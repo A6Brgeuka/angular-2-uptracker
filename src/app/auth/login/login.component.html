@@ -1,7 +1,3 @@
-<div class="auth-wrapper">
-  <div class="logo">
-    <a [routerLink]="['']">uptracker</a>
-  </div>
   <div class="auth-box center-align">
     <div class="title">Welcome back!</div>
     <div class="subtitle">Please enter your credentials below to continue.</div>
@@ -45,7 +41,7 @@
 
       <button
           type="submit"
-          class="white-text"
+          class="white-text waves-effect waves-light"
           [class.disabled]="!loginForm.form.valid"
           [disabled]="!loginForm.form.valid"
           type="submit">
@@ -61,4 +57,3 @@
       <a [routerLink]="['/signup']" class="white-text">Don’t have an account? Register here</a>
     </div>
   </div>
-</div>

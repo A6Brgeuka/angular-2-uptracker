@@ -1,0 +1,81 @@
+:host /deep/ {
+  .auth-wrapper{
+    max-width: 760px;
+    margin:0 auto;
+
+    .logo a{
+      display:block;
+      width:215px;
+      height:47px;
+      padding-right:35px;
+      font-family: Ubuntu;
+      font-size:38px;
+      background: url(/assets/img/logo.svg) no-repeat right center;
+      background-size: auto 100%;
+      color:#fff;
+      margin:57px auto 50px;
+    }
+
+    .auth-box{
+      padding:60px 0 75px; //225
+      border-radius:5px;
+      background:#fff;
+      margin-bottom:19px;
+
+      .title {
+        font-family: Ubuntu;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .subtitle {
+        font-size: 14px;
+        color: #9a9c9e;
+      }
+
+      form{
+        margin:30px auto 0;
+        width:310px;
+
+        .input{
+          margin-bottom:25px;
+
+          input{
+            height: 40px;
+            border-radius: 5px;
+            background-color: #f5f6f7;
+            border: 1px solid #d6d6d6;
+            margin:8px 0 0;
+          }
+
+          .error{
+            font-size:12px;
+            margin-top:3px;
+          }
+        }
+
+        button{
+          width:120px;
+          height:40px;
+          margin-top:19px;
+          border-radius:5px;
+          background: #f1594e;
+          border:0;
+          font-size:16px;
+          font-weight:900;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .auth-wrapper{
+    .footer{
+      div {
+        text-align:center;
+      }
+    }
+  }
+}

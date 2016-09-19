@@ -1,25 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-
-import { MaterializeModule } from 'angular2-materialize';
 
 import { routing }  from './app.routing';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+
+// modules
+import { AppSharedModule } from './shared/shared.module';
+import { AuthModule } from './auth/auth.module';
+import { NoContentModule } from './no-content/no-content.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    MaterializeModule,
-    routing
+    AppSharedModule,
+    routing,
+    AuthModule,
+    NoContentModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

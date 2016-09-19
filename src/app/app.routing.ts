@@ -1,8 +1,11 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-// import { NoContent } from "./no-content";
-import { AppComponent } from "./app.component";
-import { LoginComponent } from "./login/login.component";
+
+import { NoContentComponent } from './no-content/index';
+import { AppComponent } from './app.component';
+
+// routings
+import { AuthRoutes } from './auth/index';
 
 
 const appRoutes: Routes = [
@@ -13,13 +16,12 @@ const appRoutes: Routes = [
     // },
     component: AppComponent,
     children: [
-      // ...LandingRoutes,
+      ...AuthRoutes,
       // ...CrmRoutes,
       // ...FormRoutes,
     ]
   },
-  {path: 'login', component: LoginComponent},
-  // {path: '**', component: NoContent},
+  {path: '**', component: NoContentComponent},
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
