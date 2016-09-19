@@ -9,8 +9,7 @@ body{
 }
 
 .auth-wrapper{
-  width: 760px;
-  max-width:100%;
+  max-width: 760px;
   margin:0 auto;
 
   .logo a{
@@ -27,7 +26,7 @@ body{
   }
 
   .auth-box{
-    padding:60px 225px 75px;
+    padding:60px 0 75px; //225
     border-radius:5px;
     background:#fff;
     margin-bottom:19px;
@@ -44,7 +43,8 @@ body{
     }
 
     form{
-      margin-top:30px;
+      margin:30px auto 0;
+      width:310px;
 
       .input{
         margin-bottom:25px;
@@ -72,8 +72,19 @@ body{
         border:0;
         font-size:16px;
         font-weight:900;
+        cursor: pointer;
       }
     }
   }
 
+}
+
+@media all and (max-width: 767px) {
+  .auth-wrapper{
+    .footer{
+      div {
+        text-align:center;
+      }
+    }
+  }
 }
