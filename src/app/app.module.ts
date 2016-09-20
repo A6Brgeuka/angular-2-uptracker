@@ -9,6 +9,7 @@ import { CoreModule } from './core/core.module';
 import { AppSharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { NoContentModule } from './no-content/no-content.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NoContentModule } from './no-content/no-content.module';
     // AppSharedModule,
     routing,
     AuthModule,
-    NoContentModule
+    NoContentModule,
+    DashboardModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

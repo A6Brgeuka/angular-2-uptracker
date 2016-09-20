@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 
 // routings
 import { AuthRoutes } from './auth/index';
+import { DashboardRoutes } from './dashboard/index';
 
 
 const appRoutes: Routes = [
@@ -17,7 +18,7 @@ const appRoutes: Routes = [
     component: AppComponent,
     children: [
       ...AuthRoutes,
-      // ...CrmRoutes,
+      ...DashboardRoutes,
       // ...FormRoutes,
     ]
   },

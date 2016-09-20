@@ -1,0 +1,52 @@
+<div class="dashboard">
+  <aside class="left-panel">
+    <div class="logo">
+      <a [routerLink]="['']">uptracker</a>
+    </div>
+    <div class="nav">
+      <a [routerLink]="['']" class="orders">Orders</a>
+      <a [routerLink]="['']" class="products">Products</a>
+      <a [routerLink]="['']" class="inventory">Inventory</a>
+      <a [routerLink]="['']" class="transfers">Transfers</a>
+      <a [routerLink]="['']" class="vendors">Vendors</a>
+      <a [routerLink]="['']" class="locations">Locations</a>
+      <a [routerLink]="['']" class="users">Users</a>
+    </div>
+  </aside>
+  <section class="main-column">
+    <header class="header">
+      <div class="row">
+        <div class="col s6">
+          <div class="select">
+            <select class="browser-default">
+              <option>USA</option>
+              <option>Canada</option>
+              <option>Germany</option>
+            </select>
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="fixed-action-btn click-to-toggle">
+            <a class="btn-floating blue white-text center-align">
+              AG
+              <!--<i class="material-icons">menu</i>-->
+            </a>
+            <span class="name">Aure G.</span>
+            <ul>
+              <li><a class="">My Profile</a></li>
+              <li><a class="">Edit Profile</a></li>
+              <li><a class="">Logout</a></li>
+              <!--<li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>-->
+              <!--<li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>-->
+              <!--<li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>-->
+              <!--<li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>-->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+</div>
