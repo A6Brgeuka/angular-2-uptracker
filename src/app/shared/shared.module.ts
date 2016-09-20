@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { MaterializeModule } from "angular2-materialize";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
+// import { MaterializeModule } from "angular2-materialize";
 
-// import { CoreModule } from "../core/core.module";
+import { CoreModule } from "../core/core.module";
 
 // import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 // import * as directives from "./directives";
@@ -36,15 +36,15 @@ import { RouterModule } from "@angular/router";
 
 @NgModule({
   imports: [
+    CommonModule,
     RouterModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    // CoreModule,
-    CommonModule,
-    
-    MaterializeModule,
+
+    CoreModule,
+    // MaterializeModule
   ],
   declarations: [
     // ...directivesArr,
@@ -56,9 +56,9 @@ import { RouterModule } from "@angular/router";
     FormsModule,
     HttpModule,
     CommonModule,
-    // CoreModule,
+    CoreModule,
     
-    MaterializeModule,
+    // MaterializeModule,
     
     // ...directivesArr,
     // ...pipesArr,
