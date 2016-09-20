@@ -1,3 +1,17 @@
-<p class="center-align white-text">
-  Home page
-</p>
+<div class="center-align">
+  <h4 class="center-align white-text">
+    Home page
+  </h4>
+  <div>
+    <a [routerLink]="['/login']" class="white-text">Login</a>
+  </div>
+  <div>
+    <a [routerLink]="['/forgot-password']" class="white-text">Forgot Password</a>
+  </div>
+  <div>
+    <a [routerLink]="['/reset-password']" class="white-text">Reset Password</a>
+  </div>
+  <div>
+    <a [routerLink]="['/signup','company']" class="white-text">Signup Company</a>
+  </div>
+</div>

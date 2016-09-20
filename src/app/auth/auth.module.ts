@@ -5,6 +5,7 @@ import { AppSharedModule } from '../shared/shared.module';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
 import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { LoginModule } from './login/login.module';
+import { SignupModule } from './signup/signup.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { LoginModule } from './login/login.module';
     
     ForgotPasswordModule,
     ResetPasswordModule,
-    LoginModule
+    LoginModule,
+    SignupModule
   ],
   providers: []
 })

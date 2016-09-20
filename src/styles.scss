@@ -8,3 +8,10 @@ body{
   font-size:14px;
 }
 
+a{
+  color:#33c6d9;
+
+  &:hover{
+    text-decoration: underline;
+  }
+}

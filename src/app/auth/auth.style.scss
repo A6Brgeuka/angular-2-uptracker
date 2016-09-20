@@ -14,6 +14,10 @@
       background-size: auto 100%;
       color:#fff;
       margin:57px auto 50px;
+
+      &:hover{
+        text-decoration: none;
+      }
     }
 
     .auth-box{
@@ -51,6 +55,40 @@
           .error{
             font-size:12px;
             margin-top:3px;
+          }
+        }
+
+        .split-input-row{
+          margin:0 -0.75rem;
+        }
+
+        .input-checkbox{
+          [type="checkbox"]{
+            & + label{
+              padding-left:25px;
+              font-size:14px;
+
+              &:before{
+                width:20px;
+                height:20px;
+                background-color: #f5f6f7;
+                border-color: #d6d6d6;
+                border-radius:3px;
+              }
+            }
+
+            &:checked{
+              & + label:before{
+                border-width:0 2px 2px 0;
+                background:transparent;
+                width: 10px;
+                height: 15px;
+                border-radius: 1px;
+                top: 1px;
+                left:-2px;
+                border-color: #33c6d9;
+              }
+            }
           }
         }
 
