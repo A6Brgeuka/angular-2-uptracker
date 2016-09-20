@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   draftUser: UserModel;
 
   constructor(
-      private userService: UserService,
+      // private userService: UserService,
       private router: Router
   ) { }
 
