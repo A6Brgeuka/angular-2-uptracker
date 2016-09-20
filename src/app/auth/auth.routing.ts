@@ -2,8 +2,7 @@ import { AuthComponent } from './auth.component';
 
 import { LoginRoutes } from './login/login.routing';
 import { ForgotPasswordRoutes } from './forgot-password/forgot-password.routing';
-
-// import { UpdatePasswordRoutes } from './update-password/update-password.routing';
+import { ResetPasswordRoutes } from './reset-password/reset-password.routing';
 
 export const AuthRoutes = [
   {
@@ -12,7 +11,7 @@ export const AuthRoutes = [
     resolve: {},
     children: [
       ...LoginRoutes,
-      // ...UpdatePasswordRoutes,
+      ...ResetPasswordRoutes,
       ...ForgotPasswordRoutes
     ]
   }
