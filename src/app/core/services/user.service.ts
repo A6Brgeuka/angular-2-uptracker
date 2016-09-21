@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { HttpClient } from './http.service';
 import { ToasterService } from './toaster.service';
-import { APP_CONFIG, AppConfig } from '../../app.config';
+import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class UserService extends ModelService {
   constructor(
     public http: HttpClient,
     public toasterService: ToasterService,
-    @Inject(APP_CONFIG) appConfig: AppConfig,
+    @Inject(APP_CONFIG) appConfig,
     public localStorage: LocalStorage,
     public cookieService: CookieService,
     public router: Router
