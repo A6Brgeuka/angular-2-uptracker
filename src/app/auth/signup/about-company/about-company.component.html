@@ -6,7 +6,6 @@
         <div class="label left-align">Company Name</div>
         <input
             id="companyName"
-            prefilling-fix
             placeholder="Enter name"
             class="validate col s12"
             [(ngModel)]="signupAccount.companyName"
@@ -14,7 +13,7 @@
             #companyName="ngModel"
             required
             type="text">
-        <div [hidden]="companyName.valid || companyName.untouched" class="error red-text col s12 left-align">
+        <div [hidden]="companyName.valid || companyName.pristine" class="error red-text left-align">
           Company name is required.
         </div>
       </div>
@@ -24,15 +23,13 @@
         <input
             id="email"
             class="validate col s12"
-            prefilling-fix
             placeholder="Enter email"
             [(ngModel)]="signupAccount.email"
             name="email"
-            #email="ngModel"
+            #email="ngModel" #spy
             required minlength="10" maxlength="100" pattern=".+@.+\..+"
             type="text">
-
-        <div [hidden]="email.valid || email.pristine" class="error red-text col s12 left-align">
+        <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
           Your email must be between 10 and 100 characters long and look like an e-mail address.
         </div>
       </div>
@@ -41,7 +38,6 @@
         <div class="label left-align">Street Address</div>
         <input
             id="streetAddress"
-            prefilling-fix
             placeholder="Address Line 1"
             class="validate col s12"
             [(ngModel)]="signupAccount.streetAddress"
@@ -49,12 +45,11 @@
             #streetAddress="ngModel"
             required
             type="text">
-        <div [hidden]="streetAddress.valid || streetAddress.untouched" class="error red-text col s12 left-align">
+        <div [hidden]="streetAddress.valid || streetAddress.untouched" class="error red-text left-align">
           Street Address is required.
         </div>
         <input
             id="streetAddress2"
-            prefilling-fix
             placeholder="Address Line 1"
             class="validate col s12"
             [(ngModel)]="signupAccount.streetAddress2"
@@ -62,7 +57,7 @@
             #streetAddress2="ngModel"
             required
             type="text">
-        <div [hidden]="streetAddress2.valid || streetAddress2.untouched" class="error red-text col s12 left-align">
+        <div [hidden]="streetAddress2.valid || streetAddress2.untouched" class="error red-text left-align">
           Street Address is required.
         </div>
       </div>
@@ -72,7 +67,6 @@
           <div class="label left-align">City</div>
           <input
               id="city"
-              prefilling-fix
               placeholder="Enter city name"
               class="validate col s12"
               [(ngModel)]="signupAccount.city"
@@ -80,7 +74,7 @@
               #city="ngModel"
               required
               type="text">
-          <div [hidden]="city.valid || city.untouched" class="error red-text col s12 left-align">
+          <div [hidden]="city.valid || city.untouched" class="error red-text left-align">
             City is required.
           </div>
         </div>
@@ -88,7 +82,6 @@
           <div class="label left-align">Zip Code</div>
           <input
               id="zip"
-              prefilling-fix
               placeholder="Enter zip code"
               class="validate col s12"
               [(ngModel)]="signupAccount.zip"
@@ -96,45 +89,9 @@
               #zip="ngModel"
               required
               type="text">
-          <div [hidden]="zip.valid || zip.untouched" class="error red-text col s12 left-align">
+          <div [hidden]="zip.valid || zip.untouched" class="error red-text left-align">
             Zip code is required.
           </div>
-        </div>
-      </div>
-
-      <div class="input row">
-        <div class="label left-align">Password</div>
-        <input
-            id="password"
-            prefilling-fix
-            placeholder="Enter password"
-            class="validate col s12"
-            type="password"
-            [(ngModel)]="signupAccount.password"
-            name="password"
-            minlength="6"
-            required
-            #password="ngModel">
-
-        <div [hidden]="password.valid || password.pristine" class="error red-text col s12 left-align">
-          Required. Min length of password must be at least 6 symbols.
-        </div>
-      </div>
-
-      <div class="input row">
-        <div class="label left-align">Annual Income</div>
-        <input
-            id="income"
-            prefilling-fix
-            placeholder="Enter dollar amount here"
-            class="validate col s12"
-            [(ngModel)]="signupAccount.income"
-            name="income"
-            #income="ngModel"
-            required
-            type="text">
-        <div [hidden]="income.valid || income.untouched" class="error red-text col s12 left-align">
-          Annual Income name is required.
         </div>
       </div>
 

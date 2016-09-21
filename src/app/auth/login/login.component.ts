@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   draftUser: UserModel;
 
   constructor(
-      // private userService: UserService,
+      private userService: UserService,
       private router: Router
   ) { }
 
@@ -21,16 +21,16 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.userService.login(this.draftUser)
-    //     .subscribe((res: any) => {
-    //       console.log(res);
-    //       // if (res.typeAuthenticationString == 'sms') {
-    //       //   this.populateModel(res);
-    //       // } else {
-    //       //   this.router.navigate(['/deployments']);
-    //       // }
-    //       this.router.navigate(['/reset-password']);
-    //     });
+    this.userService.login(this.draftUser)
+        .subscribe((res: any) => {
+          console.log(res);
+          // if (res.typeAuthenticationString == 'sms') {
+          //   this.populateModel(res);
+          // } else {
+          //   this.router.navigate(['/deployments']);
+          // }
+          this.router.navigate(['/reset-password']);
+        });
   }
 
 }

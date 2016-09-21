@@ -14,6 +14,7 @@
       background-size: auto 100%;
       color:#fff;
       margin:57px auto 50px;
+      text-indent:-5000px;
 
       &:hover{
         text-decoration: none;
@@ -50,6 +51,19 @@
             background-color: #f5f6f7;
             border: 1px solid #d6d6d6;
             margin:8px 0 0;
+
+            &:focus{
+              box-shadow:none;
+              border-color:#33c6d9;
+            }
+
+            & + .error{
+              display:none;
+            }
+
+            &.invalid + .error{
+              display:block;
+            }
           }
 
           .error{

@@ -21,3 +21,21 @@ a{
     text-decoration:none;
   }
 }
+
+.select{
+  select{
+    height:30px;
+    border-radius:5px;
+    border-color:#979797;
+
+    &:focus{
+      outline:0;
+    }
+  }
+}
+
+button{
+  &[disabled]{
+    cursor:default !important;
+  }
+}

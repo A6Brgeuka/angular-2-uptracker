@@ -8,7 +8,7 @@ import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
 
-// import { IterablePipe } from "./pipes/iterable/iterable.pipe";
+import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 // import * as directives from "./directives";
 // import * as lodash from "lodash";
 // import MaskedInput from 'angular2-text-mask'
@@ -29,9 +29,9 @@ import { CoreModule } from "../core/core.module";
 // ];
 
 
-// let pipesArr = [
-//   IterablePipe,
-// ];
+let pipesArr = [
+  IterablePipe,
+];
 
 
 @NgModule({
@@ -48,7 +48,7 @@ import { CoreModule } from "../core/core.module";
   ],
   declarations: [
     // ...directivesArr,
-    // ...pipesArr,
+    ...pipesArr
   ],
   exports: [
     RouterModule,
@@ -61,7 +61,7 @@ import { CoreModule } from "../core/core.module";
     // MaterializeModule,
     
     // ...directivesArr,
-    // ...pipesArr,
+    ...pipesArr
   ],
   providers: []
 })

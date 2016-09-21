@@ -1,20 +1,20 @@
 import { Injectable }     from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 
-// import { LocalStorage } from 'angular2-local-storage/local_storage';
+import { LocalStorage } from 'angular2-local-storage/local_storage';
 
 @Injectable()
 export class HttpClient {
   
   constructor(
-    public http:Http,
-    // public localStorage:LocalStorage
+    public localStorage:LocalStorage,
+    public http:Http
   ) {
   }
   
   createAuthorizationHeader(headers:Headers) {
     headers.append('Content-Type', 'application/json');
-    // headers.append('Authorization', 'Bearer ' + this.localStorage.get('token') || null);
+    // headers.append('Authorization', 'Bearer ' + this.localStorage.get('uptracker_token') || null);
   }
   
   get(url, params?) {

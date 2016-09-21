@@ -1,15 +1,16 @@
 import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-// import {LocalStorage} from 'angular2-local-storage/local_storage';
+import { LocalStorage } from 'angular2-local-storage/local_storage';
+import { CookieService } from 'angular2-cookie/services';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { HttpClient } from './http.service';
-// import { ToasterService } from './toaster.service';
-// import { APP_CONFIG, AppConfig } from '../../app.config';
-// import { ModelService } from '../../overrides/ModelService.ts';
+import { ToasterService } from './toaster.service';
+import { APP_CONFIG, AppConfig } from '../../app.config';
+import { ModelService } from '../../overrides/model.service';
 
 @Injectable()
-export class UserService { //extends ModelService {
+export class UserService extends ModelService {
   
   // static STATUS_BLOCKED = 0;
   // static STATUS_ACTIVE = 1;
@@ -20,33 +21,29 @@ export class UserService { //extends ModelService {
   //
   // static TYPE_AUTHENTICATION_DEFAULT = 1;
   // static TYPE_AUTHENTICATION_SMS = 2;
-  //
-  // selfData: any;
-  // selfData$: Observable<any>;
-  // updateSelfData$: Subject<any> = new Subject<any>();
+
+  selfData: any;
+  selfData$: Observable<any>;
+  updateSelfData$: Subject<any> = new Subject<any>();
 
   // apiEndpoint: string = 'http://uptracker-api.herokuapp.com/api/v1';
-  apiEndpoint: string = 'http://private-anon-ce8323ff87-uptracker.apiary-mock.com/api/v1';
+  // apiEndpoint: string = 'http://private-anon-ce8323ff87-uptracker.apiary-mock.com/api/v1';
   
   constructor(
     public http: HttpClient,
-    // public toasterService: ToasterService,
-    // @Inject(APP_CONFIG) appConfig: AppConfig,
-    // public localStorage: LocalStorage,
-    public router: Router,
+    public toasterService: ToasterService,
+    @Inject(APP_CONFIG) appConfig: AppConfig,
+    public localStorage: LocalStorage,
+    public cookieService: CookieService,
+    public router: Router
   ) {
-    // super({
-    //   childClassName: UserService.name,
-    //   modelEndpoint: 'users',
-    //   expand: {
-    //     default: [
-    //       {
-    //         //Account: ['users'],
-    //         User: ['account', 'deployments', 'cards', 'defaultCard']
-    //       }
-    //     ],
-    //   }
-    // }, http, toasterService, appConfig);
+    super({
+      childClassName: UserService.name,
+      modelEndpoint: '',
+      expand: {
+        default: [],
+      }
+    }, http, toasterService, appConfig);
     
     this.onInit();
   }
@@ -80,7 +77,7 @@ export class UserService { //extends ModelService {
   //     console.log(`${this.defaultOptions.childClassName} Update SELF DATA`, res);
   //   });
   // }
-  //
+
   // isGuest():boolean {
   //   return !this.localStorage.get('token');
   // }
@@ -120,33 +117,27 @@ export class UserService { //extends ModelService {
   // }
   
   login(data) {
-    // let body = JSON.stringify(data);
-    // let api =  this.apiEndpoint + '/login';
-    //
-    // return this.http.post(api, body, {
-    //   // search: this.getSearchParams('login')
-    // })
-    //     .map((res) => {
-    //       let body = res.json();
-    //       return body || {};
-    //     })
-    //     .do((res) => {
-    //       console.log(res);
-    //     });
-
-    // .map(this.extractData.bind(this))
-    // .catch(this.handleError.bind(this))
-    // .do((res)=> {
-    //   this.afterLogin(res);
-    // });
+    let body = JSON.stringify(data);
+    // body['email_address'] = body['email'];
+    let api = this.apiEndpoint + 'login';
+    return this.http.post(api, body, {
+      search: this.getSearchParams('login')
+    })
+      .map(this.extractData.bind(this))
+      .catch(this.handleError.bind(this))
+      .do((res) => {
+        this.afterLogin(res);
+      });
   }
   
-  // afterLogin(data){
-  //   this.localStorage.set('token', '');
-  //   this.localStorage.set('selfId', '');
-  //   this.updateSelfData$.next(data);
-  // }
-  //
+  afterLogin(data){
+    this.localStorage.set('uptracker_token', '');
+    this.localStorage.set('uptracker_selfId', '');
+    this.cookieService.put('uptracker_token', '');
+    this.cookieService.put('uptracker_selfId', '');
+    // this.updateSelfData$.next(data);
+  }
+
   // signUp(data){
   //   let entity = super.create(data);
   //
