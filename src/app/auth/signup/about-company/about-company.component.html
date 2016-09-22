@@ -24,7 +24,7 @@
             id="email"
             class="validate col s12"
             placeholder="Enter email"
-            [(ngModel)]="signupAccount.email"
+            [(ngModel)]="signupAccount.companyEmail"
             name="email"
             #email="ngModel"
             required minlength="10" maxlength="100" pattern=".+@.+\..+"
@@ -107,8 +107,7 @@
           type="submit"
           class="btn white-text waves-effect waves-light"
           [class.disabled]="!signupForm.form.valid"
-          [disabled]="!signupForm.form.valid"
-          type="submit">
+          [disabled]="!signupForm.form.valid">
         Next
       </button>
     </form>

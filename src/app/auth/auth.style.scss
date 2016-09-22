@@ -22,7 +22,7 @@
     }
 
     .auth-box{
-      padding:60px 0 75px; //225
+      padding:60px 0 70px;
       border-radius:5px;
       background:#fff;
       margin-bottom:19px;
@@ -110,19 +110,19 @@
             }
           }
         }
+      }
 
-        button{
-          width:120px;
-          height:40px;
-          margin-top:19px;
-          border-radius:5px;
-          background: #f1594e;
-          border:0;
-          font-size:16px;
-          font-weight:900;
-          cursor: pointer;
-          text-transform: capitalize;
-        }
+      button{
+        width:120px;
+        height:40px;
+        margin-top:19px;
+        border-radius:5px;
+        background: #f1594e;
+        border:0;
+        font-size:16px;
+        font-weight:900;
+        cursor: pointer;
+        text-transform: capitalize;
       }
     }
   }

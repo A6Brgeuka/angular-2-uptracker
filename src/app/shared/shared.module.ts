@@ -11,22 +11,22 @@ import { CoreModule } from "../core/core.module";
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 // import * as directives from "./directives";
 // import * as lodash from "lodash";
-// import MaskedInput from 'angular2-text-mask'
+import MaskedInput from 'angular2-text-mask';
 
-// let directivesArr = [
-//   PageScroll,
-//   directives.SvgIconComponent,
-//   directives.LogoutDirective,
-//   directives.CalculatorTableComponent,
-//   directives.GetStartedComponent,
-//  
-//   directives.AlertsRangeSliderComponent,
-//   directives.Ng2SliderComponent,
-//   // derectives to ng2 slider
-//   SlideAbleDirective, Ng2StyledDirective,
-//  
-//   MaskedInput,
-// ];
+let directivesArr = [
+  // PageScroll,
+  // directives.SvgIconComponent,
+  // directives.LogoutDirective,
+  // directives.CalculatorTableComponent,
+  // directives.GetStartedComponent,
+  //
+  // directives.AlertsRangeSliderComponent,
+  // directives.Ng2SliderComponent,
+  // derectives to ng2 slider
+  // SlideAbleDirective, Ng2StyledDirective,
+
+  MaskedInput
+];
 
 
 let pipesArr = [
@@ -47,7 +47,7 @@ let pipesArr = [
     // MaterializeModule
   ],
   declarations: [
-    // ...directivesArr,
+    ...directivesArr,
     ...pipesArr
   ],
   exports: [
@@ -60,7 +60,7 @@ let pipesArr = [
     
     // MaterializeModule,
     
-    // ...directivesArr,
+    ...directivesArr,
     ...pipesArr
   ],
   providers: []
