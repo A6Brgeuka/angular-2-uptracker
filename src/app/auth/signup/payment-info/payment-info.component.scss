@@ -1,0 +1,13 @@
+.expiration-row{
+  .expMonth{
+    position: relative;
+
+    &:after{
+      content:'/';
+      position: absolute;
+      top:17px;
+      right:-2px;
+      color:#9a9c9e;
+    }
+  }
+}

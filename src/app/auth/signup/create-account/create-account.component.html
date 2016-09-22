@@ -5,15 +5,15 @@
       <div class="input row">
         <div class="label left-align">Your Name</div>
         <input
-            id="userName"
+            id="name"
             placeholder="Enter name"
             class="validate col s12"
-            [(ngModel)]="signupAccount.userName"
-            name="userName"
-            #userName="ngModel"
+            [(ngModel)]="signupAccount.name"
+            name="name"
+            #name="ngModel"
             required
             type="text">
-        <div [hidden]="userName.valid || userName.pristine" class="error red-text left-align">
+        <div [hidden]="name.valid || name.pristine" class="error red-text left-align">
           Name is required.
         </div>
       </div>

@@ -1,64 +1,74 @@
   <div class="auth-box center-align">
-    <div class="title">About your company</div>
-    <div class="subtitle">Tell us a bit about your place of work.</div>
+    <div class="title">Payment Information</div>
+    <div class="subtitle">How will you be paying for orders?</div>
     <form materialize (ngSubmit)="onSubmit()" #signupForm="ngForm" autocomplete="off" novalidate>
       <div class="input row">
-        <div class="label left-align">Company Name</div>
+        <div class="label left-align">Credit Card Number</div>
         <input
-            id="companyName"
-            placeholder="Enter name"
+            id="cardNumber"
+            placeholder="Enter a valid creditcard number here"
             class="validate col s12"
-            [(ngModel)]="signupAccount.companyName"
-            name="companyName"
-            #companyName="ngModel"
+            [textMask]="{mask: masks.card, guide:false}"
+            [(ngModel)]="creditCard.cardNumber"
+            name="cardNumber" data-stripe="exp_number"
+            #cardNumber="ngModel"
             required
             type="text">
-        <div [hidden]="companyName.valid || companyName.pristine" class="error red-text left-align">
-          Company name is required.
+        <div [hidden]="cardNumber.valid || cardNumber.pristine" class="error red-text left-align">
+          Credit card number is required.
+        </div>
+      </div>
+
+      <div class="row split-input-row expiration-row">
+        <div class="label left-align col s12">Expiration Date</div>
+        <div class="input col s6 expMonth">
+          <input
+              id="expMonth"
+              placeholder="Month"
+              class="validate col s12"
+              [textMask]="{mask: masks.expYear, guide:false}"
+              [(ngModel)]="creditCard.expMonth"
+              name="expMonth" data-stripe="exp_month"
+              #expMonth="ngModel"
+              required
+              type="text">
+          <div [hidden]="expMonth.valid || expMonth.untouched" class="error red-text left-align">
+            Expiration month is required.
+          </div>
+        </div>
+        <div class="input col s6">
+          <input
+              id="expYear"
+              placeholder="Year"
+              class="validate col s12"
+              [textMask]="{mask: masks.expYear, guide:false}"
+              [(ngModel)]="creditCard.expYear"
+              name="expYear" data-stripe="exp_year"
+              #expYear="ngModel"
+              required
+              type="text">
+          <div [hidden]="expYear.valid || expYear.untouched" class="error red-text left-align">
+            Expiration year is required.
+          </div>
         </div>
       </div>
 
       <div class="input row">
-        <div class="label left-align">Company Email</div>
-        <input
-            id="email"
-            class="validate col s12"
-            placeholder="Enter email"
-            [(ngModel)]="signupAccount.email"
-            name="email"
-            #email="ngModel"
-            required minlength="10" maxlength="100" pattern=".+@.+\..+"
-            type="text">
-        <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
-          Your email must be between 10 and 100 characters long and look like an e-mail address.
-        </div>
-      </div>
-
-      <div class="input row">
-        <div class="label left-align">Street Address</div>
-        <input
-            id="streetAddress"
-            placeholder="Address Line 1"
-            class="validate col s12"
-            [(ngModel)]="signupAccount.streetAddress"
-            name="streetAddress"
-            #streetAddress="ngModel"
-            required
-            type="text">
-        <div [hidden]="streetAddress.valid || streetAddress.untouched" class="error red-text left-align">
-          Street Address is required.
-        </div>
-        <input
-            id="streetAddress2"
-            placeholder="Address Line 1"
-            class="validate col s12"
-            [(ngModel)]="signupAccount.streetAddress2"
-            name="streetAddress2"
-            #streetAddress2="ngModel"
-            required
-            type="text">
-        <div [hidden]="streetAddress2.valid || streetAddress2.untouched" class="error red-text left-align">
-          Street Address is required.
+        <div class="clearfix">
+          <div class="label left-align">CVC</div>
+          <input
+              id="number"
+              class="validate col s12"
+              placeholder="222"
+              [textMask]="{mask: masks.cvc, guide:false}"
+              [(ngModel)]="creditCard.cvc"
+              name="number" size="20" data-stripe="number"
+              required minlength="3"
+              #number="ngModel"
+              type="text">
+          <div [hidden]="number.valid || number.untouched" class="col-12 alert alert-danger">
+            CVC is required.
+          </div>
         </div>
       </div>
 
@@ -66,49 +76,65 @@
         <div class="input col s6">
           <div class="label left-align">City</div>
           <input
-              id="city"
+              id="cardCity"
               placeholder="Enter city name"
               class="validate col s12"
-              [(ngModel)]="signupAccount.city"
-              name="city"
-              #city="ngModel"
+              [(ngModel)]="creditCard.cardCity"
+              name="cardCity"
+              #cardCity="ngModel"
               required
               type="text">
-          <div [hidden]="city.valid || city.untouched" class="error red-text left-align">
+          <div [hidden]="cardCity.valid || cardCity.untouched" class="error red-text left-align">
             City is required.
           </div>
         </div>
         <div class="input col s6">
           <div class="label left-align">Zip Code</div>
           <input
-              id="zip"
+              id="cardZip"
               placeholder="Enter zip code"
               class="validate col s12"
-              [(ngModel)]="signupAccount.zip"
-              name="zip"
-              #zip="ngModel"
+              [(ngModel)]="creditCard.cardZip"
+              name="cardZip"
+              #cardZip="ngModel"
               required
               type="text">
-          <div [hidden]="zip.valid || zip.untouched" class="error red-text left-align">
+          <div [hidden]="cardZip.valid || cardZip.untouched" class="error red-text left-align">
             Zip code is required.
           </div>
         </div>
       </div>
 
-      <div class="input-checkbox row">
-        <input type="checkbox"
-               id="inList"
-               [(ngModel)]="signupAccount.inList"
-               name="inList">
-        <label for="inList">I am a Mary’s List Member <a href="#">What is Mary’s List?</a></label>
+      <div class="input row">
+        <div class="label left-align">Trial Code</div>
+        <input
+            id="trial"
+            placeholder="Enter trial code"
+            class="validate col s12"
+            [(ngModel)]="trialCode"
+            name="trial"
+            #trial="ngModel"
+            type="text">
+        <div [hidden]="trial.valid || trial.pristine" class="error red-text left-align">
+          Trial Code number is required.
+        </div>
       </div>
 
-      <button
-          type="submit"
-          class="btn white-text waves-effect waves-light"
-          [class.disabled]="!signupForm.form.valid"
-          [disabled]="!signupForm.form.valid">
-        Next
-      </button>
+      <div class="buttons">
+        <button
+            type="button"
+            [routerLink]="['']"
+            class="btn white-text waves-effect waves-light left">
+          Back
+        </button>
+        <button
+            type="submit"
+            class="btn white-text waves-effect waves-light right"
+            [class.disabled]="!signupForm.form.valid"
+            [disabled]="!signupForm.form.valid">
+          Next
+        </button>
+        <div class="clearfix"></div>
+      </div>
     </form>
   </div>

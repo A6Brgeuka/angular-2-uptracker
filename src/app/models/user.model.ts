@@ -1,10 +1,10 @@
 // import { TokenModel } from './token.model';
-// import { CardModel, CreditCardModel } from './credit-card.model';
+import { CreditCardModel } from './credit-card.model';
 // import { AccountModel } from './account.model';
 
 export class UserModel {
   id: number = null;
-  // fullName: string = null;
+  name: string = null;
   email: string = null;
   password: string = null;
 
@@ -18,8 +18,8 @@ export class UserModel {
   // trialPeriodLeft: number = null;
 
   // tokens: TokenModel[] = [];
-  // cards: CreditCardModel[] = [];
-  // defaultCard: CreditCardModel = null;
+  cards: CreditCardModel[] = [];
+  defaultCard: CreditCardModel = null;
   // account: AccountModel = new AccountModel();
   // deployments: DeploymentModel[] = [];
   
@@ -33,7 +33,7 @@ export class UserModel {
     //         this[field] = new AccountModel(obj[field]);
     //         break;
     //       case 'cards':
-    //         obj[field] = obj[field].filter(res=>{
+    //         obj[field] = obj[field].filter(res => {
     //           return res.statusString == "active";
     //         });
     //

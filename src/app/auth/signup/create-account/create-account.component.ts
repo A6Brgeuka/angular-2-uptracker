@@ -1,19 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 
+import { UserModel } from '../../../models/index';
+import { UserService } from '../../../core/services/index';
+
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.scss']
 })
 export class CreateAccountComponent implements OnInit {
-  signupAccount = {};
-  public mask = ['+', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
+  signupAccount: UserModel;
+  // public mask = ['+', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
   terms: boolean = false;
   privacy: boolean = false;
 
   constructor() { }
 
   ngOnInit() {
+    this.signupAccount = new UserModel();
   }
 
   viewTerms(){
