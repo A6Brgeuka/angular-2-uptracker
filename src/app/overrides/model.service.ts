@@ -203,7 +203,7 @@ export class ModelService {
   
   public handleError(error: any) {
     let body = JSON.parse(error._body);
-    let errMsg = body.length ? body[0].message : body.message;
+    let errMsg = body.length ? body[0]['error_message'] : body['error_message'];
     
     this.toasterService.pop('error', errMsg);
     

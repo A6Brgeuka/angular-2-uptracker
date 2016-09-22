@@ -39,3 +39,21 @@ button{
     cursor:default !important;
   }
 }
+
+
+/*** Materialize styles
+*************************************************/
+
+#toast-container {
+  .toast {
+    opacity: 0.9 !important;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  #toast-container {
+    top: 1%;
+    right: 2%;
+    max-width: 86%;
+  }
+}

@@ -41,7 +41,7 @@ export class UserService extends ModelService {
       childClassName: UserService.name,
       modelEndpoint: '',
       expand: {
-        default: [],
+        default: []
       }
     }, http, toasterService, appConfig);
     
@@ -49,60 +49,61 @@ export class UserService extends ModelService {
   }
   
   onInit() {
-    // this.selfDataActions();
+    this.selfDataActions();
     // this.addSubscribers();
   }
   
   // addSubscribers(){
-  //   this.entity$.subscribe((res)=> {
+  //   this.entity$.subscribe((res) => {
   //     this.updateSelfData$.next(res);
   //   });
   // }
-  //
-  // selfDataActions() {
-  //   this.selfData$ = Observable.merge(
-  //     this.updateSelfData$
-  //   )
-  //   .filter(res=>{
-  //     return !this.localStorage.get('selfId') || res.id == this.localStorage.get('selfId');
-  //   })
-  //   .publishReplay(1).refCount();
-  //   this.selfData$.subscribe(res=> {
-  //     //Set token
-  //     if (res['accessToken']) {
-  //       this.localStorage.set('token', res['accessToken']);
-  //       this.localStorage.set('selfId', res['id']);
-  //     }
-  //     this.selfData = res;
-  //     console.log(`${this.defaultOptions.childClassName} Update SELF DATA`, res);
-  //   });
-  // }
 
-  // isGuest():boolean {
-  //   return !this.localStorage.get('token');
-  // }
-  //
-  // logout() {
-  //   this.localStorage.set('token', '');
-  //   this.localStorage.set('selfId', '');
-  //   this.router.navigate(['/']);
-  // }
-  //
-  // getToken():any {
-  //   if (this.isGuest()) {
-  //     return null;
-  //   }
-  //   return this.localStorage.get('token') || null;
-  // }
-  //
-  // getSelfId():any {
-  //   if (this.isGuest()) {
-  //     return null;
-  //   }
-  //   return this.localStorage.get('selfId')
-  // }
-  //
-  // loadSelfData():Observable<any> {
+  selfDataActions() {
+    this.selfData$ = Observable.merge(
+      this.updateSelfData$
+    )
+    .filter(res => {
+      // return !this.localStorage.get('selfId') || res.id == this.localStorage.get('selfId');
+      return !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
+    })
+    .publishReplay(1).refCount();
+    this.selfData$.subscribe(res => {
+      //Set token
+      if (res['token']) {
+        this.cookieService.put('uptracker_token', res['token']);
+        this.cookieService.put('uptracker_selfId', res['id']);
+      }
+      this.selfData = res;
+      console.log(`${this.defaultOptions.childClassName} Update SELF DATA`, res);
+    });
+  }
+
+  isGuest(): boolean {
+    return !this.cookieService.get('uptracker_token');
+  }
+
+  logout() {
+    this.cookieService.remove('uptracker_token');
+    this.cookieService.remove('uptracker_selfId');
+    this.router.navigate(['/']);
+  }
+
+  getToken(): any {
+    if (this.isGuest()) {
+      return null;
+    }
+    return this.cookieService.get('uptracker_token') || null;
+  }
+
+  getSelfId(): any {
+    if (this.isGuest()) {
+      return null;
+    }
+    return this.cookieService.get('uptracker_selfId');
+  }
+
+  // loadSelfData(): Observable<any> {
   //   if (this.isGuest()) {
   //     return Observable.of(null);
   //   }
@@ -111,17 +112,16 @@ export class UserService extends ModelService {
   //
   //   return this.selfData$;
   // }
-  //
+
   // updateSelfData(data){
   //   this.updateSelfData$.next(data);
   // }
   
   login(data) {
     let body = JSON.stringify(data);
-    // body['email_address'] = body['email'];
     let api = this.apiEndpoint + 'login';
     return this.http.post(api, body, {
-      search: this.getSearchParams('login')
+      // search: this.getSearchParams('login')
     })
       .map(this.extractData.bind(this))
       .catch(this.handleError.bind(this))
@@ -131,17 +131,19 @@ export class UserService extends ModelService {
   }
   
   afterLogin(data){
-    this.localStorage.set('uptracker_token', '');
-    this.localStorage.set('uptracker_selfId', '');
-    this.cookieService.put('uptracker_token', '');
-    this.cookieService.put('uptracker_selfId', '');
-    // this.updateSelfData$.next(data);
+    data.data.user.user.token = data.data.user.token;
+    console.log(data.data.user.user);
+    // this.localStorage.set('uptracker_token', '');
+    // this.localStorage.set('uptracker_selfId', '');
+    // this.cookieService.put('uptracker_token', '');
+    // this.cookieService.put('uptracker_selfId', '');
+    this.updateSelfData$.next(data.data.user.user);
   }
 
   // signUp(data){
   //   let entity = super.create(data);
   //
-  //   entity.subscribe(res=>{
+  //   entity.subscribe(res => {
   //     this.updateSelfData$.next(res);
   //   });
   //
@@ -200,17 +202,17 @@ export class UserService extends ModelService {
   //     this.updateSelfData$.next(res);
   //   });
   // }
-  //
-  // handleError(error:any) {
-  //   if (error.status == 401 || error.status == 404) {
-  //     this.logout();
-  //   }
-  //
-  //   let body = JSON.parse(error._body);
-  //   let errMsg = body.length ? body[0].message : body.message;
-  //
-  //   this.toasterService.pop('error', errMsg);
-  //
-  //   return Observable.throw(errMsg);
-  // }
+
+  handleError(error: any) {
+    if (error.status == 401 || error.status == 404) {
+      this.logout();
+    }
+
+    let body = JSON.parse(error._body);
+    let errMsg = body.length ? body[0]['error_message'] : body['error_message'];
+
+    this.toasterService.pop('error', errMsg);
+
+    return Observable.throw(errMsg);
+  }
 }

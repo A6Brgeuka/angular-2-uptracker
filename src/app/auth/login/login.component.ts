@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
           // } else {
           //   this.router.navigate(['/deployments']);
           // }
-          this.router.navigate(['/reset-password']);
+          this.router.navigate(['/dashboard']);
         });
   }
 
