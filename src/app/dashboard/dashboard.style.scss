@@ -39,12 +39,46 @@
           padding-left:66px;
           line-height:70px;
           text-transform: uppercase;
-          background-position:17px center;
           background-repeat:no-repeat;
 
           &:hover{
-            background:#198f90;
+            background-color:#198f90;
             text-decoration: none;
+          }
+
+          &.orders{
+            background-image: url(/assets/img/icon-nav-orders.svg);
+            background-position:19px center;
+          }
+
+          &.products{
+            background-image: url(/assets/img/icon-nav-products.svg);
+            background-position:22px center;
+          }
+
+          &.inventory{
+            background-image: url(/assets/img/icon-nav-inventory.svg);
+            background-position:16px center;
+          }
+
+          &.transfers{
+            background-image: url(/assets/img/icon-nav-transfers.svg);
+            background-position:14px center;
+          }
+
+          &.vendors{
+            background-image: url(/assets/img/icon-nav-vendors.svg);
+            background-position:17px center;
+          }
+
+          &.locations{
+            background-image: url(/assets/img/icon-nav-locations.svg);
+            background-position:17px center;
+          }
+
+          &.users{
+            background-image: url(/assets/img/icon-nav-users.svg);
+            background-position:14px center;
           }
         }
       }
@@ -66,45 +100,49 @@
           width:200px;
         }
 
-        .fixed-action-btn{
-          position:absolute;
-          top:5px;
-          right:31px;
+        .user-menu-col{
+          position:relative;
 
-          .btn-floating{
-            background: #4baaf4;
-            width:27px;
-            height:27px;
-            line-height:25px;
-            font-size:12px;
-            font-weight:bold;
-            margin:-1px 6px 0 0;
-            box-shadow:none;
+          .fixed-action-btn{
+            position:absolute;
+            top:5px;
+            right:31px;
 
-            &:hover{
-              box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            .btn-floating{
+              background: #4baaf4;
+              width:27px;
+              height:27px;
+              line-height:25px;
+              font-size:12px;
+              font-weight:bold;
+              margin:-1px 6px 0 0;
+              box-shadow:none;
+
+              &:hover{
+                box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+              }
             }
-          }
 
-          span{
-            line-height:25px;
-          }
+            span{
+              line-height:25px;
+            }
 
-          ul{
-            bottom: auto;
-            top: 55px;
-            background: #fff;
-            padding: 10px 0 5px;
-            width:100px;
-            left:-37px;
-            border:1px solid #d6d6d6;
-            box-shadow: 0 0 5px #d6d6d6;
+            ul{
+              bottom: auto;
+              top: 55px;
+              background: #fff;
+              padding: 10px 0 5px;
+              width:100px;
+              left:-37px;
+              border:1px solid #d6d6d6;
+              box-shadow: 0 0 5px #d6d6d6;
 
-            li{
-              margin-bottom:5px;
+              li{
+                margin-bottom:5px;
 
-              a{
-                color:#444;
+                a{
+                  color:#444;
+                }
               }
             }
           }
@@ -113,6 +151,58 @@
 
       .content-wrapper{
 
+      }
+    }
+  }
+}
+
+@media all and (max-width: 767px) {
+  .dashboard{
+    .left-panel{
+      width:70px;
+
+      .logo{
+        a{
+          background-image: url(/assets/img/icon-nav-uptracker.svg);
+          width:26px;
+          height:45px;
+          padding-right:0;
+        }
+      }
+
+      .nav{
+        a{
+          text-indent:-5000px;
+        }
+      }
+    }
+
+    .main-column{
+      margin-left:70px;
+
+      .header{
+        .user-menu-col {
+          .truncate{
+            max-width:120px;
+
+            .fixed-action-btn{
+              right:10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 480px) {
+  .main-column {
+    margin-left: 70px;
+
+    .header {
+      .select {
+        margin-left: 0;
+        width: 100px;
       }
     }
   }
