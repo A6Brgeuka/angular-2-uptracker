@@ -1,8 +1,9 @@
 import { SignupComponent } from './signup.component';
 
 import { AboutCompanyRoutes } from './about-company/about-company.routing';
-// import { ForgotPasswordRoutes } from './forgot-password/forgot-password.routing';
-// import { ResetPasswordRoutes } from './reset-password/reset-password.routing';
+import { CreateAccountRoutes } from './create-account/create-account.routing';
+import { PaymentInfoRoutes } from './payment-info/payment-info.routing';
+import { CongratsRoutes } from './congrats/congrats.routing';
 
 export const SignupRoutes = [
   {
@@ -11,8 +12,9 @@ export const SignupRoutes = [
     resolve: {},
     children: [
       ...AboutCompanyRoutes,
-      // ...ResetPasswordRoutes,
-      // ...ForgotPasswordRoutes
+      ...CreateAccountRoutes,
+      ...PaymentInfoRoutes,
+      ...CongratsRoutes
     ]
   }
 ];

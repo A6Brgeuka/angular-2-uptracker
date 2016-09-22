@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 import { SignupComponent } from './signup.component';
 import { AppSharedModule } from '../../shared/shared.module';
 import { AboutCompanyModule } from './about-company/about-company.module';
-// import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
-// import { ResetPasswordModule } from './reset-password/reset-password.module';
+import { CreateAccountModule } from './create-account/create-account.module';
+import { PaymentInfoModule } from './payment-info/payment-info.module';
+import { CongratsModule } from './congrats/congrats.module';
 
 @NgModule({
   declarations: [
@@ -14,8 +15,9 @@ import { AboutCompanyModule } from './about-company/about-company.module';
     AppSharedModule,
 
     AboutCompanyModule,
-    // ForgotPasswordModule,
-    // ResetPasswordModule
+    CreateAccountModule,
+    PaymentInfoModule,
+    CongratsModule
   ],
   providers: []
 })

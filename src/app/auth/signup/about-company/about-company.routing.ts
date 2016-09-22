@@ -2,8 +2,8 @@ import { AboutCompanyComponent } from './about-company.component';
 
 export const AboutCompanyRoutes = [
   {
-    path: 'company',
+    path: 'about-company',
     component: AboutCompanyComponent,
     canActivate: []
-  },
+  }
 ];

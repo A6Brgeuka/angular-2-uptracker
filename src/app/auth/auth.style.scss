@@ -61,8 +61,13 @@
               display:none;
             }
 
-            &.invalid + .error{
-              display:block;
+            &.invalid {
+              box-shadow:none;
+              border-color: #F44336;
+
+              & + .error{
+                display:block;
+              }
             }
           }
 
