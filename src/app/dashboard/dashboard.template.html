@@ -16,28 +16,26 @@
   <section class="main-column">
     <header class="header">
       <div class="row">
-        <div class="col s6 m8">
+        <div class="col s6 m6">
           <div class="select">
             <select class="browser-default">
+              <option>Select a location</option>
               <option>USA</option>
               <option>Canada</option>
               <option>Germany</option>
             </select>
           </div>
         </div>
-        <div class="col s6 m4 user-menu-col">
+        <div class="col s6 m6 user-menu-col">
           <div class="fixed-action-btn click-to-toggle">
-            <div class="truncate">
-              <a class="btn-floating white-text center-align waves-effect waves-light">
-                AG
-              </a>
-              <span class="name">Aure G.</span>
-              <ul>
-                <li><a [routerLink]="['/dashbord']" class="">My Profile</a></li>
-                <li><a [routerLink]="['/dashbord']" class="">Edit Profile</a></li>
-                <li><a [routerLink]="['/dashbord']" class="">Logout</a></li>
-              </ul>
-            </div>
+            <a class="btn-floating white-text center-align waves-effect waves-light">
+              AG
+            </a>
+            <a class="name truncate">Aure G.</a>
+            <ul>
+              <li><a [routerLink]="['/dashbord']" class="">My Profile</a></li>
+              <li><a [routerLink]="['/dashbord']" class="">Logout</a></li>
+            </ul>
           </div>
         </div>
       </div>

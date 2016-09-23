@@ -98,6 +98,14 @@
         .select{
           margin:19px 0 0 19px;
           width:200px;
+          max-width:calc(100% - 19px);
+
+          select{
+            font-weight:bold;
+            padding-left:4px;
+            padding-top:4px;
+            font-size:12px;
+          }
         }
 
         .user-menu-col{
@@ -105,8 +113,11 @@
 
           .fixed-action-btn{
             position:absolute;
+            max-width:100%;
+            //text-align:right;
             top:5px;
             right:31px;
+            bottom:auto;
 
             .btn-floating{
               background: #4baaf4;
@@ -115,7 +126,7 @@
               line-height:25px;
               font-size:12px;
               font-weight:bold;
-              margin:-1px 6px 0 0;
+              margin:0 6px 0 0;
               box-shadow:none;
 
               &:hover{
@@ -123,8 +134,18 @@
               }
             }
 
-            span{
-              line-height:25px;
+            .truncate{
+              //max-width: calc(100% - 47px);
+              max-width:215px;
+              display:inline-block;
+              margin-top:-1px;
+              vertical-align: middle;
+              cursor:pointer;
+              color:inherit;
+
+              &:hover{
+                text-decoration:none;
+              }
             }
 
             ul{
@@ -182,11 +203,12 @@
 
       .header{
         .user-menu-col {
-          .truncate{
-            max-width:120px;
+          .fixed-action-btn{
+            right:10px;
 
-            .fixed-action-btn{
-              right:10px;
+            .truncate{
+              //max-width: calc(100% - 57px);
+              max-width:155px;
             }
           }
         }
@@ -196,6 +218,7 @@
 }
 
 @media all and (max-width: 480px) {
+  .dashboard{
   .main-column {
     margin-left: 70px;
 
@@ -203,7 +226,17 @@
       .select {
         margin-left: 0;
         width: 100px;
+        max-width:inherit;
+      }
+
+      .user-menu-col {
+        .fixed-action-btn {
+          .truncate {
+            max-width: 68px;
+          }
+        }
       }
     }
+  }
   }
 }
