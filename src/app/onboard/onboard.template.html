@@ -1,0 +1,42 @@
+<div class="onboard-wrapper">
+  <div class="header">
+
+    <div class="top row">
+      <div class="col s6">
+        <div class="logo">
+          <a [routerLink]="['']">uptracker</a>
+        </div>
+      </div>
+      <div class="col s6 user-menu-col">
+        <div class="fixed-action-btn click-to-toggle">
+          <a class="btn-floating white center-align waves-effect waves-light">
+            AG
+          </a>
+          <a class="name truncate white-text">Aure G.</a>
+          <ul>
+            <li><a [routerLink]="['/dashbord']" class="">My Profile</a></li>
+            <li><a [routerLink]="['/dashbord']" class="">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <div class="inner">
+        <div class="locations" *ngIf="stateService.isUrl('/onboard/locations')">
+          <div class="img">
+            <img src="/assets/img/onboard/icon-onboarding-locations.svg" alt="" />
+          </div>
+          <div class="empty"></div>
+          <div class="empty"></div>
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+</div>

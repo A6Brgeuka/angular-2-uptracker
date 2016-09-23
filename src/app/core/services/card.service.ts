@@ -1,39 +1,39 @@
-import { Injectable, Inject, NgZone } from '@angular/core';
+import { Injectable, Inject, NgZone, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { CreditCardModel } from '../../models';
-import { HttpClient } from './http.service';
-import { ToasterService } from './toaster.service';
 import { UserService } from './user.service';
-import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service.ts';
+import { DefaultOptions } from '../../decorators/default-options.decorator';
+import { Subscribers } from '../../decorators/subscribers.decorator';
 
 @Injectable()
+@DefaultOptions({
+  modelEndpoint: '',
+  expand: {
+    default: []
+  }
+})
+@Subscribers({
+  initFunc: 'onInit',
+  destroyFunc: null
+})
 export class CardService extends ModelService {
   
   static STATUS_BLOCKED = 0;
   static STATUS_ACTIVE = 1;
   
   constructor(
+    public injector: Injector,
     public zone: NgZone,
-    public userService: UserService,
-    public http: HttpClient,
-    public toasterService: ToasterService,
-    @Inject(APP_CONFIG) appConfig
+    public userService: UserService
   ) {
-    super({
-      childClassName: CardService.name,
-      modelEndpoint: 'cards',
-      expand: {
-        default: []
-      }
-    }, http, toasterService, appConfig);
+    super(injector);
   
     this.onInit();
   }
   
   onInit() {
-    // this.addSubscribers();
   }
   
   // addSubscribers(){

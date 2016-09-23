@@ -6,10 +6,11 @@ import { AppComponent } from './app.component';
 
 // modules
 import { CoreModule } from './core/core.module';
-import { AppSharedModule } from './shared/shared.module';
+// import { AppSharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { NoContentModule } from './no-content/no-content.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { OnboardModule } from './onboard/onboard.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     routing,
     AuthModule,
     NoContentModule,
-    DashboardModule
+    DashboardModule,
+    OnboardModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

@@ -22,15 +22,21 @@ export class ModelService {
   collection;
   
   public apiEndpoint: string;
+  public defaultOptions: any;
+  public http: HttpClient;
+  public toasterService: ToasterService;
+  public appConfig: AppConfig;
   
   constructor(
-    public defaultOptions,
-    public http,
-    public toasterService,
-    public appConfig
+      public injector
   ) {
+    this.http = injector.get(HttpClient);
+    this.toasterService = injector.get(ToasterService);
+    this.appConfig = injector.get(APP_CONFIG);
+
+
     this.apiEndpoint = `${this.appConfig.apiEndpoint}/${this.defaultOptions.modelEndpoint}`;
-  
+
     this.entityActions();
     this.collectionActions();
   }

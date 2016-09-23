@@ -4,17 +4,10 @@
     margin:0 auto;
 
     .logo a{
-      display:block;
       width:215px;
       height:47px;
-      padding-right:35px;
-      font-family: Ubuntu;
       font-size:38px;
-      background: url(/assets/img/logo.svg) no-repeat right center;
-      background-size: auto 100%;
-      color:#fff;
       margin:57px auto 50px;
-      text-indent:-5000px;
 
       &:hover{
         text-decoration: none;
@@ -51,9 +44,9 @@
             background-color: #f5f6f7;
             border: 1px solid #d6d6d6;
             margin:8px 0 0;
+            box-shadow:none;
 
             &:focus{
-              box-shadow:none;
               border-color:#33c6d9;
             }
 
@@ -61,8 +54,11 @@
               display:none;
             }
 
+            &.valid{
+              border-color:#4CAF50;
+            }
+
             &.invalid {
-              box-shadow:none;
               border-color: #F44336;
 
               & + .error{

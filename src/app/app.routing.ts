@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 // routings
 import { AuthRoutes } from './auth/index';
 import { DashboardRoutes } from './dashboard/index';
+import { OnboardRoutes } from './onboard/index';
 
 
 const appRoutes: Routes = [
@@ -19,10 +20,10 @@ const appRoutes: Routes = [
     children: [
       ...AuthRoutes,
       ...DashboardRoutes,
-      // ...FormRoutes,
+      ...OnboardRoutes
     ]
   },
-  {path: '**', component: NoContentComponent},
+  {path: '**', component: NoContentComponent}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

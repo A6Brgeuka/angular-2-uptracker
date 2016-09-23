@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalStorage } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services';
@@ -8,8 +8,20 @@ import { HttpClient } from './http.service';
 import { ToasterService } from './toaster.service';
 import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service';
+import { DefaultOptions } from '../../decorators/default-options.decorator';
+import { Subscribers } from '../../decorators/subscribers.decorator';
 
 @Injectable()
+@DefaultOptions({
+  modelEndpoint: '',
+  expand: {
+    default: []
+  }
+})
+@Subscribers({
+  initFunc: 'onInit',
+  destroyFunc: null
+})
 export class UserService extends ModelService {
   
   // static STATUS_BLOCKED = 0;
@@ -30,34 +42,27 @@ export class UserService extends ModelService {
   // apiEndpoint: string = 'http://private-anon-ce8323ff87-uptracker.apiary-mock.com/api/v1';
   
   constructor(
+    public injector: Injector,
     public http: HttpClient,
     public toasterService: ToasterService,
-    @Inject(APP_CONFIG) appConfig,
     public localStorage: LocalStorage,
     public cookieService: CookieService,
     public router: Router
   ) {
-    super({
-      childClassName: UserService.name,
-      modelEndpoint: '',
-      expand: {
-        default: []
-      }
-    }, http, toasterService, appConfig);
+    super(injector);
     
     this.onInit();
   }
   
   onInit() {
     this.selfDataActions();
-    // this.addSubscribers();
   }
   
-  // addSubscribers(){
-  //   this.entity$.subscribe((res) => {
-  //     this.updateSelfData$.next(res);
-  //   });
-  // }
+  addSubscribers(){
+    this.entity$.subscribe((res) => {
+      this.updateSelfData$.next(res);
+    });
+  }
 
   selfDataActions() {
     this.selfData$ = Observable.merge(
