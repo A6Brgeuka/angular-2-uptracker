@@ -1,4 +1,4 @@
-:host {
+:host /deep/ {
   .onboard-wrapper{
     min-height:100vh;
     background:#f5f6f7;
@@ -69,6 +69,43 @@
     .content-wrapper{
       background:#f5f6f7;
       z-index:4;
+
+      .content{
+        text-align:center;
+        max-width:1064px;
+        margin:0 auto;
+
+        .title{
+          font:bold 36px/43px 'Ubuntu';
+          margin:67px 0 12px;
+        }
+
+        .subtitle{
+          font-size:18px;
+          color:#9a9c9e;
+          margin-bottom:57px;
+        }
+
+        .buttons{
+          padding:40px 0;
+
+          button{
+            width:120px;
+            height:40px;
+            font-size:16px;
+            font-weight:900;
+            padding:0;
+            border:0;
+            color:#fff;
+
+            &.next{
+              background:url(/assets/img/onboard/button-next-bg.svg) no-repeat;
+              text-align:left;
+              text-indent:37px;
+            }
+          }
+        }
+      }
     }
   }
 }
