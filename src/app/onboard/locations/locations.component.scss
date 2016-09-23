@@ -20,6 +20,13 @@
 
       &:hover{
         border-style: solid;
+        cursor:pointer;
+      }
+    }
+
+    .img{
+      img{
+        display:block;
       }
     }
 
