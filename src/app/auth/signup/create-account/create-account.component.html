@@ -1,7 +1,7 @@
   <div class="auth-box center-align" *ngIf="!terms && !privacy">
     <div class="title">Create Account</div>
     <div class="subtitle">Get started by entering the information below.</div>
-    <form materialize (ngSubmit)="onSubmit()" #signupForm="ngForm" autocomplete="off" novalidate>
+    <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #signupForm="ngForm" autocomplete="off" novalidate>
       <div class="input row">
         <div class="label left-align">Your Name</div>
         <input

@@ -39,94 +39,14 @@
           color: #9a9c9e;
         }
 
-        form {
+        .uptracker-form {
           margin: 30px auto 0;
           width: 310px;
 
-          .input {
-            margin-bottom: 25px;
-
-            input {
-              height: 40px;
-              border-radius: 5px;
-              background-color: #f5f6f7;
-              border: 1px solid #d6d6d6;
-              margin: 8px 0 0;
-              box-shadow: none;
-
-              &:focus {
-                border-color: #33c6d9;
-              }
-
-              & + .error {
-                display: none;
-              }
-
-              &.valid {
-                border-color: #4CAF50;
-              }
-
-              &.invalid {
-                border-color: #F44336;
-
-                & + .error {
-                  display: block;
-                }
-              }
-            }
-
-            .error {
-              font-size: 12px;
-              margin-top: 3px;
-            }
+          button {
+            margin-top: 19px;
+            background: #f1594e;
           }
-
-          .split-input-row {
-            margin: 0 -0.75rem;
-          }
-
-          .input-checkbox {
-            [type="checkbox"] {
-              & + label {
-                padding-left: 25px;
-                font-size: 14px;
-
-                &:before {
-                  width: 20px;
-                  height: 20px;
-                  background-color: #f5f6f7;
-                  border-color: #d6d6d6;
-                  border-radius: 3px;
-                }
-              }
-
-              &:checked {
-                & + label:before {
-                  border-width: 0 2px 2px 0;
-                  background: transparent;
-                  width: 10px;
-                  height: 15px;
-                  border-radius: 1px;
-                  top: 1px;
-                  left: -2px;
-                  border-color: #33c6d9;
-                }
-              }
-            }
-          }
-        }
-
-        button {
-          width: 120px;
-          height: 40px;
-          margin-top: 19px;
-          border-radius: 5px;
-          background: #f1594e;
-          border: 0;
-          font-size: 16px;
-          font-weight: 900;
-          cursor: pointer;
-          text-transform: capitalize;
         }
       }
     }

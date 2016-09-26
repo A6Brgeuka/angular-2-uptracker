@@ -1,17 +1,98 @@
-<div class="container-fluid custom-modal-container">
-  <div class="row custom-modal-header">
-    <div class="col s12">
-      <h1>A Custom modal design</h1>
+<!--<div class="container-fluid custom-modal-container">-->
+  <!--<div class="row custom-modal-header">-->
+    <!--<div class="col s12">-->
+      <!--<h1>A Custom modal design</h1>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="row" [ngClass]="{'myclass' : shouldUseMyClass}">-->
+    <!--<div class="col s12">-->
+      <!--<div class="jumbotron">-->
+        <!--<h1>Do the math to quit:</h1>-->
+        <!--<p class="lead">I received an injection of the number <strong>{{context.num1}}</strong> and the number <strong>{{context.num2}}</strong></p>-->
+        <!--<span>What is the sum?</span>-->
+        <!--<input class="form-control" type="text" #answer (keyup)="onKeyUp(answer.value)" autofocus>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<div class="close" (click)="closeModal()"></div>
+<div class="title center-align">Location Details</div>
+<form materialize (ngSubmit)="onSubmit()" #locationForm="ngForm" autocomplete="off" novalidate>
+  <div class="input row">
+    <div class="label left-align">Your Name</div>
+    <input
+        id="name"
+        placeholder="Enter name"
+        class="validate col s12"
+        [(ngModel)]="signupAccount.name"
+        name="name"
+        #name="ngModel"
+        required
+        type="text">
+    <div [hidden]="name.valid || name.pristine" class="error red-text left-align">
+      Name is required.
     </div>
   </div>
-  <div class="row" [ngClass]="{'myclass' : shouldUseMyClass}">
-    <div class="col s12">
-      <div class="jumbotron">
-        <h1>Do the math to quit:</h1>
-        <p class="lead">I received an injection of the number <strong>{{context.num1}}</strong> and the number <strong>{{context.num2}}</strong></p>
-        <span>What is the sum?</span>
-        <input class="form-control" type="text" #answer (keyup)="onKeyUp(answer.value)" autofocus>
-      </div>
+
+  <div class="input row">
+    <div class="label left-align">Your Email</div>
+    <input
+        id="email"
+        class="validate col s12"
+        placeholder="Enter email"
+        [(ngModel)]="signupAccount.email"
+        name="email"
+        #email="ngModel"
+        required minlength="10" maxlength="100" pattern=".+@.+\..+"
+        type="text">
+    <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
+      Your email must be between 10 and 100 characters long and look like an e-mail address.
     </div>
   </div>
-</div>
+
+  <div class="input row">
+    <div class="label left-align">Create a password</div>
+    <input
+        id="password"
+        placeholder="Enter password"
+        class="validate col s12"
+        type="password"
+        [(ngModel)]="signupAccount.password"
+        name="password"
+        minlength="6"
+        required
+        #password="ngModel">
+
+    <div [hidden]="password.valid || password.pristine" class="error red-text left-align">
+      Required. Min length of password must be at least 6 symbols.
+    </div>
+  </div>
+
+  <div class="input row">
+    <div class="label left-align">Phone number</div>
+    <input
+        id="phone"
+        placeholder="Enter phone number"
+        class="validate col s12"
+        [(ngModel)]="signupAccount.phone"
+        name="phone"
+        #phone="ngModel"
+        required
+        minlength="10" maxlength="12" pattern="[0-9]+"
+        type="text">
+    <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
+      Required. Phone number must have between 10-12 numbers.
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button
+        type="submit"
+        class="btn white-text waves-effect waves-light"
+        [class.disabled]="!locationForm.form.valid"
+        [disabled]="!locationForm.form.valid">
+      Next
+    </button>
+  </div>
+</form>
