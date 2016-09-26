@@ -77,64 +77,39 @@
         position:relative;
         box-shadow: 0 1px 0 0 #d6d6d6;
 
-        .select{
-          margin:19px 0 0 19px;
-          width:200px;
-          max-width:calc(100% - 19px);
+        .select {
+          margin: 19px 0 0 19px;
+          width: 200px;
+          max-width: calc(100% - 19px);
 
-          .select-wrapper{
-            .caret{
-              background:url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
-              text-indent:-5000px;
-              width:10px;
-              height:6px;
-              top:50%;
-              margin-top:-3px;
-              right:10px;
-            }
+          .caret{
+            right:10px;
+          }
 
-            input.select-dropdown{
-              height: 30px;
-              border-radius: 5px;
-              border: 1px solid #979797;
-              font-weight:bold;
-              text-indent:8px;
-              font-size:12px;
-              line-height:normal;
-            }
+          input.select-dropdown{
+            height: 30px;
+            border: 1px solid #979797;
+            font-weight:bold;
+            text-indent:8px;
+            font-size:12px;
+          }
 
-            .dropdown-content{
-              box-shadow:none;
-              border:1px solid #979797;
-              border-radius:5px;
+          .dropdown-content{
+            border:1px solid #979797;
+            margin-top:0;
 
-              li{
-                min-height:inherit;
+            li{
+              //&:hover{
+              //  background:#f5f5f5;
+              //}
 
-                &:hover{
-                  background:#f5f5f5;
-                }
-
-                span{
-                  color:#444;
-                  padding:0 0 0 8px;
-                  font-size:12px;
-                  line-height:30px;
-                }
+              span{
+                padding:0 0 0 8px;
+                font-size:12px;
+                line-height:30px;
               }
             }
           }
-
-          //select{
-          //  font-weight:bold;
-          //  padding-left:8px;
-          //  padding-top:4px;
-          //  font-size:12px;
-          //  -webkit-appearance: none;
-          //  -moz-appearance: none;
-          //  appearance: none;
-          //  background:url(/assets/img/icon-dropdown-arrow.svg) no-repeat calc(100% - 11px) center;
-          //}
         }
       }
 

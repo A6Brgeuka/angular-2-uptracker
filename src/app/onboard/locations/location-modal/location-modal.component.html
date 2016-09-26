@@ -18,73 +18,118 @@
 
 <div class="close" (click)="closeModal()"></div>
 <div class="title center-align">Location Details</div>
-<form materialize (ngSubmit)="onSubmit()" #locationForm="ngForm" autocomplete="off" novalidate>
+<form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #locationForm="ngForm" autocomplete="off" novalidate>
   <div class="input row">
-    <div class="label left-align">Your Name</div>
-    <input
-        id="name"
-        placeholder="Enter name"
-        class="validate col s12"
-        [(ngModel)]="signupAccount.name"
-        name="name"
-        #name="ngModel"
-        required
-        type="text">
-    <div [hidden]="name.valid || name.pristine" class="error red-text left-align">
-      Name is required.
+    <div class="col s12 m6">
+      <div class="label left-align">Location Name</div>
+      <input
+          id="name"
+          placeholder="Enter name here"
+          class="validate col s12"
+          [(ngModel)]="location.name"
+          name="name"
+          #name="ngModel"
+          required
+          type="text">
+      <div [hidden]="name.valid || name.pristine" class="error red-text left-align">
+        Location Name is required.
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="label left-align">Location Type</div>
+      <div class="select">
+        <select [(ngModel)]="selectedType" name="selectedOption" materialize="material_select" [materializeSelectOptions]="selectTypes">
+          <option value="">Please select one</option>
+          <option>Type1</option>
+          <option>Type2</option>
+          <option>Type3</option>
+        </select>
+      </div>
     </div>
   </div>
 
   <div class="input row">
-    <div class="label left-align">Your Email</div>
-    <input
-        id="email"
-        class="validate col s12"
-        placeholder="Enter email"
-        [(ngModel)]="signupAccount.email"
-        name="email"
-        #email="ngModel"
-        required minlength="10" maxlength="100" pattern=".+@.+\..+"
-        type="text">
-    <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
-      Your email must be between 10 and 100 characters long and look like an e-mail address.
+    <div class="label left-align">Street Address</div>
+    <div class="col s12 m8">
+      <input
+          id="address"
+          placeholder="123 Main St."
+          class="validate col s12"
+          [(ngModel)]="location.address"
+          name="address"
+          #address="ngModel"
+          required
+          type="text">
+      <div [hidden]="address.valid || address.pristine" class="error red-text left-align">
+        Street Address is required.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <input
+          id="unit"
+          placeholder="Unit #"
+          class="validate col s12"
+          [(ngModel)]="location.unit"
+          name="unit"
+          #unit="ngModel"
+          required
+          type="text">
+      <div [hidden]="unit.valid || unit.pristine" class="error red-text left-align">
+        Unit # is required.
+      </div>
     </div>
   </div>
 
-  <div class="input row">
-    <div class="label left-align">Create a password</div>
-    <input
-        id="password"
-        placeholder="Enter password"
-        class="validate col s12"
-        type="password"
-        [(ngModel)]="signupAccount.password"
-        name="password"
-        minlength="6"
-        required
-        #password="ngModel">
+  <!--<div class="input row">-->
+    <!--<div class="label left-align">Your Email</div>-->
+    <!--<input-->
+        <!--id="email"-->
+        <!--class="validate col s12"-->
+        <!--placeholder="Enter email"-->
+        <!--[(ngModel)]="signupAccount.email"-->
+        <!--name="email"-->
+        <!--#email="ngModel"-->
+        <!--required minlength="10" maxlength="100" pattern=".+@.+\..+"-->
+        <!--type="text">-->
+    <!--<div [hidden]="email.valid || email.pristine" class="error red-text left-align">-->
+      <!--Your email must be between 10 and 100 characters long and look like an e-mail address.-->
+    <!--</div>-->
+  <!--</div>-->
 
-    <div [hidden]="password.valid || password.pristine" class="error red-text left-align">
-      Required. Min length of password must be at least 6 symbols.
-    </div>
-  </div>
+  <!--<div class="input row">-->
+    <!--<div class="label left-align">Create a password</div>-->
+    <!--<input-->
+        <!--id="password"-->
+        <!--placeholder="Enter password"-->
+        <!--class="validate col s12"-->
+        <!--type="password"-->
+        <!--[(ngModel)]="signupAccount.password"-->
+        <!--name="password"-->
+        <!--minlength="6"-->
+        <!--required-->
+        <!--#password="ngModel">-->
 
-  <div class="input row">
-    <div class="label left-align">Phone number</div>
-    <input
-        id="phone"
-        placeholder="Enter phone number"
-        class="validate col s12"
-        [(ngModel)]="signupAccount.phone"
-        name="phone"
-        #phone="ngModel"
-        required
-        minlength="10" maxlength="12" pattern="[0-9]+"
-        type="text">
-    <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
-      Required. Phone number must have between 10-12 numbers.
-    </div>
-  </div>
+    <!--<div [hidden]="password.valid || password.pristine" class="error red-text left-align">-->
+      <!--Required. Min length of password must be at least 6 symbols.-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <!--<div class="input row">-->
+    <!--<div class="label left-align">Phone number</div>-->
+    <!--<input-->
+        <!--id="phone"-->
+        <!--placeholder="Enter phone number"-->
+        <!--class="validate col s12"-->
+        <!--[(ngModel)]="signupAccount.phone"-->
+        <!--name="phone"-->
+        <!--#phone="ngModel"-->
+        <!--required-->
+        <!--minlength="10" maxlength="12" pattern="[0-9]+"-->
+        <!--type="text">-->
+    <!--<div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">-->
+      <!--Required. Phone number must have between 10-12 numbers.-->
+    <!--</div>-->
+  <!--</div>-->
 
   <div class="buttons">
     <button

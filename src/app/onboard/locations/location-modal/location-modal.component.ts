@@ -21,6 +21,8 @@ export class LocationModalContext extends BSModalContext {
 })
 export class LocationModal implements CloseGuard, ModalComponent<LocationModalContext> {
   context: LocationModalContext;
+  location = {};
+  selectedType = '';
 
   public wrongAnswer: boolean;
 
