@@ -1,8 +1,10 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewContainerRef } from '@angular/core';
 // import { UserModel } from '../../models/index';
 // import { UserService } from '../../core/services/index';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-declare var jQuery:any;
+import { LocationModal } from './location-modal/location-modal.component';
 
 @Component({
   selector: 'app-locations',
@@ -10,13 +12,19 @@ declare var jQuery:any;
   styleUrls: ['./locations.component.scss']
 })
 export class LocationsComponent implements OnInit {
-  public elementRef;
-
   constructor(
+      vcRef: ViewContainerRef,
+      overlay: Overlay,
+      public modal: Modal
   ) {
+    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
+  }
+
+  viewLocationModal(){
+    this.modal.open(LocationModal,  overlayConfigFactory({ num1: 2, num2: 3 }, BSModalContext));
   }
 
 }

@@ -5,19 +5,22 @@ import { CommonModule } from '@angular/common';
 import { APP_CONFIG, APP_DI_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-// import { MaterializeModule } from 'angular2-materialize';
-import { ResourceModule } from 'ng2-resource-rest';
+// import { ResourceModule } from 'ng2-resource-rest';
+
+// custom modals
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule, Modal } from 'angular2-modal/plugins/bootstrap';
 
 // import { APP_RESOLVER_PROVIDERS } from '../../app2/app.resolver';
 
 import { APP_SERVICE_PROVIDERS } from './services/index';
 
-
 @NgModule({
   imports: [
     CommonModule,
-    // MaterializeModule,
-    ResourceModule.forRoot()
+    // ResourceModule.forRoot(),
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
   declarations: [  ],
   providers: [
@@ -33,7 +36,8 @@ import { APP_SERVICE_PROVIDERS } from './services/index';
     //...APP_RESOLVER_PROVIDERS,
     
     ...APP_SERVICE_PROVIDERS,
-    CookieService
+    CookieService,
+    Modal
   ]
 })
 export class CoreModule {

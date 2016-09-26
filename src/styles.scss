@@ -192,3 +192,28 @@ button{
     max-width: 86%;
   }
 }
+
+
+/*** Modal
+**************************************************/
+
+.modal-backdrop{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 1040;
+  background-color: rgb(0, 0, 0);
+  opacity:0.5;
+}
+
+.modal{
+  z-index:1050;
+  max-height:inherit;
+  margin:30px auto;
+
+  .modal-content{
+    //box-shadow: 0 3px 9px rgba(0,0,0,.5)
+  }
+}
