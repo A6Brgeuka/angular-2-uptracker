@@ -17,14 +17,16 @@
     <header class="header">
       <div class="row">
         <div class="col s6 m6">
-          <div class="select">
-            <select class="browser-default">
-              <option>Select a location</option>
+          <form materialize>
+          <div class="select input-field">
+            <select [(ngModel)]="selectedOption" name="selectedOption" materialize="material_select" [materializeSelectOptions]="selectOptions">
+              <option value="">Select a location</option>
               <option>USA</option>
               <option>Canada</option>
               <option>Germany</option>
             </select>
           </div>
+          </form>
         </div>
         <div class="col s6 m6 user-menu-col">
           <div class="user-menu">

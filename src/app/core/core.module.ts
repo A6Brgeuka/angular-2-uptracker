@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { APP_CONFIG, APP_DI_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { MaterializeModule } from 'angular2-materialize';
+// import { MaterializeModule } from 'angular2-materialize';
 import { ResourceModule } from 'ng2-resource-rest';
 
 // import { APP_RESOLVER_PROVIDERS } from '../../app2/app.resolver';
@@ -16,7 +16,7 @@ import { APP_SERVICE_PROVIDERS } from './services/index';
 @NgModule({
   imports: [
     CommonModule,
-    MaterializeModule,
+    // MaterializeModule,
     ResourceModule.forRoot()
   ],
   declarations: [  ],

@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard.template.html'
 })
 export class DashboardComponent {
+  public selectedOption = '';
 
   constructor(
   ) {

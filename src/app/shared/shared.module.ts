@@ -4,7 +4,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
-// import { MaterializeModule } from "angular2-materialize";
+import { MaterializeModule } from "angular2-materialize";
 
 import { CoreModule } from "../core/core.module";
 
@@ -44,7 +44,7 @@ let pipesArr = [
     HttpModule,
 
     CoreModule,
-    // MaterializeModule
+    MaterializeModule
   ],
   declarations: [
     ...directivesArr,
@@ -58,7 +58,7 @@ let pipesArr = [
     CommonModule,
     CoreModule,
     
-    // MaterializeModule,
+    MaterializeModule,
     
     ...directivesArr,
     ...pipesArr
