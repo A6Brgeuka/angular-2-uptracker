@@ -27,12 +27,12 @@
           </div>
         </div>
         <div class="col s6 m6 user-menu-col">
-          <div class="fixed-action-btn click-to-toggle">
-            <a class="btn-floating white-text center-align waves-effect waves-light">
-              AG
-            </a>
-            <a class="name truncate">Aure G.</a>
-            <ul>
+          <div class="user-menu">
+            <div materialize="dropdown" class="dropdown-button" data-activates="dropdown1">
+              <a class="btn-floating center-align waves-effect waves-light" >AG</a>
+              <a class="name truncate">Aure G.</a>
+            </div>
+            <ul id="dropdown1" class="dropdown-content">
               <li><a [routerLink]="['/dashbord']" class="">My Profile</a></li>
               <li><a [routerLink]="['/dashbord']" class="">Logout</a></li>
             </ul>

@@ -1,0 +1,43 @@
+.list{
+  margin:-40px 0 0 -20px;
+
+  .item{
+    display:inline-block;
+    vertical-align:top;
+    letter-spacing: 0;
+    word-spacing: 0;
+    border-radius:5px;
+    border: 1px solid #d6d6d6;
+    background:#fff;
+    height:350px;
+    width:520px;
+    max-width:100%;
+    margin:40px 0 0 20px;
+
+    &.empty{
+      background:#f5f6f7 url(/assets/img/onboard/button-add-location.svg) no-repeat center center;
+      border:1px dashed #a7a7a7;
+
+      &:hover{
+        border-style: solid;
+        cursor:pointer;
+      }
+    }
+
+    .img{
+      img{
+        display:block;
+      }
+    }
+
+    .ttl{
+      margin:17px 0 23px;
+    }
+  }
+}
+
+@media all and (max-width: 1080px){
+  .content{
+    max-width:520px !important;
+  }
+}
