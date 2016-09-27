@@ -15,7 +15,7 @@
             type="text">
 
         <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
-          Your email must be between 10 and 100 characters long and look like an e-mail address.
+          Your email must be from 10 to 100 characters long and look like an e-mail address.
         </div>
       </div>
 
@@ -33,7 +33,7 @@
             #password="ngModel">
 
         <div [hidden]="password.valid || password.pristine" class="error red-text left-align">
-          Required. Min length of password must be at least 6 symbols.
+          *Min length of password must be at least 6 symbols.
         </div>
       </div>
 

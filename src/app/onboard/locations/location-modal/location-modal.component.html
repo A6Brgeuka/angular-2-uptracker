@@ -121,7 +121,7 @@
           minlength="10" maxlength="12" pattern="[0-9]+"
           type="text">
       <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
-        Required. Phone number must have between 10-12 numbers.
+        *Phone number must contain from 10 to 12 numbers.
       </div>
     </div>
     <div class="col s12 m4">
@@ -136,7 +136,7 @@
           required minlength="10" maxlength="100" pattern=".+@.+\..+"
           type="text">
       <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
-        Your email must be between 10 and 100 characters long and look like an e-mail address.
+        Your email must be from 10 to 100 characters long and look like an e-mail address.
       </div>
     </div>
     <div class="col s12 m4">
@@ -152,7 +152,7 @@
           minlength="10" maxlength="12" pattern="[0-9]+"
           type="text">
       <div [hidden]="fax.valid || fax.pristine" class="error red-text left-align">
-        Required. Fax number must have between 10-12 numbers.
+        *Fax number must contain from 10 to 12 numbers.
       </div>
     </div>
   </div>
