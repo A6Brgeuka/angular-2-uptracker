@@ -40,31 +40,39 @@
           <div class="expiration-row">
             <div class="label left-align col s12">Expiration Date</div>
             <div class="input col s6 expMonth">
-              <input
-                  id="expMonth"
-                  placeholder="Month"
-                  class="validate col s12"
-                  [textMask]="{mask: masks.expYear, guide:false}"
-                  [(ngModel)]="creditCard.expMonth"
-                  name="expMonth" data-stripe="exp_month"
-                  #expMonth="ngModel"
-                  required
-                  type="text">
+              <div class="select" [class.dirty]="monthDirty">
+                <select
+                    [(ngModel)]="creditCard.expMonth"
+                    #expMonth="ngModel"
+                    name="expMonth"
+                    id="expMonth"
+                    materialize="material_select"
+                    data-stripe="exp_month"
+                    (change)="changeMonth()"
+                    required>
+                  <option value="" disabled selected>Month</option>
+                  <option *ngFor="let monthNumber of selectMonth" [value]="monthNumber">{{monthNumber}}</option>
+                </select>
+              </div>
               <div [hidden]="expMonth.valid || expMonth.untouched" class="error red-text left-align">
                 Expiration month is required.
               </div>
             </div>
             <div class="input col s6">
-              <input
-                  id="expYear"
-                  placeholder="Year"
-                  class="validate col s12"
-                  [textMask]="{mask: masks.expYear, guide:false}"
-                  [(ngModel)]="creditCard.expYear"
-                  name="expYear" data-stripe="exp_year"
-                  #expYear="ngModel"
-                  required
-                  type="text">
+              <div class="select" [class.dirty]="yearDirty">
+                <select
+                    [(ngModel)]="creditCard.expYear"
+                    #expYear="ngModel"
+                    name="expYear"
+                    id="expYear"
+                    materialize="material_select"
+                    data-stripe="exp_year"
+                    (change)="changeYear()"
+                    required>
+                  <option value="" disabled selected>Year</option>
+                  <option *ngFor="let yearNumber of selectYear" [value]="yearNumber">{{yearNumber}}</option>
+                </select>
+              </div>
               <div [hidden]="expYear.valid || expYear.untouched" class="error red-text left-align">
                 Expiration year is required.
               </div>

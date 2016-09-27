@@ -40,7 +40,28 @@ a{
 //}
 
 .select{
+  &.dirty{
+    .select-wrapper{
+      input.select-dropdown{
+        border-color:#4CAF50;
+        color:inherit;
+      }
+    }
+  }
+
   .select-wrapper{
+    &.ng-pristine{
+      input{
+        color:#9a9c9e;
+      }
+    }
+
+    &.ng-valid{
+      input.select-dropdown{
+        border-color: #4CAF50;
+      }
+    }
+
     .caret{
       background:url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
       text-indent:-5000px;
@@ -59,6 +80,7 @@ a{
       line-height:normal;
       font-size:14px;
       text-indent:10px;
+      color:#9a9c9e;
       box-sizing:border-box;
     }
 
@@ -67,6 +89,7 @@ a{
       border:1px solid #d6d6d6;
       border-radius:5px;
       margin-top:8px;
+      max-height:285px;
 
       li{
         min-height:inherit;

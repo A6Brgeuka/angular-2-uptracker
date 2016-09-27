@@ -18,12 +18,28 @@ export class PaymentInfoComponent implements OnInit {
     expYear: [ /\d/, /\d/],
     cvc: [ /\d/, /\d/, /\d/],
   };
+  public selectMonth = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  public selectYear = [];
+  yearDirty: boolean = false;
+  monthDirty: boolean = false;
 
   constructor() { }
 
   ngOnInit() {
     this.creditCard = new CreditCardModel;
     this.trialCode = '';
+    let currentYear = new Date().getFullYear();
+    for (let i = 0; i < 21; i++){
+      this.selectYear.push(currentYear+i);
+    }
+  }
+
+  changeYear(){
+    this.yearDirty = true;
+  }
+
+  changeMonth(){
+    this.monthDirty = true;
   }
 
 }

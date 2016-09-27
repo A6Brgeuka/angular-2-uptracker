@@ -24,6 +24,8 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   location = {};
   selectedType = '';
   selectedState = '';
+  typeDirty: boolean = false;
+  stateDirty: boolean = false;
 
   constructor(public dialog: DialogRef<LocationModalContext>) {
     this.context = dialog.context;
@@ -41,4 +43,12 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   // beforeClose(): boolean {
   //   return true;
   // }
+
+  changeState(){
+    this.stateDirty = true;
+  }
+
+  changeType(){
+    this.typeDirty = true;
+  }
 }
