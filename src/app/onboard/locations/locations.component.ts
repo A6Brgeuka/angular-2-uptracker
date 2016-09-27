@@ -24,7 +24,7 @@ export class LocationsComponent implements OnInit {
   }
 
   viewLocationModal(){
-    this.modal.open(LocationModal,  overlayConfigFactory({ num1: 2, num2: 3 }, BSModalContext));
+    this.modal.open(LocationModal,  overlayConfigFactory(BSModalContext));
   }
 
 }

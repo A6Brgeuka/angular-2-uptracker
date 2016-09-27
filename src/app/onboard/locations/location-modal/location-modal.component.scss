@@ -1,13 +1,37 @@
-.custom-modal-container {
-  padding: 15px;
+.location-type{
+  position:relative;
+
+  .helper{
+    position:absolute;
+    right:0.75rem;
+    top:3px;
+  }
 }
 
-.custom-modal-header {
-  background-color: #219161;
-  color: #fff;
-  -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
-  box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
-  margin-top: -15px;
-  margin-bottom: 40px;
+.location-image{
+  .img-container{
+    width:240px;
+    height:136px;
+    border-radius: 5px;
+    background: #f5f6f7 url(/assets/img/onboard/icon-img-placeholder-locations.svg) no-repeat center center;
+    border:1px dashed #d6d6d6;
+    max-width:100%;
+  }
+
+  .text{
+    margin-top:30px;
+
+    .tip{
+      color:#9a9c9e;
+      margin-bottom:13px;
+    }
+  }
+
+  a{
+    cursor:pointer;
+  }
+}
+
+.buttons{
+  margin:38px 0 0;
 }

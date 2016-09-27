@@ -1,21 +1,3 @@
-<!--<div class="container-fluid custom-modal-container">-->
-  <!--<div class="row custom-modal-header">-->
-    <!--<div class="col s12">-->
-      <!--<h1>A Custom modal design</h1>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<div class="row" [ngClass]="{'myclass' : shouldUseMyClass}">-->
-    <!--<div class="col s12">-->
-      <!--<div class="jumbotron">-->
-        <!--<h1>Do the math to quit:</h1>-->
-        <!--<p class="lead">I received an injection of the number <strong>{{context.num1}}</strong> and the number <strong>{{context.num2}}</strong></p>-->
-        <!--<span>What is the sum?</span>-->
-        <!--<input class="form-control" type="text" #answer (keyup)="onKeyUp(answer.value)" autofocus>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
-
 <div class="close" (click)="closeModal()"></div>
 <div class="title center-align">Location Details</div>
 <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #locationForm="ngForm" autocomplete="off" novalidate>
@@ -35,10 +17,11 @@
         Location Name is required.
       </div>
     </div>
-    <div class="col s12 m6">
+    <div class="col s12 m6 location-type">
+      <div class="helper"></div>
       <div class="label left-align">Location Type</div>
       <div class="select">
-        <select [(ngModel)]="selectedType" name="selectedOption" materialize="material_select" [materializeSelectOptions]="selectTypes">
+        <select [(ngModel)]="selectedType" name="type" materialize="material_select" [materializeSelectOptions]="selectTypes">
           <option value="">Please select one</option>
           <option>Type1</option>
           <option>Type2</option>
@@ -49,7 +32,7 @@
   </div>
 
   <div class="input row">
-    <div class="label left-align">Street Address</div>
+    <div class="label left-align col s12">Street Address</div>
     <div class="col s12 m8">
       <input
           id="address"
@@ -80,64 +63,124 @@
     </div>
   </div>
 
-  <!--<div class="input row">-->
-    <!--<div class="label left-align">Your Email</div>-->
-    <!--<input-->
-        <!--id="email"-->
-        <!--class="validate col s12"-->
-        <!--placeholder="Enter email"-->
-        <!--[(ngModel)]="signupAccount.email"-->
-        <!--name="email"-->
-        <!--#email="ngModel"-->
-        <!--required minlength="10" maxlength="100" pattern=".+@.+\..+"-->
-        <!--type="text">-->
-    <!--<div [hidden]="email.valid || email.pristine" class="error red-text left-align">-->
-      <!--Your email must be between 10 and 100 characters long and look like an e-mail address.-->
-    <!--</div>-->
-  <!--</div>-->
+  <div class="input row">
+    <div class="col s12 m4">
+      <div class="label left-align">City</div>
+      <input
+          id="city"
+          placeholder="Enter city here"
+          class="validate col s12"
+          [(ngModel)]="location.city"
+          name="city"
+          #city="ngModel"
+          required
+          type="text">
+      <div [hidden]="city.valid || city.pristine" class="error red-text left-align">
+        City is required.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">State</div>
+      <div class="select">
+        <select [(ngModel)]="selectedState" name="state" materialize="material_select" [materializeSelectOptions]="selectStates">
+          <option value="">Please select one</option>
+          <option>State1</option>
+          <option>State2</option>
+          <option>State3</option>
+        </select>
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">Zip</div>
+      <input
+          id="zip"
+          placeholder="Enter Zip Code"
+          class="validate col s12"
+          [(ngModel)]="location.zip"
+          name="zip"
+          #zip="ngModel"
+          required
+          type="text">
+      <div [hidden]="zip.valid || zip.pristine" class="error red-text left-align">
+        Zip code is required.
+      </div>
+    </div>
+  </div>
 
-  <!--<div class="input row">-->
-    <!--<div class="label left-align">Create a password</div>-->
-    <!--<input-->
-        <!--id="password"-->
-        <!--placeholder="Enter password"-->
-        <!--class="validate col s12"-->
-        <!--type="password"-->
-        <!--[(ngModel)]="signupAccount.password"-->
-        <!--name="password"-->
-        <!--minlength="6"-->
-        <!--required-->
-        <!--#password="ngModel">-->
+  <div class="input row">
+    <div class="col s12 m4">
+      <div class="label left-align">Phone</div>
+      <input
+          id="phone"
+          placeholder="Enter phone number"
+          class="validate col s12"
+          [(ngModel)]="location.phone"
+          name="phone"
+          #phone="ngModel"
+          required
+          minlength="10" maxlength="12" pattern="[0-9]+"
+          type="text">
+      <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
+        Required. Phone number must have between 10-12 numbers.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">Email</div>
+      <input
+          id="email"
+          class="validate col s12"
+          placeholder="Enter email"
+          [(ngModel)]="location.email"
+          name="email"
+          #email="ngModel"
+          required minlength="10" maxlength="100" pattern=".+@.+\..+"
+          type="text">
+      <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
+        Your email must be between 10 and 100 characters long and look like an e-mail address.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">Fax</div>
+      <input
+          id="fax"
+          placeholder="Enter fax number"
+          class="validate col s12"
+          [(ngModel)]="location.fax"
+          name="fax"
+          #fax="ngModel"
+          required
+          minlength="10" maxlength="12" pattern="[0-9]+"
+          type="text">
+      <div [hidden]="fax.valid || fax.pristine" class="error red-text left-align">
+        Required. Fax number must have between 10-12 numbers.
+      </div>
+    </div>
+  </div>
 
-    <!--<div [hidden]="password.valid || password.pristine" class="error red-text left-align">-->
-      <!--Required. Min length of password must be at least 6 symbols.-->
-    <!--</div>-->
-  <!--</div>-->
+  <div class="input row location-image">
+    <div class="col s12 m5">
+      <div class="img-container">
+        <div class="img"></div>
+      </div>
+    </div>
+    <div class="col s12 m7">
+      <div class="text">
+        <div class="label">Location Image</div>
+        <div class="tip">Please upload a JPG or PNG max size 10 MB</div>
+        <div class="upload-link">
+          <a>Upload a photo</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!--<div class="input row">-->
-    <!--<div class="label left-align">Phone number</div>-->
-    <!--<input-->
-        <!--id="phone"-->
-        <!--placeholder="Enter phone number"-->
-        <!--class="validate col s12"-->
-        <!--[(ngModel)]="signupAccount.phone"-->
-        <!--name="phone"-->
-        <!--#phone="ngModel"-->
-        <!--required-->
-        <!--minlength="10" maxlength="12" pattern="[0-9]+"-->
-        <!--type="text">-->
-    <!--<div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">-->
-      <!--Required. Phone number must have between 10-12 numbers.-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <div class="buttons">
+  <div class="buttons center-align">
     <button
         type="submit"
         class="btn white-text waves-effect waves-light"
         [class.disabled]="!locationForm.form.valid"
         [disabled]="!locationForm.form.valid">
-      Next
+      Save
     </button>
   </div>
 </form>

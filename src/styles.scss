@@ -123,6 +123,12 @@ button{
   }
 }
 
+.helper{
+  width:22px;
+  height:22px;
+  background:url(/assets/img/icon-info.svg) no-repeat;
+}
+
 
 /*** Logo
 **************************************************/
@@ -344,6 +350,10 @@ button{
 /*** Modal
 **************************************************/
 
+modal-overlay{
+  position:absolute !important;
+}
+
 .modal-backdrop{
   position: fixed;
   top: 0px;
@@ -379,8 +389,14 @@ button{
       right:-17px;
     }
 
+    .title{
+      font:bold 28px/32px Ubuntu;
+      margin-bottom:46px;
+    }
+
     .row{
-      margin: 0 -0.75rem;
+      margin-left: -0.75rem;
+      margin-right: -0.75rem;
     }
   }
 }

@@ -4,8 +4,8 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 export class LocationModalContext extends BSModalContext {
-  public num1: number;
-  public num2: number;
+  // public num1: number;
+  // public num2: number;
 }
 
 /**
@@ -23,26 +23,22 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   context: LocationModalContext;
   location = {};
   selectedType = '';
-
-  public wrongAnswer: boolean;
+  selectedState = '';
 
   constructor(public dialog: DialogRef<LocationModalContext>) {
     this.context = dialog.context;
-    this.wrongAnswer = true;
     dialog.setCloseGuard(this);
   }
 
-  onKeyUp(value) {
-    this.wrongAnswer = value != 5;
+  closeModal(){
     this.dialog.close();
   }
 
-
-  beforeDismiss(): boolean {
-    return true;
-  }
-
-  beforeClose(): boolean {
-    return this.wrongAnswer;
-  }
+  // beforeDismiss(): boolean {
+  //   return true;
+  // }
+  //
+  // beforeClose(): boolean {
+  //   return true;
+  // }
 }
