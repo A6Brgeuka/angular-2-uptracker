@@ -162,15 +162,16 @@ export class UserService extends ModelService {
         .catch(this.handleError.bind(this));
   }
 
-  // updatePassword(data) {
-  //   return this.http.post(`${this.apiEndpoint}/update-password`, data)
-  //   .map(this.extractData.bind(this))
-  //   .catch(this.handleError.bind(this))
-  //   .do((res)=> {
-  //     this.updateSelfData$.next(res);
-  //   });
-  // }
-  //
+  updatePassword(data) {
+    let api = this.apiEndpoint + 'passwordreset';
+    return this.http.post(api, data)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this))
+        .do((res)=> {
+          this.updateSelfData$.next(res);
+        });
+  }
+
   // verification(data) {
   //   let body = JSON.stringify(data);
   //
