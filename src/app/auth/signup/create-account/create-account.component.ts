@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { UserModel } from '../../../models/index';
 import { UserService } from '../../../core/services/index';
@@ -14,10 +15,20 @@ export class CreateAccountComponent implements OnInit {
   terms: boolean = false;
   privacy: boolean = false;
 
-  constructor() { }
+  constructor(
+      private userService: UserService,
+      private router: Router
+  ) { }
 
   ngOnInit() {
     this.signupAccount = new UserModel();
+  }
+
+  onSubmit(){
+    this.userService.signUp(this.signupAccount)
+        .subscribe((res: any) => {
+          this.router.navigate(['/signup/about-company']);
+        });
   }
 
   viewTerms(){

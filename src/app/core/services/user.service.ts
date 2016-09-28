@@ -143,15 +143,36 @@ export class UserService extends ModelService {
     this.updateSelfData$.next(data.data.user.user);
   }
 
-  // signUp(data){
-  //   let entity = super.create(data);
-  //
-  //   entity.subscribe(res => {
-  //     this.updateSelfData$.next(res);
-  //   });
-  //
-  //   return entity;
-  // }
+  signUp(data){
+    let api = this.apiEndpoint + 'register/user';
+
+    let body = JSON.stringify(data);
+
+    let entity = this.http.post(api, body)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this))
+        .publish().refCount();
+
+    entity.subscribe(
+        (res) => {
+          console.log(res);
+          this.addToCollection$.next(res);
+          this.updateEntity$.next(res);
+          this.updateSelfData$.next(res);
+        }
+        // (err) => {
+        // }
+    );
+
+
+    // let entity = super.create(data);
+    //
+    // entity.subscribe(res => {
+    //   this.updateSelfData$.next(res);
+    // });
+
+    return entity;
+  }
 
   forgotPasswordRequest(data?) {
     let api = this.apiEndpoint + 'forgot';
