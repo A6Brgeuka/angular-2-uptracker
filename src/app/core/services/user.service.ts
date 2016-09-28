@@ -162,6 +162,13 @@ export class UserService extends ModelService {
         .catch(this.handleError.bind(this));
   }
 
+  forgotPasswordTokenValidation(token) {
+    let api = this.apiEndpoint + 'forgot/' + token;
+    return this.http.get(api)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this));
+  }
+
   updatePassword(data) {
     let api = this.apiEndpoint + 'passwordreset';
     return this.http.post(api, data)

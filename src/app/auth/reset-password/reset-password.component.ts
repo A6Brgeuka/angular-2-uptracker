@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService, ToasterService } from '../../core/services/index';
 
 @Component({
@@ -12,13 +12,15 @@ export class ResetPasswordComponent implements OnInit {
     password: '',
     password2: ''
   };
-  updateData = {
-    user_id: '',
+  updatePasswordData = {
+    user_id: '', //57dffa993319db00069a4976
     fp_token: '',
     password: ''
   };
+  tokenParam: string;
 
   constructor(
+      private activatedRoute: ActivatedRoute,
       private userService: UserService,
       private toasterService: ToasterService,
       private router: Router
@@ -26,15 +28,35 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.params.forEach((params: Params) => {
+      this.tokenParam = params['token'];
+    });
+
+    // token validation
+    this.userService.forgotPasswordTokenValidation(this.tokenParam)
+        .subscribe(
+            (res:any) => {
+              if (res.data.valid_token) {
+                this.updatePasswordData.user_id = res.data.user_id;
+                this.updatePasswordData.fp_token = this.tokenParam;
+              } else {
+                this.toasterService.pop('error', res.message);
+                this.router.navigate(['/login']);
+              }
+            },
+            (err)=>{
+              this.router.navigate(['/login']);
+            }
+        );
   }
 
   onSubmit() {
     if (this.userPass.password != this.userPass.password2) {
       this.toasterService.pop('error', 'The passwords should be similar.');
     } else {
-      this.updateData.password = this.userPass.password;
+      this.updatePasswordData.password = this.userPass.password;
 
-      this.userService.updatePassword(this.updateData)
+      this.userService.updatePassword(this.updatePasswordData)
           .subscribe((res:any) => {
             this.toasterService.pop('', res.message);
             this.router.navigate(['/login']);
