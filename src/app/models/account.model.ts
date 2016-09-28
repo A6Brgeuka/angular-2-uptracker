@@ -66,12 +66,12 @@ export class AccountModel {
   // "use_reorder_level": false;
   users: UserModel[] = [];
   
-  constructor(obj?: any){
-    // for (let field in obj) {
-    //   if (typeof this[field] !== "undefined") {
-    //     this[field] = obj && obj[field];
-    //   }
-    //
+  constructor(obj?: any) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+      }
+    
     //   switch (field) {
     //     case 'owner':
     //       this[field] = new UserModel(obj[field]);
@@ -85,6 +85,6 @@ export class AccountModel {
     //       this[field] = new AlertSettingModel(obj[field]);
     //       break;
     //   }
-    // }
+    }
   }
 }

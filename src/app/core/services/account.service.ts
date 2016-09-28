@@ -50,16 +50,18 @@ export class AccountService extends ModelService{
   }
   
   addSubscribers(){
-    this.entity$.subscribe((res)=> {
+    this.entity$.subscribe((res) => {
       //update user after update account
       // this.userService.loadSelfData();
-    })
+
+      this.updateSelfData$.next(res);
+    });
   }
 
   createCompany(data){
     let api = this.apiEndpoint + 'register/company';
 
-    let body = JSON.stringify(data);
+    let body = JSON.stringify(data); 
 
     let entity = this.http.post(api, body)
         .map(this.extractData.bind(this))

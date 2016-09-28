@@ -29,10 +29,10 @@ export class UserModel {
   // deployments: DeploymentModel[] = [];
   
   constructor(obj?: any) {
-    // for (let field in obj) {
-    //   if (typeof this[field] !== "undefined") {
-    //     this[field] = obj && obj[field];
-    //
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+
     //     switch (field) {
     //       case 'account':
     //         this[field] = new AccountModel(obj[field]);
@@ -48,7 +48,7 @@ export class UserModel {
     //
     //         break;
     //     }
-    //   }
-    // }
+      }
+    }
   }
 }

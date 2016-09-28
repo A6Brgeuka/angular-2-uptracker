@@ -4,19 +4,19 @@ export class CreditCardModel {
   expYear: number = null;
   cvc: number = null;
   cardNumber: number = null;
-  token: string = null;
-  customer: string = null;
-  name: string = null;
-  street: string = null;
+  // token: string = null;
+  // customer: string = null;
+  // name: string = null;
   city: string = null;
-  state: string = null;
   zip: string = null;
-  country: string = null;
-  brand: string = null;
-  lastNumbers: string = null;
-  isDefault: boolean = false;
-  status: number = null;
-  statusString: string = null;
+  // street: string = null;
+  // state: string = null;
+  // country: string = null;
+  // brand: string = null;
+  // lastNumbers: string = null;
+  // isDefault: boolean = false;
+  // status: number = null;
+  // statusString: string = null;
   
   constructor(obj?:any) {
     for (let field in obj) {

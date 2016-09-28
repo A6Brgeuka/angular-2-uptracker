@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { CreditCardModel } from '../../../models/index';
-import { UserModel } from '../../../models/index';
+import { UserModel, CreditCardModel } from '../../../models/index';
 import { UserService, CardService } from '../../../core/services/index';
 
 
@@ -23,7 +23,11 @@ export class PaymentInfoComponent implements OnInit {
   yearDirty: boolean = false;
   monthDirty: boolean = false;
 
-  constructor() { }
+  constructor(
+      private router: Router,
+      private userService: UserService,
+      private cardService: CardService
+  ) { }
 
   ngOnInit() {
     this.creditCard = new CreditCardModel;
@@ -40,6 +44,14 @@ export class PaymentInfoComponent implements OnInit {
 
   changeMonth(){
     this.monthDirty = true;
+  }
+
+  onSubmit(){
+    // this.userService.signUp(this.signupAccount)
+    //     .subscribe((res: any) => {
+    //       this.cookieService.put('uptracker_token', res.token);
+    //       this.router.navigate(['/signup/about-company']);
+    //     });
   }
 
 }

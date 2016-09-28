@@ -88,7 +88,7 @@
               id="cardCity"
               placeholder="Enter city name"
               class="validate col s12"
-              [(ngModel)]="creditCard.cardCity"
+              [(ngModel)]="creditCard.city"
               name="cardCity"
               #cardCity="ngModel"
               required
@@ -103,7 +103,7 @@
               id="cardZip"
               placeholder="Enter zip code"
               class="validate col s12"
-              [(ngModel)]="creditCard.cardZip"
+              [(ngModel)]="creditCard.zip"
               name="cardZip"
               #cardZip="ngModel"
               required
@@ -120,7 +120,7 @@
             id="trial"
             placeholder="Enter trial code"
             class="validate col s12"
-            [(ngModel)]="trialCode"
+            [(ngModel)]="trial_code"
             name="trial"
             #trial="ngModel"
             type="text">
@@ -132,7 +132,7 @@
       <div class="buttons">
         <button
             type="button"
-            [routerLink]="['']"
+            [routerLink]="['signup', 'about-company']"
             class="btn-flat left back-btn">
           Back
         </button>
