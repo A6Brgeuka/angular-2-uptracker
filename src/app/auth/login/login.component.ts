@@ -23,12 +23,6 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.userService.login(this.draftUser)
         .subscribe((res: any) => {
-          console.log(res);
-          // if (res.typeAuthenticationString == 'sms') {
-          //   this.populateModel(res);
-          // } else {
-          //   this.router.navigate(['/deployments']);
-          // }
           this.router.navigate(['/dashboard']);
         });
   }

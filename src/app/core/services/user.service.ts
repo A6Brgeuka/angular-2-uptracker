@@ -125,9 +125,7 @@ export class UserService extends ModelService {
   login(data) {
     let body = JSON.stringify(data);
     let api = this.apiEndpoint + 'login';
-    return this.http.post(api, body, {
-      // search: this.getSearchParams('login')
-    })
+    return this.http.post(api, body)
         .map(this.extractData.bind(this))
         .catch(this.handleError.bind(this))
         .do((res) => {
