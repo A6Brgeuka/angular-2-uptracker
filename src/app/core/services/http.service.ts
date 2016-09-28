@@ -14,8 +14,8 @@ export class HttpClient {
   }
   
   createAuthorizationHeader(headers:Headers) {
-    headers.append('Content-Type', 'application/json');
-    headers.append('X_AUTH_TOKEN', this.cookieService.get('uptracker_token') || null);
+    // headers.append('Content-Type', 'application/json');
+    // headers.append('X_AUTH_TOKEN', this.cookieService.get('uptracker_token') || null);
   }
   
   get(url, params?) {
