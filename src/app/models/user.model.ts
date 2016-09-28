@@ -1,6 +1,6 @@
 // import { TokenModel } from './token.model';
 import { CreditCardModel } from './credit-card.model';
-// import { AccountModel } from './account.model';
+import { AccountModel } from './account.model';
 
 export class UserModel {
   id: number = null;
@@ -25,7 +25,7 @@ export class UserModel {
   // tokens: TokenModel[] = [];
   cards: CreditCardModel[] = [];
   defaultCard: CreditCardModel = null;
-  // account: AccountModel = new AccountModel();
+  account: AccountModel = new AccountModel();
   // deployments: DeploymentModel[] = [];
   
   constructor(obj?: any) {

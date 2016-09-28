@@ -1,6 +1,7 @@
 import { HttpClient } from './http.service';
 import { ToasterService } from './toaster.service';
 import { UserService } from './user.service';
+import { AccountService } from './account.service';
 import { CardService } from './card.service';
 import { StateService } from './state.service';
 // import { TokenService } from './token.service';
@@ -11,6 +12,7 @@ export {
   HttpClient,
   ToasterService,
   UserService,
+  AccountService,
   CardService,
   StateService,
   // TokenService,
@@ -22,6 +24,7 @@ export const APP_SERVICE_PROVIDERS = [
   HttpClient,
   ToasterService,
   UserService,
+  AccountService,
   CardService,
   StateService,
   // TokenService,

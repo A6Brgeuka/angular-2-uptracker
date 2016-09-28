@@ -108,15 +108,15 @@ export class UserService extends ModelService {
     return this.cookieService.get('uptracker_selfId');
   }
 
-  // loadSelfData(): Observable<any> {
-  //   if (this.isGuest()) {
-  //     return Observable.of(null);
-  //   }
-  //
-  //   this.loadEntity({id: this.getSelfId()});
-  //
-  //   return this.selfData$;
-  // }
+  loadSelfData(): Observable<any> {
+    if (this.isGuest()) {
+      return Observable.of(null);
+    }
+  
+    this.loadEntity({id: this.getSelfId()});
+  
+    return this.selfData$;
+  }
 
   // updateSelfData(data){
   //   this.updateSelfData$.next(data);
