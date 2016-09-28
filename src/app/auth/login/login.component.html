@@ -8,7 +8,7 @@
             id="email"
             class="validate col s12"
             placeholder="Enter email here"
-            [(ngModel)]="draftUser.email"
+            [(ngModel)]="loginUser.email"
             name="email"
             #email="ngModel"
             required minlength="6" maxlength="254" pattern=".+@.+\..+"
@@ -26,7 +26,7 @@
             placeholder="Enter password"
             class="validate col s12"
             type="password"
-            [(ngModel)]="draftUser.password"
+            [(ngModel)]="loginUser.password"
             name="password"
             minlength="6"
             required

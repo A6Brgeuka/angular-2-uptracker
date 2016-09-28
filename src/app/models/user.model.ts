@@ -5,8 +5,13 @@ import { CreditCardModel } from './credit-card.model';
 export class UserModel {
   id: number = null;
   name: string = null;
-  email: string = null;
+  email_address: string = null;
   password: string = null;
+  
+  locations: any = [];
+  permissions: any = [];
+  phone: number = null;
+  account_id: number = null;
 
   // smsToNumber: number = null;
   // typeAuthenticationString: string = 'default';

@@ -9,7 +9,10 @@ import { UserService } from '../../core/services/index';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  draftUser: UserModel;
+  loginUser = {
+    email: '',
+    password: ''
+  };
 
   constructor(
       private userService: UserService,
@@ -17,11 +20,10 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.draftUser = new UserModel({});
   }
 
   onSubmit() {
-    this.userService.login(this.draftUser)
+    this.userService.login(this.loginUser)
         .subscribe((res: any) => {
           this.router.navigate(['/dashboard']);
         });
