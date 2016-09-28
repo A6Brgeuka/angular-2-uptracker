@@ -160,16 +160,7 @@ export class UserService extends ModelService {
           this.updateEntity$.next(res);
           this.updateSelfData$.next(res);
         }
-        // (err) => {
-        // }
     );
-
-
-    // let entity = super.create(data);
-    //
-    // entity.subscribe(res => {
-    //   this.updateSelfData$.next(res);
-    // });
 
     return entity;
   }

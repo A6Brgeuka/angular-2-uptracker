@@ -8,7 +8,7 @@
             id="companyName"
             placeholder="Enter name"
             class="validate col s12"
-            [(ngModel)]="signupAccount.companyName"
+            [(ngModel)]="signupAccount.company_name"
             name="companyName"
             #companyName="ngModel"
             required
@@ -24,7 +24,7 @@
             id="email"
             class="validate col s12"
             placeholder="Enter email"
-            [(ngModel)]="signupAccount.companyEmail"
+            [(ngModel)]="signupAccount.company_email"
             name="email"
             #email="ngModel"
             required minlength="6" maxlength="254" pattern=".+@.+\..+"
@@ -40,7 +40,7 @@
             id="streetAddress"
             placeholder="Address Line 1"
             class="validate col s12"
-            [(ngModel)]="signupAccount.streetAddress"
+            [(ngModel)]="signupAccount.street_1"
             name="streetAddress"
             #streetAddress="ngModel"
             required
@@ -52,7 +52,7 @@
             id="streetAddress2"
             placeholder="Address Line 2"
             class="validate col s12"
-            [(ngModel)]="signupAccount.streetAddress2"
+            [(ngModel)]="signupAccount.street_2"
             name="streetAddress2"
             #streetAddress2="ngModel"
             required
@@ -98,7 +98,7 @@
       <div class="input-checkbox row">
         <input type="checkbox"
                id="inList"
-               [(ngModel)]="signupAccount.inList"
+               [(ngModel)]="signupAccount.marys_list_member"
                name="inList">
         <label for="inList">I am a Mary’s List Member <a href="#">What is Mary’s List?</a></label>
       </div>
@@ -106,7 +106,7 @@
       <div class="buttons">
         <button
             type="button"
-            [routerLink]="['']"
+            [routerLink]="['/signup']"
             class="btn-flat left back-btn">
           Back
         </button>
