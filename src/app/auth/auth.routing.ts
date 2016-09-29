@@ -4,6 +4,7 @@ import { LoginRoutes } from './login/login.routing';
 import { ForgotPasswordRoutes } from './forgot-password/forgot-password.routing';
 import { ResetPasswordRoutes } from './reset-password/reset-password.routing';
 import { SignupRoutes } from './signup/signup.routing';
+import { ForgotPasswordCongratsRoutes } from './forgot-password-congrats/forgot-password-congrats.routing';
 
 export const AuthRoutes = [
   {
@@ -14,7 +15,8 @@ export const AuthRoutes = [
       ...LoginRoutes,
       ...ResetPasswordRoutes,
       ...ForgotPasswordRoutes,
-      ...SignupRoutes
+      ...SignupRoutes,
+      ...ForgotPasswordCongratsRoutes
     ]
   }
 ];

@@ -6,6 +6,7 @@ import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
 import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
+import { ForgotPasswordCongratsModule } from './forgot-password-congrats/forgot-password-congrats.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SignupModule } from './signup/signup.module';
     ForgotPasswordModule,
     ResetPasswordModule,
     LoginModule,
-    SignupModule
+    SignupModule,
+    ForgotPasswordCongratsModule
   ],
   providers: []
 })

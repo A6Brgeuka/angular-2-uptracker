@@ -25,7 +25,8 @@ export class ForgotPasswordComponent implements OnInit {
   onSubmit() {
     this.userService.forgotPasswordRequest(this.draftUser)
         .subscribe((res: any) => {
-          this.toasterService.pop('', 'Forgotten password request sent.');
+          // this.toasterService.pop('', 'Forgotten password request sent.');
+          this.router.navigate(['/forgot-password-congrats']);
         });
   }
 
