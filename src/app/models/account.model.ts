@@ -64,6 +64,7 @@ export class AccountModel {
   // "trial_expiration": null;
   updated_at: string = null;
   // "use_reorder_level": false;
+  user_id: string = null; //for company signup
   users: UserModel[] = [];
   
   constructor(obj?: any) {

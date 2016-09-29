@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserModel, CreditCardModel } from '../../../models/index';
-import { UserService, CardService } from '../../../core/services/index';
+import { UserService, CardService, AccountService } from '../../../core/services/index';
 
 
 @Component({
@@ -26,6 +26,7 @@ export class PaymentInfoComponent implements OnInit {
   constructor(
       private router: Router,
       private userService: UserService,
+      private accountService: AccountService,
       private cardService: CardService
   ) { }
 
@@ -36,6 +37,19 @@ export class PaymentInfoComponent implements OnInit {
     for (let i = 0; i < 21; i++){
       this.selectYear.push(currentYear+i);
     }
+
+    // console.log(this.accountService);
+
+    // this.accountService.selfData$ = Observable.merge(
+    //     this.updateSelfData$
+    // );
+
+    // let res = {
+    //   account_id: 'asdasdasdasdasdas'
+    // };
+    // this.accountService.addToCollection$.next(res);
+    // this.accountService.updateEntity$.next(res);
+    // this.accountService.updateSelfData$.next(res);
   }
 
   changeYear(){
@@ -47,11 +61,34 @@ export class PaymentInfoComponent implements OnInit {
   }
 
   onSubmit(){
-    // this.userService.signUp(this.signupAccount)
-    //     .subscribe((res: any) => {
-    //       this.cookieService.put('uptracker_token', res.token);
-    //       this.router.navigate(['/signup/about-company']);
-    //     });
+    if (this.trialCode != '') {
+      this.router.navigate(['/signup/congrats']);
+    }
+    let self = this;
+    this.cardService.getToken(self.creditCard)
+        .switchMap(cardData => {
+          cardData.trial_code = self.trialCode;
+          self.accountService.entity$
+              .subscribe((res) => {
+                console.log(res);
+                cardData.account_id = res.id;
+              });
+          console.log(2222222222222222222);
+          console.log(cardData);
+          // return self.accountService.entity$;
+          return self.cardService.addCard(cardData);
+        })
+        .subscribe((res) => {
+          // this.resetCreateCardForm();
+          // res.trial_code = '';
+          // res.account_id = this.accountService.selfData.account_id;
+          // console.log(res); debugger;
+          // this.cardService.addCard(res);
+
+          console.log(33333333333333333333333333333);
+          console.log(res.data.account);
+          this.router.navigate(['/signup/congrats']);
+        });
   }
 
 }

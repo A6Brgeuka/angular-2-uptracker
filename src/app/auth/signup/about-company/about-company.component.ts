@@ -23,10 +23,16 @@ export class AboutCompanyComponent implements OnInit {
   }
 
   onSubmit(){
+    this.userService.entity$
+        .subscribe((res: any) => {
+          console.log(res);
+          this.signupAccount.user_id = res.id;
+        });
+
     this.accountService.createCompany(this.signupAccount)
         .subscribe((res: any) => {
           console.log(1111111111111);
-          console.log(res);
+          console.log(res.data.account);
           this.router.navigate(['/signup/payment-info']);
         });
   }

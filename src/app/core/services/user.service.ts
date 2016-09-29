@@ -154,11 +154,12 @@ export class UserService extends ModelService {
         .publish().refCount();
 
     entity.subscribe(
-        (res) => {
-          console.log(res);
-          this.addToCollection$.next(res);
-          this.updateEntity$.next(res);
-          this.updateSelfData$.next(res);
+        (res: any) => {
+          res.data.user.token = res.data.token;
+          console.log(res.data.user);
+          this.addToCollection$.next(res.data.user);
+          this.updateEntity$.next(res.data.user);
+          this.updateSelfData$.next(res.data.user);
         }
     );
 

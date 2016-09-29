@@ -1,10 +1,10 @@
 import { Injectable, Injector } from '@angular/core';
-
-import { ModelService } from '../../overrides/model.service';
-import { UserService } from './user.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+
 import { HttpClient } from './http.service';
+import { ModelService } from '../../overrides/model.service';
+import { UserService } from './user.service';
 import { DefaultOptions } from '../../decorators/default-options.decorator';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 
@@ -69,12 +69,11 @@ export class AccountService extends ModelService{
         .publish().refCount();
 
     entity.subscribe(
-        (res) => {
-          console.log(res);
-          this.userService.loadSelfData();
-          this.addToCollection$.next(res);
-          this.updateEntity$.next(res);
-          this.updateSelfData$.next(res);
+        (res: any) => {
+          console.log(res.data.account);
+          this.addToCollection$.next(res.data.account);
+          this.updateEntity$.next(res.data.account);
+          this.updateSelfData$.next(res.data.account);
         }
     );
 

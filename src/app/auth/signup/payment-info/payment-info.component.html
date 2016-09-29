@@ -65,7 +65,7 @@
                     #expYear="ngModel"
                     name="expYear"
                     id="expYear"
-                    materialize="material_select"
+                    materialize="material_select" value=""
                     data-stripe="exp_year"
                     (change)="changeYear()"
                     required>
@@ -81,38 +81,38 @@
         </div>
       </div>
 
-      <div class="row split-input-row">
-        <div class="input col s6">
-          <div class="label left-align">City</div>
-          <input
-              id="cardCity"
-              placeholder="Enter city name"
-              class="validate col s12"
-              [(ngModel)]="creditCard.city"
-              name="cardCity"
-              #cardCity="ngModel"
-              required
-              type="text">
-          <div [hidden]="cardCity.valid || cardCity.untouched" class="error red-text left-align">
-            City is required.
-          </div>
-        </div>
-        <div class="input col s6">
-          <div class="label left-align">Zip Code</div>
-          <input
-              id="cardZip"
-              placeholder="Enter zip code"
-              class="validate col s12"
-              [(ngModel)]="creditCard.zip"
-              name="cardZip"
-              #cardZip="ngModel"
-              required
-              type="text">
-          <div [hidden]="cardZip.valid || cardZip.untouched" class="error red-text left-align">
-            Zip code is required.
-          </div>
-        </div>
-      </div>
+      <!--<div class="row split-input-row">-->
+        <!--<div class="input col s6">-->
+          <!--<div class="label left-align">City</div>-->
+          <!--<input-->
+              <!--id="cardCity"-->
+              <!--placeholder="Enter city name"-->
+              <!--class="validate col s12"-->
+              <!--[(ngModel)]="creditCard.city"-->
+              <!--name="cardCity"-->
+              <!--#cardCity="ngModel"-->
+              <!--required-->
+              <!--type="text">-->
+          <!--<div [hidden]="cardCity.valid || cardCity.untouched" class="error red-text left-align">-->
+            <!--City is required.-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="input col s6">-->
+          <!--<div class="label left-align">Zip Code</div>-->
+          <!--<input-->
+              <!--id="cardZip"-->
+              <!--placeholder="Enter zip code"-->
+              <!--class="validate col s12"-->
+              <!--[(ngModel)]="creditCard.zip"-->
+              <!--name="cardZip"-->
+              <!--#cardZip="ngModel"-->
+              <!--required-->
+              <!--type="text">-->
+          <!--<div [hidden]="cardZip.valid || cardZip.untouched" class="error red-text left-align">-->
+            <!--Zip code is required.-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <div class="input row">
         <div class="label left-align">Trial Code</div>
@@ -120,7 +120,7 @@
             id="trial"
             placeholder="Enter trial code"
             class="validate col s12"
-            [(ngModel)]="trial_code"
+            [(ngModel)]="trialCode"
             name="trial"
             #trial="ngModel"
             type="text">
@@ -132,15 +132,15 @@
       <div class="buttons">
         <button
             type="button"
-            [routerLink]="['signup', 'about-company']"
+            [routerLink]="['/signup', 'about-company']"
             class="btn-flat left back-btn">
           Back
         </button>
         <button
             type="submit"
             class="btn white-text waves-effect waves-light right"
-            [class.disabled]="!signupForm.form.valid"
-            [disabled]="!signupForm.form.valid">
+            [class.disabled]="!signupForm.form.valid && trialCode == ''"
+            [disabled]="!signupForm.form.valid && trialCode == ''">
           Next
         </button>
         <div class="clearfix"></div>
