@@ -16,7 +16,11 @@ export class AboutCompanyComponent implements OnInit {
       private accountService: AccountService,
       private userService: UserService,
       private router: Router
-  ) { }
+  ) {
+    if (!this.userService.isGuest()){
+      this.router.navigate(['/dashboard']);
+    }
+  }
 
   ngOnInit() {
     this.signupAccount = new AccountModel();

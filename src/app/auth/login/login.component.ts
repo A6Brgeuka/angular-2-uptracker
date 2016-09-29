@@ -17,7 +17,11 @@ export class LoginComponent implements OnInit {
   constructor(
       private userService: UserService,
       private router: Router
-  ) { }
+  ) {
+    if (!this.userService.isGuest()){
+      this.router.navigate(['/dashboard']);
+    }
+  }
 
   ngOnInit() {
   }

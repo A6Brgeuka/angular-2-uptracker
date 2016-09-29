@@ -28,7 +28,11 @@ export class PaymentInfoComponent implements OnInit {
       private userService: UserService,
       private accountService: AccountService,
       private cardService: CardService
-  ) { }
+  ) {
+    if (!this.userService.isGuest()){
+      this.router.navigate(['/dashboard']);
+    }
+  }
 
   ngOnInit() {
     this.creditCard = new CreditCardModel;

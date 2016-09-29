@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
-import {CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router";
-import {UserService, StateService} from "./shared";
+import { Injectable } from '@angular/core';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { UserService, StateService } from './services/index';
 
 
 @Injectable()

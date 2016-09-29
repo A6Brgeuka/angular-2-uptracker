@@ -20,7 +20,11 @@ export class CreateAccountComponent implements OnInit {
       private userService: UserService,
       private router: Router,
       private cookieService: CookieService
-  ) { }
+  ) {
+    if (!this.userService.isGuest()){
+      this.router.navigate(['/dashboard']);
+    }
+  }
 
   ngOnInit() {
     this.signupAccount = new UserModel();

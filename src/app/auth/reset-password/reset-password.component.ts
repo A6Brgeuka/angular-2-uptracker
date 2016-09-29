@@ -25,6 +25,9 @@ export class ResetPasswordComponent implements OnInit {
       private toasterService: ToasterService,
       private router: Router
   ) {
+    if (!this.userService.isGuest()){
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   ngOnInit() {

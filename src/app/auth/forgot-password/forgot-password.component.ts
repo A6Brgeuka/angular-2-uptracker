@@ -14,7 +14,11 @@ export class ForgotPasswordComponent implements OnInit {
       private userService: UserService,
       private toasterService: ToasterService,
       private router: Router
-  ) { }
+  ) {
+    if (!this.userService.isGuest()){
+      this.router.navigate(['/dashboard']);
+    }
+  }
 
   ngOnInit() {
     this.draftUser = {
