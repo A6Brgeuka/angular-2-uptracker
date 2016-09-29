@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { UserService } from '../core/services/index';
+
 @Component({
   selector: 'app-dashboard',
   styleUrls: [ './dashboard.style.scss' ],
@@ -9,10 +11,15 @@ export class DashboardComponent {
   public selectedOption = '';
 
   constructor(
+      private userService: UserService
   ) {
   }
 
   ngOnInit() {
+  }
+
+  logOut(){
+    this.userService.logout();
   }
 
 }
