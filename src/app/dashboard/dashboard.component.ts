@@ -19,7 +19,7 @@ export class DashboardComponent {
   }
 
   logOut(){
-    this.userService.logout();
+    this.userService.logout().subscribe();
   }
 
 }

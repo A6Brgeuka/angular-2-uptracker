@@ -88,9 +88,19 @@ export class UserService extends ModelService {
   }
 
   logout() {
-    this.cookieService.remove('uptracker_token');
-    this.cookieService.remove('uptracker_selfId');
-    this.router.navigate(['/']);
+    let data = {
+      user_id: this.cookieService.get('uptracker_selfId')
+    };
+    let body = JSON.stringify(data);
+    let api = this.apiEndpoint + 'logout';
+    return this.http.post(api, body)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this))
+        .do((res) => {
+          this.cookieService.remove('uptracker_token');
+          this.cookieService.remove('uptracker_selfId');
+          this.router.navigate(['/']);
+        });
   }
 
   getToken(): any {
