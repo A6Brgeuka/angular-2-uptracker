@@ -69,13 +69,12 @@ export class UserService extends ModelService {
       this.updateSelfData$
     )
     .filter(res => {
-      // return !this.localStorage.get('selfId') || res.id == this.localStorage.get('selfId');
       return !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
     })
     .publishReplay(1).refCount();
     this.selfData$.subscribe(res => {
       //Set token
-      if (res['token']) {
+      if (res['token'] && !res['signup']) {
         this.cookieService.put('uptracker_token', res['token']);
         this.cookieService.put('uptracker_selfId', res['id']);
       }
@@ -85,7 +84,7 @@ export class UserService extends ModelService {
   }
 
   isGuest(): boolean {
-    return !this.cookieService.get('uptracker_token');
+    return !this.cookieService.get('uptracker_token') || !this.cookieService.get('uptracker_selfId');
   }
 
   logout() {
@@ -155,6 +154,8 @@ export class UserService extends ModelService {
 
     entity.subscribe(
         (res: any) => {
+          // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
+          res.data.user.signup = true;
           res.data.user.token = res.data.token;
           console.log(res.data.user);
           this.addToCollection$.next(res.data.user);

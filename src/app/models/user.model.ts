@@ -12,6 +12,7 @@ export class UserModel {
   permissions: any = [];
   phone: number = null;
   account_id: number = null;
+  signup: boolean = null;
 
   // smsToNumber: number = null;
   // typeAuthenticationString: string = 'default';
