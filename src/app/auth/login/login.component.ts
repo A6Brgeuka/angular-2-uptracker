@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.userService.login(this.loginUser)
         .subscribe((res: any) => {
-          if (res.account_id) {
+          if (res.data.user.user.account_id) {
             this.router.navigate(['/dashboard']);
           } else {
             // remove selfId to pass isGuest condition on about-company component
