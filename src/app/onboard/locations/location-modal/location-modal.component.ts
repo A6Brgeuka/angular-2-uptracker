@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -27,6 +27,12 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   typeDirty: boolean = false;
   stateDirty: boolean = false;
 
+  uploadedImage;
+  fileIsOver: boolean = false;
+  options = {
+    readAs: 'DataURL'
+  };
+
   constructor(public dialog: DialogRef<LocationModalContext>) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -50,5 +56,29 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
 
   changeType(){
     this.typeDirty = true;
+  }
+
+  // upload by input type=file
+  changeListener($event) : void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    var file:File = inputValue.files[0];
+    var myReader:FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      this.uploadedImage = myReader.result;
+    };
+    myReader.readAsDataURL(file);
+  }
+
+  // upload by filedrop
+  fileOver(fileIsOver: boolean): void {
+    this.fileIsOver = fileIsOver;
+  }
+
+  onFileDrop(file: File): void {
+    this.uploadedImage = file;
   }
 }

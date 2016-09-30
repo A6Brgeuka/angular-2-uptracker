@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 import { MaterializeModule } from "angular2-materialize";
+import { FileDropModule } from 'angular2-file-drop';
 
 import { CoreModule } from "../core/core.module";
 
@@ -44,7 +45,8 @@ let pipesArr = [
     HttpModule,
 
     CoreModule,
-    MaterializeModule
+    MaterializeModule,
+    FileDropModule
   ],
   declarations: [
     ...directivesArr,
@@ -59,6 +61,7 @@ let pipesArr = [
     CoreModule,
     
     MaterializeModule,
+    FileDropModule,
     
     ...directivesArr,
     ...pipesArr

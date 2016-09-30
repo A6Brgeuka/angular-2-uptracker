@@ -173,16 +173,26 @@
 
   <div class="input row location-image">
     <div class="col s12 m5">
-      <div class="img-container">
-        <div class="img"></div>
+      <div class="img-container"
+           fileDrop
+           [ngClass]="{'file-is-over': fileIsOver}"
+           [options]="options"
+           (fileOver)="fileOver($event)"
+           (onFileDrop)="onFileDrop($event)">
+        <div class="img" *ngIf="uploadedImage">
+          <img src="{{uploadedImage}}" alt="" />
+        </div>
       </div>
     </div>
     <div class="col s12 m7">
       <div class="text">
         <div class="label">Location Image</div>
         <div class="tip">Please upload a JPG or PNG max size 10 MB</div>
-        <div class="upload-link">
-          <a>Upload a photo</a>
+        <div class="file-field">
+          <div class="upload-link">
+            <input type="file" accept="image/*" (change)="changeListener($event)" />
+            <a>Upload a photo</a>
+          </div>
         </div>
       </div>
     </div>

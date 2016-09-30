@@ -296,6 +296,11 @@ button{
       margin: 8px 0 0;
       box-shadow: none !important;
 
+      &[type=file]{
+        height:inherit;
+        margin:0;
+      }
+
       &:focus {
         border-color: #33c6d9;
       }
@@ -353,6 +358,21 @@ button{
           left: -2px;
           border-color: #33c6d9;
         }
+      }
+    }
+  }
+
+  .upload-link{
+    display:inline-block;
+    position:relative;
+    cursor:pointer;
+
+    input:hover {
+      overflow:hidden;
+      text-indent: 5000px;
+
+      & + a{
+        text-decoration:underline;
       }
     }
   }
