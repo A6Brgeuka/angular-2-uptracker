@@ -8,7 +8,11 @@ import { UserService, CardService, AccountService } from '../../../core/services
   styleUrls: ['./congrats.component.scss']
 })
 export class CongratsComponent implements OnInit {
-  signupAccount: any;
+  signupAccount: any = {
+    account: {},
+    user: {},
+    card: {}
+  };
 
   constructor(
       private userService: UserService,
@@ -17,18 +21,18 @@ export class CongratsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.accountService.entity$
-        .subscribe((res: any) => {
-          this.signupAccount.account = res;
-        });
-    this.userService.entity$
-        .subscribe((res: any) => {
-          this.signupAccount.user = res;
-        });
-    this.cardService.entity$
-        .subscribe((res: any) => {
-          this.signupAccount.card = res;
-        });
+    // this.accountService.entity$
+    //     .subscribe((res: any) => {
+    //       this.signupAccount.account = res;
+    //     });
+    // this.userService.entity$
+    //     .subscribe((res: any) => {
+    //       this.signupAccount.user = res;
+    //     });
+    // this.cardService.entity$
+    //     .subscribe((res: any) => {
+    //       this.signupAccount.card = res;
+    //     });
   }
 
 }

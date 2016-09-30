@@ -70,7 +70,6 @@ export class AccountService extends ModelService{
 
     entity.subscribe(
         (res: any) => {
-          console.log(res.data.account);
           this.addToCollection$.next(res.data.account);
           this.updateEntity$.next(res.data.account);
           this.updateSelfData$.next(res.data.account);

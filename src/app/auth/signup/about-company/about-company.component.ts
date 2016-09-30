@@ -35,8 +35,6 @@ export class AboutCompanyComponent implements OnInit {
 
     this.accountService.createCompany(this.signupAccount)
         .subscribe((res: any) => {
-          console.log(1111111111111);
-          console.log(res.data.account);
           this.router.navigate(['/signup/payment-info']);
         });
   }

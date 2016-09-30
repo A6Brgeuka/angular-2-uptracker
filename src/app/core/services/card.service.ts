@@ -101,7 +101,6 @@ export class CardService extends ModelService {
 
     entity.subscribe(
         (res: any) => {
-          console.log(res.data.account);
           // this.userService.loadSelfData();
           this.addToCollection$.next(res.data.account);
           this.updateEntity$.next(res.data.account);

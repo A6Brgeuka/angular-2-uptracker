@@ -33,8 +33,6 @@ export class CreateAccountComponent implements OnInit {
   onSubmit(){
     this.userService.signUp(this.signupAccount)
         .subscribe((res: any) => {
-          console.log('000000000000000000');
-          console.log(res.data.user);
           this.cookieService.put('uptracker_token', res.data.token);
           this.router.navigate(['/signup/about-company']);
         });

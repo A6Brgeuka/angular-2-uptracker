@@ -77,20 +77,9 @@ export class PaymentInfoComponent implements OnInit {
                 console.log(res);
                 cardData.account_id = res.id;
               });
-          console.log(2222222222222222222);
-          console.log(cardData);
-          // return self.accountService.entity$;
           return self.cardService.addCard(cardData);
         })
-        .subscribe((res) => {
-          // this.resetCreateCardForm();
-          // res.trial_code = '';
-          // res.account_id = this.accountService.selfData.account_id;
-          // console.log(res); debugger;
-          // this.cardService.addCard(res);
-
-          console.log(33333333333333333333333333333);
-          console.log(res.data.account);
+        .subscribe((res: any) => {
           this.router.navigate(['/signup/congrats']);
         });
   }

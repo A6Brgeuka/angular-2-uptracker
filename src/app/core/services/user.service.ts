@@ -150,6 +150,8 @@ export class UserService extends ModelService {
     // this.cookieService.put('uptracker_token', '');
     // this.cookieService.put('uptracker_selfId', '');
     this.updateSelfData$.next(data.data.user.user);
+    this.addToCollection$.next(data.data.user.user);
+    this.updateEntity$.next(data.data.user.user);
   }
 
   signUp(data){
@@ -167,7 +169,7 @@ export class UserService extends ModelService {
           // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
           res.data.user.signup = true;
           res.data.user.token = res.data.token;
-          console.log(res.data.user);
+          
           this.addToCollection$.next(res.data.user);
           this.updateEntity$.next(res.data.user);
           this.updateSelfData$.next(res.data.user);

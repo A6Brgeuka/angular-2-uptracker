@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'angular2-cookie/services';
+
 import { UserModel } from '../../models/index';
 import { UserService } from '../../core/services/index';
 
@@ -16,7 +18,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
       private userService: UserService,
-      private router: Router
+      private router: Router,
+      private cookieService: CookieService
   ) {
     if (!this.userService.isGuest()){
       this.router.navigate(['/dashboard']);
@@ -29,7 +32,13 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.userService.login(this.loginUser)
         .subscribe((res: any) => {
-          this.router.navigate(['/dashboard']);
+          if (res.account_id) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            // remove selfId to pass isGuest condition on about-company component
+            this.cookieService.remove('uptracker_selfId');
+            this.router.navigate(['/signup', 'about-company']);
+          }
         });
   }
 
