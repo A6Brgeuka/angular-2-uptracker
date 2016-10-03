@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services';
 
 import { UserModel } from '../../models/index';
-import { UserService } from '../../core/services/index';
+import { UserService, SpinnerService } from '../../core/services/index';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,8 @@ export class LoginComponent implements OnInit {
   constructor(
       private userService: UserService,
       private router: Router,
-      private cookieService: CookieService
+      private cookieService: CookieService,
+      private spinnerService: SpinnerService
   ) {
     if (!this.userService.isGuest()){
       this.router.navigate(['/dashboard']);
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.spinnerService.toggleLoadingIndicator(true);
   }
 
   onSubmit() {

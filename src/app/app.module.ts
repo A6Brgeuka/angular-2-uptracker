@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { NoContentModule } from './no-content/no-content.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { OnboardModule } from './onboard/onboard.module';
+import { SpinnerModule } from './spinner/spinner.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { OnboardModule } from './onboard/onboard.module';
     AuthModule,
     NoContentModule,
     DashboardModule,
-    OnboardModule
+    OnboardModule,
+    SpinnerModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

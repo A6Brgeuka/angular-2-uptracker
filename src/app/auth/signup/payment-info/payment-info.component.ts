@@ -41,19 +41,6 @@ export class PaymentInfoComponent implements OnInit {
     for (let i = 0; i < 21; i++){
       this.selectYear.push(currentYear+i);
     }
-
-    // console.log(this.accountService);
-
-    // this.accountService.selfData$ = Observable.merge(
-    //     this.updateSelfData$
-    // );
-
-    // let res = {
-    //   account_id: 'asdasdasdasdasdas'
-    // };
-    // this.accountService.addToCollection$.next(res);
-    // this.accountService.updateEntity$.next(res);
-    // this.accountService.updateSelfData$.next(res);
   }
 
   changeYear(){

@@ -10,6 +10,7 @@ import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service';
 import { DefaultOptions } from '../../decorators/default-options.decorator';
 import { Subscribers } from '../../decorators/subscribers.decorator';
+import { SpinnerService } from './spinner.service';
 
 @Injectable()
 @DefaultOptions({
@@ -47,7 +48,8 @@ export class UserService extends ModelService {
     public toasterService: ToasterService,
     public localStorage: LocalStorage,
     public cookieService: CookieService,
-    public router: Router
+    public router: Router,
+    public spinnerService: SpinnerService
   ) {
     super(injector);
     
