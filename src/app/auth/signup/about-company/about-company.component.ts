@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserModel, AccountModel } from '../../../models/index';
-import { AccountService, UserService } from '../../../core/services/index';
+import { AccountService, UserService, SpinnerService } from '../../../core/services/index';
 
 @Component({
   selector: 'app-about-company',
@@ -15,6 +15,7 @@ export class AboutCompanyComponent implements OnInit {
   constructor(
       private accountService: AccountService,
       private userService: UserService,
+      private spinnerService: SpinnerService,
       private router: Router
   ) {
     if (!this.userService.isGuest()){
@@ -27,14 +28,15 @@ export class AboutCompanyComponent implements OnInit {
   }
 
   onSubmit(){
+    this.spinnerService.show();
     this.userService.entity$
         .subscribe((res: any) => {
-          console.log(res);
           this.signupAccount.user_id = res.id;
         });
 
     this.accountService.createCompany(this.signupAccount)
         .subscribe((res: any) => {
+          this.spinnerService.hide();
           this.router.navigate(['/signup/payment-info']);
         });
   }

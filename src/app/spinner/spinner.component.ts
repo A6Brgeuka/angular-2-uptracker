@@ -16,7 +16,7 @@ export class SpinnerComponent implements OnInit, OnDestroy {
   ){}
 
   ngOnInit(){
-    this.subscription = this.spinnerService.loading$.subscribe(res => { debugger;
+    this.subscription = this.spinnerService.loading$.subscribe(res => {
       this.toggleLoadingIndicator(res);
     });
   }

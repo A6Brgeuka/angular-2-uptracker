@@ -66,10 +66,13 @@
 }
 
 @media all and (max-width: 767px) {
-  .auth-wrapper{
-    .footer{
-      div {
-        text-align:center;
+  :host /deep/ {
+    .auth-wrapper{
+      .footer{
+        div {
+          text-align:center !important;
+          margin-bottom:5px;
+        }
       }
     }
   }

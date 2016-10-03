@@ -199,10 +199,7 @@ export class UserService extends ModelService {
     let api = this.apiEndpoint + 'passwordreset';
     return this.http.post(api, data)
         .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this))
-        .do((res)=> {
-          this.updateSelfData$.next(res);
-        });
+        .catch(this.handleError.bind(this));
   }
 
   // verification(data) {
@@ -247,6 +244,8 @@ export class UserService extends ModelService {
     if (error.status == 401 || error.status == 404) {
       this.logout();
     }
+
+    this.spinnerService.hide();
 
     let body = JSON.parse(error._body);
     let errMsg = body.length ? body[0]['error_message'] : body['error_message'];

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserModel, CreditCardModel } from '../../../models/index';
-import { UserService, CardService, AccountService } from '../../../core/services/index';
+import { UserService, CardService, AccountService, SpinnerService } from '../../../core/services/index';
 
 
 @Component({
@@ -27,6 +27,7 @@ export class PaymentInfoComponent implements OnInit {
       private router: Router,
       private userService: UserService,
       private accountService: AccountService,
+      private spinnerService: SpinnerService,
       private cardService: CardService
   ) {
     if (!this.userService.isGuest()){
@@ -54,21 +55,24 @@ export class PaymentInfoComponent implements OnInit {
   onSubmit(){
     if (this.trialCode != '') {
       this.router.navigate(['/signup/congrats']);
+    } else {
+      this.spinnerService.show();
+      let self = this;
+      this.cardService.getToken(self.creditCard)
+          .switchMap(cardData => {
+            cardData.trial_code = self.trialCode;
+            self.accountService.entity$
+                .subscribe((res) => {
+                  console.log(res);
+                  cardData.account_id = res.id;
+                });
+            return self.cardService.addCard(cardData);
+          })
+          .subscribe((res: any) => {
+            this.spinnerService.hide();
+            this.router.navigate(['/signup/congrats']);
+          });
     }
-    let self = this;
-    this.cardService.getToken(self.creditCard)
-        .switchMap(cardData => {
-          cardData.trial_code = self.trialCode;
-          self.accountService.entity$
-              .subscribe((res) => {
-                console.log(res);
-                cardData.account_id = res.id;
-              });
-          return self.cardService.addCard(cardData);
-        })
-        .subscribe((res: any) => {
-          this.router.navigate(['/signup/congrats']);
-        });
   }
 
 }

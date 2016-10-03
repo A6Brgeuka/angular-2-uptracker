@@ -22,10 +22,11 @@ export class SpinnerService {
   ngOnInit(){
   }
   
-  toggleLoadingIndicator(state) {
-    // if (this.updateSpinner$){
-      // this._observer.next(state);
-      this.updateSpinner$.next(state);
-    // }
+  show() {
+    this.updateSpinner$.next(true);
+  }
+
+  hide() {
+    this.updateSpinner$.next(false);
   }
 }

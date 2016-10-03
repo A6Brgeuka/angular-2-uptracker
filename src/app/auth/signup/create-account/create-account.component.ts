@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services';
 
 import { UserModel } from '../../../models/index';
-import { UserService } from '../../../core/services/index';
+import { UserService, SpinnerService } from '../../../core/services/index';
 
 @Component({
   selector: 'app-create-account',
@@ -19,6 +19,7 @@ export class CreateAccountComponent implements OnInit {
   constructor(
       private userService: UserService,
       private router: Router,
+      private spinnerService: SpinnerService,
       private cookieService: CookieService
   ) {
     if (!this.userService.isGuest()){
@@ -31,8 +32,10 @@ export class CreateAccountComponent implements OnInit {
   }
 
   onSubmit(){
+    this.spinnerService.show();
     this.userService.signUp(this.signupAccount)
         .subscribe((res: any) => {
+          this.spinnerService.hide();
           this.cookieService.put('uptracker_token', res.data.token);
           this.router.navigate(['/signup/about-company']);
         });

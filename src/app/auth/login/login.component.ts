@@ -28,20 +28,23 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.spinnerService.toggleLoadingIndicator(true);
+    
   }
 
   onSubmit() {
+    this.spinnerService.show();
     this.userService.login(this.loginUser)
-        .subscribe((res: any) => {
-          if (res.data.user.user.account_id) {
-            this.router.navigate(['/dashboard']);
-          } else {
-            // remove selfId to pass isGuest condition on about-company component
-            this.cookieService.remove('uptracker_selfId');
-            this.router.navigate(['/signup', 'about-company']);
-          }
-        });
+        .subscribe(
+            (res: any) => {
+              this.spinnerService.hide();
+              if (res.data.user.user.account_id) {
+                this.router.navigate(['/dashboard']);
+              } else {
+                // remove selfId to pass isGuest condition on about-company component
+                this.cookieService.remove('uptracker_selfId');
+                this.router.navigate(['/signup', 'about-company']);
+              }
+            }
+        );
   }
-
 }
