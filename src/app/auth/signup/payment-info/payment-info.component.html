@@ -13,7 +13,7 @@
             (keypress) = "checkMask()"
             name="cardNumber" data-stripe="exp_number"
             #cardNumber="ngModel"
-            required minlength="18"
+            required minlength="17"
             type="text">
         <div [hidden]="cardNumber.valid || cardNumber.untouched" class="error red-text left-align">
           Credit card number is required.

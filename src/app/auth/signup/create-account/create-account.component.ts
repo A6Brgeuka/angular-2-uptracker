@@ -12,7 +12,9 @@ import { UserService, SpinnerService } from '../../../core/services/index';
 })
 export class CreateAccountComponent implements OnInit {
   signupAccount: UserModel;
-  // public mask = ['+', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
+  public phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
+  inernationalPhoneMask = [ /\+/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/ ];
+  usPhoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
   terms: boolean = false;
   privacy: boolean = false;
 
@@ -29,6 +31,10 @@ export class CreateAccountComponent implements OnInit {
 
   ngOnInit() {
     this.signupAccount = new UserModel();
+    this.userService.entity$
+        .subscribe((res) => {
+          this.signupAccount = res;
+        });
   }
 
   onSubmit(){

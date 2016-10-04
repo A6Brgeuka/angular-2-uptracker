@@ -16,7 +16,7 @@ export class PaymentInfoComponent implements OnInit {
   public masks = {
     card: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     cardOther: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
-    cardAmex: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    cardAmex: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
     expYear: [ /\d/, /\d/],
     cvc: [ /\d/, /\d/, /\d/],
   };
@@ -74,7 +74,6 @@ export class PaymentInfoComponent implements OnInit {
             cardData.trial_code = self.trialCode;
             self.accountService.entity$
                 .subscribe((res) => {
-                  console.log(res);
                   cardData.account_id = res.id;
                 });
             return self.cardService.addCard(cardData);
