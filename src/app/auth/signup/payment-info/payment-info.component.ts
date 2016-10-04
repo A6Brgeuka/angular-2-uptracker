@@ -54,7 +54,7 @@ export class PaymentInfoComponent implements OnInit {
     this.monthDirty = true;
   }
 
-  checkMask(){ 
+  checkMask(){
     let cardStr = '' + this.creditCard.cardNumber;
     let cardArr = cardStr.split("");
     if (cardArr[0] == '3' && (cardArr[1] == '4' || cardArr[1] == '7'))
