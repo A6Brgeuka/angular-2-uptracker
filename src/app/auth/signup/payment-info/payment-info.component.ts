@@ -15,6 +15,8 @@ export class PaymentInfoComponent implements OnInit {
   trialCode: string;
   public masks = {
     card: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    cardOther: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+    cardAmex: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     expYear: [ /\d/, /\d/],
     cvc: [ /\d/, /\d/, /\d/],
   };
@@ -50,6 +52,15 @@ export class PaymentInfoComponent implements OnInit {
 
   changeMonth(){
     this.monthDirty = true;
+  }
+
+  checkMask(){ 
+    let cardStr = '' + this.creditCard.cardNumber;
+    let cardArr = cardStr.split("");
+    if (cardArr[0] == '3' && (cardArr[1] == '4' || cardArr[1] == '7'))
+      this.masks.card = this.masks.cardAmex;
+    else
+      this.masks.card = this.masks.cardOther;
   }
 
   onSubmit(){

@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { CreditCardModel } from '../../models';
 import { UserService } from './user.service';
+import { SpinnerService } from './spinner.service';
 import { ModelService } from '../../overrides/model.service';
 import { DefaultOptions } from '../../decorators/default-options.decorator';
 import { Subscribers } from '../../decorators/subscribers.decorator';
@@ -31,7 +32,8 @@ export class CardService extends ModelService {
   constructor(
     public injector: Injector,
     public zone: NgZone,
-    public userService: UserService
+    public userService: UserService,
+    public spinnerService: SpinnerService
   ) {
     super(injector);
   
@@ -77,11 +79,13 @@ export class CardService extends ModelService {
             observer.next(cardData);
           } else {
             observer.error(response.error.message);
+            this.spinnerService.hide();
           }
         })
       });
     })
     .catch((err) => {
+      this.spinnerService.hide();
       this.toasterService.pop('error', err);
       return Observable.throw(err);
     });

@@ -8,13 +8,14 @@
             id="cardNumber"
             placeholder="Enter a valid creditcard number here"
             class="validate col s12"
-            [textMask]="{mask: masks.card, guide:false}"
+            [textMask]="{mask: masks.card, guide: false}"
             [(ngModel)]="creditCard.cardNumber"
+            (keypress) = "checkMask()"
             name="cardNumber" data-stripe="exp_number"
             #cardNumber="ngModel"
-            required
+            required minlength="16"
             type="text">
-        <div [hidden]="cardNumber.valid || cardNumber.pristine" class="error red-text left-align">
+        <div [hidden]="cardNumber.valid || cardNumber.untouched" class="error red-text left-align">
           Credit card number is required.
         </div>
       </div>
@@ -26,7 +27,7 @@
               id="number"
               class="validate col s12"
               placeholder="222"
-              [textMask]="{mask: masks.cvc, guide:false}"
+              [textMask]="{mask: masks.cvc, guide: false}"
               [(ngModel)]="creditCard.cvc"
               name="number" data-stripe="number"
               required minlength="3"
