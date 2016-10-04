@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { HttpClient, ToasterService } from '../core/services/index';
+import { HttpClient, ToasterService, SpinnerService } from '../core/services/index';
 import { APP_CONFIG, AppConfig } from '../app.config';
 
 @Injectable()
@@ -26,12 +26,14 @@ export class ModelService {
   public http: HttpClient;
   public toasterService: ToasterService;
   public appConfig: AppConfig;
+  public spinnerService: SpinnerService;
   
   constructor(
       public injector
   ) {
     this.http = injector.get(HttpClient);
     this.toasterService = injector.get(ToasterService);
+    this.spinnerService = injector.get(SpinnerService);
     this.appConfig = injector.get(APP_CONFIG);
 
 
@@ -210,7 +212,8 @@ export class ModelService {
   public handleError(error: any) {
     let body = JSON.parse(error._body);
     let errMsg = body.length ? body[0]['error_message'] : body['error_message'];
-    
+
+    this.spinnerService.hide();
     this.toasterService.pop('error', errMsg);
     
     return Observable.throw(errMsg);

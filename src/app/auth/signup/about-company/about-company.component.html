@@ -55,11 +55,7 @@
             [(ngModel)]="signupAccount.street_2"
             name="streetAddress2"
             #streetAddress2="ngModel"
-            required
             type="text">
-        <div [hidden]="streetAddress2.valid || streetAddress2.untouched" class="error red-text left-align">
-          Street Address is required.
-        </div>
       </div>
 
       <div class="row split-input-row">
