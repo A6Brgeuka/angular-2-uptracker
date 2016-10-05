@@ -3,7 +3,7 @@ import { Component, Output } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-export class UserModalContext extends BSModalContext {
+export class ProductModalContext extends BSModalContext {
   // public num1: number;
   // public num2: number;
 }
@@ -12,15 +12,15 @@ export class UserModalContext extends BSModalContext {
  * A Sample of how simple it is to create a new window, with its own injects.
  */
 @Component({
-  selector: 'app-user-modal',
+  selector: 'app-product-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
-  templateUrl: './user-modal.component.html',
-  styleUrls: ['./user-modal.component.scss']
+  templateUrl: './product-modal.component.html',
+  styleUrls: ['./product-modal.component.scss']
 })
-export class UserModal implements CloseGuard, ModalComponent<UserModalContext> {
-  context: UserModalContext;
+export class ProductModal implements CloseGuard, ModalComponent<ProductModalContext> {
+  context: ProductModalContext;
   location = {};
   selectedType = '';
   selectedState = '';
@@ -33,7 +33,7 @@ export class UserModal implements CloseGuard, ModalComponent<UserModalContext> {
     readAs: 'DataURL'
   };
 
-  constructor(public dialog: DialogRef<UserModalContext>) {
+  constructor(public dialog: DialogRef<ProductModalContext>) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }

@@ -1,0 +1,38 @@
+<div class="users content">
+  <div class="arrow-buttons">
+    <button class="btn-floating up-btn"></button>
+    <button class="btn-floating down-btn"></button>
+  </div>
+  <div class="title">Add users to your account</div>
+  <div class="subtitle">Please add the people that will have access to your account.</div>
+  <div class="users-row">
+    <div class="right">
+      <div class="empty item" (click)="viewUserModal()"></div>
+    </div>
+    <div class="list">
+      <div class="item">
+        <div class="img">
+          <img src="http://placehold.it/120x120" alt="" class="responsive-img" />
+        </div>
+        <div class="ttl">Firstname Lastname</div>
+      </div>
+      <div class="item">
+        <div class="img">
+          <img src="http://placehold.it/120x120" alt="" class="responsive-img" />
+        </div>
+        <div class="ttl">John Doe</div>
+      </div>
+      <div class="item">
+        <div class="img">
+          <img src="http://placehold.it/120x120" alt="" class="responsive-img" />
+        </div>
+        <div class="ttl">Jane Doe</div>
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <button class="back left" (click)="goBack()">Back</button>
+    <button class="next waves-effect waves-light right" (click)="goNext()">Next</button>
+    <div class="clearfix"></div>
+  </div>
+</div>
