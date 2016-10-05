@@ -1,7 +1,7 @@
 import { OnboardComponent } from './onboard.component';
 
 import { LocationsRoutes } from './locations/locations.routing';
-// import { ForgotPasswordRoutes } from './forgot-password/forgot-password.routing';
+import { UsersRoutes } from './users/users.routing';
 // import { ResetPasswordRoutes } from './reset-password/reset-password.routing';
 // import { SignupRoutes } from './signup/signup.routing';
 
@@ -12,7 +12,7 @@ export const OnboardRoutes = [
     resolve: {},
     children: [
       ...LocationsRoutes,
-      // ...ResetPasswordRoutes,
+      ...UsersRoutes,
       // ...ForgotPasswordRoutes,
       // ...SignupRoutes
     ]

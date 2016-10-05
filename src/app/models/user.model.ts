@@ -3,7 +3,7 @@ import { CreditCardModel } from './credit-card.model';
 import { AccountModel } from './account.model';
 
 export class UserModel {
-  id: number = null;
+  id: string = null;
   name: string = null;
   email_address: string = null;
   password: string = null;
@@ -12,7 +12,7 @@ export class UserModel {
   permissions: any = [];
   phone: number = null;
   account_id: number = null;
-  signup: boolean = null;
+  signup: boolean = null; // for SelfDataActions in user.service to avoid putting user_id in cookies (for isGuest functionality)
 
   // smsToNumber: number = null;
   // typeAuthenticationString: string = 'default';

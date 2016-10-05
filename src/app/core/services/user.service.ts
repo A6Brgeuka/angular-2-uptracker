@@ -146,7 +146,6 @@ export class UserService extends ModelService {
   
   afterLogin(data){
     data.data.user.user.token = data.data.user.token;
-    console.log(data.data.user.user);
     // this.localStorage.set('uptracker_token', '');
     // this.localStorage.set('uptracker_selfId', '');
     // this.cookieService.put('uptracker_token', '');
