@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
   }
 
-  viewUserModal(){
+  viewUsersModal(){
     this.modal.open(UserModal,  overlayConfigFactory(BSModalContext));
   }
   

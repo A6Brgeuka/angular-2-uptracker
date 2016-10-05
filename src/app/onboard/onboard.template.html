@@ -21,10 +21,10 @@
       </div>
     </div>
 
-    <div class="nav">
+    <div class="onboard-nav">
       <div class="inner">
 
-        <div class="locations-nav" *ngIf="stateService.isUrl('/onboard/locations')">
+        <div class="locations-nav nav" *ngIf="stateService.isUrl('/onboard/locations')">
           <div class="img">
             <img src="/assets/img/onboard/icon-onboarding-locations.svg" alt="" />
           </div>
@@ -34,7 +34,7 @@
           <div class="empty"></div>
         </div>
 
-        <div class="users-nav" *ngIf="stateService.isUrl('/onboard/users')">
+        <div class="users-nav nav" *ngIf="stateService.isUrl('/onboard/users')">
           <div class="empty"></div>
           <div class="img">
             <img src="/assets/img/onboard/icon-onboarding-users.svg" alt="" />
@@ -44,13 +44,23 @@
           <div class="empty"></div>
         </div>
 
-        <div class="users-nav" *ngIf="stateService.isUrl('/onboard/products')">
+        <div class="products-nav nav" *ngIf="stateService.isUrl('/onboard/products')">
           <div class="empty"></div>
           <div class="empty"></div>
           <div class="img">
             <img src="/assets/img/onboard/icon-onboarding-products.svg" alt="" />
           </div>
           <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+
+        <div class="vendors-nav nav" *ngIf="stateService.isUrl('/onboard/vendors')">
+          <div class="empty"></div>
+          <div class="empty"></div>
+          <div class="empty"></div>
+          <div class="img">
+            <img src="/assets/img/onboard/icon-onboarding-vendors.svg" alt="" />
+          </div>
           <div class="empty"></div>
         </div>
 

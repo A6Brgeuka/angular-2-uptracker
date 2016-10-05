@@ -30,7 +30,7 @@
         }
       }
 
-      .nav{
+      .onboard-nav{
         position:relative;
 
         .inner{
@@ -62,26 +62,35 @@
             border-radius:50%;
           }
 
-          .locations-nav{
+          .nav{
             position:relative;
-            left:-95px;
-          }
 
-          .users-nav{
-            position:relative;
-            left:-126px;
-
-            .img{
-              top:3px;
+            &.locations-nav{
+              left:-95px;
             }
-          }
 
-          .products-nav{
-            position:relative;
-            left:-157px;
+            &.users-nav{
+              left:-126px;
 
-            .img{
-              //top:3px;
+              .img{
+                top:3px;
+              }
+            }
+
+            &.products-nav{
+              left:-157px;
+
+              .img{
+                top:-9px;
+              }
+            }
+
+            &.vendors-nav{
+              left:-188px;
+
+              .img{
+                //top:-9px;
+              }
             }
           }
         }
@@ -96,6 +105,31 @@
         text-align:center;
         max-width:1060px;
         margin:0 auto;
+        position:relative;
+
+        .arrow-buttons{
+          position: absolute;
+          right:0;
+          top:-29px;
+          z-index:5;
+
+          button{
+            box-shadow:none;
+            margin-left:11px;
+            width:52px;
+            height:52px;
+            background-repeat: no-repeat;
+            background-color:transparent;
+
+            &.up-btn{
+              background-image:url(/assets/img/onboard/button-upload.svg)
+            }
+
+            &.down-btn{
+              background-image:url(/assets/img/onboard/button-download.svg)
+            }
+          }
+        }
 
         .title{
           font:bold 36px/43px 'Ubuntu';
@@ -143,11 +177,11 @@
 @media all and (max-width: 320px) {
   .onboard-wrapper {
     .header {
-      .nav {
+      .onboard-nav {
         .inner {
           left:0;
 
-          & > div{
+          .nav{
             left:0;
           }
         }

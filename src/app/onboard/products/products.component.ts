@@ -13,6 +13,8 @@ import { ProductModal } from './product-modal/product-modal.component';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
+  searchText: string = '';
+
   constructor(
       private router: Router,
       vcRef: ViewContainerRef,
@@ -25,7 +27,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
   }
 
-  viewUserModal(){
+  viewProductModal(){
     this.modal.open(ProductModal,  overlayConfigFactory(BSModalContext));
   }
   
@@ -35,6 +37,10 @@ export class ProductsComponent implements OnInit {
   
   goNext(){
     this.router.navigate(['/onboard','vendors']);
+  }
+
+  onSubmit(){
+
   }
 
 }
