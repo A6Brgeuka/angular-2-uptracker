@@ -41,15 +41,19 @@
           top:0;
           white-space:nowrap;
           letter-spacing:0;
+          font-size:0;
 
           .img{
-            margin: 0 19px;
+            width:190px;
             display:inline-block;
             vertical-align: top;
+            text-align:center;
+            margin-right:-18px;
+            position:relative;
           }
 
           .empty{
-            margin:41px 0 0 18px;
+            margin:41px 0 0 20px;
             display:inline-block;
             vertical-align: top;
             width:11px;
@@ -58,9 +62,27 @@
             border-radius:50%;
           }
 
-          .locations{
+          .locations-nav{
             position:relative;
-            left:-75px;
+            left:-95px;
+          }
+
+          .users-nav{
+            position:relative;
+            left:-126px;
+
+            .img{
+              top:3px;
+            }
+          }
+
+          .products-nav{
+            position:relative;
+            left:-157px;
+
+            .img{
+              //top:3px;
+            }
           }
         }
       }
@@ -72,12 +94,12 @@
 
       .content{
         text-align:center;
-        max-width:1064px;
+        max-width:1060px;
         margin:0 auto;
 
         .title{
           font:bold 36px/43px 'Ubuntu';
-          margin:67px 0 12px;
+          padding:67px 0 12px;
         }
 
         .subtitle{
@@ -90,18 +112,26 @@
           padding:40px 0;
 
           button{
-            width:120px;
-            height:40px;
+            width:122px;
+            height:42px;
             font-size:16px;
             font-weight:900;
             padding:0;
             border:0;
             color:#fff;
+            background:transparent no-repeat center center;
 
             &.next{
-              background:url(/assets/img/onboard/button-next-bg.svg) no-repeat;
+              background-image:url(/assets/img/onboard/button-next-bg.svg);
               text-align:left;
               text-indent:37px;
+            }
+
+            &.back{
+              background-image:url(/assets/img/onboard/button-back-bg.svg);
+              text-align:left;
+              text-indent:46px;
+              color:#33c6d9;
             }
           }
         }
@@ -110,6 +140,18 @@
   }
 }
 
-@media all and (max-width: 767px) {
+@media all and (max-width: 320px) {
+  .onboard-wrapper {
+    .header {
+      .nav {
+        .inner {
+          left:0;
 
+          & > div{
+            left:0;
+          }
+        }
+      }
+    }
+  }
 }

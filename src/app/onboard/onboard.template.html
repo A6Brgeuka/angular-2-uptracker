@@ -23,7 +23,8 @@
 
     <div class="nav">
       <div class="inner">
-        <div class="locations" *ngIf="stateService.isUrl('/onboard/locations')">
+
+        <div class="locations-nav" *ngIf="stateService.isUrl('/onboard/locations')">
           <div class="img">
             <img src="/assets/img/onboard/icon-onboarding-locations.svg" alt="" />
           </div>
@@ -32,6 +33,27 @@
           <div class="empty"></div>
           <div class="empty"></div>
         </div>
+
+        <div class="users-nav" *ngIf="stateService.isUrl('/onboard/users')">
+          <div class="empty"></div>
+          <div class="img">
+            <img src="/assets/img/onboard/icon-onboarding-users.svg" alt="" />
+          </div>
+          <div class="empty"></div>
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+
+        <div class="users-nav" *ngIf="stateService.isUrl('/onboard/products')">
+          <div class="empty"></div>
+          <div class="empty"></div>
+          <div class="img">
+            <img src="/assets/img/onboard/icon-onboarding-products.svg" alt="" />
+          </div>
+          <div class="empty"></div>
+          <div class="empty"></div>
+        </div>
+
       </div>
 
     </div>

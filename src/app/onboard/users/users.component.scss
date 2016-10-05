@@ -1,42 +1,113 @@
-.list{
-  margin:-40px 0 0 -20px;
+.users {
+  position:relative;
 
-  .item{
-    display:inline-block;
-    vertical-align:top;
-    letter-spacing: 0;
-    word-spacing: 0;
-    border-radius:5px;
-    border: 1px solid #d6d6d6;
-    background:#fff;
-    height:350px;
-    width:520px;
-    max-width:100%;
-    margin:40px 0 0 20px;
+  .arrow-buttons{
+    position: absolute;
+    right:0;
+    top:-29px;
+    z-index:5;
 
-    &.empty{
-      background:#f5f6f7 url(/assets/img/onboard/button-add-location.svg) no-repeat center center;
-      border:1px dashed #a7a7a7;
+    button{
+      box-shadow:none;
+      margin-left:11px;
+      width:52px;
+      height:52px;
+      background-repeat: no-repeat;
+      background-color:transparent;
 
-      &:hover{
-        cursor:pointer;
+      &.up-btn{
+        background-image:url(/assets/img/onboard/button-upload.svg)
+      }
+
+      &.down-btn{
+        background-image:url(/assets/img/onboard/button-download.svg)
+      }
+    }
+  }
+
+  .users-row{
+    .item{
+      width:250px;
+      height:250px;
+      display:inline-block;
+      vertical-align:top;
+      border-radius:5px;
+
+      &.empty{
+        background:#f5f6f7 url(/assets/img/onboard/button-add-location.svg) no-repeat center center;
+        border:1px dashed #a7a7a7;
+
+        &:hover{
+          cursor:pointer;
+        }
       }
     }
 
-    .img{
-      img{
-        display:block;
+    .list{
+      overflow-x:auto;
+      overflow-y:hidden;
+      white-space: nowrap;
+      letter-spacing: 0;
+      word-spacing: 0;
+      font-size:0;
+      margin-right:270px;
+      padding-bottom:15px;
+
+      .item{
+        border: 1px solid #d6d6d6;
+        background:#fff;
+        max-width:100%;
+        margin-left:20px;
+
+        &:first-child{
+          margin:0;
+        }
+
+        .img{
+          img{
+            display:block;
+            margin:41px auto 53px;
+            border-radius:50%;
+          }
+        }
+
+        .ttl{
+          font-size:12px;
+        }
       }
     }
+  }
 
-    .ttl{
-      margin:17px 0 23px;
-    }
+  .buttons{
+    padding-top:25px !important;
   }
 }
 
-@media all and (max-width: 1080px){
-  .content{
-    max-width:520px !important;
+@media all and (max-width: 500px){
+  .users{
+    .users-row{
+      .right{
+        width:100%;
+        text-align:center;
+        margin-bottom:20px;
+      }
+
+      .list{
+        text-align:center;
+        clear:both;
+        width:250px;
+        margin:0 auto;
+        overflow:inherit;
+
+        .item{
+          display:block;
+          margin:0 0 20px !important;
+        }
+      }
+    }
+
+    .buttons{
+      padding:20px !important;
+    }
   }
 }
