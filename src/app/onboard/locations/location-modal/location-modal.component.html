@@ -98,11 +98,10 @@
             (change)="changeState()"
             [materializeSelectOptions]="selectStates">
           <option value="">Please select one</option>
-          <option>State1</option>
-          <option>State2</option>
-          <option>State3</option>
+          <option *ngFor="let state of stateArr | iterable" [value]="state.key">{{state.value}}</option>
         </select>
       </div>
+      <div *ngFor="let state of stateArr | iterable">{{state | json}}</div>
     </div>
     <div class="col s12 m4">
       <div class="label left-align">Zip</div>

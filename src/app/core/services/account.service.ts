@@ -78,5 +78,12 @@ export class AccountService extends ModelService{
 
     return entity;
   }
+
+  getStates(){
+    let api = this.apiEndpoint + 'config/states';
+    return this.http.get(api)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this));
+  }
   
 }

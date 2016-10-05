@@ -3,6 +3,8 @@ import { Component, Output } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
+import { AccountService } from '../../../core/services/index';
+
 export class LocationModalContext extends BSModalContext {
   // public num1: number;
   // public num2: number;
@@ -24,6 +26,8 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   location = {};
   selectedType = '';
   selectedState = '';
+  stateArr = {};
+  typeArr = {};
   typeDirty: boolean = false;
   stateDirty: boolean = false;
 
@@ -33,9 +37,16 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
     readAs: 'DataURL'
   };
 
-  constructor(public dialog: DialogRef<LocationModalContext>) {
+  constructor(
+      public dialog: DialogRef<LocationModalContext>,
+      private accountService: AccountService
+  ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
+    this.accountService.getStates().subscribe((res: any) => {
+      this.stateArr = res.data; 
+      console.log(this.stateArr);
+    });
   }
 
   closeModal(){
