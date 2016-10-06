@@ -1,4 +1,5 @@
 import { Component, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -38,14 +39,22 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   };
 
   constructor(
+      private activatedRoute: ActivatedRoute,
       public dialog: DialogRef<LocationModalContext>,
       private accountService: AccountService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
-    this.accountService.getStates().subscribe((res: any) => {
-      this.stateArr = res.data; 
-      console.log(this.stateArr);
+    // this.accountService.getStates().subscribe((res: any) => {
+    //   this.stateArr = res.data;
+    // });
+  }
+
+  ngOnInit(){
+    this.activatedRoute.data.forEach((data: { stateCollection: any }) => {
+      // data.stateCollection$.subscribe((res: any) => {
+        this.stateArr = data.stateCollection.data;
+      // });
     });
   }
 
