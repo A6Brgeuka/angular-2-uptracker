@@ -10,8 +10,8 @@ export class UserModel {
   
   locations: any = [];
   permissions: any = [];
-  phone: number = null;
-  account_id: number = null;
+  phone: string = null;
+  account_id: string = null;
   signup: boolean = null; // for SelfDataActions in user.service to avoid putting user_id in cookies (for isGuest functionality)
 
   // smsToNumber: number = null;

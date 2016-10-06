@@ -45,16 +45,11 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
-    // this.accountService.getStates().subscribe((res: any) => {
-    //   this.stateArr = res.data;
-    // });
   }
 
   ngOnInit(){
     this.activatedRoute.data.forEach((data: { stateCollection: any }) => {
-      // data.stateCollection$.subscribe((res: any) => {
-        this.stateArr = data.stateCollection.data;
-      // });
+      this.stateArr = data.stateCollection.data;
     });
   }
 
