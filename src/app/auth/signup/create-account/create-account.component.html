@@ -54,36 +54,18 @@
 
       <div class="input row">
         <div class="label left-align">Phone number</div>
-        <div class="intl-tel-input allow-dropdown">
-          <div class="flag-container">
-            <div class="selected-flag" (click)="viewCountryList = !viewCountryList">
-              <div class="iti-flag {{selectedCountry[1]}}"></div>
-              <div class="iti-arrow"></div>
-            </div>
-            <ul class="country-list" [class.hide]="!viewCountryList">
-              <li class="country" [class.highlight]="country[1] == selectedCountry[1]" *ngFor="let country of allCountries" (click)="selectCountry(country)">
-                <div class="flag-box"><div class="iti-flag {{country[1]}}"></div></div>
-                <span class="country-name">{{country[0]}}</span>
-                <span class="dial-code">+{{country[2]}}</span>
-              </li>
-            </ul>
-          </div>
-          <input
-              id="phone"
-              placeholder="Enter phone number"
-              class="validate"
-              [textMask]="{mask: phoneMask, guide: false}"
-              (keypress)="phoneChanged()"
-              [(ngModel)]="signupAccount.phone"
-              name="phone"
-              #phone="ngModel"
-              required
-              type="text">
-        </div>
+        <input
+            id="phone"
+            placeholder="Enter phone number"
+            class="validate col s12"
+            [(ngModel)]="signupAccount.phone"
+            name="phone"
+            #phone="ngModel"
+            required
+            type="text">
         <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
           Phone number required.
         </div>
-        {{signupAccount.phone}}
       </div>
 
       <div class="buttons">

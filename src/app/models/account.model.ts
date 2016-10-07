@@ -31,7 +31,7 @@ export class AccountModel {
   // "cc_last_four": null;
   // "cc_type": null;
   company_name: string = null;
-  // "contact_email_address": "ben@ben.com";
+  contact_email_address: string = null;
   created_at: string = null;
   created_by: string = null;
   // "currency": "USD";
@@ -64,7 +64,6 @@ export class AccountModel {
   // "trial_expiration": null;
   updated_at: string = null;
   // "use_reorder_level": false;
-  user_id: string = null; //for company signup
   users: UserModel[] = [];
   
   constructor(obj?: any) {

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { HttpClient } from './http.service';
 import { ToasterService } from './toaster.service';
+import { AccountService } from './account.service';
 import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service';
 import { DefaultOptions } from '../../decorators/default-options.decorator';
@@ -89,7 +90,7 @@ export class UserService extends ModelService {
     return !this.cookieService.get('uptracker_token') || !this.cookieService.get('uptracker_selfId');
   }
 
-  logout() {
+  logout(redirectUrl = '/') {
     let data = {
       user_id: this.cookieService.get('uptracker_selfId')
     };
@@ -101,7 +102,8 @@ export class UserService extends ModelService {
         .do((res) => {
           this.cookieService.remove('uptracker_token');
           this.cookieService.remove('uptracker_selfId');
-          this.router.navigate(['/']);
+          this.updateSelfData$.next({});
+          this.router.navigate([redirectUrl]);
         });
   }
 
@@ -123,10 +125,24 @@ export class UserService extends ModelService {
     if (this.isGuest()) {
       return Observable.of(null);
     }
-  
+
     this.loadEntity({id: this.getSelfId()});
-  
+
     return this.selfData$;
+  }
+
+  loadEntity(data){
+    let api = this.apiEndpoint + 'getuser';
+    let entity = this.http.get(api, data)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this))
+        .publishReplay(1).refCount();
+
+    entity.subscribe((res) => {
+      this.updateSelfData$.next(res);
+    });
+
+    return entity;
   }
 
   // updateSelfData(data){

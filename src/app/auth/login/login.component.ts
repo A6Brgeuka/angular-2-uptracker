@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/dashboard']);
               } else {
                 // remove selfId to pass isGuest condition on about-company component
-                this.cookieService.remove('uptracker_selfId');
+                // this.cookieService.remove('uptracker_selfId');
                 this.router.navigate(['/signup', 'about-company']);
               }
             }

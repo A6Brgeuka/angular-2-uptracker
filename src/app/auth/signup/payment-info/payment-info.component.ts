@@ -32,9 +32,15 @@ export class PaymentInfoComponent implements OnInit {
       private spinnerService: SpinnerService,
       private cardService: CardService
   ) {
-    if (!this.userService.isGuest()){
-      this.router.navigate(['/dashboard']);
-    }
+    // this.userService.loadSelfData().subscribe((res: any) => {
+    //   // TODO:
+    //   // check response and add account_id to condition
+    //   // if user is logged in and created company (have account_id) redirect him
+    //   debugger;
+    //   if (!this.userService.isGuest() && res.account_id){
+    //     this.router.navigate(['/dashboard']);
+    //   }
+    // });
   }
 
   ngOnInit() {
@@ -79,7 +85,7 @@ export class PaymentInfoComponent implements OnInit {
             return self.cardService.addCard(cardData);
           })
           .subscribe((res: any) => {
-            this.spinnerService.hide();
+            self.spinnerService.hide();
             this.router.navigate(['/signup/congrats']);
           });
     }
