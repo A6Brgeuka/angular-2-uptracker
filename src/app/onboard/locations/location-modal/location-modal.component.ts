@@ -1,4 +1,4 @@
-import { Component, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
@@ -7,8 +7,6 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { AccountService } from '../../../core/services/index';
 
 export class LocationModalContext extends BSModalContext {
-  // public num1: number;
-  // public num2: number;
 }
 
 /**
