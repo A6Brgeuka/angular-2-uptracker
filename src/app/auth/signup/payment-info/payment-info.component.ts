@@ -86,6 +86,7 @@ export class PaymentInfoComponent implements OnInit {
           })
           .subscribe((res: any) => {
             self.spinnerService.hide();
+            self.accountService.updateSelfData$.next(res.data.account);
             this.router.navigate(['/signup/congrats']);
           });
     }

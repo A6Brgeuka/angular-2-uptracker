@@ -3,32 +3,21 @@ import {UserModel} from "./user.model";
 export class AccountModel {
   
   id:number = null;
-  // status:number = null;
-  // statusString:string = null;
-  // company:string = null;
-  // enabled:boolean = null;
-  // trialPeriodLeft:number = null;
-  // createdAt:string = null;
-  // updatedAt:string = null;
-  
-  // invoices:InvoiceModel[] = [];
-  // users:UserModel[] = [];
-  // owner:UserModel = null;
 
   account_owner: string = null;
   address: any = {};
-  // "alert_on_dup_product": true;
-  // "allow_multiple_locations": true;
-  // "allow_product_nicknames": true;
-  // "annual_income": 1000000;
-  // "annual_inventory_budget": null;
-  // "annual_net_revenue": null;
-  // "auto_manage_inventory": false;
-  // "bcc_account_email": false;
-  // "breakout_products_by_location": false;
-  // "cc_account_email": false;
-  // "cc_last_four": null;
-  // "cc_type": null;
+  // alert_on_dup_product: boolean = null;
+  // allow_multiple_locations: boolean = null;
+  // allow_product_nicknames: boolean = null;
+  // annual_income: string = null;
+  // annual_inventory_budget: string = null;
+  // annual_net_revenue: string = null;
+  // auto_manage_inventory: boolean = null;
+  // bcc_account_email: string = null;
+  // breakout_products_by_location: string = null;
+  // cc_account_email: string = null;
+  // cc_last_four: number = null;
+  // cc_type: string = null;
   company_name: string = null;
   contact_email_address: string = null;
   created_at: string = null;
@@ -48,7 +37,7 @@ export class AccountModel {
   // "marys_list_pricing": false;
   // "paper_size": "US Letter";
   // "parent_account": null;
-  // "payment_token": null;
+  payment_token: string = null;
   // "perpetual_inventory": true;
   // "phone_format": "+1 222-3333";
   // "print_emailed_po": false;

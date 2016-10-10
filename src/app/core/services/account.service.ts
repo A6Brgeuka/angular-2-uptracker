@@ -38,6 +38,10 @@ export class AccountService extends ModelService{
     this.selfData$ = Observable.merge(
         this.updateSelfData$
     );
+    this.selfData$.subscribe(res => {
+      this.selfData = res;
+      console.log(`${this.defaultOptions.childClassName} Update SELF DATA`, res);
+    });
   }
   
   addSubscribers(){
