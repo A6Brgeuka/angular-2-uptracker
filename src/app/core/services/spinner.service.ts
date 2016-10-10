@@ -7,18 +7,10 @@ export class SpinnerService {
   loading$: Observable<any>;
   private updateSpinner$: Subject<any> = new Subject<any>();
 
-  constructor(
-  ) {
-    // this.loading$ = new Observable(
-    //     // observer => this._observer = observer
-    //     (observer) => this._observer.subscribe(observer)
-    // ).share();
+  constructor() {
     this.loading$ = Observable.merge(
         this.updateSpinner$
     )
-  }
-
-  ngOnInit(){
   }
   
   show() {

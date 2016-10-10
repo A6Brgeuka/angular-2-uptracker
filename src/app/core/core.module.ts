@@ -1,7 +1,6 @@
 /* tslint:disable:member-ordering no-unused-variable */
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { HttpModule } from '@angular/http';
 import { APP_CONFIG, APP_DI_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services/cookies.service';

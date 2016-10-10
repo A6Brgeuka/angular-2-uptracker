@@ -11,14 +11,6 @@ export class CreditCardModel {
   brand: string = null;
   lastNumbers: string = null;
   
-  // customer: string = null;
-  // name: string = null;
-  // street: string = null;
-  // state: string = null;
-  // isDefault: boolean = false;
-  // status: number = null;
-  // statusString: string = null;
-  
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {

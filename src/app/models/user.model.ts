@@ -1,4 +1,3 @@
-// import { TokenModel } from './token.model';
 import { CreditCardModel } from './credit-card.model';
 import { AccountModel } from './account.model';
 
@@ -14,41 +13,14 @@ export class UserModel {
   account_id: string = null;
   signup: boolean = null; // for SelfDataActions in user.service to avoid putting user_id in cookies (for isGuest functionality)
 
-  // smsToNumber: number = null;
-  // typeAuthenticationString: string = 'default';
-  // role: string = null;
-  // roleString: string = null;
-  // status: number = null;
-  // statusString: string = null;
-  // idAccount: number = null;
-  // trialPeriodLeft: number = null;
-
-  // tokens: TokenModel[] = [];
   cards: CreditCardModel[] = [];
   defaultCard: CreditCardModel = null;
   account: AccountModel = new AccountModel();
-  // deployments: DeploymentModel[] = [];
   
   constructor(obj?: any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {
         this[field] = obj && obj[field];
-
-    //     switch (field) {
-    //       case 'account':
-    //         this[field] = new AccountModel(obj[field]);
-    //         break;
-    //       case 'cards':
-    //         obj[field] = obj[field].filter(res => {
-    //           return res.statusString == "active";
-    //         });
-    //
-    //         obj[field].forEach((value, key) => {
-    //           this[field][key] = new CreditCardModel(value);
-    //         });
-    //
-    //         break;
-    //     }
       }
     }
   }

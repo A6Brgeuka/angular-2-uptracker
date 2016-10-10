@@ -21,10 +21,6 @@ import { Subscribers } from '../../decorators/subscribers.decorator';
   destroyFunc: null
 })
 export class CardService extends ModelService {
-  
-  // static STATUS_BLOCKED = 0;
-  // static STATUS_ACTIVE = 1;
-
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
@@ -105,7 +101,6 @@ export class CardService extends ModelService {
 
     entity.subscribe(
         (res: any) => {
-          // this.userService.loadSelfData();
           this.addToCollection$.next(res.data.account);
           this.updateEntity$.next(res.data.account);
           this.updateSelfData$.next(res.data.account);

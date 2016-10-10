@@ -5,8 +5,6 @@ import { AccountService } from './account.service';
 import { CardService } from './card.service';
 import { StateService } from './state.service';
 import { SpinnerService } from './spinner.service';
-// import { TokenService } from './token.service';
-// import { InvoiceService } from './invoice.service';
 
 
 export {
@@ -17,8 +15,6 @@ export {
   CardService,
   StateService,
   SpinnerService,
-  // TokenService,
-  // InvoiceService
 };
 
 // an array of services to resolve routes with data
@@ -30,6 +26,4 @@ export const APP_SERVICE_PROVIDERS = [
   CardService,
   StateService,
   SpinnerService,
-  // TokenService,
-  // InvoiceService
 ];

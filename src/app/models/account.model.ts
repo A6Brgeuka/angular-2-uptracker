@@ -1,5 +1,4 @@
 import {UserModel} from "./user.model";
-// import {InvoiceModel} from "./invoice.model";
 
 export class AccountModel {
   
@@ -71,20 +70,6 @@ export class AccountModel {
       if (typeof this[field] !== "undefined") {
         this[field] = obj && obj[field];
       }
-    
-    //   switch (field) {
-    //     case 'owner':
-    //       this[field] = new UserModel(obj[field]);
-    //       break;
-    //     case 'users':
-    //       obj[field].forEach((value, key) => {
-    //         this[field][key] = new UserModel(value);
-    //       });
-    //       break;
-    //     case 'alertSetting':
-    //       this[field] = new AlertSettingModel(obj[field]);
-    //       break;
-    //   }
     }
   }
 }

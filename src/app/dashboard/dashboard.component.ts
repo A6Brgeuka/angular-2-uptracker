@@ -16,9 +16,6 @@ export class DashboardComponent {
   ) {
   }
 
-  ngOnInit() {
-  }
-
   logOut(){
     this.spinnerService.show();
     this.userService.logout().subscribe((res) => {

@@ -12,23 +12,14 @@ import { Subscribers } from '../../decorators/subscribers.decorator';
 @DefaultOptions({
   modelEndpoint: '',
   expand: {
-    default: [
-      // {
-      //   Account: ['owner', 'users'],
-      //   User: ['deployments', 'cards']
-      // }
-    ],
+    default: [],
   }
 })
 @Subscribers({
   initFunc: 'onInit',
   destroyFunc: null,
 })
-export class AccountService extends ModelService{
-  
-  // static STATUS_BLOCKED = 1;
-  // static STATUS_ACTIVE = 2;
-  
+export class AccountService extends ModelService{  
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();

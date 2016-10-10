@@ -10,21 +10,11 @@ import { FileDropModule } from 'angular2-file-drop';
 import { CoreModule } from "../core/core.module";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
-// import * as directives from "./directives";
-// import * as lodash from "lodash";
+import * as directives from "./directives";
 import MaskedInput from 'angular2-text-mask';
 
 let directivesArr = [
-  // PageScroll,
-  // directives.SvgIconComponent,
-  // directives.LogoutDirective,
-  // directives.CalculatorTableComponent,
-  // directives.GetStartedComponent,
-  //
-  // directives.AlertsRangeSliderComponent,
-  // directives.Ng2SliderComponent,
-  // derectives to ng2 slider
-  // SlideAbleDirective, Ng2StyledDirective,
+  // directives.IntlPhoneMaskDirective,
 
   MaskedInput
 ];

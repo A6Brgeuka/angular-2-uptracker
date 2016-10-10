@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { UserService, CardService, AccountService } from '../../../core/services/index';
 
@@ -7,7 +7,7 @@ import { UserService, CardService, AccountService } from '../../../core/services
   templateUrl: './congrats.component.html',
   styleUrls: ['./congrats.component.scss']
 })
-export class CongratsComponent implements OnInit {
+export class CongratsComponent {
   signupAccount: any = {
     account: {},
     user: {},
@@ -19,20 +19,5 @@ export class CongratsComponent implements OnInit {
       private accountService: AccountService,
       private cardService: CardService
   ) { }
-
-  ngOnInit() {
-    // this.accountService.entity$
-    //     .subscribe((res: any) => {
-    //       this.signupAccount.account = res;
-    //     });
-    // this.userService.entity$
-    //     .subscribe((res: any) => {
-    //       this.signupAccount.user = res;
-    //     });
-    // this.cardService.entity$
-    //     .subscribe((res: any) => {
-    //       this.signupAccount.card = res;
-    //     });
-  }
 
 }

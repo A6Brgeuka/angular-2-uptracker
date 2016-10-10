@@ -25,23 +25,10 @@ import { SpinnerService } from './spinner.service';
   destroyFunc: null
 })
 export class UserService extends ModelService {
-  
-  // static STATUS_BLOCKED = 0;
-  // static STATUS_ACTIVE = 1;
-  //
-  // static ROLE_USER = 3;
-  // static ROLE_OWNER = 2;
-  // static ROLE_ADMIN = 1;
-  //
-  // static TYPE_AUTHENTICATION_DEFAULT = 1;
-  // static TYPE_AUTHENTICATION_SMS = 2;
 
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
-
-  // apiEndpoint: string = 'http://uptracker-api.herokuapp.com/api/v1';
-  // apiEndpoint: string = 'http://private-anon-ce8323ff87-uptracker.apiary-mock.com/api/v1';
   
   constructor(
     public injector: Injector,
@@ -145,9 +132,9 @@ export class UserService extends ModelService {
     return entity;
   }
 
-  // updateSelfData(data){
-  //   this.updateSelfData$.next(data);
-  // }
+  updateSelfData(data){
+    this.updateSelfData$.next(data);
+  }
   
   login(data) {
     let body = JSON.stringify(data);
@@ -162,10 +149,7 @@ export class UserService extends ModelService {
   
   afterLogin(data){
     data.data.user.user.token = data.data.user.token;
-    // this.localStorage.set('uptracker_token', '');
-    // this.localStorage.set('uptracker_selfId', '');
-    // this.cookieService.put('uptracker_token', '');
-    // this.cookieService.put('uptracker_selfId', '');
+    
     this.updateSelfData$.next(data.data.user.user);
     this.addToCollection$.next(data.data.user.user);
     this.updateEntity$.next(data.data.user.user);
@@ -217,43 +201,18 @@ export class UserService extends ModelService {
         .catch(this.handleError.bind(this));
   }
 
-  // verification(data) {
-  //   let body = JSON.stringify(data);
-  //
-  //   return this.http.post(`${this.apiEndpoint}/verification`, body, {
-  //     search: this.getSearchParams('login')
-  //   })
-  //   .map(this.extractData.bind(this))
-  //   .catch(this.handleError.bind(this))
-  //   .do((res)=> {
-  //     this.updateSelfData$.next(res);
-  //   });
-  // }
-  //
-  // smsRequest(data) {
-  //   let body = JSON.stringify(data);
-  //
-  //   return this.http.post(`${this.apiEndpoint}/sms-request`, body)
-  //   .map(this.extractData.bind(this))
-  //   .catch(this.handleError.bind(this))
-  //   .do((res)=> {
-  //     this.toasterService.pop('success', 'SMS sent to your phone');
-  //     this.updateSelfData$.next(res);
-  //   });
-  // }
-  //
-  // smsLogin(data) {
-  //   let body = JSON.stringify(Object.assign({}, data, {idUser: this.selfData.id}));
-  //
-  //   return this.http.post(`${this.apiEndpoint}/sms-login`, body, {
-  //     search: this.getSearchParams('login')
-  //   })
-  //   .map(this.extractData.bind(this))
-  //   .catch(this.handleError.bind(this))
-  //   .do((res)=> {
-  //     this.updateSelfData$.next(res);
-  //   });
-  // }
+  verification(data) {
+    let body = JSON.stringify(data);
+  
+    return this.http.post(`${this.apiEndpoint}/verification`, body, {
+      search: this.getSearchParams('login')
+    })
+    .map(this.extractData.bind(this))
+    .catch(this.handleError.bind(this))
+    .do((res)=> {
+      this.updateSelfData$.next(res);
+    });
+  }
 
   handleError(error: any) {
     if (error.status == 401 || error.status == 404) {

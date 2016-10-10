@@ -1,5 +1,6 @@
 import {
   Directive,
+  Component,
   EventEmitter,
   ElementRef,
   HostListener,
@@ -7,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 
-@Directive({
+@Component({
   selector: '[intlPhoneMask]',
   templateUrl: './phone-mask.component.html',
   styleUrls: ['./phone-mask.component.scss'],
