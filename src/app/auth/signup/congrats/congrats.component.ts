@@ -21,7 +21,7 @@ export class CongratsComponent {
       private cardService: CardService,
       private router: Router
   ) {
-    // if payment token doesn't exist then redirect user to dashboard (guest will be automatically redirected to login)
+    // if payment token doesn't exist then redirect user to login (authorized user will be automatically redirected to dashboard)
     let payment_token = this.accountService.selfData ? this.userService.selfData.id || null : null;
     if (!payment_token){
       this.router.navigate(['/dashboard']);

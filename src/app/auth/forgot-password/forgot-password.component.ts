@@ -17,7 +17,7 @@ export class ForgotPasswordComponent implements OnInit {
       private spinnerService: SpinnerService
   ) {
     if (!this.userService.isGuest()){
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/login']);
     }
   }
 
@@ -28,9 +28,12 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit() {
+    let self = this;
     this.spinnerService.show();
     this.userService.forgotPasswordRequest(this.draftUser)
         .subscribe((res: any) => {
+          res.data = res.data || 'Forgotten password request sent.';
+          self.userService.selfData ? self.userService.selfData.tempData = res.data : self.userService.selfData = { tempData: res.data };
           this.spinnerService.hide();
           this.router.navigate(['/forgot-password-congrats']);
         });

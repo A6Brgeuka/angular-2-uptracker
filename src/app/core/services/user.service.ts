@@ -24,7 +24,6 @@ import { SpinnerService } from './spinner.service';
   destroyFunc: null
 })
 export class UserService extends ModelService {
-
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();

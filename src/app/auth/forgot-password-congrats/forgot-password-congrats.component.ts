@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { UserService } from '../../core/services/index';
 
 @Component({
   selector: 'app-forgot-password-congrats',
@@ -8,6 +11,13 @@ import { Component } from '@angular/core';
 export class ForgotPasswordCongratsComponent {
 
   constructor(
-  ) { }
+      private userService: UserService,
+      private router: Router
+  ) {
+    let data = this.userService.selfData ? this.userService.selfData.tempData || null : null;
+    if (!data) {
+      this.router.navigate(['/login']);
+    }
+  }
 
 }
