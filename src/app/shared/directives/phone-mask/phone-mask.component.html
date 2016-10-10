@@ -13,13 +13,13 @@
     </ul>
   </div>
   <input
-      id="phone"
-      placeholder="Enter phone number"
-      class="validate"
-      [textMask]="{mask: phoneMask, guide: false}"
-      [(ngModel)]="signupFormPhone"
-      name="phone"
-      #phone="ngModel"
+      id="input.id"
+      placeholder="{{input.placeholder}}"
+      class="{{input.class}}"
+      [textMask]="input.mask"
+      [(ngModel)]="input.model"
+      name="{{input.name}}"
+      #{{input.id}}="ngModel"
       required
       type="text">
 </div>

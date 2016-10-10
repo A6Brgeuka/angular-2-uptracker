@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { HttpClient } from './http.service';
 import { ToasterService } from './toaster.service';
-import { AccountService } from './account.service';
 import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service';
 import { DefaultOptions } from '../../decorators/default-options.decorator';
