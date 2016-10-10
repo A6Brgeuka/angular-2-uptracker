@@ -29,6 +29,14 @@ export class AboutCompanyComponent implements OnInit {
     //     this.router.navigate(['/dashboard']);
     //   }
     // });
+
+    // check for user_id
+    this.signupAccount.user_id = this.userService.selfData ? this.userService.selfData.id || null : null;
+
+    // if guest (user without id) then redirect him to login page
+    if (!this.signupAccount.user_id) {
+      this.router.navigate(['/login']);
+    }
   }
 
   ngOnInit() {
@@ -46,9 +54,6 @@ export class AboutCompanyComponent implements OnInit {
             marys_list_member: res.marys_list_member
           };
         });
-
-    // check for user_id
-    this.signupAccount.user_id = this.userService.selfData ? this.userService.selfData.id || null : null;
   }
 
   ngOnDestroy() {

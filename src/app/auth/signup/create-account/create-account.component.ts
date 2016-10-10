@@ -34,6 +34,7 @@ export class CreateAccountComponent implements OnInit {
 
   ngOnInit() {
     this.signupAccount = this.userService.selfData || new UserModel();
+    // debugger;
   }
 
   onSubmit(){

@@ -62,7 +62,6 @@
           [(ngModel)]="location.unit"
           name="unit"
           #unit="ngModel"
-          required
           type="text">
       <div [hidden]="unit.valid || unit.pristine" class="error red-text left-align">
         Unit # is required.
@@ -160,7 +159,6 @@
           [(ngModel)]="location.fax"
           name="fax"
           #fax="ngModel"
-          required
           minlength="10" maxlength="12" pattern="[0-9]+"
           type="text">
       <div [hidden]="fax.valid || fax.pristine" class="error red-text left-align">
