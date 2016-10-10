@@ -31,11 +31,18 @@ export class AboutCompanyComponent implements OnInit {
     // });
 
     // check for user_id
-    this.signupAccount.user_id = this.userService.selfData ? this.userService.selfData.id || null : null;
+    this.signupAccount.user_id = this.userService.getSelfIdFromSelfData();
 
     // if guest (user without id) then redirect him to login page
     if (!this.signupAccount.user_id) {
       this.router.navigate(['/login']);
+    }
+
+    // check for account
+    // if user is logged in and created company (have account_id) redirect him
+    let account_id = this.userService.selfData ? this.userService.selfData.account_id || null : null;
+    if (!this.userService.isGuest() && account_id){
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -44,6 +51,7 @@ export class AboutCompanyComponent implements OnInit {
     this.accountSubscription = this.accountService.entity$
         .subscribe((res) => {
           self.signupAccount = {
+            user_id: self.signupAccount.user_id,
             id: res.id,
             company_name: res.company_name,
             company_email: res.contact_email_address,

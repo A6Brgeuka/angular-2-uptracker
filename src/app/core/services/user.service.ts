@@ -106,6 +106,11 @@ export class UserService extends ModelService {
     return this.cookieService.get('uptracker_selfId');
   }
 
+  // for signup pages
+  getSelfIdFromSelfData(): any {
+    return this.selfData ? this.selfData.id || null : null;
+  }
+
   loadSelfData(): Observable<any> {
     if (this.isGuest()) {
       return Observable.of(null);
@@ -147,6 +152,7 @@ export class UserService extends ModelService {
   
   afterLogin(data){
     data.data.user.user.token = data.data.user.token;
+    data.data.user.user.account = data.data.user.account; 
     
     this.updateSelfData$.next(data.data.user.user);
     this.addToCollection$.next(data.data.user.user);

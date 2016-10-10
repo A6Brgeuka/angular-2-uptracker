@@ -44,6 +44,8 @@ export class CreateAccountComponent implements OnInit {
         .subscribe(
             (res: any) => {
               this.spinnerService.hide();
+              if (res.data.token)
+                this.cookieService.put('uptracker_token', res.data.token);
               this.router.navigate(['/signup/about-company']);
             },
             (err) => {}

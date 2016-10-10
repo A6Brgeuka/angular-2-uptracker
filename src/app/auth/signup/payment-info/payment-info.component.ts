@@ -41,6 +41,26 @@ export class PaymentInfoComponent implements OnInit {
     //     this.router.navigate(['/dashboard']);
     //   }
     // });
+
+    // check for user_id
+    let user_id = this.userService.getSelfIdFromSelfData();
+
+    // if guest (user without id) then redirect him to login page
+    if (!user_id) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // check for payment info
+    // if user is logged in and added payment info redirect him
+    let account = this.userService.selfData ? this.userService.selfData.account || null : null;
+    if (account){
+      let payment_token = account.payment_token || null;
+      let trial_code = account.trial_code || null;
+      if (!this.userService.isGuest() && (payment_token || trial_code) ){
+        this.router.navigate(['/dashboard']);
+      }
+    }
   }
 
   ngOnInit() {
@@ -78,10 +98,17 @@ export class PaymentInfoComponent implements OnInit {
       this.cardService.getToken(self.creditCard)
           .switchMap(cardData => {
             cardData.trial_code = self.trialCode;
-            self.accountService.entity$
-                .subscribe((res) => {
-                  cardData.account_id = res.id;
-                });
+            // set account_id
+            // if user is logged in and created company (have account_id)
+            let account_id = self.userService.selfData ? self.userService.selfData.account_id || null : null;
+            if (account_id){
+              cardData.account_id = account_id;
+            } else {
+              self.accountService.entity$
+                  .subscribe((res) => {
+                    cardData.account_id = res.id;
+                  });
+            }
             return self.cardService.addCard(cardData);
           })
           .subscribe((res: any) => {

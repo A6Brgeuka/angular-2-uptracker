@@ -37,13 +37,16 @@ export class LoginComponent implements OnInit {
         .subscribe(
             (res: any) => {
               this.spinnerService.hide();
-              if (res.data.user.user.account_id) {
-                this.router.navigate(['/dashboard']);
-              } else {
-                // remove selfId to pass isGuest condition on about-company component
-                // this.cookieService.remove('uptracker_selfId');
+              // check for passing signup steps for navigation
+              if (!res.data.user.user.account_id) {
                 this.router.navigate(['/signup', 'about-company']);
+                return;
               }
+              if (!res.data.user.user.account.payment_token && !res.data.user.user.account.trial_code) {
+                this.router.navigate(['/signup', 'payment-info']);
+                return;
+              }
+              this.router.navigate(['/dashboard']);
             }
         );
   }
