@@ -30,9 +30,7 @@
             (change)="changeType()"
             [materializeSelectOptions]="selectTypes">
           <option value="">Please select one</option>
-          <option>Type1</option>
-          <option>Type2</option>
-          <option>Type3</option>
+          <option *ngFor="let type of typeArr" [value]="type">{{type}}</option>
         </select>
       </div>
     </div>

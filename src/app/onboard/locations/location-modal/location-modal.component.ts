@@ -46,8 +46,14 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   }
 
   ngOnInit(){
+    // getting state collection
     this.activatedRoute.data.forEach((data: { stateCollection: any }) => {
       this.stateArr = data.stateCollection.data;
+    });
+    
+    //getting locations types collection
+    this.activatedRoute.data.forEach((data: { locationTypesCollection: any }) => {
+      this.typeArr = data.locationTypesCollection.data;
     });
   }
 

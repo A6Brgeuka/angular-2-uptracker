@@ -80,5 +80,12 @@ export class AccountService extends ModelService{
         .map(this.extractData.bind(this))
         .catch(this.handleError.bind(this));
   }
+
+  getLocationTypes(){
+    let api = this.apiEndpoint + 'config/location_types';
+    return this.http.get(api)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this));
+  }
   
 }

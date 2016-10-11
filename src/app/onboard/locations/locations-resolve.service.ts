@@ -15,7 +15,20 @@ export class StateCollectionResolve implements Resolve<any> {
   }
 }
 
+@Injectable()
+export class LocationTypesCollectionResolve implements Resolve<any> {
+  constructor(
+      private accountService: AccountService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.accountService.getLocationTypes();
+  }
+}
+
 // an array of services to resolve routes with data
 export const APP_RESOLVER_PROVIDERS = [
-  StateCollectionResolve
+  StateCollectionResolve,
+  LocationTypesCollectionResolve
 ];

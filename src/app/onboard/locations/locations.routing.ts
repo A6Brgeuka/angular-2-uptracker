@@ -1,5 +1,8 @@
 import { LocationsComponent } from './locations.component';
-import { StateCollectionResolve } from './locations-resolve.service';
+import {
+    StateCollectionResolve,
+    LocationTypesCollectionResolve
+} from './locations-resolve.service';
 
 export const LocationsRoutes = [
   {
@@ -7,7 +10,8 @@ export const LocationsRoutes = [
     component: LocationsComponent,
     canActivate: [],
     resolve: {
-      stateCollection: StateCollectionResolve
+      stateCollection: StateCollectionResolve, 
+      locationTypesCollection: LocationTypesCollectionResolve
     }
   },
 ];
