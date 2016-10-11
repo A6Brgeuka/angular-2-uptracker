@@ -5,7 +5,7 @@ import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { LocationModal } from './location-modal/location-modal.component';
 // import { UserModel } from '../../models/index';
-// import { UserService } from '../../core/services/index';
+import { UserService, AccountService } from '../../core/services/index';
 
 @Component({
   selector: 'app-locations',
@@ -13,16 +13,23 @@ import { LocationModal } from './location-modal/location-modal.component';
   styleUrls: ['./locations.component.scss']
 })
 export class LocationsComponent implements OnInit {
+  public locationArr: any = [];
+
   constructor(
       private router: Router,
       vcRef: ViewContainerRef,
       overlay: Overlay,
-      public modal: Modal
+      public modal: Modal,
+      private userService: UserService,
+      private accountService: AccountService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
+    this.accountService.getLocations().subscribe((res: any) => {
+      this.locationArr = res.data.locations;
+    });
   }
 
   viewLocationModal(){

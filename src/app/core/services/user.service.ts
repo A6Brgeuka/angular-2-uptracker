@@ -103,7 +103,7 @@ export class UserService extends ModelService {
     if (this.isGuest()) {
       return null;
     }
-    return this.cookieService.get('uptracker_selfId');
+    return this.cookieService.get('uptracker_selfId') || null;
   }
 
   // for signup pages
@@ -121,7 +121,14 @@ export class UserService extends ModelService {
     return this.selfData$;
   }
 
-  loadEntity(data){
+  loadEntity(data = null){
+    // TODO:
+    // finish function when endpoint will be known
+    // if (!data) {
+    //   data = {
+    //     token: this.getToken()
+    //   };
+    // }
     let api = this.apiEndpoint + 'getuser';
     let entity = this.http.get(api, data)
         .map(this.extractData.bind(this))

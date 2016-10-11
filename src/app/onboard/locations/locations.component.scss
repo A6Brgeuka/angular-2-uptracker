@@ -26,13 +26,17 @@
     }
 
     .img{
+      min-height:293px;
+
       img{
         display:block;
+        height:100%;
       }
     }
 
     .ttl{
       margin:17px 0 23px;
+      font-size:14px;
     }
   }
 }

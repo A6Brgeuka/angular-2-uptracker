@@ -7,12 +7,12 @@ import { CookieService } from 'angular2-cookie/services';
 export class HttpClient {
   
   constructor(
-    public cookieService:CookieService,
+    public cookieService: CookieService,
     public http:Http
   ) {
   }
   
-  createAuthorizationHeader(headers:Headers) {
+  createAuthorizationHeader(headers: Headers) {
     // headers.append('Content-Type', 'application/json');
     // headers.append('X_AUTH_TOKEN', this.cookieService.get('uptracker_token') || null);
   }

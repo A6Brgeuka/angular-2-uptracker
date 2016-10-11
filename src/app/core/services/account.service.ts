@@ -74,6 +74,20 @@ export class AccountService extends ModelService{
     return entity;
   }
 
+  getLocations(){
+    let account_id;
+    // TODO:
+    // get account_id when api endpoint for user info is ready
+    // this.userService.loadEntity().subscribe((res) => {
+    //   account_id = '57e9c7cc71d08f551dca992a';
+    // });
+    account_id = "57e9c7cc71d08f551dca992a";
+    let api = this.apiEndpoint + 'accounts/' + account_id + '/locations';
+    return this.http.get(api)
+        .map(this.extractData.bind(this))
+        .catch(this.handleError.bind(this));
+  }
+
   getStates(){
     let api = this.apiEndpoint + 'config/states';
     return this.http.get(api)

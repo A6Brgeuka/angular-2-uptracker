@@ -2,11 +2,12 @@
   <div class="title">Set up your locations</div>
   <div class="subtitle">Please enter one location per card below then click next.</div>
   <div class="list left-align">
-    <div class="item">
+    <div class="item" *ngFor="let location of locationArr">
       <div class="img">
-        <img src="http://placehold.it/520x293" alt="" class="responsive-img" />
+        <!--<img src="http://placehold.it/520x293" alt="" class="responsive-img" />-->
+        <img src="{{location.image}}" alt="" class="responsive-img" />
       </div>
-      <div class="ttl">Location Name Here</div>
+      <div class="ttl">{{location.name}}</div>
     </div>
     <div class="empty item" (click)="viewLocationModal()"></div>
   </div>
