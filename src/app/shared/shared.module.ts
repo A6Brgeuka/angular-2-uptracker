@@ -10,7 +10,7 @@ import { FileDropModule } from 'angular2-file-drop';
 import { CoreModule } from "../core/core.module";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
-// import * as directives from "./directives";
+// import * as directives from "./directives/index";
 import MaskedInput from 'angular2-text-mask';
 
 let directivesArr = [
