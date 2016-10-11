@@ -1,24 +1,26 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalStorage } from 'angular2-local-storage/local_storage';
-import { CookieService } from 'angular2-cookie/services';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { HttpClient } from './http.service';
+
+import { LocalStorage } from 'angular2-local-storage/local_storage';
+import { CookieService } from 'angular2-cookie/services';
+// import { HttpClient } from './http.service';
+// import { DefaultOptions } from '../../decorators/default-options.decorator';
 import { ToasterService } from './toaster.service';
 import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service';
-import { DefaultOptions } from '../../decorators/default-options.decorator';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { SpinnerService } from './spinner.service';
+import { UserResource } from "../../core/resources/index";
 
 @Injectable()
-@DefaultOptions({
-  modelEndpoint: '',
-  expand: {
-    default: []
-  }
-})
+// @DefaultOptions({
+//   modelEndpoint: '',
+//   expand: {
+//     default: []
+//   }
+// })
 @Subscribers({
   initFunc: 'onInit',
   destroyFunc: null
@@ -30,14 +32,15 @@ export class UserService extends ModelService {
   
   constructor(
     public injector: Injector,
-    public http: HttpClient,
+    // public http: HttpClient,
+    public userResource: UserResource,
     public toasterService: ToasterService,
     public localStorage: LocalStorage,
     public cookieService: CookieService,
     public router: Router,
     public spinnerService: SpinnerService
   ) {
-    super(injector);
+    super(injector, userResource);
     
     this.onInit();
   }
@@ -76,20 +79,27 @@ export class UserService extends ModelService {
   }
 
   logout(redirectUrl = '/') {
-    let data = {
-      user_id: this.cookieService.get('uptracker_selfId')
-    };
-    let body = JSON.stringify(data);
-    let api = this.apiEndpoint + 'logout';
-    return this.http.post(api, body)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this))
-        .do((res) => {
-          this.cookieService.remove('uptracker_token');
-          this.cookieService.remove('uptracker_selfId');
-          this.updateSelfData$.next({});
-          this.router.navigate([redirectUrl]);
-        });
+    // let data = {
+    //   user_id: this.cookieService.get('uptracker_selfId')
+    // };
+    // let body = JSON.stringify(data);
+    // let api = this.apiEndpoint + 'logout';
+    // return this.http.post(api, body)
+    //     .map(this.extractData.bind(this))
+    //     .catch(this.handleError.bind(this))
+    //     .do((res) => {
+    //       this.cookieService.remove('uptracker_token');
+    //       this.cookieService.remove('uptracker_selfId');
+    //       this.updateSelfData$.next({});
+    //       this.router.navigate([redirectUrl]);
+    //     });
+
+    UserService.logout(this.cookieService, this.router);
+  }
+  static logout(cookieService, router) {
+    cookieService.remove('token');
+    cookieService.remove('selfId');
+    router.navigate(['/']);
   }
 
   getToken(): any {
@@ -129,17 +139,18 @@ export class UserService extends ModelService {
     //     token: this.getToken()
     //   };
     // }
-    let api = this.apiEndpoint + 'getuser';
-    let entity = this.http.get(api, data)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this))
-        .publishReplay(1).refCount();
-
-    entity.subscribe((res) => {
-      this.updateSelfData$.next(res);
-    });
-
-    return entity;
+    
+    // let api = this.apiEndpoint + 'getuser';
+    // let entity = this.http.get(api, data)
+    //     .map(this.extractData.bind(this))
+    //     .catch(this.handleError.bind(this))
+    //     .publishReplay(1).refCount();
+    //
+    // entity.subscribe((res) => {
+    //   this.updateSelfData$.next(res);
+    // });
+    //
+    // return entity;
   }
 
   updateSelfData(data){
@@ -147,12 +158,8 @@ export class UserService extends ModelService {
   }
   
   login(data) {
-    let body = JSON.stringify(data);
-    let api = this.apiEndpoint + 'login';
-    return this.http.post(api, body)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this))
-        .do((res) => {
+    return this.resource.login(data).$observable
+        .do((res)=> {
           this.afterLogin(res);
         });
   }
@@ -167,13 +174,7 @@ export class UserService extends ModelService {
   }
 
   signUp(data){
-    let api = this.apiEndpoint + 'register/user';
-
-    let body = JSON.stringify(data);
-
-    let entity = this.http.post(api, body)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this))
+    let entity = this.resource.signup(data).$observable
         .publish().refCount();
 
     entity.subscribe(
@@ -181,7 +182,7 @@ export class UserService extends ModelService {
           // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
           res.data.user.signup = true;
           res.data.user.token = res.data.token;
-          
+
           this.addToCollection$.next(res.data.user);
           this.updateEntity$.next(res.data.user);
           this.updateSelfData$.next(res.data.user);
@@ -191,52 +192,41 @@ export class UserService extends ModelService {
     return entity;
   }
 
-  forgotPasswordRequest(data?) {
-    let api = this.apiEndpoint + 'forgot';
-    return this.http.post(api, data)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this));
+  forgotPasswordRequest(data) {
+    return this.resource.forgotPasswordRequest(data).$observable;
   }
 
   forgotPasswordTokenValidation(token) {
     let api = this.apiEndpoint + 'forgot/' + token;
-    return this.http.get(api)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this));
+    return this.resource.forgotPasswordTokenValidation(token).$observable;
   }
 
   updatePassword(data) {
     let api = this.apiEndpoint + 'passwordreset';
-    return this.http.post(api, data)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this));
+    return this.resource.updatePassword(data).$observable;
   }
 
   verification(data) {
     let body = JSON.stringify(data);
-  
-    return this.http.post(`${this.apiEndpoint}/verification`, body, {
-      search: this.getSearchParams('login')
-    })
-    .map(this.extractData.bind(this))
-    .catch(this.handleError.bind(this))
+
+    return this.resource.verification(data).$observable
     .do((res)=> {
       this.updateSelfData$.next(res);
     });
   }
 
-  handleError(error: any) {
-    if (error.status == 401 || error.status == 404) {
-      this.logout();
-    }
-
-    this.spinnerService.hide();
-
-    let body = JSON.parse(error._body);
-    let errMsg = body.length ? body[0]['error_message'] : body['error_message'];
-
-    this.toasterService.pop('error', errMsg);
-
-    return Observable.throw(errMsg);
-  }
+  // handleError(error: any) {
+  //   if (error.status == 401 || error.status == 404) {
+  //     this.logout();
+  //   }
+  //
+  //   this.spinnerService.hide();
+  //
+  //   let body = JSON.parse(error._body);
+  //   let errMsg = body.length ? body[0]['error_message'] : body['error_message'];
+  //
+  //   this.toasterService.pop('error', errMsg);
+  //
+  //   return Observable.throw(errMsg);
+  // }
 }

@@ -5,16 +5,17 @@ import { Subject } from 'rxjs/Subject';
 import { HttpClient } from './http.service';
 import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
-import { DefaultOptions } from '../../decorators/default-options.decorator';
+// import { DefaultOptions } from '../../decorators/default-options.decorator';
 import { Subscribers } from '../../decorators/subscribers.decorator';
+import { AccountResource } from '../../core/resources/index';
 
 @Injectable()
-@DefaultOptions({
-  modelEndpoint: '',
-  expand: {
-    default: [],
-  }
-})
+// @DefaultOptions({
+//   modelEndpoint: '',
+//   expand: {
+//     default: [],
+//   }
+// })
 @Subscribers({
   initFunc: 'onInit',
   destroyFunc: null,
@@ -26,10 +27,11 @@ export class AccountService extends ModelService{
   
   constructor(
     public injector: Injector,
+    public accountResource: AccountResource,
     public http: HttpClient,
-    public userService:UserService
+    public userService: UserService
   ) {
-    super(injector);
+    super(injector, accountResource);
   
     this.onInit();
   }
@@ -40,7 +42,7 @@ export class AccountService extends ModelService{
     );
     this.selfData$.subscribe(res => {
       this.selfData = res;
-      console.log(`${this.defaultOptions.childClassName} Update SELF DATA`, res);
+      console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
   }
   
@@ -54,13 +56,7 @@ export class AccountService extends ModelService{
   }
 
   createCompany(data){
-    let api = this.apiEndpoint + 'register/company';
-
-    let body = JSON.stringify(data); 
-
-    let entity = this.http.post(api, body)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this))
+    let entity = this.resource.createCompany(data).$observable
         .publish().refCount();
 
     entity.subscribe(

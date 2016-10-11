@@ -11,8 +11,8 @@ import { AccountService, UserService, SpinnerService } from '../../../core/servi
 })
 export class AboutCompanyComponent implements OnInit {
   signupAccount: any = {};
-  userSubscription = null;
-  accountSubscription = null;
+  private userSubscription: any = null;
+  private accountSubscription: any = null;
 
   constructor(
       private accountService: AccountService,

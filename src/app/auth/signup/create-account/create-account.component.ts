@@ -27,17 +27,20 @@ export class CreateAccountComponent implements OnInit {
       private spinnerService: SpinnerService,
       private cookieService: CookieService
   ) {
-    if (!this.userService.isGuest()){
-      this.router.navigate(['/dashboard']);
-    }
+    // TODO:
+    // check functionality when user gets back from About-company (if he logged in after signup interrupted)
+    // if (!this.userService.isGuest()){
+    //   this.router.navigate(['/dashboard']);
+    // }
   }
 
   ngOnInit() {
     this.signupAccount = this.userService.selfData || new UserModel();
-    // debugger;
   }
 
   onSubmit(){
+    // TODO:
+    // when phone mask is ready add country code to phone ngModel
     // this.signupAccount.phone = this.selectedCountry[2] + ' ' + this.signupFormPhone;
     this.spinnerService.show();
     this.userService.signUp(this.signupAccount)

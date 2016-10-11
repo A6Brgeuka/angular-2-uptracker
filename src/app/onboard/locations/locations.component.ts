@@ -14,6 +14,7 @@ import { UserService, AccountService } from '../../core/services/index';
 })
 export class LocationsComponent implements OnInit {
   public locationArr: any = [];
+  private getLocationsSubscription: any = null;
 
   constructor(
       private router: Router,
@@ -27,9 +28,15 @@ export class LocationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accountService.getLocations().subscribe((res: any) => {
+    this.getLocationsSubscription = this.accountService.getLocations().subscribe((res: any) => {
       this.locationArr = res.data.locations;
     });
+  }
+  
+  ngOnDestroy() {
+    if (this.getLocationsSubscription) {
+      this.getLocationsSubscription.unsubscribe();
+    }
   }
 
   viewLocationModal(){

@@ -13,6 +13,7 @@ import { BootstrapModalModule, Modal } from 'angular2-modal/plugins/bootstrap';
 // import { APP_RESOLVER_PROVIDERS } from '../../app2/app.resolver';
 
 import { APP_SERVICE_PROVIDERS } from './services/index';
+import { APP_RESOURCE_PROVIDERS } from './resources/index';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { APP_SERVICE_PROVIDERS } from './services/index';
     //...APP_RESOLVER_PROVIDERS,
     
     ...APP_SERVICE_PROVIDERS,
+    ...APP_RESOURCE_PROVIDERS,
     CookieService,
     Modal
   ]
