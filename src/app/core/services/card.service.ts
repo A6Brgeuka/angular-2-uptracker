@@ -1,21 +1,15 @@
-import { Injectable, Inject, NgZone, Injector } from '@angular/core';
+import { Injectable, NgZone, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { CreditCardModel } from '../../models';
-import { UserService } from './user.service';
-import { SpinnerService } from './spinner.service';
 import { ModelService } from '../../overrides/model.service';
-import { DefaultOptions } from '../../decorators/default-options.decorator';
+import { UserService } from './user.service';
+// import { DefaultOptions } from '../../decorators/default-options.decorator';
 import { Subscribers } from '../../decorators/subscribers.decorator';
+import { CardResource } from '../../core/resources/index';
 
 @Injectable()
-@DefaultOptions({
-  modelEndpoint: '',
-  expand: {
-    default: []
-  }
-})
 @Subscribers({
   initFunc: 'onInit',
   destroyFunc: null
@@ -28,10 +22,10 @@ export class CardService extends ModelService {
   constructor(
     public injector: Injector,
     public zone: NgZone,
-    public userService: UserService,
-    public spinnerService: SpinnerService
+    public cardResource: CardResource,
+    public userService: UserService
   ) {
-    super(injector);
+    super(injector, cardResource);
   
     this.onInit();
   }
@@ -90,13 +84,7 @@ export class CardService extends ModelService {
   }
 
   addCard(data){
-    let api = this.apiEndpoint + 'register/payment';
-
-    let body = JSON.stringify(data);
-
-    let entity = this.http.post(api, body)
-        .map(this.extractData.bind(this))
-        .catch(this.handleError.bind(this))
+    let entity = this.resource.addCard(data).$observable
         .publish().refCount();
 
     entity.subscribe(

@@ -5,22 +5,12 @@ import { Subject } from 'rxjs/Subject';
 
 import { LocalStorage } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services';
-// import { HttpClient } from './http.service';
-// import { DefaultOptions } from '../../decorators/default-options.decorator';
-import { ToasterService } from './toaster.service';
-import { APP_CONFIG } from '../../app.config';
 import { ModelService } from '../../overrides/model.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { SpinnerService } from './spinner.service';
 import { UserResource } from "../../core/resources/index";
 
 @Injectable()
-// @DefaultOptions({
-//   modelEndpoint: '',
-//   expand: {
-//     default: []
-//   }
-// })
 @Subscribers({
   initFunc: 'onInit',
   destroyFunc: null
@@ -32,9 +22,7 @@ export class UserService extends ModelService {
   
   constructor(
     public injector: Injector,
-    // public http: HttpClient,
     public userResource: UserResource,
-    public toasterService: ToasterService,
     public localStorage: LocalStorage,
     public cookieService: CookieService,
     public router: Router,
@@ -59,11 +47,11 @@ export class UserService extends ModelService {
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     )
-    .filter(res => {
+    .filter((res: any) => {
       return !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
     })
     .publishReplay(1).refCount();
-    this.selfData$.subscribe(res => {
+    this.selfData$.subscribe((res: any) => {
       //Set token
       if (res['token'] && !res['signup']) {
         this.cookieService.put('uptracker_token', res['token']);
@@ -79,27 +67,19 @@ export class UserService extends ModelService {
   }
 
   logout(redirectUrl = '/') {
-    // let data = {
-    //   user_id: this.cookieService.get('uptracker_selfId')
-    // };
-    // let body = JSON.stringify(data);
-    // let api = this.apiEndpoint + 'logout';
-    // return this.http.post(api, body)
-    //     .map(this.extractData.bind(this))
-    //     .catch(this.handleError.bind(this))
-    //     .do((res) => {
-    //       this.cookieService.remove('uptracker_token');
-    //       this.cookieService.remove('uptracker_selfId');
-    //       this.updateSelfData$.next({});
-    //       this.router.navigate([redirectUrl]);
-    //     });
-
-    UserService.logout(this.cookieService, this.router);
+    let data = {
+      user_id: this.cookieService.get('uptracker_selfId')
+    };
+    return this.resource.logout(data).$observable
+        .do((res) => {
+          this.updateSelfData$.next({});
+          UserService.logout(this.cookieService, this.router, redirectUrl);
+        });
   }
-  static logout(cookieService, router) {
-    cookieService.remove('token');
-    cookieService.remove('selfId');
-    router.navigate(['/']);
+  static logout(cookieService, router, redirectUrl = '/') {
+    cookieService.remove('uptracker_token');
+    cookieService.remove('uptracker_selfId');
+    router.navigate([redirectUrl]);
   }
 
   getToken(): any {
@@ -159,16 +139,16 @@ export class UserService extends ModelService {
   
   login(data) {
     return this.resource.login(data).$observable
-        .do((res)=> {
-          this.afterLogin(res);
-        });
+      .do((res) => {
+        this.afterLogin(res);
+      });
   }
   
   afterLogin(data){
     data.data.user.user.token = data.data.user.token;
-    data.data.user.user.account = data.data.user.account; 
-    
-    this.updateSelfData$.next(data.data.user.user);
+    data.data.user.user.account = data.data.user.account;
+
+    // this.updateSelfData$.next(data.data.user.user);
     this.addToCollection$.next(data.data.user.user);
     this.updateEntity$.next(data.data.user.user);
   }
@@ -197,36 +177,20 @@ export class UserService extends ModelService {
   }
 
   forgotPasswordTokenValidation(token) {
-    let api = this.apiEndpoint + 'forgot/' + token;
-    return this.resource.forgotPasswordTokenValidation(token).$observable;
+    let data = {
+      token: token
+    };
+    return this.resource.forgotPasswordTokenValidation(data).$observable;
   }
 
   updatePassword(data) {
-    let api = this.apiEndpoint + 'passwordreset';
     return this.resource.updatePassword(data).$observable;
   }
 
   verification(data) {
-    let body = JSON.stringify(data);
-
     return this.resource.verification(data).$observable
     .do((res)=> {
       this.updateSelfData$.next(res);
     });
   }
-
-  // handleError(error: any) {
-  //   if (error.status == 401 || error.status == 404) {
-  //     this.logout();
-  //   }
-  //
-  //   this.spinnerService.hide();
-  //
-  //   let body = JSON.parse(error._body);
-  //   let errMsg = body.length ? body[0]['error_message'] : body['error_message'];
-  //
-  //   this.toasterService.pop('error', errMsg);
-  //
-  //   return Observable.throw(errMsg);
-  // }
 }

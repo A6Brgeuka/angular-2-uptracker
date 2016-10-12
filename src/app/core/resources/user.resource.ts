@@ -23,6 +23,12 @@ export class UserResource extends CustomResourceCRUD {
   
   @ResourceAction({
     method: RequestMethod.Post,
+    path: '/logout'
+  })
+  logout: ResourceMethod<any, any>;
+  
+  @ResourceAction({
+    method: RequestMethod.Post,
     path: '/register/user'
   })
   signup: ResourceMethod<any, any>;

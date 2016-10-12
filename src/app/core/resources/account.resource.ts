@@ -22,8 +22,20 @@ export class AccountResource extends CustomResourceCRUD {
   createCompany: ResourceMethod<any, any>;
   
   @ResourceAction({
-    method: RequestMethod.Post,
-    path: '/register/user'
+    method: RequestMethod.Get,
+    path: '/accounts/{!account_id}/locations'
   })
-  signup: ResourceMethod<any, any>;
+  getLocations: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Get,
+    path: '/config/states'
+  })
+  getStates: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Get,
+    path: '/config/location_types'
+  })
+  getLocationTypes: ResourceMethod<any, any>;
 }

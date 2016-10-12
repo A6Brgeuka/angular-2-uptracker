@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { APP_CONFIG, APP_DI_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-// import { ResourceModule } from 'ng2-resource-rest';
 
 // custom modals
 import { ModalModule } from 'angular2-modal';
@@ -18,7 +17,6 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
 @NgModule({
   imports: [
     CommonModule,
-    // ResourceModule.forRoot(),
     ModalModule.forRoot(),
     BootstrapModalModule
   ],

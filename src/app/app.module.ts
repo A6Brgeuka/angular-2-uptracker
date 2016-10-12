@@ -5,8 +5,8 @@ import { routing }  from './app.routing';
 import { AppComponent } from './app.component';
 
 // modules
+import { ResourceModule } from 'ng2-resource-rest';
 import { CoreModule } from './core/core.module';
-// import { AppSharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { NoContentModule } from './no-content/no-content.module';
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -20,8 +20,9 @@ import { SpinnerModule } from './spinner/spinner.module';
   imports: [
     BrowserModule,
     CoreModule,
-    // AppSharedModule,
     routing,
+    ResourceModule.forRoot(),
+
     AuthModule,
     NoContentModule,
     DashboardModule,

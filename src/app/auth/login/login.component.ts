@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
   onSubmit() {
@@ -47,6 +47,9 @@ export class LoginComponent implements OnInit {
                 return;
               }
               this.router.navigate(['/dashboard']);
+            },
+            (err: any) => {
+              // debugger;
             }
         );
   }
