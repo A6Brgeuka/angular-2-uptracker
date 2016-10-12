@@ -32,7 +32,8 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
   }
   
   requestInterceptor(req: Request) {
-    // req.headers.append('X_AUTH_TOKEN', 'Bearer ' + this.cookieService.get('uptracker_token') || null);
+    req.headers.append('Content-Type', 'application/json');
+    req.headers.append('X_AUTH_TOKEN', 'Bearer ' + this.cookieService.get('uptracker_token') || null);
     return req;
   }
   

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { LocationsComponent } from './locations.component';
-import { APP_RESOLVER_PROVIDERS } from './locations-resolve.service';
+import { LOCATIONS_RESOLVER_PROVIDERS } from './locations-resolve.service';
 import { AppSharedModule } from '../../shared/shared.module';
 
 import { LocationModal } from './location-modal/location-modal.component';
@@ -15,7 +15,7 @@ import { LocationModal } from './location-modal/location-modal.component';
     AppSharedModule
   ],
   providers: [
-      ...APP_RESOLVER_PROVIDERS
+      ...LOCATIONS_RESOLVER_PROVIDERS
   ],
   // IMPORTANT:
   // Since 'AdditionCalculateWindow' is never explicitly used (in a template)

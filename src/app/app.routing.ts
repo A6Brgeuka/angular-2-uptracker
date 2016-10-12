@@ -9,21 +9,25 @@ import { AuthRoutes } from './auth/index';
 import { DashboardRoutes } from './dashboard/index';
 import { OnboardRoutes } from './onboard/index';
 
+// resolver
+import {
+    GetSelfDataResolve
+} from './app-resolve.service';
 
 const appRoutes: Routes = [
   {
     path: '',
-    // resolve: {
-    //   'selfData': GetSelfDataResolver
-    // },
     component: AppComponent,
     children: [
       ...AuthRoutes,
       ...DashboardRoutes,
       ...OnboardRoutes
-    ]
+    ],
+    resolve: {
+      'selfData': GetSelfDataResolve
+    }
   },
-  {path: '**', component: NoContentComponent}
+  { path: '**', component: NoContentComponent }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

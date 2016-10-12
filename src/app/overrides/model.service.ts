@@ -64,7 +64,7 @@ export class ModelService {
     let addToCollection$ = this.addToCollection$
     .switchMap((res) => {
       return this.collection$.first()
-      .map(collection => {
+      .map((collection: any) => {
         collection.push(res);
         return collection;
       });
@@ -82,8 +82,8 @@ export class ModelService {
       });
       
       return this.collection$.first()
-      .map(collection => {
-        return collection.filter((el) => {
+      .map((collection: any) => {
+        return collection.filter((el: any) => {
           return el.id != id;
         });
       });
@@ -92,8 +92,8 @@ export class ModelService {
     let updateElementCollection$ = this.updateElementCollection$
     .switchMap((entity) => {
       return this.collection$.first()
-      .map(collection => {
-        return collection.map((el) => {
+      .map((collection: any) => {
+        return collection.map((el: any) => {
           if (el.id == entity.id) {
             return entity;
           }

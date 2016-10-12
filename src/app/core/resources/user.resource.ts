@@ -52,8 +52,14 @@ export class UserResource extends CustomResourceCRUD {
   updatePassword: ResourceMethod<any, any>;
   
   @ResourceAction({
-    method: RequestMethod.Post,
-    path: '/verification'
+    method: RequestMethod.Get,
+    path: '/register/verify/{!token}'
   })
   verification: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Get,
+    path: '/users/{!id}'
+  })
+  getUserData: ResourceMethod<any, any>;
 }

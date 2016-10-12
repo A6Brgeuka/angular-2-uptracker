@@ -9,7 +9,8 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule, Modal } from 'angular2-modal/plugins/bootstrap';
 
-// import { APP_RESOLVER_PROVIDERS } from '../../app2/app.resolver';
+// resolver
+import { APP_RESOLVER_PROVIDERS } from '../app-resolve.service';
 
 import { APP_SERVICE_PROVIDERS } from './services/index';
 import { APP_RESOURCE_PROVIDERS } from './resources/index';
@@ -29,10 +30,10 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
     
     //local storage
     LOCAL_STORAGE_PROVIDERS,
-  
-    //resolvers
-    //...APP_RESOLVER_PROVIDERS,
-    
+
+    //app resolver
+    ...APP_RESOLVER_PROVIDERS,
+
     ...APP_SERVICE_PROVIDERS,
     ...APP_RESOURCE_PROVIDERS,
     CookieService,

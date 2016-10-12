@@ -106,31 +106,28 @@ export class UserService extends ModelService {
       return Observable.of(null);
     }
 
-    this.loadEntity({id: this.getSelfId()});
+    let self = this;
+    return this.loadEntity({id: this.getSelfId()}).do((res: any) => {
+      let user = this.transformAccountInfo(res.data);
+      // TODO: figure out the problem with updateSelfData$ and updateEntity$ and uncomment
+      // self.updateSelfData(user);
+    });
 
-    return this.selfData$;
+    // TODO: remove after checking app resolver
+    // return this.selfData$;
   }
 
   loadEntity(data = null){
-    // TODO:
-    // finish function when endpoint will be known
-    // if (!data) {
-    //   data = {
-    //     token: this.getToken()
-    //   };
-    // }
+    let entity = this.resource.getUserData(data).$observable;
     
-    // let api = this.apiEndpoint + 'getuser';
-    // let entity = this.http.get(api, data)
-    //     .map(this.extractData.bind(this))
-    //     .catch(this.handleError.bind(this))
-    //     .publishReplay(1).refCount();
-    //
-    // entity.subscribe((res) => {
-    //   this.updateSelfData$.next(res);
-    // });
-    //
-    // return entity;
+    entity.subscribe((res: any) => {
+      //res.data.user.account = res.data.account;
+      let user = this.transformAccountInfo(res.data); 
+      // TODO: figure out the problem with updateSelfData$ and updateEntity$ and uncomment
+      // this.updateEntity$.next(user);
+    });
+    
+    return entity;
   }
 
   updateSelfData(data){
@@ -146,11 +143,12 @@ export class UserService extends ModelService {
   
   afterLogin(data){
     data.data.user.user.token = data.data.user.token;
-    data.data.user.user.account = data.data.user.account;
+    let user = this.transformAccountInfo(data.data.user);
+    // data.data.user.user.account = data.data.user.account;
 
-    // this.updateSelfData$.next(data.data.user.user);
-    this.addToCollection$.next(data.data.user.user);
-    this.updateEntity$.next(data.data.user.user);
+    this.addToCollection$.next(user);
+    this.updateEntity$.next(user);
+    this.updateSelfData(user);
   }
 
   signUp(data){
@@ -187,10 +185,18 @@ export class UserService extends ModelService {
     return this.resource.updatePassword(data).$observable;
   }
 
-  verification(data) {
-    return this.resource.verification(data).$observable
-    .do((res)=> {
-      this.updateSelfData$.next(res);
-    });
+  verification(token) {
+    let data = {
+      token: token
+    };
+    return this.resource.verification(data).$observable;
+    // .do((res)=> {
+    //   this.updateSelfData$.next(res);
+    // });
+  }
+
+  transformAccountInfo(data){
+    data.user.account = data.account || null;
+    return data.user;
   }
 }
