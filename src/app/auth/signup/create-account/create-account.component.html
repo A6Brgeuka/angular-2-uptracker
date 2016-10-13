@@ -53,16 +53,19 @@
 
       <div class="input row">
         <div class="label left-align">Phone number</div>
-        <input
-            intl-phone-mask
-            id="phone"
-            placeholder="Enter phone number"
-            class="validate col s12"
-            [(ngModel)]="signupAccount.phone"
-            name="phone"
-            #phone="ngModel"
-            required
-            type="text">
+        <phone-input (onCountryChange)="onCountryChange($event)">
+          <input
+              intl-phone-mask
+              [textMask]="{mask: phoneMask, guide: false}"
+              id="phone"
+              placeholder="Enter phone number"
+              class="validate"
+              [(ngModel)]="signupFormPhone"
+              name="phone"
+              #phone="ngModel"
+              required minlenght="11"
+              type="text">
+        </phone-input>
         <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
           Phone number required.
         </div>

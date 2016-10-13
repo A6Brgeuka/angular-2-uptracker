@@ -1,3 +1,4 @@
+:host /deep/ {
 
 .intl-tel-input {
   position: relative;
@@ -78,6 +79,7 @@
   z-index: 0;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
+  float:none !important;
   padding-left: 48px;
   margin-left: 0;
   transition: background-color 100ms ease-out
@@ -162,12 +164,6 @@
   width: 20px
 }
 
-@media (max-width: 500px) {
-  .intl-tel-input .country-list {
-    white-space: normal
-  }
-}
-
 .intl-tel-input .country-list .divider {
   padding-bottom: 5px;
   margin-bottom: 5px;
@@ -230,12 +226,6 @@
 
 .iti-flag.va {
   width: 15px
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-  .iti-flag {
-    background-size: 5630px 15px
-  }
 }
 
 .iti-flag.ac {
@@ -1533,12 +1523,26 @@
   background-position: 20px 0
 }
 
+.iti-flag.np {
+  background-color: transparent
+}
+
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .iti-flag {
+    background-size: 5630px 15px
+  }
+}
+
+@media (max-width: 500px) {
+  .intl-tel-input .country-list {
+    white-space: normal
+  }
+}
+
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
   .iti-flag {
     background-image: url("/assets/img/flags@2x.png")
   }
-}
-
-.iti-flag.np {
-  background-color: transparent
 }

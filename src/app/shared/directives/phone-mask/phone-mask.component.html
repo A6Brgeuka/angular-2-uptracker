@@ -12,14 +12,5 @@
       </li>
     </ul>
   </div>
-  <input
-      id="input.id"
-      placeholder="{{input.placeholder}}"
-      class="{{input.class}}"
-      [textMask]="input.mask"
-      [(ngModel)]="input.model"
-      name="{{input.name}}"
-      #{{input.id}}="ngModel"
-      required
-      type="text">
+  <ng-content></ng-content>
 </div>
