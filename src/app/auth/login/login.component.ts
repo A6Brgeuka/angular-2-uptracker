@@ -38,15 +38,13 @@ export class LoginComponent implements OnInit {
             (res: any) => {
               this.spinnerService.hide();
               // check for passing signup steps for navigation
-              if (!res.data.user.user.account_id) {
-                this.router.navigate(['/signup', 'about-company']);
-                return;
+              let signupStep = this.userService.currentSignupStep();
+              switch(signupStep) {
+                case 2:  this.router.navigate(['/signup', 'about-company']); return;
+                case 3:  this.router.navigate(['/signup', 'payment-info']); return;
+                case 4:  this.router.navigate(['/']); return;
+                default:this.router.navigate(['/dashboard']);
               }
-              if (!res.data.user.user.account.payment_token && !res.data.user.user.account.trial_code) {
-                this.router.navigate(['/signup', 'payment-info']);
-                return;
-              }
-              this.router.navigate(['/dashboard']);
             }
         );
   }

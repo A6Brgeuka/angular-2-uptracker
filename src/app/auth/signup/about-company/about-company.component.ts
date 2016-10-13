@@ -21,52 +21,36 @@ export class AboutCompanyComponent implements OnInit {
       private router: Router
   ) {
     // this.userService.loadSelfData().subscribe((res: any) => {
-    //   // TODO:
-    //   // check response and add account_id to condition
-    //   // if user is logged in and created company (have account_id) redirect him
-    //   debugger;
-    //   if (!this.userService.isGuest() && res.account_id){
-    //     this.router.navigate(['/dashboard']);
-    //   }
+      // TODO:
+      // check response and add account_id to condition
+      // if user is logged in and created company (have account_id) redirect him
+      // if (!this.userService.isGuest() && this.userService.selfData.account_id){
+      //   this.router.navigate(['/dashboard']);
+      // }
     // });
 
-    // check for user_id
-    this.signupAccount.user_id = this.userService.getSelfIdFromSelfData();
+    let signupStep = this.userService.currentSignupStep();
 
-    // if guest (user without id) then redirect him to login page
-    if (!this.signupAccount.user_id) {
-      this.router.navigate(['/login']);
-    }
-
-    // check for account
-    // if user is logged in and created company (have account_id) redirect him
-    let account_id = this.userService.selfData ? this.userService.selfData.account_id || null : null;
-    if (!this.userService.isGuest() && account_id){
-      this.router.navigate(['/dashboard']);
+    if (signupStep == 1) {
+      this.router.navigate(['/signup']);
     }
   }
 
   ngOnInit() {
-    let self = this;
-    this.accountSubscription = this.accountService.entity$
-        .subscribe((res) => {
-          self.signupAccount = {
-            user_id: self.signupAccount.user_id,
-            id: res.id,
-            company_name: res.company_name,
-            company_email: res.contact_email_address,
-            street_1: res.address.street_1,
-            street_2: res.address.street_2,
-            city: res.address.city,
-            zip: res.address.postal_code,
-            marys_list_member: res.marys_list_member
-          };
-        });
-  }
-
-  ngOnDestroy() {
-    if (this.accountSubscription) {
-      this.accountSubscription.unsubscribe();
+    // check for user_id
+    this.signupAccount.user_id = this.userService.getSelfIdFromSelfData()
+    if (this.userService.selfData.account) {
+      this.signupAccount = {
+        user_id: this.signupAccount.user_id,
+        id: this.userService.selfData.account.id,
+        company_name: this.userService.selfData.account.company_name,
+        company_email: this.userService.selfData.account.contact_email_address,
+        street_1: this.userService.selfData.account.address.street_1,
+        street_2: this.userService.selfData.account.address.street_2,
+        city: this.userService.selfData.account.address.city,
+        zip: this.userService.selfData.account.address.postal_code,
+        marys_list_member: this.userService.selfData.account.marys_list_member
+      };
     }
   }
 
@@ -74,8 +58,9 @@ export class AboutCompanyComponent implements OnInit {
     this.spinnerService.show();
 
     this.accountService.createCompany(this.signupAccount)
-        .subscribe((res: any) => {
-          this.spinnerService.hide();
+        .subscribe((res: any) => { 
+          let user = this.userService.transformAccountInfo(res.data);
+          this.userService.updateSelfData(user);
           this.router.navigate(['/signup/payment-info']);
         });
   }

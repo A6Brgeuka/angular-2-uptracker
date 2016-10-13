@@ -67,11 +67,6 @@ export class AccountService extends ModelService{
   getLocations(){
     let data: any = {};
     data.account_id = this.userService.selfData.account_id;
-    // this.userService.loadEntity().subscribe((res) => {
-    //   debugger;
-    //   data.account_id = res.data.user.id;
-    // });
-    // data.account_id = "57e9c7cc71d08f551dca992a";
     return this.resource.getLocations(data).$observable;
   }
 

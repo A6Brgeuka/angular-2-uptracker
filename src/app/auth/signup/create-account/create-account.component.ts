@@ -27,11 +27,6 @@ export class CreateAccountComponent implements OnInit {
       private spinnerService: SpinnerService,
       private cookieService: CookieService
   ) {
-    // TODO:
-    // check functionality when user gets back from About-company (if he logged in after signup interrupted)
-    // if (!this.userService.isGuest()){
-    //   this.router.navigate(['/dashboard']);
-    // }
   }
 
   ngOnInit() {

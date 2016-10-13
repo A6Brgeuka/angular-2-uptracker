@@ -157,10 +157,11 @@ export class UserService extends ModelService {
           // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
           res.data.user.signup = true;
           res.data.user.token = res.data.token;
+          let user = this.transformAccountInfo(res.data);
 
-          this.addToCollection$.next(res.data.user);
-          this.updateEntity$.next(res.data.user);
-          this.updateSelfData$.next(res.data.user);
+          this.addToCollection$.next(user);
+          this.updateEntity$.next(user);
+          this.updateSelfData$.next(user);
         }
     );
 
@@ -195,5 +196,29 @@ export class UserService extends ModelService {
   transformAccountInfo(data){
     data.user.account = data.account || null;
     return data.user;
+  }
+
+  currentSignupStep(){
+    if (!this.getSelfIdFromSelfData()) {
+      return 1;
+    }
+
+    let user = this.selfData;
+    if (user.email_verified) {
+      return null;
+    }
+    if (!user.account_id) {
+      return 2;
+    }
+    if (user.account) {
+      let payment_token = user.account.payment_token || null;
+      let trial_code = user.account.trial_code || null;
+      if (!payment_token && !trial_code) {
+        return 3;
+      }
+    }
+
+    // if all steps are passed then user didn't verify email
+    return 4;
   }
 }
