@@ -21,8 +21,6 @@ export class AppComponent implements OnInit{
     // getting user self data
     this.activatedRoute.data.forEach((data: { selfData: any }) => {
       console.log('Current user data ', self.userService.selfData);
-      //console.log(data.selfData);
-      // debugger;
     });
   }
 }

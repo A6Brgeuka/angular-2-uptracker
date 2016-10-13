@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { APP_CONFIG, APP_DI_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { AuthGuard } from '../auth-guard.service';
 
 // custom modals
 import { ModalModule } from 'angular2-modal';
@@ -37,7 +38,8 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
     ...APP_SERVICE_PROVIDERS,
     ...APP_RESOURCE_PROVIDERS,
     CookieService,
-    Modal
+    Modal,
+    AuthGuard
   ]
 })
 export class CoreModule {

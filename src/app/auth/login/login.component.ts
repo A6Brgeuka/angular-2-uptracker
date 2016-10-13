@@ -36,14 +36,18 @@ export class LoginComponent implements OnInit {
     this.userService.login(this.loginUser)
         .subscribe(
             (res: any) => {
-              this.spinnerService.hide();
+              // this.spinnerService.hide();
+
+              // Get the redirect URL from service
+              // If no redirect has been set, use the default
+              let redirect = this.userService.redirectUrl ? this.userService.redirectUrl : '/dashboard';
               // check for passing signup steps for navigation
               let signupStep = this.userService.currentSignupStep();
               switch(signupStep) {
                 case 2:  this.router.navigate(['/signup', 'about-company']); return;
                 case 3:  this.router.navigate(['/signup', 'payment-info']); return;
                 case 4:  this.router.navigate(['/']); return;
-                default:this.router.navigate(['/dashboard']);
+                default:this.router.navigate([redirect]);
               }
             }
         );

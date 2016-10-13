@@ -32,16 +32,6 @@ export class PaymentInfoComponent implements OnInit {
       private spinnerService: SpinnerService,
       private cardService: CardService
   ) {
-    // this.userService.loadSelfData().subscribe((res: any) => {
-    //   // TODO:
-    //   // check response and add account_id to condition
-    //   // if user is logged in and created company (have account_id) redirect him
-    //   debugger;
-    //   if (!this.userService.isGuest() && res.account_id){
-    //     this.router.navigate(['/dashboard']);
-    //   }
-    // });
-
     let signupStep = this.userService.currentSignupStep();
     if (signupStep < 3) {
       this.router.navigate(['/signup']);

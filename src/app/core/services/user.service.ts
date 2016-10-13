@@ -20,6 +20,9 @@ export class UserService extends ModelService {
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
   
+  //url for auth guard to redirect
+  redirectUrl: string = null;
+  
   constructor(
     public injector: Injector,
     public userResource: UserResource,
