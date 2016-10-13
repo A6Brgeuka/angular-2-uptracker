@@ -58,7 +58,7 @@ export class UserService extends ModelService {
         this.cookieService.put('uptracker_selfId', res['id']);
       }
       this.selfData = res;
-      console.log(`${this.defaultOptions.childClassName} Update SELF DATA`, res);
+      console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
   }
 
@@ -72,7 +72,7 @@ export class UserService extends ModelService {
     };
     return this.resource.logout(data).$observable
         .do((res) => {
-          this.updateSelfData$.next({});
+          this.updateSelfData({});
           UserService.logout(this.cookieService, this.router, redirectUrl);
         });
   }
@@ -109,8 +109,7 @@ export class UserService extends ModelService {
     let self = this;
     return this.loadEntity({id: this.getSelfId()}).do((res: any) => {
       let user = this.transformAccountInfo(res.data);
-      // TODO: figure out the problem with updateSelfData$ and updateEntity$ and uncomment
-      // self.updateSelfData(user);
+      self.updateSelfData(user);
     });
 
     // TODO: remove after checking app resolver
@@ -122,9 +121,8 @@ export class UserService extends ModelService {
     
     entity.subscribe((res: any) => {
       //res.data.user.account = res.data.account;
-      let user = this.transformAccountInfo(res.data); 
-      // TODO: figure out the problem with updateSelfData$ and updateEntity$ and uncomment
-      // this.updateEntity$.next(user);
+      let user = this.transformAccountInfo(res.data);
+      this.updateEntity$.next(user);
     });
     
     return entity;
@@ -144,11 +142,10 @@ export class UserService extends ModelService {
   afterLogin(data){
     data.data.user.user.token = data.data.user.token;
     let user = this.transformAccountInfo(data.data.user);
-    // data.data.user.user.account = data.data.user.account;
 
+    this.updateSelfData(user);
     this.addToCollection$.next(user);
     this.updateEntity$.next(user);
-    this.updateSelfData(user);
   }
 
   signUp(data){

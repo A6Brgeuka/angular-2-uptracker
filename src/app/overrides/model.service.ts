@@ -78,7 +78,7 @@ export class ModelService {
     .switchMap((id) => {
       
       this.collection$.subscribe((res) => {
-        console.log(res);
+        console.log('Model Service delete from collection ' + res);
       });
       
       return this.collection$.first()

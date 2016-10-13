@@ -17,6 +17,9 @@ export class AccountService extends ModelService{
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
   
+  locationTypeCollection: any;
+  stateCollection: any;
+  
   constructor(
     public injector: Injector,
     public accountResource: AccountResource,
@@ -63,21 +66,25 @@ export class AccountService extends ModelService{
 
   getLocations(){
     let data: any = {};
-    // TODO:
-    // get account_id when api endpoint for user info is ready
+    data.account_id = this.userService.selfData.account_id;
     // this.userService.loadEntity().subscribe((res) => {
-    //   account_id = '57e9c7cc71d08f551dca992a';
+    //   debugger;
+    //   data.account_id = res.data.user.id;
     // });
-    data.account_id = "57e9c7cc71d08f551dca992a";
+    // data.account_id = "57e9c7cc71d08f551dca992a";
     return this.resource.getLocations(data).$observable;
   }
 
   getStates(){
-    return this.resource.getStates().$observable;
+    return this.resource.getStates().$observable.do((res: any) => {
+      this.stateCollection = res.data;
+    });
   }
 
   getLocationTypes(){
-    return this.resource.getLocationTypes().$observable;
+    return this.resource.getLocationTypes().$observable.do((res: any) => {
+      this.locationTypeCollection = res.data;
+    });
   }
   
 }

@@ -18,13 +18,11 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     let self = this;
-    // getting state collection
+    // getting user self data
     this.activatedRoute.data.forEach((data: { selfData: any }) => {
-      self.userService.selfData; console.log(data);
+      console.log('Current user data ', self.userService.selfData);
+      //console.log(data.selfData);
       // debugger;
-      // let selfData = data.selfData.data.user;
-      // selfData.account = data.selfData.data.account;
-      // this.userService.updateSelfData(data.selfData);
     });
   }
 }
