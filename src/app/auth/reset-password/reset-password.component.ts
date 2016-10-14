@@ -50,7 +50,7 @@ export class ResetPasswordComponent implements OnInit {
                 this.router.navigate(['/login']);
               }
             },
-            (err)=>{
+            (err) => {
               this.router.navigate(['/login']);
             }
         );

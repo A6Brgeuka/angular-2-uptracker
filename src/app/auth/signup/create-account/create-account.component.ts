@@ -12,14 +12,13 @@ import { UserService, SpinnerService } from '../../../core/services/index';
 })
 export class CreateAccountComponent implements OnInit {
   signupAccount: UserModel;
-  public phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
+  public phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
   // usPhoneMask = ['+', '1', ' ', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
   terms: boolean = false;
   privacy: boolean = false;
 
   signupFormPhone: string = '';
   selectedCountry: any = [];
-  temp;
 
   constructor(
       private userService: UserService,
@@ -30,10 +29,16 @@ export class CreateAccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.signupAccount = this.userService.selfData || new UserModel();
-    
     // default country for phone input
     this.selectedCountry = [ "United States", "us", "1", 0 ];
+
+    this.signupAccount = this.userService.selfData || new UserModel();
+    let phone = this.userService.selfData ? this.userService.selfData.phone || null : null;
+    if (phone) {
+      phone = phone.split(' ');
+      this.signupFormPhone = phone[1] || '';
+      let countryCode = phone[0];
+    }
   }
 
   onCountryChange($event) {

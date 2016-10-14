@@ -51,7 +51,9 @@ export class UserService extends ModelService {
       this.updateSelfData$
     )
     .filter((res: any) => {
-      return !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
+      let user_id = res ? res.id || null : null;
+      let condition = !this.cookieService.get('uptracker_selfId') || user_id == this.cookieService.get('uptracker_selfId');
+      return condition;
     })
     .publishReplay(1).refCount();
     this.selfData$.subscribe((res: any) => {
@@ -75,8 +77,9 @@ export class UserService extends ModelService {
     };
     return this.resource.logout(data).$observable
         .do((res) => {
-          this.updateSelfData({});
           UserService.logout(this.cookieService, this.router, redirectUrl);
+          this.updateSelfData({});
+          // this.selfData = null;
         });
   }
   static logout(cookieService, router, redirectUrl = '/') {
