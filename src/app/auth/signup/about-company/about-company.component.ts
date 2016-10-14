@@ -30,7 +30,6 @@ export class AboutCompanyComponent implements OnInit {
     // });
 
     let signupStep = this.userService.currentSignupStep();
-
     if (signupStep == 1) {
       this.router.navigate(['/signup']);
     }
@@ -38,7 +37,7 @@ export class AboutCompanyComponent implements OnInit {
 
   ngOnInit() {
     // check for user_id
-    this.signupAccount.user_id = this.userService.getSelfIdFromSelfData()
+    this.signupAccount.user_id = this.userService.getSelfIdFromSelfData();
     if (this.userService.selfData.account) {
       this.signupAccount = {
         user_id: this.signupAccount.user_id,
@@ -55,8 +54,6 @@ export class AboutCompanyComponent implements OnInit {
   }
 
   onSubmit(){
-    this.spinnerService.show();
-
     this.accountService.createCompany(this.signupAccount)
         .subscribe((res: any) => { 
           let user = this.userService.transformAccountInfo(res.data);

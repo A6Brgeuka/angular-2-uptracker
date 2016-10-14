@@ -79,7 +79,6 @@ export class UserService extends ModelService {
         .do((res) => {
           UserService.logout(this.cookieService, this.router, redirectUrl);
           this.updateSelfData({});
-          // this.selfData = null;
         });
   }
   static logout(cookieService, router, redirectUrl = '/') {
@@ -193,10 +192,18 @@ export class UserService extends ModelService {
     let data = {
       token: token
     };
-    return this.resource.verification(data).$observable;
-    // .do((res)=> {
-    //   this.updateSelfData$.next(res);
-    // });
+    return this.resource.verification(data).$observable
+      .do((res)=> {
+        let user = this.transformAccountInfo(res.data);
+        this.updateSelfData(user);
+      });
+  }
+
+  resendVerification() {
+    let data = {
+      user_id: this.getSelfId()
+    };
+    return this.resource.resendVerification(data).$observable;
   }
 
   transformAccountInfo(data){

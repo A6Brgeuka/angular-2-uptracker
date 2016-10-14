@@ -68,7 +68,6 @@ export class PaymentInfoComponent implements OnInit {
     if (this.trialCode != '') {
       this.router.navigate(['/signup/congrats']);
     } else {
-      this.spinnerService.show();
       let self = this;
       this.cardService.getToken(self.creditCard)
           .switchMap(cardData => {
@@ -76,16 +75,6 @@ export class PaymentInfoComponent implements OnInit {
             // set account_id
             // if user is logged in and created company (have account_id)
             cardData.account_id = self.userService.selfData ? self.userService.selfData.account_id || null : null;
-
-            // TODO: remove code after full signup testing
-            // if (account_id){
-            //   cardData.account_id = account_id;
-            // } else {
-            //   self.accountService.entity$
-            //       .subscribe((res) => {
-            //         cardData.account_id = res.id;
-            //       });
-            // }
             return self.cardService.addCard(cardData);
           })
           .subscribe((res: any) => {

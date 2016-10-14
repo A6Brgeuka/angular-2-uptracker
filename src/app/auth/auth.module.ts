@@ -7,6 +7,7 @@ import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
 import { ForgotPasswordCongratsModule } from './forgot-password-congrats/forgot-password-congrats.module';
+import { EmailVerificationModule } from './email-verification/email-verification.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ForgotPasswordCongratsModule } from './forgot-password-congrats/forgot-
     ResetPasswordModule,
     LoginModule,
     SignupModule,
-    ForgotPasswordCongratsModule
+    ForgotPasswordCongratsModule,
+    EmailVerificationModule
   ],
   providers: []
 })

@@ -58,6 +58,12 @@ export class UserResource extends CustomResourceCRUD {
   verification: ResourceMethod<any, any>;
 
   @ResourceAction({
+    method: RequestMethod.Post,
+    path: '/register/verify/resend'
+  })
+  resendVerification: ResourceMethod<any, any>;
+
+  @ResourceAction({
     method: RequestMethod.Get,
     path: '/users/{!id}'
   })

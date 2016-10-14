@@ -17,11 +17,7 @@ export class DashboardComponent {
   }
 
   logOut(){
-    this.spinnerService.show();
-    this.userService.logout()
-        .subscribe((res) => {
-          this.spinnerService.hide();
-        });
+    this.userService.logout().subscribe();
   }
 
 }

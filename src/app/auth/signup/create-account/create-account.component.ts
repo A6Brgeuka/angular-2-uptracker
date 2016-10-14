@@ -53,7 +53,6 @@ export class CreateAccountComponent implements OnInit {
 
   onSubmit(){
     this.signupAccount.phone = this.selectedCountry[2] + ' ' + this.signupFormPhone;
-    this.spinnerService.show();
     this.userService.signUp(this.signupAccount)
         .subscribe(
             (res: any) => {
