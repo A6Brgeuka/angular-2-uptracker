@@ -205,6 +205,11 @@ export class UserService extends ModelService {
     };
     return this.resource.resendVerification(data).$observable;
   }
+  
+  emailVerified(){
+    let emailVerified = this.selfData ? this.selfData.email_verified || false : false;
+    return emailVerified;
+  }
 
   transformAccountInfo(data){
     data.user.account = data.account || null;

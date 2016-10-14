@@ -38,7 +38,7 @@ export class LoginComponent {
               switch(signupStep) {
                 case 2:   this.router.navigate(['/signup', 'about-company']); return;
                 case 3:   this.router.navigate(['/signup', 'payment-info']); return;
-                case 4:   this.router.navigate(['/']); return;
+                case 4:   this.router.navigate(['/email-verification']); return;
                 default:  this.router.navigate([redirect]);
               }
             }
