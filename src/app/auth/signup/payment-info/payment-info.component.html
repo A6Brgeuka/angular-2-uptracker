@@ -51,7 +51,7 @@
                     data-stripe="exp_month"
                     (change)="changeMonth()"
                     required>
-                  <option value="" disabled selected>Month</option>
+                  <option value="" selected>Month</option>
                   <option *ngFor="let monthNumber of selectMonth" [value]="monthNumber">{{monthNumber}}</option>
                 </select>
               </div>
@@ -70,7 +70,7 @@
                     data-stripe="exp_year"
                     (change)="changeYear()"
                     required>
-                  <option value="" disabled selected>Year</option>
+                  <option value="" selected>Year</option>
                   <option *ngFor="let yearNumber of selectYear" [value]="yearNumber">{{yearNumber}}</option>
                 </select>
               </div>
