@@ -53,7 +53,9 @@
 
       <div class="input row">
         <div class="label left-align">Phone number</div>
-        <phone-input (onCountryChange)="onCountryChange($event)">
+        <phone-input
+            (onCountryChange)="onCountryChange($event)"
+            [selectedCountry] = "selectedCountry">
           <input
               intl-phone-mask
               [textMask]="{mask: phoneMask, guide: false}"

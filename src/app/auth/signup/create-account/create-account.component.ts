@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services';
 
 import { UserModel } from '../../../models/index';
-import { UserService, SpinnerService } from '../../../core/services/index';
+import { UserService, SpinnerService, PhoneMaskService } from '../../../core/services/index';
 
 @Component({
   selector: 'app-create-account',
@@ -24,7 +24,8 @@ export class CreateAccountComponent implements OnInit {
       private userService: UserService,
       private router: Router,
       private spinnerService: SpinnerService,
-      private cookieService: CookieService
+      private cookieService: CookieService,
+      private phoneMaskService: PhoneMaskService
   ) {
   }
 
@@ -38,6 +39,7 @@ export class CreateAccountComponent implements OnInit {
       phone = phone.split(' ');
       this.signupFormPhone = phone[1] || '';
       let countryCode = phone[0];
+      this.selectedCountry = this.phoneMaskService.getCountryArrayByCode(countryCode);
     }
   }
 
