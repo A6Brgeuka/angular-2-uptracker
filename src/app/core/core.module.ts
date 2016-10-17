@@ -23,9 +23,7 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
     BootstrapModalModule
   ],
   declarations: [  ],
-  providers: [
-    // AuthGuard,
-    
+  providers: [    
     // app config
     { provide: APP_CONFIG, useValue: APP_DI_CONFIG },
     

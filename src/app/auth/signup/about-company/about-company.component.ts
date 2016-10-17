@@ -11,8 +11,6 @@ import { AccountService, UserService, SpinnerService } from '../../../core/servi
 })
 export class AboutCompanyComponent implements OnInit {
   signupAccount: any = {};
-  private userSubscription: any = null;
-  private accountSubscription: any = null;
 
   constructor(
       private accountService: AccountService,
@@ -20,15 +18,6 @@ export class AboutCompanyComponent implements OnInit {
       private spinnerService: SpinnerService,
       private router: Router
   ) {
-    // this.userService.loadSelfData().subscribe((res: any) => {
-      // TODO:
-      // check response and add account_id to condition
-      // if user is logged in and created company (have account_id) redirect him
-      // if (!this.userService.isGuest() && this.userService.selfData.account_id){
-      //   this.router.navigate(['/dashboard']);
-      // }
-    // });
-
     let signupStep = this.userService.currentSignupStep();
     if (signupStep == 1) {
       this.router.navigate(['/signup']);
