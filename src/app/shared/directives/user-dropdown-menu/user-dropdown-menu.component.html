@@ -1,0 +1,10 @@
+<div class="user-menu">
+  <div materialize="dropdown" class="dropdown-button" data-activates="dropdown1">
+    <a class="btn-floating center-align waves-effect waves-light" >AG</a>
+    <a class="name truncate">Aure G.</a>
+  </div>
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a [routerLink]="['/dashbord']" class="">My Profile</a></li>
+    <li><a (click)="logOut()" class="">Logout</a></li>
+  </ul>
+</div>

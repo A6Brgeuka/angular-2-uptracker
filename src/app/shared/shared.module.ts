@@ -15,6 +15,7 @@ import MaskedInput from 'angular2-text-mask';
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
+  directives.UserDropdownMenuDirective,
 
   MaskedInput
 ];

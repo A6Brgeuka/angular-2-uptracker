@@ -116,9 +116,6 @@ export class UserService extends ModelService {
       let user = this.transformAccountInfo(res.data);
       self.updateSelfData(user);
     });
-
-    // TODO: remove after checking app resolver
-    // return this.selfData$;
   }
 
   loadEntity(data = null){
@@ -207,8 +204,20 @@ export class UserService extends ModelService {
   }
   
   emailVerified(){
+    // version without observables
     let emailVerified = this.selfData ? this.selfData.email_verified || false : false;
     return emailVerified;
+
+    // version with observable
+    // TODO: remove after testing auth guard when app is ready
+    // this.selfData$
+    //     .map((res) => {
+    //       return res.email_verified;
+    //     })
+    //     .delay(500)
+    //     .subscribe((res: any) => {
+    //       return res;
+    //     });
   }
 
   transformAccountInfo(data){

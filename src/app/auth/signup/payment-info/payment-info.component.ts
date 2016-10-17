@@ -33,7 +33,7 @@ export class PaymentInfoComponent implements OnInit {
       private cardService: CardService
   ) {
     let signupStep = this.userService.currentSignupStep();
-    if (signupStep < 3) {
+    if (signupStep && signupStep < 3) {
       this.router.navigate(['/signup']);
     }
   }

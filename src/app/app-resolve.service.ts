@@ -10,7 +10,7 @@ export class GetSelfDataResolve implements Resolve<any> {
   ) {
 
   }
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) { 
     if (!this.userService.isGuest() && !this.userService.selfData) {
       return this.userService.loadSelfData();
     } else {

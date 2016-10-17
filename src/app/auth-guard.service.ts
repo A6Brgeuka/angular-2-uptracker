@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { UserService, StateService } from './core/services/index';
+import { Observable } from 'rxjs/Rx';
 
 
 @Injectable()
@@ -14,7 +15,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ) {
+  ): Observable<boolean> | boolean {
     let url: string = state.url;
     let location = url.split('/')[1];
     switch (location) {
@@ -25,11 +26,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     return this.canActivate(route, state);
   }
 
-  checkSignup(): boolean {
+  checkSignup() {
+
+
     if (this.userService.emailVerified()) {
       this.router.navigate(['/dashboard']);
       return false;
@@ -41,6 +44,26 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     return true;
+
+    // return this.userService.selfData$
+    //     .map((res: any) => { debugger;
+    //       if (res.email_verified) {
+    //         this.router.navigate(['/dashboard']);
+    //         return false;
+    //       }
+    //       if (this.userService.currentSignupStep() == 4) {
+    //         this.router.navigate(['/email-verification']);
+    //         return false;
+    //       }
+    //
+    //       return true;
+    //     })
+    //     .catch(
+    //         (err) => {
+    //           this.router.navigate(['/']);
+    //           return Observable.of(false);
+    //         }
+    //     );
   }
 
   checkLogin(url: string): boolean {

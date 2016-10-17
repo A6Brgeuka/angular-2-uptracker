@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { UserService, SpinnerService } from '../core/services/index';
+import { UserService } from '../core/services/index';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,13 +11,8 @@ export class DashboardComponent {
   public selectedOption = '';
 
   constructor(
-      private userService: UserService,
-      private spinnerService: SpinnerService
+      private userService: UserService
   ) {
-  }
-
-  logOut(){
-    this.userService.logout().subscribe();
   }
 
 }

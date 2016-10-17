@@ -8,16 +8,7 @@
         </div>
       </div>
       <div class="col s6 user-menu-col">
-        <div class="user-menu">
-          <div materialize="dropdown" class="dropdown-button" data-activates="dropdown1">
-            <a class="btn-floating white center-align waves-effect waves-light" >AG</a>
-            <a class="name truncate white-text">Aure G.</a>
-          </div>
-          <ul id="dropdown1" class="dropdown-content">
-            <li><a [routerLink]="['/dashbord']" class="">My Profile</a></li>
-            <li><a [routerLink]="['/dashbord']" class="">Logout</a></li>
-          </ul>
-        </div>
+        <user-dropdown-menu></user-dropdown-menu>
       </div>
     </div>
 
