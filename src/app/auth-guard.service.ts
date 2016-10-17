@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     let url: string = state.url;
     let location = url.split('/')[1];
     switch (location) {
+      case 'signup': return this.checkSignup();
       case 'onboard': return this.checkLogin(url);
       case 'dashboard': return this.checkLoginAndOnboard(url);
     }
@@ -26,6 +27,20 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(route, state);
+  }
+
+  checkSignup(): boolean {
+    if (this.userService.emailVerified()) {
+      this.router.navigate(['/dashboard']);
+      return false;
+    }
+
+    if (!this.userService.emailVerified() && this.userService.currentSignupStep() == 4) {
+      this.router.navigate(['/email-verification']);
+      return false;
+    }
+
+    return true;
   }
 
   checkLogin(url: string): boolean {
@@ -53,14 +68,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       return false;
     }
 
-    if (!this.userService.emailVerified() && this.userService.currentSignupStep()==4) {
-      this.router.navigate(['/email-verification']);
+    if (!this.userService.emailVerified()) {
+      // check for passing signup steps for navigation
+      let signupStep = this.userService.currentSignupStep();
+      switch(signupStep) {
+        case 2:   this.router.navigate(['/signup', 'about-company']); return;
+        case 3:   this.router.navigate(['/signup', 'payment-info']); return;
+        case 4:   this.router.navigate(['/email-verification']); return;
+        default:  this.router.navigate(['/signup']);
+      }
       return false;
     }
 
-    if (!this.userService.emailVerified()) {
-      this.router.navigate(['/signup']);
-      return false;
-    }
+    return true;
   }
 }
