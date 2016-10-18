@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { AccountService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService } from '../../../core/services/index';
+import { LocationModel } from '../../../models/index';
 
 export class LocationModalContext extends BSModalContext {
 }
@@ -22,13 +23,19 @@ export class LocationModalContext extends BSModalContext {
 })
 export class LocationModal implements CloseGuard, ModalComponent<LocationModalContext> {
   context: LocationModalContext;
-  location = {};
+  location: LocationModel;
   selectedType = '';
   selectedState = '';
   stateArr = {};
   typeArr = {};
   typeDirty: boolean = false;
   stateDirty: boolean = false;
+  locationFormPhone: string = null;
+  locationFormFax: string = null;
+  public phoneMask: any = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
+  // default country for phone input
+  selectedCountry: any = [ "United States", "us", "1", 0 ];
+  selectedFaxCountry: any = [ "United States", "us", "1", 0 ];
 
   uploadedImage;
   fileIsOver: boolean = false;
@@ -37,12 +44,16 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   };
 
   constructor(
+      public router: Router,
       private activatedRoute: ActivatedRoute,
       public dialog: DialogRef<LocationModalContext>,
+      private toasterService: ToasterService,
+      private userService: UserService,
       private accountService: AccountService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
+    this.location = new LocationModel();
   }
 
   ngOnInit(){
@@ -54,6 +65,8 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
     this.dialog.close();
   }
 
+  // TODO: remove if not necessary
+  // lifecycle functions
   // beforeDismiss(): boolean {
   //   return true;
   // }
@@ -68,6 +81,20 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
 
   changeType(){
     this.typeDirty = true;
+  }
+
+  onCountryChange($event) {
+    // TODO: change phone mask dynamically if necessary
+    // this.phoneMask = [ /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
+    // let codeArr = country[2].split('');
+    // codeArr.unshift('+');
+    // codeArr.push(' ', ' ');
+    // this.phoneMask = codeArr.concat(this.phoneMask);
+    this.selectedCountry = $event;
+  }
+
+  onFaxCountryChange($event) {
+    this.selectedFaxCountry = $event;
   }
 
   // upload by input type=file
@@ -92,5 +119,19 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
 
   onFileDrop(file: File): void {
     this.uploadedImage = file;
+  }
+
+  onSubmit(){
+    this.location.account_id = this.userService.selfData.account_id;
+    this.location.location_type = this.selectedType;
+    this.location.state = this.selectedState;
+    this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
+    this.location.fax = this.selectedFaxCountry[2] + ' ' + this.locationFormFax;
+    this.location.image = this.uploadedImage;
+    this.accountService.addLocation(this.location).subscribe(
+        (res: any) => { //debugger;
+          this.closeModal();
+        }
+    );
   }
 }

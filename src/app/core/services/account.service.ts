@@ -49,6 +49,10 @@ export class AccountService extends ModelService{
     });
   }
 
+  updateSelfData(data){
+    this.updateSelfData$.next(data);
+  }
+
   createCompany(data){
     let entity = this.resource.createCompany(data).$observable
         .publish().refCount();
@@ -57,7 +61,7 @@ export class AccountService extends ModelService{
         (res: any) => {
           this.addToCollection$.next(res.data.account);
           this.updateEntity$.next(res.data.account);
-          this.updateSelfData$.next(res.data.account);
+          this.updateSelfData(res.data.account);
         }
     );
 
@@ -81,5 +85,10 @@ export class AccountService extends ModelService{
       this.locationTypeCollection = res.data;
     });
   }
-  
+
+  addLocation(data){ //debugger;
+    return this.resource.addLocation(data).$observable.do((res: any) => {
+      this.updateSelfData(res.data.account);
+    });
+  }
 }

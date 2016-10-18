@@ -38,4 +38,10 @@ export class AccountResource extends CustomResourceCRUD {
     path: '/config/location_types'
   })
   getLocationTypes: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Post,
+    path: '/account/{!account_id}/locations'
+  })
+  addLocation: ResourceMethod<any, any>;
 }

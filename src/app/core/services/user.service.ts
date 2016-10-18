@@ -71,7 +71,7 @@ export class UserService extends ModelService {
     return !this.cookieService.get('uptracker_token') || !this.cookieService.get('uptracker_selfId');
   }
 
-  logout(redirectUrl = '/') {
+  logout(redirectUrl = '/') { 
     let data = {
       user_id: this.cookieService.get('uptracker_selfId')
     };

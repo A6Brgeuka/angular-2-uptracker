@@ -64,12 +64,12 @@
               [(ngModel)]="signupFormPhone"
               name="phone"
               #phone="ngModel"
-              required minlenght="11"
+              required minlength="11"
               type="text">
+          <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
+            Phone number required.
+          </div>
         </phone-input>
-        <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
-          Phone number required.
-        </div>
       </div>
 
       <div class="buttons">

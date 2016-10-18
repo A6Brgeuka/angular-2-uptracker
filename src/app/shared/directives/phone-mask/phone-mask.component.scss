@@ -10,6 +10,10 @@
   -moz-box-sizing: border-box
 }
 
+.intl-tel-input .error{
+  position:absolute;
+}
+
 .intl-tel-input .hide {
   display: none
 }

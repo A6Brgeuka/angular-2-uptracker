@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { UserService, StateService } from './core/services/index';
 import { Observable } from 'rxjs/Rx';
+import {publishBehavior} from "rxjs/operator/publishBehavior";
 
 
 @Injectable()
@@ -44,6 +45,23 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     return true;
+
+
+    // return this.userService.loadSelfData().map(res=>{
+    //   debugger;
+    //   return true;
+    // });
+    // return this.userService.selfData$
+    // .publishBehavior(null).refCount().skip(1)
+    //     // .filter(res=>{
+    //     //  debugger;
+    //     //   return !!res;
+    //     // })
+    // .map(res=>{
+    //   debugger;
+    //   return true;
+    // }).first();
+
 
     // return this.userService.selfData$
     //     .map((res: any) => { debugger;
