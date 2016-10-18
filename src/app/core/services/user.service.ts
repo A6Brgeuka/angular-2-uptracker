@@ -71,7 +71,7 @@ export class UserService extends ModelService {
     return !this.cookieService.get('uptracker_token') || !this.cookieService.get('uptracker_selfId');
   }
 
-  logout(redirectUrl = '/') { 
+  logout(redirectUrl = '/') {
     let data = {
       user_id: this.cookieService.get('uptracker_selfId')
     };
@@ -106,6 +106,19 @@ export class UserService extends ModelService {
     return this.selfData ? this.selfData.id || null : null;
   }
 
+  getSelfData() {
+
+    if (this.isGuest()){
+      return Observable.of(null);
+    }
+
+    if (this.selfData && this.selfData != {}) {
+      return Observable.of(this.selfData);
+    }
+
+    return this.loadSelfData();
+  }
+
   loadSelfData(): Observable<any> {
     if (this.isGuest()) {
       return Observable.of(null);
@@ -121,8 +134,7 @@ export class UserService extends ModelService {
   loadEntity(data = null){
     let entity = this.resource.getUserData(data).$observable;
     
-    entity.subscribe((res: any) => {
-      //res.data.user.account = res.data.account;
+    entity.subscribe((res: any) => { 
       let user = this.transformAccountInfo(res.data);
       this.updateEntity$.next(user);
     });

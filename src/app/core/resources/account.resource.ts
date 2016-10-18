@@ -41,7 +41,7 @@ export class AccountResource extends CustomResourceCRUD {
 
   @ResourceAction({
     method: RequestMethod.Post,
-    path: '/account/{!account_id}/locations'
+    path: '/accounts/{!account_id}/locations'
   })
   addLocation: ResourceMethod<any, any>;
 }

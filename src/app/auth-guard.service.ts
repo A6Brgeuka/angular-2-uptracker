@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { UserService, StateService } from './core/services/index';
 import { Observable } from 'rxjs/Rx';
-import {publishBehavior} from "rxjs/operator/publishBehavior";
 
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
+  // selfData$: Observable<any>;
+
   constructor(
     private userService: UserService,
     private router: Router
@@ -16,15 +17,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> | boolean {
+  ): Observable<boolean> | boolean { 
     let url: string = state.url;
     let location = url.split('/')[1];
     switch (location) {
-      case 'signup': return this.checkSignup();
-      case 'onboard': return this.checkLogin(url);
-      case 'dashboard': return this.checkLoginAndOnboard(url);
+      case 'signup':
+        return this.checkSignup();
+      case 'onboard':
+        return this.checkLogin(url);
+      case 'dashboard':
+        return this.checkLoginAndOnboard(url);
     }
-
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
@@ -32,56 +35,40 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkSignup() {
+    let user$ = this.userService.getSelfData().map((res) => {
+      if (this.userService.isGuest()) {
+        return true;
+      }
+
+      if (this.userService.emailVerified()) {
+        this.router.navigate(['/dashboard']);
+        return false;
+      }
+
+      if (!this.userService.emailVerified() && this.userService.currentSignupStep() == 4) {
+        this.router.navigate(['/email-verification']);
+        return false;
+      }
+
+      return true;
+    });
+
+    return user$;
 
 
-    if (this.userService.emailVerified()) {
-      this.router.navigate(['/dashboard']);
-      return false;
-    }
 
-    if (!this.userService.emailVerified() && this.userService.currentSignupStep() == 4) {
-      this.router.navigate(['/email-verification']);
-      return false;
-    }
-
-    return true;
-
-
-    // return this.userService.loadSelfData().map(res=>{
-    //   debugger;
-    //   return true;
-    // });
-    // return this.userService.selfData$
-    // .publishBehavior(null).refCount().skip(1)
-    //     // .filter(res=>{
-    //     //  debugger;
-    //     //   return !!res;
-    //     // })
-    // .map(res=>{
-    //   debugger;
-    //   return true;
-    // }).first();
-
-
-    // return this.userService.selfData$
-    //     .map((res: any) => { debugger;
-    //       if (res.email_verified) {
-    //         this.router.navigate(['/dashboard']);
-    //         return false;
-    //       }
-    //       if (this.userService.currentSignupStep() == 4) {
-    //         this.router.navigate(['/email-verification']);
-    //         return false;
-    //       }
+    // TODO: remove when test
+    // if (this.userService.emailVerified()) {
+    //   this.router.navigate(['/dashboard']);
+    //   return false;
+    // }
     //
-    //       return true;
-    //     })
-    //     .catch(
-    //         (err) => {
-    //           this.router.navigate(['/']);
-    //           return Observable.of(false);
-    //         }
-    //     );
+    // if (!this.userService.emailVerified() && this.userService.currentSignupStep() == 4) {
+    //   this.router.navigate(['/email-verification']);
+    //   return false;
+    // }
+    //
+    // return true;
   }
 
   checkLogin(url: string): boolean {

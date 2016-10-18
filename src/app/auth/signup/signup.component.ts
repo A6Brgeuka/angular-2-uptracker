@@ -8,18 +8,11 @@ import { UserService } from '../../core/services/index';
   styleUrls: [ './signup.style.scss' ],
   templateUrl: './signup.template.html'
 })
-export class SignupComponent implements OnInit{
+export class SignupComponent {
 
   constructor(
       private userService: UserService,
       private router: Router
   ) {
   }
-  
-  ngOnInit(){
-    if (!this.userService.currentSignupStep() || this.userService.currentSignupStep() == 4) {
-      this.router.navigate(['/dashboard']);
-    }
-  }
-
 }
