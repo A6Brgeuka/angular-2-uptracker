@@ -312,6 +312,8 @@ modal-overlay{
       position:absolute;
       top:-17px;
       right:-17px;
+      background: url(/assets/img/onboard/close-button.svg) no-repeat;
+      cursor:pointer;
     }
 
     .title{
