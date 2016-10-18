@@ -71,24 +71,34 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     // return true;
   }
 
-  checkLogin(url: string): boolean {
+  checkLogin(url: string): Observable<boolean> | boolean {
     if (!this.userService.isGuest() && this.userService.emailVerified()) { return true; }
 
     this.navigate(url);
   }
 
-  checkLoginAndOnboard(url: string): boolean {
-    let onboardRouteCondition = this.userService.selfData ? this.userService.selfData.account.status || false : false;
-    // let onboardRouteCondition = true;
+  checkLoginAndOnboard(url: string): Observable<boolean> | boolean {
+    let user$ = this.userService.getSelfData().map((res) => { 
+      if (this.userService.isGuest()) {
+        this.router.navigate(['/login']);
+        return false;
+      }
 
-    if (!this.userService.isGuest() && this.userService.emailVerified() && onboardRouteCondition && onboardRouteCondition == 2) { return true; }
+      let onboardRouteCondition = this.userService.selfData ? this.userService.selfData.account.status || false : false;
+      // let onboardRouteCondition = true;
 
-    if (onboardRouteCondition != 2) {
-      this.router.navigate(['/onboard','locations']);
-      return false;
-    }
+      if (!this.userService.isGuest() && this.userService.emailVerified() && onboardRouteCondition && onboardRouteCondition == 2) { return true; }
 
-    this.navigate(url);
+      if (onboardRouteCondition != 2) {
+        this.router.navigate(['/onboard','locations']);
+        return false;
+      }
+
+      this.navigate(url);
+    });
+
+    return user$;
+
   }
 
   navigate(url: string) {
@@ -113,7 +123,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       return false;
     }
 
-    // TODO: check navigation 
+    // TODO: check navigation
     // if (this.userService.selfData.account.status == 2) {
     //
     // }
