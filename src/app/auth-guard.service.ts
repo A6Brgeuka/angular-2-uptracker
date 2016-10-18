@@ -78,10 +78,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkLoginAndOnboard(url: string): boolean {
-    //let onboardRouteCondition this.userService.selfData ? this.userService.selfData.onboard || false : false;
-    let onboardRouteCondition = true;
+    let onboardRouteCondition = this.userService.selfData ? this.userService.selfData.account.status || false : false;
+    // let onboardRouteCondition = true;
 
-    if (!this.userService.isGuest() && onboardRouteCondition) { return true; }
+    if (!this.userService.isGuest() && this.userService.emailVerified() && onboardRouteCondition && onboardRouteCondition == 2) { return true; }
+
+    if (onboardRouteCondition != 2) {
+      this.router.navigate(['/onboard','locations']);
+      return false;
+    }
 
     this.navigate(url);
   }
@@ -107,6 +112,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       }
       return false;
     }
+
+    // TODO: check navigation 
+    // if (this.userService.selfData.account.status == 2) {
+    //
+    // }
 
     return true;
   }

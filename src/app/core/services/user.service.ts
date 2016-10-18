@@ -153,7 +153,7 @@ export class UserService extends ModelService {
       });
   }
   
-  afterLogin(data){
+  afterLogin(data){ 
     data.data.user.user.token = data.data.user.token;
     let user = this.transformAccountInfo(data.data.user);
 

@@ -86,7 +86,7 @@ export class AccountService extends ModelService{
     });
   }
 
-  addLocation(data){ //debugger;
+  addLocation(data){
     return this.resource.addLocation(data).$observable.do((res: any) => {
       this.updateSelfData(res.data.account);
     });
