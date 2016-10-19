@@ -19,19 +19,20 @@ export class LoginComponent {
       private router: Router,
       private spinnerService: SpinnerService
   ) {
-    if (!this.userService.isGuest()){
-      this.router.navigate(['/dashboard']);
-    }
   }
 
   onSubmit() {
-    this.spinnerService.show();
     this.userService.login(this.loginUser)
         .subscribe(
             (res: any) => {
+              // check account status and set redirect link
+              let redLink: string = '';
+              let account_status: any = this.userService.selfData.account.status || null;
+              account_status != 2 ? redLink='/onboard/locations' : redLink='/dashboard';
+
               // Get the redirect URL from service
               // If no redirect has been set, use the default
-              let redirect = this.userService.redirectUrl ? this.userService.redirectUrl : '/dashboard';
+              let redirect = this.userService.redirectUrl ? this.userService.redirectUrl : redLink;
 
               // check for passing signup steps for navigation
               let signupStep = this.userService.currentSignupStep();

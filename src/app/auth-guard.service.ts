@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  // selfData$: Observable<any>;
+  selfData: any;
 
   constructor(
     private userService: UserService,
@@ -17,17 +17,28 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> | boolean { 
-    let url: string = state.url;
-    let location = url.split('/')[1];
-    switch (location) {
-      case 'signup':
-        return this.checkSignup();
-      case 'onboard':
-        return this.checkLogin(url);
-      case 'dashboard':
-        return this.checkLoginAndOnboard(url);
-    }
+  ): Observable<boolean> | boolean {
+    let user$ = this.userService.getSelfData().map((res) => {
+      this.selfData = res;
+      let url: string = state.url;
+      let location = url.split('/')[1];
+      switch (location) {
+        case 'login':
+          return this.checkLogin();
+        case 'forgot-password':
+          return this.checkForgotPassword();
+        case 'signup':
+          return this.checkSignup();
+        case 'onboard':
+          return this.checkOnboard(url);
+        case 'dashboard':
+          return this.checkDashboard(url);
+        default:
+          return true;
+      }
+    });
+
+    return user$;
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
@@ -35,25 +46,21 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkSignup() {
-    let user$ = this.userService.getSelfData().map((res) => {
-      if (this.userService.isGuest()) {
-        return true;
-      }
-
-      if (this.userService.emailVerified()) {
-        this.router.navigate(['/dashboard']);
-        return false;
-      }
-
-      if (!this.userService.emailVerified() && this.userService.currentSignupStep() == 4) {
-        this.router.navigate(['/email-verification']);
-        return false;
-      }
-
+    if (this.userService.isGuest()) {
       return true;
-    });
+    }
 
-    return user$;
+    if (this.userService.emailVerified()) {
+      this.router.navigate(['/dashboard']);
+      return false;
+    }
+
+    if (!this.userService.emailVerified() && this.userService.currentSignupStep() == 4) {
+      this.router.navigate(['/email-verification']);
+      return false;
+    }
+
+    return true;
 
 
 
@@ -71,42 +78,35 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     // return true;
   }
 
-  checkLogin(url: string): Observable<boolean> | boolean {
-    if (!this.userService.isGuest() && this.userService.emailVerified()) { return true; }
+  checkOnboard(url: string): boolean {
+    if (!this.checkAuth(url)) {
+      return false;
+    }
 
-    this.navigate(url);
+    return true;
   }
 
-  checkLoginAndOnboard(url: string): Observable<boolean> | boolean {
-    let user$ = this.userService.getSelfData().map((res) => { 
-      if (this.userService.isGuest()) {
-        this.router.navigate(['/login']);
-        return false;
-      }
+  checkDashboard(url: string): boolean {
+    if (!this.checkAuth(url)) {
+      return false;
+    }
 
-      let onboardRouteCondition = this.userService.selfData ? this.userService.selfData.account.status || false : false;
-      // let onboardRouteCondition = true;
+    let account_status = this.userService.selfData.account.status || null;
 
-      if (!this.userService.isGuest() && this.userService.emailVerified() && onboardRouteCondition && onboardRouteCondition == 2) { return true; }
+    if (account_status != 2) {
+      this.router.navigate(['/onboard','locations']);
+      return false;
+    }
 
-      if (onboardRouteCondition != 2) {
-        this.router.navigate(['/onboard','locations']);
-        return false;
-      }
-
-      this.navigate(url);
-    });
-
-    return user$;
-
+    return true;
   }
 
-  navigate(url: string) {
+  checkAuth(url: string) {
     // Store the attempted URL for redirecting
     this.userService.redirectUrl = url;
 
     // Navigate to the login page if guest
-    if (this.userService.isGuest()) {
+    if (this.userService.isGuest() || !this.userService.selfData) {
       this.router.navigate(['/login']);
       return false;
     }
@@ -123,11 +123,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       return false;
     }
 
-    // TODO: check navigation
-    // if (this.userService.selfData.account.status == 2) {
-    //
-    // }
-
     return true;
+  }
+
+  checkLogin(){
+    if (!this.userService.isGuest()){
+      this.router.navigate(['/dashboard']);
+      return false;
+    }
+    
+    return true;
+  }
+  
+  checkForgotPassword(){
+    return this.checkLogin();
   }
 }

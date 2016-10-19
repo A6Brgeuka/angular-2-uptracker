@@ -153,7 +153,7 @@ export class UserService extends ModelService {
       });
   }
   
-  afterLogin(data){ 
+  afterLogin(data){
     data.data.user.user.token = data.data.user.token;
     let user = this.transformAccountInfo(data.data.user);
 
@@ -169,7 +169,7 @@ export class UserService extends ModelService {
     entity.subscribe(
         (res: any) => {
           // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
-          res.data.user.signup = true;
+          // res.data.user.signup = true;
           res.data.user.token = res.data.token;
           let user = this.transformAccountInfo(res.data);
 
