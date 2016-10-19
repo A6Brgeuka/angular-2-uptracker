@@ -129,7 +129,10 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
     this.location.fax = this.selectedFaxCountry[2] + ' ' + this.locationFormFax;
     this.location.image = this.uploadedImage;
     this.accountService.addLocation(this.location).subscribe(
-        (res: any) => { 
+        (res: any) => {
+          let user = this.userService.selfData;
+          user.account = res.data.account;
+          this.userService.updateSelfData(user);
           this.closeModal();
         }
     );

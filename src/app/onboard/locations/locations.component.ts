@@ -28,19 +28,17 @@ export class LocationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // TODO: remove after testings
-    // this.getLocationsSubscription = this.accountService.getLocations().subscribe((res: any) => {
-    //   this.locationArr = res.data.locations;
-    // });
-
-    this.locationArr = this.userService.selfData.account.locations;
+    this.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
+      if (res.account) {
+        this.locationArr = res.account.locations;
+      }
+    });
   }
   
   ngOnDestroy() {
-    // TODO: remove after testings
-    // if (this.getLocationsSubscription) {
-    //   this.getLocationsSubscription.unsubscribe();
-    // }
+    if (this.getLocationsSubscription) {
+      this.getLocationsSubscription.unsubscribe();
+    }
   }
 
   viewLocationModal(){

@@ -75,15 +75,19 @@ export class AccountService extends ModelService{
   }
 
   getStates(){
-    return this.resource.getStates().$observable.do((res: any) => {
-      this.stateCollection = res.data;
-    });
+    if (!this.stateCollection) {
+      return this.resource.getStates().$observable.do((res: any) => {
+        this.stateCollection = res.data;
+      });
+    }
   }
 
   getLocationTypes(){
-    return this.resource.getLocationTypes().$observable.do((res: any) => {
-      this.locationTypeCollection = res.data;
-    });
+    if (!this.locationTypeCollection) {
+      return this.resource.getLocationTypes().$observable.do((res: any) => {
+        this.locationTypeCollection = res.data;
+      });
+    }
   }
 
   addLocation(data){
