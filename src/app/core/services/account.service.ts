@@ -19,6 +19,7 @@ export class AccountService extends ModelService{
   
   locationTypeCollection: any;
   stateCollection: any;
+  userCollection: any;
   
   constructor(
     public injector: Injector,
@@ -94,5 +95,16 @@ export class AccountService extends ModelService{
     return this.resource.addLocation(data).$observable.do((res: any) => {
       this.updateSelfData(res.data.account);
     });
+  }
+
+  getUsers(){
+    let data: any = {};
+    data.account_id = this.userService.selfData.account_id;
+    if (!this.userCollection) {
+      return this.resource.getUsers(data).$observable.do((res: any) => {
+        this.userCollection = res.data.users;
+        this.userService.updateSelfDataAccountField('users', res.data.users);
+      });
+    }
   }
 }

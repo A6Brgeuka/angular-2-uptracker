@@ -129,6 +129,31 @@ button{
   background:url(/assets/img/icon-info.svg) no-repeat;
 }
 
+.tabs{
+  border-bottom:1px solid #d6d6d6;
+
+  li.tab{
+    a{
+      font-family: Ubuntu;
+      color:#9a9c9e;
+
+      &:hover{
+        color:#000;
+        text-decoration: none;
+      }
+
+      &.active{
+        color:#000;
+      }
+    }
+  }
+
+  .indicator{
+    background:#33c6d9;
+    height:3px;
+  }
+}
+
 
 /*** Logo
 **************************************************/
@@ -238,6 +263,35 @@ button{
           left: -2px;
           border-color: #33c6d9;
         }
+      }
+    }
+  }
+
+  .img-container{
+    border-radius: 5px;
+    background: #f5f6f7 no-repeat center center;
+    border:1px dashed #d6d6d6;
+    max-width:100%;
+
+    &.file-is-over{
+      border-style: solid;
+      border-color: #33c6d9;
+    }
+
+    .img{
+      height:calc(100%);
+      overflow:hidden;
+      text-align:center;
+      background:#f5f6f7;
+      position: relative;
+      z-index: 5;
+
+      img{
+        max-width:100%;
+        max-height:100%;
+        position:relative;
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }

@@ -4,7 +4,6 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { LocationModal } from './location-modal/location-modal.component';
-// import { UserModel } from '../../models/index';
 import { UserService, AccountService } from '../../core/services/index';
 
 @Component({

@@ -260,4 +260,18 @@ export class UserService extends ModelService {
     // if all steps are passed then user didn't verify email
     return 4;
   }
+  
+  updateSelfDataField(field, data){
+    let user = this.selfData;
+    user[field] = data;
+    this.updateSelfData(user);
+  }
+
+  updateSelfDataAccountField(field, data){
+    if (this.selfData.account){
+      let account = this.selfData.account;
+      account[field] = data;
+      this.updateSelfDataField('account', account);
+    }
+  }
 }
