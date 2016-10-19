@@ -47,6 +47,12 @@ export class AccountResource extends CustomResourceCRUD {
 
   @ResourceAction({
     method: RequestMethod.Get,
+    path: '/config/departments'
+  })
+  getDepartments: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Get,
     path: '/accounts/{!account_id}/users'
   })
   getUsers: ResourceMethod<any, any>;

@@ -101,7 +101,7 @@
               required
               (change)="changeDepartment()"
               [materializeSelectOptions]="selectDepartments">
-            <option *ngFor="let department of departmentArr | iterable" [value]="department.key">{{department.value}}</option>
+            <option *ngFor="let department of departmentArr | iterable" [value]="department.value">{{department.key}}</option>
           </select>
         </div>
       </div>
@@ -116,7 +116,7 @@
               required
               (change)="changeLocation()"
               [materializeSelectOptions]="selectLocations">
-            <option *ngFor="let location of locationArr | iterable" [value]="location.key">{{location.value}}</option>
+            <option *ngFor="let location of locationArr | iterable" [value]="location.key.id">{{location.key.name}}</option>
           </select>
         </div>
       </div>

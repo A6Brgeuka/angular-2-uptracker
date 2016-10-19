@@ -49,8 +49,8 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     this.user = {
       tutorial_mode: true
     };
-    this.locationArr = this.accountService.stateCollection || null;
-    this.departmentArr = this.accountService.locationTypeCollection || null;
+    this.locationArr = this.userService.selfData.account.locations;
+    this.departmentArr = this.accountService.departmentCollection || null;
   }
 
   closeModal(){

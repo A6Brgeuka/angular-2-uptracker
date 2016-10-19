@@ -1,6 +1,7 @@
 import { UsersComponent } from './users.component';
 import {
-    UserCollectionResolve    
+  UserCollectionResolve,
+  DepartmentCollectionResolve
 } from './users-resolve.service';
 
 export const UsersRoutes = [
@@ -8,7 +9,8 @@ export const UsersRoutes = [
     path: 'users',
     component: UsersComponent,
     resolve: {
-      userCollection: UserCollectionResolve
+      userCollection: UserCollectionResolve,
+      departmentCollection: DepartmentCollectionResolve
     },
     canActivate: []
   },

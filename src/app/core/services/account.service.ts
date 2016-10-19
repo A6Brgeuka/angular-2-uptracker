@@ -19,6 +19,7 @@ export class AccountService extends ModelService{
   
   locationTypeCollection: any;
   stateCollection: any;
+  departmentCollection: any;
   userCollection: any;
   
   constructor(
@@ -95,6 +96,14 @@ export class AccountService extends ModelService{
     return this.resource.addLocation(data).$observable.do((res: any) => {
       this.updateSelfData(res.data.account);
     });
+  }
+
+  getDepartments(){
+    if (!this.departmentCollection) {
+      return this.resource.getDepartments().$observable.do((res: any) => {
+        this.departmentCollection = res.data;
+      });
+    }
   }
 
   getUsers(){

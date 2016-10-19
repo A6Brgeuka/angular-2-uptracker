@@ -15,20 +15,20 @@ export class UserCollectionResolve implements Resolve<any> {
   }
 }
 
-// @Injectable()
-// export class LocationTypesCollectionResolve implements Resolve<any> {
-//   constructor(
-//       private accountService: AccountService
-//   ) {
-//
-//   }
-//   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-//     return this.accountService.getLocationTypes();
-//   }
-// }
+@Injectable()
+export class DepartmentCollectionResolve implements Resolve<any> {
+  constructor(
+      private accountService: AccountService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.accountService.getDepartments();
+  }
+}
 
 // an array of services to resolve routes with data
 export const USERS_RESOLVER_PROVIDERS = [
   UserCollectionResolve,
-  // LocationTypesCollectionResolve
+  DepartmentCollectionResolve
 ];
