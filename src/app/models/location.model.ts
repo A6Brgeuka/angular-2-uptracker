@@ -16,6 +16,8 @@ export class LocationModel {
   created_at: string = null;
   state: string = null;
   postal_code: string = null;
+
+  address: any = {};
   
   constructor(obj?:any) {
     for (let field in obj) {

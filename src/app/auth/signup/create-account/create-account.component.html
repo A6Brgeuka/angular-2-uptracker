@@ -57,7 +57,7 @@
             (onCountryChange)="onCountryChange($event)"
             [selectedCountry] = "selectedCountry">
           <input
-              [textMask]="{mask: phoneMask, guide: false}"
+              [textMask]="phoneMask"
               id="phone"
               placeholder="Enter phone number"
               class="validate"

@@ -216,7 +216,8 @@ button{
         display: none;
       }
 
-      &.valid {
+      &.valid,
+      &.ng-valid{
         border-color: #4CAF50;
       }
 
@@ -284,7 +285,10 @@ button{
       height:calc(100%);
       overflow:hidden;
       text-align:center;
-      background:#f5f6f7;
+      background-color:#f5f6f7;
+      background-repeat:no-repeat;
+      background-position:center center;
+      background-size:cover;
       position: relative;
       z-index: 5;
 

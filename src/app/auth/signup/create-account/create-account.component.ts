@@ -12,13 +12,12 @@ import { UserService, SpinnerService, PhoneMaskService } from '../../../core/ser
 })
 export class CreateAccountComponent implements OnInit {
   signupAccount: UserModel;
-  public phoneMask = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
-  // usPhoneMask = ['+', '1', ' ', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
+  public phoneMask = this.phoneMaskService.defaultTextMask;
   terms: boolean = false;
   privacy: boolean = false;
 
   signupFormPhone: string = '';
-  selectedCountry: any = [];
+  selectedCountry: any = this.phoneMaskService.defaultCountry;
 
   constructor(
       private userService: UserService,
@@ -30,17 +29,10 @@ export class CreateAccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    // default country for phone input
-    this.selectedCountry = [ "United States", "us", "1", 0 ];
-
     this.signupAccount = this.userService.selfData || new UserModel();
-    let phone = this.userService.selfData ? this.userService.selfData.phone || null : null;
-    if (phone) {
-      phone = phone.split(' ');
-      this.signupFormPhone = phone[1] || '';
-      let countryCode = phone[0];
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByCode(countryCode);
-    }
+    let phone = this.userService.selfData ? this.userService.selfData.phone || null : null; console.log(phone);
+    this.signupFormPhone = this.phoneMaskService.getPhoneByIntlPhone(phone);
+    this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(phone);
   }
 
   onCountryChange($event) {

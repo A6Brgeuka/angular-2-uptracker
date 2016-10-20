@@ -4,15 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { AccountService, ToasterService, UserService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
 export class LocationModalContext extends BSModalContext {
+  public location: any;
 }
 
-/**
- * A Sample of how simple it is to create a new window, with its own injects.
- */
 @Component({
   selector: 'app-location-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
@@ -24,18 +22,16 @@ export class LocationModalContext extends BSModalContext {
 export class LocationModal implements CloseGuard, ModalComponent<LocationModalContext> {
   context: LocationModalContext;
   location: LocationModel;
-  selectedType = '';
-  selectedState = '';
   stateArr = {};
   typeArr = {};
   typeDirty: boolean = false;
   stateDirty: boolean = false;
   locationFormPhone: string = null;
   locationFormFax: string = null;
-  public phoneMask: any = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
+  public phoneMask: any = this.phoneMaskService.defaultTextMask;
   // default country for phone input
-  selectedCountry: any = [ "United States", "us", "1", 0 ];
-  selectedFaxCountry: any = [ "United States", "us", "1", 0 ];
+  selectedCountry: any = this.phoneMaskService.defaultCountry;
+  selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
   uploadedImage;
   fileIsOver: boolean = false;
@@ -49,7 +45,8 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
       public dialog: DialogRef<LocationModalContext>,
       private toasterService: ToasterService,
       private userService: UserService,
-      private accountService: AccountService
+      private accountService: AccountService,
+      private phoneMaskService: PhoneMaskService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -57,18 +54,35 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   }
 
   ngOnInit(){
+    let locationData = this.context.location || {};
+    this.location = new LocationModel(locationData);
+    if (this.context.location){
+      this.location.street_1 = this.location.address.street_1;
+      this.location.street_2 = this.location.address.street_2;
+      this.location.city = this.location.address.city;
+      this.location.zip_code = this.location.address.postal_code;
+      this.location.state = this.location.address.state;
+      this.uploadedImage = this.location.image;
+
+      this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
+      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
+
+      this.locationFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax);
+      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
+    }
+    
     this.stateArr = this.accountService.stateCollection || null;
     this.typeArr = this.accountService.locationTypeCollection || null;
   }
 
   closeModal(){
-    this.dialog.close();
+    this.dialog.dismiss();
   }
 
   // TODO: remove if not necessary
   // lifecycle functions
   // beforeDismiss(): boolean {
-  //   return true;
+  //   return false;
   // }
   //
   // beforeClose(): boolean {
@@ -84,12 +98,6 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   }
 
   onCountryChange($event) {
-    // TODO: change phone mask dynamically if necessary
-    // this.phoneMask = [ /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
-    // let codeArr = country[2].split('');
-    // codeArr.unshift('+');
-    // codeArr.push(' ', ' ');
-    // this.phoneMask = codeArr.concat(this.phoneMask);
     this.selectedCountry = $event;
   }
 
@@ -123,18 +131,16 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
 
   onSubmit(){
     this.location.account_id = this.userService.selfData.account_id;
-    this.location.location_type = this.selectedType;
-    this.location.state = this.selectedState;
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
-    this.location.fax = this.selectedFaxCountry[2] + ' ' + this.locationFormFax;
+    this.location.fax = this.locationFormFax ?  this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
     this.location.image = this.uploadedImage;
     this.accountService.addLocation(this.location).subscribe(
-        (res: any) => {
-          let user = this.userService.selfData;
-          user.account = res.data.account;
-          this.userService.updateSelfData(user);
-          this.closeModal();
-        }
+      (res: any) => {
+        let user = this.userService.selfData;
+        user.account = res.data.account;
+        this.userService.updateSelfData(user);
+        this.closeModal();
+      }
     );
   }
 }

@@ -22,7 +22,7 @@
       <div class="label left-align">Location Type</div>
       <div class="select" [class.dirty]="typeDirty">
         <select
-            [(ngModel)]="selectedType"
+            [(ngModel)]="location.location_type"
             name="type"
             #type="ngModel"
             materialize="material_select"
@@ -84,7 +84,7 @@
       <div class="label left-align">State</div>
       <div class="select" [class.dirty]="stateDirty">
         <select
-            [(ngModel)]="selectedState"
+            [(ngModel)]="location.state"
             name="state"
             #state="ngModel"
             materialize="material_select"
@@ -117,9 +117,10 @@
     <div class="col s12 m4">
       <div class="label left-align">Phone</div>
       <phone-input
-          (onCountryChange)="onCountryChange($event)">
+          (onCountryChange)="onCountryChange($event)"
+          [selectedCountry]="selectedCountry">
         <input
-            [textMask]="{mask: phoneMask, guide: false}"
+            [textMask]="phoneMask"
             id="phone"
             placeholder="Enter phone number"
             class="validate col s12"
@@ -152,16 +153,16 @@
     <div class="col s12 m4">
       <div class="label left-align">Fax</div>
       <phone-input
-          (onCountryChange)="onFaxCountryChange($event)">
+          (onCountryChange)="onFaxCountryChange($event)"
+          [selectedCountry]="selectedFaxCountry">
         <input
-            [textMask]="{mask: phoneMask, guide: false}"
+            [textMask]="phoneMask"
             id="fax"
             placeholder="Enter fax number"
             class="validate col s12"
             [(ngModel)]="locationFormFax"
             name="fax"
             #fax="ngModel"
-            minlength="10"
             type="text">
       </phone-input>
     </div>
@@ -175,9 +176,7 @@
            [options]="options"
            (fileOver)="fileOver($event)"
            (onFileDrop)="onFileDrop($event)">
-        <div class="img" *ngIf="uploadedImage">
-          <img src="{{uploadedImage}}" alt="" />
-        </div>
+        <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }"></div>
       </div>
     </div>
     <div class="col s12 m7">

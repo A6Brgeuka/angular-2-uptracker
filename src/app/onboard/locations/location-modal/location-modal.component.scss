@@ -6,27 +6,7 @@
   .img-container{
     width:240px;
     height:136px;
-    border-radius: 5px;
-    background: #f5f6f7 url(/assets/img/onboard/icon-img-placeholder-locations.svg) no-repeat center center;
-    border:1px dashed #d6d6d6;
-    max-width:100%;
-
-    &.file-is-over{
-      border-style: solid;
-      border-color: #33c6d9;
-    }
-
-    .img{
-      height:calc(100%);
-      overflow:hidden;
-      text-align:center;
-      background:#f5f6f7;
-
-      img{
-        max-width:100%;
-        max-height:100%;
-      }
-    }
+    background-image: url(/assets/img/onboard/icon-img-placeholder-locations.svg);
   }
 
   .text{

@@ -3,9 +3,10 @@ import { Component, Output, OnInit } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import { UserService, AccountService } from '../../../core/services/index';
+import { UserService, AccountService, PhoneMaskService } from '../../../core/services/index';
 
 export class UserModalContext extends BSModalContext {
+  
 }
 
 @Component({
@@ -19,19 +20,20 @@ export class UserModalContext extends BSModalContext {
 export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalContext> {
   context: UserModalContext;
   user: any;
-  selectedLocation = '';
-  selectedDepartment = '';
-  selectedPermission = '';
-  locationArr: any;
-  departmentArr: any;
-  permissionArr: any;
-  locationDirty: boolean = false;
-  departmentDirty: boolean = false;
-  permissionDirty: boolean = false;
-  locationFormPhone: string = null;
-  public phoneMask: any = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
+  public selectedLocation = '';
+  public selectedDepartment = '';
+  public selectedPermission = '';
+  public locationArr: any;
+  public departmentArr: any;
+  public permissionArr: any;
+  public locationDirty: boolean = false;
+  public departmentDirty: boolean = false;
+  public permissionDirty: boolean = false;
+  public locationFormPhone: string = null;
   // default country for phone input
-  selectedCountry: any = [ "United States", "us", "1", 0 ];
+  public selectedCountry: any = this.phoneMaskService.defaultCountry;
+  public phoneMask: any = this.phoneMaskService.defaultTextMask;
+  public preset: any = [];
 
   uploadedImage;
   fileIsOver: boolean = false;
@@ -42,7 +44,8 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   constructor(
       public dialog: DialogRef<UserModalContext>,
       private userService: UserService,
-      private accountService: AccountService
+      private accountService: AccountService,
+      private phoneMaskService: PhoneMaskService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -54,6 +57,7 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     };
     this.locationArr = this.userService.selfData.account.locations;
     this.departmentArr = this.accountService.departmentCollection || null;
+    this.preset = [false, true, false];
   }
 
   closeModal(){
@@ -116,6 +120,10 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
 
   toggleTutorialMode(){
     this.user.tutorial_mode = !this.user.tutorial_mode;
+  }
+
+  togglePreset(i){
+    this.preset[i] = !this.preset[i];
   }
 
   onSubmit(){

@@ -2,7 +2,7 @@
   <div class="title">Set up your locations</div>
   <div class="subtitle">Please enter one location per card below then click next.</div>
   <div class="list left-align">
-    <div class="item" *ngFor="let location of locationArr">
+    <div class="item" *ngFor="let location of locationArr" (click)="viewLocationModal(location)">
       <div class="img">
         <img src="{{location.image}}" alt="{{location.name}}" class="responsive-img" />
       </div>

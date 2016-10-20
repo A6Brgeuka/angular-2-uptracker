@@ -12,10 +12,15 @@ export class UserModel {
   phone: string = null;
   account_id: string = null;
   signup: boolean = null; // for SelfDataActions in user.service to avoid putting user_id in cookies (for isGuest functionality)
+  tutorial_mode: boolean = null;
+  template: any = null;
+  department: any = null;
+  default_location: any = null;
 
-  cards: CreditCardModel[] = [];
-  defaultCard: CreditCardModel = null;
+  // cards: CreditCardModel[] = [];
+  // defaultCard: CreditCardModel = null;
   account: AccountModel = new AccountModel();
+
   
   constructor(obj?: any) {
     for (let field in obj) {

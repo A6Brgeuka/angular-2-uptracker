@@ -16,7 +16,6 @@ import { UserService, AccountService } from '../../core/services/index';
 @DestroySubscribers()
 export class UsersComponent implements OnInit {
   public userArr: any = [];
-  private getUsersSubscription: any = null;
   private subscribers: any = {};
 
   constructor(

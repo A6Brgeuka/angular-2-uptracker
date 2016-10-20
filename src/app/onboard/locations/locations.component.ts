@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { LocationModal } from './location-modal/location-modal.component';
 import { UserService, AccountService } from '../../core/services/index';
@@ -11,9 +12,10 @@ import { UserService, AccountService } from '../../core/services/index';
   templateUrl: './locations.component.html',
   styleUrls: ['./locations.component.scss']
 })
+@DestroySubscribers()
 export class LocationsComponent implements OnInit {
   public locationArr: any = [];
-  private getLocationsSubscription: any = null;
+  private subscribers: any = {};
 
   constructor(
       private router: Router,
@@ -27,21 +29,15 @@ export class LocationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
+    this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) {
         this.locationArr = res.account.locations;
       }
     });
   }
-  
-  ngOnDestroy() {
-    if (this.getLocationsSubscription) {
-      this.getLocationsSubscription.unsubscribe();
-    }
-  }
 
-  viewLocationModal(){
-    this.modal.open(LocationModal,  overlayConfigFactory(BSModalContext));
+  viewLocationModal(location = null){
+    this.modal.open(LocationModal,  overlayConfigFactory({ location: location }, BSModalContext));
   }
 
   goNext(){

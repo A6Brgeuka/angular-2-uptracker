@@ -2,7 +2,7 @@ import {UserModel} from "./user.model";
 
 export class AccountModel {
   
-  id:number = null;
+  id: number = null;
 
   account_owner: string = null;
   address: any = {};
@@ -33,6 +33,7 @@ export class AccountModel {
   // "email_verified_timestamp": null;
   // "fiscal_year": null;
   // "hide_obsolete_supplies": true;
+  locations: any = [];
   marys_list_member: boolean = null;
   // "marys_list_pricing": false;
   // "paper_size": "US Letter";

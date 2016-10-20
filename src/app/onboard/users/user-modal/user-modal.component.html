@@ -69,9 +69,10 @@
           <div class="col s12 m6">
             <div class="label left-align">Phone number</div>
             <phone-input
-                (onCountryChange)="onCountryChange($event)">
+                (onCountryChange)="onCountryChange($event)"
+                [selectedCountry]="selectedCountry">
               <input
-                  [textMask]="{mask: phoneMask, guide: false}"
+                  [textMask]="phoneMask"
                   id="phone"
                   placeholder="Enter a phone number"
                   class="validate col s12"
@@ -147,6 +148,9 @@
               (change)="changePermission()"
               [materializeSelectOptions]="selectPermissions">
             <option value="">Please select one</option>
+            <option>Preset 1</option>
+            <option>Preset 2</option>
+            <option>Preset 3</option>
             <option *ngFor="let permission of permissionArr | iterable" [value]="permission.value">{{permission.key}}</option>
           </select>
         </div>
@@ -161,8 +165,8 @@
       </div>
       <div class="col s12 m4">
         <div class="switch-box">
-          <div class="switcher active" [class.active]="preset1" (click)="togglePreset(1)">On</div>
-          <div class="switcher" [class.active]="!preset1" (click)="togglePreset(1)">Off</div>
+          <div class="switcher active" [class.active]="preset[1]" (click)="togglePreset(1)">On</div>
+          <div class="switcher" [class.active]="!preset[1]" (click)="togglePreset(1)">Off</div>
         </div>
       </div>
     </div>
@@ -172,8 +176,8 @@
       </div>
       <div class="col s12 m4">
         <div class="switch-box">
-          <div class="switcher active" [class.active]="preset2" (click)="togglePreset(2)">On</div>
-          <div class="switcher" [class.active]="!preset2" (click)="togglePreset(2)">Off</div>
+          <div class="switcher active" [class.active]="preset[2]" (click)="togglePreset(2)">On</div>
+          <div class="switcher" [class.active]="!preset[2]" (click)="togglePreset(2)">Off</div>
         </div>
       </div>
     </div>
