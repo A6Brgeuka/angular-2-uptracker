@@ -18,7 +18,7 @@ export class GetSelfDataResolve implements Resolve<any> {
     //   return this.userService.selfData || null;
     // }
 
-    return this.userService.getSelfData();
+    return this.userService.loadSelfData();
   }
 }
 

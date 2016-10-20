@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
-import { UserService, StateService } from './core/services/index';
 import { Observable } from 'rxjs/Rx';
 
+import { UserService, StateService } from './core/services/index';
+import { UserModel } from './models/index';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
@@ -18,10 +19,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-    let user$ = this.userService.getSelfData().map((res) => {
-      // if guest remove self data 
+    let user$ = this.userService.loadSelfData().map((res) => {
+      // if guest remove self data
       if (this.userService.isGuest()){
-        this.userService.updateSelfData({});
+        this.userService.updateSelfData(new UserModel());
       }
       this.selfData = res;
       let url: string = state.url;

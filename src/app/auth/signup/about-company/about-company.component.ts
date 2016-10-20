@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { UserModel, AccountModel } from '../../../models/index';
 import { AccountService, UserService, SpinnerService } from '../../../core/services/index';
 
 @Component({
@@ -44,7 +43,7 @@ export class AboutCompanyComponent implements OnInit {
 
   onSubmit(){
     this.accountService.createCompany(this.signupAccount)
-        .subscribe((res: any) => { 
+        .subscribe((res: any) => {
           let user = this.userService.transformAccountInfo(res.data);
           this.userService.updateSelfData(user);
           this.router.navigate(['/signup/payment-info']);

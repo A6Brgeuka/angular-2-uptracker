@@ -51,11 +51,13 @@ export class UserService extends ModelService {
       this.updateSelfData$
     )
     .filter((res: any) => {
-      let user_id = res ? res.id || null : null;
-      let condition = !this.cookieService.get('uptracker_selfId') || user_id == this.cookieService.get('uptracker_selfId');
+      // TODO: remove after testing
+      // let user_id = res ? res.id || null : null;
+      let condition = !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
       return condition;
     })
     .publishReplay(1).refCount();
+
     this.selfData$.subscribe((res: any) => {
       //Set token
       if (res['token'] && !res['signup']) {
@@ -106,9 +108,8 @@ export class UserService extends ModelService {
     return this.selfData ? this.selfData.id || null : null;
   }
 
-  getSelfData() {
-
-    if (this.isGuest()){
+  loadSelfData(): Observable<any> {
+    if (this.isGuest()) {
       return Observable.of(null);
     }
 
@@ -116,19 +117,7 @@ export class UserService extends ModelService {
       return Observable.of(this.selfData);
     }
 
-    return this.loadSelfData();
-  }
-
-  loadSelfData(): Observable<any> {
-    if (this.isGuest()) {
-      return Observable.of(null);
-    }
-
-    let self = this;
-    return this.loadEntity({id: this.getSelfId()}).do((res: any) => {
-      let user = this.transformAccountInfo(res.data);
-      self.updateSelfData(user);
-    });
+    return this.loadEntity({id: this.getSelfId()});
   }
 
   loadEntity(data = null){
@@ -159,7 +148,6 @@ export class UserService extends ModelService {
 
     this.updateSelfData(user);
     this.addToCollection$.next(user);
-    this.updateEntity$.next(user);
   }
 
   signUp(data){
@@ -174,7 +162,6 @@ export class UserService extends ModelService {
           let user = this.transformAccountInfo(res.data);
 
           this.addToCollection$.next(user);
-          this.updateEntity$.next(user);
           this.updateSelfData$.next(user);
         }
     );

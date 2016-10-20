@@ -36,18 +36,21 @@ export class AccountService extends ModelService{
     this.selfData$ = Observable.merge(
         this.updateSelfData$
     );
-    this.selfData$.subscribe(res => {
+    this.selfData$.subscribe((res) => {
       this.selfData = res;
       console.log(`${this.constructor.name} Update SELF DATA`, res);
+
+      //update user after update account
+      this.userService.updateSelfDataField('account', this.selfData);
     });
   }
   
   addSubscribers(){
     this.entity$.subscribe((res) => {
       //update user after update account
-      // this.userService.loadSelfData();
+      // this.userService.updateSelfDataField('account', res);
 
-      this.updateSelfData$.next(res);
+      this.updateSelfData(res);
     });
   }
 

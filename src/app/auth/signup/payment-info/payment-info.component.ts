@@ -78,7 +78,7 @@ export class PaymentInfoComponent implements OnInit {
             return self.cardService.addCard(cardData);
           })
           .subscribe((res: any) => {
-            self.accountService.updateSelfData$.next(res.data.account);
+            self.accountService.updateSelfData(res.data.account);
             this.router.navigate(['/signup/congrats']);
           });
     }
