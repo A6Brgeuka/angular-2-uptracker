@@ -21,10 +21,13 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   user: any;
   selectedLocation = '';
   selectedDepartment = '';
+  selectedPermission = '';
   locationArr: any;
   departmentArr: any;
+  permissionArr: any;
   locationDirty: boolean = false;
   departmentDirty: boolean = false;
+  permissionDirty: boolean = false;
   locationFormPhone: string = null;
   public phoneMask: any = [/\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/ ];
   // default country for phone input
@@ -71,6 +74,10 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
 
   changeDepartment(){
     this.departmentDirty = true;
+  }
+
+  changePermission(){
+    this.permissionDirty = true;
   }
 
   onCountryChange($event) {

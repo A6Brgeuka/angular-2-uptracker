@@ -116,13 +116,15 @@
               required
               (change)="changeLocation()"
               [materializeSelectOptions]="selectLocations">
+            <option value="">Please select one</option>
             <option *ngFor="let location of locationArr | iterable" [value]="location.key.id">{{location.key.name}}</option>
           </select>
         </div>
       </div>
-      <div class="col s12 m4">
+      <div class="col s12 m4 tutorial-mode">
+        <div class="helper"></div>
         <div class="label left-align">Tutorial Mode</div>
-        <div class="switch-mode">
+        <div class="switch-box">
           <div class="switcher active" [class.active]="user.tutorial_mode" (click)="toggleTutorialMode()">On</div>
           <div class="switcher" [class.active]="!user.tutorial_mode" (click)="toggleTutorialMode()">Off</div>
         </div>
@@ -132,7 +134,49 @@
 
 
   <div id="permissions">
-    Perm
+    <div class="input row">
+      <div class="col s12 m8">
+        <div class="label left-align">Permission Pre-sets</div>
+        <div class="select" [class.dirty]="permissionDirty">
+          <select
+              [(ngModel)]="selectedPermission"
+              name="permission"
+              #permission="ngModel"
+              materialize="material_select"
+              required
+              (change)="changePermission()"
+              [materializeSelectOptions]="selectPermissions">
+            <option value="">Please select one</option>
+            <option *ngFor="let permission of permissionArr | iterable" [value]="permission.value">{{permission.key}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col s12 m4 no-label">
+        <button type="button" class="not-submit">Add Pre-set</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m8">
+        <div class="preset-ttl">Pre-set name here</div>
+      </div>
+      <div class="col s12 m4">
+        <div class="switch-box">
+          <div class="switcher active" [class.active]="preset1" (click)="togglePreset(1)">On</div>
+          <div class="switcher" [class.active]="!preset1" (click)="togglePreset(1)">Off</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m8">
+        <div class="preset-ttl">Pre-set name here</div>
+      </div>
+      <div class="col s12 m4">
+        <div class="switch-box">
+          <div class="switcher active" [class.active]="preset2" (click)="togglePreset(2)">On</div>
+          <div class="switcher" [class.active]="!preset2" (click)="togglePreset(2)">Off</div>
+        </div>
+      </div>
+    </div>
   </div>
 
 

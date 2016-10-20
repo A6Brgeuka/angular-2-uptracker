@@ -37,7 +37,7 @@ export class UsersComponent implements OnInit {
       }
     });
 
-    // this.viewUserModal();
+    this.viewUserModal();
   }
 
   viewUserModal(){
