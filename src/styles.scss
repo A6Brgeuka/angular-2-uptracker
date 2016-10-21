@@ -191,53 +191,66 @@ button{
 
 /*** Forms
 *************************************************/
+@mixin form-field{
+  border-radius: 5px;
+  background-color: #f5f6f7;
+  border: 1px solid #d6d6d6;
+  margin: 8px 0 0;
+  box-shadow: none !important;
+  font-size:14px;
+  font-family: Lato;
+
+  &:focus {
+    border-color: $tealish;
+  }
+
+  & + .error {
+    display: none;
+  }
+
+  &.valid{
+    border-color: #4CAF50;
+  }
+
+  &.invalid {
+    border-color: #F44336;
+
+    & + .error {
+      display: block;
+    }
+  }
+}
+
 .uptracker-form{
   .input {
     margin-bottom: 25px;
 
     input {
       height: 40px;
-      border-radius: 5px;
-      background-color: #f5f6f7;
-      border: 1px solid #d6d6d6;
-      margin: 8px 0 0;
-      box-shadow: none !important;
+      @include form-field;
 
       &[type=file]{
         height:inherit;
         margin:0;
       }
-
-      &:focus {
-        border-color: $tealish;
-      }
-
-      & + .error {
-        display: none;
-      }
-
-      &.valid,
-      &.ng-valid{
-        border-color: #4CAF50;
-      }
-
-      &.invalid {
-        border-color: #F44336;
-
-        & + .error {
-          display: block;
-        }
-      }
-    }
-
-    .error {
-      font-size: 12px;
-      margin-top: 3px;
     }
   }
 
   .split-input-row {
     margin: 0 -0.75rem;
+  }
+
+  .textarea {
+    textarea{
+      @include form-field;
+      padding:10px;
+      min-height: 220px;
+    }
+  }
+
+  .error {
+    font-size: 12px;
+    margin-top: 3px;
   }
 
   .input-checkbox {
@@ -291,6 +304,7 @@ button{
       background-size:cover;
       position: relative;
       z-index: 5;
+      border-radius:5px;
 
       img{
         max-width:100%;
@@ -439,6 +453,16 @@ modal-overlay{
     .buttons{
       button{
         background:$tealish;
+      }
+    }
+
+    .uptracker-form{
+      .input{
+        input{
+          &.ng-valid{
+            border-color: #4CAF50;
+          }
+        }
       }
     }
   }

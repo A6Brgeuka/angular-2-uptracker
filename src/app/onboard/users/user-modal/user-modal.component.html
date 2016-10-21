@@ -185,7 +185,20 @@
 
 
   <div id="template">
-    Temp
+    <div class="ttl">P.O. Template</div>
+    <div class="textarea">
+      <textarea
+          id="template"
+          class="validate materialize-textarea col s12"
+          [(ngModel)]="user.template"
+          name="template"
+          #template="ngModel"
+          required>
+      </textarea>
+      <div [hidden]="template.valid || template.pristine" class="error red-text left-align">
+        P.O. Template required.
+      </div>
+    </div>
   </div>
 
 
