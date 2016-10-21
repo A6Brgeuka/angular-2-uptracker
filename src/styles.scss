@@ -49,6 +49,7 @@ a{
     &.ng-valid{
       input.select-dropdown{
         border-color: #4CAF50;
+        color:rgba(0, 0, 0, 0.87);
       }
     }
 
@@ -456,7 +457,7 @@ modal-overlay{
       }
     }
 
-    .uptracker-form{
+    .uptracker-form.ng-valid{
       .input{
         input{
           &.ng-valid{
