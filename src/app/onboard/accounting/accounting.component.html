@@ -1,18 +1,160 @@
 <div class="accounting content">
-  <div class="title">Set up your locations</div>
-  <div class="subtitle">Please enter one location per card below then click next.</div>
-  <div class="list left-align">
-    <div class="item" *ngFor="let location of locationArr" (click)="viewLocationModal(location)">
-      <div class="img">
-        <img src="{{location.image}}" alt="{{location.name}}" class="responsive-img" />
+  <div class="title">Enter your accounting details</div>
+  <div class="subtitle">Please provide details regarding your company’s accounting.</div>
+  <form class="uptracker-form left-align" materialize (ngSubmit)="onSubmit()" #accountingForm="ngForm" autocomplete="off" novalidate>
+    <div class="form-box white">
+      <div class="inner">
+        <div class="input row">
+          <div class="col s12">
+            <div class="label">When does your fiscal year start</div>
+            <input
+                id="date"
+                class="validate col s12"
+                placeholder="Select Date"
+                [(ngModel)]="accounting.date"
+                name="date"
+                #date="ngModel"
+                required
+                type="text">
+            <div [hidden]="date.valid || date.pristine" class="error red-text left-align">
+              Date is required.
+            </div>
+          </div>
+        </div>
+        <div class="input row">
+          <div class="col s12 m6">
+            <div class="label">Currency</div>
+            <div class="select" [class.dirty]="currencyDirty">
+              <select
+                  [(ngModel)]="accounting.currency"
+                  name="currency"
+                  #currency="ngModel"
+                  materialize="material_select"
+                  required
+                  (change)="changeCurrency()"
+                  [materializeSelectOptions]="currencyArr">
+                <option value="">Please select one</option>
+                <option value="">USD</option>
+                <option value="">EUR</option>
+                <option *ngFor="let currency of currencyArr | iterable" [value]="currency.key">{{currency.key}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col s12 m6">
+            <div class="label">Annual Income</div>
+            <div class="prefix-input">
+              <div class="prefix">{{currencySign}}</div>
+              <input
+                  id="income"
+                  class="validate col s12"
+                  placeholder="Enter amount here"
+                  [(ngModel)]="accounting.annual_income"
+                  name="income"
+                  #income="ngModel"
+                  required
+                  type="text">
+            </div>
+            <div [hidden]="income.valid || income.pristine" class="error red-text left-align">
+              Annual Income is required.
+            </div>
+          </div>
+        </div>
+        <div class="input row">
+          <div class="col s12 m6 with-helper">
+            <div class="helper"></div>
+            <div class="label">Annual Inventory Budget</div>
+            <div class="prefix-input">
+              <div class="prefix">{{currencySign}}</div>
+              <input
+                  id="budget"
+                  class="validate col s12"
+                  placeholder="Enter Value"
+                  [(ngModel)]="accounting.annual_inventory_budget"
+                  name="budget"
+                  #budget="ngModel"
+                  required
+                  type="text">
+            </div>
+            <div [hidden]="budget.valid || budget.pristine" class="error red-text left-align">
+              Annual Inventory Budget is required.
+            </div>
+          </div>
+          <div class="col s12 m6 with-helper">
+            <div class="helper"></div>
+            <div class="label">Total Net Receipts</div>
+            <div class="prefix-input">
+              <div class="prefix">{{currencySign}}</div>
+              <input
+                  id="receipts"
+                  class="validate col s12"
+                  placeholder="Enter Value"
+                  [(ngModel)]="accounting.annual_net_revenue"
+                  name="receipts"
+                  #receipts="ngModel"
+                  required
+                  type="text">
+            </div>
+            <div [hidden]="receipts.valid || receipts.pristine" class="error red-text left-align">
+              Total Net Receipts is required.
+            </div>
+          </div>
+        </div>
+        <div class="total-budget">
+          <div class="col s12"><div class="label main-label">Total Budget Distribution</div></div>
+          <div class="row">
+            <div class="top col s12">
+              <div class="label left">Location 1</div>
+              <div class="right">
+                <div class="value left">{{accounting.total[0]}}</div>
+                <div class="lock-box right" [class.locked]="!disabledRange[0]" (click)="toggleLock(0)"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="range-field col s12">
+              <input
+                  type="range"
+                  id="location0"
+                  min="0" max="1000000" step="1000"
+                  value="300000"
+                  [(ngModel)]="accounting.total[0]"
+                  [disabled]="disabledRange[0]"
+                  name="location0"
+                  #location0="ngModel">
+            </div>
+          </div>
+          <div class="row">
+            <div class="top col s12">
+              <div class="label left">Location 2</div>
+              <div class="right">
+                <div class="value left">{{accounting.total[1]}}</div>
+                <div class="lock-box right" [class.locked]="!disabledRange[1]" (click)="toggleLock(1)"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="range-field col s12">
+              <input
+                  type="range"
+                  id="location1"
+                  min="0" max="1000000" step="1000"
+                  value="100000"
+                  [(ngModel)]="accounting.total[1]"
+                  [disabled]="disabledRange[1]"
+                  name="location1"
+                  #location1="ngModel">
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="ttl">{{location.name}}</div>
     </div>
-    <div class="empty item" (click)="viewLocationModal()"></div>
-  </div>
-  <div class="buttons">
-    <button class="back waves-effect waves-light right" (click)="goBack()">Back</button>
-    <button class="next waves-effect waves-light right" (click)="goNext()">Next</button>
-    <div class="clearfix"></div>
-  </div>
+    <div class="buttons">
+      <button class="back left waves-effect waves-light" (click)="goBack()">Back</button>
+      <button class="next right waves-effect waves-light"
+              type="submit"
+              [class.disabled]="!accountingForm.form.valid"
+              [disabled]="!accountingForm.form.valid">
+        Done
+      </button>
+      <div class="clearfix"></div>
+    </div>
+  </form>
 </div>

@@ -97,6 +97,14 @@
                 //top:-9px;
               }
             }
+
+            &.accounting-nav{
+              left:-219px;
+
+              .img{
+                top:17px;
+              }
+            }
           }
         }
       }
@@ -164,6 +172,12 @@
               background-image:url(/assets/img/onboard/button-next-bg.svg);
               text-align:left;
               text-indent:37px;
+
+              &[disabled]{
+                opacity:0.4;
+                color:#fff;
+                backgound-color:transparent;
+              }
             }
 
             &.back{

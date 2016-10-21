@@ -103,7 +103,7 @@
               materialize="material_select"
               required
               (change)="changeDepartment()"
-              [materializeSelectOptions]="selectDepartments">
+              [materializeSelectOptions]="departmentArr">
             <option value="">Please select one</option>
             <option *ngFor="let department of departmentArr | iterable" [value]="department.value">{{department.key}}</option>
           </select>
@@ -119,7 +119,7 @@
               materialize="material_select"
               required
               (change)="changeLocation()"
-              [materializeSelectOptions]="selectLocations">
+              [materializeSelectOptions]="locationArr">
             <option value="">Please select one</option>
             <option *ngFor="let location of locationArr | iterable" [value]="location.key.id">{{location.key.name}}</option>
           </select>
@@ -148,7 +148,7 @@
               #permission="ngModel"
               materialize="material_select"
               (change)="changePermission()"
-              [materializeSelectOptions]="selectPermissions">
+              [materializeSelectOptions]="permissionArr">
             <option value="">Please select one</option>
             <option>Preset 1</option>
             <option>Preset 2</option>

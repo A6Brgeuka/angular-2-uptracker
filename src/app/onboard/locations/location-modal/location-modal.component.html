@@ -28,7 +28,7 @@
             materialize="material_select"
             required
             (change)="changeType()"
-            [materializeSelectOptions]="selectTypes">
+            [materializeSelectOptions]="typeArr">
           <option value="">Please select one</option>
           <option *ngFor="let type of typeArr" [value]="type">{{type}}</option>
         </select>
@@ -90,7 +90,7 @@
             materialize="material_select"
             required
             (change)="changeState()"
-            [materializeSelectOptions]="selectStates">
+            [materializeSelectOptions]="stateArr">
           <option value="">Please select one</option>
           <option *ngFor="let state of stateArr | iterable" [value]="state.key">{{state.value}}</option>
         </select>
