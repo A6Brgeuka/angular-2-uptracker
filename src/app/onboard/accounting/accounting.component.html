@@ -1,0 +1,18 @@
+<div class="accounting content">
+  <div class="title">Set up your locations</div>
+  <div class="subtitle">Please enter one location per card below then click next.</div>
+  <div class="list left-align">
+    <div class="item" *ngFor="let location of locationArr" (click)="viewLocationModal(location)">
+      <div class="img">
+        <img src="{{location.image}}" alt="{{location.name}}" class="responsive-img" />
+      </div>
+      <div class="ttl">{{location.name}}</div>
+    </div>
+    <div class="empty item" (click)="viewLocationModal()"></div>
+  </div>
+  <div class="buttons">
+    <button class="back waves-effect waves-light right" (click)="goBack()">Back</button>
+    <button class="next waves-effect waves-light right" (click)="goNext()">Next</button>
+    <div class="clearfix"></div>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { AuthGuard } from '../auth-guard.service';
 
 import { LocationsRoutes } from './locations/locations.routing';
 import { UsersRoutes } from './users/users.routing';
-import { ProductsRoutes } from './products/products.routing';
+import { AccountingRoutes } from './accounting/accounting.routing';
 
 export const OnboardRoutes = [
   {
@@ -15,7 +15,7 @@ export const OnboardRoutes = [
     children: [
       ...LocationsRoutes,
       ...UsersRoutes,
-      ...ProductsRoutes,
+      ...AccountingRoutes
     ]
   }
 ];

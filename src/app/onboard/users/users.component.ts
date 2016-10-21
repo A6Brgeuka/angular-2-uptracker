@@ -47,7 +47,7 @@ export class UsersComponent implements OnInit {
   }
   
   goNext(){
-    // this.router.navigate(['/onboard','products']);
+    this.router.navigate(['/onboard','accounting']);
   }
   
   upload(){
