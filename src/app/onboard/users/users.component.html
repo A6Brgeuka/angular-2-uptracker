@@ -7,7 +7,7 @@
   <div class="subtitle">Please add the people that will have access to your account.</div>
   <div class="users-row">
     <div class="list">
-      <div class="item center-align" *ngFor="let user of userArr">
+      <div class="item center-align" *ngFor="let user of userArr" (click)="viewUserModal(user)">
         <div class="img">
           <img src="{{user.avatar}}" alt="{{user.name}}" class="responsive-img" />
         </div>

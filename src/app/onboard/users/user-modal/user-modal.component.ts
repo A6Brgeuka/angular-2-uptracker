@@ -1,12 +1,13 @@
-import { Component, Output, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { UserService, AccountService, PhoneMaskService } from '../../../core/services/index';
+import { UserModel } from '../../../models/index';
 
 export class UserModalContext extends BSModalContext {
-  
+  public user: any;
 }
 
 @Component({
@@ -19,9 +20,7 @@ export class UserModalContext extends BSModalContext {
 })
 export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalContext> {
   context: UserModalContext;
-  user: any;
-  public selectedLocation = '';
-  public selectedDepartment = '';
+  public user: any;
   public selectedPermission = '';
   public locationArr: any;
   public departmentArr: any;
@@ -29,7 +28,7 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
   public permissionDirty: boolean = false;
-  public locationFormPhone: string = null;
+  public profileFormPhone: string = null;
   // default country for phone input
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
@@ -52,9 +51,14 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   }
 
   ngOnInit(){
-    this.user = {
-      tutorial_mode: true
-    };
+    let userData = this.context.user || { tutorial_mode: true };
+    this.user = new UserModel(userData);
+    if (this.context.user){
+      this.uploadedImage = this.user.avatar;
+
+      this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
+      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
+    }
     this.locationArr = this.userService.selfData.account.locations;
     this.departmentArr = this.accountService.departmentCollection || null;
     this.preset = [false, true, false];
@@ -63,14 +67,6 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   closeModal(){
     this.dialog.close();
   }
-
-  // beforeDismiss(): boolean {
-  //   return true;
-  // }
-  //
-  // beforeClose(): boolean {
-  //   return true;
-  // }
 
   changeLocation(){
     this.locationDirty = true;
@@ -85,12 +81,6 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   }
 
   onCountryChange($event) {
-    // TODO: change phone mask dynamically if necessary
-    // this.phoneMask = [ /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
-    // let codeArr = country[2].split('');
-    // codeArr.unshift('+');
-    // codeArr.push(' ', ' ');
-    // this.phoneMask = codeArr.concat(this.phoneMask);
     this.selectedCountry = $event;
   }
 
@@ -128,18 +118,16 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
 
   onSubmit(){
     this.user.account_id = this.userService.selfData.account_id;
-    this.user.default_location = this.selectedLocation;
-    this.user.department = this.selectedDepartment;
-    this.user.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
+    this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
     debugger;
-    // this.accountService.addLocation(this.user).subscribe(
-    //     (res: any) => {
-    //       let user = this.userService.selfData;
-    //       user.account = res.data.account;
-    //       this.userService.updateSelfData(user);
-    //       this.closeModal();
-    //     }
-    // );
+    this.accountService.addUser(this.user).subscribe(
+        (res: any) => {
+          // let user = this.userService.selfData;
+          // user.account = res.data.account;
+          // this.userService.updateSelfData(user);
+          this.closeModal();
+        }
+    );
   }
 }

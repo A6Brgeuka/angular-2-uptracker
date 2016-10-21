@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -19,19 +18,19 @@ export class LocationModalContext extends BSModalContext {
   templateUrl: './location-modal.component.html',
   styleUrls: ['./location-modal.component.scss']
 })
-export class LocationModal implements CloseGuard, ModalComponent<LocationModalContext> {
+export class LocationModal implements OnInit, CloseGuard, ModalComponent<LocationModalContext> {
   context: LocationModalContext;
-  location: LocationModel;
-  stateArr = {};
-  typeArr = {};
-  typeDirty: boolean = false;
-  stateDirty: boolean = false;
-  locationFormPhone: string = null;
-  locationFormFax: string = null;
+  public location: LocationModel;
+  public stateArr = {};
+  public typeArr = {};
+  public typeDirty: boolean = false;
+  public stateDirty: boolean = false;
+  public locationFormPhone: string = null;
+  public locationFormFax: string = null;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
   // default country for phone input
-  selectedCountry: any = this.phoneMaskService.defaultCountry;
-  selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
+  public selectedCountry: any = this.phoneMaskService.defaultCountry;
+  public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
   uploadedImage;
   fileIsOver: boolean = false;
@@ -40,8 +39,6 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   };
 
   constructor(
-      public router: Router,
-      private activatedRoute: ActivatedRoute,
       public dialog: DialogRef<LocationModalContext>,
       private toasterService: ToasterService,
       private userService: UserService,
@@ -78,16 +75,6 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
   closeModal(){
     this.dialog.dismiss();
   }
-
-  // TODO: remove if not necessary
-  // lifecycle functions
-  // beforeDismiss(): boolean {
-  //   return false;
-  // }
-  //
-  // beforeClose(): boolean {
-  //   return true;
-  // }
 
   changeState(){
     this.stateDirty = true;
@@ -136,9 +123,6 @@ export class LocationModal implements CloseGuard, ModalComponent<LocationModalCo
     this.location.image = this.uploadedImage;
     this.accountService.addLocation(this.location).subscribe(
       (res: any) => {
-        let user = this.userService.selfData;
-        user.account = res.data.account;
-        this.userService.updateSelfData(user);
         this.closeModal();
       }
     );

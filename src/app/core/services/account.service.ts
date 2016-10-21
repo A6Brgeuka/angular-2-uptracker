@@ -119,4 +119,10 @@ export class AccountService extends ModelService{
       });
     }
   }
+
+  addUser(data){
+    return this.resource.addUser(data).$observable.do((res: any) => {
+      // this.updateSelfData(res.data.account);
+    });
+  }
 }
