@@ -74,9 +74,16 @@ export class AccountService extends ModelService{
   }
 
   getLocations(){
-    let data: any = {};
-    data.account_id = this.userService.selfData.account_id;
-    return this.resource.getLocations(data).$observable;
+    let data: any = {
+      account_id: this.userService.selfData.account_id
+    };
+    if (!this.selfData.locations) {
+      return this.resource.getLocations(data).$observable.do((res: any) => {
+        let account = this.userService.selfData.account;
+        account.locations = res.data.locations;
+        this.updateSelfData(account);
+      });
+    }
   }
 
   getStates(){
@@ -122,6 +129,12 @@ export class AccountService extends ModelService{
 
   addUser(data){
     return this.resource.addUser(data).$observable.do((res: any) => {
+      // this.updateSelfData(res.data.account);
+    });
+  }
+
+  putAccounting(data){
+    return this.resource.putAccounting(data).$observable.do((res: any) => {
       // this.updateSelfData(res.data.account);
     });
   }

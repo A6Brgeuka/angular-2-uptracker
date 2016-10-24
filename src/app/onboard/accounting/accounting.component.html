@@ -7,16 +7,21 @@
         <div class="input row">
           <div class="col s12">
             <div class="label">When does your fiscal year start</div>
-            <input
-                id="date"
-                class="validate col s12"
-                placeholder="Select Date"
-                [(ngModel)]="accounting.date"
-                name="date"
-                #date="ngModel"
-                required
-                type="text">
-            <div [hidden]="date.valid || date.pristine" class="error red-text left-align">
+            <div class="select" [class.dirty]="monthDirty">
+              <select
+                  [(ngModel)]="accounting.fiscal_year"
+                  name="fiscal_year"
+                  #fiscal_year="ngModel"
+                  materialize="material_select"
+                  class="validate"
+                  required
+                  (change)="changeDate()"
+                  [materializeSelectOptions]="monthArr">
+                <option value="">Select Date</option>
+                <option *ngFor="let month of monthArr" [value]="month">{{month}}</option>
+              </select>
+            </div>
+            <div [hidden]="fiscal_year.valid || fiscal_year.pristine" class="error red-text left-align">
               Date is required.
             </div>
           </div>
@@ -101,48 +106,48 @@
         </div>
         <div class="total-budget">
           <div class="col s12"><div class="label main-label">Total Budget Distribution</div></div>
-          <div class="row">
+          <div class="row" *ngFor="let location of locationArr; let i=index">
             <div class="top col s12">
-              <div class="label left">Location 1</div>
+              <div class="label left">{{location.name}}</div>
               <div class="right">
-                <div class="value left">{{accounting.total[0]}}</div>
-                <div class="lock-box right" [class.locked]="!disabledRange[0]" (click)="toggleLock(0)"></div>
+                <div class="value left">{{accounting.total[i]}}</div>
+                <div class="lock-box right" [class.locked]="disabledRange[i]" (click)="toggleLock(i)"></div>
               </div>
               <div class="clearfix"></div>
             </div>
             <div class="range-field col s12">
               <input
                   type="range"
-                  id="location0"
+                  id="location{{i}}"
                   min="0" max="1000000" step="1000"
                   value="300000"
-                  [(ngModel)]="accounting.total[0]"
-                  [disabled]="disabledRange[0]"
-                  name="location0"
-                  #location0="ngModel">
+                  [(ngModel)]="accounting.total[i]"
+                  [disabled]="disabledRange[i]"
+                  name="location{{i}}"
+                  #location{{i}}="ngModel">
             </div>
           </div>
-          <div class="row">
-            <div class="top col s12">
-              <div class="label left">Location 2</div>
-              <div class="right">
-                <div class="value left">{{accounting.total[1]}}</div>
-                <div class="lock-box right" [class.locked]="!disabledRange[1]" (click)="toggleLock(1)"></div>
-              </div>
-              <div class="clearfix"></div>
-            </div>
-            <div class="range-field col s12">
-              <input
-                  type="range"
-                  id="location1"
-                  min="0" max="1000000" step="1000"
-                  value="100000"
-                  [(ngModel)]="accounting.total[1]"
-                  [disabled]="disabledRange[1]"
-                  name="location1"
-                  #location1="ngModel">
-            </div>
-          </div>
+          <!--<div class="row">-->
+            <!--<div class="top col s12">-->
+              <!--<div class="label left">Location 2</div>-->
+              <!--<div class="right">-->
+                <!--<div class="value left">{{accounting.total[1]}}</div>-->
+                <!--<div class="lock-box right" [class.locked]="disabledRange[1]" (click)="toggleLock(1)"></div>-->
+              <!--</div>-->
+              <!--<div class="clearfix"></div>-->
+            <!--</div>-->
+            <!--<div class="range-field col s12">-->
+              <!--<input-->
+                  <!--type="range"-->
+                  <!--id="location1"-->
+                  <!--min="0" max="1000000" step="1000"-->
+                  <!--value="100000"-->
+                  <!--[(ngModel)]="accounting.total[1]"-->
+                  <!--[disabled]="disabledRange[1]"-->
+                  <!--name="location1"-->
+                  <!--#location1="ngModel">-->
+            <!--</div>-->
+          <!--</div>-->
         </div>
       </div>
     </div>

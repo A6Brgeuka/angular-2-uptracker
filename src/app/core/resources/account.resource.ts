@@ -62,4 +62,10 @@ export class AccountResource extends CustomResourceCRUD {
     path: '/users'
   })
   addUser: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Post,
+    path: '/accounts/{!account_id}'
+  })
+  putAccounting: ResourceMethod<any, any>;
 }

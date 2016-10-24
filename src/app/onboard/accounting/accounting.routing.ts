@@ -8,10 +8,6 @@ export const AccountingRoutes = [
   {
     path: 'accounting',
     component: AccountingComponent,
-    canActivate: [],
-    // resolve: {
-    //   stateCollection: StateCollectionResolve, 
-    //   locationTypesCollection: LocationTypesCollectionResolve
-    // }
-  },
+    canActivate: []
+  }
 ];
