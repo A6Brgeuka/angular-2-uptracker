@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { UserService } from '../../../core/services/index';
 
@@ -8,8 +8,10 @@ import { UserService } from '../../../core/services/index';
   styleUrls: ['./user-dropdown-menu.component.scss']
 })
 export class UserDropdownMenuDirective implements OnInit {
+  @Input() onlyLogout;
   public userName: string;
   public userShortName: string;
+  public showMenu: boolean;
 
   public constructor(
       private userService: UserService
@@ -17,6 +19,7 @@ export class UserDropdownMenuDirective implements OnInit {
   }
 
   ngOnInit(){
+    this.showMenu = !this.onlyLogout; 
     this.userName = this.userService.selfData.name;
     let nameArr = this.userName.split(" ");
     let firstname = nameArr[0];

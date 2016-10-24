@@ -27,7 +27,7 @@ export class LoginComponent {
             (res: any) => {
               // check account status and set redirect link
               let redLink: string = '';
-              let account_status: any = this.userService.selfData.account.status || null;
+              let account_status: any = this.userService.selfData.account ? this.userService.selfData.account.status || null : null;
               account_status != 2 ? redLink='/onboard/locations' : redLink='/dashboard';
 
               // Get the redirect URL from service

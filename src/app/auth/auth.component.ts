@@ -20,7 +20,7 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(){
     this.showUserMenu$ = this.router.events.map(res =>{
-      return this.stateService.arrIsPartUrl(['email-verification','about-company', 'payment-info', 'signup/congrats']);
+      return this.stateService.arrIsPartUrl(['email-verification', 'about-company', 'payment-info', 'signup/congrats']);
     });
   }
 }

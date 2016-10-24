@@ -5,7 +5,7 @@
     </div>
     <div class="main-box">
       <div class="signup-user-menu" *ngIf="showUserMenu$ | async">
-        <user-dropdown-menu></user-dropdown-menu>
+        <user-dropdown-menu onlyLogout="true"></user-dropdown-menu>
       </div>
       <router-outlet></router-outlet>
     </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+
+import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, ToasterService, SpinnerService } from '../../core/services/index';
 
 @Component({
@@ -7,7 +9,9 @@ import { UserService, ToasterService, SpinnerService } from '../../core/services
   templateUrl: './email-verification.component.html',
   styleUrls: ['./email-verification.component.scss']
 })
+@DestroySubscribers()
 export class EmailVerificationComponent implements OnInit {
+  private subscribers: any = {};
   tokenParam: string;
   buttonDisabled: boolean = false;
 
@@ -35,7 +39,7 @@ export class EmailVerificationComponent implements OnInit {
     }
 
     // email validation
-    this.userService.verification(this.tokenParam)
+    this.subscribers.verificationSubscription = this.userService.verification(this.tokenParam)
         .subscribe(
             (res: any) => {
               this.router.navigate(['/onboard', 'locations']);
@@ -47,7 +51,7 @@ export class EmailVerificationComponent implements OnInit {
   }
   
   onResend() {
-    this.userService.resendVerification()
+    this.subscribers.resendSubscription = this.userService.resendVerification()
         .subscribe(
             (res: any) => {
               this.toasterService.pop('', res.message);
