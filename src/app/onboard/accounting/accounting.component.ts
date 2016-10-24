@@ -29,12 +29,16 @@ export class AccountingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.accounting = {
+      total: [],
+      budget_distribution: []
+    };
     this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) {
         this.locationArr = res.account.locations;
         for (let i=0; i<this.locationArr.length; i++){
-          this.disabledRange[i] = false;
-          this.accounting.total[i] = 100000;
+          this.disabledRange.push(false);
+          this.accounting.total.push(0);
         }
       }
     });
@@ -44,7 +48,7 @@ export class AccountingComponent implements OnInit {
     this.currencyDirty = true;
   }
 
-  changeMonth(){
+  changeDate(){
     this.monthDirty = true;
   }
 
@@ -66,7 +70,7 @@ export class AccountingComponent implements OnInit {
     }
     this.accountService.putAccounting(this.accounting).subscribe(
         (res: any) => {
-          this.router.navigate(['/dashboard']);
+          // this.router.navigate(['/dashboard']);
         }
     );
   }

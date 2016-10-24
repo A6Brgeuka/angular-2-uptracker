@@ -64,8 +64,14 @@ export class AccountResource extends CustomResourceCRUD {
   addUser: ResourceMethod<any, any>;
 
   @ResourceAction({
-    method: RequestMethod.Post,
+    method: RequestMethod.Put,
     path: '/accounts/{!account_id}'
   })
   putAccounting: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Get,
+    path: '/config/currencies'
+  })
+  getCurrencies: ResourceMethod<any, any>;
 }

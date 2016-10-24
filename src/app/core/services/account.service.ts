@@ -21,6 +21,7 @@ export class AccountService extends ModelService{
   stateCollection: any;
   departmentCollection: any;
   userCollection: any;
+  currencyCollection: any;
   
   constructor(
     public injector: Injector,
@@ -137,5 +138,13 @@ export class AccountService extends ModelService{
     return this.resource.putAccounting(data).$observable.do((res: any) => {
       // this.updateSelfData(res.data.account);
     });
+  }
+
+  getCurrencies(){
+    if (!this.currencyCollection) {
+      return this.resource.getCurrencies().$observable.do((res: any) => {
+        this.currencyCollection = res.data;
+      });
+    }
   }
 }

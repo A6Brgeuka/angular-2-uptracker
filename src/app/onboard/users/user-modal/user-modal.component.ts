@@ -60,7 +60,7 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     }
     this.locationArr = this.userService.selfData.account.locations;
-    this.departmentArr = this.accountService.departmentCollection || null;
+    this.departmentArr = this.accountService.departmentCollection;
     this.preset = [false, true, false];
   }
 

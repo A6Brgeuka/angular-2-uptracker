@@ -29,9 +29,7 @@
               <a>Upload a photo</a>
             </div>
           </div>
-          <div class="img" *ngIf="uploadedImage">
-            <img src="{{uploadedImage}}" alt="" />
-          </div>
+          <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }"></div>
         </div>
       </div>
       <div class="col s12 m8 input second-column">

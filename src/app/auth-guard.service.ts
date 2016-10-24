@@ -83,12 +83,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     // return true;
   }
 
-  checkOnboard(url: string): boolean {
-    if (!this.checkAuth(url)) {
-      return false;
-    }
-
-    return true;
+  checkOnboard(url: string): boolean { 
+    return this.checkAuth(url);
   }
 
   checkDashboard(url: string): boolean {
