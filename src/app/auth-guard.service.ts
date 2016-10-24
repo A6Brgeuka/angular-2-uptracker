@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-    let user$ = this.userService.loadSelfData().map((res) => {
+    let user$ = this.userService.loadSelfData().map((res) => { 
       // if guest remove self data
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());

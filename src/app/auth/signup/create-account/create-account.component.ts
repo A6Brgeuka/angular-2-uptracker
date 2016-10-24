@@ -30,7 +30,7 @@ export class CreateAccountComponent implements OnInit {
 
   ngOnInit() {
     this.signupAccount = this.userService.selfData || new UserModel();
-    let phone = this.userService.selfData ? this.userService.selfData.phone || null : null; console.log(phone);
+    let phone = this.userService.selfData ? this.userService.selfData.phone || null : null;
     this.signupFormPhone = this.phoneMaskService.getPhoneByIntlPhone(phone);
     this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(phone);
   }

@@ -1,8 +1,13 @@
 <div class="auth-wrapper">
   <div class="auth-content">
     <div class="logo">
-      <a [routerLink]="['']">uptracker</a>
+      <a [routerLink]="['/']">uptracker</a>
     </div>
-    <router-outlet></router-outlet>
+    <div class="main-box">
+      <div class="signup-user-menu" *ngIf="showUserMenu$ | async">
+        <user-dropdown-menu></user-dropdown-menu>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

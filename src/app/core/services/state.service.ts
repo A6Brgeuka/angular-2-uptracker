@@ -28,4 +28,17 @@ export class StateService {
     let re = new RegExp(part, 'gi');
     return this.navigationEndUrl.search(re) >= 0;
   }
+  
+  arrIsPartUrl(arr: any = []) {
+    let re: RegExp;
+    let self = this;
+    let j = 0;
+    arr.forEach((part, i, arr) => {
+      if (self.isPartUrl(part)) {
+        j++;
+      }
+    });
+    return j > 0;
+  }
+
 }

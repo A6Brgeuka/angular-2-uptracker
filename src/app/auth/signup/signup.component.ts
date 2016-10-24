@@ -1,18 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { UserService } from '../../core/services/index';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-signup',
   styleUrls: [ './signup.style.scss' ],
   templateUrl: './signup.template.html'
 })
-export class SignupComponent {
+export class SignupComponent{
 
   constructor(
-      private userService: UserService,
-      private router: Router
   ) {
   }
 }

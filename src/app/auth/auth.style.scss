@@ -1,4 +1,15 @@
 :host /deep/ {
+  .main-box{
+    position:relative;
+
+    .signup-user-menu{
+      position:absolute;
+      right:0px;
+      top:0px;
+      width:100%;
+    }
+  }
+
   .auth-wrapper {
     min-height:100vh;
     background: #33c6d9;
