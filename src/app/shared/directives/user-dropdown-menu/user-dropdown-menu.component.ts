@@ -8,6 +8,8 @@ import { UserService } from '../../../core/services/index';
   styleUrls: ['./user-dropdown-menu.component.scss']
 })
 export class UserDropdownMenuDirective implements OnInit {
+  public userName: string;
+  public userShortName: string;
 
   public constructor(
       private userService: UserService
@@ -15,6 +17,13 @@ export class UserDropdownMenuDirective implements OnInit {
   }
 
   ngOnInit(){
+    this.userName = this.userService.selfData.name;
+    let nameArr = this.userName.split(" ");
+    let firstname = nameArr[0];
+    let lastname = nameArr[nameArr.length-1];
+    let shortFirstname = firstname.split("")[0];
+    let shortLastname = lastname.split("")[0];
+    this.userShortName = shortFirstname + shortLastname;
   }
 
   logOut(){

@@ -121,13 +121,13 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
     debugger;
-    this.accountService.addUser(this.user).subscribe(
-        (res: any) => {
-          // let user = this.userService.selfData;
-          // user.account = res.data.account;
-          // this.userService.updateSelfData(user);
-          this.closeModal();
-        }
-    );
+    // this.accountService.addUser(this.user).subscribe(
+    //     (res: any) => {
+    //       // let user = this.userService.selfData;
+    //       // user.account = res.data.account;
+    //       // this.userService.updateSelfData(user);
+    //       this.closeModal();
+    //     }
+    // );
   }
 }
