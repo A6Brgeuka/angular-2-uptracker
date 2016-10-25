@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { AccountingComponent } from './accounting.component';
-// import { LOCATIONS_RESOLVER_PROVIDERS } from './locations-resolve.service';
+import { ACCOUNTING_RESOLVER_PROVIDERS } from './accounting-resolve.service';
 import { AppSharedModule } from '../../shared/shared.module';
 
 @NgModule({
@@ -12,7 +12,7 @@ import { AppSharedModule } from '../../shared/shared.module';
     AppSharedModule
   ],
   providers: [
-      // ...LOCATIONS_RESOLVER_PROVIDERS
+      ...ACCOUNTING_RESOLVER_PROVIDERS
   ]
 })
 export class AccountingModule {

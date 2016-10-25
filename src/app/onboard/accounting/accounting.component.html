@@ -39,9 +39,7 @@
                   (change)="changeCurrency()"
                   [materializeSelectOptions]="currencyArr">
                 <option value="">Please select one</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option *ngFor="let currency of currencyArr | iterable" [value]="currency.key">{{currency.key}}</option>
+                <option *ngFor="let currency of currencyArr" [value]="currency.iso_code">{{currency.name}}</option>
               </select>
             </div>
           </div>
@@ -104,9 +102,9 @@
             </div>
           </div>
         </div>
-        <div class="total-budget" *ngIf="locationArr.length > 0">
+        <div class="total-budget row" *ngIf="locationArr.length > 0">
           <div class="col s12"><div class="label main-label">Total Budget Distribution</div></div>
-          <div class="row" *ngFor="let location of locationArr; let i=index">
+          <div class="location-budget" *ngFor="let location of locationArr; let i=index">
             <div class="top col s12">
               <div class="label left">{{location.name}}</div>
               <div class="right">

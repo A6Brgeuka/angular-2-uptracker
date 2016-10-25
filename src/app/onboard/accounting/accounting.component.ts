@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import * as lodashSort from 'lodash/sortBy';
+import * as lodashFind from 'lodash/find';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { UserService, AccountService } from '../../core/services/index';
@@ -42,10 +44,15 @@ export class AccountingComponent implements OnInit {
         }
       }
     });
+    this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
+      this.currencyArr = lodashSort(res.data, 'priority');
+    });
   }
 
   changeCurrency(){
+    let currency = lodashFind(this.currencyArr, {'iso_code': this.accounting.currency});
     this.currencyDirty = true;
+    // this.currencySign = currency ? currency['html_entity'] : '$';
   }
 
   changeDate(){
@@ -68,6 +75,7 @@ export class AccountingComponent implements OnInit {
         annual_budget: this.accounting.total[i]
       }
     }
+    debugger;
     // this.accountService.putAccounting(this.accounting).subscribe(
     //   (res: any) => {
     //     this.router.navigate(['/dashboard']);

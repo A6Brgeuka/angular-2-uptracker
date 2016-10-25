@@ -71,7 +71,7 @@ export class AccountResource extends CustomResourceCRUD {
 
   @ResourceAction({
     method: RequestMethod.Get,
-    path: '/config/currencies'
+    path: '/config/currency'
   })
   getCurrencies: ResourceMethod<any, any>;
 }
