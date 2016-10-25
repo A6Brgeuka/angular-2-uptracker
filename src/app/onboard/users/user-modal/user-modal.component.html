@@ -23,7 +23,7 @@
              [options]="options"
              (fileOver)="fileOver($event)"
              (onFileDrop)="onFileDrop($event)">
-          <div class="file-field">
+          <div class="file-field" *ngIf="!uploadedImage">
             <div class="upload-link">
               <input type="file" accept="image/*" (change)="changeListener($event)" />
               <a>Upload a photo</a>
@@ -103,7 +103,7 @@
               (change)="changeDepartment()"
               [materializeSelectOptions]="departmentArr">
             <option value="">Please select one</option>
-            <option *ngFor="let department of departmentArr | iterable" [value]="department.value">{{department.key}}</option>
+            <option *ngFor="let department of departmentArr | iterable" [value]="department.key">{{department.key}}</option>
           </select>
         </div>
       </div>
