@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { UserService, AccountService, PhoneMaskService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
@@ -18,7 +19,9 @@ export class UserModalContext extends BSModalContext {
   templateUrl: './user-modal.component.html',
   styleUrls: ['./user-modal.component.scss']
 })
+@DestroySubscribers()
 export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalContext> {
+  private subscribers: any = {};
   context: UserModalContext;
   public user: any;
   public selectedPermission = '';
@@ -55,12 +58,14 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     this.user = new UserModel(userData);
     if (this.context.user){
       this.uploadedImage = this.user.avatar;
-
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     }
     this.locationArr = this.userService.selfData.account.locations;
-    this.departmentArr = this.accountService.departmentCollection;
+    
+    this.subscribers.getDepartments = this.accountService.getDepartments().subscribe((res) => {
+      this.departmentArr = res.data;
+    });
     this.preset = [false, true, false];
   }
 

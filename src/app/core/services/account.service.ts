@@ -17,11 +17,10 @@ export class AccountService extends ModelService{
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
   
-  locationTypeCollection: any;
-  stateCollection: any;
-  departmentCollection: any;
-  userCollection: any;
-  currencyCollection: any;
+  locationTypeCollection$ = Observable.empty();
+  stateCollection$ = Observable.empty();
+  currencyCollection$ = Observable.empty();
+  departmentCollection$ = Observable.empty();
   
   constructor(
     public injector: Injector,
@@ -89,19 +88,21 @@ export class AccountService extends ModelService{
   }
 
   getStates(){
-    if (!this.stateCollection) {
-      return this.resource.getStates().$observable.do((res: any) => {
-        this.stateCollection = res.data;
-      });
-    }
+    return this.stateCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.stateCollection$ = this.resource.getStates().$observable.publishReplay(1).refCount();
+      }
+      return this.stateCollection$;
+    });
   }
 
   getLocationTypes(){
-    if (!this.locationTypeCollection) {
-      return this.resource.getLocationTypes().$observable.do((res: any) => {
-        this.locationTypeCollection = res.data;
-      });
-    }
+    return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.locationTypeCollection$ = this.resource.getLocationTypes().$observable.publishReplay(1).refCount();
+      }
+      return this.locationTypeCollection$;
+    });
   }
 
   addLocation(data){
@@ -111,12 +112,12 @@ export class AccountService extends ModelService{
   }
 
   getDepartments(){
-    if (!this.departmentCollection) {
-      return this.resource.getDepartments().$observable.do((res: any) => {
-        // this.departmentCollection$ = new Observable.of(res.data);
-        this.departmentCollection = res.data;
-      });
-    }
+    return this.departmentCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.departmentCollection$ = this.resource.getDepartments().$observable.publishReplay(1).refCount();
+      }
+      return this.departmentCollection$;
+    });
   }
 
   getUsers(){
@@ -146,10 +147,11 @@ export class AccountService extends ModelService{
   }
 
   getCurrencies(){
-    if (!this.currencyCollection) {
-      return this.resource.getCurrencies().$observable.do((res: any) => {
-        this.currencyCollection = res.data;
-      });
-    }
+    return this.currencyCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.currencyCollection$ = this.resource.getCurrencies().$observable.publishReplay(1).refCount();
+      }
+      return this.currencyCollection$;
+    });
   }
 }

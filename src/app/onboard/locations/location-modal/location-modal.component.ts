@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
@@ -18,7 +19,9 @@ export class LocationModalContext extends BSModalContext {
   templateUrl: './location-modal.component.html',
   styleUrls: ['./location-modal.component.scss']
 })
+@DestroySubscribers()
 export class LocationModal implements OnInit, CloseGuard, ModalComponent<LocationModalContext> {
+  private subscribers: any = {};
   context: LocationModalContext;
   public location: LocationModel;
   public stateArr = {};
@@ -68,8 +71,13 @@ export class LocationModal implements OnInit, CloseGuard, ModalComponent<Locatio
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
     }
     
-    this.stateArr = this.accountService.stateCollection || null;
-    this.typeArr = this.accountService.locationTypeCollection || null;
+    this.subscribers.getStates = this.accountService.getStates().subscribe((res) => {
+      this.stateArr = res.data;
+    });
+    
+    this.subscribers.getLocationTypes = this.accountService.getLocationTypes().subscribe((res) => {
+      this.typeArr = res.data;
+    });
   }
 
   closeModal(){

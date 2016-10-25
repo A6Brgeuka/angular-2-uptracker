@@ -104,7 +104,7 @@
             </div>
           </div>
         </div>
-        <div class="total-budget">
+        <div class="total-budget" *ngIf="locationArr.length > 0">
           <div class="col s12"><div class="label main-label">Total Budget Distribution</div></div>
           <div class="row" *ngFor="let location of locationArr; let i=index">
             <div class="top col s12">

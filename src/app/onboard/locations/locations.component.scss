@@ -23,11 +23,13 @@
     }
 
     .img{
-      min-height:293px;
+      height:293px;
+      background:transparent no-repeat center center;
 
       img{
         display:block;
         height:100%;
+        margin:0 auto;
       }
     }
 
