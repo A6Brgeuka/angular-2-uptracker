@@ -1,15 +1,4 @@
 :host /deep/ {
-  .main-box{
-    position:relative;
-
-    .signup-user-menu{
-      position:absolute;
-      right:0px;
-      top:0px;
-      width:100%;
-    }
-  }
-
   .auth-wrapper {
     min-height:100vh;
     background: #33c6d9;
@@ -17,6 +6,7 @@
     .auth-content {
       max-width: 760px;
       margin: 0 auto;
+      position:relative;
 
       .logo{
         padding:57px 0 50px;
@@ -29,6 +19,26 @@
 
           &:hover {
             text-decoration: none;
+          }
+        }
+      }
+
+      .signup-user-menu{
+        position:absolute;
+        right:0px;
+        top:0px;
+        width:100%;
+
+        .user-menu{
+          right:0;
+
+          .btn-floating{
+            background:#fff;
+            color:#33c6d9;
+          }
+
+          .name{
+            color:#fff;
           }
         }
       }
