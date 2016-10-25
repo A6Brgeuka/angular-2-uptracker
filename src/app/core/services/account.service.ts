@@ -113,6 +113,7 @@ export class AccountService extends ModelService{
   getDepartments(){
     if (!this.departmentCollection) {
       return this.resource.getDepartments().$observable.do((res: any) => {
+        // this.departmentCollection$ = new Observable.of(res.data);
         this.departmentCollection = res.data;
       });
     }

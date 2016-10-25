@@ -34,7 +34,7 @@ export class AccountingComponent implements OnInit {
       budget_distribution: []
     };
     this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
-      if (res.account) {
+      if (res.account) { 
         this.locationArr = res.account.locations;
         for (let i=0; i<this.locationArr.length; i++){
           this.disabledRange.push(false);
@@ -68,11 +68,11 @@ export class AccountingComponent implements OnInit {
         annual_budget: this.accounting.total[i]
       }
     }
-    this.accountService.putAccounting(this.accounting).subscribe(
-        (res: any) => {
-          // this.router.navigate(['/dashboard']);
-        }
-    );
+    // this.accountService.putAccounting(this.accounting).subscribe(
+    //   (res: any) => {
+    //     this.router.navigate(['/dashboard']);
+    //   }
+    // );
   }
 
 }

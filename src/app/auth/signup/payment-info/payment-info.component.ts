@@ -11,19 +11,17 @@ import { UserService, CardService, AccountService, SpinnerService } from '../../
   styleUrls: ['./payment-info.component.scss']
 })
 export class PaymentInfoComponent implements OnInit {
-  creditCard: CreditCardModel;
-  trialCode: string;
+  public creditCard: CreditCardModel;
+  public trialCode: string;
+  public cardMask: any;
   public masks = {
-    card: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
-    cardOther: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
-    cardAmex: [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/],
     expYear: [ /\d/, /\d/],
-    cvc: [ /\d/, /\d/, /\d/],
+    cvc: [ /\d/, /\d/, /\d/, /\d/]
   };
   public selectMonth = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   public selectYear = [];
-  yearDirty: boolean = false;
-  monthDirty: boolean = false;
+  public yearDirty: boolean = false;
+  public monthDirty: boolean = false;
 
   constructor(
       private router: Router,
@@ -35,6 +33,16 @@ export class PaymentInfoComponent implements OnInit {
     let signupStep = this.userService.currentSignupStep();
     if (signupStep && signupStep < 3) {
       this.router.navigate(['/signup']);
+    }
+    this.cardMask = function(value){
+      let cardOther = [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+      let cardAmex = [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/];
+      let cardStr = '' + value;
+      let cardArr = cardStr.split("");
+      if (cardArr[0] == '3' && (cardArr[1] == '4' || cardArr[1] == '7'))
+        return cardAmex;
+      else
+        return cardOther;
     }
   }
 
@@ -53,15 +61,6 @@ export class PaymentInfoComponent implements OnInit {
 
   changeMonth(){
     this.monthDirty = true;
-  }
-
-  checkMask(){
-    let cardStr = '' + this.creditCard.cardNumber;
-    let cardArr = cardStr.split("");
-    if (cardArr[0] == '3' && (cardArr[1] == '4' || cardArr[1] == '7'))
-      this.masks.card = this.masks.cardAmex;
-    else
-      this.masks.card = this.masks.cardOther;
   }
 
   onSubmit(){

@@ -11,13 +11,11 @@ import { CoreModule } from "../core/core.module";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import * as directives from "./index";
-import MaskedInput from 'angular2-text-mask';
+import { TextMaskModule } from 'angular2-text-mask';
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
-  directives.UserDropdownMenuDirective,
-
-  MaskedInput
+  directives.UserDropdownMenuDirective
 ];
 
 
@@ -37,7 +35,8 @@ let pipesArr = [
 
     CoreModule,
     MaterializeModule,
-    FileDropModule
+    FileDropModule,
+    TextMaskModule
   ],
   declarations: [
     ...directivesArr,
@@ -53,6 +52,7 @@ let pipesArr = [
     
     MaterializeModule,
     FileDropModule,
+    TextMaskModule,
     
     ...directivesArr,
     ...pipesArr
