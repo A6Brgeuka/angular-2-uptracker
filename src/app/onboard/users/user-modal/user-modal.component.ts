@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import * as lodashMap from 'lodash/map';
+import * as lodashFind from 'lodash/find';
 
 import { UserService, AccountService, PhoneMaskService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
@@ -54,15 +56,21 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   }
 
   ngOnInit(){
+    this.locationArr = this.userService.selfData.account.locations;
     let userData = this.context.user || { tutorial_mode: true };
     this.user = new UserModel(userData);
     if (this.context.user){
       this.uploadedImage = this.user.avatar;
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
+    } else {
+      console.log(lodashFind(this.locationArr, {'location_type': 'Primary'}));
+      console.log(222222222, this.locationArr[0]);
+      let primaryLoc = lodashFind(this.locationArr, {'location_type': 'Primary'});
+      let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
+      this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
     }
-    this.locationArr = this.userService.selfData.account.locations;
-    
+
     this.subscribers.departmentCollection = this.accountService.getDepartments().subscribe((res) => {
       this.departmentArr = res.data;
     });
