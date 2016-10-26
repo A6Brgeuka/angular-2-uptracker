@@ -64,8 +64,6 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     } else {
-      console.log(lodashFind(this.locationArr, {'location_type': 'Primary'}));
-      console.log(222222222, this.locationArr[0]);
       let primaryLoc = lodashFind(this.locationArr, {'location_type': 'Primary'});
       let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
       this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;

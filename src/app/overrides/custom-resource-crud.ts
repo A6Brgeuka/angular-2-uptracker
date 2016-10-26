@@ -76,7 +76,7 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
       params,
       {
         'per-page': 1000,
-        'expand': expandParams,
+        // 'expand': expandParams,
       }
     );
     

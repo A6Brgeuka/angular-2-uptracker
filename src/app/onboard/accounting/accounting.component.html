@@ -75,6 +75,7 @@
                   [(ngModel)]="accounting.annual_inventory_budget"
                   name="budget"
                   #budget="ngModel"
+                  (change)="annualInventoryBudgetChanged()"
                   required
                   type="text">
             </div>
@@ -103,7 +104,7 @@
           </div>
         </div>
         <div class="total-budget row" *ngIf="locationArr.length > 0">
-          <div class="col s12"><div class="label main-label">Total Budget Distribution</div></div>
+          <div class="col s12"><div class="label main-label">Total Budget Distribution (Per Location)</div></div>
           <div class="location-budget" *ngFor="let location of locationArr; let i=index">
             <div class="top col s12">
               <div class="label left">{{location.name}}</div>
@@ -117,10 +118,12 @@
               <input
                   type="range"
                   id="location{{i}}"
-                  min="0" max="1000000" step="1000"
+                  min="0" max="{{maxRange}}" step="1000"
                   value="300000"
                   [(ngModel)]="accounting.total[i]"
                   [disabled]="disabledRange[i]"
+                  (change)="changingRange($event, i);"
+                  (input)="changingRange($event, i);"
                   name="location{{i}}"
                   #location{{i}}="ngModel">
             </div>
