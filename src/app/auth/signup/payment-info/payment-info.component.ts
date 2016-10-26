@@ -14,8 +14,9 @@ export class PaymentInfoComponent implements OnInit {
   public creditCard: CreditCardModel;
   public trialCode: string;
   public cardMask: any;
+  public cvcMaskFunction: any;
+  public cvcMask: any = [ /\d/, /\d/, /\d/];
   public masks = {
-    expYear: [ /\d/, /\d/],
     cvc: [ /\d/, /\d/, /\d/, /\d/]
   };
   public selectMonth = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
@@ -37,13 +38,20 @@ export class PaymentInfoComponent implements OnInit {
     this.cardMask = function(value){
       let cardOther = [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
       let cardAmex = [ /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/];
+
       let cardStr = '' + value;
       let cardArr = cardStr.split("");
-      if (cardArr[0] == '3' && (cardArr[1] == '4' || cardArr[1] == '7'))
+      if (cardArr[0] == '3' && (cardArr[1] == '4' || cardArr[1] == '7')) {
+        this.cvcMask = [ /\d/, /\d/, /\d/, /\d/];
         return cardAmex;
-      else
+      } else {
+        this.cvcMask = [ /\d/, /\d/, /\d/];
         return cardOther;
-    }
+      }
+    }.bind(this);
+    this.cvcMaskFunction = function(value){
+      return this.cvcMask;
+    }.bind(this);
   }
 
   ngOnInit() {

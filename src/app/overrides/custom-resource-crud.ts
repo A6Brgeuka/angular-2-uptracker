@@ -57,7 +57,7 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
         this.spinnerService.hide();
 
         let body = err.json();
-        let errMsg = body.length ? body[0]['error_message'] : body['error_message'];
+        let errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
         this.toasterService.pop('error', errMsg);
 
         return Observable.throw(errMsg);

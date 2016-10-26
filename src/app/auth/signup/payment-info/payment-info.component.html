@@ -26,7 +26,7 @@
               id="number"
               class="validate col s12"
               placeholder="222"
-              [textMask]="{mask: masks.cvc, guide: false}"
+              [textMask]="{mask: cvcMaskFunction, guide: false}"
               [(ngModel)]="creditCard.cvc"
               name="number" data-stripe="number"
               required minlength="3"
