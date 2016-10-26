@@ -1,7 +1,8 @@
 import { UsersComponent } from './users.component';
 import {
   UserCollectionResolve,
-  DepartmentCollectionResolve
+  DepartmentCollectionResolve,
+  PermissionCollectionResolve
 } from './users-resolve.service';
 
 export const UsersRoutes = [
@@ -10,7 +11,8 @@ export const UsersRoutes = [
     component: UsersComponent,
     resolve: {
       userCollection: UserCollectionResolve,
-      departmentCollection: DepartmentCollectionResolve
+      departmentCollection: DepartmentCollectionResolve,
+      permissionCollection: PermissionCollectionResolve
     },
     canActivate: []
   },

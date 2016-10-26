@@ -148,10 +148,7 @@
               (change)="changePermission()"
               [materializeSelectOptions]="permissionArr">
             <option value="">Please select one</option>
-            <option>Preset 1</option>
-            <option>Preset 2</option>
-            <option>Preset 3</option>
-            <option *ngFor="let permission of permissionArr | iterable" [value]="permission.value">{{permission.key}}</option>
+            <option *ngFor="let permission of permissionArr" [value]="permission.label">{{permission.label}}</option>
           </select>
         </div>
       </div>

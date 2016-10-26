@@ -1,7 +1,7 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 
-import { AccountService } from '../../core/services/index';
+import { AccountService, UserService } from '../../core/services/index';
 
 @Injectable()
 export class UserCollectionResolve implements Resolve<any> {
@@ -27,8 +27,21 @@ export class DepartmentCollectionResolve implements Resolve<any> {
   }
 }
 
+@Injectable()
+export class PermissionCollectionResolve implements Resolve<any> {
+  constructor(
+      private userService: UserService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.userService.getPermissions();
+  }
+}
+
 // an array of services to resolve routes with data
 export const USERS_RESOLVER_PROVIDERS = [
   UserCollectionResolve,
-  DepartmentCollectionResolve
+  DepartmentCollectionResolve,
+  PermissionCollectionResolve
 ];

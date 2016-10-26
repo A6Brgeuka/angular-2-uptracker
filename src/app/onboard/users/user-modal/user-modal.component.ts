@@ -63,8 +63,11 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     }
     this.locationArr = this.userService.selfData.account.locations;
     
-    this.subscribers.getDepartments = this.accountService.getDepartments().subscribe((res) => {
+    this.subscribers.departmentCollection = this.accountService.getDepartments().subscribe((res) => {
       this.departmentArr = res.data;
+    });
+    this.subscribers.permissionCollection = this.userService.getPermissions().subscribe((res) => {
+      this.permissionArr = res.data;
     });
     this.preset = [false, true, false];
   }

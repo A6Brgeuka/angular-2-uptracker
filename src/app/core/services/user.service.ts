@@ -22,6 +22,7 @@ export class UserService extends ModelService {
   
   //url for auth guard to redirect
   redirectUrl: string = null;
+  permissionCollection$ = Observable.empty();
   
   constructor(
     public injector: Injector,
@@ -249,5 +250,14 @@ export class UserService extends ModelService {
       account[field] = data;
       this.updateSelfDataField('account', account);
     }
+  }
+
+  getPermissions(){
+    return this.permissionCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.permissionCollection$ = this.resource.getPermissions().$observable.publishReplay(1).refCount();
+      }
+      return this.permissionCollection$;
+    });
   }
 }
