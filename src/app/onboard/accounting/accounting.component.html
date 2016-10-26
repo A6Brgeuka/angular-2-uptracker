@@ -46,12 +46,13 @@
           <div class="col s12 m6">
             <div class="label">Annual Income</div>
             <div class="prefix-input">
-              <div class="prefix">{{currencySign}}</div>
+              <div class="prefix" [innerHTML]="currencySign"></div>
               <input
                   id="income"
                   class="validate col s12"
                   placeholder="Enter amount here"
                   [(ngModel)]="accounting.annual_income"
+                  [textMask]="{mask: amountMask, guide: false}"
                   name="income"
                   #income="ngModel"
                   required
@@ -67,12 +68,13 @@
             <div class="helper"></div>
             <div class="label">Annual Inventory Budget</div>
             <div class="prefix-input">
-              <div class="prefix">{{currencySign}}</div>
+              <div class="prefix" [innerHTML]="currencySign"></div>
               <input
                   id="budget"
                   class="validate col s12"
                   placeholder="Enter Value"
                   [(ngModel)]="accounting.annual_inventory_budget"
+                  [textMask]="{mask: amountMask, guide: false, onAccept: annualInventoryBudgetChanged()}"
                   name="budget"
                   #budget="ngModel"
                   (change)="annualInventoryBudgetChanged()"
@@ -87,12 +89,13 @@
             <div class="helper"></div>
             <div class="label">Total Net Receipts</div>
             <div class="prefix-input">
-              <div class="prefix">{{currencySign}}</div>
+              <div class="prefix" [innerHTML]="currencySign"></div>
               <input
                   id="receipts"
                   class="validate col s12"
                   placeholder="Enter Value"
                   [(ngModel)]="accounting.annual_net_revenue"
+                  [textMask]="{mask: amountMask, guide: false}"
                   name="receipts"
                   #receipts="ngModel"
                   required
@@ -119,18 +122,16 @@
                   type="range"
                   id="location{{i}}"
                   min="0" max="{{maxRange}}" step="1000"
-                  value="300000"
                   [(ngModel)]="accounting.total[i]"
                   [disabled]="disabledRange[i]"
                   (change)="changingRange($event, i);"
-                  (input)="changingRange($event, i);"
                   name="location{{i}}"
                   #location{{i}}="ngModel">
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div> allmax - {{maxRange}}<br/> total - {{accounting.total | json}} <br/> range-max {{setMaxRangeFor(0)}}, {{setMaxRangeFor(1)}}
     <div class="buttons">
       <button type="button" class="back left waves-effect waves-light" (click)="goBack()">Back</button>
       <button class="next right waves-effect waves-light"

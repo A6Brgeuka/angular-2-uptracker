@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as lodashSort from 'lodash/sortBy';
 import * as lodashFind from 'lodash/find';
-import * as lodashReject from 'lodash/reject';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 import { UserService, AccountService, ToasterService } from '../../core/services/index';
 
@@ -21,10 +21,14 @@ export class AccountingComponent implements OnInit {
   public currencyDirty: boolean = false;
   public currencySign: string ='$';
   public disabledRange: any = [];
-  public maxRange: number;
+  public maxRange: number = 1000000;
   public monthArr: any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   public monthDirty: boolean = false;
   private moreThanOneSlider: boolean = false;
+  public amountMask: any = createNumberMask({
+    allowDecimal: false,
+    prefix: ''
+  });
 
   constructor(
       private router: Router,
@@ -34,10 +38,11 @@ export class AccountingComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.accounting = {
       total: [],
-      budget_distribution: []
+      budget_distribution: [],
+      currency: 'USD'
     };
     this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) { 
@@ -54,20 +59,22 @@ export class AccountingComponent implements OnInit {
   }
 
   annualInventoryBudgetChanged(){
-    this.maxRange = parseInt(this.accounting.annual_inventory_budget) || 1000000;
-    this.setLocationBudget();
+    let annual_inventory_budget = this.accounting.annual_inventory_budget || 1000000;
+    this.maxRange = this.amount2number(annual_inventory_budget);
+    // this.setLocationBudget();
+    // console.log(this.accounting.total[0]);
   }
 
   setLocationBudget(){
-    let locationBudget: number;
+    let locationBudget = 0;
     if (this.moreThanOneSlider){
-      locationBudget = (parseInt(this.accounting.annual_inventory_budget) || 0) / this.locationArr.length;
+      locationBudget = this.amount2number(this.accounting.annual_inventory_budget) / this.locationArr.length;
     } else {
-      locationBudget = parseInt(this.accounting.annual_inventory_budget) || 0;
+      locationBudget = this.amount2number(this.accounting.annual_inventory_budget);
     }
     for (let i=0; i<this.locationArr.length; i++){
       this.disabledRange[i] = !this.moreThanOneSlider;
-      this.accounting.total[i] = locationBudget;
+      this.accounting.total[i] = parseInt(locationBudget + "");
     }
   }
 
@@ -81,15 +88,13 @@ export class AccountingComponent implements OnInit {
   }
 
   setMaxRangeFor(i){
-    let max = parseInt(this.accounting.annual_inventory_budget);
-    // let otherLocations = lodashReject(this.locationArr, {'id': this.locationArr[i]['id']});
     let otherTotal: number = 0;
     for (let j=0; j<this.locationArr.length; j++) {
       if (i!=j) {
         otherTotal += this.accounting.total[j];
       }
     }
-    return max - otherTotal;
+    return this.maxRange - otherTotal;
   }
 
   changeCurrency(){
@@ -108,6 +113,11 @@ export class AccountingComponent implements OnInit {
     } else {
       this.toasterService.pop('error', 'Only multiple locations can be adjusted.');
     }
+  }
+
+  amount2number(amount: string){
+    amount = '' + amount;
+    return amount ? parseInt(amount.replace(/,/g, "")) : 0;
   }
 
   goBack(){

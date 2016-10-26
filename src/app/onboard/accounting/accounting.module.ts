@@ -12,7 +12,7 @@ import { AppSharedModule } from '../../shared/shared.module';
     AppSharedModule
   ],
   providers: [
-      ...ACCOUNTING_RESOLVER_PROVIDERS
+      ...ACCOUNTING_RESOLVER_PROVIDERS,
   ]
 })
 export class AccountingModule {
