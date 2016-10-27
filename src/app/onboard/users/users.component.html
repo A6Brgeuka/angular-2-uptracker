@@ -8,9 +8,7 @@
   <div class="users-row">
     <div class="list">
       <div class="item center-align" *ngFor="let user of userArr" (click)="viewUserModal(user)">
-        <div class="img">
-          <img src="{{user.avatar}}" alt="{{user.name}}" class="responsive-img" />
-        </div>
+        <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
         <div class="ttl">{{user.name}}</div>
       </div>
     </div>

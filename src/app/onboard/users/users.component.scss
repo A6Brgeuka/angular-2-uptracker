@@ -24,7 +24,6 @@
       letter-spacing: 0;
       word-spacing: 0;
       font-size:0;
-      //margin-right:270px;
       padding-bottom:15px;
       text-align:left;
       max-width: calc(100% - 270px);
@@ -47,14 +46,16 @@
           height:120px;
           width:120px;
           border-radius:50%;
+          background:transparent no-repeat center center;
+          background-size:cover;
 
-          img{
-            display:block;
-            border-radius:50%;
-            //width: 120px;
-            max-height: 100%;
-            max-width:100%;
-          }
+          //TODO: remove after check
+          //img{
+          //  display:block;
+          //  border-radius:50%;
+          //  max-height: 100%;
+          //  max-width:100%;
+          //}
         }
 
         .ttl{

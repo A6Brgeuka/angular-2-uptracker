@@ -59,11 +59,12 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     this.locationArr = this.userService.selfData.account.locations;
     let userData = this.context.user || { tutorial_mode: true };
     this.user = new UserModel(userData);
-    if (this.context.user){
+    if (this.context.user){ 
       this.uploadedImage = this.user.avatar;
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     } else {
+      // set default location for new user
       let primaryLoc = lodashFind(this.locationArr, {'location_type': 'Primary'});
       let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
       this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;

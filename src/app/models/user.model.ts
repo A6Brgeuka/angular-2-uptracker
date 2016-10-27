@@ -20,6 +20,13 @@ export class UserModel {
   // cards: CreditCardModel[] = [];
   // defaultCard: CreditCardModel = null;
   account: AccountModel = new AccountModel();
+  avatar: string = null;
+  created_at: string = null;
+  updated_at: string = null;
+  last_login: string = null;
+  email_verify_token: string = null;
+  status: number = null;
+  welcome_email: string = null;
 
   
   constructor(obj?: any) {
