@@ -29,6 +29,7 @@ export class AccountingComponent implements OnInit {
     allowDecimal: false,
     prefix: ''
   });
+  private prev_annual_inventory_budget: string;
 
   constructor(
       private router: Router,
@@ -59,18 +60,22 @@ export class AccountingComponent implements OnInit {
   }
 
   annualInventoryBudgetChanged(){
-    let annual_inventory_budget = this.accounting.annual_inventory_budget || 1000000;
-    this.maxRange = this.amount2number(annual_inventory_budget);
-    // this.setLocationBudget();
-    // console.log(this.accounting.total[0]);
+    // compare with previous value. if changed then set new location budgets
+    if (this.accounting.annual_inventory_budget != this.prev_annual_inventory_budget) {
+      this.prev_annual_inventory_budget = this.accounting.annual_inventory_budget;
+      let annual_inventory_budget = this.accounting.annual_inventory_budget || 1000000;
+      this.maxRange = this.amount2number(annual_inventory_budget);
+      this.setLocationBudget();
+    }
   }
 
   setLocationBudget(){
-    let locationBudget = 0;
+    let locationBudget: number = 0;
+    let annual_inventory_budget = this.accounting.annual_inventory_budget || 0;
     if (this.moreThanOneSlider){
-      locationBudget = this.amount2number(this.accounting.annual_inventory_budget) / this.locationArr.length;
+      locationBudget = this.amount2number(annual_inventory_budget) / this.locationArr.length;
     } else {
-      locationBudget = this.amount2number(this.accounting.annual_inventory_budget);
+      locationBudget = this.amount2number(annual_inventory_budget);
     }
     for (let i=0; i<this.locationArr.length; i++){
       this.disabledRange[i] = !this.moreThanOneSlider;
@@ -115,9 +120,10 @@ export class AccountingComponent implements OnInit {
     }
   }
 
-  amount2number(amount: string){
-    amount = '' + amount;
-    return amount ? parseInt(amount.replace(/,/g, "")) : 0;
+  amount2number(amount){
+    amount = amount || 0;
+    amount = ('' + amount).replace(/,/g, "");
+    return amount ? parseInt(amount) : 0;
   }
 
   goBack(){

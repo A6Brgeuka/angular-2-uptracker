@@ -74,10 +74,10 @@
                   class="validate col s12"
                   placeholder="Enter Value"
                   [(ngModel)]="accounting.annual_inventory_budget"
-                  [textMask]="{mask: amountMask, guide: false, onAccept: annualInventoryBudgetChanged()}"
+                  [textMask]="{mask: amountMask, guide: false}"
+                  (blur) = "annualInventoryBudgetChanged()"
                   name="budget"
                   #budget="ngModel"
-                  (change)="annualInventoryBudgetChanged()"
                   required
                   type="text">
             </div>
@@ -125,13 +125,14 @@
                   [(ngModel)]="accounting.total[i]"
                   [disabled]="disabledRange[i]"
                   (change)="changingRange($event, i);"
+                  (input)="changingRange($event, i);"
                   name="location{{i}}"
                   #location{{i}}="ngModel">
             </div>
           </div>
         </div>
       </div>
-    </div> allmax - {{maxRange}}<br/> total - {{accounting.total | json}} <br/> range-max {{setMaxRangeFor(0)}}, {{setMaxRangeFor(1)}}
+    </div>
     <div class="buttons">
       <button type="button" class="back left waves-effect waves-light" (click)="goBack()">Back</button>
       <button class="next right waves-effect waves-light"
