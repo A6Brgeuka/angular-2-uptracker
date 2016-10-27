@@ -90,17 +90,17 @@ export class AccountingComponent implements OnInit {
   }
 
   changingRange(event: Event, i, byInput = false){
-    // choose what input to watch for depending on changing
-    let changedInput;
+    // choose what input to watch for, depending on changing
+    let changedInputValue;
     if (byInput) {
-      changedInput = this.rangeTotal[i];
-      this.accounting.total[i] = this.rangeTotal[i];
+      changedInputValue = this.amount2number(this.rangeTotal[i]);
+      this.accounting.total[i] = changedInputValue;
     } else {
-      changedInput = this.accounting.total[i];
-      this.rangeTotal[i] = this.accounting.total[i];
-    }
+      changedInputValue = this.accounting.total[i];
+      this.rangeTotal[i] = changedInputValue;
+    } 
     let maxRange = this.setMaxRangeFor(i);
-    if (this.amount2number(changedInput) >= maxRange){
+    if (changedInputValue >= maxRange){
       event.preventDefault();
       event.stopPropagation();
       this.accounting.total[i] = maxRange;
