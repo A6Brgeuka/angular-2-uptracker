@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as lodashReject from 'lodash/reject';
 
 import { UserModal } from './user-modal/user-modal.component';
 import { UserService, AccountService } from '../../core/services/index';
@@ -33,7 +32,7 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.subscribers.getUsersSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) { 
-        this.userArr = lodashReject(res.account.users, {'id': res.id});
+        this.userArr = res.account.users;
       }
     });
   }

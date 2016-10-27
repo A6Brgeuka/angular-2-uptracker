@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Observable } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService, StreetViewService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
 export class LocationModalContext extends BSModalContext {
@@ -46,7 +47,8 @@ export class LocationModal implements OnInit, CloseGuard, ModalComponent<Locatio
       private toasterService: ToasterService,
       private userService: UserService,
       private accountService: AccountService,
-      private phoneMaskService: PhoneMaskService
+      private phoneMaskService: PhoneMaskService,
+      private streetViewService: StreetViewService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -129,10 +131,24 @@ export class LocationModal implements OnInit, CloseGuard, ModalComponent<Locatio
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
     this.location.fax = this.locationFormFax ?  this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
     this.location.image = this.uploadedImage;
-    this.accountService.addLocation(this.location).subscribe(
-      (res: any) => {
-        this.closeModal();
-      }
-    );
+    let address = {
+      location: this.location.state + ' ' + this.location.city + ' ' + this.location.street_1 + ' ' + this.location.street_2
+    };
+    let observable = this.location.image ? Observable.empty() : this.streetViewService.getLocationStreetView(address);
+    observable
+        .switchMap((data: any) => {
+          debugger;
+          return Observable.of(null);
+          // return this.accountService.addLocation(this.location).subscribe(
+        })
+        .subscribe((res: any) =>{
+          //debugger;
+        });
+
+    // this.accountService.addLocation(this.location).subscribe(
+    //   (res: any) => {
+    //     this.closeModal();
+    //   }
+    // );
   }
 }

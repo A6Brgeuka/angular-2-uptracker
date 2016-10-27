@@ -107,6 +107,17 @@ export class AccountService extends ModelService{
     });
   }
 
+  getLocationStreetView(data){
+    // let usersLoaded = this.userService.selfData.account.users ? this.userService.selfData.account.users[0].name : false;
+    // if (!usersLoaded) {
+      return this.resource.getLocationS(data).$observable.do((res: any) => {
+        let account = this.userService.selfData.account;
+        account.users = res.data.users;
+        this.updateSelfData(account);
+      });
+    // }
+  }
+
   addLocation(data){
     return this.resource.addLocation(data).$observable.do((res: any) => {
       this.updateSelfData(res.data.account);
