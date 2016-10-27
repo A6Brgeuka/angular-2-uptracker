@@ -112,7 +112,21 @@
             <div class="top col s12">
               <div class="label left">{{location.name}}</div>
               <div class="right">
-                <div class="value left">{{accounting.total[i]}}</div>
+                <div class="value input left">
+                  <div (click)="editRangeValue(i)" *ngIf="viewRangeInput[i]">{{accounting.total[i]}}</div>
+                  <input
+                      *ngIf="!viewRangeInput[i]"
+                      id="rangeInput{{i}}"
+                      class="range-value-input"
+                      [(ngModel)]="rangeTotal[i]"
+                      [textMask]="{mask: amountMask, guide: false}"
+                      [disabled]="disabledRange[i]"
+                      (input)="changingRange($event, i, true)"
+                      (blur)="changingRange($event, i, true)"
+                      name="rangeInput{{i}}"
+                      #rangeInput{{i}}="ngModel"
+                      type="text">
+                </div>
                 <div class="lock-box right" [class.locked]="disabledRange[i]" (click)="toggleLock(i)"></div>
               </div>
               <div class="clearfix"></div>

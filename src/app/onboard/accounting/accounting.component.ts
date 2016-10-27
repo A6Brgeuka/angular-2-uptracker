@@ -17,19 +17,23 @@ export class AccountingComponent implements OnInit {
   private subscribers: any = {};
   public locationArr: any = [];
   public accounting: any = {};
+  public monthArr: any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  public monthDirty: boolean = false;
+
   public currencyArr: any;
   public currencyDirty: boolean = false;
   public currencySign: string ='$';
-  public disabledRange: any = [];
-  public maxRange: number = 1000000;
-  public monthArr: any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  public monthDirty: boolean = false;
+
   private moreThanOneSlider: boolean = false;
+  public disabledRange: any = [];
+  public viewRangeInput: any = [];
+  public rangeTotal: any = []; // array of NaN values for range text inputs
+  public maxRange: number = 1000000; // max value for slider range
+  private prev_annual_inventory_budget: string; // previous annual budget for 'change' detection
   public amountMask: any = createNumberMask({
     allowDecimal: false,
     prefix: ''
   });
-  private prev_annual_inventory_budget: string;
 
   constructor(
       private router: Router,
@@ -79,17 +83,30 @@ export class AccountingComponent implements OnInit {
     }
     for (let i=0; i<this.locationArr.length; i++){
       this.disabledRange[i] = !this.moreThanOneSlider;
+      this.viewRangeInput[i] = false;
       this.accounting.total[i] = parseInt(locationBudget + "");
+      this.rangeTotal[i] = this.accounting.total[i];
     }
   }
 
-  changingRange(event: Event, i){
+  changingRange(event: Event, i, byInput = false){
+    // choose what input to watch for depending on changing
+    let changedInput;
+    if (byInput) {
+      changedInput = this.rangeTotal[i];
+      this.accounting.total[i] = this.rangeTotal[i];
+    } else {
+      changedInput = this.accounting.total[i];
+      this.rangeTotal[i] = this.accounting.total[i];
+    }
     let maxRange = this.setMaxRangeFor(i);
-    if (this.accounting.total[i] >= maxRange){
+    if (this.amount2number(changedInput) >= maxRange){
       event.preventDefault();
       event.stopPropagation();
       this.accounting.total[i] = maxRange;
+      this.rangeTotal[i] = this.accounting.total[i];
     }
+
   }
 
   setMaxRangeFor(i){
@@ -122,6 +139,12 @@ export class AccountingComponent implements OnInit {
       this.disabledRange[i] = !this.disabledRange[i];
     } else {
       this.toasterService.pop('error', 'Only multiple locations can be adjusted.');
+    }
+  }
+
+  editRangeValue(i){
+    if (!this.disabledRange[i]){
+      this.viewRangeInput[i] = true;
     }
   }
 
