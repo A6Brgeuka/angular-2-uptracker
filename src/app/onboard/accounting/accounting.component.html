@@ -46,7 +46,7 @@
           <div class="col s12 m6">
             <div class="label">Annual Income</div>
             <div class="prefix-input">
-              <div class="prefix" [innerHTML]="currencySign"></div>
+              <div class="prefix" [innerHTML]="viewCurrencySign()"></div>
               <input
                   id="income"
                   class="validate col s12"
@@ -68,7 +68,7 @@
             <div class="helper"></div>
             <div class="label">Annual Inventory Budget</div>
             <div class="prefix-input">
-              <div class="prefix" [innerHTML]="currencySign"></div>
+              <div class="prefix" [innerHTML]="viewCurrencySign()"></div>
               <input
                   id="budget"
                   class="validate col s12"
@@ -89,7 +89,7 @@
             <div class="helper"></div>
             <div class="label">Total Net Receipts</div>
             <div class="prefix-input">
-              <div class="prefix" [innerHTML]="currencySign"></div>
+              <div class="prefix" [innerHTML]="viewCurrencySign()"></div>
               <input
                   id="receipts"
                   class="validate col s12"

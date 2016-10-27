@@ -96,7 +96,7 @@ export class AccountingComponent implements OnInit {
     let otherTotal: number = 0;
     for (let j=0; j<this.locationArr.length; j++) {
       if (i!=j) {
-        otherTotal += this.accounting.total[j];
+        otherTotal += this.amount2number(this.accounting.total[j]);
       }
     }
     return this.maxRange - otherTotal;
@@ -105,7 +105,12 @@ export class AccountingComponent implements OnInit {
   changeCurrency(){
     let currency = lodashFind(this.currencyArr, {'iso_code': this.accounting.currency});
     this.currencyDirty = true;
-    // this.currencySign = currency ? currency['html_entity'] : '$';
+    this.currencySign = currency ? currency['html_entity'] : '$';
+  }
+
+  viewCurrencySign(){
+    let currency = lodashFind(this.currencyArr, {'iso_code': this.accounting.currency});
+    return currency ? currency['html_entity'] : '$';
   }
 
   changeDate(){
