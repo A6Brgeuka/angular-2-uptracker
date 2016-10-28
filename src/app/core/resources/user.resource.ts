@@ -68,10 +68,4 @@ export class UserResource extends CustomResourceCRUD {
     path: '/users/{!id}'
   })
   getUserData: ResourceMethod<any, any>;
-
-  @ResourceAction({
-    method: RequestMethod.Get,
-    path: '/config/permissions'
-  })
-  getPermissions: ResourceMethod<any, any>;
 }

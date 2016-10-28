@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as lodashMap from 'lodash/map';
 import * as lodashFind from 'lodash/find';
+import * as lodashClone from 'lodash/cloneDeep';
+import * as lodashIsEqual from 'lodash/isEqual';
 
-import { UserService, AccountService, PhoneMaskService } from '../../../core/services/index';
+import { UserService, AccountService, PhoneMaskService, ToasterService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
 
 export class UserModalContext extends BSModalContext {
@@ -26,18 +27,14 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   private subscribers: any = {};
   context: UserModalContext;
   public user: any;
-  public selectedPermission = '';
   public locationArr: any;
   public departmentArr: any;
-  public permissionArr: any;
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
-  public permissionDirty: boolean = false;
   public profileFormPhone: string = null;
   // default country for phone input
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
-  public preset: any = [];
 
   uploadedImage;
   fileIsOver: boolean = false;
@@ -45,11 +42,21 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     readAs: 'DataURL'
   };
 
+  public selectedRole = '';
+  public customRole = 'custom';
+  public permissionArr: any;
+  public rolesArr: any;
+  public roleDirty: boolean = false;
+  public showCustomRole: boolean = false;
+  public addPresetForm: boolean = false;
+  public preset: any = {};
+
   constructor(
       public dialog: DialogRef<UserModalContext>,
       private userService: UserService,
       private accountService: AccountService,
-      private phoneMaskService: PhoneMaskService
+      private phoneMaskService: PhoneMaskService,
+      private toasterService: ToasterService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -63,20 +70,57 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
       this.uploadedImage = this.user.avatar;
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
-    } else {
-      // set default location for new user
+    }
+    // set default location for new user or selfData (current user)
+    if (!this.user.default_location || this.user.default_location == '') {
       let primaryLoc = lodashFind(this.locationArr, {'location_type': 'Primary'});
       let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
       this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
     }
 
+    if (!this.user.template){
+      this.user.template = this.userService.selfData.account.purchase_order_template;
+    }
+
     this.subscribers.departmentCollection = this.accountService.getDepartments().subscribe((res) => {
       this.departmentArr = res.data;
     });
-    this.subscribers.permissionCollection = this.userService.getPermissions().subscribe((res) => {
-      this.permissionArr = res.data;
+
+    this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {
+      if (res.account) {
+        this.rolesArr = res.account.roles;
+        if (!this.context.user) {
+          this.setDefaultPermissions();
+        } else {
+          // TODO: remove when test
+          // if (this.user.permissions[0]){
+          //   this.selectedRole = this.user.permissions[0];
+          // } else {
+          //   this.setDefaultPermissions();
+          // }
+          // this.onRoleChange();
+
+          if (this.user.permissions[0]){
+            this.permissionArr = this.user.permissions;
+            for (let j=0; j < this.rolesArr.length; j++){
+              if (lodashIsEqual(this.rolesArr[j].permissions, this.permissionArr)){
+                this.selectedRole = this.rolesArr[j].role;
+              }
+            }
+          } else {
+            this.setDefaultPermissions();
+          }
+        }
+      }
     });
-    this.preset = [false, true, false];
+  }
+
+  setDefaultPermissions(){
+    this.permissionArr = lodashClone(this.rolesArr[0].permissions);
+    this.permissionArr.map((data:any) => {
+      data.default = false;
+      return data;
+    });
   }
 
   closeModal(){
@@ -91,8 +135,8 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     this.departmentDirty = true;
   }
 
-  changePermission(){
-    this.permissionDirty = true;
+  changeRole(){
+    this.roleDirty = true;
   }
 
   onCountryChange($event) {
@@ -127,15 +171,65 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     this.user.tutorial_mode = !this.user.tutorial_mode;
   }
 
+  onRoleChange(event: any = false){
+    let newRole;
+    if (event){
+      newRole = event.target.value;
+    } else {
+      newRole = this.selectedRole;
+    }
+    for (let j=0; j < this.rolesArr.length; j++){
+      if (this.rolesArr[j].role == newRole){
+        this.permissionArr = lodashClone(this.rolesArr[j].permissions);
+      }
+    }
+  }
+
   togglePreset(i){
-    this.preset[i] = !this.preset[i];
+    let z = 0;
+    this.permissionArr[i].default = !this.permissionArr[i].default;
+    for (let j=0; j < this.rolesArr.length; j++){
+      if (lodashIsEqual(this.rolesArr[j].permissions, this.permissionArr)){
+        this.selectedRole = this.rolesArr[j].role;
+        this.showCustomRole = false;
+        z++;
+      }
+    }
+    // show role Custom if no matches
+    if (z == 0){
+      this.showCustomRole = true;
+      this.selectedRole = 'custom';
+    }
+  }
+  
+  showAddPresetForm(){
+    if (this.showCustomRole){
+      this.addPresetForm = true;
+    }
+  }
+
+  addRole(){
+    if (!this.preset.role || this.preset.role == '') {
+      this.toasterService.pop('error', 'Pre-set name is required');
+      return;
+    }
+    this.preset.account_id = this.userService.selfData.account_id;
+    this.preset.permissions = this.permissionArr;
+    this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset).subscribe((res: any) => {
+      this.selectedRole = this.preset.role;
+      this.addPresetForm = false;
+      this.preset = {};
+      this.showCustomRole = false;
+      this.onRoleChange();
+    });
   }
 
   onSubmit(){
     this.user.account_id = this.userService.selfData.account_id;
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
-    this.accountService.addUser(this.user).subscribe(
+    this.user.permissions = this.permissionArr;
+    this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
         (res: any) => {
           this.closeModal();
         }

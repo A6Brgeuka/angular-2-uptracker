@@ -23,6 +23,7 @@ export class AccountService extends ModelService{
   stateCollection$ = Observable.empty();
   currencyCollection$ = Observable.empty();
   departmentCollection$ = Observable.empty();
+  roleCollection$ = Observable.empty();
   
   constructor(
     public injector: Injector,
@@ -178,6 +179,32 @@ export class AccountService extends ModelService{
         this.currencyCollection$ = this.resource.getCurrencies().$observable.publishReplay(1).refCount();
       }
       return this.currencyCollection$;
+    });
+  }
+
+  getRoles(){
+    let data: any = {
+      account_id: this.userService.selfData.account_id
+    };
+    let rolesLoaded = this.userService.selfData.account.roles ? this.userService.selfData.account.roles[0].role : false;
+    if (!rolesLoaded) {
+      let entity$ = this.resource.getRoles(data).$observable.publishReplay(1).refCount();
+      entity$.subscribe((res: any) => {
+        let account = this.userService.selfData.account;
+        account.roles = res.data.roles;
+        this.updateSelfData(account);
+      });
+
+      return entity$;
+    } 
+  }
+  
+  addRole(data){
+    return this.resource.addRole(data).$observable.do((res: any) => {
+      let account = this.userService.selfData.account;
+      account.roles = res.data.roles;
+      this.updateSelfData(account);
+      debugger;
     });
   }
 }

@@ -2,7 +2,7 @@ import { UsersComponent } from './users.component';
 import {
   UserCollectionResolve,
   DepartmentCollectionResolve,
-  PermissionCollectionResolve
+  RoleCollectionResolve
 } from './users-resolve.service';
 
 export const UsersRoutes = [
@@ -12,7 +12,7 @@ export const UsersRoutes = [
     resolve: {
       userCollection: UserCollectionResolve,
       departmentCollection: DepartmentCollectionResolve,
-      permissionCollection: PermissionCollectionResolve
+      permissionCollection: RoleCollectionResolve
     },
     canActivate: []
   },

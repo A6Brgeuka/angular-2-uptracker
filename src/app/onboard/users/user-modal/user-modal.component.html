@@ -139,42 +139,50 @@
     <div class="input row">
       <div class="col s12 m8">
         <div class="label left-align">Permission Pre-sets</div>
-        <div class="select" [class.dirty]="permissionDirty">
+        <div class="select" [class.dirty]="roleDirty">
           <select
-              [(ngModel)]="selectedPermission"
-              name="permission"
-              #permission="ngModel"
+              [(ngModel)]="selectedRole"
+              name="role"
+              #role="ngModel"
               materialize="material_select"
-              (change)="changePermission()"
-              [materializeSelectOptions]="permissionArr">
+              (change)="onRoleChange($event)"
+              [materializeSelectOptions]="roleArr">
             <option value="">Please select one</option>
-            <option *ngFor="let permission of permissionArr" [value]="permission.label">{{permission.label}}</option>
+            <option *ngFor="let role of rolesArr; let i = index" [value]="role.role">{{role.label}}</option>
+            <option value="custom" *ngIf="showCustomRole">Custom</option>
           </select>
         </div>
       </div>
       <div class="col s12 m4 no-label">
-        <button type="button" class="not-submit">Add Pre-set</button>
+        <button type="button" class="not-submit" (click)="showAddPresetForm()">Add Pre-set</button>
       </div>
     </div>
-    <div class="row">
+    <div class="input row add-preset-form" *ngIf="addPresetForm">
       <div class="col s12 m8">
-        <div class="preset-ttl">Pre-set name here</div>
+        <input
+            id="presetName"
+            placeholder="Enter preset name here"
+            class="validate col s12"
+            [(ngModel)]="preset.role"
+            name="presetName"
+            #presetName="ngModel"
+            type="text">
       </div>
-      <div class="col s12 m4">
-        <div class="switch-box">
-          <div class="switcher active" [class.active]="preset[1]" (click)="togglePreset(1)">On</div>
-          <div class="switcher" [class.active]="!preset[1]" (click)="togglePreset(1)">Off</div>
-        </div>
+      <div class="col s12 m2">
+        <button type="button" class="not-submit" (click)="addRole()">Add</button>
+      </div>
+      <div class="col s12 m2">
+        <button type="button" class="not-submit" (click)="showAddPresetForm = false">Cancel</button>
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngFor="let permission of permissionArr; let j = index">
       <div class="col s12 m8">
-        <div class="preset-ttl">Pre-set name here</div>
+        <div class="preset-ttl">{{permission.label}}</div>
       </div>
       <div class="col s12 m4">
-        <div class="switch-box">
-          <div class="switcher active" [class.active]="preset[2]" (click)="togglePreset(2)">On</div>
-          <div class="switcher" [class.active]="!preset[2]" (click)="togglePreset(2)">Off</div>
+        <div class="switch-box" (click)="togglePreset(j)">
+          <div class="switcher active" [class.active]="permission.default">On</div>
+          <div class="switcher" [class.active]="!permission.default">Off</div>
         </div>
       </div>
     </div>

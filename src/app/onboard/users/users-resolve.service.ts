@@ -28,14 +28,15 @@ export class DepartmentCollectionResolve implements Resolve<any> {
 }
 
 @Injectable()
-export class PermissionCollectionResolve implements Resolve<any> {
+export class RoleCollectionResolve implements Resolve<any> {
   constructor(
-      private userService: UserService
+      private accountService: AccountService
   ) {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.userService.getPermissions();
+    // this.accountService.getRoles().subscribe();
+    return this.accountService.getRoles();
   }
 }
 
@@ -43,5 +44,5 @@ export class PermissionCollectionResolve implements Resolve<any> {
 export const USERS_RESOLVER_PROVIDERS = [
   UserCollectionResolve,
   DepartmentCollectionResolve,
-  PermissionCollectionResolve
+  RoleCollectionResolve
 ];

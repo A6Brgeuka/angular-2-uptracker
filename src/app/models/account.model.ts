@@ -55,6 +55,8 @@ export class AccountModel {
   // "use_reorder_level": false;
   users: UserModel[] = [];
   
+  roles: any;
+  
   constructor(obj?: any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {
