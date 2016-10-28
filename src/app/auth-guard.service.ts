@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
     let user$ = this.userService.loadSelfData().map((res) => { 
-      // if guest remove self data
+      // if logged out guest remove self data
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());
       }
@@ -69,7 +69,20 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkOnboard(url: string): boolean { 
-    return this.checkAuth(url);
+    // return this.checkAuth(url);
+    if (!this.checkAuth(url)) {
+      return false;
+    }
+
+    // redirect to locations page if at least one location wasn't added
+    let location = url.split('/')[2];
+    let locationsLength = this.userService.selfData.account.locations ? this.userService.selfData.account.locations.length || null : null;
+    if ((!locationsLength || locationsLength == 0) && location != 'locations' ) {
+      this.router.navigate(['/onboard','locations']);
+      return false;
+    }
+
+    return true;
   }
 
   checkDashboard(url: string): boolean {
