@@ -6,6 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as lodashFind from 'lodash/find';
 import * as lodashClone from 'lodash/cloneDeep';
 import * as lodashIsEqual from 'lodash/isEqual';
+import * as lodashEach from 'lodash/each';
 
 import { UserService, AccountService, PhoneMaskService, ToasterService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
@@ -92,21 +93,13 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
         if (!this.context.user) {
           this.setDefaultPermissions();
         } else {
-          // TODO: remove when test
-          // if (this.user.permissions[0]){
-          //   this.selectedRole = this.user.permissions[0];
-          // } else {
-          //   this.setDefaultPermissions();
-          // }
-          // this.onRoleChange();
-
           if (this.user.permissions[0]){
             this.permissionArr = this.user.permissions;
-            for (let j=0; j < this.rolesArr.length; j++){
-              if (lodashIsEqual(this.rolesArr[j].permissions, this.permissionArr)){
-                this.selectedRole = this.rolesArr[j].role;
+            lodashEach(this.rolesArr, (roleItem) => {
+              if (lodashIsEqual(roleItem.permissions, this.permissionArr)){
+                this.selectedRole = roleItem.role;
               }
-            }
+            });
           } else {
             this.setDefaultPermissions();
           }
@@ -171,30 +164,30 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     this.user.tutorial_mode = !this.user.tutorial_mode;
   }
 
-  onRoleChange(event: any = false){
+  onRoleChange(event: any = false){ 
     let newRole;
     if (event){
       newRole = event.target.value;
     } else {
       newRole = this.selectedRole;
     }
-    for (let j=0; j < this.rolesArr.length; j++){
-      if (this.rolesArr[j].role == newRole){
-        this.permissionArr = lodashClone(this.rolesArr[j].permissions);
+    lodashEach(this.rolesArr, (roleItem) => {
+      if (roleItem.role == newRole){
+        this.permissionArr = lodashClone(roleItem.permissions);
       }
-    }
+    });
   }
 
   togglePreset(i){
     let z = 0;
     this.permissionArr[i].default = !this.permissionArr[i].default;
-    for (let j=0; j < this.rolesArr.length; j++){
-      if (lodashIsEqual(this.rolesArr[j].permissions, this.permissionArr)){
-        this.selectedRole = this.rolesArr[j].role;
+    lodashEach(this.rolesArr, (roleItem) => {
+      if (lodashIsEqual(roleItem.permissions, this.permissionArr)){
+        this.selectedRole = roleItem.role;
         this.showCustomRole = false;
         z++;
       }
-    }
+    });
     // show role Custom if no matches
     if (z == 0){
       this.showCustomRole = true;
@@ -215,8 +208,12 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
     }
     this.preset.account_id = this.userService.selfData.account_id;
     this.preset.permissions = this.permissionArr;
-    this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset).subscribe((res: any) => {
-      this.selectedRole = this.preset.role;
+    this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset).subscribe((res: any) => { 
+      lodashEach(res.data.roles, (roleItem: any) => {
+        if (roleItem.label == this.preset.role) {
+          this.selectedRole = roleItem.role;
+        }
+      });
       this.addPresetForm = false;
       this.preset = {};
       this.showCustomRole = false;

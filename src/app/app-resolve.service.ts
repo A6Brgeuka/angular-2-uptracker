@@ -11,13 +11,6 @@ export class GetSelfDataResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // TODO: remove when test
-    // if (!this.userService.isGuest() && !this.userService.selfData) {
-    //   return this.userService.loadSelfData();
-    // } else {
-    //   return this.userService.selfData || null;
-    // }
-
     return this.userService.loadSelfData();
   }
 }

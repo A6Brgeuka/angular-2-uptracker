@@ -84,14 +84,14 @@ export class UserService extends ModelService {
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     )
-    .filter((res: any) => {
+    .filter((res: any) => { 
       // let condition = !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
       let condition = !this.getSessionId() || res.id == this.getSessionId();
       return condition;
     })
     .publishReplay(1).refCount();
 
-    this.selfData$.subscribe((res: any) => {
+    this.selfData$.subscribe((res: any) => { 
       //Set token
       if (res['token'] && !res['signup']) {
         this.setSessionId(res['id']);
@@ -114,6 +114,7 @@ export class UserService extends ModelService {
         .do((res) => {
           UserService.logout(this.localStorage, this.cookieService, this.router, redirectUrl);
           this.updateSelfData({});
+          this.session = {};
         });
   }
   static logout(localStorage, cookieService, router, redirectUrl = '/') {

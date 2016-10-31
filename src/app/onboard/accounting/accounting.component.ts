@@ -166,12 +166,12 @@ export class AccountingComponent implements OnInit {
         annual_budget: this.accounting.total[i]
       }
     }
-    debugger;
-    // this.accountService.putAccounting(this.accounting).subscribe(
-    //   (res: any) => {
-    //     this.router.navigate(['/dashboard']);
-    //   }
-    // );
+    
+    this.accountService.putAccounting(this.accounting).subscribe(
+      (res: any) => {
+        this.router.navigate(['/dashboard']);
+      }
+    );
   }
 
 }

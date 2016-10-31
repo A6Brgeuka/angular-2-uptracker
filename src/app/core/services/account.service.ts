@@ -169,7 +169,7 @@ export class AccountService extends ModelService{
 
   putAccounting(data){
     return this.resource.putAccounting(data).$observable.do((res: any) => {
-      // this.updateSelfData(res.data.account);
+      this.updateSelfData(res.data.account.account);
     });
   }
 
@@ -204,7 +204,6 @@ export class AccountService extends ModelService{
       let account = this.userService.selfData.account;
       account.roles = res.data.roles;
       this.updateSelfData(account);
-      debugger;
     });
   }
 }
