@@ -4,16 +4,13 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ResourceCRUD } from 'ng2-resource-rest';
-import { LocalStorage } from 'angular2-local-storage/local_storage';
-import { CookieService } from 'angular2-cookie/services';
 
 import { AppConfig, APP_CONFIG } from '../app.config';
-import { ToasterService, UserService, SpinnerService } from '../core/services/index';
+import { ToasterService, UserService, SpinnerService, SessionService } from '../core/services/index';
 import { UserResource } from '../core/resources/user.resource';
 
 export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
-  public cookieService: CookieService;
-  public localStorage: LocalStorage;
+  public sessionService: SessionService;
   public userService: UserService;
   public router: Router;
   public appConfig: AppConfig;
@@ -27,8 +24,7 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
   ) {
     super(http, injector);
     
-    this.localStorage = injector.get(LocalStorage);
-    this.cookieService = injector.get(CookieService);
+    this.sessionService = injector.get(SessionService);
     this.router = injector.get(Router);
     this.appConfig = injector.get(APP_CONFIG);
     this.toasterService = injector.get(ToasterService);
@@ -37,9 +33,8 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
   
   requestInterceptor(req: Request) {
     this.spinnerService.show();
-    let token = this.localStorage.get('uptracker_token') || this.cookieService.get('uptracker_token');
     req.headers.append('Content-Type', 'application/json');
-    req.headers.append('X_AUTH_TOKEN', token || null);
+    req.headers.append('X_AUTH_TOKEN', this.sessionService.get('uptracker_token') || null);
     return req;
   }
   
@@ -59,7 +54,7 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
         let errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
 
         if (self instanceof UserResource && ((err.status == 401 || err.status == 404) || errMsg == "User doesn't exist.")) {
-          UserService.logout(this.localStorage, this.cookieService, this.router, '/login');
+          UserService.logout(this.sessionService, this.router, '/login');
         }
 
         this.spinnerService.hide();

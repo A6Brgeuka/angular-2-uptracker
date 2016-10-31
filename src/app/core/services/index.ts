@@ -7,6 +7,7 @@ import { StateService } from './state.service';
 import { SpinnerService } from './spinner.service';
 import { PhoneMaskService } from './phone-mask.service';
 import { StreetViewService } from './street-view.service';
+import { SessionService } from './session.service';
 
 
 export {
@@ -18,7 +19,8 @@ export {
   StateService,
   SpinnerService,
   PhoneMaskService,
-  StreetViewService
+  StreetViewService,
+  SessionService
 };
 
 // an array of services to resolve routes with data
@@ -31,5 +33,6 @@ export const APP_SERVICE_PROVIDERS = [
   StateService,
   SpinnerService,
   PhoneMaskService,
-  StreetViewService
+  StreetViewService,
+  SessionService
 ];

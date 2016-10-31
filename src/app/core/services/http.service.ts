@@ -1,23 +1,20 @@
 import { Injectable }     from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 
-import { LocalStorage } from 'angular2-local-storage/local_storage';
-import { CookieService } from 'angular2-cookie/services';
+import { SessionService } from './session.service';
 
 @Injectable()
 export class HttpClient {
   
   constructor(
-    public localStorage: LocalStorage,
-    public cookieService: CookieService,
+    public sessionService: SessionService,
     public http:Http
   ) {
   }
   
   createAuthorizationHeader(headers: Headers) {
     // headers.append('Content-Type', 'application/json');
-    let token = this.localStorage.get('uptracker_token') || this.cookieService.get('uptracker_token');
-    headers.append('X_AUTH_TOKEN', token || null);
+    headers.append('X_AUTH_TOKEN', this.sessionService.get('uptracker_token') || null);
   }
   
   get(url, params?) {
