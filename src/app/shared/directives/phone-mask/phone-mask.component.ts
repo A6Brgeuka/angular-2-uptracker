@@ -33,58 +33,56 @@ export class IntlPhoneMaskDirective implements OnInit {
   private viewCountryList: boolean = false;
   public allCountries = [];
 
-  someDynamicHtml =
-    '<div class="flag-container">' +
-    '<div class="selected-flag" (click)="viewCountryList = !viewCountryList">' +
-    '<div class="iti-flag {{selectedCountry[1]}}"></div>' +
-    '<div class="iti-arrow"></div>' +
-    '</div>' +
-    '<ul class="country-list" [class.hide]="!viewCountryList">' +
-    '<li class="country" [class.highlight]="country[1] == selectedCountry[1]" *ngFor="let country of allCountries" (click)="selectCountry(country)">' +
-    '<div class="flag-box"><div class="iti-flag {{country[1]}}"></div></div>' +
-    '<span class="country-name">{{country[0]}}</span>' +
-    '<span class="dial-code">+{{country[2]}}</span>' +
-    '</li>' +
-    '</ul>' +
-    '</div>';
+  // TODO: remove after accepting intl phone number functionality
+  // someDynamicHtml =
+  //   '<div class="flag-container">' +
+  //   '<div class="selected-flag" (click)="viewCountryList = !viewCountryList">' +
+  //   '<div class="iti-flag {{selectedCountry[1]}}"></div>' +
+  //   '<div class="iti-arrow"></div>' +
+  //   '</div>' +
+  //   '<ul class="country-list" [class.hide]="!viewCountryList">' +
+  //   '<li class="country" [class.highlight]="country[1] == selectedCountry[1]" *ngFor="let country of allCountries" (click)="selectCountry(country)">' +
+  //   '<div class="flag-box"><div class="iti-flag {{country[1]}}"></div></div>' +
+  //   '<span class="country-name">{{country[0]}}</span>' +
+  //   '<span class="dial-code">+{{country[2]}}</span>' +
+  //   '</li>' +
+  //   '</ul>' +
+  //   '</div>';
 
   public constructor(
     element: ElementRef,
     phoneMaskService: PhoneMaskService
   ) {
     this.element = element;
-
-    // this.input = {
-    //   id: this.id,
-    //   name: this.name,
-    //   placeholder: this.placeholder,
-    //   class: this.class,
-    //   mask: this.textMask,
-    //   model: this.model
-    // };
     this.allCountries = phoneMaskService.allCountries;
   }
 
   ngOnInit(){
+    // TODO: remove after accepting intl phone number functionality
     // this.wrap(this.element.nativeElement);
   }
 
-  wrap (toWrap) {
-    let self = this;
-    let wrapper = document.createElement('div');
-    wrapper.className = "intl-tel-input allow-dropdown";
-    let flagContainer = document.createElement('div');
-    flagContainer.className = "flag-container";
-    flagContainer.addEventListener('click', function(){
-      self.viewCountryList = !self.viewCountryList;
-    });
-    // wrapper.innerHTML = this.someDynamicHtml;
-    if (toWrap.nextSibling) {
-      toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
-    } else {
-      toWrap.parentNode.appendChild(wrapper);
-    }
-    return wrapper.appendChild(toWrap);
+  // TODO: remove after accepting intl phone number functionality
+  // wrap (toWrap) {
+  //   let self = this;
+  //   let wrapper = document.createElement('div');
+  //   wrapper.className = "intl-tel-input allow-dropdown";
+  //   let flagContainer = document.createElement('div');
+  //   flagContainer.className = "flag-container";
+  //   flagContainer.addEventListener('click', function(){
+  //     self.viewCountryList = !self.viewCountryList;
+  //   });
+  //   // wrapper.innerHTML = this.someDynamicHtml;
+  //   if (toWrap.nextSibling) {
+  //     toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
+  //   } else {
+  //     toWrap.parentNode.appendChild(wrapper);
+  //   }
+  //   return wrapper.appendChild(toWrap);
+  // }
+
+  onViewCountryList(){
+    this.viewCountryList = !this.viewCountryList
   }
 
   selectCountry(country){

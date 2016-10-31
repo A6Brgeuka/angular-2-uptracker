@@ -8,7 +8,7 @@ import { CookieService } from 'angular2-cookie/services';
 import { ModelService } from '../../overrides/model.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { SpinnerService } from './spinner.service';
-import { UserResource } from "../../core/resources/index";
+import { UserResource } from '../../core/resources/index';
 
 @Injectable()
 @Subscribers({
@@ -20,8 +20,8 @@ export class UserService extends ModelService {
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
   
-  //url for auth guard to redirect
-  redirectUrl: string = null;
+  redirectUrl: string = null; //url for auth guard to redirect
+  session: any = {};
   
   constructor(
     public injector: Injector,
@@ -37,7 +37,41 @@ export class UserService extends ModelService {
   }
   
   onInit() {
+    this.session = {
+      id: this.localStorage.get('uptracker_selfId') || this.cookieService.get('uptracker_selfId'),
+      token: this.localStorage.get('uptracker_token') || this.cookieService.get('uptracker_token'),
+    };
     this.selfDataActions();
+  }
+
+  getSessionId(){
+    return this.session.id ? this.session.id : this.localStorage.get('uptracker_selfId') || this.cookieService.get('uptracker_selfId');
+  }
+
+  getSessionToken(){
+    return this.session.token ? this.session.token : this.localStorage.get('uptracker_token') || this.cookieService.get('uptracker_token');
+  }
+  
+  setSessionId(id) {
+    this.localStorage.set('uptracker_selfId', id);
+    this.cookieService.put('uptracker_selfId', id);
+  }
+
+  setSessionToken(token){
+    this.localStorage.set('uptracker_token', token);
+    this.cookieService.put('uptracker_token', token);
+  }
+
+  getSelfId(): any {
+    if (this.isGuest()) {
+      return null;
+    }
+    return this.getSessionId() || null;
+  }
+
+  // for signup pages
+  getSelfIdFromSelfData(): any {
+    return this.selfData ? this.selfData.id || null : null;
   }
   
   addSubscribers(){
@@ -51,9 +85,8 @@ export class UserService extends ModelService {
       this.updateSelfData$
     )
     .filter((res: any) => {
-      // TODO: remove after testing
-      // let user_id = res ? res.id || null : null;
-      let condition = !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
+      // let condition = !this.cookieService.get('uptracker_selfId') || res.id == this.cookieService.get('uptracker_selfId');
+      let condition = !this.getSessionId() || res.id == this.getSessionId();
       return condition;
     })
     .publishReplay(1).refCount();
@@ -61,8 +94,8 @@ export class UserService extends ModelService {
     this.selfData$.subscribe((res: any) => {
       //Set token
       if (res['token'] && !res['signup']) {
-        this.cookieService.put('uptracker_token', res['token']);
-        this.cookieService.put('uptracker_selfId', res['id']);
+        this.setSessionId(res['id']);
+        this.setSessionToken(res['token']);
       }
       this.selfData = res;
       console.log(`${this.constructor.name} Update SELF DATA`, res);
@@ -70,42 +103,25 @@ export class UserService extends ModelService {
   }
 
   isGuest(): boolean {
-    return !this.cookieService.get('uptracker_token') || !this.cookieService.get('uptracker_selfId');
+    return !this.getSessionId() || !this.getSessionToken();
   }
 
-  logout(redirectUrl = '/') {
+  logout(redirectUrl = '/') { 
     let data = {
-      user_id: this.cookieService.get('uptracker_selfId')
+      user_id: this.getSessionId()
     };
     return this.resource.logout(data).$observable
         .do((res) => {
-          UserService.logout(this.cookieService, this.router, redirectUrl);
+          UserService.logout(this.localStorage, this.cookieService, this.router, redirectUrl);
           this.updateSelfData({});
         });
   }
-  static logout(cookieService, router, redirectUrl = '/') {
+  static logout(localStorage, cookieService, router, redirectUrl = '/') {
+    localStorage.remove('uptracker_token');
+    localStorage.remove('uptracker_selfId');
     cookieService.remove('uptracker_token');
     cookieService.remove('uptracker_selfId');
     router.navigate([redirectUrl]);
-  }
-
-  getToken(): any {
-    if (this.isGuest()) {
-      return null;
-    }
-    return this.cookieService.get('uptracker_token') || null;
-  }
-
-  getSelfId(): any {
-    if (this.isGuest()) {
-      return null;
-    }
-    return this.cookieService.get('uptracker_selfId') || null;
-  }
-
-  // for signup pages
-  getSelfIdFromSelfData(): any {
-    return this.selfData ? this.selfData.id || null : null;
   }
 
   loadSelfData(): Observable<any> {

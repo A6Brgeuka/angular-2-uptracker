@@ -4,13 +4,10 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ResourceCRUD } from 'ng2-resource-rest';
-import { CookieService } from 'angular2-cookie/services';
 
-import { ToasterService, UserService, SpinnerService } from '../core/services/index';
-import { UserResource } from '../core/resources/user.resource';
+import { ToasterService, SpinnerService } from '../core/services/index';
 
 export class StreetViewResourceCRUD extends ResourceCRUD<any,any,any> {
-  public cookieService: CookieService;
   public router: Router;
   public toasterService: ToasterService;
   public spinnerService: SpinnerService;
@@ -22,7 +19,6 @@ export class StreetViewResourceCRUD extends ResourceCRUD<any,any,any> {
   ) {
     super(http, injector);
     
-    this.cookieService = injector.get(CookieService);
     this.router = injector.get(Router);
     this.toasterService = injector.get(ToasterService);
     this.spinnerService = injector.get(SpinnerService);
@@ -45,9 +41,6 @@ export class StreetViewResourceCRUD extends ResourceCRUD<any,any,any> {
         return res.json();
       })
       .catch((err: Response) => {
-        if (self instanceof UserResource && (err.status == 401 || err.status == 404)) {
-          UserService.logout(this.cookieService, this.router);
-        }
 
         this.spinnerService.hide();
 

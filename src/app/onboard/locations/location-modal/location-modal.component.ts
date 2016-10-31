@@ -134,21 +134,22 @@ export class LocationModal implements OnInit, CloseGuard, ModalComponent<Locatio
     let address = {
       location: this.location.state + ' ' + this.location.city + ' ' + this.location.street_1 + ' ' + this.location.street_2
     };
-    let observable = this.location.image ? Observable.empty() : this.streetViewService.getLocationStreetView(address);
-    observable
-        .switchMap((data: any) => {
-          debugger;
-          return Observable.of(null);
-          // return this.accountService.addLocation(this.location).subscribe(
-        })
-        .subscribe((res: any) =>{
-          //debugger;
-        });
+    // TODO: street view query when recieve API key
+    // let observable = this.location.image ? Observable.empty() : this.streetViewService.getLocationStreetView(address);
+    // observable
+    //     .switchMap((data: any) => {
+    //       debugger;
+    //       return Observable.of(null);
+    //       // return this.accountService.addLocation(this.location).subscribe(
+    //     })
+    //     .subscribe((res: any) =>{
+    //       //debugger;
+    //     });
 
-    // this.accountService.addLocation(this.location).subscribe(
-    //   (res: any) => {
-    //     this.closeModal();
-    //   }
-    // );
+    this.accountService.addLocation(this.location).subscribe(
+      (res: any) => {
+        this.closeModal();
+      }
+    );
   }
 }

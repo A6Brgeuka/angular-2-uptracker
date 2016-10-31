@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'angular2-cookie/services';
 
 import { UserModel } from '../../../models/index';
-import { UserService, SpinnerService, PhoneMaskService } from '../../../core/services/index';
+import { UserService, PhoneMaskService } from '../../../core/services/index';
 
 @Component({
   selector: 'app-create-account',
@@ -22,8 +21,6 @@ export class CreateAccountComponent implements OnInit {
   constructor(
       private userService: UserService,
       private router: Router,
-      private spinnerService: SpinnerService,
-      private cookieService: CookieService,
       private phoneMaskService: PhoneMaskService
   ) {
   }
@@ -36,12 +33,6 @@ export class CreateAccountComponent implements OnInit {
   }
 
   onCountryChange($event) {
-    // TODO: change phone mask dynamically if necessary
-    // this.phoneMask = [ /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/ ];
-    // let codeArr = country[2].split('');
-    // codeArr.unshift('+');
-    // codeArr.push(' ', ' ');
-    // this.phoneMask = codeArr.concat(this.phoneMask);
     this.selectedCountry = $event;
   }
 
@@ -51,7 +42,7 @@ export class CreateAccountComponent implements OnInit {
         .subscribe(
             (res: any) => {
               if (res.data.token)
-                this.cookieService.put('uptracker_token', res.data.token);
+                this.userService.setSessionToken(res.data.token);
               this.router.navigate(['/signup/about-company']);
             },
             (err) => {}

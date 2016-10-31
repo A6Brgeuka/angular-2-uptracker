@@ -26,15 +26,13 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
   providers: [    
     // app config
     { provide: APP_CONFIG, useValue: APP_DI_CONFIG },
-    
-    //local storage
-    LOCAL_STORAGE_PROVIDERS,
 
     //app resolver
     ...APP_RESOLVER_PROVIDERS,
 
     ...APP_SERVICE_PROVIDERS,
     ...APP_RESOURCE_PROVIDERS,
+    LOCAL_STORAGE_PROVIDERS,
     CookieService,
     Modal,
     AuthGuard
