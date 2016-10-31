@@ -17,33 +17,27 @@ export class SessionService {
     try{
       this.localStorage.set(title, value);
     } catch(err){
-      try{
-        this.cookieService.put(title, value);
-      } catch(err){
+      if (!this.cookieService.put(title, value)) {
         this.session[title] = value;
       }
     }
   }
 
   get(title){
+    let value;
     try{
-      return this.localStorage.get(title);
+      value =  this.localStorage.get(title);
     } catch(err){
-      try{
-        return this.cookieService.get(title);
-      } catch(err){
-        return this.session[title];
-      }
+      value = this.cookieService.get(title) || this.session[title];
     }
+    return value;
   }
 
   remove(title){
     try{
       this.localStorage.remove(title);
     } catch(err){
-      try{
-        this.cookieService.remove(title);
-      } catch(err){
+      if (!this.cookieService.remove(title)){
         this.session[title] = null;
       }
     }
