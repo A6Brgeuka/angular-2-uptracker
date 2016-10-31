@@ -50,16 +50,15 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
         return res.json();
       })
       .catch((err: Response) => {
-        if (self instanceof UserResource && (err.status == 401 || err.status == 404)) {
+        let body = err.json();
+        let errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
+
+        if (self instanceof UserResource && ((err.status == 401 || err.status == 404) || errMsg == "User doesn't exist.")) {
           UserService.logout(this.cookieService, this.router);
         }
 
         this.spinnerService.hide();
-
-        let body = err.json();
-        let errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
         this.toasterService.pop('error', errMsg);
-
         return Observable.throw(errMsg);
       });
   }
