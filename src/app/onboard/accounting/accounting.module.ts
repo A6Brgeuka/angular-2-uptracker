@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { AccountingComponent } from './accounting.component';
-import { ACCOUNTING_RESOLVER_PROVIDERS } from './accounting-resolve.service';
 import { AppSharedModule } from '../../shared/shared.module';
 
 @NgModule({
@@ -11,9 +10,7 @@ import { AppSharedModule } from '../../shared/shared.module';
   imports: [
     AppSharedModule
   ],
-  providers: [
-      ...ACCOUNTING_RESOLVER_PROVIDERS,
-  ]
+  providers: []
 })
 export class AccountingModule {
 }

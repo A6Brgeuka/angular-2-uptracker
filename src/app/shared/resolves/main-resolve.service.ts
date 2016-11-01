@@ -27,8 +27,34 @@ export class LocationTypesCollectionResolve implements Resolve<any> {
   }
 }
 
+@Injectable()
+export class DepartmentCollectionResolve implements Resolve<any> {
+  constructor(
+      private accountService: AccountService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.accountService.getDepartments();
+  }
+}
+
+@Injectable()
+export class CurrencyCollectionResolve implements Resolve<any> {
+  constructor(
+      private accountService: AccountService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.accountService.getCurrencies();
+  }
+}
+
 // an array of services to resolve routes with data
-export const LOCATIONS_RESOLVER_PROVIDERS = [
+export const MAIN_RESOLVER_PROVIDERS = [
   StateCollectionResolve,
-  LocationTypesCollectionResolve
+  LocationTypesCollectionResolve,
+  DepartmentCollectionResolve,
+  CurrencyCollectionResolve
 ];

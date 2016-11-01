@@ -2,7 +2,7 @@ import { OnboardLocationsComponent } from './locations.component';
 import {
     StateCollectionResolve,
     LocationTypesCollectionResolve
-} from './locations-resolve.service';
+} from '../../shared/resolves/index';
 
 export const OnboardLocationsRoutes = [
   {

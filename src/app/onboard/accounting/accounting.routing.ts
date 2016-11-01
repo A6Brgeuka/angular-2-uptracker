@@ -1,13 +1,14 @@
 import { AccountingComponent } from './accounting.component';
-// import {
-//     StateCollectionResolve,
-//     LocationTypesCollectionResolve
-// } from './locations-resolve.service';
+import {
+    CurrencyCollectionResolve
+} from '../../shared/resolves/index';
 
 export const AccountingRoutes = [
   {
     path: 'accounting',
     component: AccountingComponent,
-    canActivate: []
+    resolve: {
+      currencyCollection: CurrencyCollectionResolve
+    }
   }
 ];

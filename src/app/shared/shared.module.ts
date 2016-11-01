@@ -24,6 +24,12 @@ let pipesArr = [
 ];
 
 
+import {
+  MAIN_RESOLVER_PROVIDERS,
+  ACCOUNT_RESOLVER_PROVIDERS
+} from './resolves/index';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -57,7 +63,10 @@ let pipesArr = [
     ...directivesArr,
     ...pipesArr
   ],
-  providers: []
+  providers: [
+    ...MAIN_RESOLVER_PROVIDERS,
+    ...ACCOUNT_RESOLVER_PROVIDERS
+  ]
 })
 export class AppSharedModule {
 }
