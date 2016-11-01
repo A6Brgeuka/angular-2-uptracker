@@ -69,7 +69,7 @@
 }
 
 @media all and (max-width: 768px) {
-  .fixed-action-btn{
+  .user-menu{
     right:10px;
 
     .truncate{
@@ -79,7 +79,7 @@
 }
 
 @media all and (max-width: 480px) {
-  .fixed-action-btn {
+  .user-menu {
     .truncate {
       max-width: 68px;
     }

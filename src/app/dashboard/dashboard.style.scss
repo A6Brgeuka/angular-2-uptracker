@@ -23,7 +23,8 @@
           text-transform: uppercase;
           background-repeat:no-repeat;
 
-          &:hover{
+          &:hover,
+          &.active{
             background-color:#198f90;
             text-decoration: none;
           }
@@ -70,6 +71,7 @@
       margin-left:200px;
       min-height: 100vh;
       background:#f5f6f7;
+      overflow:hidden;
 
       .header{
         height:69px;
@@ -114,7 +116,93 @@
       }
 
       .content-wrapper{
+        padding:34px 40px 40px 30px;
 
+        .top{
+          height:30px;
+
+          .title{
+            min-width:300px;
+            line-height:30px;
+            font-size: 28px;
+            font-family: Ubuntu;
+
+            .main-title{
+              font-weight: bold;
+              margin-right:10px;
+            }
+
+            .sub-title{
+              font-weight: 300;
+              color:#33c6d9;
+            }
+          }
+
+          .filter{
+            width:420px;
+            float:right;
+            margin-left:-10px;
+
+            input{
+              height:30px;
+              width:200px;
+              margin:0;
+              font:12px Lato;
+              box-sizing:border-box;
+            }
+
+            .input {
+              margin:0 0 0 10px;
+
+              input{
+                padding:0 10px;
+              }
+            }
+
+            .select {
+              height:32px;
+              margin-left:10px;
+
+              .select-wrapper.ng-valid input.select-dropdown{
+                border-color:#d6d6d6;
+              }
+
+              .select-wrapper .dropdown-content {
+                margin:0;
+
+                li span{
+                  font-size:12px;
+                  line-height:30px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 1023px){
+  :host /deep/ {
+    .dashboard .main-column .content-wrapper{
+      padding-left:15px;
+      padding-right:15px;
+
+      .top{
+        .title{
+          margin-bottom:10px;
+        }
+
+        .filter{
+          float:none;
+          max-width:100%;
+          clear:both;
+
+          .input{
+            margin-bottom:10px;
+          }
+        }
       }
     }
   }
@@ -143,10 +231,6 @@
 
     .main-column{
       margin-left:70px;
-
-      .header{
-
-      }
     }
   }
 }

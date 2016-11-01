@@ -1,13 +1,27 @@
 <div class="locations content">
-  <div class="title">Set up your locations</div>
-  <div class="subtitle">Please enter one location per card below then click next.</div>
+  <div class="top">
+    <div class="title left">
+      <div class="main-title left">Locations</div>
+      <div class="sub-title">7 total</div>
+    </div>
+    <div class="filter uptracker-form">
+      <div class="left input">
+        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" />
+      </div>
+      <div class="left select">
+        <select [(ngModel)]="sortBy" materialize="material_select">
+          <option value="">Sort by</option>
+          <option value="name">Name</option>
+          <option value="location_type">Location type</option>
+        </select>
+      </div>
+    </div>
+  </div>
   <div class="list left-align">
     <div class="item" *ngFor="let location of locationArr" (click)="viewLocationModal(location)">
-      <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }">
-        <!--<img src="{{location.image}}" alt="{{location.name}}" class="responsive-img" />-->
-      </div>
+      <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }"></div>
       <div class="ttl">{{location.name}}</div>
     </div>
-    <div class="empty item" (click)="viewLocationModal()"></div>
+    <!--<div class="empty item" (click)="viewLocationModal()"></div>-->
   </div>
 </div>

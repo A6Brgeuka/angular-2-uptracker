@@ -6,12 +6,12 @@ import {
 
 export const LocationsRoutes = [
   {
-    path: '',
+    path: 'locations',
     component: LocationsComponent,
     canActivate: [],
     resolve: {
       stateCollection: StateCollectionResolve,
       locationTypesCollection: LocationTypesCollectionResolve
     }
-  },
+  }
 ];

@@ -1,5 +1,6 @@
 .list{
-  margin:-40px 0 0 -20px;
+  clear:both;
+  margin:-20px 0 0 -20px;
   letter-spacing: 0;
   word-spacing: 0;
   font-size:0;
@@ -13,7 +14,7 @@
     height:350px;
     width:520px;
     max-width:100%;
-    margin:40px 0 0 20px;
+    margin:20px 0 20px 20px;
     text-align:center;
     cursor:pointer;
 
@@ -43,8 +44,8 @@
   }
 }
 
-@media all and (max-width: 1080px){
-  .content{
-    max-width:520px !important;
+@media all and (max-width: 1330px){
+  .list{
+    text-align:center;
   }
 }
