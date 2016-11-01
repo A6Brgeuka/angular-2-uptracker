@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 
 import { OnboardComponent } from './onboard.component';
 import { AppSharedModule } from '../shared/shared.module';
-import { LocationsModule } from './locations/locations.module';
-import { UsersModule } from './users/users.module';
+import { OnboardLocationsModule } from './locations/locations.module';
+import { OnboardUsersModule } from './users/users.module';
 import { AccountingModule } from './accounting/accounting.module';
 
 @NgModule({
@@ -12,9 +12,9 @@ import { AccountingModule } from './accounting/accounting.module';
   ],
   imports: [
     AppSharedModule,
-    
-    LocationsModule,
-    UsersModule,
+
+    OnboardLocationsModule,
+    OnboardUsersModule,
     AccountingModule
   ],
   providers: []

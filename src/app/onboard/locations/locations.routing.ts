@@ -1,13 +1,13 @@
-import { LocationsComponent } from './locations.component';
+import { OnboardLocationsComponent } from './locations.component';
 import {
     StateCollectionResolve,
     LocationTypesCollectionResolve
 } from './locations-resolve.service';
 
-export const LocationsRoutes = [
+export const OnboardLocationsRoutes = [
   {
     path: 'locations',
-    component: LocationsComponent,
+    component: OnboardLocationsComponent,
     canActivate: [],
     resolve: {
       stateCollection: StateCollectionResolve, 

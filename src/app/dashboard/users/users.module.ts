@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { OnboardUsersComponent } from './users.component';
+import { UsersComponent } from './users.component';
 import { USERS_RESOLVER_PROVIDERS } from './users-resolve.service';
 import { AppSharedModule } from '../../shared/shared.module';
 
@@ -8,7 +8,7 @@ import { UserModal } from './user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
-    OnboardUsersComponent,
+    UsersComponent,
     UserModal
   ],
   imports: [
@@ -22,5 +22,5 @@ import { UserModal } from './user-modal/user-modal.component';
   // we must tell angular about it.
   entryComponents: [ UserModal ]
 })
-export class OnboardUsersModule {
+export class UsersModule {
 }

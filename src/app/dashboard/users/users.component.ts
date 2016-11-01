@@ -4,17 +4,18 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { LocationModal } from './location-modal/location-modal.component';
+import { UserModal } from './user-modal/user-modal.component';
 import { UserService, AccountService } from '../../core/services/index';
 
+
 @Component({
-  selector: 'app-onboard-locations',
-  templateUrl: './locations.component.html',
-  styleUrls: ['./locations.component.scss']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
 @DestroySubscribers()
-export class OnboardLocationsComponent implements OnInit {
-  public locationArr: any = [];
+export class UsersComponent implements OnInit {
+  public userArr: any = [];
   private subscribers: any = {};
 
   constructor(
@@ -29,19 +30,31 @@ export class OnboardLocationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
-      if (res.account) {
-        this.locationArr = res.account.locations;
+    this.subscribers.getUsersSubscription = this.userService.selfData$.subscribe((res: any) => {
+      if (res.account) { 
+        this.userArr = res.account.users;
       }
     });
   }
 
-  viewLocationModal(location = null){
-    this.modal.open(LocationModal,  overlayConfigFactory({ location: location }, BSModalContext));
+  viewUserModal(user = null){
+    this.modal.open(UserModal,  overlayConfigFactory({user: user}, BSModalContext));
   }
-
+  
+  goBack(){
+    this.router.navigate(['/onboard','locations']);    
+  }
+  
   goNext(){
-    this.router.navigate(['/onboard','users']);
+    this.router.navigate(['/onboard','accounting']);
+  }
+  
+  upload(){
+    
+  }
+  
+  download(){
+    
   }
 
 }

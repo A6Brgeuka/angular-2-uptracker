@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { DashboardComponent } from './dashboard.component';
 import { AppSharedModule } from '../shared/shared.module';
-// import { LoginModule } from './login/login.module';
+import { LocationsModule } from './locations/locations.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,7 @@ import { AppSharedModule } from '../shared/shared.module';
   imports: [
     AppSharedModule,
       
-    // LoginModule,
+    LocationsModule,
   ],
   providers: []
 })

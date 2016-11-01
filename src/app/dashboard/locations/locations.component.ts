@@ -4,16 +4,16 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { LocationModal } from './location-modal/location-modal.component';
+// import { LocationModal } from './location-modal/location-modal.component';
 import { UserService, AccountService } from '../../core/services/index';
 
 @Component({
-  selector: 'app-onboard-locations',
+  selector: 'app-locations',
   templateUrl: './locations.component.html',
   styleUrls: ['./locations.component.scss']
 })
 @DestroySubscribers()
-export class OnboardLocationsComponent implements OnInit {
+export class LocationsComponent implements OnInit {
   public locationArr: any = [];
   private subscribers: any = {};
 
@@ -37,7 +37,7 @@ export class OnboardLocationsComponent implements OnInit {
   }
 
   viewLocationModal(location = null){
-    this.modal.open(LocationModal,  overlayConfigFactory({ location: location }, BSModalContext));
+    // this.modal.open(LocationModal,  overlayConfigFactory({ location: location }, BSModalContext));
   }
 
   goNext(){

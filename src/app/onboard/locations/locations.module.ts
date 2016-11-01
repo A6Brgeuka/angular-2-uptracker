@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { LocationsComponent } from './locations.component';
+import { OnboardLocationsComponent } from './locations.component';
 import { LOCATIONS_RESOLVER_PROVIDERS } from './locations-resolve.service';
 import { AppSharedModule } from '../../shared/shared.module';
 
@@ -8,7 +8,7 @@ import { LocationModal } from './location-modal/location-modal.component';
 
 @NgModule({
   declarations: [
-    LocationsComponent,
+    OnboardLocationsComponent,
     LocationModal
   ],
   imports: [
@@ -22,5 +22,5 @@ import { LocationModal } from './location-modal/location-modal.component';
   // we must tell angular about it.
   entryComponents: [ LocationModal ]
 })
-export class LocationsModule {
+export class OnboardLocationsModule {
 }

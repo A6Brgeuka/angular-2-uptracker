@@ -9,12 +9,12 @@ import { UserService, AccountService } from '../../core/services/index';
 
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-onboard-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
 @DestroySubscribers()
-export class UsersComponent implements OnInit {
+export class OnboardUsersComponent implements OnInit {
   public userArr: any = [];
   private subscribers: any = {};
 

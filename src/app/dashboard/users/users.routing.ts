@@ -1,14 +1,14 @@
-import { OnboardUsersComponent } from './users.component';
+import { UsersComponent } from './users.component';
 import {
   UserCollectionResolve,
   DepartmentCollectionResolve,
   RoleCollectionResolve
 } from './users-resolve.service';
 
-export const OnboardUsersRoutes = [
+export const UsersRoutes = [
   {
     path: 'users',
-    component: OnboardUsersComponent,
+    component: UsersComponent,
     resolve: {
       userCollection: UserCollectionResolve,
       departmentCollection: DepartmentCollectionResolve,

@@ -2,7 +2,7 @@ import { DashboardComponent } from './dashboard.component';
 
 import { AuthGuard } from '../auth-guard.service';
 
-// import { LoginRoutes } from './login/login.routing';
+import { LocationsRoutes } from './locations/locations.routing';
 
 export const DashboardRoutes = [
   {
@@ -11,7 +11,7 @@ export const DashboardRoutes = [
     resolve: {},
     canActivate: [ AuthGuard ],
     children: [
-      // ...LoginRoutes,
+      ...LocationsRoutes,
     ]
   }
 ];

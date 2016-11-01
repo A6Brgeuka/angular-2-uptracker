@@ -18,8 +18,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> | boolean {
-    let user$ = this.userService.loadSelfData().map((res) => { 
+  ): Observable<boolean> | boolean { debugger;
+    let user$ = this.userService.loadSelfData().map((res) => {  debugger;
       // if logged out guest remove self data
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());
@@ -85,7 +85,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return true;
   }
 
-  checkDashboard(url: string): boolean {
+  checkDashboard(url: string): boolean { debugger;
     if (!this.checkAuth(url)) {
       return false;
     }
