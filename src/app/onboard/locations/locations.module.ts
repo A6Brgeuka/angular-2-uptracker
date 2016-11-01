@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { OnboardLocationsComponent } from './locations.component';
 import { AppSharedModule } from '../../shared/shared.module';
 
-import { LocationModal } from './location-modal/location-modal.component';
+import { EditLocationModal } from '../../shared/modals/index';
 
 @NgModule({
   declarations: [
     OnboardLocationsComponent,
-    LocationModal
+    EditLocationModal
   ],
   imports: [
     AppSharedModule
@@ -17,7 +17,7 @@ import { LocationModal } from './location-modal/location-modal.component';
   // IMPORTANT:
   // Since 'AdditionCalculateWindow' is never explicitly used (in a template)
   // we must tell angular about it.
-  entryComponents: [ LocationModal ]
+  entryComponents: [ EditLocationModal ]
 })
 export class OnboardLocationsModule {
 }

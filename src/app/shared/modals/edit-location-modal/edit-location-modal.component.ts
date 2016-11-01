@@ -8,22 +8,22 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { AccountService, ToasterService, UserService, PhoneMaskService, StreetViewService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
-export class LocationModalContext extends BSModalContext {
+export class EditLocationModalContext extends BSModalContext {
   public location: any;
 }
 
 @Component({
-  selector: 'app-location-modal',
+  selector: 'app-edit-location-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
-  templateUrl: './location-modal.component.html',
-  styleUrls: ['./location-modal.component.scss']
+  templateUrl: './edit-location-modal.component.html',
+  styleUrls: ['./edit-location-modal.component.scss']
 })
 @DestroySubscribers()
-export class LocationModal implements OnInit, CloseGuard, ModalComponent<LocationModalContext> {
+export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<EditLocationModalContext> {
   private subscribers: any = {};
-  context: LocationModalContext;
+  context: EditLocationModalContext;
   public location: LocationModel;
   public stateArr = {};
   public typeArr = {};
@@ -43,7 +43,7 @@ export class LocationModal implements OnInit, CloseGuard, ModalComponent<Locatio
   };
 
   constructor(
-      public dialog: DialogRef<LocationModalContext>,
+      public dialog: DialogRef<EditLocationModalContext>,
       private toasterService: ToasterService,
       private userService: UserService,
       private accountService: AccountService,

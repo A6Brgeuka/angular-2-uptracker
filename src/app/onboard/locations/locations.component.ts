@@ -4,7 +4,7 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { LocationModal } from './location-modal/location-modal.component';
+import { EditLocationModal } from '../../shared/modals/index';
 import { UserService, AccountService } from '../../core/services/index';
 
 @Component({
@@ -37,7 +37,7 @@ export class OnboardLocationsComponent implements OnInit {
   }
 
   viewLocationModal(location = null){
-    this.modal.open(LocationModal,  overlayConfigFactory({ location: location }, BSModalContext));
+    this.modal.open(EditLocationModal,  overlayConfigFactory({ location: location }, BSModalContext));
   }
 
   goNext(){

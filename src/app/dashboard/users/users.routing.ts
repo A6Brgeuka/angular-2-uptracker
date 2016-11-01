@@ -3,7 +3,7 @@ import {
   UserCollectionResolve,
   DepartmentCollectionResolve,
   RoleCollectionResolve
-} from './users-resolve.service';
+} from '../../shared/resolves/index';
 
 export const UsersRoutes = [
   {
