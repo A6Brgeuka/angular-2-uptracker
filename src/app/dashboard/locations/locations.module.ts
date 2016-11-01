@@ -4,6 +4,7 @@ import { LocationsComponent } from './locations.component';
 import { AppSharedModule } from '../../shared/shared.module';
 
 import { EditLocationModalModule } from '../../shared/modals/index';
+import { ViewLocationModalModule } from './view-location-modal/view-location-modal.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { EditLocationModalModule } from '../../shared/modals/index';
   ],
   imports: [
     AppSharedModule,
-    EditLocationModalModule
+    EditLocationModalModule,
+    ViewLocationModalModule
   ],
   providers: []
 })

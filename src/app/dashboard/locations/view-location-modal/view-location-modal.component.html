@@ -1,0 +1,31 @@
+<div class="close" (click)="closeModal()"></div>
+<div class="title center-align">{{location.name}}</div>
+<div class="row uptracker-form">
+  <div class="col s12 m5 location-image">
+    <div class="img-container">
+      <div class="img" *ngIf="location.image" [ngStyle]="{ 'background-image': 'url(' + location.image + ')' }"></div>
+    </div>
+  </div>
+  <div class="col s12 m7 info">
+    <div class="ttl">Location Type</div>
+    <div class="sub-ttl">{{location.location_type}}</div>
+    <div class="address">
+      <div class="ttl">Address</div>
+      <div class="steet left">{{location.street_1}}<span *ngIf="location.street_2">, {{location.street_2}}</span></div>
+      <div class="city left">{{location.city}}, {{location.state}}, {{location.zip_code}}</div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="contacts">
+      <div class="ttl">Contacts</div>
+      <div class="phone left">{{location.phone}}, </div>
+      <div class="fax left" *ngIf="location.fax">{{location.fax}}, </div>
+      <div class="email left">{{location.email_address}}</div>
+      <div class="clearfix"></div>
+    </div>
+    <button
+        type="submit"
+        class="uptracker-form-btn btn white-text waves-effect waves-light">
+        Edit
+    </button>
+  </div>
+</div>
