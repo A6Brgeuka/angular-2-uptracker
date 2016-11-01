@@ -23,7 +23,7 @@ let pipesArr = [
   IterablePipe,
 ];
 
-
+// resolvers
 import {
   MAIN_RESOLVER_PROVIDERS,
   ACCOUNT_RESOLVER_PROVIDERS
