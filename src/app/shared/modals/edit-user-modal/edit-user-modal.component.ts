@@ -11,22 +11,22 @@ import * as lodashEach from 'lodash/each';
 import { UserService, AccountService, PhoneMaskService, ToasterService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
 
-export class UserModalContext extends BSModalContext {
+export class EditUserModalContext extends BSModalContext {
   public user: any;
 }
 
 @Component({
-  selector: 'app-user-modal',
+  selector: 'app-edit-user-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
-  templateUrl: './user-modal.component.html',
-  styleUrls: ['./user-modal.component.scss']
+  templateUrl: './edit-user-modal.component.html',
+  styleUrls: ['./edit-user-modal.component.scss']
 })
 @DestroySubscribers()
-export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalContext> {
+export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUserModalContext> {
   private subscribers: any = {};
-  context: UserModalContext;
+  context: EditUserModalContext;
   public user: any;
   public locationArr: any;
   public departmentArr: any;
@@ -53,7 +53,7 @@ export class UserModal implements OnInit, CloseGuard, ModalComponent<UserModalCo
   public preset: any = {};
 
   constructor(
-      public dialog: DialogRef<UserModalContext>,
+      public dialog: DialogRef<EditUserModalContext>,
       private userService: UserService,
       private accountService: AccountService,
       private phoneMaskService: PhoneMaskService,

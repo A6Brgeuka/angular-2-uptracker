@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { OnboardUsersComponent } from './users.component';
 import { AppSharedModule } from '../../shared/shared.module';
 
-import { UserModal } from './user-modal/user-modal.component';
+import { EditUserModal } from '../../shared/modals/index';
 
 @NgModule({
   declarations: [
     OnboardUsersComponent,
-    UserModal
+    EditUserModal
   ],
   imports: [
     AppSharedModule
@@ -17,7 +17,7 @@ import { UserModal } from './user-modal/user-modal.component';
   // IMPORTANT:
   // Since 'AdditionCalculateWindow' is never explicitly used (in a template)
   // we must tell angular about it.
-  entryComponents: [ UserModal ]
+  entryComponents: [ EditUserModal ]
 })
 export class OnboardUsersModule {
 }

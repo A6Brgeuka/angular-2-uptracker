@@ -4,7 +4,7 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { UserModal } from './user-modal/user-modal.component';
+import { EditUserModal } from '../../shared/modals/index';
 import { UserService, AccountService } from '../../core/services/index';
 
 
@@ -38,7 +38,7 @@ export class OnboardUsersComponent implements OnInit {
   }
 
   viewUserModal(user = null){
-    this.modal.open(UserModal,  overlayConfigFactory({user: user}, BSModalContext));
+    this.modal.open(EditUserModal,  overlayConfigFactory({user: user}, BSModalContext));
   }
   
   goBack(){
