@@ -1,7 +1,8 @@
 import { OnboardLocationsComponent } from './locations.component';
 import {
     StateCollectionResolve,
-    LocationTypesCollectionResolve
+    LocationTypesCollectionResolve,
+    LocationCollectionResolve
 } from '../../shared/resolves/index';
 
 export const OnboardLocationsRoutes = [
@@ -11,7 +12,8 @@ export const OnboardLocationsRoutes = [
     canActivate: [],
     resolve: {
       stateCollection: StateCollectionResolve, 
-      locationTypesCollection: LocationTypesCollectionResolve
+      locationTypesCollection: LocationTypesCollectionResolve,
+      locationCollection: LocationCollectionResolve
     }
   },
 ];

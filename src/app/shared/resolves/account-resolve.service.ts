@@ -23,13 +23,25 @@ export class RoleCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // this.accountService.getRoles().subscribe();
     return this.accountService.getRoles();
+  }
+}
+
+@Injectable()
+export class LocationCollectionResolve implements Resolve<any> {
+  constructor(
+      private accountService: AccountService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.accountService.getLocations();
   }
 }
 
 // an array of services to resolve routes with data
 export const ACCOUNT_RESOLVER_PROVIDERS = [
   UserCollectionResolve,
-  RoleCollectionResolve
+  RoleCollectionResolve,
+  LocationCollectionResolve
 ];
