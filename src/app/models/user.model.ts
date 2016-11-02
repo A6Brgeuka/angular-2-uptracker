@@ -27,6 +27,7 @@ export class UserModel {
   email_verify_token: string = null;
   status: number = null;
   welcome_email: string = null;
+  role: string = null;
 
   
   constructor(obj?: any) {

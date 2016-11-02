@@ -120,6 +120,7 @@
 
         .top{
           height:30px;
+          margin-bottom:17px;
 
           .title{
             min-width:300px;
@@ -139,7 +140,6 @@
           }
 
           .filter{
-            width:420px;
             float:right;
             margin-left:-10px;
 
@@ -176,6 +176,15 @@
                 }
               }
             }
+          }
+
+          .uptracker-form-btn{
+            background:#33c6d9;
+            margin-left:10px;
+            height:30px;
+            color:#fff;
+            font-size: 12px;
+            font-weight: bold;
           }
         }
       }

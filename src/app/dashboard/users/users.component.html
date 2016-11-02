@@ -1,13 +1,28 @@
 <div class="users content">
+  <div class="top">
+    <div class="title left">
+      <div class="main-title left">Users</div>
+      <div class="sub-title">7 total</div>
+    </div>
+    <div class="filter uptracker-form">
+      <div class="left input">
+        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="locationsFilter($event)" />
+      </div>
+      <div class="left">
+        <button type="button" (click)="editUserModal()" class="uptracker-form-btn">Add New User</button>
+      </div>
+    </div>
+  </div>
   <div class="users-row">
     <div class="list">
       <div class="item center-align" *ngFor="let user of userArr" (click)="viewUserModal(user)">
         <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
-        <div class="ttl">{{user.name}}</div>
+        <div class="info">
+          <div class="ttl">{{user.name}}</div>
+          <div class="send-msg"></div>
+          <div class="edit"></div>
+        </div>
       </div>
-    </div>
-    <div class="left add-item">
-      <div class="empty item" (click)="viewUserModal()"></div>
     </div>
     <div class="clearfix"></div>
   </div>

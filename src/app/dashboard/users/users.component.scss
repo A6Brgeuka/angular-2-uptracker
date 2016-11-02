@@ -6,29 +6,14 @@
       display:inline-block;
       vertical-align:top;
       border-radius:5px;
-
-      &.empty{
-        background:#f5f6f7 url(/assets/img/onboard/button-add-location.svg) no-repeat center center;
-        border:1px dashed #a7a7a7;
-
-        &:hover{
-          cursor:pointer;
-        }
-      }
     }
 
     .list{
-      overflow-x:auto;
-      overflow-y:hidden;
-      white-space: nowrap;
       letter-spacing: 0;
       word-spacing: 0;
       font-size:0;
       padding-bottom:15px;
       text-align:left;
-      max-width: calc(100% - 270px);
-      float:left;
-      margin-right:20px;
 
       .item{
         border: 1px solid #d6d6d6;
@@ -48,55 +33,65 @@
           border-radius:50%;
           background:transparent no-repeat center center;
           background-size:cover;
-
-          //TODO: remove after check
-          //img{
-          //  display:block;
-          //  border-radius:50%;
-          //  max-height: 100%;
-          //  max-width:100%;
-          //}
         }
 
-        .ttl{
-          font-size:12px;
+        .info{
+          position:relative;
+
+          .ttl{
+            font-size:12px;
+          }
+
+          .send-msg,
+          .edit{
+            display: none;
+            width:17px;
+            height:13px;
+            background:url(/assets/img/icon-message.svg) no-repeat;
+            cursor:pointer;
+            position:absolute;
+            top:3px;
+            left:21px;
+          }
+
+          .edit{
+            width:15px;
+            height:15px;
+            background:url(/assets/img/icon-edit.svg) no-repeat;
+            right:21px;
+            top:2px;
+            left:auto;
+          }
+        }
+
+        &:hover{
+          .info{
+            .send-msg,
+            .edit{
+              display:block;
+            }
+          }
         }
       }
     }
-  }
-
-  .buttons{
-    padding-top:25px !important;
   }
 }
 
 @media all and (max-width: 500px){
   .users{
     .users-row{
-      .add-item{
-        width:100%;
-        text-align:center;
-        margin-bottom:20px;
-      }
 
       .list{
         text-align:center;
         clear:both;
-        width:250px;
-        max-width: inherit;
-        float:none;
-        margin:0 auto;
-        overflow:inherit;
+        //width:250px;
+        //margin:0 auto;
 
         .item{
           display:block;
           margin:0 0 20px !important;
         }
       }
-    }
-
-    .buttons{
-      padding:20px !important;
     }
   }
 }

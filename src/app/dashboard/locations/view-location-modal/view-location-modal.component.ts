@@ -4,7 +4,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
+import { AccountService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
 export class ViewLocationModalContext extends BSModalContext {
@@ -21,23 +21,11 @@ export class ViewLocationModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ViewLocationModal implements OnInit, CloseGuard, ModalComponent<ViewLocationModalContext> {
-  private subscribers: any = {};
   context: ViewLocationModalContext;
   public location: LocationModel;
-  public locationFormPhone: string = null;
-  public locationFormFax: string = null;
-  public phoneMask: any = this.phoneMaskService.defaultTextMask;
-  // default country for phone input
-  public selectedCountry: any = this.phoneMaskService.defaultCountry;
-  public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
-  public uploadedImage: string;
 
   constructor(
-      public dialog: DialogRef<ViewLocationModalContext>,
-      private toasterService: ToasterService,
-      private userService: UserService,
-      private accountService: AccountService,
-      private phoneMaskService: PhoneMaskService
+      public dialog: DialogRef<ViewLocationModalContext>
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -53,12 +41,6 @@ export class ViewLocationModal implements OnInit, CloseGuard, ModalComponent<Vie
       this.location.city = this.location.address.city;
       this.location.zip_code = this.location.address.postal_code;
       this.location.state = this.location.address.state;
-
-      this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
-
-      this.locationFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax);
-      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
     }
   }
 

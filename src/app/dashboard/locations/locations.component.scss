@@ -46,6 +46,7 @@
       }
 
       .edit{
+        display: none;
         width:15px;
         height:15px;
         background:url(/assets/img/icon-edit.svg) no-repeat;
@@ -53,6 +54,14 @@
         position:absolute;
         top:0;
         right:21px;
+      }
+    }
+
+    &:hover{
+      .info{
+        .edit{
+          display:block;
+        }
       }
     }
   }
