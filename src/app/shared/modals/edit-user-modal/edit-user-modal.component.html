@@ -154,7 +154,7 @@
         </div>
       </div>
       <div class="col s12 m4 no-label">
-        <button type="button" class="not-submit" (click)="showAddPresetForm()">Add Pre-set</button>
+        <button type="button" class="not-submit" (click)="showAddPresetForm()" [disabled]="!showCustomRole">Add Pre-set</button>
       </div>
     </div>
     <div class="input row add-preset-form" *ngIf="addPresetForm">
