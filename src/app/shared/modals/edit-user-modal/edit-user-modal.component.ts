@@ -8,7 +8,7 @@ import * as lodashClone from 'lodash/cloneDeep';
 import * as lodashIsEqual from 'lodash/isEqual';
 import * as lodashEach from 'lodash/each';
 
-import { UserService, AccountService, PhoneMaskService, ToasterService } from '../../../core/services/index';
+import { UserService, AccountService, PhoneMaskService, ToasterService, FileUploadService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
 
 export class EditUserModalContext extends BSModalContext {
@@ -57,7 +57,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
       private userService: UserService,
       private accountService: AccountService,
       private phoneMaskService: PhoneMaskService,
-      private toasterService: ToasterService
+      private toasterService: ToasterService,
+      private fileUploadService: FileUploadService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -141,11 +142,11 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.readThis($event.target);
   }
 
-  readThis(inputValue: any): void {
-    var file:File = inputValue.files[0];
-    var myReader:FileReader = new FileReader();
+  readThis(inputValue: any): void { debugger;
+    var file: File = inputValue.files[0];
+    var myReader: FileReader = new FileReader();
 
-    myReader.onloadend = (e) => {
+    myReader.onloadend = (e) => { debugger;
       this.uploadedImage = myReader.result;
     };
     myReader.readAsDataURL(file);
@@ -157,7 +158,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   onFileDrop(file: File): void {
-    this.uploadedImage = file;
+    let img = this.fileUploadService.getOrientedImg(file);
+    this.uploadedImage = img.src;
   }
 
   toggleTutorialMode(){

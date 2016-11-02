@@ -8,6 +8,7 @@ import { SpinnerService } from './spinner.service';
 import { PhoneMaskService } from './phone-mask.service';
 import { StreetViewService } from './street-view.service';
 import { SessionService } from './session.service';
+import { FileUploadService } from './file-upload.service';
 
 
 export {
@@ -20,7 +21,8 @@ export {
   SpinnerService,
   PhoneMaskService,
   StreetViewService,
-  SessionService
+  SessionService,
+  FileUploadService
 };
 
 // an array of services to resolve routes with data
@@ -34,5 +36,6 @@ export const APP_SERVICE_PROVIDERS = [
   SpinnerService,
   PhoneMaskService,
   StreetViewService,
-  SessionService
+  SessionService,
+  FileUploadService
 ];
