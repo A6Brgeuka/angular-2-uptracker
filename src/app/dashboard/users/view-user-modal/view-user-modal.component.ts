@@ -33,7 +33,6 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
 
   ngOnInit(){
     let userData = this.context.user || {};
-    console.log(userData);
     this.user = new UserModel(userData);
   }
 

@@ -6,7 +6,7 @@
     </div>
     <div class="filter uptracker-form">
       <div class="left input">
-        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="locationsFilter($event)" />
+        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="usersFilter($event)" />
       </div>
       <div class="left">
         <button type="button" (click)="editUserModal()" class="uptracker-form-btn">Add New User</button>
@@ -15,12 +15,14 @@
   </div>
   <div class="users-row">
     <div class="list">
-      <div class="item center-align" *ngFor="let user of userArr" (click)="viewUserModal(user)">
-        <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
-        <div class="info">
-          <div class="ttl">{{user.name}}</div>
-          <div class="send-msg"></div>
-          <div class="edit"></div>
+      <div class="item center-align" *ngFor="let user of userArr">
+        <div class="inner">
+          <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }" (click)="viewUserModal(user)"></div>
+          <div class="info">
+            <div class="ttl" (click)="viewUserModal(user)">{{user.name}}</div>
+            <div class="send-msg"></div>
+            <div class="edit" (click)="editUserModal(user)"></div>
+          </div>
         </div>
       </div>
     </div>
