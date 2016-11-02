@@ -6,10 +6,10 @@
     </div>
     <div class="filter uptracker-form">
       <div class="left input">
-        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" />
+        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="locationsFilter($event)" />
       </div>
       <div class="left select">
-        <select [(ngModel)]="sortBy" materialize="material_select">
+        <select [(ngModel)]="sortBy" materialize="material_select" (change)="locationsSort($event)">
           <option value="">Sort by</option>
           <option value="name">Name</option>
           <option value="location_type">Location type</option>
@@ -18,9 +18,12 @@
     </div>
   </div>
   <div class="list left-align">
-    <div class="item" *ngFor="let location of locationArr" (click)="viewLocationModal(location)">
-      <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }"></div>
-      <div class="ttl">{{location.name}}</div>
+    <div class="item" *ngFor="let location of locationArr">
+      <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }" (click)="viewLocationModal(location)"></div>
+      <div class="info">
+        <div class="ttl" (click)="viewLocationModal(location)">{{location.name}}</div>
+        <div class="edit" (click)="editLocationModal(location)"></div>
+      </div>
     </div>
     <!--<div class="empty item" (click)="viewLocationModal()"></div>-->
   </div>

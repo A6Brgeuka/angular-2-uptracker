@@ -4,8 +4,9 @@
 
 .location-image{
   .img-container{
-    width:240px;
-    height:136px;
+    //width:240px;
+    //height:136px;
+    height:245px;
     background-image: url(/assets/img/onboard/icon-img-placeholder-locations.svg);
   }
 
@@ -20,6 +21,10 @@
   .ttl{
     font-weight:bold;
     margin-top:10px;
+  }
+
+  .left{
+    margin-right:5px;
   }
 
   button{

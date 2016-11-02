@@ -37,9 +37,23 @@
       }
     }
 
-    .ttl{
+    .info{
+      position:relative;
       margin:17px 0 23px;
-      font-size:14px;
+
+      .ttl{
+        font-size:14px;
+      }
+
+      .edit{
+        width:15px;
+        height:15px;
+        background:url(/assets/img/icon-edit.svg) no-repeat;
+        cursor:pointer;
+        position:absolute;
+        top:0;
+        right:21px;
+      }
     }
   }
 }
