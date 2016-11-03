@@ -1,10 +1,5 @@
 .users {
   .users-row{
-    .item{
-      display:inline-block;
-      vertical-align:top;
-    }
-
     .list{
       letter-spacing: 0;
       word-spacing: 0;
@@ -14,6 +9,8 @@
       margin-left:-20px;
 
       .item{
+        display:inline-block;
+        vertical-align:top;
         width:250px;
         height:250px;
         margin-left:20px;
@@ -97,17 +94,9 @@
 @media all and (max-width: 500px){
   .users{
     .users-row{
-
       .list{
         text-align:center;
         clear:both;
-        //width:250px;
-        //margin:0 auto;
-
-        .item{
-          display:block;
-          margin:0 0 20px !important;
-        }
       }
     }
   }

@@ -10,9 +10,7 @@ import { DashboardRoutes } from './dashboard/index';
 import { OnboardRoutes } from './onboard/index';
 
 // resolver
-import {
-    GetSelfDataResolve
-} from './app-resolve.service';
+import { GetSelfDataResolve } from './app-resolve.service';
 
 const appRoutes: Routes = [
   {

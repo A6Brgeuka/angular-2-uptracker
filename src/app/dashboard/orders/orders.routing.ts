@@ -8,7 +8,6 @@ export const OrdersRoutes = [
   },
   {
     path: '',
-    component: OrdersComponent,
-    canActivate: [],
+    redirectTo: 'orders'
   }
 ];
