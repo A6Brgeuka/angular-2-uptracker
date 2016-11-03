@@ -4,8 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as lodashSortBy from 'lodash/sortBy';
-import * as lodashReject from 'lodash/reject';
+import * as _ from 'lodash';
 
 import { EditLocationModal } from '../../shared/modals/index';
 import { ViewLocationModal } from './view-location-modal/view-location-modal.component';
@@ -45,12 +44,12 @@ export class LocationsComponent implements OnInit {
         .map(([user, sortBy, searchKey]) => {
           let filteredLocations = user.account.locations;
           if (searchKey && searchKey!='') {
-            filteredLocations = lodashReject(filteredLocations, (loc: any) =>{
+            filteredLocations = _.reject(filteredLocations, (loc: any) =>{
               let key = new RegExp(searchKey, 'i');
               return !key.test(loc.name);
             });
           }
-          return lodashSortBy(filteredLocations, [sortBy]);
+          return _.sortBy(filteredLocations, [sortBy]);
         })
         .subscribe((res: any) => {
           this.locationArr = res;

@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as lodashReject from 'lodash/reject';
+import * as _ from 'lodash';
 
 import { ViewUserModal } from './view-user-modal/view-user-modal.component';
 import { EditUserModal } from '../../shared/modals/index';
@@ -47,7 +47,7 @@ export class UsersComponent implements OnInit {
         .map(([user, searchKey]) => {
           let filteredUsers = user.account.users;
           if (searchKey && searchKey!='') {
-            filteredUsers = lodashReject(filteredUsers, (user: any) =>{ 
+            filteredUsers = _.reject(filteredUsers, (user: any) =>{ 
               let key = new RegExp(searchKey, 'i');
               return !key.test(user.name);
             });

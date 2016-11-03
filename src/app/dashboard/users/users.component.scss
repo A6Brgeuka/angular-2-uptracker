@@ -11,16 +11,14 @@
       font-size:0;
       padding-bottom:15px;
       text-align:left;
+      margin-left:-20px;
 
       .item{
         width:250px;
         height:250px;
         margin-left:20px;
+        margin-bottom:20px;
         max-width:100%;
-
-        &:first-child{
-          margin:0;
-        }
 
         .inner{
           width:250px;

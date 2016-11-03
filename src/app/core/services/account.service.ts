@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import * as lodashSome from 'lodash/some';
-import * as lodashMap from 'lodash/map';
+import * as _ from 'lodash';
 
 import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
@@ -151,8 +151,8 @@ export class AccountService extends ModelService{
   addUser(data){
     return this.resource.addUser(data).$observable.do((res: any) => {
       let account = this.userService.selfData.account;
-      if (lodashSome(account.users, {'id': res.data.user.id})){
-        let userArr = lodashMap(account.users, function(user){
+      if (_.some(account.users, {'id': res.data.user.id})){
+        let userArr = _.map(account.users, function(user){
           if (user['id'] == res.data.user.id) {
             return res.data.user;
           } else {

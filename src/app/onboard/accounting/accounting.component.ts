@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as lodashSort from 'lodash/sortBy';
-import * as lodashFind from 'lodash/find';
+
+import * as _ from 'lodash';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
@@ -59,7 +59,7 @@ export class AccountingComponent implements OnInit {
       }
     });
     this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
-      this.currencyArr = lodashSort(res.data, 'priority');
+      this.currencyArr = _.sortBy(res.data, 'priority');
     });
   }
 
@@ -120,13 +120,13 @@ export class AccountingComponent implements OnInit {
   }
 
   changeCurrency(){
-    let currency = lodashFind(this.currencyArr, {'iso_code': this.accounting.currency});
+    let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
     this.currencyDirty = true;
     this.currencySign = currency ? currency['html_entity'] : '$';
   }
 
   viewCurrencySign(){
-    let currency = lodashFind(this.currencyArr, {'iso_code': this.accounting.currency});
+    let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
     return currency ? currency['html_entity'] : '$';
   }
 

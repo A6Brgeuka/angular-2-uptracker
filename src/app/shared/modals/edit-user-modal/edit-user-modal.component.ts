@@ -3,10 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as lodashFind from 'lodash/find';
-import * as lodashClone from 'lodash/cloneDeep';
-import * as lodashIsEqual from 'lodash/isEqual';
-import * as lodashEach from 'lodash/each';
+import * as _ from 'lodash';
 
 import { UserService, AccountService, PhoneMaskService, ToasterService, FileUploadService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
@@ -75,7 +72,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     }
     // set default location for new user or selfData (current user)
     if (!this.user.default_location || this.user.default_location == '') {
-      let primaryLoc = lodashFind(this.locationArr, {'location_type': 'Primary'});
+      let primaryLoc = _.find(this.locationArr, {'location_type': 'Primary'});
       let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
       this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
     }
@@ -96,8 +93,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         } else {
           if (this.user.permissions[0]){
             this.permissionArr = this.user.permissions;
-            lodashEach(this.rolesArr, (roleItem) => {
-              if (lodashIsEqual(roleItem.permissions, this.permissionArr)){
+            _.each(this.rolesArr, (roleItem) => {
+              if (_.isEqual(roleItem.permissions, this.permissionArr)){
                 this.selectedRole = roleItem.role;
               }
             });
@@ -110,7 +107,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   setDefaultPermissions(){
-    this.permissionArr = lodashClone(this.rolesArr[0].permissions);
+    this.permissionArr = _.clone(this.rolesArr[0].permissions);
     this.permissionArr.map((data:any) => {
       data.default = false;
       return data;
@@ -174,9 +171,9 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     } else {
       newRole = this.selectedRole;
     }
-    lodashEach(this.rolesArr, (roleItem) => {
+    _.each(this.rolesArr, (roleItem) => {
       if (roleItem.role == newRole){
-        this.permissionArr = lodashClone(roleItem.permissions);
+        this.permissionArr = _.clone(roleItem.permissions);
       }
     });
   }
@@ -184,8 +181,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   togglePreset(i){
     let z = 0;
     this.permissionArr[i].default = !this.permissionArr[i].default;
-    lodashEach(this.rolesArr, (roleItem) => {
-      if (lodashIsEqual(roleItem.permissions, this.permissionArr)){
+    _.each(this.rolesArr, (roleItem) => {
+      if (_.isEqual(roleItem.permissions, this.permissionArr)){
         this.selectedRole = roleItem.role;
         this.showCustomRole = false;
         z++;
@@ -212,7 +209,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.preset.account_id = this.userService.selfData.account_id;
     this.preset.permissions = this.permissionArr;
     this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset).subscribe((res: any) => { 
-      lodashEach(res.data.roles, (roleItem: any) => {
+      _.each(res.data.roles, (roleItem: any) => {
         if (roleItem.label == this.preset.role) {
           this.selectedRole = roleItem.role;
         }
