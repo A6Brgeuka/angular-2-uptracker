@@ -5,7 +5,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService, StreetViewService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService, StreetViewService, FileUploadService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
 export class EditLocationModalContext extends BSModalContext {
@@ -48,7 +48,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       private userService: UserService,
       private accountService: AccountService,
       private phoneMaskService: PhoneMaskService,
-      private streetViewService: StreetViewService
+      private streetViewService: StreetViewService,
+      private fileUploadService: FileUploadService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -112,7 +113,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     var myReader:FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      this.uploadedImage = myReader.result;
+      let img = this.fileUploadService.getOrientedImage(myReader.result);
+      this.uploadedImage = img.src;
     };
     myReader.readAsDataURL(file);
   }
@@ -123,7 +125,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   onFileDrop(file: File): void {
-    this.uploadedImage = file;
+    let img = this.fileUploadService.getOrientedImage(file);
+    this.uploadedImage = img.src;
   }
 
   onSubmit(){

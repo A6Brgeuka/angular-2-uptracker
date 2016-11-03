@@ -142,12 +142,13 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.readThis($event.target);
   }
 
-  readThis(inputValue: any): void { debugger;
+  readThis(inputValue: any): void {
     var file: File = inputValue.files[0];
     var myReader: FileReader = new FileReader();
 
-    myReader.onloadend = (e) => { debugger;
-      this.uploadedImage = myReader.result;
+    myReader.onloadend = (e) => {
+      let img = this.fileUploadService.getOrientedImage(myReader.result);
+      this.uploadedImage = img.src;
     };
     myReader.readAsDataURL(file);
   }
@@ -158,7 +159,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   onFileDrop(file: File): void {
-    let img = this.fileUploadService.getOrientedImg(file);
+    let img = this.fileUploadService.getOrientedImage(file);
     this.uploadedImage = img.src;
   }
 

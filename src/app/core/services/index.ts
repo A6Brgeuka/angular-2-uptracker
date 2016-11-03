@@ -9,6 +9,7 @@ import { PhoneMaskService } from './phone-mask.service';
 import { StreetViewService } from './street-view.service';
 import { SessionService } from './session.service';
 import { FileUploadService } from './file-upload.service';
+import { ExifService } from './exif.service';
 
 
 export {
@@ -22,7 +23,8 @@ export {
   PhoneMaskService,
   StreetViewService,
   SessionService,
-  FileUploadService
+  FileUploadService,
+  ExifService
 };
 
 // an array of services to resolve routes with data
@@ -37,5 +39,6 @@ export const APP_SERVICE_PROVIDERS = [
   PhoneMaskService,
   StreetViewService,
   SessionService,
-  FileUploadService
+  FileUploadService,
+  ExifService
 ];
