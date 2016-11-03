@@ -10,6 +10,7 @@ import { Subscribers } from '../../decorators/subscribers.decorator';
 import { SpinnerService } from './spinner.service';
 import { UserResource } from '../../core/resources/index';
 import { SessionService } from './session.service';
+import { Restangular } from 'ng2-restangular';
 
 @Injectable()
 @Subscribers({
@@ -31,7 +32,8 @@ export class UserService extends ModelService {
     // public cookieService: CookieService,
     public sessionService: SessionService,
     public router: Router,
-    public spinnerService: SpinnerService
+    public spinnerService: SpinnerService,
+    private restangular: Restangular
   ) {
     super(injector, userResource);
     
@@ -146,7 +148,9 @@ export class UserService extends ModelService {
   }
 
   loadEntity(data = null){
-    let entity = this.resource.getUserData(data).$observable;
+    // let entity = this.resource.getUserData(data).$observable;
+    let entity = this.restangular.one('users', data.id).get();
+    debugger;
     
     entity.subscribe((res: any) => { 
       let user = this.transformAccountInfo(res.data);
