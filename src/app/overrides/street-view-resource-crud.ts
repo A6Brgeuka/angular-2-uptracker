@@ -63,7 +63,7 @@ export class StreetViewResourceCRUD extends ResourceCRUD<any,any,any> {
     Object.assign(
       params,
       {
-        'key': 'YOUR_API_KEY',
+        'key': 'AIzaSyDdCda1ukqDamK3mfq5ONoLGNS-DekqHag',
         'size': '520x293',
         'expand': expandParams
       }
