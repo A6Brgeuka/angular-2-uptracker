@@ -9,11 +9,15 @@ export class FileUploadService {
   ) {
   }
 
-  getOrientedImage(file){
-    let img: any;
-    
-    let image = this.getImageFromBase64(file);
+  getOrientedImage(file) {
     let orientationNumber = this.getOrientation(file);
+    
+    return this.getOrientedImageByOrientation(file, orientationNumber);
+  }
+
+  getOrientedImageByOrientation(file, orientationNumber){
+    let img: any;
+    let image = this.getImageFromBase64(file);
 
     if ([3, 6, 8].indexOf(orientationNumber) > -1) {
       let canvas: HTMLCanvasElement = document.createElement("canvas"),
@@ -57,22 +61,28 @@ export class FileUploadService {
     } else {
       img = image;
     }
-    
+
     return img;
   }
 
   getOrientation(file){
     let buffer = this.exifService.base64ToArrayBuffer(file);
-    let orientationNum = this.exifService.findEXIFinJPEG(buffer) ? this.exifService.findEXIFinJPEG(buffer)['Orientation'] : null;
+    let orientationNum = this.getOrientationFromBase64(buffer);
     return orientationNum;
+  }
+  
+  getOrientationFromBase64(file){
+    return this.exifService.findEXIFinJPEG(file) ? this.exifService.findEXIFinJPEG(file)['Orientation'] : null;
   }
 
   getImageFromBase64(file){
     let exif = this.exifService.findEXIFinJPEG(this.exifService.base64ToArrayBuffer(file));
     let image = new Image();
     image.src = file;
-    image.width = exif.PixelXDimension;
-    image.height = exif.PixelYDimension;
+    if (exif){
+      image.width = exif.PixelXDimension;
+      image.height = exif.PixelYDimension;
+    }
 
     return image;
   }

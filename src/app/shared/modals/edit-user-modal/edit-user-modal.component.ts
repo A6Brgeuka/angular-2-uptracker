@@ -39,6 +39,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   options = {
     readAs: 'DataURL'
   };
+  uplImg: any;
 
   public selectedRole = '';
   public customRole = 'custom';
@@ -155,13 +156,12 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   onFileDrop(file: File): void {
-    let img = this.fileUploadService.resizeImage(this.fileUploadService.getOrientedImage(file).src, {resizeMaxHeight: 250, resizeMaxWidth: 250});
-
-
-
+    let img: any = this.fileUploadService.resizeImage(file, {resizeMaxHeight: 250, resizeMaxWidth: 250});
+    let orientation = this.fileUploadService.getOrientation(file);
+    let img2 = this.fileUploadService.getOrientedImageByOrientation(img, orientation);
 
     // let img = this.fileUploadService.getOrientedImage(file);
-    this.uploadedImage = img;
+    this.uploadedImage = img2.src;
   }
 
   toggleTutorialMode(){
