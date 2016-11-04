@@ -34,7 +34,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
 
-  uploadedImage;
+  public uploadedImage: any;
   fileIsOver: boolean = false;
   options = {
     readAs: 'DataURL'
@@ -135,17 +135,16 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   // upload by input type=file
-  changeListener($event) : void {
-    this.readThis($event.target);
+  changeListener($event): void {
+    this.fileToDataURL($event.target);
   }
 
-  readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
+  fileToDataURL(inputValue: any): void {
+    let file: File = inputValue.files[0];
+    let myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      let img = this.fileUploadService.getOrientedImage(myReader.result);
-      this.uploadedImage = img.src;
+      this.onFileDrop(myReader.result);
     };
     myReader.readAsDataURL(file);
   }
@@ -156,8 +155,13 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   onFileDrop(file: File): void {
-    let img = this.fileUploadService.getOrientedImage(file);
-    this.uploadedImage = img.src;
+    let img = this.fileUploadService.resizeImage(this.fileUploadService.getOrientedImage(file).src, {resizeMaxHeight: 250, resizeMaxWidth: 250});
+
+
+
+
+    // let img = this.fileUploadService.getOrientedImage(file);
+    this.uploadedImage = img;
   }
 
   toggleTutorialMode(){

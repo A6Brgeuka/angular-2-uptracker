@@ -23,9 +23,12 @@
              [options]="options"
              (fileOver)="fileOver($event)"
              (onFileDrop)="onFileDrop($event)">
-          <div class="file-field" *ngIf="!uploadedImage">
+          <div class="file-field" [hidden]="uploadedImage">
             <div class="upload-link">
-              <input type="file" accept="image/*" (change)="changeListener($event)" />
+              <input
+                  type="file"
+                  accept="image/*"
+                  (change)="changeListener($event)" />
               <a>Upload a photo</a>
             </div>
           </div>

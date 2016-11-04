@@ -104,17 +104,16 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   // upload by input type=file
-  changeListener($event) : void {
+  changeListener($event): void {
     this.readThis($event.target);
   }
 
   readThis(inputValue: any): void {
-    var file:File = inputValue.files[0];
-    var myReader:FileReader = new FileReader();
+    var file: File = inputValue.files[0];
+    var myReader: FileReader = new FileReader();
 
     myReader.onloadend = (e) => {
-      let img = this.fileUploadService.getOrientedImage(myReader.result);
-      this.uploadedImage = img.src;
+      this.onFileDrop(myReader.result);
     };
     myReader.readAsDataURL(file);
   }
