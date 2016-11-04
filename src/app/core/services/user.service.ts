@@ -148,9 +148,8 @@ export class UserService extends ModelService {
   }
 
   loadEntity(data = null){
-    // let entity = this.resource.getUserData(data).$observable;
-    let entity = this.restangular.one('users', data.id).get();
-    debugger;
+    let entity = this.resource.getUserData(data).$observable;
+    // let entity = this.restangular.one('users', data.id).get();
     
     entity.subscribe((res: any) => { 
       let user = this.transformAccountInfo(res.data);

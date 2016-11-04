@@ -107,7 +107,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   setDefaultPermissions(){
-    this.permissionArr = _.clone(this.rolesArr[0].permissions);
+    this.permissionArr = _.cloneDeep(this.rolesArr[0].permissions);
     this.permissionArr.map((data:any) => {
       data.default = false;
       return data;
@@ -173,7 +173,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     }
     _.each(this.rolesArr, (roleItem) => {
       if (roleItem.role == newRole){
-        this.permissionArr = _.clone(roleItem.permissions);
+        this.permissionArr = _.cloneDeep(roleItem.permissions);
       }
     });
   }

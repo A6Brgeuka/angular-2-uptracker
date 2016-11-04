@@ -16,7 +16,7 @@ export function RESTANGULAR_CONFIG (RestangularProvider, sessionService: Session
   RestangularProvider.setBaseUrl(APP_DI_CONFIG.apiEndpoint);
   RestangularProvider.setDefaultResponseMethod("observable");
 
-  RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => { debugger;
+  RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => { 
     let newHeaders = {
       'Content-Type': 'application/json',
       'X_AUTH_TOKEN': sessionService.get('uptracker_token')
