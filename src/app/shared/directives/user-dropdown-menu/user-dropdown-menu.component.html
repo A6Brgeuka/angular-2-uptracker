@@ -4,7 +4,7 @@
     <a class="name truncate">{{userName}}</a>
   </div>
   <ul id="dropdown1" class="dropdown-content">
-    <li *ngIf="showMenu"><a [routerLink]="['/dashbord']" class="">My Profile</a></li>
+    <li *ngIf="showMenu"><a class="" (click)="editUserModal()">My Profile</a></li>
     <li><a (click)="logOut()" class="">Logout</a></li>
   </ul>
 </div>

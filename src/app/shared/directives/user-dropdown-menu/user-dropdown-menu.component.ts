@@ -1,5 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
 
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+
+import { EditUserModal } from '../../modals/index';
 import { UserService } from '../../../core/services/index';
 
 @Component({
@@ -9,16 +13,22 @@ import { UserService } from '../../../core/services/index';
 })
 export class UserDropdownMenuDirective implements OnInit {
   @Input() onlyLogout;
+  
+  private subscribers: any = {};
   public userName: string;
   public userShortName: string;
   public showMenu: boolean;
 
   public constructor(
-      private userService: UserService
+      private userService: UserService,
+      vcRef: ViewContainerRef,
+      overlay: Overlay,
+      public modal: Modal,
   ) {
+    overlay.defaultViewContainer = vcRef;
   }
 
-  ngOnInit(){
+  ngOnInit(){    
     this.showMenu = !this.onlyLogout; 
     this.userName = this.userService.selfData.name;
     let nameArr = this.userName.split(" ");
@@ -27,6 +37,10 @@ export class UserDropdownMenuDirective implements OnInit {
     let shortFirstname = firstname.split("")[0];
     let shortLastname = lastname.split("")[0];
     this.userShortName = shortFirstname + shortLastname;
+  }
+
+  editUserModal(){
+    this.modal.open(EditUserModal,  overlayConfigFactory({user: this.userService.selfData}, BSModalContext));
   }
 
   logOut(){
