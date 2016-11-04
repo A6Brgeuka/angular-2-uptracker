@@ -22,6 +22,7 @@ export class UsersComponent implements OnInit {
   private subscribers: any = {};
   public searchKey: string = null;
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public total: number;
 
   constructor(
       vcRef: ViewContainerRef,
@@ -34,17 +35,13 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.subscribers.getUsersSubscription = this.userService.selfData$.subscribe((res: any) => {
-    //   if (res.account) {
-    //     this.userArr = res.account.users;
-    //   }
-    // });
     this.subscribers.getUsersSubscription = Observable
         .combineLatest(
             this.userService.selfData$,
             this.searchKey$
         )
         .map(([user, searchKey]) => {
+          this.total = user.account.users.length;
           let filteredUsers = user.account.users;
           if (searchKey && searchKey!='') {
             filteredUsers = _.reject(filteredUsers, (user: any) =>{ 

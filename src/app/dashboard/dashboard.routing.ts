@@ -1,6 +1,10 @@
 import { DashboardComponent } from './dashboard.component';
 
 import { AuthGuard } from '../auth-guard.service';
+import {
+    UserCollectionResolve,
+    LocationCollectionResolve
+} from '../shared/resolves/index';
 
 import { OrdersRoutes } from './orders/orders.routing';
 import { LocationsRoutes } from './locations/locations.routing';
@@ -10,12 +14,15 @@ export const DashboardRoutes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    resolve: {},
     canActivate: [ AuthGuard ],
     children: [
       ...OrdersRoutes,
       ...LocationsRoutes,
       ...UsersRoutes,
-    ]
+    ],
+    resolve: {
+      userCollection: UserCollectionResolve,
+      locationCollection: LocationCollectionResolve
+    }
   }
 ];

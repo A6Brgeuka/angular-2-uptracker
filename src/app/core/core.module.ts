@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { APP_CONFIG, APP_DI_CONFIG, RESTANGULAR_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { RestangularModule } from 'ng2-restangular';
+// import { RestangularModule } from 'ng2-restangular';
 import { AuthGuard } from '../auth-guard.service';
 
 // custom modals
@@ -17,14 +17,13 @@ import { APP_RESOLVER_PROVIDERS } from '../app-resolve.service';
 
 import { APP_SERVICE_PROVIDERS } from './services/index';
 import { APP_RESOURCE_PROVIDERS } from './resources/index';
-import { SessionService } from './services/session.service';
 
 @NgModule({
   imports: [
     CommonModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-    RestangularModule.forRoot([SessionService], RESTANGULAR_CONFIG)
+    // RestangularModule.forRoot([APP_SERVICE_PROVIDERS[9]], RESTANGULAR_CONFIG)
   ],
   declarations: [  ],
   providers: [    

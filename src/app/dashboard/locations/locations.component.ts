@@ -23,6 +23,7 @@ export class LocationsComponent implements OnInit {
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public total: number;
 
   constructor(
       vcRef: ViewContainerRef,
@@ -42,6 +43,7 @@ export class LocationsComponent implements OnInit {
           this.searchKey$
         )
         .map(([user, sortBy, searchKey]) => {
+          this.total = user.account.locations.length;
           let filteredLocations = user.account.locations;
           if (searchKey && searchKey!='') {
             filteredLocations = _.reject(filteredLocations, (loc: any) =>{
