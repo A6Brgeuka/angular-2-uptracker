@@ -82,9 +82,9 @@ $tealish: #33c6d9;
 
 
 .cssload-loader {
-  position: relative;
+  position: absolute;
   left: calc(50% - 31px);
-  margin-top: calc(50% - 62px);
+  top: calc(50% - 31px);
   width: 62px;
   height: 62px;
   border-radius: 50%;
