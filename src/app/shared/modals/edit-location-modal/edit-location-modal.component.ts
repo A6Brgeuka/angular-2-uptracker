@@ -124,8 +124,11 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   onFileDrop(file: File): void {
-    let img = this.fileUploadService.getOrientedImage(file);
-    this.uploadedImage = img.src;
+    let img: any = this.fileUploadService.resizeImage(file, {resizeMaxHeight: 586, resizeMaxWidth: 1040});
+    let orientation = this.fileUploadService.getOrientation(file);
+    let img2 = this.fileUploadService.getOrientedImageByOrientation(img, orientation);
+
+    this.uploadedImage = img2.src;
   }
 
   onSubmit(){

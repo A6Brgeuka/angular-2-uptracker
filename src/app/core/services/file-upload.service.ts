@@ -130,25 +130,6 @@ export class FileUploadService {
     resizeMaxHeight = resizeMaxHeight || resizeMaxWidth;
     resizeMaxWidth = resizeMaxWidth || resizeMaxHeight;
 
-
-    // calculate the width and height, constraining the proportions
-    // let k = 1;
-    // if (width > height) {
-    //   if (width > resizeMaxWidth) {
-    //     k = resizeMaxWidth / width;
-    //     // height = Math.round(height *= resizeMaxWidth / width);
-    //     // width = resizeMaxWidth;
-    //     resizeMaxHeight = Math.round(height = resizeMaxWidth / width);
-    //   }
-    // } else {
-    //   if (height > resizeMaxHeight) {
-    //     k = resizeMaxHeight / height;
-    //     // width = Math.round(width *= resizeMaxHeight / height);
-    //     // height = resizeMaxHeight;
-    //     resizeMaxWidth = Math.round(width = resizeMaxHeight / height);
-    //   }
-    // }
-
     canvas.width = width;
     canvas.height = height;
 
@@ -167,6 +148,7 @@ export class FileUploadService {
     width = Math.round(width);
     height = Math.round(height);
 
+    // calculate the width and height, constraining the proportions
     if (width_source > height_source) {
       height = Math.round(height_source * width / width_source);
     } else {

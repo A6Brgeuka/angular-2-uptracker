@@ -160,6 +160,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     let orientation = this.fileUploadService.getOrientation(file);
     let img2 = this.fileUploadService.getOrientedImageByOrientation(img, orientation);
 
+    // TODO: remove after testing
     // let img = this.fileUploadService.getOrientedImage(file);
     this.uploadedImage = img2.src;
   }

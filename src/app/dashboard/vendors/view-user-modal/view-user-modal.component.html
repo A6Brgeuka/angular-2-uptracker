@@ -1,0 +1,30 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="title center-align">{{user.name}}</div>
+<div class="row uptracker-form">
+  <div class="col s12 m6 user-image">
+    <div class="img-container">
+      <div class="img" *ngIf="user.avatar" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
+    </div>
+  </div>
+  <div class="col s12 m6 info">
+    <div class="contacts">
+      <div class="ttl">Contacts</div>
+      <div class="phone">+{{user.phone}},</div>
+      <div class="email">{{user.email_address}}</div>
+    </div>
+    <div class="department">
+      <div class="ttl">Department</div>
+      <div>{{user.department}}</div>
+    </div>
+    <div class="role">
+      <div class="ttl">Role</div>
+      <div>{{user.role}}</div>
+    </div>
+    <button
+        type="button"
+        class="uptracker-form-btn btn white-text waves-effect waves-light"
+        (click)="editUser(user)">
+        Edit
+    </button>
+  </div>
+</div>
