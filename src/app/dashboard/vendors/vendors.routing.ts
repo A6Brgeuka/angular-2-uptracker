@@ -1,17 +1,9 @@
-import { UsersComponent } from './users.component';
-import {
-  DepartmentCollectionResolve,
-  RoleCollectionResolve
-} from '../../shared/resolves/index';
+import { VendorsComponent } from './vendors.component';
 
-export const UsersRoutes = [
+export const VendorsRoutes = [
   {
-    path: 'users',
-    component: UsersComponent,
-    resolve: {
-      departmentCollection: DepartmentCollectionResolve,
-      permissionCollection: RoleCollectionResolve
-    },
+    path: 'vendors',
+    component: VendorsComponent,
     canActivate: []
   },
 ];

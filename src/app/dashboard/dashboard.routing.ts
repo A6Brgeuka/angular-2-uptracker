@@ -9,6 +9,7 @@ import {
 import { OrdersRoutes } from './orders/orders.routing';
 import { LocationsRoutes } from './locations/locations.routing';
 import { UsersRoutes } from './users/users.routing';
+import { VendorsRoutes } from './vendors/vendors.routing';
 
 export const DashboardRoutes = [
   {
@@ -19,6 +20,7 @@ export const DashboardRoutes = [
       ...OrdersRoutes,
       ...LocationsRoutes,
       ...UsersRoutes,
+      ...VendorsRoutes
     ],
     resolve: {
       userCollection: UserCollectionResolve,
