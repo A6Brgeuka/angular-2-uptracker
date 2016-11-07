@@ -5,35 +5,33 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { AccountService, UserService } from '../../../core/services/index';
-import { UserModel } from '../../../models/index';
 
-export class ViewUserModalContext extends BSModalContext {
-  public user: any;
+export class ViewVendorModalContext extends BSModalContext {
+  public vendor: any;
 }
 
 @Component({
-  selector: 'app-view-user-modal',
+  selector: 'app-view-vendor-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
-  templateUrl: './view-user-modal.component.html',
-  styleUrls: ['./view-user-modal.component.scss']
+  templateUrl: './view-vendor-modal.component.html',
+  styleUrls: ['./view-vendor-modal.component.scss']
 })
 @DestroySubscribers()
-export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUserModalContext> {
-  context: ViewUserModalContext;
-  public user: any;
+export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
+  context: ViewVendorModalContext;
+  public vendor: any;
 
   constructor(
-      public dialog: DialogRef<ViewUserModalContext>
+      public dialog: DialogRef<ViewVendorModalContext>
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
 
   ngOnInit(){
-    let userData = this.context.user || {};
-    this.user = new UserModel(userData);
+    this.vendor = this.context.vendor || {};
   }
 
   dismissModal(){
@@ -44,7 +42,7 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
     this.dialog.close(data);
   }
 
-  editUser(user = null){
-    this.closeModal(user);
+  editVendor(vendor = null){
+    this.closeModal(vendor);
   }
 }

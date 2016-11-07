@@ -1,18 +1,18 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
-// import { Overlay, overlayConfigFactory } from 'angular2-modal';
-// import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
-// import { ViewUserModal } from './view-user-modal/view-user-modal.component';
-// import { EditUserModal } from '../../shared/modals/index';
+import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
+import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
 import { UserService, AccountService } from '../../core/services/index';
 
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-vendors',
   templateUrl: './vendors.component.html',
   styleUrls: ['./vendors.component.scss']
 })
@@ -28,12 +28,12 @@ export class VendorsComponent implements OnInit {
 
   constructor(
       vcRef: ViewContainerRef,
-      // overlay: Overlay,
-      // public modal: Modal,
+      overlay: Overlay,
+      public modal: Modal,
       private userService: UserService,
       private accountService: AccountService
   ) {
-    // overlay.defaultViewContainer = vcRef;
+    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
@@ -59,21 +59,21 @@ export class VendorsComponent implements OnInit {
         });
   }
 
-  viewvendorModal(user = null){
-    // this.modal
-    //     .open(ViewUserModal,  overlayConfigFactory({ user: user }, BSModalContext))
-    //     .then((resultPromise)=>{
-    //       resultPromise.result.then(
-    //           (res) => {
-    //             this.editUserModal(res);
-    //           },
-    //           (err)=>{}
-    //       );
-    //     });
+  viewvendorModal(vendor = null){
+    this.modal
+        .open(ViewVendorModal,  overlayConfigFactory({ vendor: vendor }, BSModalContext))
+        .then((resultPromise)=>{
+          resultPromise.result.then(
+              (res) => {
+                this.editVendorModal(res);
+              },
+              (err)=>{}
+          );
+        });
   }
   
-  editVendorModal(user = null){
-    // this.modal.open(EditUserModal,  overlayConfigFactory({ user: user }, BSModalContext));
+  editVendorModal(vendor = null){
+    this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: vendor }, BSModalContext));
   }
 
   vendorsFilter(event){
