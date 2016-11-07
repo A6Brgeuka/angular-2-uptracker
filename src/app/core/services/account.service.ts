@@ -206,4 +206,18 @@ export class AccountService extends ModelService{
       this.updateSelfData(account);
     });
   }
+
+  getVendors(){
+    let data: any = {
+      account_id: this.userService.selfData.account_id
+    };
+    let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length : false;
+    if (!vendorsLoaded) {
+      return this.resource.getVendors(data).$observable.do((res: any) => { 
+        let account = this.userService.selfData.account;
+        account.vendors = res.data.vendors;
+        this.updateSelfData(account);
+      });
+    }
+  }
 }

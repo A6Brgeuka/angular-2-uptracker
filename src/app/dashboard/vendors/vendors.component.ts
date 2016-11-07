@@ -22,6 +22,8 @@ export class VendorsComponent implements OnInit {
   private subscribers: any = {};
   public searchKey: string = null;
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public sortBy: string;
+  private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
 
   constructor(
@@ -35,43 +37,44 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribers.getUsersSubscription = Observable
+    this.subscribers.getVendorsSubscription = Observable
         .combineLatest(
             this.userService.selfData$,
+            this.sortBy$,
             this.searchKey$
         )
-        .map(([user, searchKey]) => {
-          this.total = user.account.users.length;
-          let filteredVendors = user.account.users;
+        .map(([user, sortBy, searchKey]) => { 
+          this.total = user.account.vendors.length;
+          let filteredVendors = user.account.vendors;
           if (searchKey && searchKey!='') {
-            filteredVendors = _.reject(filteredVendors, (user: any) =>{ 
+            filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
               let key = new RegExp(searchKey, 'i');
-              return !key.test(user.name);
+              return !key.test(vendor.name);
             });
           }
-          return filteredVendors;
+          return _.sortBy(filteredVendors, [sortBy]);
         })
         .subscribe((res: any) => {
           this.vendorArr = res;
         });
   }
 
-  // viewUserModal(user = null){
-  //   this.modal
-  //       .open(ViewUserModal,  overlayConfigFactory({ user: user }, BSModalContext))
-  //       .then((resultPromise)=>{
-  //         resultPromise.result.then(
-  //             (res) => {
-  //               this.editUserModal(res);
-  //             },
-  //             (err)=>{}
-  //         );
-  //       });
-  // }
-  //
-  // editUserModal(user = null){
-  //   this.modal.open(EditUserModal,  overlayConfigFactory({ user: user }, BSModalContext));
-  // }
+  viewvendorModal(user = null){
+    // this.modal
+    //     .open(ViewUserModal,  overlayConfigFactory({ user: user }, BSModalContext))
+    //     .then((resultPromise)=>{
+    //       resultPromise.result.then(
+    //           (res) => {
+    //             this.editUserModal(res);
+    //           },
+    //           (err)=>{}
+    //       );
+    //     });
+  }
+  
+  editVendorModal(user = null){
+    // this.modal.open(EditUserModal,  overlayConfigFactory({ user: user }, BSModalContext));
+  }
 
   vendorsFilter(event){
     let value = event.target.value;
