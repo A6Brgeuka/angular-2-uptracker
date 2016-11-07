@@ -151,6 +151,7 @@ export class AccountService extends ModelService{
   addUser(data){
     return this.resource.addUser(data).$observable.do((res: any) => {
       let account = this.userService.selfData.account;
+      // if new user push him to account users array, else update user in array
       if (_.some(account.users, {'id': res.data.user.id})){
         let userArr = _.map(account.users, function(user){
           if (user['id'] == res.data.user.id) {
@@ -219,5 +220,25 @@ export class AccountService extends ModelService{
         this.updateSelfData(account);
       });
     }
+  }
+
+  addVendor(data){
+    return this.resource.addVendor(data).$observable.do((res: any) => {
+      let account = this.userService.selfData.account;
+      // if new vendor push him to account vendors array, else update vendor in array
+      if (account.vendors && _.some(account.vendors, {'id': res.data.vendor.id})){
+        let vendorArr = _.map(account.vendors, function(vendor){
+          if (vendor['id'] == res.data.vendor.id) {
+            return res.data.vendor;
+          } else {
+            return vendor;
+          }
+        });
+        account.vendors = vendorArr;
+      } else {
+        account.vendors.push(res.data.vendor);
+      }
+      this.updateSelfData(account);
+    });
   }
 }

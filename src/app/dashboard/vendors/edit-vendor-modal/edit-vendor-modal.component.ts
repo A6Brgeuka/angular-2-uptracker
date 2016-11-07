@@ -7,7 +7,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService, StreetViewService, FileUploadService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
 
 export class EditVendorModalContext extends BSModalContext {
   public vendor: any;
@@ -56,8 +56,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       private toasterService: ToasterService,
       private userService: UserService,
       private accountService: AccountService,
-      private phoneMaskService: PhoneMaskService,
-      private fileUploadService: FileUploadService
+      private phoneMaskService: PhoneMaskService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -65,9 +64,12 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
 
   ngOnInit(){    
     this.vendor = this.context.vendor || {};
+    // default values
     this.vendor.currency = this.vendor.currency || 'USD';
     this.vendor.priority = this.vendor.priority || '1';
     this.calcPriorityMargin(this.vendor.priority);
+    this.vendor.default_order_type = this.vendor.default_order_type || 'email';
+    this.vendor.payment_method = this.vendor.payment_method || 'check';
     // debugger;
     if (this.context.vendor){
 
@@ -174,7 +176,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.vendor.fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
 
     this.accountService.addVendor(this.vendor).subscribe(
-        (res: any) => {
+        (res: any) => { debugger;
           this.closeModal();
         }
     );

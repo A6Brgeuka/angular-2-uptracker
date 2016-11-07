@@ -1,89 +1,77 @@
-.users {
-  .users-row{
-    .list{
-      letter-spacing: 0;
-      word-spacing: 0;
-      font-size:0;
-      padding-bottom:15px;
-      text-align:left;
-      margin-left:-20px;
+.vendors {
+  .list{
+    letter-spacing: 0;
+    word-spacing: 0;
+    font-size:0;
+    padding-bottom:15px;
+    text-align:left;
+    margin-left:-20px;
 
-      .item{
-        display:inline-block;
-        vertical-align:top;
+    .item{
+      display:inline-block;
+      vertical-align:top;
+      width:250px;
+      height:250px;
+      margin-left:20px;
+      margin-bottom:20px;
+      max-width:100%;
+
+      .inner{
         width:250px;
         height:250px;
-        margin-left:20px;
-        margin-bottom:20px;
-        max-width:100%;
-
-        .inner{
-          width:250px;
-          height:250px;
-          border: 1px solid #d6d6d6;
-          background:#fff;
-          cursor:pointer;
-          border-radius:5px;
-
-          &:hover{
-            width:260px;
-            height:260px;
-            transform: translateX(-5px) translateY(-5px);
-            box-shadow: 2px 2px 0 0 #e6e6e6;
-
-            .img{
-              margin-top:44px;
-              margin-bottom:50px;
-              height:125px;
-              width:125px;
-            }
-          }
-        }
-
-        .img{
-          margin:41px auto 53px;
-          height:120px;
-          width:120px;
-          border-radius:50%;
-          background:transparent no-repeat center center;
-          background-size:cover;
-        }
-
-        .info{
-          position:relative;
-
-          .ttl{
-            font-size:12px;
-          }
-
-          .send-msg,
-          .edit{
-            display: none;
-            width:17px;
-            height:13px;
-            background:url(/assets/img/icon-message.svg) no-repeat;
-            cursor:pointer;
-            position:absolute;
-            top:3px;
-            left:21px;
-          }
-
-          .edit{
-            width:15px;
-            height:15px;
-            background:url(/assets/img/icon-edit.svg) no-repeat;
-            right:21px;
-            top:2px;
-            left:auto;
-          }
-        }
+        border: 1px solid #d6d6d6;
+        background:#fff;
+        cursor:pointer;
+        border-radius:5px;
 
         &:hover{
-          .info{
-            .send-msg,
-            .edit{
-              display:block;
-            }
+          width:260px;
+          height:260px;
+          transform: translateX(-5px) translateY(-5px);
+          box-shadow: 2px 2px 0 0 #e6e6e6;
+
+          .img{
+            margin-top:44px;
+            margin-bottom:50px;
+            height:125px;
+            width:125px;
+          }
+        }
+      }
+
+      .img{
+        margin:41px auto 53px;
+        height:120px;
+        width:120px;
+        border-radius:50%;
+        background:transparent no-repeat center center;
+        background-size:cover;
+      }
+
+      .info{
+        position:relative;
+
+        .ttl{
+          font-size:12px;
+        }
+
+        .edit{
+          display: none;
+          cursor:pointer;
+          position:absolute;
+          width:15px;
+          height:15px;
+          background:url(/assets/img/icon-edit.svg) no-repeat;
+          right:21px;
+          top:2px;
+          left:auto;
+        }
+      }
+
+      &:hover{
+        .info{
+          .edit{
+            display:block;
           }
         }
       }
@@ -92,12 +80,10 @@
 }
 
 @media all and (max-width: 500px){
-  .users{
-    .users-row{
-      .list{
-        text-align:center;
-        clear:both;
-      }
+  .vendors{
+    .list{
+      text-align:center;
+      clear:both;
     }
   }
 }

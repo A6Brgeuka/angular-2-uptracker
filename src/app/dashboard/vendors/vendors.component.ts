@@ -25,6 +25,7 @@ export class VendorsComponent implements OnInit {
   public sortBy: string;
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
+  public vendors$: Observable<any>;
 
   constructor(
       vcRef: ViewContainerRef,
@@ -37,13 +38,13 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribers.getVendorsSubscription = Observable
+    this.vendors$ = Observable
         .combineLatest(
             this.userService.selfData$,
             this.sortBy$,
             this.searchKey$
         )
-        .map(([user, sortBy, searchKey]) => { 
+        .map(([user, sortBy, searchKey]) => {
           this.total = user.account.vendors.length;
           let filteredVendors = user.account.vendors;
           if (searchKey && searchKey!='') {
@@ -53,9 +54,6 @@ export class VendorsComponent implements OnInit {
             });
           }
           return _.sortBy(filteredVendors, [sortBy]);
-        })
-        .subscribe((res: any) => {
-          this.vendorArr = res;
         });
   }
 
