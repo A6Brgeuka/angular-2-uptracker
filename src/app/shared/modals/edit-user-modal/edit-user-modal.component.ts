@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -39,7 +39,6 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   options = {
     readAs: 'DataURL'
   };
-  uplImg: any;
 
   public selectedRole = '';
   public customRole = 'custom';
@@ -51,6 +50,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public preset: any = {};
 
   constructor(
+      public zone: NgZone,
       public dialog: DialogRef<EditUserModalContext>,
       private userService: UserService,
       private accountService: AccountService,
@@ -144,7 +144,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     let file: File = inputValue.files[0];
     let myReader: FileReader = new FileReader();
 
-    myReader.onloadend = (e) => { debugger;
+    myReader.onloadend = (e) => { 
       this.onFileDrop(myReader.result);
     };
     myReader.readAsDataURL(file);
@@ -155,14 +155,18 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.fileIsOver = fileIsOver;
   }
 
-  onFileDrop(file: File): void {
-    let img: any = this.fileUploadService.resizeImage(file, {resizeMaxHeight: 250, resizeMaxWidth: 250});
-    let orientation = this.fileUploadService.getOrientation(file);
-    let img2 = this.fileUploadService.getOrientedImageByOrientation(img, orientation);
+  onFileDrop(imgBase64: string): void {
+    var img = new Image();
+    img.onload = () => {
+      let resizedImg: any = this.fileUploadService.resizeImage(img, {resizeMaxHeight: 250, resizeMaxWidth: 250});
+      let orientation = this.fileUploadService.getOrientation(imgBase64);
+      let orientedImg = this.fileUploadService.getOrientedImageByOrientation(resizedImg, orientation);
 
-    // TODO: remove after testing
-    // let img = this.fileUploadService.getOrientedImage(file);
-    this.uploadedImage = img2.src;
+      this.zone.run(() => {
+        this.uploadedImage = orientedImg.src;
+      });
+    };
+    img.src = imgBase64;
   }
 
   toggleTutorialMode(){

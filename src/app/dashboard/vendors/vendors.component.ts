@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 
 import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
 import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
-import { UserService, AccountService } from '../../core/services/index';
+import { UserService, AccountService, VendorService } from '../../core/services/index';
 
 
 @Component({
@@ -32,29 +32,32 @@ export class VendorsComponent implements OnInit {
       overlay: Overlay,
       public modal: Modal,
       private userService: UserService,
-      private accountService: AccountService
+      private accountService: AccountService,
+      private vendorService: VendorService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
-    this.vendors$ = Observable
-        .combineLatest(
-            this.userService.selfData$,
-            this.sortBy$,
-            this.searchKey$
-        )
-        .map(([user, sortBy, searchKey]) => {
-          this.total = user.account.vendors.length;
-          let filteredVendors = user.account.vendors;
-          if (searchKey && searchKey!='') {
-            filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
-              let key = new RegExp(searchKey, 'i');
-              return !key.test(vendor.name);
-            });
-          }
-          return _.sortBy(filteredVendors, [sortBy]);
-        });
+    let globalVendors$ = this.vendorService.getVendors();
+    // this.vendors$ = Observable
+    //     .combineLatest(
+    //         globalVendors$,
+    //         this.sortBy$,
+    //         this.searchKey$
+    //     )
+    //     .map(([vendors, sortBy, searchKey]) => {
+    //       this.total = vendors.data.vendors.length;
+    //       let filteredVendors = vendors.data.vendors;
+    //       if (searchKey && searchKey!='') {
+    //         filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
+    //           let key = new RegExp(searchKey, 'i');
+    //           return !key.test(vendor.name);
+    //         });
+    //       }
+    //       debugger;
+    //       return _.sortBy(filteredVendors, [sortBy]);
+    //     });
   }
 
   viewVendorModal(vendor = null){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
@@ -43,6 +43,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   };
 
   constructor(
+      public zone: NgZone,
       public dialog: DialogRef<EditLocationModalContext>,
       private toasterService: ToasterService,
       private userService: UserService,
@@ -123,12 +124,18 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.fileIsOver = fileIsOver;
   }
 
-  onFileDrop(file: File): void {
-    let img: any = this.fileUploadService.resizeImage(file, {resizeMaxHeight: 586, resizeMaxWidth: 1040});
-    let orientation = this.fileUploadService.getOrientation(file);
-    let img2 = this.fileUploadService.getOrientedImageByOrientation(img, orientation);
+  onFileDrop(imgBase64: string): void {
+    var img = new Image();
+    img.onload = () => {
+      let resizedImg: any = this.fileUploadService.resizeImage(img, {resizeMaxHeight: 250, resizeMaxWidth: 250});
+      let orientation = this.fileUploadService.getOrientation(imgBase64);
+      let orientedImg = this.fileUploadService.getOrientedImageByOrientation(resizedImg, orientation);
 
-    this.uploadedImage = img2.src;
+      this.zone.run(() => {
+        this.uploadedImage = orientedImg.src;
+      });
+    };
+    img.src = imgBase64;
   }
 
   onSubmit(){

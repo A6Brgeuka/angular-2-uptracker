@@ -5,7 +5,7 @@ export class VendorModel {
   created_at: string = null;
   currency: string = null;
   default_order_type: string = null;
-  discount_percentage: number = null;
+  discount_percentage: any = null;
   documents: any = null;
   email: string = null;
   ext_account_number: string = null;

@@ -77,7 +77,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     // this.vendor.payment_method = this.vendor.payment_method || 'check';
 
     if (this.context.vendor){
-      this.vendor.discount_percentage = parseInt(this.context.vendor.discount_percentage * 100);
+      // this.vendor.discount_percentage = parseInt(this.context.vendor.discount_percentage * 100);
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
       this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);

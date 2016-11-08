@@ -10,6 +10,7 @@ import { StreetViewService } from './street-view.service';
 import { SessionService } from './session.service';
 import { FileUploadService } from './file-upload.service';
 import { ExifService } from './exif.service';
+import { VendorService } from './vendor.service';
 
 
 export {
@@ -24,7 +25,8 @@ export {
   StreetViewService,
   SessionService,
   FileUploadService,
-  ExifService
+  ExifService,
+  VendorService
 };
 
 // an array of services to resolve routes with data
@@ -40,5 +42,6 @@ export const APP_SERVICE_PROVIDERS = [
   StreetViewService,
   SessionService,
   FileUploadService,
-  ExifService
+  ExifService,
+  VendorService
 ];
