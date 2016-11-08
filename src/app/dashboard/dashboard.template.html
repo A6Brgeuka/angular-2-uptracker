@@ -17,7 +17,7 @@
     <header class="header">
       <div class="row">
         <div class="col s6 m6">
-          <div class="select input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard/users') && !stateService.isUrl('/dashboard/vendors')">
+          <div class="select input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard/vendors')">
             <select
                 [(ngModel)]="selectedLocation"
                 name="location"

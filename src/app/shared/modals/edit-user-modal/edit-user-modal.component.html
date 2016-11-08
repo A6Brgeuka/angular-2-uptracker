@@ -175,7 +175,7 @@
         <button type="button" class="not-submit" (click)="addRole()">Add</button>
       </div>
       <div class="col s12 m2">
-        <button type="button" class="not-submit" (click)="showAddPresetForm = false">Cancel</button>
+        <button type="button" class="not-submit" (click)="hideAddPresetForm()">Cancel</button>
       </div>
     </div>
     <div class="row" *ngFor="let permission of permissionArr; let j = index">

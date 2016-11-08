@@ -210,6 +210,11 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     }
   }
 
+  hideAddPresetForm(){
+    this.preset.role = '';
+    this.addPresetForm = false;
+  }
+
   addRole(){
     if (!this.preset.role || this.preset.role == '') {
       this.toasterService.pop('error', 'Pre-set name is required');

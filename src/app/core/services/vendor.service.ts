@@ -59,9 +59,13 @@ export class VendorService extends ModelService{
   getVendors(){
     let vendorsLoaded = this.selfData ? this.selfData.length : false;
     if (!vendorsLoaded) {
-      return this.resource.getVendors().$observable.do((res: any) => {
-        this.updateSelfData(res.data.vendors);
-      });
+      return this.resource.getVendors().$observable
+          .map((res: any) => {
+            return res.data.vendors;
+          })
+          .do((res: any) => {
+            this.updateCollection$.next(res);
+          });
     }
   }
 

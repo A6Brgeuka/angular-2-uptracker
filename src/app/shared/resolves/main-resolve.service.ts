@@ -1,7 +1,7 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 
-import { AccountService } from '../../core/services/index';
+import { AccountService, VendorService } from '../../core/services/index';
 
 @Injectable()
 export class StateCollectionResolve implements Resolve<any> {
@@ -51,10 +51,23 @@ export class CurrencyCollectionResolve implements Resolve<any> {
   }
 }
 
+@Injectable()
+export class GlobalVendorCollectionResolve implements Resolve<any> {
+  constructor(
+      private vendorService: VendorService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.vendorService.getVendors();
+  }
+}
+
 // an array of services to resolve routes with data
 export const MAIN_RESOLVER_PROVIDERS = [
   StateCollectionResolve,
   LocationTypesCollectionResolve,
   DepartmentCollectionResolve,
-  CurrencyCollectionResolve
+  CurrencyCollectionResolve,
+  GlobalVendorCollectionResolve
 ];
