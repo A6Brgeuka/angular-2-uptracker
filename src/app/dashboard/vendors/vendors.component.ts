@@ -79,4 +79,9 @@ export class VendorsComponent implements OnInit {
     this.searchKey$.next(value);
   }
 
+  vendorsSort(event) {
+    let value = event.target.value;
+    this.sortBy$.next(value);
+  }
+
 }

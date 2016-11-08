@@ -223,10 +223,16 @@ export class AccountService extends ModelService{
   }
 
   addVendor(data){
-    return this.resource.addVendor(data).$observable.do((res: any) => {
-      let account = this.userService.selfData.account;
-      // if new vendor push him to account vendors array, else update vendor in array
-      if (account.vendors && _.some(account.vendors, {'id': res.data.vendor.id})){
+    let account = this.userService.selfData.account;
+    if (!data.id) {
+      return this.resource.addVendor(data).$observable.do((res: any) => {
+        account.vendors.push(res.data.vendor);
+        this.updateSelfData(account);
+      });
+    } else {
+      return this.resource.editVendor(data).$observable.do((res: any) => {
+        // if new vendor push him to account vendors array, else update vendor in array
+        // if (account.vendors && _.some(account.vendors, {'id': res.data.vendor.id})){
         let vendorArr = _.map(account.vendors, function(vendor){
           if (vendor['id'] == res.data.vendor.id) {
             return res.data.vendor;
@@ -235,10 +241,9 @@ export class AccountService extends ModelService{
           }
         });
         account.vendors = vendorArr;
-      } else {
-        account.vendors.push(res.data.vendor);
-      }
-      this.updateSelfData(account);
-    });
+        // }
+        this.updateSelfData(account);
+      });
+    }
   }
 }

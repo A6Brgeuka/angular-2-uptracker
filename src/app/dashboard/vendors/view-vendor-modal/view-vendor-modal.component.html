@@ -13,7 +13,7 @@
   </div>
   <div class="separator"></div>
   <div class="info">
-    <div class="row">
+    <div class="row" *ngIf="vendor.street || vendor.unit || vendor.city || vendor.state || vendor.zip_code">
       <div class="col s4 label">Address</div>
       <div class="col s8">
         {{vendor.street}}, {{vendor.unit}}<br/>

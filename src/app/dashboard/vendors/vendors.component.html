@@ -6,10 +6,10 @@
     </div>
     <div class="filter uptracker-form">
       <div class="left input">
-        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="usersFilter($event)" />
+        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="vendorsFilter($event)" />
       </div>
       <div class="left select">
-        <select [(ngModel)]="sortBy" materialize="material_select" (change)="locationsSort($event)">
+        <select [(ngModel)]="sortBy" materialize="material_select" (change)="vendorsSort($event)">
           <option value="">Sort by</option>
           <option value="name">Name</option>
           <option value="priority">Priority</option>
@@ -22,11 +22,11 @@
     <div class="clearfix"></div>
   </div>
   <div class="list">
-    <div class="item center-align" *ngFor="let vendor of vendors$ | async">
+    <div class="item center-align" *ngFor="let vendor of vendors$ | async; let i=index">
       <div class="inner">
         <div class="img" [ngStyle]="{ 'background-image': 'url(' + vendor.logo + ')' }" (click)="viewVendorModal(vendor)"></div>
         <div class="info">
-          <div class="ttl" (click)="viewVendorModal(vendor)">300 products</div>
+          <div class="ttl" (click)="viewVendorModal(vendor)">{{i}}300 products</div>
           <div class="edit" (click)="editVendorModal(vendor)"></div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
 import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
+import { VendorModel } from '../../../models/index';
 
 export class EditVendorModalContext extends BSModalContext {
   public vendor: any;
@@ -63,23 +64,20 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   }
 
   ngOnInit(){    
-    this.vendor = this.context.vendor || {};
-    // default values
-    this.vendor.currency = this.vendor.currency || 'USD';
-    this.vendor.priority = this.vendor.priority || '1';
+    // this.vendor = this.context.vendor || new VendorModel();
+    let vendorData = this.context.vendor || { currency: 'USD', priority: '1', default_order_type: 'email', payment_method: 'check' };
+    this.vendor = new VendorModel(vendorData);
+    console.log(this.vendor);
     this.calcPriorityMargin(this.vendor.priority);
-    this.vendor.default_order_type = this.vendor.default_order_type || 'email';
-    this.vendor.payment_method = this.vendor.payment_method || 'check';
+    // default values
+    // this.vendor.currency = this.vendor.currency || 'USD';
+    // this.vendor.priority = this.vendor.priority || '1';
+    // this.calcPriorityMargin(this.vendor.priority);
+    // this.vendor.default_order_type = this.vendor.default_order_type || 'email';
+    // this.vendor.payment_method = this.vendor.payment_method || 'check';
 
     if (this.context.vendor){
-      this.vendor.discount = this.context.vendor.discount_percentage * 100;
-
-      // this.vendor.street_1 = this.vendor.address.street_1;
-      // this.vendor.street_2 = this.vendor.address.street_2;
-      // this.vendor.city = this.vendor.address.city;
-      // this.vendor.zip_code = this.vendor.address.postal_code;
-      // this.vendor.state = this.vendor.address.state;
-
+      this.vendor.discount_percentage = parseInt(this.context.vendor.discount_percentage * 100);
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
       this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
@@ -172,12 +170,12 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.vendor.account_id = this.userService.selfData.account_id;
     this.vendor.rep_office_phone = this.selectedCountry[2] + ' ' + this.vendorFormPhone;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
-    this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null; debugger;
+    this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
 
-    // this.accountService.addVendor(this.vendor).subscribe(
-    //     (res: any) => {
-    //       this.closeModal();
-    //     }
-    // );
+    this.accountService.addVendor(this.vendor).subscribe(
+        (res: any) => {
+          this.closeModal();
+        }
+    );
   }
 }
