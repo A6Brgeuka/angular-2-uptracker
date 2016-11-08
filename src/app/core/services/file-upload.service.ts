@@ -18,6 +18,11 @@ export class FileUploadService {
   getOrientedImageByOrientation(file, orientationNumber){
     let img: any;
     let image = this.getImageFromBase64(file);
+    // let image = new Image();
+    // image.onload = () => {
+    //
+    // };
+    // image.src = file;
 
     if ([3, 6, 8].indexOf(orientationNumber) > -1) {
       let canvas: HTMLCanvasElement = document.createElement("canvas"),
@@ -54,15 +59,20 @@ export class FileUploadService {
       canvas.height = ch;
       ctx.rotate(deg * Math.PI / 180);
       ctx.drawImage(image, cx, cy);
+      // let img2 = ctx.createImageData(cx, cy);
+      // ctx.putImageData(img2, 0, 0);
+
       img = document.createElement("img");
       img.width = cw;
       img.height = ch;
-      img.src = canvas.toDataURL("image/png");
+      // img.src = canvas.toDataURL("image/jpeg");
+      return canvas.toDataURL("image/png");
     } else {
-      img = image;
+      // img = image;
+      return image.src;
     }
 
-    return img;
+    // return img;
   }
 
   getOrientation(file){
@@ -217,7 +227,7 @@ export class FileUploadService {
     } else {
       ctx.clearRect(0, 0, width_source, height_source);
     }
-
+    
     //draw
     ctx.putImageData(img2, 0, 0);
   }
