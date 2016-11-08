@@ -70,10 +70,9 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.calcPriorityMargin(this.vendor.priority);
     this.vendor.default_order_type = this.vendor.default_order_type || 'email';
     this.vendor.payment_method = this.vendor.payment_method || 'check';
-    // debugger;
+
     if (this.context.vendor){
-
-
+      this.vendor.discount = this.context.vendor.discount_percentage * 100;
 
       // this.vendor.street_1 = this.vendor.address.street_1;
       // this.vendor.street_2 = this.vendor.address.street_2;
@@ -81,12 +80,12 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       // this.vendor.zip_code = this.vendor.address.postal_code;
       // this.vendor.state = this.vendor.address.state;
 
-      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.phone);
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.phone);
-      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.phone2);
-      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.phone2);
-      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.fax);
-      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.fax);
+      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
+      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
+      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
+      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone);
+      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
+      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
     }
     
     this.currency$ = this.accountService.getCurrencies().map((res: any) => {
@@ -171,14 +170,14 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
 
   onSubmit(){
     this.vendor.account_id = this.userService.selfData.account_id;
-    this.vendor.phone = this.selectedCountry[2] + ' ' + this.vendorFormPhone;
-    this.vendor.phone2 = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
-    this.vendor.fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
+    this.vendor.rep_office_phone = this.selectedCountry[2] + ' ' + this.vendorFormPhone;
+    this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
+    this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null; debugger;
 
-    this.accountService.addVendor(this.vendor).subscribe(
-        (res: any) => { debugger;
-          this.closeModal();
-        }
-    );
+    // this.accountService.addVendor(this.vendor).subscribe(
+    //     (res: any) => {
+    //       this.closeModal();
+    //     }
+    // );
   }
 }

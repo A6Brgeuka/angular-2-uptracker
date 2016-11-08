@@ -144,7 +144,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     let file: File = inputValue.files[0];
     let myReader: FileReader = new FileReader();
 
-    myReader.onloadend = (e) => {
+    myReader.onloadend = (e) => { debugger;
       this.onFileDrop(myReader.result);
     };
     myReader.readAsDataURL(file);

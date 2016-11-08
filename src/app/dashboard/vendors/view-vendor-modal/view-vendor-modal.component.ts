@@ -4,8 +4,6 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, UserService } from '../../../core/services/index';
-
 export class ViewVendorModalContext extends BSModalContext {
   public vendor: any;
 }
@@ -32,6 +30,7 @@ export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewV
 
   ngOnInit(){
     this.vendor = this.context.vendor || {};
+    console.log(this.vendor);
   }
 
   dismissModal(){

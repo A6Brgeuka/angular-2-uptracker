@@ -17,7 +17,7 @@ export class FileUploadService {
 
   getOrientedImageByOrientation(file, orientationNumber){
     let img: any;
-    let image = this.getImageFromBase64(file);
+    let image = this.getImageFromBase64(file); debugger;
 
     if ([3, 6, 8].indexOf(orientationNumber) > -1) {
       let canvas: HTMLCanvasElement = document.createElement("canvas"),
@@ -61,7 +61,7 @@ export class FileUploadService {
     } else {
       img = image;
     }
-
+    debugger;
     return img;
   }
 
@@ -83,7 +83,7 @@ export class FileUploadService {
       image.width = exif.PixelXDimension;
       image.height = exif.PixelYDimension;
     }
-
+debugger;
     return image;
   }
 
@@ -91,6 +91,7 @@ export class FileUploadService {
     if (file){
       let image = new Image();
       image.src = file;
+      debugger;
       return image;
     }
   }
@@ -102,7 +103,7 @@ export class FileUploadService {
       resizeArea.id = 'imageupload-resize-area';
       resizeArea.style.visibility = 'hidden';
       resizeArea.style.position = 'absolute';
-      resizeArea.style.transform = 'translate(-10000px, 0)';
+      resizeArea.style.transform = 'translate(-2000px, 0)';
       document.body.appendChild(resizeArea);
     }
 
@@ -122,7 +123,7 @@ export class FileUploadService {
       origImage = this.getHTMLImageElementFromBase64(origImage);
     }
 
-    let canvas = this.getResizeArea();
+    let canvas = this.getResizeArea(); debugger;
 
     let height = origImage.height;
     let width = origImage.width;
@@ -131,10 +132,10 @@ export class FileUploadService {
     resizeMaxWidth = resizeMaxWidth || resizeMaxHeight;
 
     canvas.width = width;
-    canvas.height = height;
+    canvas.height = height; debugger;
 
 
-    let ctx = canvas.getContext("2d");
+    let ctx = canvas.getContext("2d"); debugger;
     ctx.drawImage(origImage, 0, 0);
     this.resample_single(canvas, resizeMaxWidth, resizeMaxHeight);
 
@@ -158,7 +159,7 @@ export class FileUploadService {
     var ratio_w = width_source / width;
     var ratio_h = height_source / height;
     var ratio_w_half = Math.ceil(ratio_w / 2);
-    var ratio_h_half = Math.ceil(ratio_h / 2);
+    var ratio_h_half = Math.ceil(ratio_h / 2); debugger;
 
     var ctx = canvas.getContext("2d");
     var img = ctx.getImageData(0, 0, width_source, height_source);
@@ -220,7 +221,7 @@ export class FileUploadService {
     } else {
       ctx.clearRect(0, 0, width_source, height_source);
     }
-
+    debugger;
     //draw
     ctx.putImageData(img2, 0, 0);
   }

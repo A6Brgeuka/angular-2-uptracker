@@ -57,7 +57,7 @@ export class VendorsComponent implements OnInit {
         });
   }
 
-  viewvendorModal(vendor = null){
+  viewVendorModal(vendor = null){
     this.modal
         .open(ViewVendorModal,  overlayConfigFactory({ vendor: vendor }, BSModalContext))
         .then((resultPromise)=>{
