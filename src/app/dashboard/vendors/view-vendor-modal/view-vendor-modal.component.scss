@@ -8,9 +8,15 @@
     border:1px solid #d6d6d6;
   }
 
-  .ttl{
-    margin-top: 30px;
-    font-size:18px;
+  .ttl-box{
+    height:80px;
+
+    .ttl{
+      position:relative;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:18px;
+    }
   }
 
   .separator{

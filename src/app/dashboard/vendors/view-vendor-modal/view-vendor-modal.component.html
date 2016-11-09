@@ -8,41 +8,42 @@
       </div>
     </div>
     <div class="col s8">
-      <div class="ttl">{{vendor.name}}Colgate</div>
+      <div class="ttl-box">
+        <div class="ttl">{{vendor.name}}</div>
+      </div>
     </div>
   </div>
   <div class="separator"></div>
   <div class="info">
-    <div class="row" *ngIf="vendor.street || vendor.unit || vendor.city || vendor.state || vendor.zip_code">
+    <div class="row" *ngIf="vendor.address.street_1 || vendor.address.street_2 || vendor.address.country || vendor.address.city || vendor.address.state">
       <div class="col s4 label">Address</div>
       <div class="col s8">
-        {{vendor.street}}, {{vendor.unit}}<br/>
-        {{vendor.city}}, {{vendor.state}} {{vendor.zip_code}}
+        <div *ngIf="vendor.address.street_1 || vendor.address.street_2">{{vendor.address.street_1}}, {{vendor.address.street_2}}</div>
+        {{vendor.address.city}}, {{vendor.address.state}} {{vendor.address.postal_code}}
       </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="vendor.phone">
       <div class="col s4 label">Phone</div>
       <div class="col s8">
-        {{vendor.rep_office_phone}}<span *ngIf="vendor.rep_mobile_phone">,<br/></span>
-        {{vendor.rep_mobile_phone}}
+        {{vendor.phone}}
       </div>
     </div>
-    <div class="row" *ngIf="vendor.rep_fax">
+    <div class="row" *ngIf="vendor.fax">
       <div class="col s4 label">Fax</div>
       <div class="col s8">
-        {{vendor.rep_fax}}
+        {{vendor.fax}}
       </div>
     </div>
-    <div class="row" *ngIf="vendor.rep_email">
+    <div class="row" *ngIf="vendor.email">
       <div class="col s4 label">Email</div>
       <div class="col s8">
-        {{vendor.rep_email}}
+        {{vendor.email}}
       </div>
     </div>
     <div class="row" *ngIf="vendor.website">
       <div class="col s4 label">Website</div>
       <div class="col s8">
-        {{vendor.website}}
+        <a href="{{vendor.website}}">{{vendor.website}}</a>
       </div>
     </div>
   </div>
