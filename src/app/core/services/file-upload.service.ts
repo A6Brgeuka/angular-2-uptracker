@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { ExifService } from './exif.service';
+import { Subject, Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class FileUploadService {
@@ -57,14 +58,15 @@ export class FileUploadService {
 
       canvas.width = cw;
       canvas.height = ch;
-      ctx.rotate(deg * Math.PI / 180);
-      ctx.drawImage(image, cx, cy);
+      // ctx.rotate(deg * Math.PI / 180);
+      // ctx.drawImage(image, cx, cy);
+      ctx.drawImage(image, 0, 0);
       // let img2 = ctx.createImageData(cx, cy);
       // ctx.putImageData(img2, 0, 0);
 
-      img = document.createElement("img");
-      img.width = cw;
-      img.height = ch;
+      // img = document.createElement("img");
+      // img.width = cw;
+      // img.height = ch;
       // img.src = canvas.toDataURL("image/jpeg");
       return canvas.toDataURL("image/png");
     } else {

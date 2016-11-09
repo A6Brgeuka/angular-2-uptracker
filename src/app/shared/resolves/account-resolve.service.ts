@@ -1,7 +1,7 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 
-import { AccountService } from '../../core/services/index';
+import { AccountService, VendorService } from '../../core/services/index';
 
 @Injectable()
 export class UserCollectionResolve implements Resolve<any> {
@@ -40,14 +40,14 @@ export class LocationCollectionResolve implements Resolve<any> {
 }
 
 @Injectable()
-export class VendorCollectionResolve implements Resolve<any> {
+export class AccountVendorCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      private vendorService: VendorService
   ) {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getVendors();
+    return this.vendorService.getAccountVendors();
   }
 }
 
@@ -56,5 +56,5 @@ export const ACCOUNT_RESOLVER_PROVIDERS = [
   UserCollectionResolve,
   RoleCollectionResolve,
   LocationCollectionResolve,
-  VendorCollectionResolve
+  AccountVendorCollectionResolve
 ];

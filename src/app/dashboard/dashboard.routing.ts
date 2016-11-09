@@ -4,7 +4,8 @@ import { AuthGuard } from '../auth-guard.service';
 import {
     UserCollectionResolve,
     LocationCollectionResolve,
-    GlobalVendorCollectionResolve
+    VendorCollectionResolve,
+    AccountVendorCollectionResolve
 } from '../shared/resolves/index';
 
 import { OrdersRoutes } from './orders/orders.routing';
@@ -24,7 +25,8 @@ export const DashboardRoutes = [
       ...VendorsRoutes
     ],
     resolve: {
-      globalVendorCollection: GlobalVendorCollectionResolve,
+      accountVendorCollection: AccountVendorCollectionResolve,
+      vendorCollection: VendorCollectionResolve,
       userCollection: UserCollectionResolve,
       locationCollection: LocationCollectionResolve,
     }

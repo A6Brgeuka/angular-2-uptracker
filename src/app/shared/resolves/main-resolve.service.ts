@@ -52,7 +52,7 @@ export class CurrencyCollectionResolve implements Resolve<any> {
 }
 
 @Injectable()
-export class GlobalVendorCollectionResolve implements Resolve<any> {
+export class VendorCollectionResolve implements Resolve<any> {
   constructor(
       private vendorService: VendorService
   ) {
@@ -69,5 +69,5 @@ export const MAIN_RESOLVER_PROVIDERS = [
   LocationTypesCollectionResolve,
   DepartmentCollectionResolve,
   CurrencyCollectionResolve,
-  GlobalVendorCollectionResolve
+  VendorCollectionResolve
 ];

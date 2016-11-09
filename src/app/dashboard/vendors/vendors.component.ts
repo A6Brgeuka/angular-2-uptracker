@@ -39,23 +39,24 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.vendors$ = Observable
-        .combineLatest(
-            this.vendorService.collection$,
-            this.sortBy$,
-            this.searchKey$
-        )
-        .map(([vendors, sortBy, searchKey]) => { 
-          this.total = vendors.length;
-          let filteredVendors = vendors;
-          if (searchKey && searchKey!='') {
-            filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
-              let key = new RegExp(searchKey, 'i');
-              return !key.test(vendor.name);
-            });
-          }
-          return _.sortBy(filteredVendors, [sortBy]);
-        });
+    // this.vendors$ = Observable
+    //     .combineLatest(
+    //         this.vendorService.collection$,
+    //         this.sortBy$,
+    //         this.searchKey$
+    //     )
+    //     .map(([vendors, sortBy, searchKey]) => {
+    //       this.total = vendors.length;
+    //       let filteredVendors = vendors;
+    //       if (searchKey && searchKey!='') {
+    //         filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
+    //           let key = new RegExp(searchKey, 'i');
+    //           return !key.test(vendor.name);
+    //         });
+    //       }
+    //       debugger;
+    //       return _.sortBy(filteredVendors, [sortBy]);
+    //     });
   }
 
   viewVendorModal(vendor = null){

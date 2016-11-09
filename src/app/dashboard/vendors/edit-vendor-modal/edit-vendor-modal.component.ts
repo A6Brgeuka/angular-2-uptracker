@@ -7,7 +7,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService, VendorService } from '../../../core/services/index';
 import { VendorModel, AccountVendorModel } from '../../../models/index';
 
 export class EditVendorModalContext extends BSModalContext {
@@ -57,6 +57,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       private toasterService: ToasterService,
       private userService: UserService,
       private accountService: AccountService,
+      private vendorService: VendorService,
       private phoneMaskService: PhoneMaskService
   ) {
     this.context = dialog.context;
@@ -172,7 +173,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
 
-    this.accountService.addVendor(this.vendor).subscribe(
+    this.vendorService.addAccountVendor(this.vendor).subscribe(
         (res: any) => {
           this.closeModal();
         }

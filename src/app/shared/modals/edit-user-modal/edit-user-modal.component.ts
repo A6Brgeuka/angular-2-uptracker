@@ -159,11 +159,10 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     let img = new Image();
     img.onload = () => {
       let resizedImg: any = this.fileUploadService.resizeImage(img, {resizeMaxHeight: 250, resizeMaxWidth: 250});
-      let orientation = this.fileUploadService.getOrientation(imgBase64); 
+      let orientation = this.fileUploadService.getOrientation(imgBase64);
       let orientedImg = this.fileUploadService.getOrientedImageByOrientation(resizedImg, orientation);
 
       this.zone.run(() => {
-        // this.uploadedImage = orientedImg.src;
         this.uploadedImage = orientedImg;
       });
     };
