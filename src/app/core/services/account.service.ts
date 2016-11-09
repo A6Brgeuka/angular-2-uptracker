@@ -167,7 +167,18 @@ export class AccountService extends ModelService{
       } else {
         account.users.push(res.data.user);
       }
-      this.updateSelfData(account);
+
+      // check if changed user self data
+      if (res.data.user.id == this.userService.getSelfId()){ 
+        // let user = res.data.user;
+        // user.account = account;
+        // this.userService.updateSelfData(user);
+
+        this.userService.selfData = res.data.user;
+        this.userService.selfData.account = account;
+      } else {
+        this.updateSelfData(account);
+      }
     });
   }
 
