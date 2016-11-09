@@ -132,7 +132,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       let orientedImg = this.fileUploadService.getOrientedImageByOrientation(resizedImg, orientation);
 
       this.zone.run(() => {
-        // this.uploadedImage = orientedImg.src;
         this.uploadedImage = orientedImg;
       });
     };

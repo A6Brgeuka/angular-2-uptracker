@@ -36,7 +36,7 @@ export class VendorService extends ModelService {
             this.collection$,
             this.userService.selfData$
         )
-        .map(([vendors, user]) => { debugger;
+        .map(([vendors, user]) => { 
           let accountVendors = user.account.vendors;
           // find and combine vendors
           let commonVendors = _.map(vendors, (globalVendor: any) => {
@@ -47,7 +47,6 @@ export class VendorService extends ModelService {
             });
             return globalVendor;
           });
-          debugger;
           return commonVendors;
         })
         .publishReplay(1).refCount();

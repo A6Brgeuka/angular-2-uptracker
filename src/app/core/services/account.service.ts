@@ -140,11 +140,14 @@ export class AccountService extends ModelService{
     };
     let usersLoaded = this.userService.selfData.account.users ? this.userService.selfData.account.users[0].name : false;
     if (!usersLoaded) {
-      return this.resource.getUsers(data).$observable.do((res: any) => {
+      let users$ = this.resource.getUsers(data).$observable.publishReplay(1).refCount();
+      users$.subscribe((res: any) => {
         let account = this.userService.selfData.account;
         account.users = res.data.users;
         this.updateSelfData(account);
       });
+      
+      return users$;
     }
   }
 
@@ -189,14 +192,14 @@ export class AccountService extends ModelService{
     };
     let rolesLoaded = this.userService.selfData.account.roles ? this.userService.selfData.account.roles[0].role : false;
     if (!rolesLoaded) {
-      let entity$ = this.resource.getRoles(data).$observable.publishReplay(1).refCount();
-      entity$.subscribe((res: any) => {
+      let roles$ = this.resource.getRoles(data).$observable.publishReplay(1).refCount();
+      roles$.subscribe((res: any) => {
         let account = this.userService.selfData.account;
         account.roles = res.data.roles;
         this.updateSelfData(account);
       });
 
-      return entity$;
+      return roles$;
     } 
   }
   

@@ -39,33 +39,6 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.vendorService.getCombinedVendors().subscribe(res=>{debugger;});
-
-    // let combinedVendors$ = Observable.combineLatest(
-    //     this.accountService.collection$,
-    //     this.userService.selfData$
-    // )
-    //     .map(([vendors, account]) => { debugger;
-    //       let accountVendors = account.vendors;
-    //       // find and combine vendors
-    //       let commonVendors = _.map(vendors, (globalVendor: any) => {
-    //         return _.each(accountVendors, (accountVendor: any) => {
-    //           if (accountVendor.vendor_id == globalVendor.id){
-    //             globalVendor.account_vendor = accountVendor;
-    //             return globalVendor;
-    //           }
-    //         });
-    //       });
-    //       debugger;
-    //       return commonVendors;
-    //     }).publishReplay(1).refCount().subscribe((res)=>{debugger});
-    // combinedVendors$.subscribe((res)=>{debugger});
-
-    // this.vendorService.combinedVendors$
-    //     .subscribe(res=>{
-    //   debugger;
-    // });
-
     this.vendors$ = Observable
         .combineLatest(
             this.vendorService.combinedVendors$,
@@ -73,7 +46,7 @@ export class VendorsComponent implements OnInit {
             this.sortBy$,
             this.searchKey$
         )
-        .map(([vendors, sortBy, searchKey]) => {  debugger;
+        .map(([vendors, sortBy, searchKey]) => {  
           this.total = vendors.length;
           let filteredVendors = vendors;
           if (searchKey && searchKey!='') {
