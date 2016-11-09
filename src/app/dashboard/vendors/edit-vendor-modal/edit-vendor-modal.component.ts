@@ -8,7 +8,7 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
 import { AccountService, ToasterService, UserService, PhoneMaskService } from '../../../core/services/index';
-import { VendorModel } from '../../../models/index';
+import { VendorModel, AccountVendorModel } from '../../../models/index';
 
 export class EditVendorModalContext extends BSModalContext {
   public vendor: any;
@@ -66,7 +66,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   ngOnInit(){    
     // this.vendor = this.context.vendor || new VendorModel();
     let vendorData = this.context.vendor || { currency: 'USD', priority: '1', default_order_type: 'email', payment_method: 'check' };
-    this.vendor = new VendorModel(vendorData);
+    this.vendor = new AccountVendorModel(vendorData);
     console.log(this.vendor);
     this.calcPriorityMargin(this.vendor.priority);
     // default values
