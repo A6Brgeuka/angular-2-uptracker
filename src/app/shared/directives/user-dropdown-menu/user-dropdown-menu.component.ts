@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
 
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { EditUserModal } from '../../modals/index';
 import { UserService } from '../../../core/services/index';
@@ -11,10 +12,12 @@ import { UserService } from '../../../core/services/index';
   templateUrl: './user-dropdown-menu.component.html',
   styleUrls: ['./user-dropdown-menu.component.scss']
 })
+@DestroySubscribers()
 export class UserDropdownMenuDirective implements OnInit {
   @Input() onlyLogout;
   
   private subscribers: any = {};
+  public user: any;
   public userName: string;
   public userShortName: string;
   public showMenu: boolean;
@@ -30,17 +33,20 @@ export class UserDropdownMenuDirective implements OnInit {
 
   ngOnInit(){    
     this.showMenu = !this.onlyLogout; 
-    this.userName = this.userService.selfData.name;
-    let nameArr = this.userName.split(" ");
-    let firstname = nameArr[0];
-    let lastname = nameArr[nameArr.length-1];
-    let shortFirstname = firstname.split("")[0];
-    let shortLastname = lastname.split("")[0];
-    this.userShortName = shortFirstname + shortLastname;
+    this.userService.selfData$.subscribe((res: any) => {
+      this.user = res;
+      // this.userName = res.name;
+      let nameArr = res.name.split(" ");
+      let firstname = nameArr[0];
+      let lastname = nameArr[nameArr.length-1];
+      let shortFirstname = firstname.split("")[0];
+      let shortLastname = lastname.split("")[0];
+      this.userShortName = shortFirstname + shortLastname;
+    });
   }
 
   editUserModal(){
-    this.modal.open(EditUserModal,  overlayConfigFactory({user: this.userService.selfData}, BSModalContext));
+    this.modal.open(EditUserModal,  overlayConfigFactory({user: this.user}, BSModalContext));
   }
 
   logOut(){

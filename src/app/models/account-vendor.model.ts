@@ -3,8 +3,8 @@ export class AccountVendorModel {
   account_id: string = null;
   avg_lead_time: string = null;
   created_at: string = null;
-  currency: string = null;
-  default_order_type: string = null;
+  currency: string = 'USD';
+  default_order_type: string = 'email';
   discount_percentage: any = null;
   documents: any = null;
   email: string = null;
@@ -14,9 +14,9 @@ export class AccountVendorModel {
   logo: string = null;
   name: string = null;
   notes: string = null;
-  payment_method: string = null;
+  payment_method: string = 'check';
   phone: string = null;
-  priority: string = null;
+  priority: string = '1';
   rep_email: string = null;
   rep_fax: string = null;
   rep_mobile_phone: string = null;

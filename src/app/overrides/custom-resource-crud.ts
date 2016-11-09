@@ -31,9 +31,9 @@ export class CustomResourceCRUD extends ResourceCRUD<any,any,any> {
     this.spinnerService = injector.get(SpinnerService);
   }
   
-  requestInterceptor(req: Request) {
+  requestInterceptor(req: Request) { //debugger;
     this.spinnerService.show();
-    req.headers.append('Content-Type', 'application/json');
+    // req.headers.append('Content-Type', 'application/json');
     req.headers.append('X_AUTH_TOKEN', this.sessionService.get('uptracker_token') || null);
     return req;
   }

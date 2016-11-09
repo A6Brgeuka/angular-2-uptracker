@@ -24,9 +24,8 @@ export class EditVendorModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditVendorModalContext> {
-  private subscribers: any = {};
   private context: EditVendorModalContext;
-  public vendor: any;
+  public vendor: AccountVendorModel;
   public currency$: Observable<any>;
   public currencyArr: any;
   public currencyDirty: boolean = false;
@@ -65,8 +64,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   }
 
   ngOnInit(){    
-    // this.vendor = this.context.vendor || new VendorModel();
-    let vendorData = this.context.vendor || { currency: 'USD', priority: '1', default_order_type: 'email', payment_method: 'check' };
+    let vendorData = this.context.vendor || {};
     this.vendor = new AccountVendorModel(vendorData);
     console.log(this.vendor);
     this.calcPriorityMargin(this.vendor.priority);
