@@ -32,4 +32,28 @@ export class VendorResource extends CustomResourceCRUD {
     path: '/search/vendors?query={!query}'
   })
   searchVendors: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Get,
+    path: '/accounts/{!account_id}/vendors'
+  })
+  getAccountVendors: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Post,
+    path: '/accounts/{!account_id}/vendors'
+  })
+  addAccountVendor: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Put,
+    path: '/accounts/{!account_id}/vendors/{!id}'
+  })
+  editAccountVendor: ResourceMethod<any, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Get,
+    path: '/accounts/{!account_id}/vendors/{!id}'
+  })
+  getAccountVendor: ResourceMethod<any, any>;
 }

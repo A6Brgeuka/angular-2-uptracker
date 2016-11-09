@@ -39,24 +39,53 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.vendors$ = Observable
-    //     .combineLatest(
-    //         this.vendorService.collection$,
-    //         this.sortBy$,
-    //         this.searchKey$
-    //     )
-    //     .map(([vendors, sortBy, searchKey]) => {
-    //       this.total = vendors.length;
-    //       let filteredVendors = vendors;
-    //       if (searchKey && searchKey!='') {
-    //         filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
-    //           let key = new RegExp(searchKey, 'i');
-    //           return !key.test(vendor.name);
+    // this.vendorService.getCombinedVendors().subscribe(res=>{debugger;});
+
+    // let combinedVendors$ = Observable.combineLatest(
+    //     this.accountService.collection$,
+    //     this.userService.selfData$
+    // )
+    //     .map(([vendors, account]) => { debugger;
+    //       let accountVendors = account.vendors;
+    //       // find and combine vendors
+    //       let commonVendors = _.map(vendors, (globalVendor: any) => {
+    //         return _.each(accountVendors, (accountVendor: any) => {
+    //           if (accountVendor.vendor_id == globalVendor.id){
+    //             globalVendor.account_vendor = accountVendor;
+    //             return globalVendor;
+    //           }
     //         });
-    //       }
+    //       });
     //       debugger;
-    //       return _.sortBy(filteredVendors, [sortBy]);
-    //     });
+    //       return commonVendors;
+    //     }).publishReplay(1).refCount().subscribe((res)=>{debugger});
+    // combinedVendors$.subscribe((res)=>{debugger});
+
+    // this.vendorService.combinedVendors$
+    //     .subscribe(res=>{
+    //   debugger;
+    // });
+
+    this.vendors$ = Observable
+        .combineLatest(
+            this.vendorService.combinedVendors$,
+            // combinedVendors$,
+            this.sortBy$,
+            this.searchKey$
+        )
+        .map(([vendors, sortBy, searchKey]) => {  debugger;
+          this.total = vendors.length;
+          let filteredVendors = vendors;
+          if (searchKey && searchKey!='') {
+            filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
+              let key = new RegExp(searchKey, 'i');
+              return !key.test(vendor.name);
+            });
+          }
+          let sortedVendors = _.sortBy(filteredVendors, [sortBy]);
+          console.log(sortedVendors);
+          return sortedVendors;
+        });
   }
 
   viewVendorModal(vendor = null){

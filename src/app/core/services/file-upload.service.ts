@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { ExifService } from './exif.service';
-import { Subject, Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class FileUploadService {
@@ -19,11 +18,6 @@ export class FileUploadService {
   getOrientedImageByOrientation(file, orientationNumber){
     let img: any;
     let image = this.getImageFromBase64(file);
-    // let image = new Image();
-    // image.onload = () => {
-    //
-    // };
-    // image.src = file;
 
     if ([3, 6, 8].indexOf(orientationNumber) > -1) {
       let canvas: HTMLCanvasElement = document.createElement("canvas"),
@@ -58,11 +52,8 @@ export class FileUploadService {
 
       canvas.width = cw;
       canvas.height = ch;
-      // ctx.rotate(deg * Math.PI / 180);
-      // ctx.drawImage(image, cx, cy);
-      ctx.drawImage(image, 0, 0);
-      // let img2 = ctx.createImageData(cx, cy);
-      // ctx.putImageData(img2, 0, 0);
+      ctx.rotate(deg * Math.PI / 180);
+      ctx.drawImage(image, cx, cy);
 
       // img = document.createElement("img");
       // img.width = cw;
@@ -70,11 +61,8 @@ export class FileUploadService {
       // img.src = canvas.toDataURL("image/jpeg");
       return canvas.toDataURL("image/png");
     } else {
-      // img = image;
       return image.src;
     }
-
-    // return img;
   }
 
   getOrientation(file){

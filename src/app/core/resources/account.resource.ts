@@ -86,28 +86,4 @@ export class AccountResource extends CustomResourceCRUD {
     path: '/accounts/{!account_id}/roles'
   })
   addRole: ResourceMethod<any, any>;
-
-  @ResourceAction({
-    method: RequestMethod.Get,
-    path: '/accounts/{!account_id}/vendors'
-  })
-  getVendors: ResourceMethod<any, any>;
-
-  @ResourceAction({
-    method: RequestMethod.Post,
-    path: '/accounts/{!account_id}/vendors'
-  })
-  addVendor: ResourceMethod<any, any>;
-
-  @ResourceAction({
-    method: RequestMethod.Put,
-    path: '/accounts/{!account_id}/vendors/{!id}'
-  })
-  editVendor: ResourceMethod<any, any>;
-
-  @ResourceAction({
-    method: RequestMethod.Get,
-    path: '/accounts/{!account_id}/vendors/{!id}'
-  })
-  getVendor: ResourceMethod<any, any>;
 }

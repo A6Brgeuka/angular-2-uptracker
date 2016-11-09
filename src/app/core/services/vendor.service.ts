@@ -15,11 +15,11 @@ import { VendorResource } from '../../core/resources/index';
   initFunc: 'onInit',
   destroyFunc: null,
 })
-export class VendorService extends ModelService{
-  collection$;
+export class VendorService extends ModelService {
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
+  combinedVendors$: Observable<any>;
 
 
   constructor(
@@ -29,6 +29,28 @@ export class VendorService extends ModelService{
       public accountService: AccountService
   ) {
     super(injector, vendorResource);
+
+    // combine global vendors observable with account vendors from account observable
+    this.combinedVendors$ = Observable
+        .combineLatest(
+            this.collection$,
+            this.userService.selfData$
+        )
+        .map(([vendors, user]) => { debugger;
+          let accountVendors = user.account.vendors;
+          // find and combine vendors
+          let commonVendors = _.map(vendors, (globalVendor: any) => {
+            _.each(accountVendors, (accountVendor: any) => {
+              if (accountVendor.vendor_id == globalVendor.id){
+                globalVendor.account_vendor = accountVendor;
+              }
+            });
+            return globalVendor;
+          });
+          debugger;
+          return commonVendors;
+        })
+        .publishReplay(1).refCount();
 
     this.onInit();
   }
@@ -44,24 +66,10 @@ export class VendorService extends ModelService{
       //update user after update account
       this.userService.updateSelfDataField('account', this.selfData);
     });
-
-    // combine global vendors with account vendors
-    // this.collection$ = Observable
-    //     .combineLatest(
-    //         super.collection$,
-    //         this
-    //     )
-    //     .map(([vendors, user, sortBy, searchKey]) => {
-    //
-    //       return _.sortBy(filteredVendors, [sortBy]);
-    //     });
   }
 
   addSubscribers(){
     this.entity$.subscribe((res) => {
-      //update user after update account
-      // this.userService.updateSelfDataField('account', res);
-
       this.updateSelfData(res);
     });
   }
@@ -103,7 +111,7 @@ export class VendorService extends ModelService{
     };
     let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length : false;
     if (!vendorsLoaded) {
-      return this.resource.getVendors(data).$observable.do((res: any) => {
+      return this.resource.getAccountVendors(data).$observable.do((res: any) => {
         let account = this.userService.selfData.account;
         account.vendors = res.data.vendors;
         this.accountService.updateSelfData(account);
