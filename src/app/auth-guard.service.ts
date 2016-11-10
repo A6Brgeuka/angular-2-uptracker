@@ -69,8 +69,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkOnboard(url: string): boolean { 
-    // return this.checkAuth(url);
     if (!this.checkAuth(url)) {
+      return false;
+    }
+
+    // if onboarding was completed redirect to dashboard
+    if (this.userService.selfData.account.status == 2){
+      this.router.navigate(['/dashboard']);
       return false;
     }
 

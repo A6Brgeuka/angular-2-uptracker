@@ -125,25 +125,34 @@ export class VendorService extends ModelService {
 
   addAccountVendor(data){
     let account = this.userService.selfData.account;
+    let entity$ = this.restangular
+        .one('accounts', data.get('account_id'))
+        .one('vendors', data.get('vendor_id'))
+        .customPOST(data, undefined, undefined, { 'Content-Type': undefined });
+    return entity$.do((res: any) => { debugger;
+      account.vendors.push(res.data.vendor);
+      this.accountService.updateSelfData(account);
+    });
 
-    // if new vendor push him to account vendors array, else update vendor in array
-    if (!data.get('id')) {
-      return this.resource.addAccountVendor(data).$observable.do((res: any) => {
-        account.vendors.push(res.data.vendor);
-        this.accountService.updateSelfData(account);
-      });
-    } else {
-      return this.editAccountVendor(data);
-    }
+
+    // TODO: remove after testig
+    // return this.resource.addAccountVendor(data).$observable.do((res: any) => {
+    //   account.vendors.push(res.data.vendor);
+    //   this.accountService.updateSelfData(account);
+    // });
   }
 
   editAccountVendor(data){
     let account = this.userService.selfData.account;
-    let entity$ = this.restangular
-            .one('accounts', data.get('account_id'))
-            .one('vendors', data.get('vendor_id'))
-            .customPUT(data, undefined, undefined, { 'Content-Type': undefined });
-    return entity$.do((res: any) => { debugger;
+    // if no id then add new vendor
+    if (!data.get('id')) {
+      return this.addAccountVendor(data);
+    } else {
+      let entity$ = this.restangular
+          .one('accounts', data.get('account_id'))
+          .one('vendors', data.get('vendor_id'))
+          .customPUT(data, undefined, undefined, { 'Content-Type': undefined });
+      return entity$.do((res: any) => { debugger;
         let vendorArr = _.map(account.vendors, function(vendor){
           if (vendor['id'] == res.data.vendor.id) {
             return res.data.vendor;
@@ -154,6 +163,8 @@ export class VendorService extends ModelService {
         account.vendors = vendorArr;
         this.accountService.updateSelfData(account);
       });
+    }
+
 
     // TODO: Remove after testing restangular
     // return this.resource.editAccountVendor(data).$observable.do((res: any) => {

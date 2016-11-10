@@ -155,7 +155,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     let imageData = file.split(',')[1];
     let dataType = file.split('.')[0].split(';')[0].split(':')[1];
     let binaryImageData = atob(imageData);
-    let blob = new Blob([binaryImageData], { type: dataType })
+    let blob = new Blob([binaryImageData], { type: dataType });
     this.formData.append('documents', blob);
   }
 
@@ -167,7 +167,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     _.each(this.vendor, (value, key) => {
       this.formData.append(key, value);
     });
-    debugger;
+    // TODO: remove after testing
     // this.formData.append('account_id', this.vendor.account_id);
     // this.formData.append('vendor_id', this.vendor.vendor_id);
     // this.formData.append('rep_office_phone', this.vendor.rep_office_phone);
@@ -185,10 +185,14 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     // this.formData.append('id', this.vendor.id);
     // this.formData.append('default_order_type', this.vendor.default_order_type);
     
-    this.vendorService.addAccountVendor(this.formData).subscribe(
+    this.vendorService.editAccountVendor(this.formData).subscribe(
         (res: any) => {
           debugger;
           this.closeModal();
+        },
+        (err: any) => {
+          console.log(err);
+          // this.toasterService.pop
         }
     );
   }
