@@ -59,7 +59,7 @@ export class AccountingComponent implements OnInit {
       }
     });
     this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
-      this.currencyArr = _.sortBy(res.data, 'priority');
+      this.currencyArr = res;
     });
   }
 

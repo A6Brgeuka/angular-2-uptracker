@@ -190,7 +190,12 @@ export class AccountService extends ModelService{
   getCurrencies(){
     return this.currencyCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
-        this.currencyCollection$ = this.resource.getCurrencies().$observable.publishReplay(1).refCount();
+        this.currencyCollection$ = this.resource.getCurrencies().$observable
+            .map((res: any) => {
+              let currencyArr = _.sortBy(res.data, 'priority');
+              return currencyArr;
+            })
+            .publishReplay(1).refCount();
       }
       return this.currencyCollection$;
     });

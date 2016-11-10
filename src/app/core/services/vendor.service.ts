@@ -9,6 +9,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { VendorResource } from '../../core/resources/index';
+import { VendorModel, AccountVendorModel } from '../../models/index';
 
 @Injectable()
 @Subscribers({
@@ -40,9 +41,11 @@ export class VendorService extends ModelService {
           let accountVendors = user.account.vendors;
           // find and combine vendors
           let commonVendors = _.map(vendors, (globalVendor: any) => {
-            _.each(accountVendors, (accountVendor: any) => {
+            globalVendor = new VendorModel(globalVendor);
+            _.each(accountVendors, (accountVendor: AccountVendorModel) => {
               if (accountVendor.vendor_id == globalVendor.id){
                 globalVendor.account_vendor = accountVendor;
+                globalVendor.priority = accountVendor.priority;
               }
             });
             return globalVendor;

@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
 import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
 import { UserService, AccountService, VendorService } from '../../core/services/index';
+import { AccountVendorModel } from '../../models/index';
 
 
 @Component({
@@ -55,8 +56,16 @@ export class VendorsComponent implements OnInit {
               return !key.test(vendor.name);
             });
           }
-          let sortedVendors = _.sortBy(filteredVendors, [sortBy]);
-          console.log(sortedVendors);
+          let order = 'desc';
+          if (sortBy == 'A-Z') {
+            sortBy = 'name';
+            order = 'asc';
+          }
+          if (sortBy == 'Z-A') {
+            sortBy = 'name';
+          }
+          
+          let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
           return sortedVendors;
         });
   }
@@ -75,7 +84,9 @@ export class VendorsComponent implements OnInit {
   }
   
   editVendorModal(vendor = null){
-    this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: vendor }, BSModalContext));
+    let accountVendor = new AccountVendorModel(vendor.account_vendor);
+    accountVendor.vendor_id = vendor.id;
+    this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: accountVendor }, BSModalContext));
   }
 
   vendorsFilter(event){

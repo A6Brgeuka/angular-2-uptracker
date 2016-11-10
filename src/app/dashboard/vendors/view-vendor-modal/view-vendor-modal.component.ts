@@ -21,7 +21,7 @@ export class ViewVendorModalContext extends BSModalContext {
 @DestroySubscribers()
 export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
   context: ViewVendorModalContext;
-  public vendor: any;
+  public vendor: VendorModel;
 
   constructor(
       public dialog: DialogRef<ViewVendorModalContext>
@@ -31,9 +31,7 @@ export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewV
   }
 
   ngOnInit(){
-    this.vendor = this.context.vendor;
-    
-    console.log(this.vendor);
+    this.vendor = new VendorModel(this.context.vendor);
   }
 
   dismissModal(){

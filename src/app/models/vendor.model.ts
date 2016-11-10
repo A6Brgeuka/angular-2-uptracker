@@ -1,7 +1,7 @@
 export class VendorModel {
   id: string = null;
   active: boolean = null;
-  address: any;
+  address: any = null;
   created_at: string = null;
   email: string = null;
   fax: string = null;
@@ -10,6 +10,9 @@ export class VendorModel {
   phone: string = null;
   updated_at: string = null;
   website: string = null;
+
+  priority: number = 0;
+  account_vendor: any = null;
   
   constructor(obj?:any) {
     for (let field in obj) {

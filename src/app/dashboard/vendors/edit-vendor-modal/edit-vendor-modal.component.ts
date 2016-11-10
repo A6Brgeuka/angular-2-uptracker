@@ -11,7 +11,7 @@ import { AccountService, ToasterService, UserService, PhoneMaskService, VendorSe
 import { VendorModel, AccountVendorModel } from '../../../models/index';
 
 export class EditVendorModalContext extends BSModalContext {
-  public vendor: any;
+  public vendor: AccountVendorModel;
 }
 
 @Component({
@@ -63,20 +63,14 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     dialog.setCloseGuard(this);
   }
 
-  ngOnInit(){    
+  ngOnInit(){
     let vendorData = this.context.vendor || {};
     this.vendor = new AccountVendorModel(vendorData);
-    console.log(this.vendor);
     this.calcPriorityMargin(this.vendor.priority);
-    // default values
-    // this.vendor.currency = this.vendor.currency || 'USD';
-    // this.vendor.priority = this.vendor.priority || '1';
-    // this.calcPriorityMargin(this.vendor.priority);
-    // this.vendor.default_order_type = this.vendor.default_order_type || 'email';
-    // this.vendor.payment_method = this.vendor.payment_method || 'check';
 
-    if (this.context.vendor){
+    if (this.vendor.id){
       // this.vendor.discount_percentage = parseInt(this.context.vendor.discount_percentage * 100);
+
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
       this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
@@ -85,9 +79,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
     }
     
-    this.currency$ = this.accountService.getCurrencies().map((res: any) => {
-      this.currencyArr = _.sortBy(res.data, 'priority');
-      return this.currencyArr;
+    this.currency$ = this.accountService.getCurrencies().do((res: any) => {
+      this.currencyArr = res;
     });
   }
 
@@ -110,15 +103,15 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   calcPriorityMargin(value){
     let fixer: number;
     switch (value){
-      case '1': fixer = 12; break;
+      case '1': fixer = 13; break;
       case '2': fixer = 12; break;
       case '3': fixer = 12; break;
-      case '4': fixer = 11; break;
+      case '4': fixer = 12; break;
       case '5': fixer = 12; break;
       case '6': fixer = 11; break;
       case '7': fixer = 11; break;
       case '8': fixer = 10; break;
-      case '9': fixer = 9; break;
+      case '9': fixer = 10; break;
       case '10': fixer = 6; break;
       default: fixer = 10;
     }
@@ -151,16 +144,13 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   //   };
   //   myReader.readAsDataURL(file);
   // }
-  //
+
   // // upload by filedrop
   // fileOver(fileIsOver: boolean): void {
   //   this.fileIsOver = fileIsOver;
   // }
   //
   // onFileDrop(file: File): void {
-  //   let img: any = this.fileUploadService.resizeImage(file, {resizeMaxHeight: 586, resizeMaxWidth: 1040});
-  //   let orientation = this.fileUploadService.getOrientation(file);
-  //   let img2 = this.fileUploadService.getOrientedImageByOrientation(img, orientation);
   //
   //   // this.uploadedImage = img2.src;
   // }
@@ -172,7 +162,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
 
     this.vendorService.addAccountVendor(this.vendor).subscribe(
-        (res: any) => {
+        (res: any) => { 
           this.closeModal();
         }
     );
