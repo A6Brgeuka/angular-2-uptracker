@@ -123,11 +123,12 @@ export class VendorService extends ModelService {
     }
   }
 
-  addAccountVendor(data){
+  addAccountVendor(data){ console.log(111, data.get('id'));
     let account = this.userService.selfData.account;
+    debugger;
     let entity$ = this.restangular
         .one('accounts', data.get('account_id'))
-        .one('vendors', data.get('vendor_id'))
+        .all('vendors')
         .customPOST(data, undefined, undefined, { 'Content-Type': undefined });
     return entity$.do((res: any) => { debugger;
       account.vendors.push(res.data.vendor);
@@ -135,24 +136,26 @@ export class VendorService extends ModelService {
     });
 
 
-    // TODO: remove after testig
+    // TODO: remove after testing
     // return this.resource.addAccountVendor(data).$observable.do((res: any) => {
     //   account.vendors.push(res.data.vendor);
     //   this.accountService.updateSelfData(account);
     // });
   }
 
-  editAccountVendor(data){
+  editAccountVendor(data){ 
+    let editVendor = data.get('id');
     let account = this.userService.selfData.account;
     // if no id then add new vendor
-    if (!data.get('id')) {
+    if (!editVendor) {
       return this.addAccountVendor(data);
-    } else {
+    } else { debugger;
       let entity$ = this.restangular
           .one('accounts', data.get('account_id'))
-          .one('vendors', data.get('vendor_id'))
+          .one('vendors', data.get('id'))
           .customPUT(data, undefined, undefined, { 'Content-Type': undefined });
       return entity$.do((res: any) => { debugger;
+        console.log(111, res.data.vendor);
         let vendorArr = _.map(account.vendors, function(vendor){
           if (vendor['id'] == res.data.vendor.id) {
             return res.data.vendor;

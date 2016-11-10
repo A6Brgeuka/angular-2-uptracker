@@ -165,7 +165,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     _.each(this.vendor, (value, key) => {
-      this.formData.append(key, value);
+      if (value)
+        this.formData.append(key, value);
     });
     // TODO: remove after testing
     // this.formData.append('account_id', this.vendor.account_id);
@@ -184,15 +185,17 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     // this.formData.append('avg_lead_time', this.vendor.avg_lead_time);
     // this.formData.append('id', this.vendor.id);
     // this.formData.append('default_order_type', this.vendor.default_order_type);
-    
-    this.vendorService.editAccountVendor(this.formData).subscribe(
+
+    let request = this.vendorService.editAccountVendor(this.formData);
+
+    request.subscribe(
         (res: any) => {
           debugger;
           this.closeModal();
         },
         (err: any) => {
           console.log(err);
-          // this.toasterService.pop
+          this.toasterService.pop('error', err.data.error_message);
         }
     );
   }
