@@ -17,6 +17,7 @@ export class AccountVendorModel {
   payment_method: string = 'check';
   phone: string = null;
   priority: string = '1';
+  product_count: number = 0;
   rep_email: string = null;
   rep_fax: string = null;
   rep_mobile_phone: string = null;

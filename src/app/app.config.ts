@@ -14,23 +14,24 @@ export const APP_DI_CONFIG: AppConfig = {
 
 export function RESTANGULAR_CONFIG (RestangularProvider, sessionService: SessionService) {
   RestangularProvider.setBaseUrl(APP_DI_CONFIG.apiEndpoint);
-  RestangularProvider.setDefaultResponseMethod("observable");
+  RestangularProvider.setDefaultHeaders({'X_AUTH_TOKEN': sessionService.get('uptracker_token')});
 
-  RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => { 
-    let newHeaders = {
-      'Content-Type': 'application/json',
-      'X_AUTH_TOKEN': sessionService.get('uptracker_token')
-    };
-    // newHeaders.append('X_AUTH_TOKEN', sessionService.get('uptracker_token') || null);
+  // RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => {
+  //   debugger;
+  //   let newHeaders = {
+  //     'Content-Type': undefined,
+  //     'X_AUTH_TOKEN': sessionService.get('uptracker_token')
+  //   };
+  //   // newHeaders.append('X_AUTH_TOKEN', sessionService.get('uptracker_token') || null);
+  //
+  //   return {
+  //     params: Object.assign({}, params, {sort:"name"}),
+  //     headers: newHeaders,
+  //     element: element
+  //   }
+  // });
 
-    return {
-      params: Object.assign({}, params, {sort:"name"}),
-      headers: newHeaders,
-      element: element
-    }
-  });
-
-  RestangularProvider.addResponseInterceptor((data, operation, what, url, response)=> {
-    return data;
-  });
+  // RestangularProvider.addResponseInterceptor((data, operation, what, url, response)=> {
+  //   return data;
+  // });
 };

@@ -26,6 +26,7 @@ export class EditVendorModalContext extends BSModalContext {
 export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditVendorModalContext> {
   private context: EditVendorModalContext;
   public vendor: AccountVendorModel;
+  private formData: FormData = new FormData();
   public currency$: Observable<any>;
   public currencyArr: any;
   public currencyDirty: boolean = false;
@@ -69,7 +70,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.calcPriorityMargin(this.vendor.priority);
 
     if (this.vendor.id){
-      // this.vendor.discount_percentage = parseInt(this.context.vendor.discount_percentage * 100);
+      this.vendor.discount_percentage *= 100;
 
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
@@ -145,24 +146,48 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   //   myReader.readAsDataURL(file);
   // }
 
-  // // upload by filedrop
-  // fileOver(fileIsOver: boolean): void {
-  //   this.fileIsOver = fileIsOver;
-  // }
-  //
-  // onFileDrop(file: File): void {
-  //
-  //   // this.uploadedImage = img2.src;
-  // }
+  // upload by filedrop
+  fileOver(fileIsOver: boolean): void {
+    this.fileIsOver = fileIsOver;
+  }
+  
+  onFileDrop(file: any): void { debugger;
+    let imageData = file.split(',')[1];
+    let dataType = file.split('.')[0].split(';')[0].split(':')[1];
+    let binaryImageData = atob(imageData);
+    let blob = new Blob([binaryImageData], { type: dataType })
+    this.formData.append('documents', blob);
+  }
 
   onSubmit(){
     this.vendor.account_id = this.userService.selfData.account_id;
     this.vendor.rep_office_phone = this.selectedCountry[2] + ' ' + this.vendorFormPhone;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
-
-    this.vendorService.addAccountVendor(this.vendor).subscribe(
-        (res: any) => { 
+    _.each(this.vendor, (value, key) => {
+      this.formData.append(key, value);
+    });
+    debugger;
+    // this.formData.append('account_id', this.vendor.account_id);
+    // this.formData.append('vendor_id', this.vendor.vendor_id);
+    // this.formData.append('rep_office_phone', this.vendor.rep_office_phone);
+    // this.formData.append('rep_mobile_phone', this.vendor.rep_mobile_phone);
+    // this.formData.append('rep_fax', this.vendor.rep_fax);
+    // this.formData.append('currency', this.vendor.currency);
+    // this.formData.append('payment_method', this.vendor.payment_method);
+    // this.formData.append('discount_percentage', this.vendor.discount_percentage);
+    // this.formData.append('shipping_handling', this.vendor.shipping_handling);
+    // this.formData.append('rep_name', this.vendor.rep_name);
+    // this.formData.append('rep_email', this.vendor.rep_email);
+    // this.formData.append('notes', this.vendor.notes);
+    // this.formData.append('priority', this.vendor.priority);
+    // this.formData.append('avg_lead_time', this.vendor.avg_lead_time);
+    // this.formData.append('id', this.vendor.id);
+    // this.formData.append('default_order_type', this.vendor.default_order_type);
+    
+    this.vendorService.addAccountVendor(this.formData).subscribe(
+        (res: any) => {
+          debugger;
           this.closeModal();
         }
     );

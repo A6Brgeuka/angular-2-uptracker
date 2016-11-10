@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { APP_CONFIG, APP_DI_CONFIG, RESTANGULAR_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-// import { RestangularModule } from 'ng2-restangular';
+import { RestangularModule } from 'ng2-restangular';
 
 // auth guard
 import { AuthGuard } from '../auth-guard.service';
@@ -25,7 +25,7 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
     CommonModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-    // RestangularModule.forRoot([APP_SERVICE_PROVIDERS[9]], RESTANGULAR_CONFIG),
+    RestangularModule.forRoot([APP_SERVICE_PROVIDERS[9]], RESTANGULAR_CONFIG),
   ],
   declarations: [  ],
   providers: [    

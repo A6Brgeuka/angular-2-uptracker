@@ -24,6 +24,7 @@
       <div class="inner">
         <div class="img" [ngStyle]="{ 'background-image': 'url(' + vendor.logo + ')' }" (click)="viewVendorModal(vendor)"></div>
         <div class="info">
+          <!--<div class="ttl" (click)="viewVendorModal(vendor)">{{vendor.account_vendor?.product_count || 0}} products</div>-->
           <div class="ttl" (click)="viewVendorModal(vendor)">{{vendor.name}}</div>
           <div class="edit" (click)="editVendorModal(vendor)"></div>
         </div>

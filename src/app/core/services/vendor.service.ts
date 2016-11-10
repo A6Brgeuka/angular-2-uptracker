@@ -10,6 +10,7 @@ import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { VendorResource } from '../../core/resources/index';
 import { VendorModel, AccountVendorModel } from '../../models/index';
+import { Restangular } from 'ng2-restangular';
 
 @Injectable()
 @Subscribers({
@@ -27,7 +28,8 @@ export class VendorService extends ModelService {
       public injector: Injector,
       public vendorResource: VendorResource,
       public userService: UserService,
-      public accountService: AccountService
+      public accountService: AccountService,
+      public restangular: Restangular
   ) {
     super(injector, vendorResource);
 
@@ -125,14 +127,23 @@ export class VendorService extends ModelService {
     let account = this.userService.selfData.account;
 
     // if new vendor push him to account vendors array, else update vendor in array
-    if (!data.id) {
+    if (!data.get('id')) {
       return this.resource.addAccountVendor(data).$observable.do((res: any) => {
         account.vendors.push(res.data.vendor);
         this.accountService.updateSelfData(account);
       });
     } else {
-      return this.resource.editAccountVendor(data).$observable.do((res: any) => {
-        // if (account.vendors && _.some(account.vendors, {'id': res.data.vendor.id})){
+      return this.editAccountVendor(data);
+    }
+  }
+
+  editAccountVendor(data){
+    let account = this.userService.selfData.account;
+    let entity$ = this.restangular
+            .one('accounts', data.get('account_id'))
+            .one('vendors', data.get('vendor_id'))
+            .customPUT(data, undefined, undefined, { 'Content-Type': undefined });
+    return entity$.do((res: any) => { debugger;
         let vendorArr = _.map(account.vendors, function(vendor){
           if (vendor['id'] == res.data.vendor.id) {
             return res.data.vendor;
@@ -141,9 +152,22 @@ export class VendorService extends ModelService {
           }
         });
         account.vendors = vendorArr;
-        // }
         this.accountService.updateSelfData(account);
       });
-    }
+
+    // TODO: Remove after testing restangular
+    // return this.resource.editAccountVendor(data).$observable.do((res: any) => {
+    //   // if (account.vendors && _.some(account.vendors, {'id': res.data.vendor.id})){
+    //   let vendorArr = _.map(account.vendors, function(vendor){
+    //     if (vendor['id'] == res.data.vendor.id) {
+    //       return res.data.vendor;
+    //     } else {
+    //       return vendor;
+    //     }
+    //   });
+    //   account.vendors = vendorArr;
+    //   // }
+    //   this.accountService.updateSelfData(account);
+    // });
   }
 }
