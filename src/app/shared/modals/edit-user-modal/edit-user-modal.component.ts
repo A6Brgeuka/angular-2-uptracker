@@ -241,7 +241,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.user.avatar = this.uploadedImage;
     this.user.permissions = this.permissionArr;
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
-        (res: any) => {
+        (res: any) => { 
           this.closeModal();
         }
     );

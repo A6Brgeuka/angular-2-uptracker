@@ -121,7 +121,9 @@ export class AccountService extends ModelService{
 
   addLocation(data){
     return this.resource.addLocation(data).$observable.do((res: any) => {
-      this.updateSelfData(res.data.account);
+      let account = this.userService.selfData.account;
+      account.locations = res.data.account.locations;
+      this.updateSelfData(account);
     });
   }
 
@@ -170,12 +172,9 @@ export class AccountService extends ModelService{
 
       // check if changed user self data
       if (res.data.user.id == this.userService.getSelfId()){ 
-        // let user = res.data.user;
-        // user.account = account;
-        // this.userService.updateSelfData(user);
-
-        this.userService.selfData = res.data.user;
-        this.userService.selfData.account = account;
+        let user = res.data.user;
+        user.account = account;
+        this.userService.updateSelfData(user);
       } else {
         this.updateSelfData(account);
       }
