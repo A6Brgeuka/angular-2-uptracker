@@ -154,13 +154,14 @@ export class AccountService extends ModelService{
   }
 
   addUser(data){
-    return this.resource.addUser(data).$observable.do((res: any) => {
+    return this.resource.addUser(data).$observable
+    .do((res: any) => {
       let account = this.userService.selfData.account;
       // if new user push him to account users array, else update user in array
       if (_.some(account.users, {'id': res.data.user.id})){
         let userArr = _.map(account.users, function(user){
           if (user['id'] == res.data.user.id) {
-            return res.data.user;
+            return _.cloneDeep(res.data.user);
           } else {
             return user;
           }
