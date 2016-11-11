@@ -14,7 +14,7 @@ export class EditUserModalContext extends BSModalContext {
 
 @Component({
   selector: 'app-edit-user-modal',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
+  // TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
   templateUrl: './edit-user-modal.component.html',

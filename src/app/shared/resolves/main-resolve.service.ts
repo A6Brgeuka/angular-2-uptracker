@@ -60,7 +60,7 @@ export class VendorCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.vendorService.getVendors().take(1);
+    return this.vendorService.getVendors().subscribe();
   }
 }
 

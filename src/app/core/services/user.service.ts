@@ -2,6 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import * as _ from 'lodash';
 
 import { ModelService } from '../../overrides/model.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
@@ -78,13 +79,16 @@ export class UserService extends ModelService {
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     )
+    // .filter((res: any) => {
+    //   return !(Object.keys(res).length === 0 && res.constructor === Object);
+    // })
     .filter((res: any) => { 
       let condition = !this.getSessionId() || res.id == this.getSessionId();
       return condition;
     })
     .publishReplay(1).refCount();
 
-    this.selfData$.subscribe((res: any) => { 
+    this.selfData$.subscribe((res: any) => {
       //Set token
       if (res['token'] && !res['signup']) {
         this.setSessionId(res['id']);
@@ -103,7 +107,9 @@ export class UserService extends ModelService {
     let data = {
       user_id: this.getSessionId()
     };
+    // TODO: remove after testing
     return this.resource.logout(data).$observable
+    // return this.restangular.all('logout').post('')
         .do((res) => {
           UserService.logout(this.sessionService, this.router, redirectUrl);
           this.updateSelfData({});

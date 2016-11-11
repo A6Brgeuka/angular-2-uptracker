@@ -79,11 +79,11 @@ export class AccountService extends ModelService{
   getLocations(){
     let data: any = {
       account_id: this.userService.selfData.account_id
-    };
-    let locationsLoaded = this.userService.selfData.account.locations ? this.userService.selfData.account.locations.length : false;
+    }; 
+    let account = this.userService.selfData.account;
+    let locationsLoaded = account ? this.userService.selfData.account.locations ? this.userService.selfData.account.locations.length : false : false;
     if (!locationsLoaded) {
       return this.resource.getLocations(data).$observable.do((res: any) => {
-        let account = this.userService.selfData.account;
         account.locations = res.data.locations;
         this.updateSelfData(account);
       });

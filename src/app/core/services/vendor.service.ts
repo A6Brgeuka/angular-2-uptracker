@@ -10,7 +10,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { VendorResource } from '../../core/resources/index';
-// import { HttpClient } from './http.service';
+import { HttpClient } from './http.service';
 import { VendorModel, AccountVendorModel } from '../../models/index';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class VendorService extends ModelService {
   constructor(
       public injector: Injector,
       public vendorResource: VendorResource,
-      // public httpService: HttpClient,
+      public httpService: HttpClient,
       public userService: UserService,
       public accountService: AccountService,
       public restangular: Restangular
@@ -41,7 +41,7 @@ export class VendorService extends ModelService {
             this.collection$,
             this.userService.selfData$
         )
-        .map(([vendors, user]) => { 
+        .map(([vendors, user]) => {
           let accountVendors = user.account.vendors;
           // find and combine vendors
           let commonVendors = _.map(vendors, (globalVendor: any) => {
@@ -85,25 +85,52 @@ export class VendorService extends ModelService {
   }
 
   getVendors(){
-    let vendorsLoaded = this.collection ? this.collection.length : false;
-    if (!vendorsLoaded) {
-      return this.restangular.all('vendors').customGET('')
-          .map((res: any) => {
-            return res.data.vendors;
-          })
-          .do((res: any) => {
-            this.updateCollection$.next(res);
-          });
 
-      // TODO: remove after testing
-      // return this.resource.getVendors().$observable
-      //     .map((res: any) => {
-      //       return res.data.vendors;
-      //     })
-      //     .do((res: any) => {
-      //       this.updateCollection$.next(res);
-      //     });
-    }
+
+
+
+    this.collection$ = this.restangular.all('vendors').customGET('')
+        .map((res: any) => { //debugger;
+          return res.data.vendors;
+        })
+        .do((res: any) => {
+          this.updateCollection$.next(res);
+        });
+    return  this.collection$; //.do((res)=>{debugger});
+
+
+
+
+
+
+
+
+    // this.collection$.do((res)=>{debugger}).subscribe((res)=>{debugger});
+    //
+    // debugger;
+    // return this.collection$
+    //     .do((res)=>{debugger})
+    //     .isEmpty().switchMap((isEmpty) => { debugger;
+    //   if(isEmpty) {
+    //     this.collection$ = this.restangular.all('vendors').customGET('')
+    //         .map((res: any) => { debugger;
+    //           return res.data.vendors;
+    //         })
+    //         .do((res: any) => {
+    //           this.updateCollection$.next(res);
+    //         });
+    //   }
+    //   return this.collection$.do((res)=>{debugger});
+    // });
+
+    // TODO: remove after testing
+    // return this.resource.getVendors().$observable
+    //     .map((res: any) => {
+    //       return res.data.vendors;
+    //     })
+    //     .do((res: any) => {
+    //       this.updateCollection$.next(res);
+    //     });
   }
 
   getVendor(id){
@@ -161,12 +188,13 @@ export class VendorService extends ModelService {
 
     // TODO: remove after testing
     // entity$ = this.resource.addAccountVendor(data).$observable;
-    // let entity$ = this.httpService.post('http://api.pacific-grid.2muchcoffee.com/v1/deployments/test-post', data);
+    // let entity$ = this.httpService.post('http://uptracker-api.herokuapp.com/api/v1/accounts/' + data.get('account_id') + '/vendors', data);
 
 
     return entity$
         .map((res: any) => { debugger;
-          return res.data.vendor;
+          // return res.data.vendor;
+          return res._body.data.vendor;
         })
         .do((res: any) => {
           account.vendors.push(res);

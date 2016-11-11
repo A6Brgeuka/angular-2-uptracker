@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, StateService } from '../core/services/index';
 
 @Component({
@@ -8,11 +7,9 @@ import { UserService, StateService } from '../core/services/index';
   styleUrls: [ './dashboard.style.scss' ],
   templateUrl: './dashboard.template.html'
 })
-@DestroySubscribers()
 export class DashboardComponent implements OnInit{
-  private subscribers: any = {};
   public selectedOption = '';
-  public locationArr: any;
+  public locations$: any;
 
   constructor(
       private userService: UserService,
@@ -21,9 +18,11 @@ export class DashboardComponent implements OnInit{
   }
   
   ngOnInit(){
-    this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
-      this.locationArr = res.account.locations;
-    });
+    this.locations$ = this.userService.selfData$
+        .map((res: any) => { 
+          if (res.account)
+            return res.account.locations;
+        });
   }
 
   changeLocation(event){

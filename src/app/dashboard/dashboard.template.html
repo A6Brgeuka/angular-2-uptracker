@@ -25,7 +25,7 @@
                 [materializeSelectOptions]="locationArr"
                 (change)="changeLocation($event)">
               <option value="">All Locations</option>
-              <option *ngFor="let location of locationArr" [value]="location.id">{{location.name}}</option>
+              <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
             </select>
           </div>
         </div>
