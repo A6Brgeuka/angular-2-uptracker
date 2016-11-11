@@ -222,5 +222,69 @@ export class FileUploadService {
     ctx.putImageData(img2, 0, 0);
   }
 
+  smoothResample(){
+    let smoothCanvas = document.getElementById('smoothCanvas');
+    let smoothCtx = smoothCanvas.getContext('2d');
+    let crunchyCanvas = document.getElementById('crunchyCanvas');
+    let crunchyCtx = crunchyCanvas.getContext('2d');
+    let stepScale = 0.5;
+
+    let scaleDown = (image, targetScale) => {
+      let currentScale = 1;
+
+      while (currentScale * stepScale > targetScale) {
+        currentScale *= stepScale;
+        image = stepDown(image);
+      }
+
+      return {image: image, remainingScale: targetScale / currentScale};
+    };
+
+    let stepDown = (image) => {
+      let temp: any = {};
+      temp.canvas = document.createElement('canvas');
+      temp.ctx = temp.canvas.getContext('2d');
+
+      // Size canvas and image to stepScale
+      temp.canvas.width = (image.width * stepScale) + 1;
+      temp.canvas.height = (image.height * stepScale) + 1;
+      temp.ctx.scale(stepScale, stepScale);
+      temp.ctx.drawImage(image, 0, 0);
+
+      // 0.5 size'd canvas!
+      temp.canvas;
+    };
+
+    let applyScale = (scale) => {
+      if (typeof scale != 'number')
+        scale = scale.currentTarget.value;
+
+      // Match the canvas size (with some padding)
+      smoothCanvas.width = crunchyCanvas.width = Math.floor(testImage.width * scale) + 4;
+      smoothCanvas.height = crunchyCanvas.height = Math.floor(testImage.height * scale) + 4;
+
+      // Draw smooth scaled version to canvas
+      let scaledData = scaleDown(testImage, scale);
+      smoothCtx.scale(scaledData.remainingScale, scaledData.remainingScale);
+      smoothCtx.drawImage(scaledData.image, 2, 2);
+
+
+      // Draw original scaled version
+      crunchyCtx.scale(scale, scale);
+      crunchyCtx.drawImage(testImage, 2, 2);
+    };
+
+    let demoSetup = () => {
+      let input = document.getElementById('input');
+      input.addEventListener('change', applyScale);
+      applyScale(Number(input.value));
+    };
+
+    // Create Image and wait for it to load before working with it
+    let testImage = document.getElementById('test-image');
+    let testSrc = testImage.getAttribute('data-src');
+    testImage.onload = demoSetup;
+    testImage.src = testSrc;
+
 
 }
