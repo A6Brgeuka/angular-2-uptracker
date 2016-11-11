@@ -2,6 +2,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Injectable } from '@angular/core';
 
 import { AccountService, VendorService } from '../../core/services/index';
+import {Observable} from "rxjs/Rx";
 
 @Injectable()
 export class StateCollectionResolve implements Resolve<any> {
@@ -59,7 +60,7 @@ export class VendorCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.vendorService.getVendors();
+    return this.vendorService.getVendors().take(1);
   }
 }
 

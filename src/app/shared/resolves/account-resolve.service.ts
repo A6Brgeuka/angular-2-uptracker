@@ -47,7 +47,7 @@ export class AccountVendorCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.vendorService.getAccountVendors();
+    return this.vendorService.getAccountVendors().take(1);
   }
 }
 

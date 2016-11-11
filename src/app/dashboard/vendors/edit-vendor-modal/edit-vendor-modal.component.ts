@@ -7,7 +7,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService, VendorService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService, VendorService, HttpClient } from '../../../core/services/index';
 import { VendorModel, AccountVendorModel } from '../../../models/index';
 
 export class EditVendorModalContext extends BSModalContext {
@@ -58,7 +58,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       private userService: UserService,
       private accountService: AccountService,
       private vendorService: VendorService,
-      private phoneMaskService: PhoneMaskService
+      private phoneMaskService: PhoneMaskService,
+      private http: HttpClient
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -151,7 +152,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.fileIsOver = fileIsOver;
   }
   
-  onFileDrop(file: any): void { debugger;
+  onFileDrop(file: any): void { 
     let imageData = file.split(',')[1];
     let dataType = file.split('.')[0].split(';')[0].split(':')[1];
     let binaryImageData = atob(imageData);

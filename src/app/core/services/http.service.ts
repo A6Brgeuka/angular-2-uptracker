@@ -8,7 +8,7 @@ export class HttpClient {
   
   constructor(
     public sessionService: SessionService,
-    public http:Http
+    public http: Http
   ) {
   }
   

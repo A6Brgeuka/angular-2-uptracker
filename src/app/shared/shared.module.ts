@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpModule } from "@angular/http";
+// import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 import { MaterializeModule } from "angular2-materialize";
 import { FileDropModule } from 'angular2-file-drop';
@@ -37,7 +37,7 @@ import {
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    // HttpModule,
 
     CoreModule,
     MaterializeModule,
@@ -52,7 +52,7 @@ import {
     RouterModule,
     BrowserModule,
     FormsModule,
-    HttpModule,
+    // HttpModule,
     CommonModule,
     CoreModule,
     
