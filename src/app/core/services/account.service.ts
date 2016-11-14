@@ -117,8 +117,8 @@ export class AccountService extends ModelService{
     return imageUrl.replace(/\s/g,'%20');
   }
 
-  addLocation(data){ debugger;
-    return this.resource.addLocation(data).$observable.do((res: any) => { debugger;
+  addLocation(data){ 
+    return this.resource.addLocation(data).$observable.do((res: any) => {
       let account = this.userService.selfData.account;
       account.locations = res.data.account.locations;
       this.updateSelfData(account);

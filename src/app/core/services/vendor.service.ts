@@ -61,12 +61,12 @@ export class VendorService extends ModelService {
 
   onInit(){
     this.collection$ = this.restangular.all('vendors').customGET('')
-        .map((res: any) => { //debugger;
+        .map((res: any) => {
           return res.data.vendors;
         })
-        .do((res: any) => {
+        .do((res: any) => { 
           this.updateCollection$.next(res);
-        }).publishBehavior(1).refCount();
+        }).publishReplay(1).refCount();
 
     this.selfData$ = Observable.merge(
         this.updateSelfData$

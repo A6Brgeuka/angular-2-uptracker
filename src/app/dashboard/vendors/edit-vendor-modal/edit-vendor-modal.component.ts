@@ -169,23 +169,6 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       if (value)
         this.formData.append(key, value);
     });
-    // TODO: remove after testing
-    // this.formData.append('account_id', this.vendor.account_id);
-    // this.formData.append('vendor_id', this.vendor.vendor_id);
-    // this.formData.append('rep_office_phone', this.vendor.rep_office_phone);
-    // this.formData.append('rep_mobile_phone', this.vendor.rep_mobile_phone);
-    // this.formData.append('rep_fax', this.vendor.rep_fax);
-    // this.formData.append('currency', this.vendor.currency);
-    // this.formData.append('payment_method', this.vendor.payment_method);
-    // this.formData.append('discount_percentage', this.vendor.discount_percentage);
-    // this.formData.append('shipping_handling', this.vendor.shipping_handling);
-    // this.formData.append('rep_name', this.vendor.rep_name);
-    // this.formData.append('rep_email', this.vendor.rep_email);
-    // this.formData.append('notes', this.vendor.notes);
-    // this.formData.append('priority', this.vendor.priority);
-    // this.formData.append('avg_lead_time', this.vendor.avg_lead_time);
-    // this.formData.append('id', this.vendor.id);
-    // this.formData.append('default_order_type', this.vendor.default_order_type);
 
     let request = this.vendorService.editAccountVendor(this.formData);
 

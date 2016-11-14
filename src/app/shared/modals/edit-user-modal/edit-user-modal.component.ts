@@ -63,7 +63,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   ngOnInit(){
-    this.locationArr = this.userService.selfData.account.locations;
+    this.locationArr = this.userService.selfData.account ? this.userService.selfData.account.locations : [];
     let userData = this.context.user || { tutorial_mode: true };
     this.user = new UserModel(userData);
     if (this.context.user){ 
