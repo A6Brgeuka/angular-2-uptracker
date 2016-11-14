@@ -60,6 +60,14 @@ export class VendorService extends ModelService {
   }
 
   onInit(){
+    this.collection$ = this.restangular.all('vendors').customGET('')
+        .map((res: any) => { //debugger;
+          return res.data.vendors;
+        })
+        .do((res: any) => {
+          this.updateCollection$.next(res);
+        }).publishBehavior(1).refCount();
+
     this.selfData$ = Observable.merge(
         this.updateSelfData$
     );
@@ -83,52 +91,7 @@ export class VendorService extends ModelService {
   }
 
   getVendors(){
-
-
-
-
-    this.collection$ = this.restangular.all('vendors').customGET('')
-        .map((res: any) => { //debugger;
-          return res.data.vendors;
-        })
-        .do((res: any) => {
-          this.updateCollection$.next(res);
-        });
-    return  this.collection$; //.do((res)=>{debugger});
-
-
-
-
-
-
-
-
-    // this.collection$.do((res)=>{debugger}).subscribe((res)=>{debugger});
-    //
-    // debugger;
-    // return this.collection$
-    //     .do((res)=>{debugger})
-    //     .isEmpty().switchMap((isEmpty) => { debugger;
-    //   if(isEmpty) {
-    //     this.collection$ = this.restangular.all('vendors').customGET('')
-    //         .map((res: any) => { debugger;
-    //           return res.data.vendors;
-    //         })
-    //         .do((res: any) => {
-    //           this.updateCollection$.next(res);
-    //         });
-    //   }
-    //   return this.collection$.do((res)=>{debugger});
-    // });
-
-    // TODO: remove after testing
-    // return this.resource.getVendors().$observable
-    //     .map((res: any) => {
-    //       return res.data.vendors;
-    //     })
-    //     .do((res: any) => {
-    //       this.updateCollection$.next(res);
-    //     });
+    return  this.collection$;
   }
 
   getVendor(id){
@@ -174,6 +137,8 @@ export class VendorService extends ModelService {
       //   account.vendors = res.data.vendors;
       //   this.accountService.updateSelfData(account);
       // });
+    } else {
+      return this.userService.selfData$.map(self => self.account.vendors)
     }
   }
 
