@@ -155,6 +155,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     let imageData = file.split(',')[1];
     let dataType = file.split('.')[0].split(';')[0].split(':')[1];
     let binaryImageData = atob(imageData);
+    debugger;
     let blob = new Blob([binaryImageData], { type: dataType });
     this.formData.append('documents', blob);
   }
@@ -190,12 +191,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
 
     request.subscribe(
         (res: any) => {
-          debugger;
           this.closeModal();
-        },
-        (err: any) => {
-          console.log(err);
-          this.toasterService.pop('error', err.data.error_message);
         }
     );
   }

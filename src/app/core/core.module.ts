@@ -25,7 +25,13 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
     CommonModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
-    RestangularModule.forRoot([APP_SERVICE_PROVIDERS[9]], RESTANGULAR_CONFIG),
+    RestangularModule.forRoot(
+        [
+          APP_SERVICE_PROVIDERS[9],
+          APP_SERVICE_PROVIDERS[6],
+          APP_SERVICE_PROVIDERS[1]
+        ],
+        RESTANGULAR_CONFIG),
   ],
   declarations: [  ],
   providers: [    

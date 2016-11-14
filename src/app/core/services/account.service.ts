@@ -3,6 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
+import { Restangular } from 'ng2-restangular';
 
 import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
@@ -28,7 +29,8 @@ export class AccountService extends ModelService{
   constructor(
     public injector: Injector,
     public accountResource: AccountResource,
-    public userService: UserService
+    public userService: UserService,
+    public restangular: Restangular
   ) {
     super(injector, accountResource);
   
@@ -108,15 +110,11 @@ export class AccountService extends ModelService{
     });
   }
 
-  getLocationStreetView(data){
-    // let usersLoaded = this.userService.selfData.account.users ? this.userService.selfData.account.users[0].name : false;
-    // if (!usersLoaded) {
-      return this.resource.getLocationS(data).$observable.do((res: any) => {
-        let account = this.userService.selfData.account;
-        account.users = res.data.users;
-        this.updateSelfData(account);
-      });
-    // }
+  getLocationStreetView(params: any){
+    params.key = 'AIzaSyAkbvjQdD4qOQGppnPEh6nhGn5eaWicU9A';
+    params.size = '520x293';
+    let imageUrl = 'https://maps.googleapis.com/maps/api/streetview?';
+    return imageUrl;
   }
 
   addLocation(data){

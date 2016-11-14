@@ -150,7 +150,8 @@ export class UserService extends ModelService {
   }
   
   login(data) {
-    return this.resource.login(data).$observable
+    // return this.resource.login(data).$observable
+    return this.restangular.all('login').post(data)
       .do((res) => {
         this.afterLogin(res);
       });

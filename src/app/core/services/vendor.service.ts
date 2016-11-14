@@ -10,7 +10,6 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { VendorResource } from '../../core/resources/index';
-import { HttpClient } from './http.service';
 import { VendorModel, AccountVendorModel } from '../../models/index';
 
 @Injectable()
@@ -28,7 +27,6 @@ export class VendorService extends ModelService {
   constructor(
       public injector: Injector,
       public vendorResource: VendorResource,
-      public httpService: HttpClient,
       public userService: UserService,
       public accountService: AccountService,
       public restangular: Restangular
@@ -184,17 +182,15 @@ export class VendorService extends ModelService {
     let entity$ = this.restangular
         .one('accounts', data.get('account_id'))
         .all('vendors')
-        .customPOST(data, undefined, undefined, { 'Content-Type': undefined });
+        .post(data);
 
     // TODO: remove after testing
     // entity$ = this.resource.addAccountVendor(data).$observable;
     // let entity$ = this.httpService.post('http://uptracker-api.herokuapp.com/api/v1/accounts/' + data.get('account_id') + '/vendors', data);
 
-
     return entity$
-        .map((res: any) => { debugger;
+        .map((res: any) => { 
           return res.data.vendor;
-          // return res._body.data.vendor;
         })
         .do((res: any) => {
           account.vendors.push(res);
@@ -212,10 +208,10 @@ export class VendorService extends ModelService {
       let entity$ = this.restangular
           .one('accounts', data.get('account_id'))
           .one('vendors', data.get('id'))
-          .customPUT(data, undefined, undefined, { 'Content-Type': undefined });
+          .customPUT(data, undefined, undefined, {'Content-Type': undefined});
+
       return entity$
           .map((res: any) => {
-            console.log(111, res.data.vendor); debugger;
             return res.data.vendor;
           })
           .do((res: any) => {
