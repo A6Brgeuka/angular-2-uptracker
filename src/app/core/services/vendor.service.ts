@@ -22,7 +22,7 @@ export class VendorService extends ModelService {
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
   combinedVendors$: Observable<any>;
-
+  accountVendors$: Observable<any> = Observable.empty();
 
   constructor(
       public injector: Injector,
@@ -204,7 +204,7 @@ export class VendorService extends ModelService {
     // if no id then add new vendor
     if (!editVendor) {
       return this.addAccountVendor(data);
-    } else { debugger;
+    } else {
       let entity$ = this.restangular
           .one('accounts', data.get('account_id'))
           .one('vendors', data.get('id'))

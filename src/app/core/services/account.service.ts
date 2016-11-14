@@ -113,12 +113,12 @@ export class AccountService extends ModelService{
   getLocationStreetView(params: any){
     params.key = 'AIzaSyAkbvjQdD4qOQGppnPEh6nhGn5eaWicU9A';
     params.size = '520x293';
-    let imageUrl = 'https://maps.googleapis.com/maps/api/streetview?';
-    return imageUrl;
+    let imageUrl = 'https://maps.googleapis.com/maps/api/streetview?location='+params.location+'&size='+params.size+'&key='+params.key;
+    return imageUrl.replace(/\s/g,'%20');
   }
 
-  addLocation(data){
-    return this.resource.addLocation(data).$observable.do((res: any) => {
+  addLocation(data){ debugger;
+    return this.resource.addLocation(data).$observable.do((res: any) => { debugger;
       let account = this.userService.selfData.account;
       account.locations = res.data.account.locations;
       this.updateSelfData(account);

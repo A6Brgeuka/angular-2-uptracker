@@ -142,31 +142,50 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
     this.location.fax = this.locationFormFax ?  this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
-    this.location.image = this.uploadedImage;
     let address = {
       location: this.location.state + ' ' + this.location.city + ' ' + this.location.street_1 + ' ' + this.location.street_2
     };
+    this.location.image = this.uploadedImage; // || this.accountService.getLocationStreetView(address);
+    if (!this.location.image){
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = () => {
+        var reader = new FileReader();
+        reader.onloadend = () => {
+          this.location.image = reader.result;
+          this.addLocation(this.location);
+        };
+        reader.readAsDataURL(xhr.response);
+      };
+      xhr.open('GET', this.accountService.getLocationStreetView(address));
+      xhr.send();
+    } else {
+      this.addLocation(this.location);
+    }
+    
     // TODO: street view query when recieve API key
-    let observable = this.location.image ? Observable.empty() : this.accountService.getLocationStreetView(address);
-    observable
+    // let observable = this.location.image ? Observable.empty() : this.accountService.getLocationStreetView(address);
+    // observable
         // .switchMap((data: any) => {
         //   debugger;
         //   return Observable.of(null);
         //   // return this.accountService.addLocation(this.location).subscribe(
         // })
-        .subscribe(
-            (res: any) => {
-              debugger;
-            },
-            (err: any) => {
-              debugger;
-            }
-        );
+        // .subscribe(
+        //     (res: any) => {
+        //       debugger;
+        //     },
+        //     (err: any) => {
+        //       debugger;
+        //     }
+        // );
+  }
 
-    // this.accountService.addLocation(this.location).subscribe(
-    //   (res: any) => {
-    //     this.closeModal();
-    //   }
-    // );
+  addLocation(data){
+    this.accountService.addLocation(data).subscribe(
+        (res: any) => {
+          this.closeModal();
+        }
+    );
   }
 }
