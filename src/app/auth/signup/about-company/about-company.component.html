@@ -83,7 +83,7 @@
               [(ngModel)]="signupAccount.zip"
               name="zip"
               #zip="ngModel"
-              required
+              required minlength="5"
               type="text">
           <div [hidden]="zip.valid || zip.untouched" class="error red-text left-align">
             Zip code is required.

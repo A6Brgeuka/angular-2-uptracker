@@ -193,8 +193,8 @@ export class VendorService extends ModelService {
 
     return entity$
         .map((res: any) => { debugger;
-          // return res.data.vendor;
-          return res._body.data.vendor;
+          return res.data.vendor;
+          // return res._body.data.vendor;
         })
         .do((res: any) => {
           account.vendors.push(res);
