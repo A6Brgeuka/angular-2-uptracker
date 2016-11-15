@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { UserService, ToasterService, SpinnerService } from '../../core/services/index';
+import { UserService, ToasterService } from '../../core/services/index';
 
 @Component({
   selector: 'app-email-verification',
@@ -19,7 +19,6 @@ export class EmailVerificationComponent implements OnInit {
       private activatedRoute: ActivatedRoute,
       private userService: UserService,
       private toasterService: ToasterService,
-      private spinnerService: SpinnerService,
       private router: Router
   ) {
     let signupStep = this.userService.currentSignupStep();
@@ -56,7 +55,6 @@ export class EmailVerificationComponent implements OnInit {
             (res: any) => {
               this.toasterService.pop('', res.message);
               this.buttonDisabled = true;
-              // this.router.navigate(['/login']);
             },
             (err) => {
               this.userService.logout('/login');

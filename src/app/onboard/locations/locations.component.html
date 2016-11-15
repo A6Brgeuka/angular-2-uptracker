@@ -2,7 +2,7 @@
   <div class="title">Set up your locations</div>
   <div class="subtitle">Please enter one location per card below then click next.</div>
   <div class="list left-align">
-    <div class="item" *ngFor="let location of locationArr" (click)="viewLocationModal(location)">
+    <div class="item" *ngFor="let location of locations$ | async" (click)="viewLocationModal(location)">
       <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }"></div>
       <div class="ttl">{{location.name}}</div>
     </div>

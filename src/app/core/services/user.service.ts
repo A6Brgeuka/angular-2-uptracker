@@ -222,7 +222,7 @@ export class UserService extends ModelService {
     };
     // TODO: remove after testing restangular
     // return this.resource.resendVerification(data).$observable;
-    return this.restangular.all('register').all('register').all('verify').all('resend').post(data).take(1);
+    return this.restangular.all('register').all('verify').all('resend').post(data).take(1);
   }
   
   emailVerified(){

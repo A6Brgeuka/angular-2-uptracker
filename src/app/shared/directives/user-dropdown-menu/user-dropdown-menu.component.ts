@@ -33,21 +33,22 @@ export class UserDropdownMenuDirective implements OnInit {
 
   ngOnInit(){
     this.showMenu = !this.onlyLogout;
-    debugger;
-    this.subscribers.gerSelfDataSubscription = this.userService.selfData$.subscribe((res: any) => { debugger;
-      if (!this.userService.isGuest()){
-        this.user = res;
-        let nameArr = this.user.name.split(" ");
-        let firstname = nameArr[0];
-        this.userShortName = firstname.split("")[0];
-        let lastname = null;
-        if (nameArr.length > 1) {
-          lastname = nameArr[nameArr.length-1];
-          let shortLastname = lastname.split("")[0];
-          this.userShortName += shortLastname;
-        }
-      }
-    });
+    this.subscribers.gerSelfDataSubscription = this.userService.selfData$
+        .filter((res: any) => {
+          return !this.userService.isGuest();
+        })
+        .subscribe((res: any) => {
+          this.user = res;
+          let nameArr = this.user.name.split(" ");
+          let firstname = nameArr[0];
+          this.userShortName = firstname.split("")[0];
+          let lastname = null;
+          if (nameArr.length > 1) {
+            lastname = nameArr[nameArr.length-1];
+            let shortLastname = lastname.split("")[0];
+            this.userShortName += shortLastname;
+          }
+        });
   }
 
   editUserModal(){
