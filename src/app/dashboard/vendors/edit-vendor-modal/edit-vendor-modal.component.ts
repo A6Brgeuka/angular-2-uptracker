@@ -108,7 +108,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       case '2': fixer = 12; break;
       case '3': fixer = 12; break;
       case '4': fixer = 12; break;
-      case '5': fixer = 12; break;
+      case '5': fixer = 11; break;
       case '6': fixer = 11; break;
       case '7': fixer = 11; break;
       case '8': fixer = 10; break;

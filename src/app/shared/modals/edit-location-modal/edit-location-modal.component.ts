@@ -162,23 +162,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     } else {
       this.addLocation(this.location);
     }
-    
-    // TODO: street view query when recieve API key
-    // let observable = this.location.image ? Observable.empty() : this.accountService.getLocationStreetView(address);
-    // observable
-        // .switchMap((data: any) => {
-        //   debugger;
-        //   return Observable.of(null);
-        //   // return this.accountService.addLocation(this.location).subscribe(
-        // })
-        // .subscribe(
-        //     (res: any) => {
-        //       debugger;
-        //     },
-        //     (err: any) => {
-        //       debugger;
-        //     }
-        // );
   }
 
   addLocation(data){

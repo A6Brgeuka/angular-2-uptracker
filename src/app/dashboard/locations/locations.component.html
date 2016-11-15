@@ -19,6 +19,7 @@
     <div class="clearfix"></div>
   </div>
   <div class="list left-align">
+    <div class="empty item" (click)="editLocationModal()"></div>
     <div class="item" *ngFor="let location of locationArr">
       <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }" (click)="viewLocationModal(location)"></div>
       <div class="info">
