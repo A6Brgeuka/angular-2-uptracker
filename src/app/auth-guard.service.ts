@@ -73,10 +73,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     // if onboarding was completed redirect to dashboard
-    if (this.userService.selfData.account.status == 2){
-      this.router.navigate(['/dashboard']);
-      return false;
-    }
+    // if (this.userService.selfData.account.status == 2){
+    //   this.router.navigate(['/dashboard']);
+    //   return false;
+    // }
 
     // redirect to locations page if at least one location wasn't added
     let onboardStep = this.userService.selfData.account.onboarding_step || 'locations';

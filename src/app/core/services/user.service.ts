@@ -203,7 +203,6 @@ export class UserService extends ModelService {
   }
 
   verification(token) {
-    // TODO: remove after testing restangular
     // let data = {
     //   token: token
     // };

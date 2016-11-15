@@ -12,7 +12,7 @@ export class StateCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getStates();
+    return this.accountService.getStates().take(1);
   }
 }
 
@@ -24,7 +24,7 @@ export class LocationTypesCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getLocationTypes();
+    return this.accountService.getLocationTypes().take(1);
   }
 }
 
@@ -36,7 +36,7 @@ export class DepartmentCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getDepartments();
+    return this.accountService.getDepartments().take(1);
   }
 }
 

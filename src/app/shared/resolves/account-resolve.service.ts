@@ -35,7 +35,7 @@ export class LocationCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getLocations();
+    return this.accountService.getLocations().take(1);
   }
 }
 

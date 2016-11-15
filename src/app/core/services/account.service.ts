@@ -82,17 +82,24 @@ export class AccountService extends ModelService{
     let account = this.userService.selfData.account;
     let locationsLoaded = account ? account.locations ? account.locations.length : false : false;
     if (!locationsLoaded) {
-      return this.resource.getLocations(data).$observable.do((res: any) => {
-        account.locations = res.data.locations;
-        this.updateSelfData(account);
-      });
+      // TODO: remove after testing restangular
+      // return this.resource.getLocations(data).$observable /accounts/{!account_id}/locations
+      return this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
+          .do((res: any) => {
+            account.locations = res.data.locations;
+            this.updateSelfData(account);
+          });
+    } else {
+      return this.userService.selfData$.map(res => res.account.locations);
     }
   }
 
   getStates(){
     return this.stateCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
-        this.stateCollection$ = this.resource.getStates().$observable.publishReplay(1).refCount();
+        this.stateCollection$ = this.restangular.all('config').all('states').customGET('');
+        // TODO: remove after testing restangular
+        // this.stateCollection$ = this.resource.getStates().$observable.publishReplay(1).refCount();
       }
       return this.stateCollection$;
     });
@@ -101,7 +108,9 @@ export class AccountService extends ModelService{
   getLocationTypes(){
     return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
-        this.locationTypeCollection$ = this.resource.getLocationTypes().$observable.publishReplay(1).refCount();
+        this.locationTypeCollection$ = this.restangular.all('config').all('location_types').customGET('');
+        // TODO: remove after testing restangular
+        // this.locationTypeCollection$ = this.resource.getLocationTypes().$observable.publishReplay(1).refCount();
       }
       return this.locationTypeCollection$;
     });
@@ -114,18 +123,23 @@ export class AccountService extends ModelService{
     return imageUrl.replace(/\s/g,'%20');
   }
 
-  addLocation(data){ 
-    return this.resource.addLocation(data).$observable.do((res: any) => {
-      let account = this.userService.selfData.account;
-      account.locations = res.data.account.locations;
-      this.updateSelfData(account);
-    });
+  addLocation(data: any){
+    // TODO: remove after testing restangular
+    // return this.resource.addLocation(data).$observable /accounts/{!account_id}/locations
+    return this.restangular.one('accounts', data.account_id).all('locations').post(data)
+        .do((res: any) => {
+          let account = this.userService.selfData.account;
+          account.locations = res.data.account.locations;
+          this.updateSelfData(account);
+        });
   }
 
   getDepartments(){
     return this.departmentCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
-        this.departmentCollection$ = this.resource.getDepartments().$observable.publishReplay(1).refCount();
+        this.departmentCollection$ = this.restangular.all('config').all('departments').customGET('');
+        // TODO: remove after testing restangular
+        // this.departmentCollection$ = this.resource.getDepartments().$observable.publishReplay(1).refCount();
       }
       return this.departmentCollection$;
     });

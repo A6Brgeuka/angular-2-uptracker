@@ -168,7 +168,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       if (value)
         this.formData.append(key, value);
     });
-
+    // debugger;
+    //
     this.vendorService.editAccountVendor(this.formData).subscribe(
         (res: any) => {
           this.closeModal();
