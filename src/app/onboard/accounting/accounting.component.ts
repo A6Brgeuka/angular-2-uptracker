@@ -43,7 +43,7 @@ export class AccountingComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.accounting = {
       total: [],
       budget_distribution: [],

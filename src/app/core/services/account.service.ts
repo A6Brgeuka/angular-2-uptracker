@@ -125,7 +125,7 @@ export class AccountService extends ModelService{
 
   addLocation(data: any){
     // TODO: remove after testing restangular
-    // return this.resource.addLocation(data).$observable /accounts/{!account_id}/locations
+    // return this.resource.addLocation(data).$observable
     return this.restangular.one('accounts', data.account_id).all('locations').post(data)
         .do((res: any) => {
           let account = this.userService.selfData.account;
@@ -146,66 +146,77 @@ export class AccountService extends ModelService{
   }
 
   getUsers(){
-    let data: any = {
-      account_id: this.userService.selfData.account_id
-    };
     let usersLoaded = this.userService.selfData.account.users ? this.userService.selfData.account.users[0].name : false;
     if (!usersLoaded) {
-      let users$ = this.resource.getUsers(data).$observable.publishReplay(1).refCount();
-      users$.subscribe((res: any) => {
-        let account = this.userService.selfData.account;
-        account.users = res.data.users;
-        this.updateSelfData(account);
-      });
-      
-      return users$;
+      // TODO: remove after testing restangular
+      // let data: any = {
+      //   account_id: this.userService.selfData.account_id
+      // };
+      // let users$ = this.resource.getUsers(data).$observable.publishReplay(1).refCount();
+      return this.restangular.one('accounts', this.userService.selfData.account_id).all('users').customGET('')
+          .map((res: any) => {
+            return res.data.users;
+          })
+          .do((res: any) => {
+            let account = this.userService.selfData.account;
+            account.users = res;
+            this.updateSelfData(account);
+          });
+    } else {
+      return this.userService.selfData$.map(res => res.account.users);
     }
   }
 
   addUser(data){
-    return this.resource.addUser(data).$observable
-    .do((res: any) => {
-      let account = this.userService.selfData.account;
-      // if new user push him to account users array, else update user in array
-      if (_.some(account.users, {'id': res.data.user.id})){
-        let userArr = _.map(account.users, function(user){
-          if (user['id'] == res.data.user.id) {
-            return _.cloneDeep(res.data.user);
+    // TODO: remove after testing restangular
+    // return this.resource.addUser(data).$observable
+    return this.restangular.all('users').post(data)
+        .do((res: any) => {
+          let account = this.userService.selfData.account;
+          // if new user push him to account users array, else update user in array
+          if (_.some(account.users, {'id': res.data.user.id})){
+            let userArr = _.map(account.users, function(user){
+              if (user['id'] == res.data.user.id) {
+                return _.cloneDeep(res.data.user);
+              } else {
+                return user;
+              }
+            });
+            account.users = userArr;
           } else {
-            return user;
+            account.users.push(res.data.user);
+          }
+
+          // check if changed user self data
+          if (res.data.user.id == this.userService.getSelfId()){
+            let user = res.data.user;
+            user.account = account;
+            this.userService.updateSelfData(user);
+          } else {
+            this.updateSelfData(account);
           }
         });
-        account.users = userArr;
-      } else {
-        account.users.push(res.data.user);
-      }
-
-      // check if changed user self data
-      if (res.data.user.id == this.userService.getSelfId()){ 
-        let user = res.data.user;
-        user.account = account;
-        this.userService.updateSelfData(user);
-      } else {
-        this.updateSelfData(account);
-      }
-    });
   }
 
-  putAccounting(data){
-    return this.resource.putAccounting(data).$observable.do((res: any) => {
-      this.updateSelfData(res.data.account.account);
-    });
+  putAccounting(data: any){
+    // TODO: remove after testing restangular
+    // return this.resource.putAccounting(data).$observable
+    return this.restangular.one('accounts', data.account_id).customPUT(data)
+        .do((res: any) => {
+          this.updateSelfData(res.data.account.account);
+        });
   }
 
   getCurrencies(){
-    return this.currencyCollection$.isEmpty().switchMap((isEmpty) => {
-      if(isEmpty) {
-        this.currencyCollection$ = this.resource.getCurrencies().$observable
+    return this.currencyCollection$.isEmpty().switchMap((isEmpty) => { 
+      if (isEmpty) {
+        // TODO: remove after testing restangular
+        // this.currencyCollection$ = this.resource.getCurrencies().$observable
+        this.currencyCollection$ = this.restangular.all('config').all('currency').customGET('')
             .map((res: any) => {
               let currencyArr = _.sortBy(res.data, 'priority');
               return currencyArr;
-            })
-            .publishReplay(1).refCount();
+            });
       }
       return this.currencyCollection$;
     });
@@ -233,25 +244,30 @@ export class AccountService extends ModelService{
 
     let rolesLoaded = this.userService.selfData.account.roles ? this.userService.selfData.account.roles[0].role : false;
     if (!rolesLoaded) {
-      let roles$ = this.restangular.one('accounts', this.userService.selfData.account_id).all('permissions').customGET('')
+      // TODO: remove after testing restangular
       // let roles$ = this.resource.getRoles(data).$observable.publishReplay(1).refCount();
+      return this.restangular.one('accounts', this.userService.selfData.account_id).all('permissions').customGET('')
+          .map((res: any) => {
+            return res.data.roles;
+          })
           .do((res: any) => {
             let account = this.userService.selfData.account;
-            account.roles = res.data.roles;
+            account.roles = res;
             this.updateSelfData(account);
           });
-
-      return roles$;
     } else {
       return this.userService.selfData$.map(res => res.account.roles);
     }
   }
   
   addRole(data){
-    return this.resource.addRole(data).$observable.do((res: any) => {
-      let account = this.userService.selfData.account;
-      account.roles = res.data.roles;
-      this.updateSelfData(account);
-    });
+    // TODO: remove after testing restangular
+    // return this.resource.addRole(data).$observable accounts/{!account_id}/roles
+    return this.restangular.one('accounts', data.account_id).all('roles').post(data)
+        .do((res: any) => {
+          let account = this.userService.selfData.account;
+          account.roles = res.data.roles;
+          this.updateSelfData(account);
+        });
   }
 }

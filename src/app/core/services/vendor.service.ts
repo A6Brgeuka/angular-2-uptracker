@@ -40,10 +40,10 @@ export class VendorService extends ModelService {
             this.userService.selfData$
         )
         // filter for emitting only if user account exists (for logout user updateSelfData)
-        .filter(([vendors, user]) => {
+        .filter(([vendors, user]) => { debugger;
           return user.account;
         })
-        .map(([vendors, user]) => {
+        .map(([vendors, user]) => { debugger;
           let accountVendors = user.account.vendors;
           // find and combine vendors
           let commonVendors = _.map(vendors, (globalVendor: any) => {

@@ -48,7 +48,7 @@ export class CurrencyCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getCurrencies();
+    return this.accountService.getCurrencies().take(1);
   }
 }
 
