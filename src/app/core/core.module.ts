@@ -25,9 +25,9 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
     BootstrapModalModule,
     RestangularModule.forRoot(
         [
-          APP_SERVICE_PROVIDERS[9],
-          APP_SERVICE_PROVIDERS[6],
-          APP_SERVICE_PROVIDERS[1]
+          APP_SERVICE_PROVIDERS[2], // sessionService
+          APP_SERVICE_PROVIDERS[3], // spinner
+          APP_SERVICE_PROVIDERS[0] // toaster
         ],
         RESTANGULAR_CONFIG),
   ],

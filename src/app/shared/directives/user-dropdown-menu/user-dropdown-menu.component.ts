@@ -31,9 +31,10 @@ export class UserDropdownMenuDirective implements OnInit {
     overlay.defaultViewContainer = vcRef;
   }
 
-  ngOnInit(){    
+  ngOnInit(){
     this.showMenu = !this.onlyLogout;
-    this.subscribers.gerSelfDataSubscription = this.userService.selfData$.subscribe((res: any) => {
+    debugger;
+    this.subscribers.gerSelfDataSubscription = this.userService.selfData$.subscribe((res: any) => { debugger;
       if (!this.userService.isGuest()){
         this.user = res;
         let nameArr = this.user.name.split(" ");

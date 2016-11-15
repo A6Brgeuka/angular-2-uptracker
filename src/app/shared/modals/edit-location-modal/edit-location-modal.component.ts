@@ -5,7 +5,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService, StreetViewService, FileUploadService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService, FileUploadService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
 export class EditLocationModalContext extends BSModalContext {
@@ -49,7 +49,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       private userService: UserService,
       private accountService: AccountService,
       private phoneMaskService: PhoneMaskService,
-      private streetViewService: StreetViewService,
       private fileUploadService: FileUploadService
   ) {
     this.context = dialog.context;
@@ -145,7 +144,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     let address = {
       location: this.location.state + ' ' + this.location.city + ' ' + this.location.street_1 + ' ' + this.location.street_2
     };
-    this.location.image = this.uploadedImage; // || this.accountService.getLocationStreetView(address);
+    this.location.image = this.uploadedImage; 
     if (!this.location.image){
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';

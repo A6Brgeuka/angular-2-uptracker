@@ -14,34 +14,32 @@ import { VendorService } from './vendor.service';
 
 
 export {
-  HttpClient,
   ToasterService,
   UserService,
+  SessionService,
+  SpinnerService,
   AccountService,
   CardService,
   StateService,
-  SpinnerService,
   PhoneMaskService,
-  StreetViewService,
-  SessionService,
   FileUploadService,
   ExifService,
+  HttpClient,
   VendorService
 };
 
 // an array of services to resolve routes with data
 export const APP_SERVICE_PROVIDERS = [
-  HttpClient,
   ToasterService,
   UserService,
+  SessionService,
+  SpinnerService,
   AccountService,
   CardService,
   StateService,
-  SpinnerService,
   PhoneMaskService,
-  StreetViewService,
-  SessionService,
   FileUploadService,
   ExifService,
+  HttpClient,
   VendorService
 ];
