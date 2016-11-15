@@ -6,7 +6,6 @@ import { CardService } from './card.service';
 import { StateService } from './state.service';
 import { SpinnerService } from './spinner.service';
 import { PhoneMaskService } from './phone-mask.service';
-import { StreetViewService } from './street-view.service';
 import { SessionService } from './session.service';
 import { FileUploadService } from './file-upload.service';
 import { ExifService } from './exif.service';

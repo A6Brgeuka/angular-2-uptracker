@@ -40,7 +40,7 @@ export class VendorService extends ModelService {
             this.userService.selfData$
         )
         // filter for emitting only if user account exists (for logout user updateSelfData)
-        .filter(([vendors, user]) => { 
+        .filter(([vendors, user]) => {
           return user.account;
         })
         .map(([vendors, user]) => { debugger;
@@ -138,10 +138,9 @@ export class VendorService extends ModelService {
 
 
 
-    let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length : false;
+    let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
     if (!vendorsLoaded) {
-      let entity$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors');
-      return entity$
+      return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
           .map((res: any) => {
             return res.data.vendors;
           })
