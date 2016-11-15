@@ -64,7 +64,7 @@ export class VendorService extends ModelService {
         .map((res: any) => {
           return res.data.vendors;
         })
-        .do((res: any) => { 
+        .do((res: any) => {
           this.updateCollection$.next(res);
         }).publishReplay(1).refCount();
 

@@ -131,20 +131,20 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.selectedFaxCountry = $event;
   }
 
-  // // upload by input type=file
-  // changeListener($event): void {
-  //   this.readThis($event.target);
-  // }
-  //
-  // readThis(inputValue: any): void {
-  //   var file: File = inputValue.files[0];
-  //   var myReader: FileReader = new FileReader();
-  //
-  //   myReader.onloadend = (e) => {
-  //     this.onFileDrop(myReader.result);
-  //   };
-  //   myReader.readAsDataURL(file);
-  // }
+  // upload by input type=file
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    var file: File = inputValue.files[0];
+    var myReader: FileReader = new FileReader();
+
+    myReader.onloadend = (e) => {
+      this.onFileDrop(myReader.result);
+    };
+    myReader.readAsDataURL(file);
+  }
 
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
@@ -155,7 +155,6 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     let imageData = file.split(',')[1];
     let dataType = file.split('.')[0].split(';')[0].split(':')[1];
     let binaryImageData = atob(imageData);
-    debugger;
     let blob = new Blob([binaryImageData], { type: dataType });
     this.formData.append('documents', blob);
   }
@@ -169,10 +168,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       if (value)
         this.formData.append(key, value);
     });
-
-    let request = this.vendorService.editAccountVendor(this.formData);
-
-    request.subscribe(
+    
+    this.vendorService.editAccountVendor(this.formData).subscribe(
         (res: any) => {
           this.closeModal();
         }

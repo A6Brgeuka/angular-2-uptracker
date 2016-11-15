@@ -126,19 +126,18 @@
              [options]="options"
              (fileOver)="fileOver($event)"
              (onFileDrop)="onFileDrop($event)">
-          <!--<div class="img" *ngIf="false" [ngStyle]="{ 'background-image': 'url()' }"></div>-->
         </div>
       </div>
       <div class="col s5">
         <div class="text">
           <div class="label">Documents</div>
-          <div class="tip">Please upload here</div>
-          <!--<div class="file-field">-->
-            <!--<div class="upload-link">-->
-              <!--<input type="file" accept="image/*" (change)="changeListener($event)" />-->
-              <!--<a>Upload a photo</a>-->
-            <!--</div>-->
-          <!--</div>-->
+          <!--<div class="tip">Please upload here</div>-->
+          <div class="file-field">
+            <div class="upload-link">
+              <input type="file" (change)="changeListener($event)" />
+              <a>Please upload here</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
