@@ -33,7 +33,7 @@ export class AccountService extends ModelService{
     public injector: Injector,
     public accountResource: AccountResource,
     public userService: UserService,
-    public restangular: Restangular,
+    public restangular: Restangular
   ) {
     super(injector, accountResource);
     this.appConfig = injector.get(APP_CONFIG);
@@ -65,18 +65,14 @@ export class AccountService extends ModelService{
   }
 
   createCompany(data){
-    let entity = this.resource.createCompany(data).$observable
-        .publish().refCount();
-
-    entity.subscribe(
-        (res: any) => {
-          this.addToCollection$.next(res.data.account);
-          this.updateEntity$.next(res.data.account);
-          this.updateSelfData(res.data.account);
-        }
-    );
-
-    return entity;
+    return this.restangular.all('register').all('company').post(data)
+        .do(
+          (res: any) => {
+            this.addToCollection$.next(res.data.account);
+            this.updateEntity$.next(res.data.account);
+            this.updateSelfData(res.data.account);
+          }
+        );
   }
 
   getLocations(){

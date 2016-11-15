@@ -150,6 +150,7 @@ export class UserService extends ModelService {
   }
   
   login(data) {
+    // TODO: remove after testing restangular
     // return this.resource.login(data).$observable
     return this.restangular.all('login').post(data)
       .do((res) => {
@@ -166,55 +167,62 @@ export class UserService extends ModelService {
   }
 
   signUp(data){
-    let entity = this.resource.signup(data).$observable
-        .publish().refCount();
+    return this.restangular.all('register').all('user').post(data)
+        .do(
+          (res: any) => {
+            // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
+            // res.data.user.signup = true;
+            res.data.user.token = res.data.token;
+            let user = this.transformAccountInfo(res.data);
 
-    entity.subscribe(
-        (res: any) => {
-          // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
-          // res.data.user.signup = true;
-          res.data.user.token = res.data.token;
-          let user = this.transformAccountInfo(res.data);
-
-          this.addToCollection$.next(user);
-          this.updateSelfData$.next(user);
-        }
-    );
-
-    return entity;
+            this.addToCollection$.next(user);
+            this.updateSelfData$.next(user);
+          }
+        );
   }
 
   forgotPasswordRequest(data) {
-    return this.resource.forgotPasswordRequest(data).$observable;
+    // TODO: remove after testing restangular
+    // return this.resource.forgotPasswordRequest(data).$observable;
+    return this.restangular.all('forgot').post(data).take(1);
   }
 
   forgotPasswordTokenValidation(token) {
-    let data = {
-      token: token
-    };
-    return this.resource.forgotPasswordTokenValidation(data).$observable;
+    // TODO: remove after testing restangular
+    // let data = {
+    //   token: token
+    // };
+    // return this.resource.forgotPasswordTokenValidation(data).$observable;
+    return this.restangular.one('forgot', token).get().take(1);
   }
 
   updatePassword(data) {
-    return this.resource.updatePassword(data).$observable;
+    // TODO: remove after testing restangular
+    // return this.resource.updatePassword(data).$observable;
+    return this.restangular.all('passwordreset').post(data).take(1);
   }
 
   verification(token) {
-    let data = {
-      token: token
-    };
-    return this.resource.verification(data).$observable
+    // TODO: remove after testing restangular
+    // let data = {
+    //   token: token
+    // };
+    // return this.resource.verification(data).$observable
+    return this.restangular.all('register').one('verify', token).get()
       .do((res)=> {
         let user = this.transformAccountInfo(res.data);
         this.updateSelfData(user);
-      });
+      })
+      .take(1);
   }
 
   resendVerification() {
     let data = {
       user_id: this.getSelfId()
     };
-    return this.resource.resendVerification(data).$observable;
+    // TODO: remove after testing restangular
+    // return this.resource.resendVerification(data).$observable;
+    return this.restangular.all('register').all('register').all('verify').all('resend').post(data).take(1);
   }
   
   emailVerified(){

@@ -2,6 +2,8 @@ import { Injectable, NgZone, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import { Restangular } from 'ng2-restangular';
+
 import { CreditCardModel } from '../../models';
 import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
@@ -23,7 +25,8 @@ export class CardService extends ModelService {
     public injector: Injector,
     public zone: NgZone,
     public cardResource: CardResource,
-    public userService: UserService
+    public userService: UserService,
+    public restangular: Restangular,
   ) {
     super(injector, cardResource);
   
@@ -84,17 +87,13 @@ export class CardService extends ModelService {
   }
 
   addCard(data){
-    let entity = this.resource.addCard(data).$observable
-        .publish().refCount();
-
-    entity.subscribe(
-        (res: any) => {
-          this.addToCollection$.next(res.data.account);
-          this.updateEntity$.next(res.data.account);
-          this.updateSelfData$.next(res.data.account);
-        }
-    );
-
-    return entity;
+    return this.restangular.all('register').all('payment').post(data)
+        .do(
+            (res: any) => {
+              this.addToCollection$.next(res.data.account);
+              this.updateEntity$.next(res.data.account);
+              this.updateSelfData$.next(res.data.account);
+            }
+        );
   }
 }
