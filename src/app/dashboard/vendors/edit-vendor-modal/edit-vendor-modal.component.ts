@@ -152,9 +152,9 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   }
   
   onFileDrop(file: any): void {
-    let imageData = file.split(',')[1];
+    let fileData = file.split(',')[1];
     let dataType = file.split('.')[0].split(';')[0].split(':')[1];
-    let binaryImageData = atob(imageData);
+    let binaryImageData = atob(fileData);
     let blob = new Blob([binaryImageData], { type: dataType });
     this.formData.append('documents', blob);
   }
@@ -168,8 +168,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       if (value)
         this.formData.append(key, value);
     });
-    // debugger;
-    //
+
     this.vendorService.editAccountVendor(this.formData).subscribe(
         (res: any) => {
           this.closeModal();
