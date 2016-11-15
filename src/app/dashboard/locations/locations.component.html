@@ -20,7 +20,7 @@
   </div>
   <div class="list left-align">
     <div class="empty item" (click)="editLocationModal()"></div>
-    <div class="item" *ngFor="let location of locationArr">
+    <div class="item" *ngFor="let location of locations$ | async">
       <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }" (click)="viewLocationModal(location)"></div>
       <div class="info">
         <div class="ttl" (click)="viewLocationModal(location)">{{location.name}}</div>

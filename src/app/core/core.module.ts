@@ -15,8 +15,6 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule, Modal } from 'angular2-modal/plugins/bootstrap';
 
 // resolver
-import { APP_RESOLVER_PROVIDERS } from '../app-resolve.service';
-
 import { APP_SERVICE_PROVIDERS } from './services/index';
 import { APP_RESOURCE_PROVIDERS } from './resources/index';
 
@@ -37,9 +35,6 @@ import { APP_RESOURCE_PROVIDERS } from './resources/index';
   providers: [    
     // app config
     { provide: APP_CONFIG, useValue: APP_DI_CONFIG },
-
-    //app resolver
-    ...APP_RESOLVER_PROVIDERS,
 
     ...APP_SERVICE_PROVIDERS,
     ...APP_RESOURCE_PROVIDERS,

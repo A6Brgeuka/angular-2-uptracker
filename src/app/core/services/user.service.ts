@@ -79,9 +79,6 @@ export class UserService extends ModelService {
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     )
-    // .filter((res: any) => {
-    //   return !(Object.keys(res).length === 0 && res.constructor === Object);
-    // })
     .filter((res: any) => { 
       let condition = !this.getSessionId() || res.id == this.getSessionId();
       return condition;
@@ -108,8 +105,8 @@ export class UserService extends ModelService {
       user_id: this.getSessionId()
     };
     // TODO: remove after testing
-    return this.resource.logout(data).$observable
-    // return this.restangular.all('logout').post('')
+    // return this.resource.logout(data).$observable
+    return this.restangular.all('logout').post('')
         .do((res) => {
           UserService.logout(this.sessionService, this.router, redirectUrl);
           this.updateSelfData({});
@@ -128,12 +125,14 @@ export class UserService extends ModelService {
 
     if (this.selfData && this.selfData != {}) {
       return Observable.of(this.selfData);
+      // return this.selfData$;
     }
 
     return this.loadEntity({id: this.getSelfId()});
   }
 
   loadEntity(data = null){
+    // TODO: remove after testing
     let entity = this.resource.getUserData(data).$observable;
     // let entity = this.restangular.one('users', data.id).get();
     
@@ -150,8 +149,8 @@ export class UserService extends ModelService {
   }
   
   login(data) {
-    // return this.resource.login(data).$observable
-    return this.restangular.all('login').post(data)
+    return this.resource.login(data).$observable
+    // return this.restangular.all('login').post(data)
       .do((res) => {
         this.afterLogin(res);
       });

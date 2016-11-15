@@ -9,9 +9,6 @@ import { AuthRoutes } from './auth/index';
 import { DashboardRoutes } from './dashboard/index';
 import { OnboardRoutes } from './onboard/index';
 
-// resolver
-import { GetSelfDataResolve } from './app-resolve.service';
-
 const appRoutes: Routes = [
   {
     path: '',
@@ -20,10 +17,7 @@ const appRoutes: Routes = [
       ...AuthRoutes,
       ...DashboardRoutes,
       ...OnboardRoutes
-    ],
-    resolve: {
-      'selfData': GetSelfDataResolve
-    }
+    ]
   },
   { path: '**', component: NoContentComponent }
 ];

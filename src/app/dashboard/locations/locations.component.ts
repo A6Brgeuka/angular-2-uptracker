@@ -17,13 +17,13 @@ import { UserService, AccountService } from '../../core/services/index';
 })
 @DestroySubscribers()
 export class LocationsComponent implements OnInit {
-  public locationArr: any = [];
   private subscribers: any = {};
   public searchKey: string = null;
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
+  public locations$: Observable<any>;
 
   constructor(
       vcRef: ViewContainerRef,
@@ -36,12 +36,15 @@ export class LocationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribers.locationsSubscription = Observable
+    this.locations$ = Observable
         .combineLatest(
           this.userService.selfData$,
           this.sortBy$,
           this.searchKey$
         )
+        .filter(([user, sortBy, searchKey]) => {
+          return user.account;
+        })
         .map(([user, sortBy, searchKey]) => {
           this.total = user.account.locations.length;
           let filteredLocations = user.account.locations;
@@ -52,9 +55,6 @@ export class LocationsComponent implements OnInit {
             });
           }
           return _.sortBy(filteredLocations, [sortBy]);
-        })
-        .subscribe((res: any) => {
-          this.locationArr = res;
         });
   }
 
