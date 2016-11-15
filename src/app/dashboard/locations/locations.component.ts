@@ -42,6 +42,7 @@ export class LocationsComponent implements OnInit {
           this.sortBy$,
           this.searchKey$
         )
+        // filter for emitting only if user account exists (for logout user updateSelfData)
         .filter(([user, sortBy, searchKey]) => {
           return user.account;
         })

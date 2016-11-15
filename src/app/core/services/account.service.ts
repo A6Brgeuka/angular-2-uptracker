@@ -84,7 +84,7 @@ export class AccountService extends ModelService{
       account_id: this.userService.selfData.account_id
     }; 
     let account = this.userService.selfData.account;
-    let locationsLoaded = account ? this.userService.selfData.account.locations ? this.userService.selfData.account.locations.length : false : false;
+    let locationsLoaded = account ? account.locations ? account.locations.length : false : false;
     if (!locationsLoaded) {
       return this.resource.getLocations(data).$observable.do((res: any) => {
         account.locations = res.data.locations;
@@ -202,20 +202,39 @@ export class AccountService extends ModelService{
   }
 
   getRoles(){
-    let data: any = {
-      account_id: this.userService.selfData.account_id
-    };
+    // TODO: remove after testing
+    // let data: any = {
+    //   account_id: this.userService.selfData.account_id
+    // };
+    // return this.roleCollection$.isEmpty().switchMap((isEmpty) => {
+    //   if(isEmpty) {
+    //     this.roleCollection$ = this.restangular.one('accounts', this.userService.selfData.account_id).all('permissions').customGET('')
+    //     // this.roleCollection$ = this.resource.getRoles(data).$observable
+    //         .do((res: any) => { debugger;
+    //           let account = this.userService.selfData.account;
+    //           account.roles = res.data.roles;
+    //           this.updateSelfData(account);
+    //         })
+    //         .publishReplay(1).refCount();
+    //   }
+    //   return this.roleCollection$;
+    // });
+
+
     let rolesLoaded = this.userService.selfData.account.roles ? this.userService.selfData.account.roles[0].role : false;
     if (!rolesLoaded) {
-      let roles$ = this.resource.getRoles(data).$observable.publishReplay(1).refCount();
-      roles$.subscribe((res: any) => {
-        let account = this.userService.selfData.account;
-        account.roles = res.data.roles;
-        this.updateSelfData(account);
-      });
+      let roles$ = this.restangular.one('accounts', this.userService.selfData.account_id).all('permissions').customGET('')
+      // let roles$ = this.resource.getRoles(data).$observable.publishReplay(1).refCount();
+          .do((res: any) => {
+            let account = this.userService.selfData.account;
+            account.roles = res.data.roles;
+            this.updateSelfData(account);
+          });
 
       return roles$;
-    } 
+    } else {
+      return this.userService.selfData$.map(res => res.account.roles);
+    }
   }
   
   addRole(data){

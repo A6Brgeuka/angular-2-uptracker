@@ -124,17 +124,18 @@ export class UserService extends ModelService {
     }
 
     if (this.selfData && this.selfData != {}) {
-      return Observable.of(this.selfData);
-      // return this.selfData$;
+      // TODO: remove after testing
+      // return Observable.of(this.selfData);
+      return this.selfData$;
     }
 
     return this.loadEntity({id: this.getSelfId()});
   }
 
-  loadEntity(data = null){
+  loadEntity(data: any = null){
     // TODO: remove after testing
-    let entity = this.resource.getUserData(data).$observable;
-    // let entity = this.restangular.one('users', data.id).get();
+    // let entity = this.resource.getUserData(data).$observable;
+    let entity = this.restangular.one('users', data.id).get();
     
     entity.subscribe((res: any) => { 
       let user = this.transformAccountInfo(res.data);
@@ -149,8 +150,8 @@ export class UserService extends ModelService {
   }
   
   login(data) {
-    return this.resource.login(data).$observable
-    // return this.restangular.all('login').post(data)
+    // return this.resource.login(data).$observable
+    return this.restangular.all('login').post(data)
       .do((res) => {
         this.afterLogin(res);
       });

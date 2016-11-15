@@ -39,6 +39,10 @@ export class VendorService extends ModelService {
             this.collection$,
             this.userService.selfData$
         )
+        // filter for emitting only if user account exists (for logout user updateSelfData)
+        .filter(([vendors, user]) => {
+          return user.account;
+        })
         .map(([vendors, user]) => {
           let accountVendors = user.account.vendors;
           // find and combine vendors
@@ -115,46 +119,50 @@ export class VendorService extends ModelService {
   }
 
   getAccountVendors(){
-    return this.accountVendors$.isEmpty().switchMap((isEmpty) => {
-      if(isEmpty) {
-        this.accountVendors$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
-            .map((res: any) => {
-              return res.data.vendors;
-            })
-            .do((res: any) => {
-              let account = this.userService.selfData.account;
-              account.vendors = res;
-              this.accountService.updateSelfData(account);
-            });
-      }
-      return this.accountVendors$;
-    });
+    // processing account vendors by vendors.service doesn't work correct for logout
+    // TODO: remove after testing
+    // return this.accountVendors$.isEmpty().switchMap((isEmpty) => {
+    //   if(isEmpty) {
+    //     this.accountVendors$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
+    //         .map((res: any) => {
+    //           return res.data.vendors;
+    //         })
+    //         .do((res: any) => {
+    //           let account = this.userService.selfData.account;
+    //           account.vendors = res;
+    //           this.accountService.updateSelfData(account);
+    //         });
+    //   }
+    //   return this.accountVendors$;
+    // });
 
-    // let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length : false;
-    // if (!vendorsLoaded) {
-    //   let entity$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors');
-    //   return entity$
-    //       .map((res: any) => {
-    //         return res.data.vendors;
-    //       })
-    //       .do((res: any) => {
-    //         let account = this.userService.selfData.account;
-    //         account.vendors = res;
-    //         this.accountService.updateSelfData(account);
-    //       });
-    //
-    //   // TODO: remove after testing
-    //   // let data: any = {
-    //   //   account_id: this.userService.selfData.account_id
-    //   // };
-    //   // return this.resource.getAccountVendors(data).$observable.do((res: any) => {
-    //   //   let account = this.userService.selfData.account;
-    //   //   account.vendors = res.data.vendors;
-    //   //   this.accountService.updateSelfData(account);
-    //   // });
-    // } else {
-    //   return this.userService.selfData$.map(self => self.account.vendors)
-    // }
+
+
+    let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length : false;
+    if (!vendorsLoaded) {
+      let entity$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors');
+      return entity$
+          .map((res: any) => {
+            return res.data.vendors;
+          })
+          .do((res: any) => {
+            let account = this.userService.selfData.account;
+            account.vendors = res;
+            this.accountService.updateSelfData(account);
+          });
+
+      // TODO: remove after testing
+      // let data: any = {
+      //   account_id: this.userService.selfData.account_id
+      // };
+      // return this.resource.getAccountVendors(data).$observable.do((res: any) => {
+      //   let account = this.userService.selfData.account;
+      //   account.vendors = res.data.vendors;
+      //   this.accountService.updateSelfData(account);
+      // });
+    } else {
+      return this.userService.selfData$.map(res => res.account.vendors);
+    }
   }
 
   addAccountVendor(data){

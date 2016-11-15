@@ -40,6 +40,10 @@ export class UsersComponent implements OnInit {
             this.userService.selfData$,
             this.searchKey$
         )
+        // filter for emitting only if user account exists (for logout user updateSelfData)
+        .filter(([user, searchKey]) => {
+          return user.account;
+        })
         .map(([user, searchKey]) => {
           this.total = user.account.users.length;
           let filteredUsers = user.account.users;

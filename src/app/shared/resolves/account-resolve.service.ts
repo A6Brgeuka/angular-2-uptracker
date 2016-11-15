@@ -23,7 +23,7 @@ export class RoleCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getRoles();
+    return this.accountService.getRoles().take(1);
   }
 }
 
