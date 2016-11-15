@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, Inject } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -9,6 +9,7 @@ import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { AccountResource } from '../../core/resources/index';
+import { AppConfig, APP_CONFIG } from '../../app.config';
 
 @Injectable()
 @Subscribers({
@@ -25,14 +26,17 @@ export class AccountService extends ModelService{
   currencyCollection$ = Observable.empty();
   departmentCollection$ = Observable.empty();
   roleCollection$ = Observable.empty();
+
+  public appConfig: AppConfig;
   
   constructor(
     public injector: Injector,
     public accountResource: AccountResource,
     public userService: UserService,
-    public restangular: Restangular
+    public restangular: Restangular,
   ) {
     super(injector, accountResource);
+    this.appConfig = injector.get(APP_CONFIG);
   
     this.onInit();
   }
@@ -52,9 +56,6 @@ export class AccountService extends ModelService{
   
   addSubscribers(){
     this.entity$.subscribe((res) => {
-      //update user after update account
-      // this.userService.updateSelfDataField('account', res);
-
       this.updateSelfData(res);
     });
   }
@@ -111,9 +112,9 @@ export class AccountService extends ModelService{
   }
 
   getLocationStreetView(params: any){
-    params.key = 'AIzaSyAkbvjQdD4qOQGppnPEh6nhGn5eaWicU9A';
+    params.key = this.appConfig.streetView.apiKey;
     params.size = '520x293';
-    let imageUrl = 'https://maps.googleapis.com/maps/api/streetview?location='+params.location+'&size='+params.size+'&key='+params.key;
+    let imageUrl = this.appConfig.streetView.endpoint+'?location='+params.location+'&size='+params.size+'&key='+params.key;
     return imageUrl.replace(/\s/g,'%20');
   }
 

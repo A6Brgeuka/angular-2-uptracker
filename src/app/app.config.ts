@@ -7,11 +7,16 @@ export let APP_CONFIG = new OpaqueToken('app.config');
 
 export interface AppConfig {
   apiEndpoint: string;
+  streetView: any;
 }
 
 export const APP_DI_CONFIG: AppConfig = {
   // apiEndpoint: process.env.API_URL,
-  apiEndpoint: 'http://uptracker-api.herokuapp.com/api/v1'
+  apiEndpoint: 'http://uptracker-api.herokuapp.com/api/v1',
+  streetView: {
+    apiKey: 'AIzaSyAkbvjQdD4qOQGppnPEh6nhGn5eaWicU9A',
+    endpoint: 'https://maps.googleapis.com/maps/api/streetview'
+  }
 };
 
 export function RESTANGULAR_CONFIG (
@@ -21,7 +26,7 @@ export function RESTANGULAR_CONFIG (
     toasterService: ToasterService,
 ) {
   RestangularProvider.setBaseUrl(APP_DI_CONFIG.apiEndpoint);
-  RestangularProvider.setDefaultHeaders({'X_AUTH_TOKEN': sessionService.get('uptracker_token')});
+  // RestangularProvider.setDefaultHeaders({'X_AUTH_TOKEN': sessionService.get('uptracker_token')});
 
   RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => {
     spinnerService.show();

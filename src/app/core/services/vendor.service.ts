@@ -60,14 +60,6 @@ export class VendorService extends ModelService {
   }
 
   onInit(){
-    this.collection$ = this.restangular.all('vendors').customGET('')
-        .map((res: any) => {
-          return res.data.vendors;
-        })
-        .do((res: any) => {
-          this.updateCollection$.next(res);
-        }).publishReplay(1).refCount();
-
     this.selfData$ = Observable.merge(
         this.updateSelfData$
     );
@@ -78,6 +70,14 @@ export class VendorService extends ModelService {
       //update user after update account
       this.userService.updateSelfDataField('account', this.selfData);
     });
+    
+    this.collection$ = this.restangular.all('vendors').customGET('')
+        .map((res: any) => {
+          return res.data.vendors;
+        })
+        .do((res: any) => {
+          this.updateCollection$.next(res);
+        }).publishReplay(1).refCount();
   }
 
   addSubscribers(){
@@ -115,31 +115,46 @@ export class VendorService extends ModelService {
   }
 
   getAccountVendors(){
-    let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length : false;
-    if (!vendorsLoaded) {
-      let entity$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors');
-      return entity$
-          .map((res: any) => {
-            return res.data.vendors;
-          })
-          .do((res: any) => {
-            let account = this.userService.selfData.account;
-            account.vendors = res;
-            this.accountService.updateSelfData(account);
-          });
+    return this.accountVendors$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.accountVendors$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
+            .map((res: any) => {
+              return res.data.vendors;
+            })
+            .do((res: any) => {
+              let account = this.userService.selfData.account;
+              account.vendors = res;
+              this.accountService.updateSelfData(account);
+            });
+      }
+      return this.accountVendors$;
+    });
 
-      // TODO: remove after testing
-      // let data: any = {
-      //   account_id: this.userService.selfData.account_id
-      // };
-      // return this.resource.getAccountVendors(data).$observable.do((res: any) => {
-      //   let account = this.userService.selfData.account;
-      //   account.vendors = res.data.vendors;
-      //   this.accountService.updateSelfData(account);
-      // });
-    } else {
-      return this.userService.selfData$.map(self => self.account.vendors)
-    }
+    // let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length : false;
+    // if (!vendorsLoaded) {
+    //   let entity$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors');
+    //   return entity$
+    //       .map((res: any) => {
+    //         return res.data.vendors;
+    //       })
+    //       .do((res: any) => {
+    //         let account = this.userService.selfData.account;
+    //         account.vendors = res;
+    //         this.accountService.updateSelfData(account);
+    //       });
+    //
+    //   // TODO: remove after testing
+    //   // let data: any = {
+    //   //   account_id: this.userService.selfData.account_id
+    //   // };
+    //   // return this.resource.getAccountVendors(data).$observable.do((res: any) => {
+    //   //   let account = this.userService.selfData.account;
+    //   //   account.vendors = res.data.vendors;
+    //   //   this.accountService.updateSelfData(account);
+    //   // });
+    // } else {
+    //   return this.userService.selfData$.map(self => self.account.vendors)
+    // }
   }
 
   addAccountVendor(data){
