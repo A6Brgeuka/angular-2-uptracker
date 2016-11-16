@@ -19,6 +19,7 @@ export const DashboardRoutes = [
     component: DashboardComponent,
     canActivate: [ AuthGuard ],
     children: [
+      { path: '' },
       ...OrdersRoutes,
       ...LocationsRoutes,
       ...UsersRoutes,

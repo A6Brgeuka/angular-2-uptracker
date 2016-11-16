@@ -4,71 +4,164 @@
 
     .left-panel{
       float:left;
-      width:200px;
+      width:70px;
 
-      .logo {
+      .logo{
         background: #404852;
         height:70px;
         padding:15px 7px 0 0;
+
+        a{
+          background-image: url(/assets/img/icon-nav-uptracker.svg);
+          width:26px;
+          height:45px;
+          padding-right:0;
+        }
       }
 
       .nav{
-        a{
-          display:block;
-          color:#fff;
-          font-family: 'Ubuntu';
-          font-weight:bold;
-          padding-left:66px;
-          line-height:70px;
-          text-transform: uppercase;
-          background-repeat:no-repeat;
+         a{
+           display:block;
+           color:#fff;
+           font-family: 'Ubuntu';
+           font-weight:bold;
+           padding-left:66px;
+           line-height:70px;
+           text-transform: uppercase;
+           background-repeat:no-repeat;
+           text-indent:-5000px;
 
-          &:hover,
-          &.active{
-            background-color:#198f90;
-            text-decoration: none;
-          }
+           &:hover,
+           &.active{
+             background-color:#198f90;
+             text-decoration: none;
+           }
 
-          &.orders{
-            background-image: url(/assets/img/icon-nav-orders.svg);
-            background-position:19px center;
-          }
+           &.orders{
+             background-image: url(/assets/img/icon-nav-orders.svg);
+             background-position:19px center;
+           }
 
-          &.products{
-            background-image: url(/assets/img/icon-nav-products.svg);
-            background-position:22px center;
-          }
+           &.products{
+             background-image: url(/assets/img/icon-nav-products.svg);
+             background-position:22px center;
+           }
 
-          &.inventory{
-            background-image: url(/assets/img/icon-nav-inventory.svg);
-            background-position:16px center;
-          }
+           &.inventory{
+             background-image: url(/assets/img/icon-nav-inventory.svg);
+             background-position:16px center;
+           }
 
-          &.transfers{
-            background-image: url(/assets/img/icon-nav-transfers.svg);
-            background-position:14px center;
-          }
+           &.transfers{
+             background-image: url(/assets/img/icon-nav-transfers.svg);
+             background-position:14px center;
+           }
 
-          &.vendors{
-            background-image: url(/assets/img/icon-nav-vendors.svg);
-            background-position:17px center;
-          }
+           &.vendors{
+             background-image: url(/assets/img/icon-nav-vendors.svg);
+             background-position:17px center;
+           }
 
-          &.locations{
-            background-image: url(/assets/img/icon-nav-locations.svg);
-            background-position:17px center;
-          }
+           &.locations{
+             background-image: url(/assets/img/icon-nav-locations.svg);
+             background-position:17px center;
+           }
 
-          &.users{
-            background-image: url(/assets/img/icon-nav-users.svg);
-            background-position:14px center;
+           &.users{
+             background-image: url(/assets/img/icon-nav-users.svg);
+             background-position:14px center;
+           }
+         }
+       }
+
+      //.nav{
+      //  a{
+      //    text-indent:-5000px;
+      //  }
+      //}
+
+      &:hover{
+        width:200px;
+
+        .logo{
+          a{
+            
           }
+        }
+
+        .nav a{
+          text-indent:0;
         }
       }
     }
 
+    .left-panel:hover{
+      //float:left;
+      //width:200px;
+
+      //.logo {
+      //  background: #404852;
+      //  height:70px;
+      //  padding:15px 7px 0 0;
+      //}
+
+      //.nav{
+      //  a{
+      //    display:block;
+      //    color:#fff;
+      //    font-family: 'Ubuntu';
+      //    font-weight:bold;
+      //    padding-left:66px;
+      //    line-height:70px;
+      //    text-transform: uppercase;
+      //    background-repeat:no-repeat;
+      //
+      //    &:hover,
+      //    &.active{
+      //      background-color:#198f90;
+      //      text-decoration: none;
+      //    }
+      //
+      //    &.orders{
+      //      background-image: url(/assets/img/icon-nav-orders.svg);
+      //      background-position:19px center;
+      //    }
+      //
+      //    &.products{
+      //      background-image: url(/assets/img/icon-nav-products.svg);
+      //      background-position:22px center;
+      //    }
+      //
+      //    &.inventory{
+      //      background-image: url(/assets/img/icon-nav-inventory.svg);
+      //      background-position:16px center;
+      //    }
+      //
+      //    &.transfers{
+      //      background-image: url(/assets/img/icon-nav-transfers.svg);
+      //      background-position:14px center;
+      //    }
+      //
+      //    &.vendors{
+      //      background-image: url(/assets/img/icon-nav-vendors.svg);
+      //      background-position:17px center;
+      //    }
+      //
+      //    &.locations{
+      //      background-image: url(/assets/img/icon-nav-locations.svg);
+      //      background-position:17px center;
+      //    }
+      //
+      //    &.users{
+      //      background-image: url(/assets/img/icon-nav-users.svg);
+      //      background-position:14px center;
+      //    }
+      //  }
+      //}
+    }
+
     .main-column{
-      margin-left:200px;
+      margin-left:70px;
       min-height: 100vh;
       background:#f5f6f7;
       overflow:hidden;
@@ -216,32 +309,32 @@
   }
 }
 
-@media all and (max-width: 768px) {
-  .dashboard{
-    .left-panel{
-      width:70px;
-
-      .logo{
-        a{
-          background-image: url(/assets/img/icon-nav-uptracker.svg);
-          width:26px;
-          height:45px;
-          padding-right:0;
-        }
-      }
-
-      .nav{
-        a{
-          text-indent:-5000px;
-        }
-      }
-    }
-
-    .main-column{
-      margin-left:70px;
-    }
-  }
-}
+//@media all and (max-width: 768px) {
+//  .dashboard{
+//    .left-panel{
+//      width:70px;
+//
+//      .logo{
+//        a{
+//          background-image: url(/assets/img/icon-nav-uptracker.svg);
+//          width:26px;
+//          height:45px;
+//          padding-right:0;
+//        }
+//      }
+//
+//      .nav{
+//        a{
+//          text-indent:-5000px;
+//        }
+//      }
+//    }
+//
+//    .main-column{
+//      margin-left:70px;
+//    }
+//  }
+//}
 
 @media all and (max-width: 480px) {
   .dashboard{
