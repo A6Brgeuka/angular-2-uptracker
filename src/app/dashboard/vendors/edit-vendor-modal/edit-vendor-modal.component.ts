@@ -103,17 +103,18 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
 
   calcPriorityMargin(value){
     let fixer: number;
+    value = parseInt(value);
     switch (value){
-      case '1': fixer = 13; break;
-      case '2': fixer = 12; break;
-      case '3': fixer = 12; break;
-      case '4': fixer = 12; break;
-      case '5': fixer = 11; break;
-      case '6': fixer = 11; break;
-      case '7': fixer = 11; break;
-      case '8': fixer = 10; break;
-      case '9': fixer = 10; break;
-      case '10': fixer = 6; break;
+      case 1: fixer = 13; break;
+      case 2: fixer = 12; break;
+      case 3: fixer = 12; break;
+      case 4: fixer = 11; break;
+      case 5: fixer = 12; break;
+      case 6: fixer = 11; break;
+      case 7: fixer = 11; break;
+      case 8: fixer = 10; break;
+      case 9: fixer = 10; break;
+      case 10: fixer = 6; break;
       default: fixer = 10;
     }
     this.priorityMargin = 'calc(' + (value - 1)*10 + '% + ' + fixer + 'px)';
@@ -137,13 +138,15 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   }
 
   readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
+    let file: File = inputValue.files[0];
+    let myReader: any = new FileReader();
+    myReader.fileName = file.name;
+    this.formData.append('documents', file);
 
-    myReader.onloadend = (e) => {
-      this.onFileDrop(myReader.result);
-    };
-    myReader.readAsDataURL(file);
+    // myReader.onloadend = (e) => { debugger;
+    //   this.onFileDrop(myReader.result);
+    // };
+    // myReader.readAsDataURL(file);
   }
 
   // upload by filedrop
@@ -151,13 +154,15 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.fileIsOver = fileIsOver;
   }
   
-  onFileDrop(file: any): void {
+  onFileDrop(file: any): void { debugger;
     let fileData = file.split(',')[1];
     let dataType = file.split('.')[0].split(';')[0].split(':')[1];
     let binaryImageData = atob(fileData);
     let blob = new Blob([binaryImageData], { type: dataType });
     this.formData.append('documents', blob);
   }
+
+  
 
   onSubmit(){
     this.vendor.account_id = this.userService.selfData.account_id;
@@ -168,6 +173,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       if (value)
         this.formData.append(key, value);
     });
+    debugger;
 
     this.vendorService.editAccountVendor(this.formData).subscribe(
         (res: any) => {
