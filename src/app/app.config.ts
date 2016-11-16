@@ -36,7 +36,7 @@ export function RESTANGULAR_CONFIG (
       newHeaders = {
         'X_AUTH_TOKEN': sessionService.get('uptracker_token')
       };
-    //
+    
     return {
       headers: newHeaders
     };

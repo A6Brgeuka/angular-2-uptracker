@@ -141,7 +141,11 @@
         </div>
       </div>
       <div class="file-list col s12">
-        <div class="item tip" *ngFor="let file of files$ | async">{{file.name}}</div>
+        <div class="item" *ngFor="let file of files$ | async">
+          <a href="{{file.link}}" target="_blank" *ngIf="file.link"><img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}</a>
+          <div class="tip" *ngIf="!file.link"><img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}</div>
+          <div class="clearfix"></div>
+        </div>
       </div>
     </div>
   </div>

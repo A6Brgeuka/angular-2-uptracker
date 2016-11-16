@@ -169,11 +169,13 @@ export class VendorService extends ModelService {
     let entity$ = this.restangular
         .one('accounts', data.get('account_id'))
         .all('vendors')
+        // .allUrl('post', 'http://api.pacific-grid.2muchcoffee.com/v1/deployments/test-post')
         .post(data);
 
     // TODO: remove after testing
     // entity$ = this.resource.addAccountVendor(data).$observable;
     // let entity$ = this.httpService.post('http://uptracker-api.herokuapp.com/api/v1/accounts/' + data.get('account_id') + '/vendors', data);
+
 
     return entity$
         .map((res: any) => { 

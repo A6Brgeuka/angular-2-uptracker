@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -48,10 +48,11 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
   fileIsOver: boolean = false;
-  options = {
-    readAs: 'DataURL'
-  };
-  public files$: Subject<any> = new Subject();
+  // TODO: remove after testing
+  // options = {
+  //   readAs: 'File'
+  // };
+  public files$: BehaviorSubject<any> = new BehaviorSubject(null);
   private fileArr: any = [];
 
   constructor(
@@ -73,6 +74,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
 
     if (this.vendor.id){
       this.vendor.discount_percentage *= 100;
+      this.fileArr = this.vendor.documents;
+      this.files$.next(this.fileArr);
 
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
@@ -141,14 +144,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
 
   readThis(inputValue: any): void {
     let file: File = inputValue.files[0];
-    let myReader: any = new FileReader();
-    myReader.fileName = file.name;
-    this.addFile(file);
-
-    // myReader.onloadend = (e) => { debugger;
-    //   this.onFileDrop(myReader.result);
-    // };
-    // myReader.readAsDataURL(file);
+    this.onFileDrop(file);
   }
 
   // upload by filedrop
@@ -156,17 +152,21 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.fileIsOver = fileIsOver;
   }
   
-  onFileDrop(file: any): void { debugger;
-    let fileData = file.split(',')[1];
-    let dataType = file.split('.')[0].split(';')[0].split(':')[1];
-    let binaryImageData = atob(fileData);
-    let blob = new Blob([binaryImageData], { type: dataType });
-    this.formData.append('documents', blob);
-    // this.addFile(file);
+  onFileDrop(file: any): void {
+    // TODO: remove after testing
+    // let fileData = file.split(',')[1];
+    // let dataType = file.split('.')[0].split(';')[0].split(':')[1];
+    // let binaryImageData = atob(fileData);
+    // let blob = new Blob([binaryImageData], { type: dataType });
+
+    let myReader: any = new FileReader();
+    myReader.fileName = file.name;
+    this.addFile(file);
   }
 
   addFile(file){
-    this.formData.append('documents', file);
+    // TODO: Remove after testing
+    // this.formData.append('documents[]', file);
     this.fileArr.push(file);
     this.files$.next(this.fileArr);
   }
@@ -180,10 +180,15 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       if (value)
         this.formData.append(key, value);
     });
-    debugger;
+
+    let i = 0;
+    _.each(this.fileArr, (value, key) => {
+      this.formData.append('documents['+i+']', this.fileArr[i]);
+      i++;
+    });
 
     this.vendorService.editAccountVendor(this.formData).subscribe(
-        (res: any) => {
+        (res: any) => { debugger;
           this.closeModal();
         }
     );
