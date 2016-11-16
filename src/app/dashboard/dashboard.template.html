@@ -1,5 +1,5 @@
 <div class="dashboard">
-  <aside class="left-panel">
+  <aside class="left-panel" [class.collapsed]="stateService.isUrl('/dashboard')">
     <div class="logo">
       <a [routerLink]="['']">uptracker</a>
     </div>
