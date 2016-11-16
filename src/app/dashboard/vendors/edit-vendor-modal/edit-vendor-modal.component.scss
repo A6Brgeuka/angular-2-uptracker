@@ -24,6 +24,17 @@
     margin-top:5px;
   }
 
+  .file-list{
+    padding:5px 0 0;
+
+    .item{
+      img{
+        float:left;
+        margin-right:5px;
+      }
+    }
+  }
+
   .text{
     margin-top:15px;
     margin-right:-0.75rem;

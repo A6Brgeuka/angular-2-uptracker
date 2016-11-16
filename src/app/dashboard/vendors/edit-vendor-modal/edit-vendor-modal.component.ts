@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -51,6 +51,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   options = {
     readAs: 'DataURL'
   };
+  public files$: Subject<any> = new Subject();
+  private fileArr: any = [];
 
   constructor(
       public dialog: DialogRef<EditVendorModalContext>,
@@ -141,7 +143,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     let file: File = inputValue.files[0];
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
-    this.formData.append('documents', file);
+    this.addFile(file);
 
     // myReader.onloadend = (e) => { debugger;
     //   this.onFileDrop(myReader.result);
@@ -160,9 +162,14 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     let binaryImageData = atob(fileData);
     let blob = new Blob([binaryImageData], { type: dataType });
     this.formData.append('documents', blob);
+    // this.addFile(file);
   }
 
-  
+  addFile(file){
+    this.formData.append('documents', file);
+    this.fileArr.push(file);
+    this.files$.next(this.fileArr);
+  }
 
   onSubmit(){
     this.vendor.account_id = this.userService.selfData.account_id;

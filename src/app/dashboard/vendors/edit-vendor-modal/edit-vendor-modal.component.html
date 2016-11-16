@@ -140,6 +140,9 @@
           </div>
         </div>
       </div>
+      <div class="file-list col s12">
+        <div class="item tip" *ngFor="let file of files$ | async">{{file.name}}</div>
+      </div>
     </div>
   </div>
   <div class="input row">
