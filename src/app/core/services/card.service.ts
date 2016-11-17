@@ -7,9 +7,9 @@ import { Restangular } from 'ng2-restangular';
 import { CreditCardModel } from '../../models';
 import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
-// import { DefaultOptions } from '../../decorators/default-options.decorator';
+import { SpinnerService } from './spinner.service';
+import { ToasterService } from './toaster.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
-import { CardResource } from '../../core/resources/index';
 
 @Injectable()
 @Subscribers({
@@ -24,11 +24,12 @@ export class CardService extends ModelService {
   constructor(
     public injector: Injector,
     public zone: NgZone,
-    public cardResource: CardResource,
     public userService: UserService,
     public restangular: Restangular,
+    public spinnerService: SpinnerService,
+    public toasterService: ToasterService
   ) {
-    super(injector, cardResource);
+    super(restangular);
   
     this.onInit();
   }

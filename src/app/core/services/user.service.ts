@@ -3,13 +3,12 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
+import { Restangular } from 'ng2-restangular';
 
 import { ModelService } from '../../overrides/model.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { SpinnerService } from './spinner.service';
-import { UserResource } from '../../core/resources/index';
 import { SessionService } from './session.service';
-import { Restangular } from 'ng2-restangular';
 
 @Injectable()
 @Subscribers({
@@ -26,13 +25,12 @@ export class UserService extends ModelService {
 
   constructor(
     public injector: Injector,
-    public userResource: UserResource,
     public sessionService: SessionService,
     public router: Router,
     public spinnerService: SpinnerService,
-    private restangular: Restangular
+    public restangular: Restangular
   ) {
-    super(injector, userResource);
+    super(restangular);
     
     this.onInit();
   }

@@ -196,13 +196,13 @@ button{
 
 /*** Forms
 *************************************************/
-@mixin form-field{
+@mixin form-field {
   border-radius: 5px;
   background-color: #f5f6f7;
   border: 1px solid #d6d6d6;
   margin: 8px 0 0;
   box-shadow: none !important;
-  font-size:14px;
+  font-size: 14px;
   font-family: Lato;
 
   &:focus {
@@ -213,28 +213,29 @@ button{
     display: none;
   }
 
-  &.valid{
+  &.valid {
     border-color: #4CAF50;
   }
 
-  // TODO: remove after testing
   // materialize validation error
-  //&.invalid {
-  //  border-color: #F44336;
-  //
-  //  & + .error {
-  //    display: block;
-  //  }
-  //}
+  &.invalid {
+    border-color: #F44336;
 
-  //&.minlength-validation,
-  &.validate{
-    &.ng-touched{
-      &.ng-invalid{
-        border-color: #F44336;
+    & + .error {
+      display: block;
+    }
+  }
 
-        & + .error {
-          display: block;
+  &.minlength-validation{
+  //&.validate {
+    &.ng-touched {
+      &.ng-dirty {
+        &.ng-invalid {
+          border-color: #F44336;
+
+          & + .error {
+            display: block;
+          }
         }
       }
     }

@@ -1,4 +1,4 @@
-import { HttpClient } from './http.service';
+// import { HttpClient } from './http.service';
 import { ToasterService } from './toaster.service';
 import { UserService } from './user.service';
 import { AccountService } from './account.service';
@@ -23,7 +23,7 @@ export {
   PhoneMaskService,
   FileUploadService,
   ExifService,
-  HttpClient,
+  // HttpClient,
   VendorService
 };
 
@@ -39,6 +39,6 @@ export const APP_SERVICE_PROVIDERS = [
   PhoneMaskService,
   FileUploadService,
   ExifService,
-  HttpClient,
+  // HttpClient,
   VendorService
 ];

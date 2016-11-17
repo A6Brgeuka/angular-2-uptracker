@@ -8,7 +8,6 @@ import { Restangular } from 'ng2-restangular';
 import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
-import { AccountResource } from '../../core/resources/index';
 import { AppConfig, APP_CONFIG } from '../../app.config';
 
 @Injectable()
@@ -31,11 +30,10 @@ export class AccountService extends ModelService{
   
   constructor(
     public injector: Injector,
-    public accountResource: AccountResource,
     public userService: UserService,
     public restangular: Restangular
   ) {
-    super(injector, accountResource);
+    super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
   
     this.onInit();

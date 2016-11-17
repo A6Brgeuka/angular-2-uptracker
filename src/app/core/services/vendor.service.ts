@@ -9,7 +9,6 @@ import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
-import { VendorResource } from '../../core/resources/index';
 import { VendorModel, AccountVendorModel } from '../../models/index';
 
 @Injectable()
@@ -26,12 +25,11 @@ export class VendorService extends ModelService {
 
   constructor(
       public injector: Injector,
-      public vendorResource: VendorResource,
       public userService: UserService,
       public accountService: AccountService,
       public restangular: Restangular
   ) {
-    super(injector, vendorResource);
+    super(restangular);
 
     // combine global vendors observable with account vendors from account observable
     this.combinedVendors$ = Observable

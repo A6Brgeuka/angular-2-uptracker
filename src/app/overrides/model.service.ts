@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { HttpClient, ToasterService, SpinnerService } from '../core/services/index';
+import { Restangular } from 'ng2-restangular';
 
 @Injectable()
 export class ModelService {
@@ -21,19 +21,10 @@ export class ModelService {
   
   public apiEndpoint: string;
   public defaultOptions: any;
-  public http: HttpClient;
-  public toasterService: ToasterService;
-  public spinnerService: SpinnerService;
   
   constructor(
-      public injector,
-      public resource
+      public restangular: Restangular
   ) {
-    this.http = injector.get(HttpClient);
-    this.toasterService = injector.get(ToasterService);
-    this.spinnerService = injector.get(SpinnerService);
-
-
     this.entityActions();
     this.collectionActions();
   }
@@ -116,7 +107,7 @@ export class ModelService {
   }
   
   loadCollection(data: any = {}, options: any = {}): Observable<any> {
-    this.resource.query(data).$observable
+    this.restangular.all(this.constructor.name).customGET('')
         .subscribe((res)=> {
           this.loadCollection$.next(res);
         });
@@ -125,8 +116,7 @@ export class ModelService {
   }
   
   loadEntity(data: any = {}, options: any = {}) {
-    let entity = this.resource.get(data).$observable
-        .publishReplay(1).refCount();
+    let entity = this.restangular.one(this.constructor.name, data.id).get(data);
     
     entity.subscribe((res) => {
       this.loadEntity$.next(res);
@@ -137,8 +127,7 @@ export class ModelService {
   
   
   create(data = {}) {
-    let entity = this.resource.save(data).$observable
-        .publish().refCount();
+    let entity = this.restangular.all(this.constructor.name).post(data);
     
     entity.subscribe(
       (res) => {
@@ -153,8 +142,7 @@ export class ModelService {
   }
   
   update(data) {
-    let entity = this.resource.update(data).$observable
-        .publishReplay(1).refCount();
+    let entity = this.restangular.all(this.constructor.name).save(data);
     
     entity.subscribe(
       (res) => {
@@ -169,8 +157,8 @@ export class ModelService {
   }
   
   delete(id: number): Observable<any> {
-    this.resource.remove({id: id}).$observable
-        .subscribe(res=>{
+    this.restangular.one(this.constructor.name, id).remove()
+        .subscribe((res) =>{
           this.deleteFromCollection$.next(id);
           this.deleteEntity$.next(id);
         });
