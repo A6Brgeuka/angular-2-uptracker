@@ -9,6 +9,7 @@ import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { AppConfig, APP_CONFIG } from '../../app.config';
+import {isUndefined} from "util";
 
 @Injectable()
 @Subscribers({
@@ -74,13 +75,13 @@ export class AccountService extends ModelService{
   }
 
   getLocations(){
-    let data: any = {
-      account_id: this.userService.selfData.account_id
-    }; 
     let account = this.userService.selfData.account;
-    let locationsLoaded = account ? account.locations ? account.locations.length : false : false;
+    let locationsLoaded = account ?  !isUndefined(account.locations) ? true : false : false;
     if (!locationsLoaded) {
       // TODO: remove after testing restangular
+      // let data: any = {
+      //   account_id: this.userService.selfData.account_id
+      // };
       // return this.resource.getLocations(data).$observable /accounts/{!account_id}/locations
       return this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
           .do((res: any) => {
