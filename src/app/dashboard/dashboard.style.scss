@@ -1,3 +1,21 @@
+@mixin collapsed-left-panel{
+  width:200px;
+
+  .logo{
+    a{
+      width: 153px;
+      height: 34px;
+      padding-right: 35px;
+      background: url(/assets/img/logo.svg) no-repeat center center;
+      background-size: auto 100%;
+    }
+  }
+
+  .nav a{
+    text-indent:0;
+  }
+}
+
 :host /deep/ {
   .dashboard{
     min-height: 100vh;
@@ -77,30 +95,15 @@
          }
        }
 
+      &.collapsed{
+        @include collapsed-left-panel;
+      }
+
       //.nav{
       //  a{
       //    text-indent:-5000px;
       //  }
       //}
-
-      &:hover,
-      &.collapsed{
-        width:200px;
-
-        .logo{
-          a{
-            width: 153px;
-            height: 34px;
-            padding-right: 35px;
-            background: url(/assets/img/logo.svg) no-repeat center center;
-            background-size: auto 100%;
-          }
-        }
-
-        .nav a{
-          text-indent:0;
-        }
-      }
     }
 
     .left-panel:hover{
@@ -287,6 +290,16 @@
             font-weight: bold;
           }
         }
+      }
+    }
+  }
+}
+
+@media all and (min-width: 769px){
+  :host /deep/ {
+    .left-panel{
+      &:hover{
+        @include collapsed-left-panel;
       }
     }
   }
