@@ -134,8 +134,6 @@ export class VendorService extends ModelService {
     //   return this.accountVendors$;
     // });
 
-
-
     let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
     if (!vendorsLoaded) {
       return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')

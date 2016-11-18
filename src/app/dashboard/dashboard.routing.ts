@@ -1,6 +1,9 @@
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
 import { DashboardComponent } from './dashboard.component';
 
-import { AuthGuard } from '../auth-guard.service';
+// import { AuthGuard } from '../auth-guard.service';
 import {
     UserCollectionResolve,
     LocationCollectionResolve,
@@ -13,11 +16,12 @@ import { LocationsRoutes } from './locations/locations.routing';
 import { UsersRoutes } from './users/users.routing';
 import { VendorsRoutes } from './vendors/vendors.routing';
 
-export const DashboardRoutes = [
+// export const DashboardRoutes = [
+const dashboardRoutes = [
   {
-    path: 'dashboard',
+    path: '',
     component: DashboardComponent,
-    canActivate: [ AuthGuard ],
+    // canActivate: [ AuthGuard ],
     children: [
       { path: '' },
       ...OrdersRoutes,
@@ -29,7 +33,9 @@ export const DashboardRoutes = [
       accountVendorCollection: AccountVendorCollectionResolve,
       vendorCollection: VendorCollectionResolve,
       userCollection: UserCollectionResolve,
-      locationCollection: LocationCollectionResolve,
+      locationCollection: LocationCollectionResolve
     }
   }
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);
