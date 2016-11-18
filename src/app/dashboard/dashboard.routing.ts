@@ -19,6 +19,7 @@ import { VendorsRoutes } from './vendors/vendors.routing';
 // export const DashboardRoutes = [
 const dashboardRoutes = [
   {
+    // path: 'dashboard',
     path: '',
     component: DashboardComponent,
     // canActivate: [ AuthGuard ],

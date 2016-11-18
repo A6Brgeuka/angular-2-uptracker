@@ -10,7 +10,7 @@ import { CoreModule } from './core/core.module';
 import { NoContentModule } from './no-content/no-content.module';
 import { AuthModule } from './auth/auth.module';
 // import { DashboardModule } from './dashboard/dashboard.module';
-import { OnboardModule } from './onboard/onboard.module';
+// import { OnboardModule } from './onboard/onboard.module';
 import { SpinnerModule } from './spinner/spinner.module';
 
 @NgModule({
@@ -26,7 +26,7 @@ import { SpinnerModule } from './spinner/spinner.module';
     AuthModule,
     NoContentModule,
     // DashboardModule,
-    OnboardModule,
+    // OnboardModule,
     SpinnerModule
   ],
   providers: [],

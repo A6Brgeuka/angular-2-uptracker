@@ -8,18 +8,19 @@ import { AuthGuard } from './auth-guard.service';
 // routings
 import { AuthRoutes } from './auth/index';
 // import { DashboardRoutes } from './dashboard/index';
-import { OnboardRoutes } from './onboard/index';
+// import { OnboardRoutes } from './onboard/index';
 
-const appRoutes: Routes = [
+const appRoutes = [
   {
     path: '',
     component: AppComponent,
-    canActivateChild: [ AuthGuard ],
+    canActivate: [ AuthGuard ],
     children: [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
+      { path: 'onboard', loadChildren: './onboard/onboard.module#OnboardModule' },
       ...AuthRoutes,
       // ...DashboardRoutes,
-      ...OnboardRoutes
+      // ...OnboardRoutes
     ]
   },
   { path: '**', component: NoContentComponent }

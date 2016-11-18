@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { EditLocationModal } from './edit-location-modal.component';
-import { AppSharedModule } from '../../shared.module';
+// import { AppSharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [
     EditLocationModal
   ],
   imports: [
-    AppSharedModule
+    // AppSharedModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   // IMPORTANT:

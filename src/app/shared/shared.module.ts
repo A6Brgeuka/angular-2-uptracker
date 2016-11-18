@@ -29,6 +29,14 @@ import {
   ACCOUNT_RESOLVER_PROVIDERS
 } from './resolves/index';
 
+// modals
+import { EditUserModal } from './modals/edit-user-modal/edit-user-modal.component';
+import { EditLocationModal } from './modals/edit-location-modal/edit-location-modal.component';
+let modalsArr = [
+  EditUserModal,
+  EditLocationModal
+];
+
 
 @NgModule({
   imports: [
@@ -46,7 +54,8 @@ import {
   ],
   declarations: [
     ...directivesArr,
-    ...pipesArr
+    ...pipesArr,
+    ...modalsArr
   ],
   exports: [
     RouterModule,
@@ -66,6 +75,9 @@ import {
   providers: [
     ...MAIN_RESOLVER_PROVIDERS,
     ...ACCOUNT_RESOLVER_PROVIDERS
+  ],
+  entryComponents: [ 
+    ...modalsArr
   ]
 })
 export class AppSharedModule {

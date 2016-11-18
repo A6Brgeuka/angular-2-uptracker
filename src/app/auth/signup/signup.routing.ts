@@ -1,5 +1,5 @@
 import { SignupComponent } from './signup.component';
-import { AuthGuard } from '../../auth-guard.service';
+// import { AuthGuard } from '../../auth-guard.service';
 
 import { AboutCompanyRoutes } from './about-company/about-company.routing';
 import { CreateAccountRoutes } from './create-account/create-account.routing';
@@ -11,7 +11,7 @@ export const SignupRoutes = [
     path: 'signup',
     component: SignupComponent,
     resolve: {},
-    canActivate: [ AuthGuard ],
+    // canActivate: [ AuthGuard ],
     children: [
       ...AboutCompanyRoutes,
       ...CreateAccountRoutes,

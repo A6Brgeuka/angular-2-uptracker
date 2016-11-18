@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 
 import { OnboardUsersComponent } from './users.component';
 import { AppSharedModule } from '../../shared/shared.module';
-import { EditUserModalModule } from '../../shared/modals/index';
+
+// import { EditUserModalModule } from '../../shared/modals/index';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,7 @@ import { EditUserModalModule } from '../../shared/modals/index';
   ],
   imports: [
     AppSharedModule,
-    EditUserModalModule
+    // EditUserModalModule
   ],
   providers: []
 })
