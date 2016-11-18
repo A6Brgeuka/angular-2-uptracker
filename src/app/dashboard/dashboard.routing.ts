@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
 
-// import { AuthGuard } from '../auth-guard.service';
 import {
     UserCollectionResolve,
     LocationCollectionResolve,
@@ -16,13 +15,10 @@ import { LocationsRoutes } from './locations/locations.routing';
 import { UsersRoutes } from './users/users.routing';
 import { VendorsRoutes } from './vendors/vendors.routing';
 
-// export const DashboardRoutes = [
 const dashboardRoutes = [
   {
-    // path: 'dashboard',
     path: '',
     component: DashboardComponent,
-    // canActivate: [ AuthGuard ],
     children: [
       { path: '' },
       ...OrdersRoutes,

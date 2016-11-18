@@ -3,8 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { OnboardComponent } from './onboard.component';
 
-// import { AuthGuard } from '../auth-guard.service';
-
 // resolves
 import {
     StateCollectionResolve,
@@ -20,13 +18,10 @@ import { OnboardLocationsRoutes } from './locations/locations.routing';
 import { OnboardUsersRoutes } from './users/users.routing';
 import { AccountingRoutes } from './accounting/accounting.routing';
 
-// export const OnboardRoutes = [
 const onboardRoutes = [
   {
-    // path: 'onboard',
     path: '',
     component: OnboardComponent,
-    // canActivate: [ AuthGuard ],
     children: [
       ...OnboardLocationsRoutes,
       ...OnboardUsersRoutes,

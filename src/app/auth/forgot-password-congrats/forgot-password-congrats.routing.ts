@@ -3,10 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ForgotPasswordCongratsComponent } from './forgot-password-congrats.component';
 
-// export const ForgotPasswordCongratsRoutes = [
 const forgotPasswordCongratsRoutes = [
   {
-    // path: 'forgot-password-congrats',
     path: '',
     component: ForgotPasswordCongratsComponent,
     canActivate: []
