@@ -14,10 +14,11 @@ const appRoutes = [
   {
     path: '',
     component: AppComponent,
-    canActivate: [ AuthGuard ],
+    // canActivate: [ AuthGuard ],
     children: [
-      { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
-      { path: 'onboard', loadChildren: './onboard/onboard.module#OnboardModule' },
+      // { path: '', canLoad: [AuthGuard], loadChildren: './auth/auth.module#AuthModule' },
+      { path: 'dashboard', canLoad: [AuthGuard], loadChildren: './dashboard/dashboard.module#DashboardModule' },
+      { path: 'onboard', canLoad: [AuthGuard], loadChildren: './onboard/onboard.module#OnboardModule' },
       ...AuthRoutes,
       // ...DashboardRoutes,
       // ...OnboardRoutes

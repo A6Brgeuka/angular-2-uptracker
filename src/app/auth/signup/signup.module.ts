@@ -7,11 +7,15 @@ import { CreateAccountModule } from './create-account/create-account.module';
 import { PaymentInfoModule } from './payment-info/payment-info.module';
 import { CongratsModule } from './congrats/congrats.module';
 
+// for lazy loading
+import { routing } from './index';
+
 @NgModule({
   declarations: [
     SignupComponent,
   ],
   imports: [
+    routing,
     AppSharedModule,
 
     AboutCompanyModule,

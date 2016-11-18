@@ -2,25 +2,30 @@ import { NgModule } from '@angular/core';
 
 import { AuthComponent } from './auth.component';
 import { AppSharedModule } from '../shared/shared.module';
-import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
-import { ResetPasswordModule } from './reset-password/reset-password.module';
-import { LoginModule } from './login/login.module';
-import { SignupModule } from './signup/signup.module';
-import { ForgotPasswordCongratsModule } from './forgot-password-congrats/forgot-password-congrats.module';
+
+// import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
+// import { ResetPasswordModule } from './reset-password/reset-password.module';
+// import { LoginModule } from './login/login.module';
+// import { SignupModule } from './signup/signup.module';
+// import { ForgotPasswordCongratsModule } from './forgot-password-congrats/forgot-password-congrats.module';
 import { EmailVerificationModule } from './email-verification/email-verification.module';
+
+// for lazy loading
+// import { routing } from './index';
 
 @NgModule({
   declarations: [
     AuthComponent,
   ],
   imports: [
+    // routing,
     AppSharedModule,
     
-    ForgotPasswordModule,
-    ResetPasswordModule,
-    LoginModule,
-    SignupModule,
-    ForgotPasswordCongratsModule,
+    // ForgotPasswordModule,
+    // ResetPasswordModule,
+    // LoginModule,
+    // SignupModule,
+    // ForgotPasswordCongratsModule,
     EmailVerificationModule
   ],
   providers: []

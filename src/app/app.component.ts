@@ -16,11 +16,6 @@ export class AppComponent implements OnInit{
   ) {
   }
 
-  ngOnInit(){
-    let self = this;
-    // getting user self data
-    this.activatedRoute.data.forEach((data: { selfData: any }) => {
-      console.log('Current user data ', self.userService.selfData);
-    });
+  ngOnInit(){ 
   }
 }

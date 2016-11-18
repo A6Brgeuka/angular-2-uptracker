@@ -1,3 +1,6 @@
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
 import { SignupComponent } from './signup.component';
 // import { AuthGuard } from '../../auth-guard.service';
 
@@ -6,9 +9,11 @@ import { CreateAccountRoutes } from './create-account/create-account.routing';
 import { PaymentInfoRoutes } from './payment-info/payment-info.routing';
 import { CongratsRoutes } from './congrats/congrats.routing';
 
-export const SignupRoutes = [
+// export const SignupRoutes = [
+const signupRoutes = [
   {
-    path: 'signup',
+    // path: 'signup',
+    path: '',
     component: SignupComponent,
     resolve: {},
     // canActivate: [ AuthGuard ],
@@ -20,3 +25,5 @@ export const SignupRoutes = [
     ]
   }
 ];
+
+export const routing: ModuleWithProviders = RouterModule.forChild(signupRoutes);

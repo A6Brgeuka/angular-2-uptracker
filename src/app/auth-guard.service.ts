@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, CanLoad, Route } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { UserService, StateService } from './core/services/index';
 import { UserModel } from './models/index';
 
 @Injectable()
-export class AuthGuard implements CanActivate, CanActivateChild {
+export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   selfData: any;
 
   constructor(
@@ -18,14 +18,57 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> | boolean { 
+  ): Observable<boolean> | boolean {
+    // TODO: remove after testing
+    // let user$ = this.userService.loadSelfData().map((res) => {
+    //   // if logged out guest remove self data
+    //   if (this.userService.isGuest()){
+    //     this.userService.updateSelfData(new UserModel());
+    //   }
+    //   this.selfData = res;
+    //   let url: string = state.url;
+    //   let location = url.split('/')[1];
+    //   switch (location) {
+    //     case 'login':
+    //       return this.checkLogin();
+    //     case 'forgot-password':
+    //       return this.checkForgotPassword();
+    //     case 'signup':
+    //       return this.checkSignup();
+    //     case 'onboard':
+    //       return this.checkOnboard(url);
+    //     case 'dashboard':
+    //       return this.checkDashboard(url);
+    //     default:
+    //       return true;
+    //   }
+    // });
+    // return user$.take(1);
+
+    let url: string = state.url;
+    return this.guard(url);
+  }
+
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+    return this.canActivate(route, state);
+  }
+
+  canLoad(
+      route: Route
+  ): Observable<boolean> | boolean {
+    let url = `/${route.path}`;
+
+    return this.guard(url);
+  }
+  
+  guard(url){
     let user$ = this.userService.loadSelfData().map((res) => {
       // if logged out guest remove self data
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());
       }
       this.selfData = res;
-      let url: string = state.url;
+      // let url: string = state.url;
       let location = url.split('/')[1];
       switch (location) {
         case 'login':
@@ -43,10 +86,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       }
     });
     return user$.take(1);
-  }
-
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    return this.canActivate(route, state);
   }
 
   checkSignup() {
