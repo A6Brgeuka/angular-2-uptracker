@@ -131,7 +131,6 @@
       <div class="col s5">
         <div class="text">
           <div class="label">Documents</div>
-          <!--<div class="tip">Please upload here</div>-->
           <div class="file-field">
             <div class="upload-link">
               <input type="file" (change)="changeListener($event)" />
@@ -142,8 +141,8 @@
       </div>
       <div class="file-list col s12">
         <div class="item" *ngFor="let file of files$ | async">
-          <a href="{{file.link}}" target="_blank" *ngIf="file.link"><img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}</a>
-          <div class="tip" *ngIf="!file.link"><img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}</div>
+          <a href="{{file.uri}}" target="_blank" *ngIf="file.uri"><img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}</a>
+          <div class="tip" *ngIf="!file.uri"><img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}</div>
           <div class="clearfix"></div>
         </div>
       </div>

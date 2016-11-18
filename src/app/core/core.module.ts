@@ -1,6 +1,7 @@
 /* tslint:disable:member-ordering no-unused-variable */
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserModule } from "@angular/platform-browser";
 
 import { APP_CONFIG, APP_DI_CONFIG, RESTANGULAR_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
@@ -20,6 +21,7 @@ import { APP_SERVICE_PROVIDERS } from './services/index';
 @NgModule({
   imports: [
     CommonModule,
+    BrowserModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
     RestangularModule.forRoot(

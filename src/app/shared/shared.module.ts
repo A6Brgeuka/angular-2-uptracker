@@ -1,13 +1,13 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { BrowserModule } from "@angular/platform-browser";
+// import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 // import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 import { MaterializeModule } from "angular2-materialize";
 import { FileDropModule } from 'angular2-file-drop';
 
-import { CoreModule } from "../core/core.module";
+// import { CoreModule } from "../core/core.module";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import * as directives from "./index";
@@ -34,12 +34,12 @@ import {
   imports: [
     CommonModule,
     RouterModule,
-    BrowserModule,
+    // BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     // HttpModule,
 
-    CoreModule,
+    // CoreModule,
     MaterializeModule,
     FileDropModule,
     TextMaskModule
@@ -50,11 +50,11 @@ import {
   ],
   exports: [
     RouterModule,
-    BrowserModule,
+    // BrowserModule,
     FormsModule,
     // HttpModule,
     CommonModule,
-    CoreModule,
+    // CoreModule,
     
     MaterializeModule,
     FileDropModule,
