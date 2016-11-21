@@ -22,6 +22,10 @@ export class ViewVendorModalContext extends BSModalContext {
 export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
   context: ViewVendorModalContext;
   public vendor: VendorModel;
+  public locationArr: any = [
+    'sat1', 'sattt2', 'satttttttt3'
+  ];
+  public currentLocation: any = 'Satelite Location';
 
   constructor(
       public dialog: DialogRef<ViewVendorModalContext>
@@ -44,5 +48,9 @@ export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewV
 
   editVendor(vendor = null){
     this.closeModal(vendor);
+  }
+
+  chooseLocation(location){
+    this.currentLocation = location;
   }
 }

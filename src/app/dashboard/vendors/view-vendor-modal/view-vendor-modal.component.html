@@ -13,46 +13,77 @@
       </div>
     </div>
   </div>
-  <div class="separator"></div>
-  <div class="info">
-    <div class="row" *ngIf="vendor.address.street_1 || vendor.address.street_2 || vendor.address.country || vendor.address.city || vendor.address.state">
-      <div class="col s4 label">Address</div>
-      <div class="col s8">
-        <div *ngIf="vendor.address.street_1 || vendor.address.street_2">{{vendor.address.street_1}}, {{vendor.address.street_2}}</div>
-        {{vendor.address.city}}, {{vendor.address.state}} {{vendor.address.postal_code}}
+</div>
+<div class="row">
+  <ul class="tabs" materialize="tabs">
+    <li class="tab col s4"><a href="#general">General</a></li>
+    <li class="tab col s4"><a href="#general">Main Location</a></li>
+    <li class="tab col s4 uptracker-dropdown">
+      <a href="#general" materialize="dropdown" data-activates="location_dropdown">
+        {{currentLocation}}
+        <i class="caret"></i>
+      </a>
+      <ul id="location_dropdown" class="dropdown-content">
+        <li *ngFor="let location of locationArr" (click)="chooseLocation(location)" [class.active]="location == currentLocation">
+          {{location}}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<div id="general">
+  <div class="inner" (click)="currentLocation = 1231231">
+    <div class="info">
+      <div class="row" *ngIf="vendor.address.street_1 || vendor.address.street_2 || vendor.address.country || vendor.address.city || vendor.address.state">
+        <div class="col s4 label">Address</div>
+        <div class="col s8">
+          <div *ngIf="vendor.address.street_1 || vendor.address.street_2">{{vendor.address.street_1}}, {{vendor.address.street_2}}</div>
+          {{vendor.address.city}}, {{vendor.address.state}} {{vendor.address.postal_code}}
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="vendor.phone">
-      <div class="col s4 label">Phone</div>
-      <div class="col s8">
-        {{vendor.phone}}
+      <div class="row" *ngIf="vendor.phone">
+        <div class="col s4 label">Phone</div>
+        <div class="col s8">
+          {{vendor.phone}}
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="vendor.fax">
-      <div class="col s4 label">Fax</div>
-      <div class="col s8">
-        {{vendor.fax}}
+      <div class="row" *ngIf="vendor.fax">
+        <div class="col s4 label">Fax</div>
+        <div class="col s8">
+          {{vendor.fax}}
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="vendor.email">
-      <div class="col s4 label">Email</div>
-      <div class="col s8">
-        {{vendor.email}}
+      <div class="row" *ngIf="vendor.email">
+        <div class="col s4 label">Email</div>
+        <div class="col s8">
+          {{vendor.email}}
+        </div>
       </div>
-    </div>
-    <div class="row" *ngIf="vendor.website">
-      <div class="col s4 label">Website</div>
-      <div class="col s8">
-        <a href="{{vendor.website}}">{{vendor.website}}</a>
+      <div class="row" *ngIf="vendor.website">
+        <div class="col s4 label">Website</div>
+        <div class="col s8">
+          <a href="{{vendor.website}}">{{vendor.website}}</a>
+        </div>
       </div>
-    </div>
-    <div class="row buttons center-align">
-      <button
-          type="button"
-          class="uptracker-form-btn btn white-text waves-effect waves-light"
-          (click)="editVendor(vendor)">
-        Edit
-      </button>
+      <div class="row buttons center-align">
+        <button
+            type="button"
+            class="uptracker-form-btn btn white-text waves-effect waves-light"
+            (click)="editVendor(vendor)">
+          Edit
+        </button>
+      </div>
     </div>
   </div>
 </div>
+<!--<div id="main">-->
+  <!--<div class="inner">-->
+    <!--main-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div id="satelite">-->
+  <!--<div class="inner">-->
+    <!--satelite-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div *ngFor="let location of locationArr" id="#{{location}}">{{location}}</div>-->

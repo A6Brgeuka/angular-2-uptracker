@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 export class SpinnerService {
   loading$: Observable<any>;
   private updateSpinner$: Subject<any> = new Subject<any>();
+  private counter: number = 0;
 
   constructor() {
     this.loading$ = Observable.merge(
@@ -14,10 +15,13 @@ export class SpinnerService {
   }
   
   show() {
+    this.counter++;
     this.updateSpinner$.next(true);
   }
 
   hide() {
-    this.updateSpinner$.next(false);
+    this.counter--;
+    if  (this.counter == 0)
+      this.updateSpinner$.next(false);
   }
 }

@@ -37,11 +37,9 @@ export class ResetPasswordComponent implements OnInit {
     });
 
     // token validation
-    this.spinnerService.show();
     this.userService.forgotPasswordTokenValidation(this.tokenParam)
         .subscribe(
             (res:any) => {
-              this.spinnerService.hide();
               if (res.data.valid_token) {
                 this.updatePasswordData.user_id = res.data.user_id;
                 this.updatePasswordData.fp_token = this.tokenParam;
@@ -61,10 +59,8 @@ export class ResetPasswordComponent implements OnInit {
       this.toasterService.pop('error', 'The passwords should be similar.');
     } else {
       this.updatePasswordData.password = this.userPass.password;
-      this.spinnerService.show();
       this.userService.updatePassword(this.updatePasswordData)
           .subscribe((res: any) => {
-            this.spinnerService.hide();
             this.toasterService.pop('', res.message);
             this.router.navigate(['/login']);
           });
