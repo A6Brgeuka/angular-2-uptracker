@@ -16,16 +16,16 @@
 </div>
 <div class="row">
   <ul class="tabs" materialize="tabs">
-    <li class="tab col s4"><a href="#general">General</a></li>
-    <li class="tab col s4"><a href="#general">Main Location</a></li>
+    <li class="tab col s4"><a href="#general" (click)="sateliteLocationActive = false">General</a></li>
+    <li class="tab col s4"><a href="#general" (click)="sateliteLocationActive = false">Main Location</a></li>
     <li class="tab col s4 uptracker-dropdown">
-      <a href="#general" materialize="dropdown" data-activates="location_dropdown">
-        {{currentLocation}}
+      <a href="#general" materialize="dropdown" data-activates="location_dropdown" [class.active1]="sateliteLocationActive">
+        <span>{{currentLocation.name}}</span>
         <i class="caret"></i>
       </a>
       <ul id="location_dropdown" class="dropdown-content">
-        <li *ngFor="let location of locationArr" (click)="chooseLocation(location)" [class.active]="location == currentLocation">
-          {{location}}
+        <li *ngFor="let location of locationArr" (click)="chooseLocation(location)" [class.active]="location.name == currentLocation.name">
+          {{location.name}}
         </li>
       </ul>
     </li>

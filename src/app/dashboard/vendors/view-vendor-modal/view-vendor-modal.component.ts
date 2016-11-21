@@ -5,6 +5,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { VendorModel } from '../../../models/index';
+import { UserService } from '../../../core/services/index';
 
 export class ViewVendorModalContext extends BSModalContext {
   public vendor: VendorModel;
@@ -20,15 +21,18 @@ export class ViewVendorModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
+  subscribers: any;
   context: ViewVendorModalContext;
   public vendor: VendorModel;
-  public locationArr: any = [
-    'sat1', 'sattt2', 'satttttttt3'
-  ];
-  public currentLocation: any = 'Satelite Location';
+  public locationArr: any = [];
+  public currentLocation: any = {
+    name: 'Satelite Location'
+  };
+  public sateliteLocationActive: boolean = false;
 
   constructor(
-      public dialog: DialogRef<ViewVendorModalContext>
+      public dialog: DialogRef<ViewVendorModalContext>,
+      public userService: UserService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -36,6 +40,13 @@ export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewV
 
   ngOnInit(){
     this.vendor = new VendorModel(this.context.vendor);
+    this.subscribers = this.userService.selfData$
+        .filter(() => {
+          return !this.userService.isGuest();
+        })
+        .subscribe((res: any) => {
+          this.locationArr = res.account.locations;
+        });
   }
 
   dismissModal(){
@@ -51,6 +62,9 @@ export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewV
   }
 
   chooseLocation(location){
+    this.sateliteLocationActive = true;
     this.currentLocation = location;
   }
+
+
 }

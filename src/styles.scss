@@ -50,13 +50,23 @@ a{
   position:relative;
   text-align:center;
 
-  .caret{
-    display:inline-block;
-    background:url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
-    width:10px;
-    height:6px;
-    vertical-align: middle;
-    margin-left:5px;
+  a{
+    span{
+      max-width: calc(100% - 15px);
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+    }
+
+    .caret{
+      display:inline-block;
+      background:url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
+      width:10px;
+      height:6px;
+      vertical-align: middle;
+      margin-left:5px;
+    }
   }
 
   .dropdown-content{
