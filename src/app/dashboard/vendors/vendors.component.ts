@@ -98,5 +98,9 @@ export class VendorsComponent implements OnInit {
     let value = event.target.value;
     this.sortBy$.next(value);
   }
+  
+  requestVendor(){
+    
+  }
 
 }

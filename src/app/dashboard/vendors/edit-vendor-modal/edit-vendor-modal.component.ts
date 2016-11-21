@@ -32,10 +32,10 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   public currencyDirty: boolean = false;
   public currencySign: string ='$';
   public amountMask: any = createNumberMask({
-    allowDecimal: false,
+    allowDecimal: true,
     prefix: ''
   });
-  public discountMask: any = [/\d/, /\d/, /\d/];
+  public discountMask: any = this.amountMask; //[/\d/, /\d/, /\d/];
   public priorityMargin: string = '0';
   
   public vendorFormPhone: string = null;
