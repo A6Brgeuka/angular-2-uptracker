@@ -43,6 +43,8 @@
               </select>
             </div>
           </div>
+        </div>
+        <div class="input row">
           <div class="col s12 m6 with-helper">
             <div class="helper"></div>
             <div class="label">Annual Gross Income</div>
@@ -63,8 +65,6 @@
               Annual Income is required.
             </div>
           </div>
-        </div>
-        <div class="input row">
           <div class="col s12 m6 with-helper">
             <div class="helper"></div>
             <div class="label">Annual Inventory Budget</div>
@@ -84,26 +84,6 @@
             </div>
             <div [hidden]="budget.valid || budget.pristine" class="error red-text left-align">
               Annual Inventory Budget is required.
-            </div>
-          </div>
-          <div class="col s12 m6 with-helper">
-            <div class="helper"></div>
-            <div class="label">Total Net Receipts</div>
-            <div class="prefix-input">
-              <div class="prefix" [innerHTML]="viewCurrencySign()"></div>
-              <input
-                  id="receipts"
-                  class="validate col s12"
-                  placeholder="Enter Value"
-                  [(ngModel)]="accounting.annual_net_revenue"
-                  [textMask]="{mask: amountMask, guide: false}"
-                  name="receipts"
-                  #receipts="ngModel"
-                  required
-                  type="text">
-            </div>
-            <div [hidden]="receipts.valid || receipts.pristine" class="error red-text left-align">
-              Total Net Receipts is required.
             </div>
           </div>
         </div>

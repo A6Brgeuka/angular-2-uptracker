@@ -27,6 +27,12 @@ export class AccountService extends ModelService{
   departmentCollection$ = Observable.empty();
   roleCollection$ = Observable.empty();
 
+  onboardAccounting: any = {
+    total: [],
+    budget_distribution: [],
+    currency: 'USD'
+  };;
+
   public appConfig: AppConfig;
   
   constructor(

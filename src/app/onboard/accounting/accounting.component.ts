@@ -44,11 +44,7 @@ export class AccountingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accounting = {
-      total: [],
-      budget_distribution: [],
-      currency: 'USD'
-    };
+    this.accounting = this.accountService.onboardAccounting;
     this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) { 
         this.locationArr = res.account.locations;
