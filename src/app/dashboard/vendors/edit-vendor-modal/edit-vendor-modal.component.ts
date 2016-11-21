@@ -52,8 +52,11 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   // options = {
   //   readAs: 'File'
   // };
-  public files$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public files$: Observable<any>;
+  public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   private fileArr: any = [];
+  private oldFileArr: any = [];
 
   constructor(
       public dialog: DialogRef<EditVendorModalContext>,
@@ -74,8 +77,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
 
     if (this.vendor.id){
       this.vendor.discount_percentage *= 100;
-      this.fileArr = this.vendor.documents;
-      this.files$.next(this.fileArr);
+      this.oldFileArr = this.vendor.documents;
+      this.oldFiles$.next(this.oldFileArr);
 
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
@@ -87,6 +90,11 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
+    });
+
+    this.files$ = Observable.combineLatest(this.newFiles$, this.oldFiles$, (newFiles, oldFiles) => {
+      let files = _.union(oldFiles, newFiles);
+      return files;
     });
   }
 
@@ -168,7 +176,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     // TODO: Remove after testing
     // this.formData.append('documents[]', file);
     this.fileArr.push(file);
-    this.files$.next(this.fileArr);
+    this.newFiles$.next(this.fileArr);
   }
 
   onSubmit(){
@@ -176,19 +184,28 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.vendor.rep_office_phone = this.selectedCountry[2] + ' ' + this.vendorFormPhone;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
+    this.vendor.documents = null;
     _.each(this.vendor, (value, key) => {
       if (value)
         this.formData.append(key, value);
     });
 
+    // append new files
     let i = 0;
     _.each(this.fileArr, (value, key) => {
-      this.formData.append('documents['+i+']', this.fileArr[i]);
+      this.formData.append('new_documents['+i+']', this.fileArr[i]);
       i++;
     });
 
+    // append old files
+    let j = 0;
+    _.each(this.fileArr, (value, key) => {
+      this.formData.append('documents['+j+']', this.oldFileArr[j]);
+      j++;
+    });
+
     this.vendorService.editAccountVendor(this.formData).subscribe(
-        (res: any) => { debugger;
+        (res: any) => {
           this.closeModal();
         }
     );
