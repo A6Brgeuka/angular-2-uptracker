@@ -47,4 +47,8 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   editUser(user = null){
     this.closeModal(user);
   }
+  
+  deleteUser(user = null){
+    
+  }
 }

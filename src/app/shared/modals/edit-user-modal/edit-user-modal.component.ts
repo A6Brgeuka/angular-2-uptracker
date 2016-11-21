@@ -246,4 +246,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         }
     );
   }
+
+  deleteUser(user = null){
+    
+  }
 }

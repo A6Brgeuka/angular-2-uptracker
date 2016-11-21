@@ -20,11 +20,20 @@
       <div class="ttl">Role</div>
       <div>{{user.role}}</div>
     </div>
-    <button
-        type="button"
-        class="uptracker-form-btn btn white-text waves-effect waves-light"
-        (click)="editUser(user)">
+    <div class="buttons">
+      <button
+          type="button"
+          class="uptracker-form-btn btn white-text waves-effect waves-light left"
+          (click)="editUser(user)">
         Edit
-    </button>
+      </button>
+      <button
+          type="button"
+          class="uptracker-form-btn btn white-text waves-effect waves-light left red lighten-1"
+          (click)="deleteUser(user)">
+        Delete
+      </button>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </div>
