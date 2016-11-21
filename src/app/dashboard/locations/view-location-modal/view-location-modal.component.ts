@@ -55,4 +55,8 @@ export class ViewLocationModal implements OnInit, CloseGuard, ModalComponent<Vie
   editLocation(location = null){
     this.closeModal(location);
   }
+
+  deleteLocation(location = null){
+
+  }
 }

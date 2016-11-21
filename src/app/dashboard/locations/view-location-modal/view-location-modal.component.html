@@ -21,11 +21,19 @@
       <div class="clearfix"></div>
       <div class="email">{{location.email}}</div>
     </div>
-    <button
-        type="button"
-        class="uptracker-form-btn btn white-text waves-effect waves-light"
-        (click)="editLocation(location)">
-        Edit
-    </button>
+    <div class="buttons">
+      <button
+          type="button"
+          class="uptracker-form-btn btn white-text waves-effect waves-light"
+          (click)="editLocation(location)">
+          Edit
+      </button>
+      <button
+          type="button"
+          class="uptracker-form-btn btn white-text waves-effect waves-light uptracker-form-delete-btn"
+          (click)="deleteLocation(location)">
+        Delete
+      </button>
+    </div>
   </div>
 </div>

@@ -170,4 +170,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         }
     );
   }
+
+  deleteLocation(data){
+    
+  }
 }
