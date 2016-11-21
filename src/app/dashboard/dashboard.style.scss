@@ -55,6 +55,7 @@
            &:hover,
            &.active{
              background-color:#198f90;
+             //color:#18a6b9;
              text-decoration: none;
            }
 
@@ -265,6 +266,7 @@
             .select {
               height:32px;
               margin-left:10px;
+              margin-bottom: 10px;
 
               .select-wrapper.ng-valid input.select-dropdown{
                 border-color:#d6d6d6;

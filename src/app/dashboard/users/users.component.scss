@@ -9,6 +9,18 @@
       margin-left:-20px;
 
       .item{
+        &.empty{
+          background:#f5f6f7 url(/assets/img/onboard/button-add-location.svg) no-repeat center center;
+          border:1px dashed #a7a7a7;
+          border-radius:5px;
+
+          &:hover{
+            cursor:pointer;
+          }
+        }
+      }
+
+      .item{
         display:inline-block;
         vertical-align:top;
         width:250px;

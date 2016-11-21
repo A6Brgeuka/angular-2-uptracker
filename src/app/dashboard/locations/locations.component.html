@@ -15,11 +15,13 @@
           <option value="location_type">Location type</option>
         </select>
       </div>
+      <div class="left">
+        <button type="button" (click)="editLocationModal()" class="uptracker-form-btn">Add New Location</button>
+      </div>
     </div>
     <div class="clearfix"></div>
   </div>
   <div class="list left-align">
-    <div class="empty item" (click)="editLocationModal()"></div>
     <div class="item" *ngFor="let location of locations$ | async">
       <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }" (click)="viewLocationModal(location)"></div>
       <div class="info">
@@ -27,5 +29,6 @@
         <div class="edit" (click)="editLocationModal(location)"></div>
       </div>
     </div>
+    <div class="empty item" (click)="editLocationModal()"></div>
   </div>
 </div>
