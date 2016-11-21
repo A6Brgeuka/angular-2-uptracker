@@ -84,14 +84,17 @@
     </div>
     <div class="col s12 m4">
       <div class="label left-align">Average Lead Time</div>
-      <input
-          id="lead_time"
-          placeholder="Enter Value"
-          class="validate col s12"
-          [(ngModel)]="vendor.avg_lead_time"
-          name="lead_time"
-          #lead_time="ngModel"
-          type="text">
+      <div class="suffix-input">
+        <input
+            id="lead_time"
+            placeholder="Enter Value"
+            class="validate col s12"
+            [(ngModel)]="vendor.avg_lead_time"
+            name="lead_time"
+            #lead_time="ngModel"
+            type="text">
+        <div class="suffix">days</div>
+      </div>
       <div [hidden]="lead_time.valid || lead_time.pristine" class="error red-text left-align">
         Average Lead Time is required.
       </div>
