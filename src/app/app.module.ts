@@ -5,12 +5,9 @@ import { routing }  from './app.routing';
 import { AppComponent } from './app.component';
 
 // modules
-import { ResourceModule } from 'ng2-resource-rest';
 import { CoreModule } from './core/core.module';
 import { NoContentModule } from './no-content/no-content.module';
 import { AuthModule } from './auth/auth.module';
-// import { DashboardModule } from './dashboard/dashboard.module';
-// import { OnboardModule } from './onboard/onboard.module';
 import { SpinnerModule } from './spinner/spinner.module';
 
 @NgModule({
@@ -21,12 +18,9 @@ import { SpinnerModule } from './spinner/spinner.module';
     BrowserModule,
     CoreModule,
     routing,
-    ResourceModule.forRoot(),
 
     AuthModule,
     NoContentModule,
-    // DashboardModule,
-    // OnboardModule,
     SpinnerModule
   ],
   providers: [],
