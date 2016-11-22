@@ -6,8 +6,9 @@
       width: 153px;
       height: 34px;
       padding-right: 35px;
-      background: url(/assets/img/logo.svg) no-repeat center center;
-      background-size: auto 100%;
+      // TODO: remove after testing
+      //background: url(/assets/img/logo.svg) no-repeat center center;
+      //background-size: auto 100%;
     }
   }
 
@@ -32,10 +33,17 @@
         padding:15px 7px 0 0;
 
         a{
-          background-image: url(/assets/img/icon-nav-uptracker.svg);
-          width:26px;
-          height:45px;
+          // TODO: remove after testing
+          //background-image: url(/assets/img/icon-nav-uptracker.svg);
+          //width:26px;
+          //height:45px;
           padding-right:0;
+
+          height:34px;
+          width:22px;
+          background: url(/assets/img/logo.svg) no-repeat right center;
+          background-size:auto 100%;
+          transition: width .3s ease-out 0.05s;
         }
       }
 
