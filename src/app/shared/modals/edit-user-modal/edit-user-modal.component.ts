@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -48,6 +48,10 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public showCustomRole: boolean = false;
   public addPresetForm: boolean = false;
   public preset: any = {};
+
+  @ViewChild('tabProfile') tabProfile: ElementRef;
+  @ViewChild('tabPermissions') tabPermissions: ElementRef;
+  @ViewChild('tabTemplate') tabTemplate: ElementRef;
 
   constructor(
       public zone: NgZone,
@@ -245,6 +249,18 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
           this.closeModal();
         }
     );
+  }
+
+  nextTab(){
+    if (this.tabProfile.nativeElement.className == 'active')
+      this.tabPermissions.nativeElement.click();
+    else this.tabTemplate.nativeElement.click();
+  }
+
+  prevTab(){
+    if (this.tabTemplate.nativeElement.className == 'active')
+      this.tabPermissions.nativeElement.click();
+    else this.tabProfile.nativeElement.click();
   }
 
   deleteUser(user = null){

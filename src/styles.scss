@@ -560,6 +560,18 @@ button{
       @include range-thumb-disabled;
     }
   }
+
+  .back-btn{
+    background:transparent !important;
+    width:auto;
+    color:#33c6d9;
+    text-align:left;
+    padding:0;
+
+    &:hover{
+      text-decoration:underline;
+    }
+  }
 }
 
 .uptracker-form button,
@@ -661,7 +673,6 @@ modal-overlay{
 
   .modal-content{
     padding:60px 60px 75px;
-    //box-shadow: 0 3px 9px rgba(0,0,0,.5)
 
     .close{
       width:41px;
@@ -697,6 +708,15 @@ modal-overlay{
           }
         }
       }
+    }
+  }
+}
+
+@media all and (max-width: 480px){
+  .modal{
+    .modal-content {
+      padding-left: 15px;
+      padding-right: 15px;
     }
   }
 }

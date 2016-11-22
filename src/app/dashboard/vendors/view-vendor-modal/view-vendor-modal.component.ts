@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -22,7 +22,7 @@ export class ViewVendorModalContext extends BSModalContext {
   styleUrls: ['./view-vendor-modal.component.scss']
 })
 @DestroySubscribers()
-export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
+export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
   subscribers: any = {};
   context: ViewVendorModalContext;
   public vendor: VendorModel;
@@ -57,7 +57,6 @@ export class ViewVendorModal implements OnInit, CloseGuard, ModalComponent<ViewV
 
   ngAfterViewInit(){
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
-      // this.setSecondaryLocation(res);
       this.secondaryLocation = res || { name: 'Satelite Location' };
       if (res){
         this.chooseLocation(res);
