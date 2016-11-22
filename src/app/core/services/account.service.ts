@@ -1,7 +1,7 @@
 import { Injectable, Injector, Inject } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject, BehaviorSubject } from 'rxjs/Rx';
+import { isUndefined } from 'util';
 import * as _ from 'lodash';
 import { Restangular } from 'ng2-restangular';
 
@@ -9,7 +9,6 @@ import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { AppConfig, APP_CONFIG } from '../../app.config';
-import {isUndefined} from "util";
 
 @Injectable()
 @Subscribers({
@@ -31,7 +30,9 @@ export class AccountService extends ModelService{
     total: [],
     budget_distribution: [],
     currency: 'USD'
-  };;
+  };
+  locations$: Observable<any>;
+  dashboardLocation$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   public appConfig: AppConfig;
   
@@ -57,6 +58,14 @@ export class AccountService extends ModelService{
       //update user after update account
       this.userService.updateSelfDataField('account', this.selfData);
     });
+
+    this.locations$ = this.userService.selfData$
+        .filter(() => {
+          return !this.userService.isGuest();
+        })
+        .map((res: any) => {
+          return res.account.locations;
+        });
   }
   
   addSubscribers(){
@@ -82,7 +91,7 @@ export class AccountService extends ModelService{
 
   getLocations(){
     let account = this.userService.selfData.account;
-    let locationsLoaded = account ?  !isUndefined(account.locations) ? true : false : false;
+    let locationsLoaded = account ? !isUndefined(account.locations) ? true : false : false;
     if (!locationsLoaded) {
       // TODO: remove after testing restangular
       // let data: any = {

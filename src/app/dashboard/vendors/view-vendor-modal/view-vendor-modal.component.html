@@ -16,15 +16,16 @@
 </div>
 <div class="row">
   <ul class="tabs" materialize="tabs">
-    <li class="tab col s4"><a href="#general" (click)="sateliteLocationActive = false">General</a></li>
-    <li class="tab col s4"><a href="#general" (click)="sateliteLocationActive = false">Main Location</a></li>
-    <li class="tab col s4 uptracker-dropdown">
-      <a href="#general" materialize="dropdown" data-activates="location_dropdown" [class.active1]="sateliteLocationActive">
-        <span>{{currentLocation.name}}</span>
+    <li class="tab col s4"><a href="#general" (click)="chooseLocation()">General</a></li>
+    <li class="tab col s4"><a href="#general" (click)="chooseLocation(primaryLocation)">Main Location</a></li>
+    <li class="tab col s4" *ngIf="(locations$ | async)?.length == 1"><a href="#general">{{(locations$ | async)[0].name}}</a></li>
+    <li class="tab col s4 uptracker-dropdown" *ngIf="(locations$ | async)?.length > 1">
+      <a href="#general" materialize="dropdown" data-activates="location_dropdown" [class.active1]="sateliteLocationActive" #secondary>
+        <span>{{secondaryLocation?.name}}</span>
         <i class="caret"></i>
       </a>
       <ul id="location_dropdown" class="dropdown-content">
-        <li *ngFor="let location of locationArr" (click)="chooseLocation(location)" [class.active]="location.name == currentLocation.name">
+        <li *ngFor="let location of locations$ | async" (click)="chooseLocation(location)" [class.active]="location.name == currentLocation?.name">
           {{location.name}}
         </li>
       </ul>
@@ -32,7 +33,7 @@
   </ul>
 </div>
 <div id="general">
-  <div class="inner" (click)="currentLocation = 1231231">
+  <div class="inner">
     <div class="info">
       <div class="row" *ngIf="vendor.address.street_1 || vendor.address.street_2 || vendor.address.country || vendor.address.city || vendor.address.state">
         <div class="col s4 label">Address</div>
@@ -76,14 +77,3 @@
     </div>
   </div>
 </div>
-<!--<div id="main">-->
-  <!--<div class="inner">-->
-    <!--main-->
-  <!--</div>-->
-<!--</div>-->
-<!--<div id="satelite">-->
-  <!--<div class="inner">-->
-    <!--satelite-->
-  <!--</div>-->
-<!--</div>-->
-<!--<div *ngFor="let location of locationArr" id="#{{location}}">{{location}}</div>-->
