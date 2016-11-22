@@ -11,6 +11,7 @@ export class AccountVendorModel {
   ext_account_number: string = null;
   fax: string = null;
   hidden: boolean = null;
+  location_id: string = null;
   logo: string = null;
   name: string = null;
   notes: string = null;
@@ -23,7 +24,7 @@ export class AccountVendorModel {
   rep_mobile_phone: string = null;
   rep_name: string =  null;
   rep_office_phone: string = null;
-  shipping_handling: number = null;
+  shipping_handling: any = null;
   updated_at: string = null;
   vendor_id: string = null;
   website: string = null;

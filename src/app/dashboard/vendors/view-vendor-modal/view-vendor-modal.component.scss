@@ -47,68 +47,6 @@
     }
   }
 
-  .tabs{
-    margin-bottom:20px;
-    overflow:visible;
-    height:38px;
-    overflow:visible;
-
-    .tab{
-      height:38px;
-      line-height:38px;
-
-      a{
-        transition: none;
-      }
-
-      &.uptracker-dropdown{
-        position:static;
-
-        a{
-          .caret{
-            opacity:.4;
-          }
-
-          &:hover,
-          &.active1{
-            span{
-              color:#000;
-            }
-
-            .caret{
-              opacity:.8;
-            }
-          }
-        }
-      }
-
-      .select{
-        .select-wrapper {
-          max-width:165px;
-          margin:0 auto;
-
-          .caret{
-            opacity:.45;
-          }
-
-          input.select-dropdown{
-            border:0;
-            height:38px;
-            text-align:right;
-            text-transform: uppercase;
-            color:#9a9c9e;
-            font-family: Ubuntu;
-            padding-right:25px;
-          }
-
-          .dropdown-content{
-            margin-top:0;
-          }
-        }
-      }
-    }
-  }
-
   #general{
     display:block !important;
   }

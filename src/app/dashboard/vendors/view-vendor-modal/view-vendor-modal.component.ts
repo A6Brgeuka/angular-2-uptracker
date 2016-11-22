@@ -23,7 +23,7 @@ export class ViewVendorModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
-  subscribers: any = {};
+  private subscribers: any = {};
   context: ViewVendorModalContext;
   public vendor: VendorModel;
   public locationArr: any = [];

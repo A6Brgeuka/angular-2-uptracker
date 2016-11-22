@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
@@ -23,7 +23,8 @@ export class EditVendorModalContext extends BSModalContext {
   styleUrls: ['./edit-vendor-modal.component.scss']
 })
 @DestroySubscribers()
-export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditVendorModalContext> {
+export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<EditVendorModalContext> {
+  private subscribers: any = {};
   private context: EditVendorModalContext;
   public vendor: AccountVendorModel;
   private formData: FormData = new FormData();
@@ -48,19 +49,22 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
   fileIsOver: boolean = false;
-  // TODO: remove after testing
-  // options = {
-  //   readAs: 'File'
-  // };
   public files$: Observable<any>;
   public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   private fileArr: any = [];
   private oldFileArr: any = [];
 
+  public locations$: Observable<any>;
+  public currentLocation: any;
+  public sateliteLocationActive: boolean = false;
+  public primaryLocation: any;
+  public secondaryLocation: any;
+
+  @ViewChild('secondary') secondaryLocationLink: ElementRef;
+
   constructor(
       public dialog: DialogRef<EditVendorModalContext>,
-      private toasterService: ToasterService,
       private userService: UserService,
       private accountService: AccountService,
       private vendorService: VendorService,
@@ -71,23 +75,8 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
   }
 
   ngOnInit(){
-    let vendorData = this.context.vendor || {};
-    this.vendor = new AccountVendorModel(vendorData);
-    this.calcPriorityMargin(this.vendor.priority);
+    this.fillForm(this.context.vendor);
 
-    if (this.vendor.id){
-      this.vendor.discount_percentage *= 100;
-      this.oldFileArr = this.vendor.documents;
-      this.oldFiles$.next(this.oldFileArr);
-
-      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
-      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
-      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone);
-      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
-      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
-    }
-    
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
     });
@@ -96,6 +85,44 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
       let files = _.union(oldFiles, newFiles);
       return files;
     });
+
+    this.locations$ = this.accountService.locations$.map((res: any) => {
+      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+      let secondaryLocations = _.filter(res, (loc) => {
+        return this.primaryLocation != loc;
+      });
+      return secondaryLocations;
+    });
+  }
+
+  ngAfterViewInit(){
+    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
+      this.secondaryLocation = res || { name: 'Satelite Location' };
+      if (res){
+        this.chooseLocation(res);
+        this.secondaryLocationLink.nativeElement.click();
+      }
+    });
+  }
+
+  fillForm(vendor){ debugger;
+    let vendorData = vendor || {};
+    this.vendor = new AccountVendorModel(vendorData);
+    this.calcPriorityMargin(this.vendor.priority);
+
+    if (this.vendor.id){
+      this.vendor.discount_percentage *= 100;
+      this.oldFileArr = this.vendor.documents;
+      this.oldFiles$.next(this.oldFileArr);
+      this.newFiles$.next(null);
+
+      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
+      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
+      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
+      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone);
+      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
+      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
+    }
   }
 
   closeModal(){
@@ -185,6 +212,7 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     this.vendor.documents = null;
+    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
     _.each(this.vendor, (value, key) => {
       if (value)
         this.formData.append(key, value);
@@ -209,5 +237,17 @@ export class EditVendorModal implements OnInit, CloseGuard, ModalComponent<EditV
           this.closeModal();
         }
     );
+  }
+
+  chooseLocation(location = null){
+    if (location && location != this.primaryLocation) {
+      this.sateliteLocationActive = true;
+      this.secondaryLocation = location;
+    } else {
+      this.sateliteLocationActive = false;
+    }
+    this.currentLocation = location;
+    let currentVendor = {};
+    this.fillForm(currentVendor);
   }
 }
