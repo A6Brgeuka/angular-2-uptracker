@@ -12,7 +12,7 @@ export class VendorModel {
   website: string = null;
 
   priority: number = 0;
-  account_vendor: any = null;
+  account_vendor: any = [];
   
   constructor(obj?:any) {
     for (let field in obj) {

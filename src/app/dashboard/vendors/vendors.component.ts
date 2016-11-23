@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 
 import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
 import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
-import { UserService, AccountService, VendorService } from '../../core/services/index';
+import { VendorService } from '../../core/services/index';
 import { AccountVendorModel } from '../../models/index';
 
 
@@ -19,9 +19,6 @@ import { AccountVendorModel } from '../../models/index';
 })
 @DestroySubscribers()
 export class VendorsComponent implements OnInit {
-  public vendorArr: any = [];
-  private subscribers: any = {};
-  public searchKey: string = null;
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -32,8 +29,6 @@ export class VendorsComponent implements OnInit {
       vcRef: ViewContainerRef,
       overlay: Overlay,
       public modal: Modal,
-      private userService: UserService,
-      private accountService: AccountService,
       private vendorService: VendorService
   ) {
     overlay.defaultViewContainer = vcRef;
@@ -43,7 +38,6 @@ export class VendorsComponent implements OnInit {
     this.vendors$ = Observable
         .combineLatest(
             this.vendorService.combinedVendors$,
-            // combinedVendors$,
             this.sortBy$,
             this.searchKey$
         )
@@ -84,8 +78,12 @@ export class VendorsComponent implements OnInit {
   }
   
   editVendorModal(vendor = null){
-    let accountVendor = new AccountVendorModel(vendor.account_vendor);
-    accountVendor.vendor_id = vendor.id;
+    let accountVendor = vendor.account_vendor;
+    _.map(accountVendor, (data: any) => {
+      data.vendor_id = vendor.id;
+      return data;
+    });
+    // accountVendor.vendor_id = vendor.id;
     this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: accountVendor }, BSModalContext));
   }
 

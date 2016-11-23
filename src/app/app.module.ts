@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { routing }  from './app.routing';
@@ -15,7 +15,7 @@ import { SpinnerModule } from './spinner/spinner.module';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    // BrowserModule,
     CoreModule,
     routing,
 

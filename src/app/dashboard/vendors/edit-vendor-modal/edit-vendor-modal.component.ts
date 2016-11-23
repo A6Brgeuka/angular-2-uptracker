@@ -11,7 +11,7 @@ import { AccountService, ToasterService, UserService, PhoneMaskService, VendorSe
 import { AccountVendorModel } from '../../../models/index';
 
 export class EditVendorModalContext extends BSModalContext {
-  public vendor: AccountVendorModel;
+  public vendor: any;
 }
 
 @Component({
@@ -63,6 +63,19 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
+  private defaultPlaceholder: any = {
+    discount_percentage: "Enter Value",
+    shipping_handling: "Enter Value",
+    avg_lead_time: "Enter Value",
+    rep_name: "Enter full name",
+    rep_email: "username@email.com",
+    vendorFormPhone: "Enter phone number",
+    vendorFormPhone2: "Enter phone number",
+    vendorFormFax: "Enter fax number",
+    notes: ""
+  };
+  public placeholder: any = {};
+
   constructor(
       public dialog: DialogRef<EditVendorModalContext>,
       private userService: UserService,
@@ -75,16 +88,21 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   ngOnInit(){
-    this.fillForm(this.context.vendor);
+    this.vendor = new AccountVendorModel();
+    // this.fillForm(this.context.vendor);
 
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
     });
 
-    this.files$ = Observable.combineLatest(this.newFiles$, this.oldFiles$, (newFiles, oldFiles) => {
-      let files = _.union(oldFiles, newFiles);
-      return files;
-    });
+    this.files$ = Observable.combineLatest(
+        this.newFiles$,
+        this.oldFiles$,
+        (newFiles, oldFiles) => {
+          let files = _.union(oldFiles, newFiles);
+          return files;
+        }
+    );
 
     this.locations$ = this.accountService.locations$.map((res: any) => {
       this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
@@ -97,15 +115,29 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   ngAfterViewInit(){
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
+      this.chooseTabLocation(res);
       this.secondaryLocation = res || { name: 'Satelite Location' };
       if (res){
-        this.chooseLocation(res);
         this.secondaryLocationLink.nativeElement.click();
       }
     });
   }
 
-  fillForm(vendor){ debugger;
+  chooseTabLocation(location = null){
+    if (location && location != this.primaryLocation) {
+      this.sateliteLocationActive = true;
+      this.secondaryLocation = location;
+    } else {
+      this.sateliteLocationActive = false;
+    }
+    this.currentLocation = location; 
+    let currentVendor = _.find(this.context.vendor, {'location_id': this.currentLocation ? this.currentLocation.id : null});
+    this.fillForm(currentVendor);
+  }
+
+  fillForm(vendor){
+    this.oldFiles$.next(null);
+    this.newFiles$.next(null);
     let vendorData = vendor || {};
     this.vendor = new AccountVendorModel(vendorData);
     this.calcPriorityMargin(this.vendor.priority);
@@ -114,7 +146,6 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       this.vendor.discount_percentage *= 100;
       this.oldFileArr = this.vendor.documents;
       this.oldFiles$.next(this.oldFileArr);
-      this.newFiles$.next(null);
 
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
@@ -208,7 +239,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   onSubmit(){
     this.vendor.account_id = this.userService.selfData.account_id;
-    this.vendor.rep_office_phone = this.selectedCountry[2] + ' ' + this.vendorFormPhone;
+    this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     this.vendor.documents = null;
@@ -232,22 +263,12 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       j++;
     });
 
+    // debugger;
+
     this.vendorService.editAccountVendor(this.formData).subscribe(
         (res: any) => {
           this.closeModal();
         }
     );
-  }
-
-  chooseLocation(location = null){
-    if (location && location != this.primaryLocation) {
-      this.sateliteLocationActive = true;
-      this.secondaryLocation = location;
-    } else {
-      this.sateliteLocationActive = false;
-    }
-    this.currentLocation = location;
-    let currentVendor = {};
-    this.fillForm(currentVendor);
   }
 }

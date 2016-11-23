@@ -59,7 +59,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.secondaryLocation = res || { name: 'Satelite Location' };
       if (res){
-        this.chooseLocation(res);
+        this.chooseTabLocation(res);
         this.secondaryLocationLink.nativeElement.click();
       }
     });
@@ -77,7 +77,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.closeModal(vendor);
   }
 
-  chooseLocation(location = null){
+  chooseTabLocation(location = null){
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
       this.secondaryLocation = location;

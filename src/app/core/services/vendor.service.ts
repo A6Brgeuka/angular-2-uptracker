@@ -20,6 +20,7 @@ export class VendorService extends ModelService {
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
+  
   combinedVendors$: Observable<any>;
   accountVendors$: Observable<any> = Observable.empty();
 
@@ -48,8 +49,10 @@ export class VendorService extends ModelService {
             globalVendor = new VendorModel(globalVendor);
             _.each(accountVendors, (accountVendor: AccountVendorModel) => {
               if (accountVendor.vendor_id == globalVendor.id){
-                globalVendor.account_vendor = accountVendor;
-                globalVendor.priority = accountVendor.priority;
+                // globalVendor.account_vendor = accountVendor;
+                globalVendor.account_vendor.push(accountVendor);
+                if (!accountVendor.location_id)
+                  globalVendor.priority = accountVendor.priority;
               }
             });
             return globalVendor;
