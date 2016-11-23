@@ -80,6 +80,7 @@ export class VendorsComponent implements OnInit {
   editVendorModal(vendor = null){
     let accountVendor = vendor.account_vendor;
     accountVendor.vendor_id = vendor.id;
+    // TODO: remove after testing
     // _.map(accountVendor, (data: any) => {
     //   data.vendor_id = vendor.id;
     //   return data;

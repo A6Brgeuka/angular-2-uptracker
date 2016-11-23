@@ -59,7 +59,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
-  public secondaryLocation: any;
+  public secondaryLocation: any = { name: 'Satelite Location' };
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -116,8 +116,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   ngAfterViewInit(){
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.chooseTabLocation(res);
-      this.secondaryLocation = res || { name: 'Satelite Location' };
-      if (res){
+      if (res && res.id != this.primaryLocation.id){
         this.secondaryLocationLink.nativeElement.click();
       }
     });

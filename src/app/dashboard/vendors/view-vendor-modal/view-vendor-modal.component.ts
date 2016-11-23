@@ -25,13 +25,14 @@ export class ViewVendorModalContext extends BSModalContext {
 export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewVendorModalContext> {
   private subscribers: any = {};
   context: ViewVendorModalContext;
-  public vendor: VendorModel;
+  public vendor: any = {};
+  public allLocationsVendor: VendorModel;
   public locationArr: any = [];
   public locations$: Observable<any>;
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
-  public secondaryLocation: any;
+  public secondaryLocation: any = { name: 'Satelite Location' };
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -45,7 +46,24 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   ngOnInit(){
+    this.allLocationsVendor = new VendorModel(this.context.vendor);
+
+
+
+
+
     this.vendor = new VendorModel(this.context.vendor);
+
+
+
+
+
+
+
+
+
+
+
     this.locations$ = this.accountService.locations$.map((res: any) => {
       this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
       let secondaryLocations = _.filter(res, (loc) => {
@@ -57,9 +75,8 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   ngAfterViewInit(){
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
-      this.secondaryLocation = res || { name: 'Satelite Location' };
-      if (res){
-        this.chooseTabLocation(res);
+      this.chooseTabLocation(res);
+      if (res && res.id != this.primaryLocation.id){
         this.secondaryLocationLink.nativeElement.click();
       }
     });
@@ -85,5 +102,12 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       this.sateliteLocationActive = false;
     }
     this.currentLocation = location;
+
+    // // fill vendor info for modal view
+    // if (location){
+    //   this.vendor = new VendorModel();
+    // } else {
+    //   this.vendor = this.allLocationsVendor;
+    // }
   }
 }
