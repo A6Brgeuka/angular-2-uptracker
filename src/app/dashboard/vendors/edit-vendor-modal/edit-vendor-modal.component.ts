@@ -124,14 +124,27 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   chooseTabLocation(location = null){
+    // set placeholders
+    if (location) {
+      let allLocationsVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': null}) || {};
+      _.each(allLocationsVendor, (value, key) => {
+        key == 'discount_percentage' ? allLocationsVendor[key] = value*100 : allLocationsVendor[key] = value;
+        this.placeholder[key] = allLocationsVendor[key] || this.defaultPlaceholder[key];
+      });
+    } else {
+      this.placeholder = this.defaultPlaceholder;
+    }
+
+    // check if secondary location was chosen
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
       this.secondaryLocation = location;
     } else {
       this.sateliteLocationActive = false;
     }
-    this.currentLocation = location; 
-    let currentVendor = _.find(this.context.vendor, {'location_id': this.currentLocation ? this.currentLocation.id : null});
+
+    this.currentLocation = location;
+    let currentVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': this.currentLocation ? this.currentLocation.id : null});
     this.fillForm(currentVendor);
   }
 
@@ -239,6 +252,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   onSubmit(){
     this.vendor.account_id = this.userService.selfData.account_id;
+    this.vendor.vendor_id = this.context.vendor.vendor_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;

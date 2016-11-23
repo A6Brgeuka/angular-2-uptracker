@@ -79,10 +79,11 @@ export class VendorsComponent implements OnInit {
   
   editVendorModal(vendor = null){
     let accountVendor = vendor.account_vendor;
-    _.map(accountVendor, (data: any) => {
-      data.vendor_id = vendor.id;
-      return data;
-    });
+    accountVendor.vendor_id = vendor.id;
+    // _.map(accountVendor, (data: any) => {
+    //   data.vendor_id = vendor.id;
+    //   return data;
+    // }); debugger;
     // accountVendor.vendor_id = vendor.id;
     this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: accountVendor }, BSModalContext));
   }

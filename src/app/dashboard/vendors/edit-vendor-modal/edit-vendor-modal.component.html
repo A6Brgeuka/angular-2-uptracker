@@ -71,7 +71,7 @@
           <div class="suffix">%</div>
           <input
               id="discount"
-              placeholder="Enter Value"
+              placeholder="{{placeholder.discount_percentage}}"
               class="validate col s12"
               [(ngModel)]="vendor.discount_percentage"
               [textMask]="{mask: discountMask, guide: false}"
@@ -90,7 +90,7 @@
           <input
               id="shipping"
               class="validate col s12"
-              placeholder="Enter Value"
+              placeholder="{{placeholder.shipping_handling}}"
               [(ngModel)]="vendor.shipping_handling"
               [textMask]="{mask: amountMask, guide: false}"
               name="shipping"
@@ -106,7 +106,7 @@
         <div class="suffix-input">
           <input
               id="lead_time"
-              placeholder="Enter Value"
+              placeholder="{{placeholder.avg_lead_time}}"
               class="validate col s12"
               [(ngModel)]="vendor.avg_lead_time"
               name="lead_time"
@@ -169,7 +169,7 @@
         <div class="label left-align">Rep Name</div>
         <input
             id="name"
-            placeholder="Enter full name"
+            placeholder="{{placeholder.rep_name}}"
             class="validate col s12"
             [(ngModel)]="vendor.rep_name"
             name="name"
@@ -184,7 +184,7 @@
         <input
             id="email"
             class="validate col s12"
-            placeholder="username@email.com"
+            placeholder="{{placeholder.rep_email}}"
             [(ngModel)]="vendor.rep_email"
             name="email"
             #email="ngModel"
@@ -204,7 +204,7 @@
           <input
               [textMask]="phoneMask"
               id="phone"
-              placeholder="Enter phone number"
+              placeholder="{{placeholder.vendorFormPhone}}"
               class="validate col s12"
               [(ngModel)]="vendorFormPhone"
               name="phone"
@@ -224,7 +224,7 @@
           <input
               [textMask]="phoneMask"
               id="phone2"
-              placeholder="Enter phone number"
+              placeholder="{{placeholder.vendorFormPhone2}}"
               class="validate col s12"
               [(ngModel)]="vendorFormPhone2"
               name="phone2"
@@ -244,7 +244,7 @@
           <input
               [textMask]="phoneMask"
               id="fax"
-              placeholder="Enter fax number"
+              placeholder="{{placeholder.vendorFormFax}}"
               class="validate col s12"
               [(ngModel)]="vendorFormFax"
               name="fax"
