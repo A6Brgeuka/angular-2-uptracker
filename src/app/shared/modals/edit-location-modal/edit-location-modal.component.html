@@ -206,7 +206,8 @@
     <button
         type="button"
         class="btn white-text waves-effect waves-light uptracker-form-delete-btn"
-        (click)="deleteLocation(user)">
+        *ngIf="location.id"
+        (click)="deleteLocation(location)">
       Delete
     </button>
   </div>

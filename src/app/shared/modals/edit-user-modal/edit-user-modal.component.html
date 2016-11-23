@@ -222,6 +222,7 @@
     <button
         type="button"
         class="btn white-text waves-effect waves-light uptracker-form-delete-btn"
+        *ngIf="user.id"
         (click)="deleteUser(user)">
       Delete
     </button>
