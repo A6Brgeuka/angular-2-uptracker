@@ -265,7 +265,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
     _.each(this.vendor, (value, key) => {
-      if (value)
+      if (value != null)
         this.formData.append(key, value);
     });
 
