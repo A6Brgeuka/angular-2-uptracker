@@ -75,6 +75,9 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   editVendor(vendor = null){
+    if (this.currentLocation) {
+      this.accountService.dashboardLocation$.next(this.currentLocation);
+    }
     this.closeModal(vendor);
   }
 
@@ -96,7 +99,6 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
         if (value)
             this.vendor[key] = value;
       });
-      console.log(222, this.vendor);
     }
   }
 }

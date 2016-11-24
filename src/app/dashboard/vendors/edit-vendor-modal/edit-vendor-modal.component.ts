@@ -89,7 +89,6 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   ngOnInit(){
     this.vendor = new AccountVendorModel();
-    // this.fillForm(this.context.vendor);
 
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
@@ -122,7 +121,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     });
   }
 
-  chooseTabLocation(location = null){ debugger;
+  chooseTabLocation(location = null){ 
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': null}) || {};
