@@ -176,9 +176,9 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   deleteLocation(data){
-    this.subscribers.deleteLocationSubscription = this.accountService.deleteUser(data).subscribe((res: any) => {
-      debugger;
-      this.dismissModal();
-    });
+    // this.subscribers.deleteLocationSubscription = this.accountService.deleteUser(data).subscribe((res: any) => {
+    //   debugger;
+    //   this.dismissModal();
+    // });
   }
 }

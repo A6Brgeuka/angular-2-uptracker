@@ -121,7 +121,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     });
   }
 
-  chooseTabLocation(location = null){ 
+  chooseTabLocation(location = null){
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': null}) || {};
@@ -173,6 +173,10 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
     }
+  }
+
+  dismissModal(){
+    this.dialog.dismiss();
   }
 
   closeModal(){
@@ -264,6 +268,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
+
     _.each(this.vendor, (value, key) => {
       if (value != null)
         this.formData.append(key, value);
@@ -283,7 +288,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       j++;
     });
 
-    this.vendorService.editAccountVendor(this.formData).subscribe(
+    this.vendorService.editAccountVendor(this.vendor, this.formData).subscribe(
         (res: any) => {
           this.closeModal();
         }

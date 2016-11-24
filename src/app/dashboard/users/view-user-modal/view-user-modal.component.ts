@@ -52,9 +52,9 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   }
   
   deleteUser(user){
-    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
-      debugger;
-      this.dismissModal();
-    });
+    // this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
+    //   debugger;
+    //   this.dismissModal();
+    // });
   }
 }

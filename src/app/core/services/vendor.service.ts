@@ -166,7 +166,7 @@ export class VendorService extends ModelService {
   addAccountVendor(data){
     let account = this.userService.selfData.account;
     let entity$ = this.restangular
-        .one('accounts', data.get('account_id'))
+        .one('accounts', account.id)
         .all('vendors')
         // .allUrl('post', 'http://api.pacific-grid.2muchcoffee.com/v1/deployments/test-post')
         .post(data);
@@ -186,16 +186,15 @@ export class VendorService extends ModelService {
         });
   }
 
-  editAccountVendor(data){ 
-    let editVendor = data.get('id');
+  editAccountVendor(vendorInfo: any, data){
     let account = this.userService.selfData.account;
     // if no id then add new vendor
-    if (!editVendor) {
+    if (!vendorInfo.id) {
       return this.addAccountVendor(data);
     } else {
       let entity$ = this.restangular
-          .one('accounts', data.get('account_id'))
-          .one('vendors', data.get('id'))
+          .one('accounts', vendorInfo.account_id)
+          .one('vendors', vendorInfo.id)
           .customPUT(data, undefined, undefined, {'Content-Type': undefined});
 
       return entity$
