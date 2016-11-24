@@ -17,7 +17,7 @@
 <div class="row">
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col s4"><a href="#general" (click)="chooseTabLocation()">General</a></li>
-    <li class="tab col s4"><a href="#general" (click)="chooseTabLocation(primaryLocation)">Main Location</a></li>
+    <li class="tab col s4"><a href="#general" (click)="chooseTabLocation(primaryLocation)" [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">Main Location</a></li>
     <li class="tab col s4" *ngIf="(locations$ | async)?.length == 1"><a href="#general" (click)="chooseTabLocation(secondaryLocation)">{{(locations$ | async)[0].name}}</a></li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(locations$ | async)?.length > 1">
       <a href="#general" materialize="dropdown" data-activates="location_dropdown" [class.active1]="sateliteLocationActive" #secondary>
@@ -35,23 +35,23 @@
 <div id="general">
   <div class="inner">
     <div class="info">
-      <div class="row" *ngIf="vendor.address.street_1 || vendor.address.street_2 || vendor.address.country || vendor.address.city || vendor.address.state">
+      <div class="row" *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2 || vendor?.address?.country || vendor?.address?.city || vendor?.address?.state">
         <div class="col s4 label">Address</div>
         <div class="col s8">
-          <div *ngIf="vendor.address.street_1 || vendor.address.street_2">{{vendor.address.street_1}}, {{vendor.address.street_2}}</div>
-          {{vendor.address.city}}, {{vendor.address.state}} {{vendor.address.postal_code}}
+          <div *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2">{{vendor?.address?.street_1}}, {{vendor?.address?.street_2}}</div>
+          {{vendor?.address?.city}}, {{vendor?.address?.state}} {{vendor?.address?.postal_code}}
         </div>
       </div>
       <div class="row" *ngIf="vendor.phone">
         <div class="col s4 label">Phone</div>
         <div class="col s8">
-          {{vendor.phone}}
+          {{vendor.rep_office_phone || vendor.rep_mobile_phone || vendor.phone}}
         </div>
       </div>
       <div class="row" *ngIf="vendor.fax">
         <div class="col s4 label">Fax</div>
         <div class="col s8">
-          {{vendor.fax}}
+          {{vendor.rep_fax || vendor.fax}}
         </div>
       </div>
       <div class="row" *ngIf="vendor.email">
@@ -60,10 +60,22 @@
           {{vendor.email}}
         </div>
       </div>
+      <div class="row" *ngIf="vendor.rep_name">
+        <div class="col s4 label">Rep Name</div>
+        <div class="col s8">
+          {{vendor.rep_name}}
+        </div>
+      </div>
       <div class="row" *ngIf="vendor.website">
         <div class="col s4 label">Website</div>
         <div class="col s8">
           <a href="{{vendor.website}}">{{vendor.website}}</a>
+        </div>
+      </div>
+      <div class="row" *ngIf="vendor.notes">
+        <div class="col s4 label">Notes</div>
+        <div class="col s8">
+          {{vendor.notes}}
         </div>
       </div>
       <div class="row buttons center-align">

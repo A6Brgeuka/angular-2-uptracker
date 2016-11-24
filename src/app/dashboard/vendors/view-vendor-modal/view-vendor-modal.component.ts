@@ -26,7 +26,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   private subscribers: any = {};
   context: ViewVendorModalContext;
   public vendor: any = {};
-  public allLocationsVendor: VendorModel;
+  private accountVendors: any;
   public locationArr: any = [];
   public locations$: Observable<any>;
   public currentLocation: any;
@@ -46,24 +46,8 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   ngOnInit(){
-    this.allLocationsVendor = new VendorModel(this.context.vendor);
-
-
-
-
-
+    this.accountVendors = this.context.vendor.account_vendor;
     this.vendor = new VendorModel(this.context.vendor);
-
-
-
-
-
-
-
-
-
-
-
     this.locations$ = this.accountService.locations$.map((res: any) => {
       this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
       let secondaryLocations = _.filter(res, (loc) => {
@@ -103,11 +87,16 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     }
     this.currentLocation = location;
 
-    // // fill vendor info for modal view
-    // if (location){
-    //   this.vendor = new VendorModel();
-    // } else {
-    //   this.vendor = this.allLocationsVendor;
-    // }
+    // fill vendor info for modal view vendor
+    this.vendor = new VendorModel(this.context.vendor);
+    if (location){
+      // this.vendor = new VendorModel();
+      let locationAccountVendor = _.find(this.accountVendors, {'location_id': this.currentLocation.id});
+      _.each(locationAccountVendor, (value, key) => {
+        if (value)
+            this.vendor[key] = value;
+      });
+      console.log(222, this.vendor);
+    }
   }
 }

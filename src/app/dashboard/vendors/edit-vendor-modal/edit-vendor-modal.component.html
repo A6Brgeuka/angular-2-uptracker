@@ -6,11 +6,11 @@
     <li class="tab col s4"><a href="#general" (click)="chooseTabLocation(primaryLocation)" [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">Main Location</a></li>
     <li class="tab col s4" *ngIf="(locations$ | async)?.length == 1"><a href="#general" (click)="chooseTabLocation(secondaryLocation)">{{(locations$ | async)[0].name}}</a></li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(locations$ | async)?.length > 1">
-      <a href="#general" materialize="dropdown" data-activates="location_dropdown" [class.active1]="sateliteLocationActive" #secondary>
+      <a href="#general" materialize="dropdown" data-activates="location_dropdown5" [class.active1]="sateliteLocationActive" #secondary>
         <span>{{secondaryLocation?.name}}</span>
         <i class="caret"></i>
       </a>
-      <ul id="location_dropdown" class="dropdown-content">
+      <ul id="location_dropdown5" class="dropdown-content">
         <li *ngFor="let location of locations$ | async" (click)="chooseTabLocation(location)" [class.active]="location.name == currentLocation?.name">
           {{location.name}}
         </li>
