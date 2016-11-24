@@ -119,8 +119,12 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     });
   }
 
-  closeModal(){
-    this.dialog.close();
+  dismissModal(){
+    this.dialog.dismiss();
+  }
+
+  closeModal(data){
+    this.dialog.close(data);
   }
 
   changeLocation(){
@@ -246,7 +250,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.user.permissions = this.permissionArr;
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
         (res: any) => { 
-          this.closeModal();
+          this.dismissModal();
         }
     );
   }
@@ -263,7 +267,10 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     else this.tabProfile.nativeElement.click();
   }
 
-  deleteUser(user = null){
-    
+  deleteUser(user){
+    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
+      debugger;
+      this.closeModal(res);
+    });
   }
 }

@@ -74,7 +74,16 @@ export class UsersComponent implements OnInit {
   }
 
   editUserModal(user = null){
-    this.modal.open(EditUserModal,  overlayConfigFactory({ user: user }, BSModalContext));
+    this.modal
+        .open(EditUserModal,  overlayConfigFactory({ user: user }, BSModalContext))
+        .then((resultPromise)=>{
+            resultPromise.result.then(
+                (res) => {
+                  debugger;
+                },
+                (err)=>{}
+            );
+        });
   }
 
   usersFilter(event){

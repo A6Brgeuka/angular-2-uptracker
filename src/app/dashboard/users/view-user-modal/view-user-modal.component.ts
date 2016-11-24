@@ -21,11 +21,13 @@ export class ViewUserModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUserModalContext> {
+  private subscribers: any = {};
   context: ViewUserModalContext;
   public user: any;
 
   constructor(
-      public dialog: DialogRef<ViewUserModalContext>
+      public dialog: DialogRef<ViewUserModalContext>,
+      public accountService: AccountService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -48,7 +50,10 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
     this.closeModal(user);
   }
   
-  deleteUser(user = null){
-    
+  deleteUser(user){
+    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
+      debugger;
+      this.dismissModal();
+    });
   }
 }

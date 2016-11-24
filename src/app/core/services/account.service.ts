@@ -148,6 +148,17 @@ export class AccountService extends ModelService{
         });
   }
 
+  deleteLocation(data: any){
+    return this.restangular.one('accounts', this.userService.selfData.account_id).one('locations', data.id).remove()
+        .do((res: any) => {
+          let account = this.userService.selfData.account;
+          _.remove(account.locations, (location: any) => {
+            return location.id == data.id;
+          });
+          this.updateSelfData(account);
+        });
+  }
+
   getDepartments(){
     return this.departmentCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
@@ -209,6 +220,17 @@ export class AccountService extends ModelService{
           } else {
             this.updateSelfData(account);
           }
+        });
+  }
+
+  deleteUser(data: any){
+    return this.restangular.one('accounts', this.userService.selfData.account_id).one('users', data.id).remove()
+        .do((res: any) => {
+          let account = this.userService.selfData.account;
+          _.remove(account.users, (user: any) => {
+            return user.id == data.id;
+          });
+          this.updateSelfData(account);
         });
   }
 

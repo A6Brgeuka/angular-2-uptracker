@@ -83,8 +83,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     });
   }
 
-  closeModal(){
+  dismissModal(){
     this.dialog.dismiss();
+  }
+
+  closeModal(data){
+    this.dialog.close(data);
   }
 
   changeState(){
@@ -166,12 +170,15 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   addLocation(data){
     this.accountService.addLocation(data).subscribe(
         (res: any) => {
-          this.closeModal();
+          this.dismissModal();
         }
     );
   }
 
   deleteLocation(data){
-    
+    this.subscribers.deleteLocationSubscription = this.accountService.deleteUser(data).subscribe((res: any) => {
+      debugger;
+      this.dismissModal();
+    });
   }
 }
