@@ -27,6 +27,7 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
 
   constructor(
       public dialog: DialogRef<ViewUserModalContext>,
+      public userService: UserService,
       public accountService: AccountService
   ) {
     this.context = dialog.context;

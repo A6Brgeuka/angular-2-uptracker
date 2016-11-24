@@ -30,6 +30,7 @@
       <button
           type="button"
           class="uptracker-form-btn btn white-text waves-effect waves-light left uptracker-form-delete-btn"
+          *ngIf="user.id!=userService.selfData.id"
           (click)="deleteUser(user)">
         Delete
       </button>

@@ -211,7 +211,7 @@
 
 
   <div class="buttons center-align">
-    <button type="button" class="btn-flat back-btn" *ngIf="tabProfile.className != 'active'" (click)="prevTab()">Prev</button>
+    <span class="nav-btn"><button type="button" class="btn-flat back-btn" *ngIf="tabProfile.className != 'active'" (click)="prevTab()">Prev</button></span>
     <button
         type="submit"
         class="btn white-text waves-effect waves-light"
@@ -222,10 +222,10 @@
     <button
         type="button"
         class="btn white-text waves-effect waves-light uptracker-form-delete-btn"
-        *ngIf="user.id"
+        *ngIf="user.id && user.id!=userService.selfData.id"
         (click)="deleteUser(user)">
       Delete
     </button>
-    <button type="button" class="btn-flat back-btn" *ngIf="tabTemplate.className != 'active'" (click)="nextTab()">Next</button>
+    <span class="nav-btn"><button type="button" class="btn-flat back-btn" *ngIf="tabTemplate.className != 'active'" (click)="nextTab()">Next</button></span>
   </div>
 </form>
