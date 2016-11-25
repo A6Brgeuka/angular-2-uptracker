@@ -53,11 +53,17 @@ export function RESTANGULAR_CONFIG (
     let body = err.json();
     let errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
 
+
     // logout user if local storage or cookies have wrong token
     let endpoint = _.last(response.request.url.split['/']);
     if ((err.status == 401 || err.status == 404) || (errMsg == "User doesn't exist." && endpoint == 'login')) {
       sessionService.remove('uptracker_token');
       sessionService.remove('uptracker_selfId');
+    }
+
+    // handle error 500
+    if (err.status == 500){
+      errMsg = 'Something went wrong';
     }
 
     spinnerService.hide();

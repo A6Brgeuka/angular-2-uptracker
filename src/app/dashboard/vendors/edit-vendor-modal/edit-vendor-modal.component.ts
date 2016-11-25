@@ -162,7 +162,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.calcPriorityMargin(this.vendor.priority);
 
     if (this.vendor.id){
-      this.vendor.discount_percentage *= 100;
+      this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
       this.oldFileArr = this.vendor.documents;
       this.oldFiles$.next(this.oldFileArr);
 
