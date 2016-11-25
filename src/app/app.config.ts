@@ -35,7 +35,7 @@ export function RESTANGULAR_CONFIG (
     let newHeaders = headers;
     // if (urlArr[urlArr.length - 1] != 'streetview')
       newHeaders = {
-        'X_AUTH_TOKEN': sessionService.get('uptracker_token')
+        'X_AUTH_TOKEN': false //sessionService.get('uptracker_token')
       };
     
     return {

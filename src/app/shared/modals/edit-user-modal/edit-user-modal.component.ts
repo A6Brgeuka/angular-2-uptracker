@@ -268,9 +268,9 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   deleteUser(user){
-    // this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
-    //   debugger;
-    //   this.closeModal(res);
-    // });
+    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
+      debugger;
+      this.closeModal(res);
+    });
   }
 }

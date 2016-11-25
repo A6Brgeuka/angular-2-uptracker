@@ -224,7 +224,7 @@ export class AccountService extends ModelService{
   }
 
   deleteUser(data: any){
-    return this.restangular.one('accounts', this.userService.selfData.account_id).one('users', data.id).remove()
+    return this.restangular.one('users', data.id).remove()
         .do((res: any) => {
           let account = this.userService.selfData.account;
           _.remove(account.users, (user: any) => {
