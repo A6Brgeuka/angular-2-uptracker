@@ -28,8 +28,9 @@ export function RESTANGULAR_CONFIG (
   RestangularProvider.setBaseUrl(APP_DI_CONFIG.apiEndpoint);
   // RestangularProvider.setDefaultHeaders({'X_AUTH_TOKEN': sessionService.get('uptracker_token')});
 
-  RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => {
+  RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => { 
     spinnerService.show();
+    
     // let urlArr = url.split('/');
     let newHeaders = headers;
     // if (urlArr[urlArr.length - 1] != 'streetview')
