@@ -268,18 +268,25 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   deleteUser(user){
-    // this.modal.confirm()
-    //     .size('sm')
-    //     .isBlocking(true)
-    //     .showClose(false)
-    //     .keyboard(27)
-    //     .dialogClass('modal-confirm')
-    //     .title('Delete user?')
-    //     .okBtnClass('btn btn-confirm uptracker-form-btn')
-    //     .cancelBtnClass('btn back-btn')
-    //     .open();
-    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
-      this.dismissModal();
-    });
+    this.modal.confirm()
+        .isBlocking(false)
+        .showClose(false)
+        .keyboard(27)
+        .dialogClass('modal-confirm')
+        .title('Delete user?')
+        .okBtnClass('btn-confirm uptracker-form-btn waves-effect waves-light')
+        .cancelBtnClass('cancel-btn')
+        .open()
+        .then((resultPromise)=>{
+          resultPromise.result.then(
+              (res) => {
+                this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
+                  this.dismissModal();
+                });
+              },
+              (err)=>{
+              }
+          );
+        });
   }
 }

@@ -658,20 +658,44 @@ modal-overlay{
   background-color: #f5f6f7;
 }
 
-.confirm-modal{
-  .modal-header{
-    .modal-title{
-      font: 28px/32px Ubuntu;
-      margin-bottom: 46px;
+.modal-confirm{
+  .modal-content{
+    padding:50px !important;
+
+    .modal-header{
+      .modal-title{
+        font: 28px/32px Ubuntu;
+        margin-bottom: 36px;
+        text-align:center;
+      }
+    }
+
+    .modal-body{}
+
+    .modal-footer{
+      background:transparent;
       text-align:center;
+
+      button{
+        margin:0 15px;
+        background:$tealish;
+        color:#fff;
+
+        &.cancel-btn {
+          background: transparent !important;
+          width: auto;
+          color: $tealish;
+          text-align: left;
+          padding: 0;
+          border:0;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
     }
   }
-
-  .modal-body{}
-
-  .modal-footer{}
-
-
 }
 
 .modal{
