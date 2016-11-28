@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -61,7 +61,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
       private accountService: AccountService,
       private phoneMaskService: PhoneMaskService,
       private toasterService: ToasterService,
-      private fileUploadService: FileUploadService
+      private fileUploadService: FileUploadService,
+      public modal: Modal
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -267,6 +268,16 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   deleteUser(user){
+    // this.modal.confirm()
+    //     .size('sm')
+    //     .isBlocking(true)
+    //     .showClose(false)
+    //     .keyboard(27)
+    //     .dialogClass('modal-confirm')
+    //     .title('Delete user?')
+    //     .okBtnClass('btn btn-confirm uptracker-form-btn')
+    //     .cancelBtnClass('btn back-btn')
+    //     .open();
     this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
       this.dismissModal();
     });

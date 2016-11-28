@@ -3,6 +3,7 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule } from '@angular/http';
+import { Router } from '@angular/router';
 
 import { APP_CONFIG, APP_DI_CONFIG, RESTANGULAR_CONFIG } from '../app.config';
 import { LOCAL_STORAGE_PROVIDERS } from 'angular2-local-storage/local_storage';
@@ -28,6 +29,7 @@ import { APP_SERVICE_PROVIDERS } from './services/index';
     BootstrapModalModule,
     RestangularModule.forRoot(
         [
+          Router,
           APP_SERVICE_PROVIDERS[2], // sessionService
           APP_SERVICE_PROVIDERS[3], // spinner
           APP_SERVICE_PROVIDERS[0] // toaster

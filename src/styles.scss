@@ -658,6 +658,22 @@ modal-overlay{
   background-color: #f5f6f7;
 }
 
+.confirm-modal{
+  .modal-header{
+    .modal-title{
+      font: 28px/32px Ubuntu;
+      margin-bottom: 46px;
+      text-align:center;
+    }
+  }
+
+  .modal-body{}
+
+  .modal-footer{}
+
+
+}
+
 .modal{
   z-index:1050;
   max-height:inherit;

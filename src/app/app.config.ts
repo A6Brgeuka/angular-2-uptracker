@@ -1,4 +1,5 @@
 import { OpaqueToken } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
 import { SessionService, SpinnerService, ToasterService } from './core/services/index';
@@ -21,6 +22,7 @@ export const APP_DI_CONFIG: AppConfig = {
 
 export function RESTANGULAR_CONFIG (
     RestangularProvider,
+    router: Router,
     sessionService: SessionService,
     spinnerService: SpinnerService,
     toasterService: ToasterService,
@@ -43,12 +45,12 @@ export function RESTANGULAR_CONFIG (
     };
   });
 
-  RestangularProvider.addResponseInterceptor((data, operation, what, url, response)=> {
+  RestangularProvider.addResponseInterceptor((data, operation, what, url, response)=> { 
     spinnerService.hide();
     return data;
   });
 
-  RestangularProvider.addErrorInterceptor((response, subject, responseHandler) => { debugger;
+  RestangularProvider.addErrorInterceptor((response, subject, responseHandler) => {
     let actionAuth: boolean = false,
         errMsg;
     let err = response;
@@ -68,9 +70,10 @@ export function RESTANGULAR_CONFIG (
 
 
     // logout user if local storage or cookies have wrong token or user doesn't exist
-    if ((err.status == 401 || err.status == 404) || (errMsg == "User doesn't exist." && actionAuth)) {
+    if ((err.status == 401 || err.status == 404) || (new RegExp("User doesn't exist.", 'i').test(errMsg) && actionAuth)) {
       sessionService.remove('uptracker_token');
       sessionService.remove('uptracker_selfId');
+      router.navigate(['/login']);
     }
 
     // handle error 500

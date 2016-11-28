@@ -218,7 +218,7 @@ export class UserService extends ModelService {
     if (user.email_verified) {
       return null;
     }
-    if (!user.account) {
+    if (!user.account_id) {
       return 2;
     }
     if (user.account) {

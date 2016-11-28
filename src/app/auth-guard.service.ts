@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, CanLoad, Route } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+import * as _ from 'lodash';
 
 import { UserService, StateService } from './core/services/index';
 import { UserModel } from './models/index';
@@ -67,7 +68,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());
       }
-      this.selfData = res;
       // let url: string = state.url;
       let location = url.split('/')[1];
       switch (location) {
@@ -119,8 +119,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
     // redirect to locations page if at least one location wasn't added
     let onboardStep = this.userService.selfData.account.onboarding_step || 'locations';
-    let location = url.split('/')[2];
-    if (onboardStep == 'locations' && location != 'locations' ) {
+    // if (onboardStep == 'locations' && _.last(url.split('/')) != 'locations' ) {
+    if (onboardStep == 'locations' && _.last(url.split('/')) != 'locations' && _.last(url.split('/')) != 'onboard' ) {
       this.router.navigate(['/onboard','locations']);
       return false;
     }
@@ -139,7 +139,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       this.router.navigate(['/onboard','locations']);
       return false;
     }
-
     return true;
   }
 
@@ -169,7 +168,12 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   checkLogin(){
-    if (!this.userService.isGuest()){
+    if (!this.userService.isGuest() && this.userService.selfData.status == 1){
+      this.router.navigate(['/onboard', this.userService.selfData.onboarding_step]);
+      return false;
+    }
+
+    if (!this.userService.isGuest() && this.userService.selfData.status == 2){
       this.router.navigate(['/dashboard']);
       return false;
     }
