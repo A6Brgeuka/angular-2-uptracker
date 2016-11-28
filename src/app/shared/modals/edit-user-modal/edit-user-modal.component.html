@@ -106,9 +106,9 @@
               materialize="material_select"
               required
               (change)="changeDepartment()"
-              [materializeSelectOptions]="departmentArr">
+              [materializeSelectOptions]="departmentCollection$ | async">
             <option value="">Please select one</option>
-            <option *ngFor="let department of departmentArr | iterable" [value]="department.key">{{department.key}}</option>
+            <option *ngFor="let department of departmentCollection$ | async" [value]="department">{{department}}</option>
           </select>
         </div>
       </div>

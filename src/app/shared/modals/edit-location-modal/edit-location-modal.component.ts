@@ -25,8 +25,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   private subscribers: any = {};
   context: EditLocationModalContext;
   public location: LocationModel;
-  public stateArr = {};
-  public typeArr = {};
+  public states$: Observable<any> = new Observable<any>();
+  public locationTypes$: Observable<any> = new Observable<any>();
   public typeDirty: boolean = false;
   public stateDirty: boolean = false;
   public locationFormPhone: string = null;
@@ -74,13 +74,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
     }
     
-    this.subscribers.getStates = this.accountService.getStates().subscribe((res) => {
-      this.stateArr = res.data;
-    });
-    
-    this.subscribers.getLocationTypes = this.accountService.getLocationTypes().subscribe((res) => {
-      this.typeArr = res.data;
-    });
+    this.states$ = this.accountService.getStates().take(1);
+    this.locationTypes$ = this.accountService.getLocationTypes().take(1);
   }
 
   dismissModal(){

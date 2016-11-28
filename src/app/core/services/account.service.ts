@@ -94,8 +94,11 @@ export class AccountService extends ModelService{
     let locationsLoaded = account ? !isUndefined(account.locations) ? true : false : false;
     if (!locationsLoaded) {
       return this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
+          .map((res: any) => {
+            return res.data.locations;
+          })
           .do((res: any) => {
-            account.locations = res.data.locations;
+            account.locations = res;
             this.updateSelfData(account);
           });
     } else {
@@ -106,7 +109,10 @@ export class AccountService extends ModelService{
   getStates(){
     return this.stateCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
-        this.stateCollection$ = this.restangular.all('config').all('states').customGET('');
+        this.stateCollection$ = this.restangular.all('config').all('states').customGET('')
+            .map((res: any) => {
+              return res.data;
+            });
       }
       return this.stateCollection$;
     });
@@ -115,7 +121,10 @@ export class AccountService extends ModelService{
   getLocationTypes(){
     return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
-        this.locationTypeCollection$ = this.restangular.all('config').all('location_types').customGET('');
+        this.locationTypeCollection$ = this.restangular.all('config').all('location_types').customGET('')
+            .map((res: any) => {
+              return res.data;
+            });
       }
       return this.locationTypeCollection$;
     });
@@ -151,9 +160,10 @@ export class AccountService extends ModelService{
   getDepartments(){
     return this.departmentCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
-        this.departmentCollection$ = this.restangular.all('config').all('departments').customGET('');
-        // TODO: remove after testing restangular
-        // this.departmentCollection$ = this.resource.getDepartments().$observable.publishReplay(1).refCount();
+        this.departmentCollection$ = this.restangular.all('config').all('departments').customGET('')
+            .map((res: any) => {
+              return res.data;
+            });
       }
       return this.departmentCollection$;
     });

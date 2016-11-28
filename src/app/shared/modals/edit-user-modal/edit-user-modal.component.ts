@@ -3,6 +3,7 @@ import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core'
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { UserService, AccountService, PhoneMaskService, ToasterService, FileUploadService } from '../../../core/services/index';
@@ -26,7 +27,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   context: EditUserModalContext;
   public user: any;
   public locationArr: any;
-  public departmentArr: any;
+  public departmentCollection$: Observable<any> = new Observable<any>();
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
   public profileFormPhone: string = null;
@@ -85,10 +86,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     if (!this.user.template){
       this.user.template = this.userService.selfData.account.purchase_order_template;
     }
-
-    this.subscribers.departmentCollection = this.accountService.getDepartments().subscribe((res) => {
-      this.departmentArr = res.data;
-    });
+    
+    this.departmentCollection$ = this.accountService.getDepartments().take(1);
 
     this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) {

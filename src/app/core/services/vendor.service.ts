@@ -96,7 +96,7 @@ export class VendorService extends ModelService {
   }
 
   getVendors(){
-    return  this.collection$;
+    return this.collection$;
   }
 
   getVendor(id){
