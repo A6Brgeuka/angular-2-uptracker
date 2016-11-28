@@ -48,27 +48,33 @@ export function RESTANGULAR_CONFIG (
     return data;
   });
 
-  RestangularProvider.addErrorInterceptor((response, subject, responseHandler) => {
+  RestangularProvider.addErrorInterceptor((response, subject, responseHandler) => { debugger;
+    let actionAuth: boolean = false,
+        errMsg;
     let err = response;
-    let body = err.json();
-    let errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
+    try {
+      let body = err.json();
+      errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
+
+      let endpoint = _.last(response.request.url.split('/'));
+      switch (endpoint){
+        case 'login': actionAuth = true; break;
+        case sessionService.get('uptracker_selfId'): actionAuth = true; break;
+        default: actionAuth = false;
+      }
+    } catch(err) {
+      errMsg = 'Something went wrong'
+    }
 
 
     // logout user if local storage or cookies have wrong token or user doesn't exist
-    let endpoint = _.last(response.request.url.split('/'));
-    let actionAuth: boolean = false;
-    switch (endpoint){
-      case 'login': actionAuth = true; break;
-      case sessionService.get('uptracker_selfId'): actionAuth = true; break;
-      default: actionAuth = false;
-    }
     if ((err.status == 401 || err.status == 404) || (errMsg == "User doesn't exist." && actionAuth)) {
       sessionService.remove('uptracker_token');
       sessionService.remove('uptracker_selfId');
     }
 
     // handle error 500
-    if (err.status == 500){
+    if (!err.status || err.status == 500){
       errMsg = 'Something went wrong';
     }
 

@@ -242,12 +242,6 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
   
   onFileDrop(file: any): void {
-    // TODO: remove after testing
-    // let fileData = file.split(',')[1];
-    // let dataType = file.split('.')[0].split(';')[0].split(':')[1];
-    // let binaryImageData = atob(fileData);
-    // let blob = new Blob([binaryImageData], { type: dataType });
-
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
     this.addFile(file);

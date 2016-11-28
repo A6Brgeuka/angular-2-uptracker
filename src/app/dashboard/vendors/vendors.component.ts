@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
 import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
 import { VendorService } from '../../core/services/index';
-import { AccountVendorModel } from '../../models/index';
 
 
 @Component({
@@ -81,12 +80,6 @@ export class VendorsComponent implements OnInit {
   editVendorModal(vendor = null){
     let accountVendor = vendor.account_vendor;
     accountVendor.vendor_id = vendor.id;
-    // TODO: remove after testing
-    // _.map(accountVendor, (data: any) => {
-    //   data.vendor_id = vendor.id;
-    //   return data;
-    // }); debugger;
-    // accountVendor.vendor_id = vendor.id;
     this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: accountVendor }, BSModalContext));
   }
 

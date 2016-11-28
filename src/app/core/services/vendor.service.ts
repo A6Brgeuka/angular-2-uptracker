@@ -101,42 +101,13 @@ export class VendorService extends ModelService {
 
   getVendor(id){
     return this.restangular.one('vendors', id).get();
-
-    // TODO: remove after testing
-    // let data = {
-    //   id: id
-    // };
-    // return this.resource.getVendor(data).$observable;
   }
 
   searchVendor(query){
     return this.restangular.all('search').getList('vendors', {query: query});
-
-    // TODO: remove after testing
-    // let data = {
-    //   query: query
-    // };
-    // return this.resource.searchVendors(data).$observable;
   }
 
   getAccountVendors(){
-    // processing account vendors by vendors.service doesn't work correct for logout
-    // TODO: remove after testing
-    // return this.accountVendors$.isEmpty().switchMap((isEmpty) => {
-    //   if(isEmpty) {
-    //     this.accountVendors$ = this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
-    //         .map((res: any) => {
-    //           return res.data.vendors;
-    //         })
-    //         .do((res: any) => {
-    //           let account = this.userService.selfData.account;
-    //           account.vendors = res;
-    //           this.accountService.updateSelfData(account);
-    //         });
-    //   }
-    //   return this.accountVendors$;
-    // });
-
     let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
     if (!vendorsLoaded) {
       return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
@@ -148,16 +119,6 @@ export class VendorService extends ModelService {
             account.vendors = res;
             this.accountService.updateSelfData(account);
           });
-
-      // TODO: remove after testing
-      // let data: any = {
-      //   account_id: this.userService.selfData.account_id
-      // };
-      // return this.resource.getAccountVendors(data).$observable.do((res: any) => {
-      //   let account = this.userService.selfData.account;
-      //   account.vendors = res.data.vendors;
-      //   this.accountService.updateSelfData(account);
-      // });
     } else {
       return this.userService.selfData$.map(res => res.account.vendors);
     }
@@ -172,7 +133,6 @@ export class VendorService extends ModelService {
         .post(data);
 
     // TODO: remove after testing
-    // entity$ = this.resource.addAccountVendor(data).$observable;
     // let entity$ = this.httpService.post('http://uptracker-api.herokuapp.com/api/v1/accounts/' + data.get('account_id') + '/vendors', data);
 
 
@@ -209,21 +169,5 @@ export class VendorService extends ModelService {
             this.accountService.updateSelfData(account);
           });
     }
-
-
-    // TODO: Remove after testing restangular
-    // return this.resource.editAccountVendor(data).$observable.do((res: any) => {
-    //   // if (account.vendors && _.some(account.vendors, {'id': res.data.vendor.id})){
-    //   let vendorArr = _.map(account.vendors, function(vendor){
-    //     if (vendor['id'] == res.data.vendor.id) {
-    //       return res.data.vendor;
-    //     } else {
-    //       return vendor;
-    //     }
-    //   });
-    //   account.vendors = vendorArr;
-    //   // }
-    //   this.accountService.updateSelfData(account);
-    // });
   }
 }

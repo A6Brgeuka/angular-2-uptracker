@@ -93,11 +93,6 @@ export class AccountService extends ModelService{
     let account = this.userService.selfData.account;
     let locationsLoaded = account ? !isUndefined(account.locations) ? true : false : false;
     if (!locationsLoaded) {
-      // TODO: remove after testing restangular
-      // let data: any = {
-      //   account_id: this.userService.selfData.account_id
-      // };
-      // return this.resource.getLocations(data).$observable /accounts/{!account_id}/locations
       return this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
           .do((res: any) => {
             account.locations = res.data.locations;
@@ -112,8 +107,6 @@ export class AccountService extends ModelService{
     return this.stateCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
         this.stateCollection$ = this.restangular.all('config').all('states').customGET('');
-        // TODO: remove after testing restangular
-        // this.stateCollection$ = this.resource.getStates().$observable.publishReplay(1).refCount();
       }
       return this.stateCollection$;
     });
@@ -123,8 +116,6 @@ export class AccountService extends ModelService{
     return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
         this.locationTypeCollection$ = this.restangular.all('config').all('location_types').customGET('');
-        // TODO: remove after testing restangular
-        // this.locationTypeCollection$ = this.resource.getLocationTypes().$observable.publishReplay(1).refCount();
       }
       return this.locationTypeCollection$;
     });
@@ -138,8 +129,6 @@ export class AccountService extends ModelService{
   }
 
   addLocation(data: any){
-    // TODO: remove after testing restangular
-    // return this.resource.addLocation(data).$observable
     return this.restangular.one('accounts', data.account_id).all('locations').post(data)
         .do((res: any) => {
           let account = this.userService.selfData.account;
@@ -173,11 +162,6 @@ export class AccountService extends ModelService{
   getUsers(){
     let usersLoaded = this.userService.selfData.account.users ? this.userService.selfData.account.users[0].name : false;
     if (!usersLoaded) {
-      // TODO: remove after testing restangular
-      // let data: any = {
-      //   account_id: this.userService.selfData.account_id
-      // };
-      // let users$ = this.resource.getUsers(data).$observable.publishReplay(1).refCount();
       return this.restangular.one('accounts', this.userService.selfData.account_id).all('users').customGET('')
           .map((res: any) => {
             return res.data.users;
@@ -193,8 +177,6 @@ export class AccountService extends ModelService{
   }
 
   addUser(data){
-    // TODO: remove after testing restangular
-    // return this.resource.addUser(data).$observable
     return this.restangular.all('users').post(data)
         .do((res: any) => {
           let account = this.userService.selfData.account;
@@ -235,8 +217,6 @@ export class AccountService extends ModelService{
   }
 
   putAccounting(data: any){
-    // TODO: remove after testing restangular
-    // return this.resource.putAccounting(data).$observable
     return this.restangular.one('accounts', data.account_id).customPUT(data)
         .do((res: any) => {
           this.updateSelfData(res.data.account.account);
@@ -246,8 +226,6 @@ export class AccountService extends ModelService{
   getCurrencies(){
     return this.currencyCollection$.isEmpty().switchMap((isEmpty) => { 
       if (isEmpty) {
-        // TODO: remove after testing restangular
-        // this.currencyCollection$ = this.resource.getCurrencies().$observable
         this.currencyCollection$ = this.restangular.all('config').all('currency').customGET('')
             .map((res: any) => {
               let currencyArr = _.sortBy(res.data, 'priority');
@@ -259,29 +237,8 @@ export class AccountService extends ModelService{
   }
 
   getRoles(){
-    // TODO: remove after testing
-    // let data: any = {
-    //   account_id: this.userService.selfData.account_id
-    // };
-    // return this.roleCollection$.isEmpty().switchMap((isEmpty) => {
-    //   if(isEmpty) {
-    //     this.roleCollection$ = this.restangular.one('accounts', this.userService.selfData.account_id).all('permissions').customGET('')
-    //     // this.roleCollection$ = this.resource.getRoles(data).$observable
-    //         .do((res: any) => { debugger;
-    //           let account = this.userService.selfData.account;
-    //           account.roles = res.data.roles;
-    //           this.updateSelfData(account);
-    //         })
-    //         .publishReplay(1).refCount();
-    //   }
-    //   return this.roleCollection$;
-    // });
-
-
     let rolesLoaded = this.userService.selfData.account.roles ? this.userService.selfData.account.roles[0].role : false;
     if (!rolesLoaded) {
-      // TODO: remove after testing restangular
-      // let roles$ = this.resource.getRoles(data).$observable.publishReplay(1).refCount();
       return this.restangular.one('accounts', this.userService.selfData.account_id).all('permissions').customGET('')
           .map((res: any) => {
             return res.data.roles;
@@ -297,8 +254,6 @@ export class AccountService extends ModelService{
   }
   
   addRole(data){
-    // TODO: remove after testing restangular
-    // return this.resource.addRole(data).$observable accounts/{!account_id}/roles
     return this.restangular.one('accounts', data.account_id).all('roles').post(data)
         .do((res: any) => {
           let account = this.userService.selfData.account;
