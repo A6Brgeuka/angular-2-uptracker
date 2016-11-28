@@ -35,7 +35,7 @@ export function RESTANGULAR_CONFIG (
     let newHeaders = headers;
     // if (urlArr[urlArr.length - 1] != 'streetview')
       newHeaders = {
-        'X_AUTH_TOKEN': false //sessionService.get('uptracker_token')
+        'X_AUTH_TOKEN': sessionService.get('uptracker_token')
       };
     
     return {
@@ -54,9 +54,15 @@ export function RESTANGULAR_CONFIG (
     let errMsg = body.length ? body[0]['error_message'] || body[0]['error'] : body['error_message'] || body['error'];
 
 
-    // logout user if local storage or cookies have wrong token
-    let endpoint = _.last(response.request.url.split['/']);
-    if ((err.status == 401 || err.status == 404) || (errMsg == "User doesn't exist." && endpoint == 'login')) {
+    // logout user if local storage or cookies have wrong token or user doesn't exist
+    let endpoint = _.last(response.request.url.split('/'));
+    let actionAuth: boolean = false;
+    switch (endpoint){
+      case 'login': actionAuth = true; break;
+      case sessionService.get('uptracker_selfId'): actionAuth = true; break;
+      default: actionAuth = false;
+    }
+    if ((err.status == 401 || err.status == 404) || (errMsg == "User doesn't exist." && actionAuth)) {
       sessionService.remove('uptracker_token');
       sessionService.remove('uptracker_selfId');
     }
