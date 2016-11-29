@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { ProductsComponent } from './products.component';
 import { AppSharedModule } from '../../shared/shared.module';
-// import { EditVendorModalModule } from './edit-vendor-modal/edit-vendor-modal.module';
+import { EditProductModalModule } from './edit-product-modal/edit-product-modal.module';
 import { ViewProductModalModule } from './view-product-modal/view-product-modal.module';
 
 @NgModule({
@@ -11,7 +11,7 @@ import { ViewProductModalModule } from './view-product-modal/view-product-modal.
   ],
   imports: [
     AppSharedModule,
-    // EditVendorModalModule,
+    EditProductModalModule,
     ViewProductModalModule
   ],
   providers: []

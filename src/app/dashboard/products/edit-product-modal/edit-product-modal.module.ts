@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 
-import { EditVendorModal } from './edit-vendor-modal.component';
+import { EditProductModal } from './edit-product-modal.component';
 import { AppSharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [
-    EditVendorModal
+    EditProductModal
   ],
   imports: [
     AppSharedModule
@@ -14,7 +14,7 @@ import { AppSharedModule } from '../../../shared/shared.module';
   // IMPORTANT:
   // Since 'AdditionCalculateWindow' is never explicitly used (in a template)
   // we must tell angular about it.
-  entryComponents: [ EditVendorModal ]
+  entryComponents: [ EditProductModal ]
 })
-export class EditVendorModalModule {
+export class EditProductModalModule {
 }

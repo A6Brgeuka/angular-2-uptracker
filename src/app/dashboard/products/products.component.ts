@@ -7,7 +7,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
 import { ViewProductModal } from './view-product-modal/view-product-modal.component';
-// import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
+import { EditProductModal } from './edit-product-modal/edit-product-modal.component';
 // import { VendorService } from '../../core/services/index';
 
 
@@ -68,7 +68,6 @@ export class ProductsComponent implements OnInit {
   }
 
   viewProductModal(product){
-    // let accountVendor = vendor.account_vendor;
     this.modal
         .open(ViewProductModal,  overlayConfigFactory({ product: product }, BSModalContext))
         .then((resultPromise)=>{
@@ -82,9 +81,7 @@ export class ProductsComponent implements OnInit {
   }
 
   editProductModal(product = null){
-    // let accountVendor = vendor.account_vendor;
-    // accountVendor.vendor_id = vendor.id;
-    // this.modal.open(EditProductModal,  overlayConfigFactory({ product: product }, BSModalContext));
+    this.modal.open(EditProductModal,  overlayConfigFactory({ product: product }, BSModalContext));
   }
 
   searchFilter(event){
@@ -96,9 +93,4 @@ export class ProductsComponent implements OnInit {
     let value = event.target.value;
     this.sortBy$.next(value);
   }
-  
-  requestVendor(){
-    
-  }
-
 }
