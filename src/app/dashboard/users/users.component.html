@@ -4,12 +4,12 @@
       <div class="main-title left">Users</div>
       <div class="sub-title">{{total}} total</div>
     </div>
-    <div class="filter uptracker-form">
+    <div class="filter uptracker-form right">
       <div class="left input">
         <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="usersFilter($event)" />
       </div>
       <div class="left">
-        <button type="button" (click)="editUserModal()" class="uptracker-form-btn">Add New User</button>
+        <button type="button" (click)="editUserModal()" class="uptracker-form-btn waves-light waves-effect">Add New User</button>
       </div>
     </div>
     <div class="clearfix"></div>

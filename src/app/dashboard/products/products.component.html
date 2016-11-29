@@ -1,0 +1,45 @@
+<div class="products content">
+  <div class="top">
+    <div class="title left">
+      <div class="main-title left">Products</div>
+      <div class="sub-title">{{total}} total</div>
+    </div>
+    <div class="filter uptracker-form clearfix">
+      <div class="left input">
+        <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" class="col s12" (input)="searchFilter($event)" />
+      </div>
+      <div class="left select">
+        <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+          <option value="">Sort by</option>
+          <option value="A-Z">A-Z</option>
+          <option value="Z-A">Z-A</option>
+          <option value="priority">Priority</option>
+        </select>
+      </div>
+      <div class="right">
+        <div class="right red-helper waves-light waves-effect">
+          <div class="helper"></div>
+        </div>
+        <button type="button" (click)="placeOrder()" class="uptracker-form-btn red-btn waves-light waves-effect">Place Order</button>
+      </div>
+      <div class="right">
+        <button type="button" (click)="addProduct()" class="uptracker-form-btn waves-light waves-effect">Add Product</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="list">
+      <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
+        <div class="inner" [class.active]="product.name=='First'">
+          <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }" (click)="viewProductModal(product)"></div>
+          <div class="info">
+            <div class="ttl" (click)="viewProductModal(product)">{{product.name}}</div>
+            <div class="vendor-name" (click)="viewProductModal(product)">{{product.vendor_name}}</div>
+            <!--<div class="edit" (click)="editVendorModal(vendor)"></div>-->
+          </div>
+        </div>
+      </div>
+      <div class="empty item" (click)="editProductModal()"></div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

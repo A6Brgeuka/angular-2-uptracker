@@ -4,7 +4,7 @@
       <div class="main-title left">Locations</div>
       <div class="sub-title">{{total}} total</div>
     </div>
-    <div class="filter uptracker-form">
+    <div class="filter uptracker-form right">
       <div class="left input">
         <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="locationsFilter($event)" />
       </div>
@@ -16,7 +16,7 @@
         </select>
       </div>
       <div class="left">
-        <button type="button" (click)="editLocationModal()" class="uptracker-form-btn">Add New Location</button>
+        <button type="button" (click)="editLocationModal()" class="uptracker-form-btn waves-light waves-effect">Add New Location</button>
       </div>
     </div>
     <div class="clearfix"></div>

@@ -4,9 +4,9 @@
       <div class="main-title left">Vendors</div>
       <div class="sub-title">{{total}} total</div>
     </div>
-    <div class="filter uptracker-form">
+    <div class="filter uptracker-form right">
       <div class="left input">
-        <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" class="col s12" (input)="vendorsFilter($event)" />
+        <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" class="col s12" (input)="vendorsFilter($event)" />
       </div>
       <div class="left select">
         <select [(ngModel)]="sortBy" materialize="material_select" (change)="vendorsSort($event)">
@@ -17,7 +17,7 @@
         </select>
       </div>
       <div class="left">
-        <button type="button" (click)="requestVendor()" class="uptracker-form-btn">Request Vendor</button>
+        <button type="button" (click)="requestVendor()" class="uptracker-form-btn waves-light waves-effect">Request Vendor</button>
       </div>
     </div>
     <div class="clearfix"></div>

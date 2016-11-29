@@ -14,6 +14,7 @@ import { OrdersRoutes } from './orders/orders.routing';
 import { LocationsRoutes } from './locations/locations.routing';
 import { UsersRoutes } from './users/users.routing';
 import { VendorsRoutes } from './vendors/vendors.routing';
+import { ProductsRoutes } from './products/products.routing';
 
 const dashboardRoutes = [
   {
@@ -24,7 +25,8 @@ const dashboardRoutes = [
       ...OrdersRoutes,
       ...LocationsRoutes,
       ...UsersRoutes,
-      ...VendorsRoutes
+      ...VendorsRoutes,
+      ...ProductsRoutes
     ],
     resolve: {
       accountVendorCollection: AccountVendorCollectionResolve,
