@@ -27,7 +27,7 @@ export class AccountingComponent implements OnInit {
   private moreThanOneSlider: boolean = false;
   public disabledRange: any = [];
   public viewRangeInput: any = [];
-  public rangeTotal: any = []; // array of NaN values for range text inputs
+  public textInputRangeTotal: any = []; // array of NaN values for range text inputs
   public maxRange: number = 1000000; // max value for slider range
   private prev_annual_inventory_budget: string; // previous annual budget for 'change' detection
   public amountMask: any = createNumberMask({
@@ -81,26 +81,23 @@ export class AccountingComponent implements OnInit {
       this.disabledRange[i] = !this.moreThanOneSlider;
       this.viewRangeInput[i] = false;
       this.accounting.total[i] = parseInt(locationBudget + "");
-      this.rangeTotal[i] = this.accounting.total[i];
+      this.textInputRangeTotal[i] = this.accounting.total[i];
     }
   }
 
-  changingRange(event: Event, i, byInput = false){
+  changingRange(event, i, byInput = false){
     // choose what input to watch for, depending on changing
     let changedInputValue;
-    if (byInput) {
-      changedInputValue = this.amount2number(this.rangeTotal[i]);
-      this.accounting.total[i] = changedInputValue;
-    } else {
-      changedInputValue = this.accounting.total[i];
-      this.rangeTotal[i] = changedInputValue;
-    } 
+    changedInputValue = this.amount2number(event.target.value);
+    this.accounting.total[i] = changedInputValue;
+    this.textInputRangeTotal[i] = changedInputValue;
+    
     let maxRange = this.setMaxRangeFor(i);
     if (changedInputValue >= maxRange){
       event.preventDefault();
       event.stopPropagation();
       this.accounting.total[i] = maxRange;
-      this.rangeTotal[i] = this.accounting.total[i];
+      this.textInputRangeTotal[i] = this.accounting.total[i];
     }
 
   }
@@ -159,7 +156,8 @@ export class AccountingComponent implements OnInit {
     for (let i=0; i<this.locationArr.length;i++){
       this.accounting.budget_distribution[i] = {
         location_id: this.locationArr[i].id,
-        annual_budget: this.accounting.total[i]
+        // annual_budget: this.accounting.total[i]
+        annual_budget: this.accounting.textInputRangeTotal[i]
       }
     }
     

@@ -99,7 +99,7 @@
                       *ngIf="!viewRangeInput[i]"
                       id="rangeInput{{i}}"
                       class="range-value-input"
-                      [(ngModel)]="rangeTotal[i]"
+                      [(ngModel)]="textInputRangeTotal[i]"
                       [textMask]="{mask: amountMask, guide: false}"
                       [disabled]="disabledRange[i]"
                       (change)="changingRange($event, i, true)"
@@ -119,9 +119,10 @@
                   min="0" max="{{maxRange}}" step="1000"
                   [(ngModel)]="accounting.total[i]"
                   [disabled]="disabledRange[i]"
-                  (change)="changingRange($event, i);"
-                  (input)="changingRange($event, i);"
+                  (change)="changingRange($event, i); loc.value = accounting.total[i]"
+                  (input)="changingRange($event, i); loc.value = accounting.total[i]"
                   name="location{{i}}"
+                  #loc
                   #location{{i}}="ngModel">
             </div>
           </div>

@@ -274,6 +274,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         .keyboard(27)
         .dialogClass('modal-confirm')
         .title('Delete user?')
+        .body('Are you sure you want to delete the user?')
         .okBtnClass('btn-confirm uptracker-form-btn waves-effect waves-light')
         .cancelBtnClass('cancel-btn')
         .open()
