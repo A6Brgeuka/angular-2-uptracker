@@ -21,7 +21,11 @@ export class LoginComponent {
   ) {
   }
 
-  onSubmit() {
+  onSubmit(event) {
+    if (!event.target.checkValidity()){
+      return;
+    }
+
     this.userService.login(this.loginUser)
         .subscribe(
             (res: any) => {
