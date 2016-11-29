@@ -2,10 +2,10 @@ import { Component, OnInit, NgZone } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService, FileUploadService } from '../../../core/services/index';
+import { AccountService, ToasterService, UserService, PhoneMaskService, FileUploadService, ModalWindowService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
 export class EditLocationModalContext extends BSModalContext {
@@ -49,7 +49,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       private userService: UserService,
       private accountService: AccountService,
       private phoneMaskService: PhoneMaskService,
-      private fileUploadService: FileUploadService
+      private fileUploadService: FileUploadService,
+      private modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -171,9 +172,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   deleteLocation(data){
-    // this.subscribers.deleteLocationSubscription = this.accountService.deleteUser(data).subscribe((res: any) => {
-    //   debugger;
-    //   this.dismissModal();
-    // });
+    this.modalWindowService.confirmModal('Delete Location?', 'Are you sure you want to delete the location?', this.deleteLocationFunc.bind(this));
+  }
+
+  deleteLocationFunc(){
+    this.subscribers.deleteUserSubscription = this.accountService.deleteLocation(this.location).subscribe((res: any) => {
+      this.dismissModal();
+    });
   }
 }

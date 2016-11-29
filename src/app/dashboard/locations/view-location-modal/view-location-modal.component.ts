@@ -4,7 +4,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService } from '../../../core/services/index';
+import { AccountService, ModalWindowService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 
 export class ViewLocationModalContext extends BSModalContext {
@@ -21,11 +21,14 @@ export class ViewLocationModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ViewLocationModal implements OnInit, CloseGuard, ModalComponent<ViewLocationModalContext> {
+  private subscribers: any = {};
   context: ViewLocationModalContext;
   public location: LocationModel;
 
   constructor(
-      public dialog: DialogRef<ViewLocationModalContext>
+      public dialog: DialogRef<ViewLocationModalContext>,
+      public accountService: AccountService,
+      public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -56,7 +59,13 @@ export class ViewLocationModal implements OnInit, CloseGuard, ModalComponent<Vie
     this.closeModal(location);
   }
 
-  deleteLocation(location = null){
+  deleteLocation(location){
+    this.modalWindowService.confirmModal('Delete location?', 'Are you sure you want to delete the location?', this.deleteLocationFunc.bind(this));
+  }
 
+  deleteLocationFunc(){
+    this.subscribers.deleteUserSubscription = this.accountService.deleteLocation(this.location).subscribe((res: any) => {
+      this.dismissModal();
+    });
   }
 }
