@@ -6,7 +6,7 @@ import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
-// import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
+import { ViewProductModal } from './view-product-modal/view-product-modal.component';
 // import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
 // import { VendorService } from '../../core/services/index';
 
@@ -84,7 +84,7 @@ export class ProductsComponent implements OnInit {
   editProductModal(product = null){
     // let accountVendor = vendor.account_vendor;
     // accountVendor.vendor_id = vendor.id;
-    this.modal.open(EditProductModal,  overlayConfigFactory({ product: product }, BSModalContext));
+    // this.modal.open(EditProductModal,  overlayConfigFactory({ product: product }, BSModalContext));
   }
 
   searchFilter(event){

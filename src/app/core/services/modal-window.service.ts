@@ -22,7 +22,7 @@ export class ModalWindowService {
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {
-                fn(res);
+                fn();
               },
               (err)=>{
               }
