@@ -1,12 +1,12 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-import { UserService, AccountService, PhoneMaskService, ToasterService, FileUploadService } from '../../../core/services/index';
+import { UserService, AccountService, PhoneMaskService, ToasterService, FileUploadService, ModalWindowService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
 
 export class EditUserModalContext extends BSModalContext {
@@ -62,7 +62,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
       private phoneMaskService: PhoneMaskService,
       private toasterService: ToasterService,
       private fileUploadService: FileUploadService,
-      public modal: Modal
+      public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -268,26 +268,12 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   deleteUser(user){
-    this.modal.confirm()
-        .isBlocking(false)
-        .showClose(false)
-        .keyboard(27)
-        .dialogClass('modal-confirm')
-        .title('Delete user?')
-        .body('Are you sure you want to delete the user?')
-        .okBtnClass('btn-confirm uptracker-form-btn waves-effect waves-light')
-        .cancelBtnClass('cancel-btn')
-        .open()
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
-                  this.dismissModal();
-                });
-              },
-              (err)=>{
-              }
-          );
-        });
+    this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?', this.deleteUserFunc.bind(this));
+  }
+
+  deleteUserFunc(){
+    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
+      this.dismissModal();
+    });
   }
 }

@@ -4,7 +4,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, UserService } from '../../../core/services/index';
+import { AccountService, UserService, ModalWindowService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
 
 export class ViewUserModalContext extends BSModalContext {
@@ -28,7 +28,8 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   constructor(
       public dialog: DialogRef<ViewUserModalContext>,
       public userService: UserService,
-      public accountService: AccountService
+      public accountService: AccountService,
+      public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -52,7 +53,11 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   }
   
   deleteUser(user){
-    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(user).subscribe((res: any) => {
+    this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?', this.deleteUserFunc.bind(this));
+  }
+
+  deleteUserFunc(){
+    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
       this.dismissModal();
     });
   }
