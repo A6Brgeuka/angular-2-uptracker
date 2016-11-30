@@ -11,6 +11,7 @@ import { FileUploadService } from './file-upload.service';
 import { ExifService } from './exif.service';
 import { VendorService } from './vendor.service';
 import { ModalWindowService } from './modal-window.service';
+import { ProductService } from './product.service';
 
 
 export {
@@ -26,7 +27,8 @@ export {
   ExifService,
   // HttpClient,
   VendorService,
-  ModalWindowService
+  ModalWindowService,
+  ProductService
 };
 
 // an array of services to resolve routes with data
@@ -43,5 +45,6 @@ export const APP_SERVICE_PROVIDERS = [
   ExifService,
   // HttpClient,
   VendorService,
-  ModalWindowService
+  ModalWindowService,
+  ProductService
 ];

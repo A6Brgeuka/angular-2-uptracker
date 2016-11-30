@@ -31,7 +31,6 @@ export class IntlPhoneMaskDirective implements OnInit {
   @Input() selectedCountry: any = [ "United States", "us", "1", 0 ];
   @Output('onCountryChange') countryChangeEvent = new EventEmitter();
   @ViewChild('countryParent') countryWrapper: ElementRef;
-  @ViewChild('') con;
 
   public input = {};
   // private selectedCountry: any = [];
