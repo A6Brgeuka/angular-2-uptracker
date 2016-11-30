@@ -8,18 +8,21 @@ import {
   Output,
   TemplateRef,
   ViewContainerRef,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
+
+import * as _ from 'lodash';
 
 import { PhoneMaskService } from '../../../core/services/index';
 
 @Component({
-  // selector: '[intl-phone-mask]',
   selector: 'phone-input',
   templateUrl: './phone-mask.component.html',
   styleUrls: ['./phone-mask.component.scss'],
   host: {
     '(document: mousedown)': 'onDocumentClick($event)',
+    '(document: keypress)': 'onKeyPress($event)'
   }
 })
 export class IntlPhoneMaskDirective implements OnInit {
@@ -27,6 +30,8 @@ export class IntlPhoneMaskDirective implements OnInit {
 
   @Input() selectedCountry: any = [ "United States", "us", "1", 0 ];
   @Output('onCountryChange') countryChangeEvent = new EventEmitter();
+  @ViewChild('countryParent') countryWrapper: ElementRef;
+  @ViewChild('') con;
 
   public input = {};
   // private selectedCountry: any = [];
@@ -82,7 +87,32 @@ export class IntlPhoneMaskDirective implements OnInit {
   // }
 
   onViewCountryList(){
-    this.viewCountryList = !this.viewCountryList
+    this.viewCountryList = !this.viewCountryList;
+    let selectedCountryEl = document.getElementById('country'+this.selectedCountry[1]);
+    setTimeout(()=>{
+      this.countryWrapper.nativeElement.scrollTop = selectedCountryEl.offsetTop;
+    }, 100);
+  }
+
+  onKeyPress(event){
+    if (!this.viewCountryList){
+      return;
+    }
+
+    let key = null, countryKey = null;
+    if (new RegExp('[A-z]', 'gi').test(event.key)){
+      key = event.key;
+    }
+
+    if (!key) return;
+
+    _.each(this.allCountries, (country, cKey) => {
+      if (!countryKey && new RegExp(key, 'gi').test(country[0].split('')[0]))
+        countryKey = country[1];
+    });
+
+    let selectedCountryEl = this.element.nativeElement.getElementsByClassName('country_'+countryKey)[0];
+    this.countryWrapper.nativeElement.scrollTop = selectedCountryEl.offsetTop;
   }
 
   selectCountry(country){
