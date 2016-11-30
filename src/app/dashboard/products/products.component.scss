@@ -118,8 +118,24 @@
   }
 }
 
+@media all and (max-width: 768px){
+  .filter{
+    .right{
+      float:left !important;
+
+      &.red-helper{
+        float:right !important;
+      }
+
+      button{
+        //float:left;
+      }
+    }
+  }
+}
+
 @media all and (max-width: 500px){
-  .vendors{
+  .products{
     .list{
       text-align:center;
       clear:both;
