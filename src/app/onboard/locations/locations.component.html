@@ -9,7 +9,7 @@
     <div class="empty item" (click)="viewLocationModal()"></div>
   </div>
   <div class="buttons">
-    <button class="next waves-effect waves-light right" [disabled]="!(locations$ | async)" (click)="goNext()">Next</button>
+    <button class="next waves-effect waves-light right" [disabled]="!(locations$ | async) || (locations$ | async)?.length == 0" (click)="goNext()">Next</button>
     <div class="clearfix"></div>
   </div>
 </div>

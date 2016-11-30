@@ -119,7 +119,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
     // redirect to locations page if at least one location wasn't added
     let onboardStep = this.userService.selfData.account.onboarding_step || 'locations';
-    // if (onboardStep == 'locations' && _.last(url.split('/')) != 'locations' ) {
     if (onboardStep == 'locations' && _.last(url.split('/')) != 'locations' && _.last(url.split('/')) != 'onboard' ) {
       this.router.navigate(['/onboard','locations']);
       return false;
