@@ -119,8 +119,9 @@
                   min="0" max="{{maxRange}}" step="1000"
                   [(ngModel)]="accounting.total[i]"
                   [disabled]="disabledRange[i]"
-                  (change)="changingRange($event, i); loc.value = accounting.total[i]"
                   (input)="changingRange($event, i); loc.value = accounting.total[i]"
+                  (mousedown)="saveOldValue(i)"
+                  (mouseup)="rangeChanged($event, i)"
                   name="location{{i}}"
                   #loc
                   #location{{i}}="ngModel">

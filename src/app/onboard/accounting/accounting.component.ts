@@ -28,12 +28,15 @@ export class AccountingComponent implements OnInit {
   public disabledRange: any = [];
   public viewRangeInput: any = [];
   public textInputRangeTotal: any = []; // array of NaN values for range text inputs
-  public maxRange: number = 1000000; // max value for slider range
+  public maxRange: number; // max value for slider range
   private prev_annual_inventory_budget: string; // previous annual budget for 'change' detection
   public amountMask: any = createNumberMask({
     allowDecimal: false,
     prefix: ''
   });
+
+  private prevInputValue: number;
+  private tempInputValue: number;
 
   constructor(
       private router: Router,
@@ -45,6 +48,7 @@ export class AccountingComponent implements OnInit {
 
   ngOnInit() {
     this.accounting = this.accountService.onboardAccounting;
+    this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 1000000;
     this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) { 
         this.locationArr = res.account.locations;
@@ -71,7 +75,7 @@ export class AccountingComponent implements OnInit {
 
   setLocationBudget(){
     let locationBudget: number = 0;
-    let annual_inventory_budget = this.accounting.annual_inventory_budget || 0;
+    let annual_inventory_budget = this.accounting.annual_inventory_budget || 1000000;
     if (this.moreThanOneSlider){
       locationBudget = this.amount2number(annual_inventory_budget) / this.locationArr.length;
     } else {
@@ -80,35 +84,67 @@ export class AccountingComponent implements OnInit {
     for (let i=0; i<this.locationArr.length; i++){
       this.disabledRange[i] = !this.moreThanOneSlider;
       this.viewRangeInput[i] = false;
-      this.accounting.total[i] = parseInt(locationBudget + "");
+      this.accounting.total[i] = this.accountService.onboardAccounting.total[i] || parseInt(locationBudget + "");
       this.textInputRangeTotal[i] = this.accounting.total[i];
+
+      this.tempInputValue = this.accounting.total[i];
     }
   }
 
   changingRange(event, i, byInput = false){
-    let changedInputValue;
-    changedInputValue = this.amount2number(event.target.value);
+    let changedInputValue = event.target.valueAsNumber;
     this.accounting.total[i] = changedInputValue;
-    this.textInputRangeTotal[i] = changedInputValue;
+    this.textInputRangeTotal[i] = this.accounting.total[i];
 
-    let maxRange = this.setMaxRangeFor(i);
-    if (changedInputValue >= maxRange){
-      event.preventDefault();
-      event.stopPropagation();
-      this.accounting.total[i] = maxRange;
-      this.textInputRangeTotal[i] = this.accounting.total[i];
-    }
-  }
+    // TODO: remove after accepting the concept of accounting sliders logic
+    // let maxRange = this.setMaxRangeFor(i);
+    // if (changedInputValue >= maxRange){
+    //   event.preventDefault();
+    //   event.stopPropagation();
+    //   this.accounting.total[i] = maxRange;
+    //   this.textInputRangeTotal[i] = this.accounting.total[i];
+    // }
 
-  setMaxRangeFor(i){
-    let otherTotal: number = 0;
-    for (let j=0; j<this.locationArr.length; j++) {
-      if (i!=j) {
-        otherTotal += this.amount2number(this.accounting.total[j]);
+    let step = this.amount2number(event.target.step);
+    let diff = changedInputValue - this.tempInputValue;
+    for (let j=0; j<this.accounting.total.length; j++){
+      if (i != j) {
+        this.accounting.total[j] -= diff / (this.accounting.total.length - 1);
+        this.textInputRangeTotal[j] = this.accounting.total[j];
       }
     }
-    return this.maxRange - otherTotal;
+    this.tempInputValue = changedInputValue;
   }
+
+  saveOldValue(i){
+    this.prevInputValue = this.amount2number(this.accounting.total[i]);
+  }
+
+  rangeChanged(event, i){
+    // let changedInputValue = event.target.valueAsNumber;
+    // this.accounting.total[i] = changedInputValue;
+    // this.textInputRangeTotal[i] = this.accounting.total[i];
+    // let diff = changedInputValue - this.prevInputValue;
+    // console.log(diff);
+    //
+    // for (let j=0; j<this.accounting.total.length; j++){
+    //   if (i != j) {
+    //     this.accounting.total[j] -= diff / (this.accounting.total.length - 1);
+    //     this.textInputRangeTotal[j] = this.accounting.total[j];
+    //   }
+    // }
+  }
+
+  // TODO: remove after accepting the concept of accounting sliders logic
+  // setMaxRangeFor(i){
+  //   let otherTotal: number = 0;
+  //   for (let j=0; j<this.locationArr.length; j++) {
+  //     if (i!=j) {
+  //       otherTotal += this.amount2number(this.accounting.total[j]);
+  //     }
+  //   }
+  //   return this.maxRange - otherTotal;
+  // }
 
   changeCurrency(){
     let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
