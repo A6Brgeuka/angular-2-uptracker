@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { VendorModel } from '../../../models/index';
-import { UserService, AccountService } from '../../../core/services/index';
+import { UserService, AccountService, ModalWindowService } from '../../../core/services/index';
 
 export class ViewVendorModalContext extends BSModalContext {
   public vendor: VendorModel;
@@ -39,7 +39,8 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   constructor(
       public dialog: DialogRef<ViewVendorModalContext>,
       public userService: UserService,
-      public accountService: AccountService
+      public accountService: AccountService,
+      private modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -68,6 +69,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   dismissModal(){
     this.dialog.dismiss();
+    this.modalWindowService.setScrollPosition();
   }
 
   closeModal(data){

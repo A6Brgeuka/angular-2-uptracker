@@ -258,7 +258,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.newFiles$.next(this.fileArr);
   }
 
-  onSubmit(){
+  onSubmit(){ 
     this.vendor.account_id = this.userService.selfData.account_id;
     this.vendor.vendor_id = this.context.vendor.vendor_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;

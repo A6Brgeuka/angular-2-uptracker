@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 
 import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
 import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
-import { VendorService } from '../../core/services/index';
+import { VendorService, ModalWindowService } from '../../core/services/index';
 
 
 @Component({
@@ -25,10 +25,11 @@ export class VendorsComponent implements OnInit {
   public vendors$: Observable<any>;
 
   constructor(
-      vcRef: ViewContainerRef,
+      private vcRef: ViewContainerRef,
       overlay: Overlay,
       public modal: Modal,
-      private vendorService: VendorService
+      private vendorService: VendorService,
+      private modalWindowService: ModalWindowService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -64,23 +65,28 @@ export class VendorsComponent implements OnInit {
   }
 
   viewVendorModal(vendor = null){
-    let accountVendor = vendor.account_vendor;
-    this.modal
-        .open(ViewVendorModal,  overlayConfigFactory({ vendor: vendor }, BSModalContext))
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                this.editVendorModal(res);
-              },
-              (err)=>{}
-          );
-        });
+    // this.modalWindowService.saveScrollPosition();
+    let data = { vendor: vendor };
+    this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
+    // this.modal
+    //     .open(ViewVendorModal,  overlayConfigFactory({ vendor: vendor }, BSModalContext))
+    //     .then((resultPromise)=>{
+    //       resultPromise.result.then(
+    //           (res) => {
+    //             this.editVendorModal(res);
+    //           },
+    //           (err) => {}
+    //       );
+    //     });
   }
   
   editVendorModal(vendor = null){
     let accountVendor = vendor.account_vendor;
-    accountVendor.vendor_id = vendor.id;
-    this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: accountVendor }, BSModalContext));
+    accountVendor.vendor_id = accountVendor.vendor_id || vendor.id;
+
+    let data = { vendor: accountVendor };
+    this.modalWindowService.customModal(this.vcRef, EditVendorModal, data);
+    // this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: accountVendor }, BSModalContext));
   }
 
   vendorsFilter(event){
