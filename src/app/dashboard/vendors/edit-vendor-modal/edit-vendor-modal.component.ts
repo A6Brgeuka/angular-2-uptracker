@@ -108,6 +108,8 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       let secondaryLocations = _.filter(res, (loc) => {
         return this.primaryLocation != loc;
       });
+      if (secondaryLocations.length == 1)
+          this.secondaryLocation = secondaryLocations[0];
       return secondaryLocations;
     });
   }
@@ -262,6 +264,8 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
+
+    debugger;
 
     _.each(this.vendor, (value, key) => {
       if (value != null)

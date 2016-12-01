@@ -24,7 +24,7 @@
                 [(ngModel)]="selectedLocation"
                 name="location"
                 materialize="material_select"
-                [materializeSelectOptions]="locationArr"
+                [materializeSelectOptions]="locations$ | async"
                 (change)="changeLocation($event)">
               <option value="">All Locations</option>
               <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
