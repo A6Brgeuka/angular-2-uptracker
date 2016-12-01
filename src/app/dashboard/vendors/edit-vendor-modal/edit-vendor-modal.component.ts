@@ -128,7 +128,9 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': null}) || {};
       _.each(allLocationsVendor, (value, key) => {
-        key == 'discount_percentage' ? allLocationsVendor[key] = value*100 : allLocationsVendor[key] = value;
+        if (key == 'discount_percentage') {
+          value = value*100;
+        }
         switch(key){
           case 'rep_office_phone': this.placeholder.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(value); break;
           case 'rep_mobile_phone': this.placeholder.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(value); break;
@@ -264,8 +266,6 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
-
-    debugger;
 
     _.each(this.vendor, (value, key) => {
       if (value != null)
