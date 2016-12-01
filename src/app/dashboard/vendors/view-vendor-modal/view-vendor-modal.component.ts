@@ -6,7 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-import { VendorModel } from '../../../models/index';
+import { VendorModel, LocationModel } from '../../../models/index';
 import { UserService, AccountService, ModalWindowService } from '../../../core/services/index';
 
 export class ViewVendorModalContext extends BSModalContext {
@@ -88,16 +88,14 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     } else {
       this.sateliteLocationActive = false;
     }
-    this.currentLocation = location;
+    this.currentLocation = new LocationModel(location);
 
     // fill vendor info for modal view vendor
     this.vendor = new VendorModel(this.context.vendor);
-    if (location){
-      let locationAccountVendor = _.find(this.accountVendors, {'location_id': this.currentLocation.id});
-      _.each(locationAccountVendor, (value, key) => {
-        if (value)
-            this.vendor[key] = value;
-      });
-    }
+    let locationAccountVendor = _.find(this.accountVendors, {'location_id': this.currentLocation.id});
+    _.each(locationAccountVendor, (value, key) => {
+      if (value)
+          this.vendor[key] = value;
+    });
   }
 }

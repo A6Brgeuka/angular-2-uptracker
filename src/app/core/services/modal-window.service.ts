@@ -52,7 +52,7 @@ export class ModalWindowService {
         .open(modal,  overlayConfigFactory(data, BSModalContext))
         .then((resultPromise)=>{
           resultPromise.result.then(
-              (res) => { 
+              (res) => {
                 this.setScrollPosition();
                 if (!fn) return;
 
@@ -60,7 +60,6 @@ export class ModalWindowService {
               },
               (err) => {
                 this.setScrollPosition();
-                debugger;
               }
           );
         });

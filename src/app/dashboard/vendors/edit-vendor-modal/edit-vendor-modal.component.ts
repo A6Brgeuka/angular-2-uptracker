@@ -260,7 +260,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
   onSubmit(){ 
     this.vendor.account_id = this.userService.selfData.account_id;
-    this.vendor.vendor_id = this.context.vendor.vendor_id;
+    this.vendor.vendor_id = this.vendor.vendor_id || this.context.vendor.vendor_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
