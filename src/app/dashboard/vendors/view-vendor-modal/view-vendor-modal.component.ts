@@ -75,9 +75,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   editVendor(vendor = null){
-    if (this.currentLocation) {
-      this.accountService.dashboardLocation$.next(this.currentLocation);
-    }
+    this.accountService.dashboardLocation$.next(this.currentLocation);
     this.closeModal(vendor);
   }
 

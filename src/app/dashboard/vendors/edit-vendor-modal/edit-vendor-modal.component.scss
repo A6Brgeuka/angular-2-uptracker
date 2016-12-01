@@ -23,8 +23,9 @@
         color:#fff;
         font-weight:bold;
         bottom:7px;
-        z-index:3;
+        z-index:1;
         cursor:pointer;
+        pointer-events: none;
       }
     }
 
