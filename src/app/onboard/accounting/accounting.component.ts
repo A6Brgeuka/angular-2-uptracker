@@ -34,7 +34,7 @@ export class AccountingComponent implements OnInit {
     prefix: ''
   });
   private prevInputValue: any = [];
-  public rangeStep: number = 1000;
+  public rangeStep: number = 1;
   private prev_annual_inventory_budget: string; // previous annual budget for 'change' detection on blur
 
   constructor(
@@ -103,12 +103,10 @@ export class AccountingComponent implements OnInit {
 
   changingRange(event, i, byInput = false){
     //check if unlocked sliders exists to allow changing amount
-    let k = 0, unlockedSliders = [];
+    let k = 0;
     for (let j=0; j<this.accounting.total.length; j++){
-      if (!this.disabledRange[j] && j != i){
+      if (!this.disabledRange[j] && j != i)
         k++;
-        unlockedSliders.push(this.accounting.total[j]);
-      }
     }
     if (k==0) {
       this.setSliderValue(i, this.prevInputValue[i]);
@@ -117,6 +115,7 @@ export class AccountingComponent implements OnInit {
 
     // if new value greater than maximum than change value to max
     let changedInputValue = this.amount2number(event.target.value) < this.setMaxRangeFor(i) ? this.amount2number(event.target.value) : this.setMaxRangeFor(i);
+    console.log('changedInputValue = ', changedInputValue);
     this.setSliderValue(i, changedInputValue);
 
     // TODO: remove after accepting the concept of accounting sliders logic
@@ -128,8 +127,12 @@ export class AccountingComponent implements OnInit {
     //   this.textInputRangeTotal[i] = this.accounting.total[i];
     // }
 
-    let diff = !this.disabledRange[i] ? changedInputValue - this.prevInputValue[i] : false;
+    // update other sliders values
+    let diff = changedInputValue - this.prevInputValue[i];
     console.log('diff', diff);
+    // count modulo
+    let mod = diff % k;
+
     for (let j=0; j<this.accounting.total.length; j++){
       // handle negative values
       if ((this.accounting.total[j] <= 0 && diff > 0) || this.accounting.total[j] > this.maxRange) {
@@ -140,9 +143,16 @@ export class AccountingComponent implements OnInit {
         }
       }
 
-      // move not active sliders
+      // move not active sliders and add mod to some sliders
+      let delta;
       if (i != j && !this.disabledRange[j]) {
-        this.setSliderValue(j, this.accounting.total[j] - diff / k);
+        if (mod > 0) {
+          delta = diff/k - this.rangeStep;
+          mod -= this.rangeStep;
+        } else {
+          delta = diff/k;
+        }
+        this.setSliderValue(j, this.accounting.total[j] - diff/k); // TODO: diff/k => delta
         this.prevInputValue[j] = this.accounting.total[j];
       }
     }
@@ -150,7 +160,7 @@ export class AccountingComponent implements OnInit {
   }
 
   setSliderValue(i, value){ console.log('new value', value);
-    value = value > 0 ? value : 0;
+    value = value > 0 ? Math.round(value) : 0; //TODO: math.func depends on diff
     this.accounting.total[i] = value;
     this.textInputRangeTotal[i] = this.accounting.total[i];
   }

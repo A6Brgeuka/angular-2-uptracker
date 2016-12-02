@@ -84,7 +84,7 @@
                   [(ngModel)]="profileFormPhone"
                   name="phone"
                   #phone="ngModel"
-                  required minlength="11"
+                  minlength="11"
                   type="text">
               <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
                 Phone number required.
