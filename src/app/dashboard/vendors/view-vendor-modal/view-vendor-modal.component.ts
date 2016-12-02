@@ -88,11 +88,11 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     } else {
       this.sateliteLocationActive = false;
     }
-    this.currentLocation = new LocationModel(location);
+    this.currentLocation = location;
 
     // fill vendor info for modal view vendor
     this.vendor = new VendorModel(this.context.vendor);
-    let locationAccountVendor = _.find(this.accountVendors, {'location_id': this.currentLocation.id});
+    let locationAccountVendor = _.find(this.accountVendors, {'location_id': this.currentLocation ? this.currentLocation.id : null});
     _.each(locationAccountVendor, (value, key) => {
       if (value)
           this.vendor[key] = value;

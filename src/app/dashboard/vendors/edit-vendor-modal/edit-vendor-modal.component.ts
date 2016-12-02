@@ -115,7 +115,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   ngAfterViewInit(){
-    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
+    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => { 
       this.chooseTabLocation(res);
       if (res && res.id != this.primaryLocation.id){
         this.secondaryLocationLink.nativeElement.click();
