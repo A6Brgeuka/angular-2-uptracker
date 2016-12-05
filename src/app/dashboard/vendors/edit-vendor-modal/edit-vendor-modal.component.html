@@ -30,7 +30,7 @@
               #currency="ngModel"
               materialize="material_select"
               (change)="changeCurrency($event)"
-              [materializeSelectOptions]="currency$">
+              [materializeSelectOptions]="currencyArr">
             <option value="">Please select one</option>
             <option *ngFor="let currency of currency$ | async" [value]="currency.iso_code">{{currency.name}}</option>
           </select>

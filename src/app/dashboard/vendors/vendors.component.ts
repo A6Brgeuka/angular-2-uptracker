@@ -65,19 +65,8 @@ export class VendorsComponent implements OnInit {
   }
 
   viewVendorModal(vendor = null){
-    // this.modalWindowService.saveScrollPosition();
     let data = { vendor: vendor };
     this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
-    // this.modal
-    //     .open(ViewVendorModal,  overlayConfigFactory({ vendor: vendor }, BSModalContext))
-    //     .then((resultPromise)=>{
-    //       resultPromise.result.then(
-    //           (res) => {
-    //             this.editVendorModal(res);
-    //           },
-    //           (err) => {}
-    //       );
-    //     });
   }
   
   editVendorModal(vendor = null){
@@ -86,7 +75,6 @@ export class VendorsComponent implements OnInit {
 
     let data = { vendor: accountVendor };
     this.modalWindowService.customModal(this.vcRef, EditVendorModal, data);
-    // this.modal.open(EditVendorModal,  overlayConfigFactory({ vendor: accountVendor }, BSModalContext));
   }
 
   vendorsFilter(event){

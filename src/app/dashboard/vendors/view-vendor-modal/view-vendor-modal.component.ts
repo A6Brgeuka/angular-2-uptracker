@@ -6,7 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-import { VendorModel, LocationModel } from '../../../models/index';
+import { VendorModel, LocationModel, AccountVendorModel } from '../../../models/index';
 import { UserService, AccountService, ModalWindowService } from '../../../core/services/index';
 
 export class ViewVendorModalContext extends BSModalContext {
@@ -33,6 +33,9 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
   public secondaryLocation: any = { name: 'Satelite Location' };
+  public locVendorChosen: boolean = false;
+  private currencyArr: any = [];
+  public currencySign: string;
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -56,12 +59,16 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       });
       return secondaryLocations;
     });
+
+    this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies().subscribe((res: any) => {
+      this.currencyArr = res;
+    });
   }
 
   ngAfterViewInit(){
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.chooseTabLocation(res);
-      if (res && res.id != this.primaryLocation.id){
+      if (res ? res.id != this.primaryLocation.id : null){
         this.secondaryLocationLink.nativeElement.click();
       }
     });
@@ -82,6 +89,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   chooseTabLocation(location = null){
+    this.locVendorChosen = location ? true : false;
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
       this.secondaryLocation = location;
@@ -90,12 +98,21 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     }
     this.currentLocation = location;
 
-    // fill vendor info for modal view vendor
+    // global vendor info
     this.vendor = new VendorModel(this.context.vendor);
-    let locationAccountVendor = _.find(this.accountVendors, {'location_id': this.currentLocation ? this.currentLocation.id : null});
+    // account vendor general info
+    let generalAccountVendor: any = _.cloneDeep(_.find(this.accountVendors, {'location_id': null}));
+    // account vendor info for specific location
+    let locationAccountVendor: AccountVendorModel = new AccountVendorModel(_.find(this.accountVendors, {'location_id': this.currentLocation ? this.currentLocation.id : null}) || null);
+    // fill vendor info for modal view vendor
     _.each(locationAccountVendor, (value, key) => {
+      if (generalAccountVendor && generalAccountVendor[key])
+          this.vendor[key] = generalAccountVendor[key];
       if (value)
           this.vendor[key] = value;
     });
+    this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
+    let currentVendorCurrency: any = _.find(this.currencyArr, {'iso_code': this.vendor.currency});
+    this.currencySign = currentVendorCurrency.html_entity;
   }
 }
