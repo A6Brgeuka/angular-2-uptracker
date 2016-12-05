@@ -4,6 +4,5 @@ export const PaymentInfoRoutes = [
   {
     path: 'payment-info',
     component: PaymentInfoComponent,
-    canActivate: []
   }
 ];

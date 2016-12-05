@@ -1,6 +1,8 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+// import { SignupStepsAuthGuard } from '../../singup-steps-auth-guard.service';
+import { AuthGuard } from '../../auth-guard.service';
 import { SignupComponent } from './signup.component';
 
 import { AboutCompanyRoutes } from './about-company/about-company.routing';
@@ -18,7 +20,8 @@ const signupRoutes = [
       ...CreateAccountRoutes,
       ...PaymentInfoRoutes,
       ...CongratsRoutes
-    ]
+    ],
+    canActivateChild: [ AuthGuard ]
   }
 ];
 

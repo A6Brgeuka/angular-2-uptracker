@@ -4,6 +4,5 @@ export const CreateAccountRoutes = [
   {
     path: '',
     component: CreateAccountComponent,
-    canActivate: []
   }
 ];

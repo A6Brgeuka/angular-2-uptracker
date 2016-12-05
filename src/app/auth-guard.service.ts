@@ -59,10 +59,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   ): Observable<boolean> | boolean {
     let url = `/${route.path}`;
 
-    return this.guard(url);
+    return this.guard(url, true);
   }
   
-  guard(url){
+  guard(url, lazy = false){
     let user$ = this.userService.loadSelfData().map((res) => {
       // if logged out guest remove self data
       if (this.userService.isGuest()){
@@ -76,7 +76,9 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         case 'forgot-password':
           return this.checkForgotPassword();
         case 'signup':
-          return this.checkSignup();
+          // handling '/signup' url which is used for lazy loading and for create account step of signup
+          // if lazy loading - signup main routing, if ordinary load - signup steps routings
+          return lazy ? this.checkSignup() : this.checkSignupSteps(url);
         case 'onboard':
           return this.checkOnboard(url);
         case 'dashboard':
@@ -98,7 +100,22 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       return false;
     }
 
-    if (!this.userService.emailVerified() && this.userService.currentSignupStep() == 4) {
+    // TODO: remove after testing
+    // if (this.userService.currentSignupStep() == 4) {
+    //   this.router.navigate(['/email-verification']);
+    //   return false;
+    // }
+
+    return true;
+  }
+
+  checkSignupSteps(url){
+    if (this.userService.emailVerified()) {
+      this.router.navigate(['/dashboard']);
+      return false;
+    }
+
+    if (this.userService.currentSignupStep() == 4 && _.last(url.split('/')) != 'congrats') {
       this.router.navigate(['/email-verification']);
       return false;
     }

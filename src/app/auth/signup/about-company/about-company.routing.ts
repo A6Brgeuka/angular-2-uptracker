@@ -4,6 +4,5 @@ export const AboutCompanyRoutes = [
   {
     path: 'about-company',
     component: AboutCompanyComponent,
-    canActivate: []
   }
 ];
