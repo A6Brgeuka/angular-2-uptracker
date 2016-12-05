@@ -131,11 +131,14 @@ export class AccountingComponent implements OnInit {
     let diff = changedInputValue - this.prevInputValue[i];
     console.log('diff', diff);
     // count modulo
-    let mod = diff % k;
+    let num: number = diff > 0 ? Math.floor(diff/k) : Math.ceil(diff/k);
+    let mod: number = diff % k;
+    console.log('num', num);
+    console.log('mod', mod);
 
     for (let j=0; j<this.accounting.total.length; j++){
-      // handle negative values
-      if ((this.accounting.total[j] <= 0 && diff > 0) || this.accounting.total[j] > this.maxRange) {
+      // handle negative and over maximum values
+      if ((this.accounting.total[j] <= 0 && diff > 0) || (this.accounting.total[j] > this.maxRange && diff > 0)) {
         k--;
         if (k == 0)  {
           this.setSliderValue(i, this.prevInputValue[i]);
@@ -144,22 +147,22 @@ export class AccountingComponent implements OnInit {
       }
 
       // move not active sliders and add mod to some sliders
-      let delta;
+      let delta: number;
       if (i != j && !this.disabledRange[j]) {
-        if (mod > 0) {
-          delta = diff/k - this.rangeStep;
-          mod -= this.rangeStep;
-        } else {
-          delta = diff/k;
+        delta = num + mod;
+        // set mod to null after first delta counting
+        if (mod != 0) {
+          // delta = diff/k - this.rangeStep;
+          mod = 0;
         }
-        this.setSliderValue(j, this.accounting.total[j] - diff/k); // TODO: diff/k => delta
+        this.setSliderValue(j, this.accounting.total[j] - delta); // TODO: diff/k => delta
         this.prevInputValue[j] = this.accounting.total[j];
       }
     }
     this.prevInputValue[i] = changedInputValue;
   }
 
-  setSliderValue(i, value){ console.log('new value', value);
+  setSliderValue(i, value){ console.log('new value ' + i + ' = ', value);
     value = value > 0 ? Math.round(value) : 0; //TODO: math.func depends on diff
     this.accounting.total[i] = value;
     this.textInputRangeTotal[i] = this.accounting.total[i];
