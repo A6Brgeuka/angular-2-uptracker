@@ -90,7 +90,8 @@ export class VendorsComponent implements OnInit {
   }
 
   vendorsFilter(event){
-    let value = event.target.value;
+    // replace forbidden characters
+    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
 

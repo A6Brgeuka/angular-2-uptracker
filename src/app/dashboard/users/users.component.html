@@ -16,7 +16,7 @@
   </div>
   <div class="users-row">
     <div class="list">
-      <div class="item center-align" *ngFor="let user of userArr">
+      <div class="item center-align" *ngFor="let user of users$ | async">
         <div class="inner">
           <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }" (click)="viewUserModal(user)"></div>
           <div class="info">

@@ -82,7 +82,8 @@ export class LocationsComponent implements OnInit {
   }
 
   locationsFilter(event){
-    let value = event.target.value;
+    // replace forbidden characters
+    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
 

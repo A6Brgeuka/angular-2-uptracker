@@ -23,6 +23,7 @@ export class UsersComponent implements OnInit {
   public searchKey: string = null;
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public total: number;
+  public users$: Observable<any> = new Observable<any>();
 
   constructor(
       vcRef: ViewContainerRef,
@@ -35,28 +36,25 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribers.getUsersSubscription = Observable
+    // this.subscribers.getUsersSubscription 
+    this.users$ = Observable
         .combineLatest(
             this.userService.selfData$,
-            this.searchKey$
+            this.searchKey$,
+            this.accountService.dashboardLocation$
         )
         // filter for emitting only if user account exists (for logout user updateSelfData)
-        .filter(([user, searchKey]) => {
+        .filter(([user, searchKey, location]) => {
           return user.account;
         })
-        .map(([user, searchKey]) => {
+        .map(([user, searchKey, location]) => {
           this.total = user.account.users.length;
-          let filteredUsers = user.account.users;
-          if (searchKey && searchKey!='') {
-            filteredUsers = _.reject(filteredUsers, (user: any) =>{ 
-              let key = new RegExp(searchKey, 'i');
-              return !key.test(user.name);
-            });
-          }
+          let filteredUsers = _.filter(user.account.users, (user: any) => {
+            let key = new RegExp(searchKey, 'i');
+            let userIsFromCurrentLocation: boolean = !location || user.default_location == location.id;
+            return ((!searchKey || key.test(user.name)) && userIsFromCurrentLocation);
+          });
           return filteredUsers;
-        })
-        .subscribe((res: any) => {
-          this.userArr = res;
         });
   }
 
@@ -78,7 +76,8 @@ export class UsersComponent implements OnInit {
   }
 
   usersFilter(event){
-    let value = event.target.value;
+    // replace forbidden characters
+    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
 
