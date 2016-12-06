@@ -152,6 +152,12 @@
           {{vendor.rep_fax}}
         </div>
       </div>
+      <div class="row" *ngIf="vendor.ext_account_id">
+        <div class="col s6 label">Account #</div>
+        <div class="col s6">
+          {{vendor.ext_account_id}}
+        </div>
+      </div>
       <div class="row" *ngIf="vendor.rep_name">
         <div class="col s6 label">Rep Name</div>
         <div class="col s6">

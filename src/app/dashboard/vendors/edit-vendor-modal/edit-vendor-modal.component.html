@@ -165,7 +165,21 @@
       </div>
     </div>
     <div class="input row">
-      <div class="col s12 m8">
+      <div class="col s12 m4">
+        <div class="label left-align">Account #</div>
+        <input
+            id="ext_account_id"
+            placeholder="{{placeholder.ext_account_id}}"
+            class="validate col s12"
+            [(ngModel)]="vendor.ext_account_id"
+            name="ext_account_id"
+            #ext_account_id="ngModel"
+            type="text">
+        <div [hidden]="ext_account_id.valid || ext_account_id.pristine" class="error red-text left-align">
+          Account # is required.
+        </div>
+      </div>
+      <div class="col s12 m4">
         <div class="label left-align">Rep Name</div>
         <input
             id="name"
