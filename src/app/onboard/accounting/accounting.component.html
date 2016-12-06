@@ -95,9 +95,7 @@
               <div class="label left">{{location.name}}</div>
               <div class="right">
                 <div class="value input left">
-                  <div (click)="editRangeValue(i)" *ngIf="viewRangeInput[i]">{{accounting.total[i]}}</div>
                   <input
-                      *ngIf="!viewRangeInput[i]"
                       id="rangeInput{{i}}"
                       class="range-value-input"
                       [(ngModel)]="textInputRangeTotal[i]"

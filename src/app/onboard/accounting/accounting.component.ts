@@ -82,39 +82,45 @@ export class AccountingComponent implements OnInit {
   setLocationBudget(){
     let annual_inventory_budget = this.accounting.annual_inventory_budget || 1000000;
     let locationBudget: number = this.amount2number(annual_inventory_budget) / this.locationArr.length;
+    let mod: number = this.amount2number(annual_inventory_budget) % this.locationArr.length;
 
-    // check if saved values count == current locations count for setting the values
-    if (this.accountService.onboardAccounting.total.length != this.accounting.total.length)
-        _.map(this.accountService.onboardAccounting, (value) => {
-          return null;
-        });
+    // check if saved location budget values count == current locations count for setting the values
+    if (this.accountService.onboardAccounting.total.length != this.locationArr.length) {
+      // set array length to current locationArr length and fill it with null values
+      this.accountService.onboardAccounting.total = _.map(_.cloneDeep(this.locationArr), (value) => {
+        return null;
+      });
+    }
 
     for (let i=0; i<this.locationArr.length; i++){
       this.disabledRange[i] = !this.moreThanOneSlider;
-      this.viewRangeInput[i] = false;
 
-      let budgetValue = this.accountService.onboardAccounting.total[i] || this.amount2number(locationBudget);
+      let budgetValue = this.accountService.onboardAccounting.total[i] || this.amount2number(locationBudget) + mod;
+      mod = 0;
       this.setSliderValue(i, budgetValue);
+
       // store budget amount to know previous value
       this.prevInputValue[i] = this.accounting.total[i];
-      console.log('total '+i, this.prevInputValue[i]);
+      console.log('prev value '+i, this.prevInputValue[i]);
     }
   }
 
   changingRange(event, i, byInput = false){
     //check if unlocked sliders exists to allow changing amount
-    let k = 0;
+    let unlockedSliders: number = 0;
     for (let j=0; j<this.accounting.total.length; j++){
       if (!this.disabledRange[j] && j != i)
-        k++;
+        unlockedSliders++;
     }
-    if (k==0) {
+    if (unlockedSliders==0) {
       this.setSliderValue(i, this.prevInputValue[i]);
       return;
     }
 
     // if new value greater than maximum than change value to max
     let changedInputValue = this.amount2number(event.target.value) < this.setMaxRangeFor(i) ? this.amount2number(event.target.value) : this.setMaxRangeFor(i);
+    console.log('---------------------------');
+    console.log('event value = ', event.target.value);
     console.log('changedInputValue = ', changedInputValue);
     this.setSliderValue(i, changedInputValue);
 
@@ -130,35 +136,57 @@ export class AccountingComponent implements OnInit {
     // update other sliders values
     let diff = changedInputValue - this.prevInputValue[i];
     console.log('diff', diff);
+
+    // calculate amount of sliders that can be changed depending on (+ or -) diff
+    let k: number = 0;
+    _.each(this.accounting.total, (value, key) => {
+      let cond = diff > 0 ? value > 0 : true; //Math.floor(diff/unlockedSliders) : true;
+      console.log('__i ', i, ' == __key ', key);
+      if ( i != key && !this.disabledRange[key] && cond) {
+        k++;
+      }
+    });
+    console.log('active sliders counter = ', k);
+
     // count modulo
     let num: number = diff > 0 ? Math.floor(diff/k) : Math.ceil(diff/k);
     let mod: number = diff % k;
     console.log('num', num);
     console.log('mod', mod);
 
-    for (let j=0; j<this.accounting.total.length; j++){
-      // handle negative and over maximum values
-      if ((this.accounting.total[j] <= 0 && diff > 0) || (this.accounting.total[j] > this.maxRange && diff > 0)) {
-        k--;
-        if (k == 0)  {
+    _.each(this.accounting.total, (value, key) => {
+      console.log('----------', key);
+      // handle negative and over maximum values (for text inputs)
+      if ((this.accounting.total[key] <= 0 && diff > 0) || (this.accounting.total[key] > this.maxRange && diff < 0)) {
+        unlockedSliders--;
+        if (unlockedSliders == 0)  {
           this.setSliderValue(i, this.prevInputValue[i]);
-          return;
         }
+        return;
       }
 
       // move not active sliders and add mod to some sliders
-      let delta: number;
-      if (i != j && !this.disabledRange[j]) {
-        delta = num + mod;
-        // set mod to null after first delta counting
-        if (mod != 0) {
-          // delta = diff/k - this.rangeStep;
+      if (i != key && !this.disabledRange[key]) {
+        let delta: number = num + mod;
+        let newValue: number = this.accounting.total[key] - delta;
+        console.log('prev value '+key+' = ', this.accounting.total[key]);
+        console.log('mod '+key+' before =', mod);
+        // share mod on all other locations
+        if (newValue < 0) {
+          mod = -newValue;
+          newValue = 0;
+        } else if (newValue > this.maxRange) {
+          mod = this.maxRange - newValue;
+          newValue = this.maxRange;
+        } else {
           mod = 0;
         }
-        this.setSliderValue(j, this.accounting.total[j] - delta); // TODO: diff/k => delta
-        this.prevInputValue[j] = this.accounting.total[j];
+        console.log('mod '+key+' after =', mod);
+        this.setSliderValue(key, newValue); // TODO: diff/k => delta
+        this.prevInputValue[key] = this.accounting.total[key];
+
       }
-    }
+    });
     this.prevInputValue[i] = changedInputValue;
   }
 
@@ -231,17 +259,21 @@ export class AccountingComponent implements OnInit {
     }
   }
 
-  editRangeValue(i){
-    if (!this.disabledRange[i]){
-      this.viewRangeInput[i] = true;
-    }
-  }
-
   amount2number(amount){
     amount = amount || 0;
     amount = ('' + amount).replace(/,/g, "");
     return amount ? parseInt(amount) : 0;
   }
+
+  // TODO: remove after testings
+  // getActiveSlidersWithout(i){
+  //   let arr = [];
+  //   for (let j=0; j<this.accounting.total.length; j++){
+  //     if (!this.disabledRange[j] && i != j)
+  //         arr[j] = this.accounting.total[j];
+  //   }
+  //   return arr;
+  // }
 
   goBack(){
     this.router.navigate(['/onboard','users']);
