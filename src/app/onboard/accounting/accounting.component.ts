@@ -117,13 +117,6 @@ export class AccountingComponent implements OnInit {
       return;
     }
 
-    // if new value greater than maximum than change value to max
-    let changedInputValue = this.amount2number(event.target.value) < this.setMaxRangeFor(i) ? this.amount2number(event.target.value) : this.setMaxRangeFor(i);
-    console.log('---------------------------');
-    console.log('event value = ', event.target.value);
-    console.log('changedInputValue = ', changedInputValue);
-    this.setSliderValue(i, changedInputValue);
-
     // TODO: remove after accepting the concept of accounting sliders logic
     // let maxRange = this.setMaxRangeFor(i);
     // if (changedInputValue >= maxRange){
@@ -133,15 +126,21 @@ export class AccountingComponent implements OnInit {
     //   this.textInputRangeTotal[i] = this.accounting.total[i];
     // }
 
-    // update other sliders values
+    // if new value greater than maximum than change value to max
+    let changedInputValue = this.amount2number(event.target.value) < this.setMaxRangeFor(i) ? this.amount2number(event.target.value) : this.setMaxRangeFor(i);
+    console.log('---------------------------');
+    console.log('event value = ', event.target.value);
+    console.log('changedInputValue = ', changedInputValue);
+    this.setSliderValue(i, changedInputValue);
+
+    // count difference between new and prev values
     let diff = changedInputValue - this.prevInputValue[i];
     console.log('diff', diff);
 
-    // calculate amount of sliders that can be changed depending on (+ or -) diff
+    // calculate amount of sliders that can be changed (not current draggable slider && enabled slider && slider value is > 0)
     let k: number = 0;
     _.each(this.accounting.total, (value, key) => {
-      let cond = diff > 0 ? value > 0 : true; //Math.floor(diff/unlockedSliders) : true;
-      console.log('__i ', i, ' == __key ', key);
+      let cond = diff > 0 ? value > 0 : true;
       if ( i != key && !this.disabledRange[key] && cond) {
         k++;
       }
@@ -154,39 +153,43 @@ export class AccountingComponent implements OnInit {
     console.log('num', num);
     console.log('mod', mod);
 
-    _.each(this.accounting.total, (value, key) => {
-      console.log('----------', key);
-      // handle negative and over maximum values (for text inputs)
-      if ((this.accounting.total[key] <= 0 && diff > 0) || (this.accounting.total[key] > this.maxRange && diff < 0)) {
-        unlockedSliders--;
-        if (unlockedSliders == 0)  {
-          this.setSliderValue(i, this.prevInputValue[i]);
+    // use cycle to handle potential modular on last slider (until mod == 0)
+    do {
+      _.each(this.accounting.total, (value, key) => {
+        console.log('----------', key);
+        // handle negative and over maximum values (for text inputs)
+        if ((this.accounting.total[key] <= 0 && diff > 0) || (this.accounting.total[key] > this.maxRange && diff < 0)) {
+          unlockedSliders--;
+          if (unlockedSliders == 0) {
+            this.setSliderValue(i, this.prevInputValue[i]);
+          }
+          return;
         }
-        return;
-      }
 
-      // move not active sliders and add mod to some sliders
-      if (i != key && !this.disabledRange[key]) {
-        let delta: number = num + mod;
-        let newValue: number = this.accounting.total[key] - delta;
-        console.log('prev value '+key+' = ', this.accounting.total[key]);
-        console.log('mod '+key+' before =', mod);
-        // share mod on all other locations
-        if (newValue < 0) {
-          mod = -newValue;
-          newValue = 0;
-        } else if (newValue > this.maxRange) {
-          mod = this.maxRange - newValue;
-          newValue = this.maxRange;
-        } else {
-          mod = 0;
+        // move not active sliders and add mod to some sliders
+        if (i != key && !this.disabledRange[key]) {
+          let delta: number = num + mod;
+          let newValue: number = this.accounting.total[key] - delta;
+          console.log('prev value ' + key + ' = ', this.accounting.total[key]);
+          
+          console.log('mod ' + key + ' before =', mod);
+          // share mod on all other locations
+          if (newValue < 0) { // if mod is too big set new value to 0 and update mod
+            mod = -newValue;
+            newValue = 0;
+          } else {
+            mod = 0;
+          }
+          console.log('mod ' + key + ' after =', mod);
+          this.setSliderValue(key, newValue); // TODO: diff/k => delta
+          this.prevInputValue[key] = this.accounting.total[key];
         }
-        console.log('mod '+key+' after =', mod);
-        this.setSliderValue(key, newValue); // TODO: diff/k => delta
-        this.prevInputValue[key] = this.accounting.total[key];
 
-      }
-    });
+        // if last slider and mod != 0 than set num to null for next do while iteration
+        if (mod != 0 && this.amount2number(key) == this.accounting.total.length - 1)
+            num = 0;
+      });
+    } while (mod != 0);
     this.prevInputValue[i] = changedInputValue;
   }
 
