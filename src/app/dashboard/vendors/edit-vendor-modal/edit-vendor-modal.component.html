@@ -4,7 +4,7 @@
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col s4"><a href="#general" (click)="chooseTabLocation()">All Locations</a></li>
     <li class="tab col s4"><a href="#general" (click)="chooseTabLocation(primaryLocation)" [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">{{primaryLocation?.name}}</a></li>
-    <li class="tab col s4" *ngIf="(locations$ | async)?.length == 1"><a href="#general" (click)="chooseTabLocation(secondaryLocation)">{{(locations$ | async)[0].name}}</a></li>
+    <li class="tab col s4" *ngIf="(locations$ | async)?.length == 1"><a href="#general" (click)="chooseTabLocation(secondaryLocation)" #aloneSecondary>{{(locations$ | async)[0].name}}</a></li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(locations$ | async)?.length > 1">
       <a href="#general" materialize="dropdown" data-activates="location_dropdown5" [class.active1]="sateliteLocationActive" #secondary>
         <span>{{secondaryLocation?.name}}</span>
@@ -168,14 +168,14 @@
       <div class="col s12 m4">
         <div class="label left-align">Account #</div>
         <input
-            id="ext_account_id"
-            placeholder="{{placeholder.ext_account_id}}"
+            id="ext_account_number"
+            placeholder="{{placeholder.ext_account_number}}"
             class="validate col s12"
-            [(ngModel)]="vendor.ext_account_id"
-            name="ext_account_id"
-            #ext_account_id="ngModel"
+            [(ngModel)]="vendor.ext_account_number"
+            name="ext_account_number"
+            #ext_account_number="ngModel"
             type="text">
-        <div [hidden]="ext_account_id.valid || ext_account_id.pristine" class="error red-text left-align">
+        <div [hidden]="ext_account_number.valid || ext_account_number.pristine" class="error red-text left-align">
           Account # is required.
         </div>
       </div>

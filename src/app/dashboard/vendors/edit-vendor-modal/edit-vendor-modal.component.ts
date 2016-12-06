@@ -60,8 +60,10 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
   public secondaryLocation: any = { name: 'Satelite Location' };
+  public secondaryLocationArr: any = [];
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
+  @ViewChild('aloneSecondary') aloneSecondaryLocationLink: ElementRef;
 
   private defaultPlaceholder: any = {
     discount_percentage: "Enter Value",
@@ -103,22 +105,29 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
         }
     );
 
-    this.locations$ = this.accountService.locations$.map((res: any) => {
-      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-      let secondaryLocations = _.filter(res, (loc) => {
-        return this.primaryLocation != loc;
-      });
-      if (secondaryLocations.length == 1)
-          this.secondaryLocation = secondaryLocations[0];
-      return secondaryLocations;
-    });
+    this.locations$ = this.accountService.locations$
+        .map((res: any) => {
+          this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+          let secondaryLocations = _.filter(res, (loc) => {
+            return this.primaryLocation != loc;
+          });
+          if (secondaryLocations.length == 1)
+              this.secondaryLocation = secondaryLocations[0];
+          return secondaryLocations;
+        })
+        .do((res) => {
+          this.secondaryLocationArr = res;
+        });
   }
 
   ngAfterViewInit(){
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => { 
       this.chooseTabLocation(res);
-      if (res && res.id != this.primaryLocation.id){
+      if (res && res.id != this.primaryLocation.id && this.secondaryLocationArr.length != 1){
         this.secondaryLocationLink.nativeElement.click();
+      }
+      if (res && res.id != this.primaryLocation.id && this.secondaryLocationArr.length == 1){
+        this.aloneSecondaryLocationLink.nativeElement.click();
       }
     });
   }

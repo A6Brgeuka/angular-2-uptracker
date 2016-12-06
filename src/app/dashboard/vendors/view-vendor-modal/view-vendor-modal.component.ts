@@ -33,11 +33,13 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
   public secondaryLocation: any = { name: 'Satelite Location' };
+  public secondaryLocationArr: any = [];
   public locVendorChosen: boolean = false;
   private currencyArr: any = [];
   public currencySign: string;
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
+  @ViewChild('aloneSecondary') aloneSecondaryLocationLink: ElementRef;
 
   constructor(
       public dialog: DialogRef<ViewVendorModalContext>,
@@ -52,13 +54,17 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   ngOnInit(){
     this.accountVendors = this.context.vendor.account_vendor;
     this.vendor = new VendorModel(this.context.vendor);
-    this.locations$ = this.accountService.locations$.map((res: any) => {
-      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-      let secondaryLocations = _.filter(res, (loc) => {
-        return this.primaryLocation != loc;
-      });
-      return secondaryLocations;
-    });
+    this.locations$ = this.accountService.locations$
+        .map((res: any) => {
+          this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+          let secondaryLocations = _.filter(res, (loc) => {
+            return this.primaryLocation != loc;
+          });
+          return secondaryLocations;
+        })
+        .do((res) => {
+          this.secondaryLocationArr = res;
+        });
 
     this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies().subscribe((res: any) => {
       this.currencyArr = res;
@@ -68,8 +74,11 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   ngAfterViewInit(){
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.chooseTabLocation(res);
-      if (res ? res.id != this.primaryLocation.id : null){
+      if (res ? res.id != this.primaryLocation.id : null && this.secondaryLocationArr.length != 1){
         this.secondaryLocationLink.nativeElement.click();
+      }
+      if (res && res.id != this.primaryLocation.id && this.secondaryLocationArr.length == 1){
+        this.aloneSecondaryLocationLink.nativeElement.click();
       }
     });
   }
