@@ -1,11 +1,10 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-// import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-// import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 import { MaterializeModule } from "angular2-materialize";
 import { FileDropModule } from 'angular2-file-drop';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 
 // import { CoreModule } from "../core/core.module";
 
@@ -42,15 +41,13 @@ let modalsArr = [
   imports: [
     CommonModule,
     RouterModule,
-    // BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    // HttpModule,
 
-    // CoreModule,
     MaterializeModule,
     FileDropModule,
-    TextMaskModule
+    TextMaskModule,
+    Angular2FontawesomeModule
   ],
   declarations: [
     ...directivesArr,
@@ -59,15 +56,13 @@ let modalsArr = [
   ],
   exports: [
     RouterModule,
-    // BrowserModule,
     FormsModule,
-    // HttpModule,
     CommonModule,
-    // CoreModule,
-    
+
     MaterializeModule,
     FileDropModule,
     TextMaskModule,
+    Angular2FontawesomeModule,
     
     ...directivesArr,
     ...pipesArr

@@ -9,7 +9,11 @@
         <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" class="col s12" (input)="searchFilter($event)" />
       </div>
       <div class="left filter-btn">
-        <a (click)="showFiltersModal()"><i class="material-icons">settings</i><span>Filters</span></a>
+        <a (click)="showFiltersModal()">
+          <!--<i class="material-icons">settings</i>-->
+          <fa [name]="'filter'"></fa>
+          <span>Filters</span>
+        </a>
       </div>
       <div class="right">
         <button type="button" (click)="requestProduct()" class="uptracker-form-btn waves-light waves-effect">Request Product</button>
@@ -28,7 +32,7 @@
         <div class="inner">
           <div class="hazardous" *ngIf="true"><i class="material-icons">warning</i></div>
           <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }" (click)="viewProductModal(product)">
-            <div class="trackable" *ngIf="true"><i class="material-icons">warning</i></div>
+            <div class="trackable" *ngIf="true"><fa [name]="'barcode'"></fa></div>
           </div>
           <div class="info">
             <div class="ttl" (click)="viewProductModal(product)">{{product.name}}</div>

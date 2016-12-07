@@ -36,7 +36,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.products$ = Observable.of([
       { name: 'First', variations: 3, priceMin: 79, priceMax: 112},
-      { name: 'Second', variations: 100, priceMin: 8, priceMax: 34},
+      { name: 'Second with long name length for two lines', variations: 100, priceMin: 8, priceMax: 34},
     ]);
     // this.vendors$ = Observable
     //     .combineLatest(
