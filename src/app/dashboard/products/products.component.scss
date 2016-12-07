@@ -5,26 +5,20 @@
     }
 
     .filter{
-      .red-helper{
-        position:relative;
-        background:#f1594e;
-        width:30px;
-        height:30px;
-        border-radius:0 5px 5px 0;
-        margin-left:1px;
+      .filter-btn{
+        a{
+          margin: 0 0 0 10px;
+          line-height: 30px;
+          cursor: pointer;
 
-        .helper{
-          right:6px;
-          top:6px;
-          width:18px;
-          height:18px;
-          background-image: url(/assets/img/icon-info-white.svg);
-          background-size: cover;
+          i {
+            margin-right: 3px;
+          }
+
+          & > *{
+            vertical-align: middle;
+          }
         }
-      }
-
-      .red-btn{
-        border-radius: 5px 0 0 5px;
       }
     }
   }
@@ -45,6 +39,7 @@
       margin-left:20px;
       margin-bottom:20px;
       max-width:100%;
+      position: relative;
 
       .inner{
         width:250px;
@@ -54,19 +49,26 @@
         cursor:pointer;
         border-radius:5px;
 
-        &:hover{
-          width:260px;
-          height:260px;
-          transform: translateX(-5px) translateY(-5px);
-          box-shadow: 2px 2px 0 0 #e6e6e6;
-
-          .img{
-            margin-top:33px;
-            margin-bottom:10px;
-            height:155px;
-            width:155px;
-          }
+        .hazardous{
+          position: absolute;
+          left: 10px;
+          top: 10px;
+          color:#f1594e;
         }
+
+        //&:hover{
+        //  width:260px;
+        //  height:260px;
+        //  transform: translateX(-5px) translateY(-5px);
+        //  box-shadow: 2px 2px 0 0 #e6e6e6;
+        //
+        //  .img{
+        //    margin-top:34px;
+        //    margin-bottom:27px;
+        //    height:125px;
+        //    width:125px;
+        //  }
+        //}
 
         &.active{
           border:3px solid #000;
@@ -74,24 +76,43 @@
       }
 
       .img{
-        margin:30px auto 13px;
-        height:150px;
-        width:150px;
-        //border-radius:50%;
+        margin:31px auto 30px;
+        height:120px;
+        width:120px;
+        border-radius:50%;
         background:#f1f2f2 no-repeat center center;
         background-size:cover;
+        position:relative;
+
+        .trackable{
+          color:#33c6d9;
+          position:absolute;
+          right:-10px;
+          bottom:-25px;
+        }
       }
 
       .info{
         position:relative;
+        font-size:12px;
 
         .ttl{
-          font-size:12px;
+          font-size:14px;
+          line-height:18px;
+          font-weight:bold;
+          height:36px;
         }
 
-        .vendor-name{
-          font-size:12px;
-          color:#9d9d9d;
+        .bottom{
+          margin:0 15px;
+
+          .variations{
+            color:#9d9d9d;
+          }
+
+          .price{
+            color:#33c6d9;
+          }
         }
 
         .edit{

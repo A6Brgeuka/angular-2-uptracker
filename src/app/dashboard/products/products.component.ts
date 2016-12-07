@@ -35,9 +35,9 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.products$ = Observable.of([
-      { name: 'First', vendor_name: 'vendor1'},
-      { name: 'Second', vendor_name: 'vendor2'},
-    ])
+      { name: 'First', variations: 3, priceMin: 79, priceMax: 112},
+      { name: 'Second', variations: 100, priceMin: 8, priceMax: 34},
+    ]);
     // this.vendors$ = Observable
     //     .combineLatest(
     //         // this.vendorService.combinedVendors$,
@@ -93,5 +93,21 @@ export class ProductsComponent implements OnInit {
   itemsSort(event) {
     let value = event.target.value;
     this.sortBy$.next(value);
+  }
+
+  showFiltersModal(){
+    this.modal
+        .open(Modal,  overlayConfigFactory({}, BSModalContext))
+        .then((resultPromise)=>{
+          resultPromise.result.then(
+              (res) => {
+                // this.filterProducts();
+              },
+              (err)=>{}
+          );
+        });
+  }
+
+  requestProduct(){
   }
 }
