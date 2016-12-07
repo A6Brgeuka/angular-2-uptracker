@@ -80,7 +80,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
           // if lazy loading - signup main routing, if ordinary load - signup steps routings
           return lazy ? this.checkSignup() : this.checkSignupSteps(url);
         case 'onboard':
-          return this.checkOnboard(url);
+          this.checkOnboard(url);
         case 'dashboard':
           return this.checkDashboard(url);
         default:

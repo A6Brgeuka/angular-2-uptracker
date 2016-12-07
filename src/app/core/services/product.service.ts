@@ -9,7 +9,7 @@ import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
-// import { VendorModel, AccountVendorModel } from '../../models/index';
+import { ProductModel } from '../../models/index';
 
 @Injectable()
 @Subscribers({
@@ -41,23 +41,23 @@ export class ProductService extends ModelService {
         .filter(([vendors, user]) => {
           return user.account;
         })
-        .map(([vendors, user]) => {
-          // let accountVendors = user.account.vendors;
-          // // find and combine vendors
-          // let commonVendors = _.map(vendors, (globalVendor: any) => {
-          //   globalVendor = new VendorModel(globalVendor);
-          //   _.each(accountVendors, (accountVendor: AccountVendorModel) => {
-          //     if (accountVendor.vendor_id == globalVendor.id){
-          //       // globalVendor.account_vendor = accountVendor;
-          //       globalVendor.account_vendor.push(accountVendor);
-          //       if (!accountVendor.location_id)
-          //         globalVendor.priority = accountVendor.priority;
-          //     }
-          //   });
-          //   return globalVendor;
-          // });
-          // return commonVendors;
-        })
+        // .map(([vendors, user]) => {
+        //   let accountVendors = user.account.vendors;
+        //   // find and combine vendors
+        //   let commonVendors = _.map(vendors, (globalVendor: any) => {
+        //     globalVendor = new VendorModel(globalVendor);
+        //     _.each(accountVendors, (accountVendor: AccountVendorModel) => {
+        //       if (accountVendor.vendor_id == globalVendor.id){
+        //         // globalVendor.account_vendor = accountVendor;
+        //         globalVendor.account_vendor.push(accountVendor);
+        //         if (!accountVendor.location_id)
+        //           globalVendor.priority = accountVendor.priority;
+        //       }
+        //     });
+        //     return globalVendor;
+        //   });
+        //   return commonVendors;
+        // })
         .publishReplay(1).refCount();
 
     this.onInit();
@@ -75,9 +75,9 @@ export class ProductService extends ModelService {
       // this.userService.updateSelfDataField('account', this.selfData);
     });
     
-    // this.collection$ = this.restangular.all('vendors').customGET('')
+    // this.collection$ = this.restangular.all('products').customGET('')
     //     .map((res: any) => {
-    //       return res.data.vendors;
+    //       return res.data.products;
     //     })
     //     .do((res: any) => {
     //       this.updateCollection$.next(res);
@@ -94,9 +94,9 @@ export class ProductService extends ModelService {
     this.updateSelfData$.next(data);
   }
 
-  // getVendors(){
-  //   return this.collection$;
-  // }
+  getProducts(){
+    return this.collection$;
+  }
 
   getProduct(id){
     return this.restangular.one('products', id).get();
