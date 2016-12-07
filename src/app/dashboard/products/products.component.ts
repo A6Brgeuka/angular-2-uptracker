@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 
 import { ViewProductModal } from './view-product-modal/view-product-modal.component';
 import { EditProductModal } from './edit-product-modal/edit-product-modal.component';
+import { ProductFilterModal } from './product-filter-modal/product-filter-modal.component';
+import { RequestProductModal } from './request-product-modal/request-product-modal.component';
 // import { VendorService } from '../../core/services/index';
 
 
@@ -97,7 +99,7 @@ export class ProductsComponent implements OnInit {
 
   showFiltersModal(){
     this.modal
-        .open(Modal,  overlayConfigFactory({}, BSModalContext))
+        .open(ProductFilterModal,  overlayConfigFactory({}, BSModalContext))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {
@@ -109,5 +111,15 @@ export class ProductsComponent implements OnInit {
   }
 
   requestProduct(){
+    this.modal
+        .open(RequestProductModal,  overlayConfigFactory({}, BSModalContext))
+        .then((resultPromise)=>{
+          resultPromise.result.then(
+              (res) => {
+                // this.filterProducts();
+              },
+              (err)=>{}
+          );
+        });
   }
 }
