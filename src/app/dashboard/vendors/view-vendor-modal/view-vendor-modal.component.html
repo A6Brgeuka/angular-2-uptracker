@@ -18,7 +18,7 @@
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col s4"><a href="#general" (click)="chooseTabLocation()">General</a></li>
     <li class="tab col s4"><a href="#specific" (click)="chooseTabLocation(primaryLocation)" [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">{{primaryLocation?.name}}</a></li>
-    <li class="tab col s4" *ngIf="(locations$ | async)?.length == 1"><a href="#specific" (click)="chooseTabLocation(secondaryLocation)" #aloneSecondary>{{(locations$ | async)[0].name}}</a></li>
+    <li class="tab col s4" *ngIf="(locations$ | async)?.length == 1"><a href="#specific" (click)="chooseTabLocation(secondaryLocation)" [class.active]="secondaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">{{secondaryLocation?.name}}</a></li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(locations$ | async)?.length > 1">
       <a href="#specific" materialize="dropdown" data-activates="location_dropdown" [class.active1]="sateliteLocationActive" #secondary>
         <span>{{secondaryLocation?.name}}</span>
