@@ -36,6 +36,7 @@ export function RESTANGULAR_CONFIG (
       sessionService.remove('uptracker_selfId');
       sessionService.remove('uptracker_token');
       router.navigate['/login'];
+      toasterService.pop('error', 'Your session has expired.');
       return;
     }
     spinnerService.show();
