@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
   
   guard(url, lazy = false){
-    let user$ = this.userService.loadSelfData().map((res) => { 
+    let user$ = this.userService.loadSelfData().map((res) => {
       // if logged out guest remove self data
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());
@@ -117,9 +117,9 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
     let registerInProgress: boolean = function(): boolean {
       switch( _.last(url.split('/')) ) {
-        case 'signup': return true; break;
-        case 'about-company': return true; break;
-        case 'payment-info': return true; break;
+        case 'signup': return true;
+        case 'about-company': return true;
+        case 'payment-info': return true;
         default: return false;
       }
     }();

@@ -12,6 +12,7 @@ import { ExifService } from './exif.service';
 import { VendorService } from './vendor.service';
 import { ModalWindowService } from './modal-window.service';
 import { ProductService } from './product.service';
+import { JwtService } from './jwt.service';
 
 
 export {
@@ -28,7 +29,8 @@ export {
   // HttpClient,
   VendorService,
   ModalWindowService,
-  ProductService
+  ProductService,
+  JwtService
 };
 
 // an array of services to resolve routes with data
@@ -46,5 +48,6 @@ export const APP_SERVICE_PROVIDERS = [
   // HttpClient,
   VendorService,
   ModalWindowService,
-  ProductService
+  ProductService,
+  JwtService
 ];

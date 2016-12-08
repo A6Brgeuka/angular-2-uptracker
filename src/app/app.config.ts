@@ -2,7 +2,7 @@ import { OpaqueToken } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
-import { SessionService, SpinnerService, ToasterService } from './core/services/index';
+import { SessionService, SpinnerService, ToasterService, JwtService } from './core/services/index';
 
 export let APP_CONFIG = new OpaqueToken('app.config');
 
@@ -26,11 +26,18 @@ export function RESTANGULAR_CONFIG (
     sessionService: SessionService,
     spinnerService: SpinnerService,
     toasterService: ToasterService,
+    jwtService: JwtService
 ) {
   RestangularProvider.setBaseUrl(APP_DI_CONFIG.apiEndpoint);
   // RestangularProvider.setDefaultHeaders({'X_AUTH_TOKEN': sessionService.get('uptracker_token')});
 
-  RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => { 
+  RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => {
+    if ( jwtService.tokenExpired(sessionService.get('uptracker_token')) ) {
+      sessionService.remove('uptracker_selfId');
+      sessionService.remove('uptracker_token');
+      router.navigate['/login'];
+      return;
+    }
     spinnerService.show();
     
     // let urlArr = url.split('/');

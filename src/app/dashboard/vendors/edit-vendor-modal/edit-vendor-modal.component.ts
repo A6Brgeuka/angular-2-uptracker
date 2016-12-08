@@ -68,7 +68,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     discount_percentage: "Enter Value",
     shipping_handling: "Enter Value",
     avg_lead_time: "Enter Value",
-    ext_account_number: "Enter Value"
+    ext_account_number: "Enter Value",
     rep_name: "Enter full name",
     rep_email: "username@email.com",
     vendorFormPhone: "Enter phone number",

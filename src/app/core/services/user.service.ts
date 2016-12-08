@@ -8,6 +8,7 @@ import { ModelService } from '../../overrides/model.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { SpinnerService } from './spinner.service';
 import { SessionService } from './session.service';
+import { JwtService } from './jwt.service';
 
 @Injectable()
 @Subscribers({
@@ -27,7 +28,8 @@ export class UserService extends ModelService {
     public sessionService: SessionService,
     public router: Router,
     public spinnerService: SpinnerService,
-    public restangular: Restangular
+    public restangular: Restangular,
+    public jwtService: JwtService
   ) {
     super(restangular);
     
@@ -52,6 +54,12 @@ export class UserService extends ModelService {
 
   setSessionToken(token){
     this.sessionService.set('uptracker_token', token);
+  }
+
+  checkTokenExpiration(){
+    if (this.jwtService.tokenExpired(this.getSessionToken())) {
+      UserService.logout(this.sessionService, this.router, '/login');
+    }
   }
 
   getSelfId(): any {
@@ -153,6 +161,7 @@ export class UserService extends ModelService {
 
     this.updateSelfData(user);
     this.addToCollection$.next(user);
+    debugger;
   }
 
   signUp(data){

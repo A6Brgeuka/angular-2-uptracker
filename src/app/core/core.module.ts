@@ -32,7 +32,8 @@ import { APP_SERVICE_PROVIDERS } from './services/index';
           Router,
           APP_SERVICE_PROVIDERS[2], // sessionService
           APP_SERVICE_PROVIDERS[3], // spinner
-          APP_SERVICE_PROVIDERS[0] // toaster
+          APP_SERVICE_PROVIDERS[0], // toaster
+          APP_SERVICE_PROVIDERS[13] // jwt
         ],
         RESTANGULAR_CONFIG),
   ],
