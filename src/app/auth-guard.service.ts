@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
   
   guard(url, lazy = false){
-    let user$ = this.userService.loadSelfData().map((res) => {
+    let user$ = this.userService.loadSelfData().map((res) => { 
       // if logged out guest remove self data
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());
@@ -80,7 +80,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
           // if lazy loading - signup main routing, if ordinary load - signup steps routings
           return lazy ? this.checkSignup() : this.checkSignupSteps(url);
         case 'onboard':
-          this.checkOnboard(url);
+          return this.checkOnboard(url);
         case 'dashboard':
           return this.checkDashboard(url);
         default:
@@ -109,13 +109,22 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return true;
   }
 
-  checkSignupSteps(url){
+  checkSignupSteps(url){ 
     if (this.userService.emailVerified()) {
       this.router.navigate(['/dashboard']);
       return false;
     }
 
-    if (this.userService.currentSignupStep() == 4 && _.last(url.split('/')) != 'congrats') {
+    let registerInProgress: boolean = function(): boolean {
+      switch( _.last(url.split('/')) ) {
+        case 'signup': return true; break;
+        case 'about-company': return true; break;
+        case 'payment-info': return true; break;
+        default: return false;
+      }
+    }();
+
+    if (this.userService.currentSignupStep() == 4 && registerInProgress) {
       this.router.navigate(['/email-verification']);
       return false;
     }
