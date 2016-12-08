@@ -154,6 +154,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
     this.currentLocation = location;
     let currentVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': this.currentLocation ? this.currentLocation.id : null});
+    debugger;
     this.fillForm(currentVendor);
   }
 
@@ -254,8 +255,6 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   addFile(file){
-    // TODO: Remove after testing
-    // this.formData.append('documents[]', file);
     this.fileArr.push(file);
     this.newFiles$.next(this.fileArr);
   }
@@ -270,7 +269,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
 
     _.each(this.vendor, (value, key) => {
-      if (value != null)
+      if (value != null || key == 'location_id')
         this.formData.append(key, value);
     });
 
