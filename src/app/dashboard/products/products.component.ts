@@ -12,7 +12,6 @@ import { ProductFilterModal } from './product-filter-modal/product-filter-modal.
 import { RequestProductModal } from './request-product-modal/request-product-modal.component';
 import { ProductService } from '../../core/services/index';
 
-
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
