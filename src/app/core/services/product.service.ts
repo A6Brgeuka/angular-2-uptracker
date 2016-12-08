@@ -75,13 +75,13 @@ export class ProductService extends ModelService {
       // this.userService.updateSelfDataField('account', this.selfData);
     });
     
-    // this.collection$ = this.restangular.all('products').customGET('')
-    //     .map((res: any) => {
-    //       return res.data.products;
-    //     })
-    //     .do((res: any) => {
-    //       this.updateCollection$.next(res);
-    //     }).publishReplay(1).refCount();
+    this.collection$ = this.restangular.all('products').customGET('')
+        .map((res: any) => {
+          return res.data.results;
+        })
+        .do((res: any) => {
+          this.updateCollection$.next(res);
+        }).publishReplay(1).refCount();
   }
 
   addSubscribers(){

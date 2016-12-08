@@ -10,7 +10,7 @@ import { ViewProductModal } from './view-product-modal/view-product-modal.compon
 import { EditProductModal } from './edit-product-modal/edit-product-modal.component';
 import { ProductFilterModal } from './product-filter-modal/product-filter-modal.component';
 import { RequestProductModal } from './request-product-modal/request-product-modal.component';
-// import { VendorService } from '../../core/services/index';
+import { ProductService } from '../../core/services/index';
 
 
 @Component({
@@ -30,43 +30,43 @@ export class ProductsComponent implements OnInit {
       vcRef: ViewContainerRef,
       overlay: Overlay,
       public modal: Modal,
-      // private vendorService: VendorService
+      private productService: ProductService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
-    this.products$ = Observable.of([
-      { name: 'First', variations: 3, priceMin: 79, priceMax: 112},
-      { name: 'Second with long name length for two lines', variations: 100, priceMin: 8, priceMax: 34},
-    ]);
-    // this.vendors$ = Observable
-    //     .combineLatest(
-    //         // this.vendorService.combinedVendors$,
-    //         this.sortBy$,
-    //         this.searchKey$
-    //     )
-    //     .map(([vendors, sortBy, searchKey]) => {  
-    //       this.total = vendors.length;
-    //       let filteredVendors = vendors;
-    //       if (searchKey && searchKey!='') {
-    //         filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
-    //           let key = new RegExp(searchKey, 'i');
-    //           return !key.test(vendor.name);
-    //         });
-    //       }
-    //       let order = 'desc';
-    //       if (sortBy == 'A-Z') {
-    //         sortBy = 'name';
-    //         order = 'asc';
-    //       }
-    //       if (sortBy == 'Z-A') {
-    //         sortBy = 'name';
-    //       }
-    //      
-    //       let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
-    //       return sortedVendors;
-    //     });
+    // this.products$ = Observable.of([
+    //   { name: 'First', variations: 3, priceMin: 79, priceMax: 112},
+    //   { name: 'Second with long name length for two lines', variations: 100, priceMin: 8, priceMax: 34},
+    // ]);
+    this.products$ = Observable
+        .combineLatest(
+            this.productService.collection$,
+            this.sortBy$,
+            this.searchKey$
+        )
+        .map(([products, sortBy, searchKey]) => {
+          this.total = products.length;
+          let filteredProducts = products;
+          if (searchKey && searchKey!='') {
+            filteredProducts = _.reject(filteredProducts, (product: any) =>{
+              let key = new RegExp(searchKey, 'i');
+              return !key.test(product.name);
+            });
+          }
+          let order = 'desc';
+          if (sortBy == 'A-Z') {
+            sortBy = 'name';
+            order = 'asc';
+          }
+          if (sortBy == 'Z-A') {
+            sortBy = 'name';
+          }
+
+          let sortedProducts = _.orderBy(filteredProducts, [sortBy], [order]);
+          return sortedProducts;
+        });
   }
 
   viewProductModal(product){

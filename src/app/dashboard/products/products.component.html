@@ -30,15 +30,16 @@
     <div class="list">
       <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
         <div class="inner">
-          <div class="hazardous" *ngIf="true"><i class="material-icons">warning</i></div>
+          <div class="hazardous" *ngIf="product.hazardous"><i class="material-icons">warning</i></div>
           <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }" (click)="viewProductModal(product)">
-            <div class="trackable" *ngIf="true"><fa [name]="'barcode'"></fa></div>
+            <div class="trackable" *ngIf="product.trackable"><fa [name]="'barcode'"></fa></div>
           </div>
           <div class="info">
             <div class="ttl" (click)="viewProductModal(product)">{{product.name}}</div>
             <div class="bottom">
-              <div class="variations left">{{product.variations}} Variations</div>
-              <div class="price right">${{product.priceMin}} - ${{product.priceMax}}</div>
+              <div class="variations left">{{product.variant_count}} Variations</div>
+              <!--<div class="price right">${{product.priceMin}} - ${{product.priceMax}}</div>-->
+              <div class="price right">{{product.price_range}}</div>
             </div>
             <!--<div class="edit" (click)="editProductModal(vendor)"></div>-->
           </div>
