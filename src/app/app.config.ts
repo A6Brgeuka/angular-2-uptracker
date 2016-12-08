@@ -32,7 +32,7 @@ export function RESTANGULAR_CONFIG (
   // RestangularProvider.setDefaultHeaders({'X_AUTH_TOKEN': sessionService.get('uptracker_token')});
 
   RestangularProvider.addFullRequestInterceptor((element, operation, path, url, headers, params) => {
-    if ( jwtService.tokenExpired(sessionService.get('uptracker_token')) ) {
+    if ( sessionService.get('uptracker_token') && jwtService.tokenExpired(sessionService.get('uptracker_token')) ) {
       sessionService.remove('uptracker_selfId');
       sessionService.remove('uptracker_token');
       router.navigate['/login'];

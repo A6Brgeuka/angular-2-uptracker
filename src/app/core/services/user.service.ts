@@ -161,7 +161,6 @@ export class UserService extends ModelService {
 
     this.updateSelfData(user);
     this.addToCollection$.next(user);
-    debugger;
   }
 
   signUp(data){
