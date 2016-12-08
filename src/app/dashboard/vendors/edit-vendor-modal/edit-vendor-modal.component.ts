@@ -131,16 +131,14 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': null}) || {};
-      _.each(allLocationsVendor, (value, key) => {
-        if (key == 'discount_percentage') {
-          value = value*100;
-        }
+      _.each(this.defaultPlaceholder, (value, key) => {
         switch(key){
-          case 'rep_office_phone': this.placeholder.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(value); break;
-          case 'rep_mobile_phone': this.placeholder.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(value); break;
-          case 'rep_fax': this.placeholder.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(value); break;
+          case 'rep_office_phone': this.placeholder.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]); break;
+          case 'rep_mobile_phone': this.placeholder.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]); break;
+          case 'rep_fax': this.placeholder.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]); break;
+          case 'discount_percentage': allLocationsVendor[key] = allLocationsVendor[key]*100; break;
         }
-        this.placeholder[key] = value || this.defaultPlaceholder[key];
+        this.placeholder[key] = allLocationsVendor[key] || this.defaultPlaceholder[key];
       });
     } else {
       this.placeholder = this.defaultPlaceholder;
