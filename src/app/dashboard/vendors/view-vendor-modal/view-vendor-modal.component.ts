@@ -32,7 +32,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
-  public secondaryLocation: any = { name: 'Satelite Location' };
+  public secondaryLocation: any;
   public secondaryLocationArr: any = [];
   public locVendorChosen: boolean = false;
   private currencyArr: any = [];
@@ -59,7 +59,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
           this.secondaryLocationArr = _.filter(res, (loc) => {
             return this.primaryLocation != loc;
           });
-          if (this.secondaryLocationArr.length == 1)
+          if (this.secondaryLocationArr.length > 0)
             this.secondaryLocation = this.secondaryLocationArr[0];
           return this.secondaryLocationArr;
         });

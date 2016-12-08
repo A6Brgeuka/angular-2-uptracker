@@ -59,7 +59,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
-  public secondaryLocation: any = { name: 'Satelite Location' };
+  public secondaryLocation: any; 
   public secondaryLocationArr: any = [];
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
@@ -68,6 +68,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     discount_percentage: "Enter Value",
     shipping_handling: "Enter Value",
     avg_lead_time: "Enter Value",
+    ext_account_number: "Enter Value"
     rep_name: "Enter full name",
     rep_email: "username@email.com",
     vendorFormPhone: "Enter phone number",
@@ -110,7 +111,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
           this.secondaryLocationArr = _.filter(res, (loc) => {
             return this.primaryLocation != loc;
           });
-          if (this.secondaryLocationArr.length == 1)
+          if (this.secondaryLocationArr.length > 0)
               this.secondaryLocation = this.secondaryLocationArr[0];
           return this.secondaryLocationArr;
         });
