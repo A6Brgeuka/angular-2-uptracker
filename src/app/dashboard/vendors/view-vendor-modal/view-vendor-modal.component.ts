@@ -77,6 +77,20 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
         this.secondaryLocationLink.nativeElement.click();
       }
     });
+
+    // observer to detect class change
+    let observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
+          // this.secondaryLocationLink.nativeElement.click();
+          this.chooseTabLocation(this.secondaryLocation);
+        }
+      });
+    });
+    observer.observe(this.secondaryLocationLink.nativeElement,  {
+      attributes: true,
+      attributeOldValue: true
+    });
   }
 
   dismissModal(){

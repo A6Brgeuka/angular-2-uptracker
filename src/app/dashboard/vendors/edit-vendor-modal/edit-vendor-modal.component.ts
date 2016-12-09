@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer } from '@angular/core';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
@@ -83,7 +83,8 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       private userService: UserService,
       private accountService: AccountService,
       private vendorService: VendorService,
-      private phoneMaskService: PhoneMaskService
+      private phoneMaskService: PhoneMaskService,
+      private renderer: Renderer
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -125,6 +126,20 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
         this.secondaryLocationLink.nativeElement.click();
       }
     });
+
+    // observer to detect class change
+    let observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
+          // this.secondaryLocationLink.nativeElement.click();
+          this.chooseTabLocation(this.secondaryLocation);
+        }
+      });
+    });
+    observer.observe(this.secondaryLocationLink.nativeElement,  {
+      attributes: true,
+      attributeOldValue: true
+    });
   }
 
   chooseTabLocation(location = null){
@@ -147,6 +162,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     // check if secondary location was chosen
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
+
       this.secondaryLocation = location;
     } else {
       this.sateliteLocationActive = false;
@@ -154,7 +170,6 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
     this.currentLocation = location;
     let currentVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': this.currentLocation ? this.currentLocation.id : null});
-    debugger;
     this.fillForm(currentVendor);
   }
 
