@@ -102,6 +102,7 @@
                       [textMask]="{mask: amountMask, guide: false}"
                       [disabled]="disabledRange[i]"
                       (change)="changingRange($event, i, true)"
+                      (blur)="changingRange($event, i, true)"
                       name="rangeInput{{i}}"
                       #rangeInput{{i}}="ngModel"
                       type="text">

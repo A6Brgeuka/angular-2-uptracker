@@ -74,24 +74,24 @@
 <div id="specific" [class.active]="locVendorChosen" class="tab-content">
   <div class="inner">
     <div class="info">
-      <div class="row" *ngIf="vendor.rep_office_phone">
-        <div class="col s6 label">Phone</div>
-        <div class="col s6">
-          {{vendor.rep_office_phone}}
-        </div>
-      </div>
-      <div class="row" *ngIf="vendor.rep_mobile_phone">
-        <div class="col s6 label">Mobile Phone</div>
-        <div class="col s6">
-          {{vendor.rep_mobile_phone}}
-        </div>
-      </div>
-      <div class="row" *ngIf="vendor.rep_fax">
-        <div class="col s6 label">Fax</div>
-        <div class="col s6">
-          {{vendor.rep_fax}}
-        </div>
-      </div>
+      <!--<div class="row" *ngIf="vendor.rep_office_phone">-->
+        <!--<div class="col s6 label">Phone</div>-->
+        <!--<div class="col s6">-->
+          <!--{{vendor.rep_office_phone}}-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="row" *ngIf="vendor.rep_mobile_phone">-->
+        <!--<div class="col s6 label">Mobile Phone</div>-->
+        <!--<div class="col s6">-->
+          <!--{{vendor.rep_mobile_phone}}-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="row" *ngIf="vendor.rep_fax">-->
+        <!--<div class="col s6 label">Fax</div>-->
+        <!--<div class="col s6">-->
+          <!--{{vendor.rep_fax}}-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="row" *ngIf="vendor.ext_account_number">
         <div class="col s6 label">Account #</div>
         <div class="col s6">
@@ -131,7 +131,7 @@
       <div class="row" *ngIf="vendor.shipping_handling">
         <div class="col s6 label">Shipping & Handling Fee</div>
         <div class="col s6">
-          {{vendor.shipping_handling}}{{currencySign}}
+          {{currencySign}}{{vendor.shipping_handling}}
         </div>
       </div>
       <div class="row" *ngIf="vendor.avg_lead_time">
