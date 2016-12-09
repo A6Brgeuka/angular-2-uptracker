@@ -78,7 +78,6 @@ export function RESTANGULAR_CONFIG (
 
 
     // logout user if local storage or cookies have wrong token or user doesn't exist
-    // if ((err.status == 401 || err.status == 404) || (new RegExp("User doesn't exist.", 'i').test(errMsg) && actionAuth) || (new RegExp("Token has expired.", 'i').test(errMsg) && actionAuth)) {
     if ((err.status == 401 || err.status == 404) || (new RegExp("User doesn't exist.", 'i').test(errMsg) && actionAuth)) {
       sessionService.remove('uptracker_token');
       sessionService.remove('uptracker_selfId');

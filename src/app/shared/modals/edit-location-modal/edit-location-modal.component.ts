@@ -144,7 +144,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     let address = {
       location: this.location.state + ' ' + this.location.city + ' ' + this.location.street_1 + ' ' + this.location.street_2
     };
-    this.location.image = this.uploadedImage; 
+    this.location.image = this.uploadedImage;
     if (!this.location.image){
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
@@ -152,6 +152,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         var reader = new FileReader();
         reader.onloadend = () => {
           this.location.image = reader.result;
+          // this.checkGoogleStreetImage();
           this.addLocation(this.location);
         };
         reader.readAsDataURL(xhr.response);
@@ -161,6 +162,13 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     } else {
       this.addLocation(this.location);
     }
+  }
+
+  checkGoogleStreetImage(){
+    if (this.accountService.googleStreetEmptyImage == this.location.image)
+      console.log('+');
+    else console.log('-');
+    debugger;
   }
 
   addLocation(data){
