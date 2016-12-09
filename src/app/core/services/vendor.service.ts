@@ -23,6 +23,7 @@ export class VendorService extends ModelService {
   
   combinedVendors$: Observable<any>;
   accountVendors$: Observable<any> = Observable.empty();
+  vendors$: Observable<any> = Observable.empty();
 
   constructor(
       public injector: Injector,
@@ -75,14 +76,16 @@ export class VendorService extends ModelService {
       //update user after update account
       this.userService.updateSelfDataField('account', this.selfData);
     });
-    
-    this.collection$ = this.restangular.all('vendors').customGET('')
-        .map((res: any) => {
-          return res.data.vendors;
-        })
-        .do((res: any) => {
-          this.updateCollection$.next(res);
-        }).publishReplay(1).refCount();
+
+    // TODO: set collection$ to account vendors
+    // TODO: and if collection updates then set the func to update account (as userSelfdata updates after account selfData updates)
+    // this.collection$ = this.restangular.all('vendors').customGET('')
+    //     .map((res: any) => {
+    //       return res.data.vendors;
+    //     })
+    //     .do((res: any) => {
+    //       this.updateCollection$.next(res);
+    //     });
   }
 
   addSubscribers(){
@@ -96,7 +99,26 @@ export class VendorService extends ModelService {
   }
 
   getVendors(){
-    return this.collection$;
+    return this.vendors$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.vendors$ = this.restangular.all('vendors').customGET('')
+            .map((res: any) => {
+              this.updateCollection$.next(res.data.vendors);
+              return res.data.vendors;
+            });
+      }
+      return this.vendors$;
+    });
+
+    // TODO: set collection$ to account vendors
+    // let collection$ = this.restangular.all('vendors').customGET('')
+    //     .map((res: any) => {
+    //       return res.data.vendors;
+    //     })
+    //     .do((res: any) => {
+    //       this.updateCollection$.next(res);
+    //     });
+    // return collection$;
   }
 
   getVendor(id){

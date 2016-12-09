@@ -22,6 +22,7 @@ export class ProductService extends ModelService {
   updateSelfData$: Subject<any> = new Subject<any>();
   
   combinedProducts$: Observable<any>;
+  products$: Observable<any> = Observable.empty();
 
   constructor(
       public injector: Injector,
@@ -70,18 +71,16 @@ export class ProductService extends ModelService {
     this.selfData$.subscribe((res) => {
       this.selfData = res;
       console.log(`${this.constructor.name} Update SELF DATA`, res);
-
-      //update user after update account
-      // this.userService.updateSelfDataField('account', this.selfData);
     });
-    
-    this.collection$ = this.restangular.all('products').customGET('')
-        .map((res: any) => {
-          return res.data.results;
-        })
-        .do((res: any) => {
-          this.updateCollection$.next(res);
-        }).publishReplay(1).refCount();
+
+    // TODO: if there are account products then set those to collection$
+    // this.collection$ = this.restangular.all('products').customGET('')
+    //     .map((res: any) => {
+    //       return res.data.results;
+    //     })
+        // .do((res: any) => {
+        //   this.updateCollection$.next(res);
+        // });
   }
 
   addSubscribers(){
@@ -95,7 +94,22 @@ export class ProductService extends ModelService {
   }
 
   getProducts(){
-    return this.collection$;
+    return this.products$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.products$ = this.restangular.all('products').customGET('')
+            .map((res: any) => {
+              return res.data.results;
+            });
+      }
+      return this.products$;
+    });
+
+    // TODO: if there are account products then set those to collection$
+    // this.collection$ = this.restangular.all('products').customGET('')
+    //     .map((res: any) => {
+    //       return res.data.results;
+    //     });
+    // return this.collection$;
   }
 
   getProduct(id){

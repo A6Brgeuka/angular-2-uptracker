@@ -41,7 +41,7 @@ export class ProductsComponent implements OnInit {
     // ]);
     this.products$ = Observable
         .combineLatest(
-            this.productService.collection$,
+            this.productService.products$,
             this.sortBy$,
             this.searchKey$
         )

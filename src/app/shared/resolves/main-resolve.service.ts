@@ -1,8 +1,7 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
 
-import { AccountService, VendorService } from '../../core/services/index';
-import {Observable} from "rxjs/Rx";
+import { AccountService, VendorService, ProductService } from '../../core/services/index';
 
 @Injectable()
 export class StateCollectionResolve implements Resolve<any> {
@@ -64,11 +63,24 @@ export class VendorCollectionResolve implements Resolve<any> {
   }
 }
 
+@Injectable()
+export class ProductCollectionResolve implements Resolve<any> {
+  constructor(
+      private productService: ProductService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.productService.getProducts().take(1);
+  }
+}
+
 // an array of services to resolve routes with data
 export const MAIN_RESOLVER_PROVIDERS = [
   StateCollectionResolve,
   LocationTypesCollectionResolve,
   DepartmentCollectionResolve,
   CurrencyCollectionResolve,
-  VendorCollectionResolve
+  VendorCollectionResolve,
+  ProductCollectionResolve
 ];
