@@ -47,7 +47,7 @@ export class AccountingComponent implements OnInit {
 
   ngOnInit() {
     this.accounting = this.accountService.onboardAccounting;
-    this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 1000000;
+    this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 0; //1000000;
     this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) { 
         this.locationArr = res.account.locations;
@@ -68,7 +68,7 @@ export class AccountingComponent implements OnInit {
       return;
     }
 
-    this.accounting.annual_inventory_budget = this.amount2number(event.target.value) || 1000000;
+    this.accounting.annual_inventory_budget = this.amount2number(event.target.value) || 0; //1000000;
     this.prev_annual_inventory_budget = this.accounting.annual_inventory_budget;
     this.maxRange = this.accounting.annual_inventory_budget;
     // set stored slider input values to null
@@ -80,7 +80,7 @@ export class AccountingComponent implements OnInit {
   }
 
   setLocationBudget(){
-    let annual_inventory_budget = this.accounting.annual_inventory_budget || 1000000;
+    let annual_inventory_budget = this.accounting.annual_inventory_budget;
     let locationBudget: number = this.amount2number(annual_inventory_budget) / this.locationArr.length;
     let mod: number = this.amount2number(annual_inventory_budget) % this.locationArr.length;
 
