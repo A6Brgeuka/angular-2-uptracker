@@ -172,13 +172,13 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     this.fillForm(currentVendor);
   }
 
-  fillForm(vendor){
+  fillForm(vendor = {}){
     this.oldFiles$.next(null);
     this.newFiles$.next(null);
     this.vendorFormPhone = null;
     this.vendorFormPhone2 = null;
     this.vendorFormFax = null;
-    let vendorData = vendor || {};
+    let vendorData = vendor;
     this.vendor = new AccountVendorModel(vendorData);
     this.calcPriorityMargin(this.vendor.priority);
 

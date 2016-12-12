@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
 import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
 import { VendorService, ModalWindowService } from '../../core/services/index';
+import { VendorModel } from '../../models/vendor.model';
 
 
 @Component({
@@ -69,9 +70,9 @@ export class VendorsComponent implements OnInit {
     this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
   }
   
-  editVendorModal(vendor = null){
+  editVendorModal(vendor: VendorModel = new VendorModel(null)){
     let accountVendor = vendor.account_vendor;
-    accountVendor.vendor_id = accountVendor.vendor_id || vendor.id;
+    accountVendor.vendor_id = vendor.id;
 
     let data = { vendor: accountVendor };
     this.modalWindowService.customModal(this.vcRef, EditVendorModal, data);
