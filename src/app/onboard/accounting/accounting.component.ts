@@ -6,6 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 import { UserService, AccountService, ToasterService, SessionService } from '../../core/services/index';
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-accounting',
@@ -37,6 +38,8 @@ export class AccountingComponent implements OnInit {
   public rangeStep: number = 1;
   private prev_annual_inventory_budget: string; // previous annual budget for 'change' detection on blur
 
+  private localAccounting = {};
+
   constructor(
       private router: Router,
       private userService: UserService,
@@ -47,8 +50,31 @@ export class AccountingComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
     this.accounting = this.accountService.onboardAccounting;
+
+    this.localAccounting = JSON.parse(this.sessionService.getLocal("onboardAccounting"));
+
+    _.each(this.accountService.onboardAccounting, (value, key) => {
+      if(_.isArray(value) && !value.length) {
+        if(this.localAccounting[key]) {
+          this.accounting[key] = this.localAccounting[key];
+        }
+      }
+      else if(!this.accountService.onboardAccounting[key] || this.accountService.onboardAccounting[key] == "USD") {
+        if(this.localAccounting[key]) {
+          this.accounting[key] = this.localAccounting[key];
+        }
+      }
+    });
+
+
+
+    debugger;
+
     this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 0; //1000000;
+
     this.subscribers.getLocationsSubscription = this.userService.selfData$
       .filter(res => res.account)
       .subscribe((res: any) => {
@@ -78,7 +104,7 @@ export class AccountingComponent implements OnInit {
     });
     this.accountService.onboardAccounting.total = nulledTotals;
     this.setLocationBudget();
-    this.sessionService.setLocal("annual_inventory_budget", this.accounting.annual_inventory_budget)
+    this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting))
   }
 
   setLocationBudget(){
@@ -194,7 +220,7 @@ export class AccountingComponent implements OnInit {
       });
     } while (mod != 0);
     this.prevInputValue[i] = changedInputValue;
-    this.sessionService.setLocal("budget_destribution_per_location", JSON.stringify(this.accounting.total));
+    this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting));
   }
 
   setSliderValue(i, value){ console.log('new value ' + i + ' = ', value);
@@ -247,11 +273,13 @@ export class AccountingComponent implements OnInit {
     let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
     this.currencyDirty = true;
     this.currencySign = currency ? currency['html_entity'] : '$';
-    this.sessionService.setLocal('currency', event.target.value);
+    this.accounting.currency = event.target.value
+    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
   }
 
   changeAnnualIncome(event) {
-    this.sessionService.setLocal('annual_income', this.amount2number(event.target.value));
+    this.accounting.annual_income = this.amount2number(event.target.value);
+    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
   }
 
   viewCurrencySign(){
@@ -261,7 +289,8 @@ export class AccountingComponent implements OnInit {
 
   changeDate(event){
     this.monthDirty = true;
-    this.sessionService.setLocal('fiscal_year', event.target.value);
+    this.accounting.fiscal_year = event.target.value;
+    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
   }
 
   changeForm(event){

@@ -29,7 +29,10 @@ export class AccountService extends ModelService{
   onboardAccounting: any = {
     total: [],
     budget_distribution: [],
-    currency: 'USD'
+    currency: 'USD',
+    fiscal_year: null,
+    annual_income: null,
+    annual_inventory_budget: null
   };
   locations$: Observable<any>;
   dashboardLocation$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
