@@ -15,7 +15,7 @@
                   materialize="material_select"
                   class="validate"
                   required
-                  (change)="changeDate()"
+                  (change)="changeDate($event)"
                   [materializeSelectOptions]="monthArr">
                 <option value="">Select Date</option>
                 <option *ngFor="let month of monthArr" [value]="month">{{month}}</option>
@@ -36,7 +36,7 @@
                   #currency="ngModel"
                   materialize="material_select"
                   required
-                  (change)="changeCurrency()"
+                  (change)="changeCurrency($event)"
                   [materializeSelectOptions]="currencyArr">
                 <option value="">Please select one</option>
                 <option *ngFor="let currency of currencyArr" [value]="currency.iso_code">{{currency.name}}</option>

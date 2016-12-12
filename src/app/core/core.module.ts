@@ -12,6 +12,7 @@ import { RestangularModule } from 'ng2-restangular';
 
 // auth guard
 import { AuthGuard } from '../auth-guard.service';
+// import { CanDeactivateGuard } from '../can-deactivate-guard.service';
 
 // custom modals
 import { ModalModule } from 'angular2-modal';
@@ -46,7 +47,8 @@ import { APP_SERVICE_PROVIDERS } from './services/index';
     LOCAL_STORAGE_PROVIDERS,
     CookieService,
     Modal,
-    AuthGuard
+    AuthGuard,
+    // CanDeactivateGuard
   ]
 })
 export class CoreModule {

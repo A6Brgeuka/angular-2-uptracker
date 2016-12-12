@@ -44,5 +44,20 @@ export class SessionService {
       }
     }
   }
+
+  setLocal(key, value){
+    try{
+      this.localStorage.set('uptracker_'+key, value);
+    } catch(err){
+    }
+  }
+
+  getLocal(key){
+    return this.localStorage.get('uptracker_'+key);
+  }
+
+  removeLocal(key){
+    this.localStorage.remove('uptracker_'+key);
+  }
   
 }

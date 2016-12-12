@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
-import { UserService, AccountService, ToasterService } from '../../core/services/index';
+import { UserService, AccountService, ToasterService, SessionService } from '../../core/services/index';
 
 @Component({
   selector: 'app-accounting',
@@ -41,7 +41,8 @@ export class AccountingComponent implements OnInit {
       private router: Router,
       private userService: UserService,
       private accountService: AccountService,
-      private toasterService: ToasterService
+      private toasterService: ToasterService,
+      private sessionService: SessionService
   ) {
   }
 
@@ -239,10 +240,11 @@ export class AccountingComponent implements OnInit {
     return this.maxRange - otherTotal;
   }
 
-  changeCurrency(){
+  changeCurrency(event){
     let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
     this.currencyDirty = true;
     this.currencySign = currency ? currency['html_entity'] : '$';
+    this.sessionService.setLocal('currency', event.target.value);
   }
 
   viewCurrencySign(){
@@ -250,8 +252,13 @@ export class AccountingComponent implements OnInit {
     return currency ? currency['html_entity'] : '$';
   }
 
-  changeDate(){
+  changeDate(event){
     this.monthDirty = true;
+    this.sessionService.setLocal('fiscal_year', event.target.value);
+  }
+
+  changeForm(event){
+    debugger;
   }
 
   toggleLock(i) {
