@@ -26,6 +26,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   private subscribers: any = {};
   context: ViewProductModalContext;
   private product: any;
+  public variation: any = {
+    pkg: ''
+  };
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -60,6 +63,18 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   closeModal(data){
     this.dialog.close(data);
+  }
+
+  changePkg(event){
+    this.variation.pkg = event.target.value;
+  }
+
+  changeUnit(event){
+    this.variation.unit = event.target.value;
+  }
+
+  changeUnitsPkg(event){
+    this.variation.unit_pkg = event.target.value;
   }
 
   // editVendor(vendor = null){

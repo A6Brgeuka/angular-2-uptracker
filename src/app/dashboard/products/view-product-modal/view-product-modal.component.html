@@ -44,20 +44,140 @@
 
 
   <div class="row">
-    <ul class="tabs" materialize="tabs">
-      <li class="tab col s2"><a href="#variations">Variations</a></li>
-      <li class="tab col s2"><a href="#info">Info</a></li>
-      <li class="tab col s2"><a href="#inventory">Inventory</a></li>
-      <li class="tab col s2"><a href="#tracking">Tracking</a></li>
-      <li class="tab col s2"><a href="#history">Order History</a></li>
-      <li class="tab col s2"><a href="#comments">Comments</a></li>
-    </ul>
+    <div class="col s12">
+      <ul class="tabs" materialize="tabs">
+        <li class="tab col s2"><a href="#variations">Variations</a></li>
+        <li class="tab col s2"><a href="#info">Info</a></li>
+        <li class="tab col s2"><a href="#inventory">Inventory</a></li>
+        <li class="tab col s2"><a href="#tracking">Tracking</a></li>
+        <li class="tab col s2"><a href="#history">Order History</a></li>
+        <li class="tab col s2"><a href="#comments">Comments</a></li>
+      </ul>
+    </div>
   </div>
 
 
   <div id="variations">
     <div class="inner">
-      Variations tab
+      <table>
+        <tr class="uptracker-form row">
+          <th>
+            <div class="input">
+              <input
+                  type="text"
+                  class="col s12"
+                  [(ngModel)]="variation.name"
+                  placeholder="Name"
+                  #name="ngModel" />
+            </div>
+          </th>
+          <th>
+            <div class="select">
+              <select
+                  [(ngModel)]="variation.pkg"
+                  #pkg="ngModel"
+                  materialize="material_select"
+                  (change)="changePkg($event)"
+                  [materializeSelectOptions]="">
+                <option value="">Pkg Type</option>
+                <option value="type1">Type 1</option>
+                <option value="type2">Type 2</option>
+              </select>
+            </div>
+          </th>
+          <th>
+            <div class="select">
+              <select
+                  [(ngModel)]="variation.unit"
+                  #unit="ngModel"
+                  materialize="material_select"
+                  (change)="changeUnit($event)"
+                  [materializeSelectOptions]="">
+                <option value="">Unit Type</option>
+                <option value="type1">Type 1</option>
+                <option value="type2">Type 2</option>
+              </select>
+            </div>
+          </th>
+          <th>
+            <div class="select">
+              <select
+                  [(ngModel)]="variation.units_pkg"
+                  #units_pkg="ngModel"
+                  materialize="material_select"
+                  (change)="changeUnitsPkg($event)"
+                  [materializeSelectOptions]="">
+                <option value="">Units/pkg.</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+              </select>
+            </div>
+          </th>
+          <th>
+            <div class="select">
+              <select
+                  [(ngModel)]="variation.size"
+                  #size="ngModel"
+                  materialize="material_select"
+                  (change)="changeSize($event)"
+                  [materializeSelectOptions]="">
+                <option value="">Size</option>
+                <option value="size1">Size 1</option>
+                <option value="size2">Size 2</option>
+              </select>
+            </div>
+          </th>
+          <th>
+            <div class="select">
+              <select
+                  [(ngModel)]="variation.material"
+                  #material="ngModel"
+                  materialize="material_select"
+                  (change)="changeMaterial($event)"
+                  [materializeSelectOptions]="">
+                <option value="">Material</option>
+                <option value="material1">Material 1</option>
+                <option value="material2">Material 2</option>
+              </select>
+            </div>
+          </th>
+          <th>
+            <div class="input">
+              <input
+                  type="text"
+                  class="col s12"
+                  [(ngModel)]="variation.price_range"
+                  placeholder="Price Range"
+                  #price_range="ngModel" />
+            </div>
+          </th>
+          <th></th>
+        </tr>
+        <tr>
+          <td>Product name here</td>
+          <td>Value Here</td>
+          <td>Value Here</td>
+          <td>100</td>
+          <td>White</td>
+          <td>Plastic</td>
+          <td>$100-$1000</td>
+          <td>
+            <button type="button" class="uptracker-form-btn not-submit">Add</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Product name here</td>
+          <td>Value Here</td>
+          <td>Value Here</td>
+          <td>100</td>
+          <td>White</td>
+          <td>Plastic</td>
+          <td>$100-$1000</td>
+          <td>
+            <button type="button" class="uptracker-form-btn not-submit">Add</button>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div id="info">

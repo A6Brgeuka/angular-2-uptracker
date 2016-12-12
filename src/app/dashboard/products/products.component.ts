@@ -48,6 +48,9 @@ export class ProductsComponent implements OnInit {
         .map(([products, sortBy, searchKey]) => {
           this.total = products.length;
           let filteredProducts = products;
+
+          this.viewProductModal(products[0]);
+
           if (searchKey && searchKey!='') {
             filteredProducts = _.reject(filteredProducts, (product: any) =>{
               let key = new RegExp(searchKey, 'i');
