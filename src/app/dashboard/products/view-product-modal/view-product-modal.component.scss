@@ -1,11 +1,8 @@
 :host /deep/ {
   .inner{
-    width:280px;
-    margin:0 auto;
-
     .img-container{
-      width:80px;
-      height:80px;
+      width:140px;
+      height:140px;
       border:1px solid #d6d6d6;
 
       .img{
@@ -15,39 +12,32 @@
       }
     }
 
-    .ttl-box{
-      height:80px;
-
+    .info-box{
       .ttl{
-        position:relative;
-        top:50%;
-        transform:translateY(-50%);
-        font-size:18px;
+        color:#9a9c9e;
+      }
+
+      label{
+        color:#9a9c9e;
+      }
+
+      .value{
+        font-size:12px;
+        color:#000;
+      }
+
+      span.value{
+        margin-left:5px;
       }
     }
 
-    .separator{
-      height:1px;
-      background:#d6d6d6;
-      margin:24px 0 20px;
-    }
-
-    .info{
-      .row{
-        margin-bottom:12px;
-
-        .label{
-          color:#9a9c9e;
+    .tabs{
+      .tab{
+        a{
+          text-transform: capitalize;
+          padding:0 10px;
         }
       }
-
-      .buttons{
-        margin-top:30px;
-      }
     }
-  }
-
-  #general{
-    display:block !important;
   }
 }
