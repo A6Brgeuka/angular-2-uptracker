@@ -56,6 +56,8 @@
                   placeholder="Enter amount here"
                   [(ngModel)]="accounting.annual_income"
                   [textMask]="{mask: amountMask, guide: false}"
+                  (change)="changeAnnualIncome($event)"
+                  (blur)="changeAnnualIncome($event)"
                   name="income"
                   #income="ngModel"
                   required

@@ -49,15 +49,15 @@ export class AccountingComponent implements OnInit {
   ngOnInit() {
     this.accounting = this.accountService.onboardAccounting;
     this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 0; //1000000;
-    this.subscribers.getLocationsSubscription = this.userService.selfData$.subscribe((res: any) => {
-      if (res.account) { 
+    this.subscribers.getLocationsSubscription = this.userService.selfData$
+      .filter(res => res.account)
+      .subscribe((res: any) => {
         this.locationArr = res.account.locations;
         if (this.locationArr.length > 1) {
           this.moreThanOneSlider = true;
         }
         this.setLocationBudget();
-      }
-    });
+      });
     this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
       this.currencyArr = res;
     });
@@ -78,6 +78,7 @@ export class AccountingComponent implements OnInit {
     });
     this.accountService.onboardAccounting.total = nulledTotals;
     this.setLocationBudget();
+    this.sessionService.setLocal("annual_inventory_budget", this.accounting.annual_inventory_budget)
   }
 
   setLocationBudget(){
@@ -172,7 +173,7 @@ export class AccountingComponent implements OnInit {
           let delta: number = num + mod;
           let newValue: number = this.accounting.total[key] - delta;
           console.log('prev value ' + key + ' = ', this.accounting.total[key]);
-          
+
           console.log('mod ' + key + ' before =', mod);
           // share mod on all other locations
           if (newValue < 0) { // if mod is too big set new value to 0 and update mod
@@ -184,6 +185,7 @@ export class AccountingComponent implements OnInit {
           console.log('mod ' + key + ' after =', mod);
           this.setSliderValue(key, newValue); // TODO: diff/k => delta
           this.prevInputValue[key] = this.accounting.total[key];
+          // this.sessionService.setLocal()
         }
 
         // if last slider and mod != 0 than set num to null for next do while iteration
@@ -192,6 +194,7 @@ export class AccountingComponent implements OnInit {
       });
     } while (mod != 0);
     this.prevInputValue[i] = changedInputValue;
+    this.sessionService.setLocal("budget_destribution_per_location", JSON.stringify(this.accounting.total));
   }
 
   setSliderValue(i, value){ console.log('new value ' + i + ' = ', value);
@@ -247,6 +250,10 @@ export class AccountingComponent implements OnInit {
     this.sessionService.setLocal('currency', event.target.value);
   }
 
+  changeAnnualIncome(event) {
+    this.sessionService.setLocal('annual_income', this.amount2number(event.target.value));
+  }
+
   viewCurrencySign(){
     let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
     return currency ? currency['html_entity'] : '$';
@@ -297,7 +304,7 @@ export class AccountingComponent implements OnInit {
         annual_budget: this.accounting.total[i]
       }
     }
-    
+
     this.accountService.putAccounting(this.accounting).subscribe(
       (res: any) => {
         this.router.navigate(['/dashboard']);
