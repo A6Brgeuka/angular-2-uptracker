@@ -139,8 +139,8 @@ export class AccountService extends ModelService{
     //     .get({location: params.location, size: params.size, key: params.key})
     //     .subscribe((res: any) => {
     //       debugger;
-          let imageUrl = this.appConfig.streetView.endpoint+'?location='+params.location+'&size='+params.size+'&key='+params.key;
-          return imageUrl.replace(/\s/g,'%20');
+          let imageUrl = this.appConfig.streetView.endpoint + '?size=' + params.size + '&key=' + params.key + '&location=' + params.location;
+          return imageUrl.replace(/\s/g,'%20').replace(/#/g, '');
         // });
   }
 

@@ -80,7 +80,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
     // observer to detect class change
     let observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
+      mutations.forEach((mutation: any) => {
         if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
           // this.secondaryLocationLink.nativeElement.click();
           this.chooseTabLocation(this.secondaryLocation);

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
@@ -83,8 +83,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       private userService: UserService,
       private accountService: AccountService,
       private vendorService: VendorService,
-      private phoneMaskService: PhoneMaskService,
-      private renderer: Renderer
+      private phoneMaskService: PhoneMaskService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -129,7 +128,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
 
     // observer to detect class change
     let observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
+      mutations.forEach((mutation: any) => {
         if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
           // this.secondaryLocationLink.nativeElement.click();
           this.chooseTabLocation(this.secondaryLocation);
