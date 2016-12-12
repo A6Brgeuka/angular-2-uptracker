@@ -8,7 +8,7 @@ import { AccountingComponent } from './onboard/accounting/accounting.component';
 import { OnboardLocationsComponent } from './onboard/locations/locations.component';
 
 @Injectable()
-export class CanDeactivateGuard implements CanDeactivate<AccountingComponent>, CanDeactivate<OnboardLocationsComponent>{
+export class CanDeactivateGuard implements CanDeactivate<AccountingComponent>{
   constructor(
     private sessionService: SessionService,
     private router: Router
@@ -20,6 +20,13 @@ export class CanDeactivateGuard implements CanDeactivate<AccountingComponent>, C
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
+    /*****
+     * Service for test!
+     * it is not used
+     * TODO: remove when not necessary
+     **********************************/
+
+
     debugger;
     // if (!accountingComponent.accounting || accountingComponent.accounting == accountingComponent.accountService.onboardAccounting)
     //     return true;
@@ -27,6 +34,8 @@ export class CanDeactivateGuard implements CanDeactivate<AccountingComponent>, C
     _.each(accountingComponent.accounting, (key, value) => {
       this.sessionService.setLocal(key, value);
     });
+
+    return true;
 
     // let user$ = this.userService.loadSelfData().map((res) => {
     //   // if logged out guest remove self data
