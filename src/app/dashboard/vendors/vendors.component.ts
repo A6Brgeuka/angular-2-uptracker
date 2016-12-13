@@ -1,15 +1,12 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
-
-import { Overlay, overlayConfigFactory } from 'angular2-modal';
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as _ from 'lodash';
-
-import { ViewVendorModal } from './view-vendor-modal/view-vendor-modal.component';
-import { EditVendorModal } from './edit-vendor-modal/edit-vendor-modal.component';
-import { VendorService, ModalWindowService } from '../../core/services/index';
-import { VendorModel } from '../../models/vendor.model';
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {Observable, BehaviorSubject} from "rxjs/Rx";
+import {Overlay} from "angular2-modal";
+import {Modal} from "angular2-modal/plugins/bootstrap";
+import {DestroySubscribers} from "ng2-destroy-subscribers";
+import * as _ from "lodash";
+import {ViewVendorModal} from "./view-vendor-modal/view-vendor-modal.component";
+import {EditVendorModal} from "./edit-vendor-modal/edit-vendor-modal.component";
+import {VendorService, ModalWindowService} from "../../core/services/index";
 
 
 @Component({
@@ -24,6 +21,7 @@ export class VendorsComponent implements OnInit {
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public vendors$: Observable<any>;
+  public vendors: any;
 
   constructor(
       private vcRef: ViewContainerRef,
@@ -59,8 +57,9 @@ export class VendorsComponent implements OnInit {
           if (sortBy == 'Z-A') {
             sortBy = 'name';
           }
-          
+
           let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
+          this.vendors = sortedVendors;
           return sortedVendors;
         });
   }
@@ -70,11 +69,20 @@ export class VendorsComponent implements OnInit {
     this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
   }
   
-  editVendorModal(vendor: VendorModel = new VendorModel(null)){
-    let accountVendor = vendor.account_vendor;
-    accountVendor.vendor_id = vendor.id;
+  editVendorModal(vendor){
+    let accountVendors: any = vendor.account_vendor;
+    accountVendors.vendor_id = vendor.id;
 
-    let data = { vendor: accountVendor };
+
+    //check local vendor or global, to make edit from viewVendorModal to editVendorModel work
+    if(vendor.vendor_id) {
+      let globalVendor: any = _.find(this.vendors, {id: vendor.vendor_id});
+      accountVendors = globalVendor.account_vendor;
+      accountVendors.vendor_id = globalVendor.id;
+    }
+
+
+    let data = { vendor: accountVendors };
     this.modalWindowService.customModal(this.vcRef, EditVendorModal, data);
   }
 
