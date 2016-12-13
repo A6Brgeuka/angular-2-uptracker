@@ -1,11 +1,8 @@
 :host /deep/ {
   .inner{
-    width:280px;
-    margin:0 auto;
-
     .img-container{
-      width:80px;
-      height:80px;
+      width:140px;
+      height:140px;
       border:1px solid #d6d6d6;
 
       .img{
@@ -15,39 +12,106 @@
       }
     }
 
-    .ttl-box{
-      height:80px;
-
+    .info-box{
       .ttl{
-        position:relative;
-        top:50%;
-        transform:translateY(-50%);
-        font-size:18px;
+        color:#9a9c9e;
+      }
+
+      label{
+        color:#9a9c9e;
+      }
+
+      .value{
+        font-size:12px;
+        color:#000;
+      }
+
+      span.value{
+        margin-left:5px;
       }
     }
 
-    .separator{
-      height:1px;
-      background:#d6d6d6;
-      margin:24px 0 20px;
-    }
-
-    .info{
-      .row{
-        margin-bottom:12px;
-
-        .label{
-          color:#9a9c9e;
+    .tabs{
+      .tab{
+        a{
+          text-transform: capitalize;
+          padding:0 10px;
         }
       }
+    }
 
-      .buttons{
-        margin-top:30px;
+    .inner{
+      table {
+        font-size:11px;
+
+        .uptracker-form{
+          input{
+            margin:0;
+            height:25px;
+            font-size:11px;
+            background: transparent;
+            padding-left:8px;
+            text-indent: 0;
+            text-overflow: ellipsis;
+            color:#9a9c9e;
+
+            &.empty{
+              color:#d6d6d6;
+            }
+          }
+
+          .select .select-wrapper {
+            &.ng-valid{
+              input.select-dropdown{
+                border-color:#d6d6d6;
+              }
+            }
+
+            &.empty{
+              input.select-dropdown{
+                color:#d6d6d6;
+              }
+            }
+
+            input.select-dropdown{
+              padding-right: 15px;
+            }
+
+            .dropdown-content {
+              margin: 0;
+
+              li {
+                span {
+                  font-size: 11px;
+                  line-height: 25px;
+                }
+              }
+            }
+          }
+        }
+
+        tr{
+          & > *:first-child{
+            padding-left:0;
+          }
+
+          & > *:last-child{
+            padding-right:0;
+          }
+        }
+
+        th{
+          border:1px solid #d6d6d6;
+          border-width:1px 0;
+          padding:10px 5px;
+        }
+
+        .not-submit{
+          height:25px;
+          width:auto;
+          padding:0 15px;
+        }
       }
     }
-  }
-
-  #general{
-    display:block !important;
   }
 }

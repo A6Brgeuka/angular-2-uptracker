@@ -6,7 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-import { VendorModel } from '../../../models/index';
+import { ProductModel } from '../../../models/index';
 import { UserService, AccountService } from '../../../core/services/index';
 
 export class ViewProductModalContext extends BSModalContext {
@@ -25,16 +25,12 @@ export class ViewProductModalContext extends BSModalContext {
 export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewProductModalContext> {
   private subscribers: any = {};
   context: ViewProductModalContext;
-  public vendor: any = {};
   private product: any;
-  public locationArr: any = [];
-  public locations$: Observable<any>;
-  public currentLocation: any;
-  public sateliteLocationActive: boolean = false;
-  public primaryLocation: any;
-  public secondaryLocation: any = { name: 'Satelite Location' };
+  public variation: any = {
+    pkg: ''
+  };
 
-  @ViewChild('secondary') secondaryLocationLink: ElementRef;
+  // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
   constructor(
       public dialog: DialogRef<ViewProductModalContext>,
@@ -47,14 +43,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   ngOnInit(){
     this.product = this.context.product;
-    // this.vendor = new VendorModel(this.context.product);
-    // this.locations$ = this.accountService.locations$.map((res: any) => {
-    //   this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-    //   let secondaryLocations = _.filter(res, (loc) => {
-    //     return this.primaryLocation != loc;
-    //   });
-    //   return secondaryLocations;
-    // });
+    this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
+    this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
+    this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
   }
 
   ngAfterViewInit(){
@@ -72,6 +63,18 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   closeModal(data){
     this.dialog.close(data);
+  }
+
+  changePkg(event){
+    this.variation.pkg = event.target.value;
+  }
+
+  changeUnit(event){
+    this.variation.unit = event.target.value;
+  }
+
+  changeUnitsPkg(event){
+    this.variation.unit_pkg = event.target.value;
   }
 
   // editVendor(vendor = null){
