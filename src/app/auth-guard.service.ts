@@ -194,7 +194,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
   checkLogin(){
     if (!this.userService.isGuest() && this.userService.selfData.status == 1){
-      this.router.navigate(['/onboard', this.userService.selfData.onboarding_step]);
+      this.router.navigate(['/onboard', this.userService.selfData.account.onboarding_step]);
       return false;
     }
 

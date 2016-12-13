@@ -127,18 +127,20 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
     });
 
     // observer to detect class change
-    let observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation: any) => {
-        if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
-          // this.secondaryLocationLink.nativeElement.click();
-          this.chooseTabLocation(this.secondaryLocation);
-        }
+    if (this.secondaryLocationLink) {
+      let observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation: any) => {
+          if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
+            // this.secondaryLocationLink.nativeElement.click();
+            this.chooseTabLocation(this.secondaryLocation);
+          }
+        });
       });
-    });
-    observer.observe(this.secondaryLocationLink.nativeElement,  {
-      attributes: true,
-      attributeOldValue: true
-    });
+      observer.observe(this.secondaryLocationLink.nativeElement,  {
+        attributes: true,
+        attributeOldValue: true
+      });
+    }
   }
 
   chooseTabLocation(location = null){
