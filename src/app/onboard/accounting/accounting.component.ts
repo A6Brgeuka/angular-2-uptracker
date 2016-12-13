@@ -69,10 +69,6 @@ export class AccountingComponent implements OnInit {
       }
     });
 
-
-
-    debugger;
-
     this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 0; //1000000;
 
     this.subscribers.getLocationsSubscription = this.userService.selfData$
@@ -291,10 +287,6 @@ export class AccountingComponent implements OnInit {
     this.monthDirty = true;
     this.accounting.fiscal_year = event.target.value;
     this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
-  }
-
-  changeForm(event){
-    debugger;
   }
 
   toggleLock(i) {
