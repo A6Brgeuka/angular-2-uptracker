@@ -49,7 +49,7 @@ export class ProductsComponent implements OnInit {
           this.total = products.length;
           let filteredProducts = products;
 
-          this.viewProductModal(products[0]);
+          // this.viewProductModal(products[0]);
 
           if (searchKey && searchKey!='') {
             filteredProducts = _.reject(filteredProducts, (product: any) =>{
