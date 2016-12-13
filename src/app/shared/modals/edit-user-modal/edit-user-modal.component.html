@@ -208,14 +208,14 @@
         <button type="button" class="not-submit" (click)="hideAddPresetForm()">Cancel</button>
       </div>
     </div>
-    <div class="row" *ngFor="let permission of permissionArr; let j = index">
-      <div class="col s12 m8">
-        <div class="preset-ttl">{{permission.label}}</div>
-      </div>
-      <div class="col s12 m4">
-        <div class="switch-box" (click)="togglePreset(j)">
-          <div class="switcher active" [class.active]="permission.default">On</div>
-          <div class="switcher" [class.active]="!permission.default">Off</div>
+    <div class="row permission-row">
+      <div class="col s12 m4 item" *ngFor="let permission of permissionArr; let j = index">
+        <div class="inner" [style.margin-left]="j%3 == 2 ? '15%' : j%3 == 1 ? '7.5%' : ''">
+          <div class="preset-ttl">{{permission.label}}</div>
+          <div class="switch-box" (click)="togglePreset(j)">
+            <div class="switcher active" [class.active]="permission.default">On</div>
+            <div class="switcher" [class.active]="!permission.default">Off</div>
+          </div>
         </div>
       </div>
     </div>
