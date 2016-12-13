@@ -38,7 +38,7 @@ export class AccountingComponent implements OnInit {
   public rangeStep: number = 1;
   private prev_annual_inventory_budget: string; // previous annual budget for 'change' detection on blur
 
-  private localAccounting = {};
+  private localAccounting: any = {};
 
   constructor(
       private router: Router,
@@ -83,6 +83,8 @@ export class AccountingComponent implements OnInit {
     this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
       this.currencyArr = res;
     });
+
+
   }
 
   annualInventoryBudgetChange(event){
@@ -114,6 +116,16 @@ export class AccountingComponent implements OnInit {
       this.accountService.onboardAccounting.total = _.map(_.cloneDeep(this.locationArr), (value) => {
         return null;
       });
+      this.accountService.onboardAccounting.disabledRange = _.map(_.cloneDeep(this.locationArr), (value) => {
+        return false;
+      });
+      this.accounting.total = _.map(_.cloneDeep(this.locationArr), (value) => {
+        return null;
+      });
+      this.accounting.disabledRange = _.map(_.cloneDeep(this.locationArr), (value) => {
+        return false;
+      });
+      this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting));
     }
 
     for (let i=0; i<this.locationArr.length; i++){
@@ -127,6 +139,20 @@ export class AccountingComponent implements OnInit {
       this.prevInputValue[i] = this.accounting.total[i];
       console.log('prev value '+i, this.prevInputValue[i]);
     }
+    this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting));
+
+    if(this.accountService.onboardAccounting.disabledRange.length || this.localAccounting) {
+      let local = this.accountService.onboardAccounting.disabledRange;
+      let storage = this.localAccounting.disabledRange;
+
+      if(local) {
+        this.disabledRange = local;
+      }
+      else if (storage) {
+        this.disabledRange = storage;
+      }
+    }
+
   }
 
   changingRange(event, i, byInput = false){
@@ -292,6 +318,9 @@ export class AccountingComponent implements OnInit {
   toggleLock(i) {
     if (this.moreThanOneSlider) {
       this.disabledRange[i] = !this.disabledRange[i];
+      this.accounting.disabledRange = this.disabledRange;
+      this.accountService.onboardAccounting.disabledRange = this.disabledRange;
+      this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
     } else {
       this.toasterService.pop('error', 'Only multiple locations can be adjusted.');
     }

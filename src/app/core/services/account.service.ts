@@ -32,7 +32,8 @@ export class AccountService extends ModelService{
     currency: 'USD',
     fiscal_year: null,
     annual_income: null,
-    annual_inventory_budget: null
+    annual_inventory_budget: null,
+    disabledRange: []
   };
   locations$: Observable<any>;
   dashboardLocation$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
