@@ -28,7 +28,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public user: any;
   public locationArr: any;
   public locations$: Observable<any>;
-  public locationCheckboxes$: BehaviorSubject = new BehaviorSubject([]);
+  public locationCheckboxes$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public departmentCollection$: Observable<any> = new Observable<any>();
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
@@ -89,7 +89,6 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
           this.locationCheckboxes$
         )
         .map(([selfData, checkboxes]) => {
-
           this.locationArr = selfData.account.locations;
 
           // set default location for new user or selfData (current user)
