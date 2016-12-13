@@ -3,7 +3,7 @@ import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core'
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { Observable } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { UserService, AccountService, PhoneMaskService, ToasterService, FileUploadService, ModalWindowService } from '../../../core/services/index';
@@ -27,6 +27,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   context: EditUserModalContext;
   public user: any;
   public locationArr: any;
+  public locations$: Observable<any>;
+  public locationCheckboxes$: BehaviorSubject = new BehaviorSubject([]);
   public departmentCollection$: Observable<any> = new Observable<any>();
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
@@ -69,7 +71,6 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   ngOnInit(){
-    this.locationArr = this.userService.selfData.account ? this.userService.selfData.account.locations : [];
     let userData = this.context.user || { tutorial_mode: true };
     this.user = new UserModel(userData);
     if (this.context.user){ 
@@ -77,16 +78,34 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     }
-    // set default location for new user or selfData (current user)
-    if (!this.user.default_location || this.user.default_location == '') {
-      let primaryLoc = _.find(this.locationArr, {'location_type': 'Primary'});
-      let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
-      this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
-    }
 
     if (!this.user.template){
       this.user.template = this.userService.selfData.account.purchase_order_template;
     }
+
+    this.locations$ = Observable
+        .combineLatest(
+          this.userService.selfData$,
+          this.locationCheckboxes$
+        )
+        .map(([selfData, checkboxes]) => {
+
+          this.locationArr = selfData.account.locations;
+
+          // set default location for new user or selfData (current user)
+          if (!this.user.default_location || this.user.default_location == '') {
+            let primaryLoc = _.find(this.locationArr, {'location_type': 'Primary'});
+            let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
+            this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
+          }
+
+          for (let i=0; i<this.locationArr.length; i++){
+            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : checkboxes[i] || false;
+            this.user.locations[i] = this.locationArr[i].checkbox;
+          }
+
+          return this.locationArr;
+        });
     
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
 
@@ -127,8 +146,18 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.dialog.close(data);
   }
 
-  changeLocation(){
+  changeLocation(event){
     this.locationDirty = true;
+
+    for (let i=0; i < this.locationArr.length; i++){
+      this.user.locations[i] = this.locationArr[i].id == event.target.value ? true : this.user.locations[i] || false;
+    }
+    this.locationCheckboxes$.next(this.user.locations);
+  }
+
+  changeLocationCheckbox(event, i){
+    this.user.locations[i] = event.target.checked;
+    this.locationCheckboxes$.next(this.user.locations);
   }
 
   changeDepartment(){

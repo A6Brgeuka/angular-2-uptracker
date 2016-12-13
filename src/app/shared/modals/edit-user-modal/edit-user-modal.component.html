@@ -77,10 +77,10 @@
                   #location="ngModel"
                   materialize="material_select"
                   required
-                  (change)="changeLocation()"
-                  [materializeSelectOptions]="locationArr">
+                  (change)="changeLocation($event)"
+                  [materializeSelectOptions]="locations$ | async">
                 <option value="">Please select one</option>
-                <option *ngFor="let location of locationArr | iterable" [value]="location.key.id">{{location.key.name}}</option>
+                <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
               </select>
             </div>
           </div>
@@ -149,17 +149,15 @@
             <div class="label left-align">Locations</div>
             <div class="location-box">
               <ul>
-                <li class="input-checkbox">
-                  <input type="checkbox" id="loc1" name="loc1" value="1" [(ngModel)]="user.locations[0]" />
-                  <label for="loc1">Loc 1</label>
-                </li>
-                <li class="input-checkbox">
-                  <input type="checkbox" id="loc2" name="loc2" value="1" [(ngModel)]="user.locations[1]" />
-                  <label for="loc2">Loc 2</label>
-                </li>
-                <li class="input-checkbox">
-                  <input type="checkbox" id="loc3" name="loc3" value="1" [(ngModel)]="user.locations[2]" />
-                  <label for="loc3">Loc 3</label>
+                <li class="input-checkbox" *ngFor="let location of locations$ | async; let i = index">
+                  <input
+                      type="checkbox"
+                      id="loc{{i}}"
+                      name="loc{{i}}"
+                      [(ngModel)]="location.checkbox"
+                      (change)="changeLocationCheckbox($event, i)"
+                      [disabled]="location.id == user.default_location" />
+                  <label for="loc{{i}}">{{location.name}}</label>
                 </li>
               </ul>
             </div>
