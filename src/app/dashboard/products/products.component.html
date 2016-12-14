@@ -30,7 +30,7 @@
       <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
         <div class="inner">
           <div class="hazardous" *ngIf="product.hazardous"><i class="material-icons">warning</i></div>
-          <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }" (click)="viewProductModal(product)">
+          <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }" (click)="viewProductModal(product)">
             <div class="trackable" *ngIf="product.trackable"><fa [name]="'barcode'"></fa></div>
           </div>
           <div class="info">
