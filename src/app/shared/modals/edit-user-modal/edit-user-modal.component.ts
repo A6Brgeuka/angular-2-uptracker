@@ -97,17 +97,11 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
             let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
             this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
           }
-          debugger;
 
           for (let i=0; i<this.locationArr.length; i++){
-
-            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : checkboxes[i] || this.user.locations[i].checked || false ;
-
-            // || _.filter(this.user.locations, locationId => locationId == this.locationArr[i].id).length ? true : false;
-
+            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : this.user.locations[i].checked || false ;
             this.user.locations[i].checked = this.locationArr[i].checkbox;
           }
-
           return this.locationArr;
         });
     
@@ -278,14 +272,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   onSubmit(){
-    // map users locations from true to location id;
-    // this.user.locations = _.map(this.user.locations, (item, index) => {
-    //   if(item) {
-    //     return this.locationArr[index].id;
-    //   }
-    // }).filter(item=>item);
 
-    debugger;
     this.user.account_id = this.userService.selfData.account_id;
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
