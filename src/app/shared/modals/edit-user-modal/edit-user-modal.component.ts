@@ -272,6 +272,13 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   onSubmit(){
+    // map users locations from true to location id;
+    this.user.locations = _.map(this.user.locations, (item, index) => {
+      if(item) {
+        return this.locationArr[index].id;
+      }
+    }).filter(item=>item);
+
     this.user.account_id = this.userService.selfData.account_id;
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;

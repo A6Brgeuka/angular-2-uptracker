@@ -32,6 +32,8 @@
     }
 
     .tabs{
+      overflow-x: hidden;
+
       .tab{
         a{
           text-transform: capitalize;
@@ -117,7 +119,6 @@
         }
       }
     }
-
     @media (max-width: 768px) {
       .img-container{
         width:110px;
