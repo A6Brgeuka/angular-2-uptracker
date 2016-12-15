@@ -7,6 +7,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { AccountService, ToasterService, UserService, PhoneMaskService, FileUploadService, ModalWindowService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
+import { LocationService } from "../../../core/services/location.service";
 
 export class EditLocationModalContext extends BSModalContext {
   public location: any;
@@ -50,7 +51,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       private accountService: AccountService,
       private phoneMaskService: PhoneMaskService,
       private fileUploadService: FileUploadService,
-      private modalWindowService: ModalWindowService
+      private modalWindowService: ModalWindowService,
+      private locationService: LocationService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -146,11 +148,18 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     };
     this.location.image = this.uploadedImage;
     if (!this.location.image){
+      // TODO: move logic to location service;
+      // this.locationService.getLocationStreetView(address).subscribe(res => {
+      //   debugger;
+      // },err => {
+      //   debugger;
+      // });
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
       xhr.onload = () => {
         var reader = new FileReader();
         reader.onloadend = () => {
+
           this.location.image = reader.result;
           // this.checkGoogleStreetImage();
           this.addLocation(this.location);
