@@ -149,25 +149,19 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.image = this.uploadedImage;
     if (!this.location.image){
       // TODO: move logic to location service;
-      // this.locationService.getLocationStreetView(address).subscribe(res => {
-      //   debugger;
-      // },err => {
-      //   debugger;
-      // });
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = () => {
-        var reader = new FileReader();
-        reader.onloadend = () => {
 
-          this.location.image = reader.result;
-          // this.checkGoogleStreetImage();
+      this.locationService.getLocationStreetView(address)
+        .map( (res: any) => JSON.parse(res._body))
+        .do(res => {
+          if(res.status == "OK") {
+            this.location.image = this.locationService.getLocationStreetViewUrl(address);
+          }
+          else {
+            this.location.image = null;
+          }
           this.addLocation(this.location);
-        };
-        reader.readAsDataURL(xhr.response);
-      };
-      xhr.open('GET', this.accountService.getLocationStreetView(address));
-      xhr.send();
+        });
+
     } else {
       this.addLocation(this.location);
     }
