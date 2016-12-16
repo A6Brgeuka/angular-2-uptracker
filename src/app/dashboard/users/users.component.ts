@@ -51,7 +51,11 @@ export class UsersComponent implements OnInit {
           this.total = user.account.users.length;
           let filteredUsers = _.filter(user.account.users, (user: any) => {
             let key = new RegExp(searchKey, 'i');
-            let userIsFromCurrentLocation: boolean = !location || user.default_location == location.id;
+
+            //check if user has checked this location
+            let userLocation: any = _.filter(user.locations , (item: any) => item.checked);
+              userLocation = _.map(userLocation, (item: any) => item.location_id);
+            let userIsFromCurrentLocation: boolean = !location || userLocation.indexOf(location.id) >= 0  ;
             return ((!searchKey || key.test(user.name)) && userIsFromCurrentLocation);
           });
           return filteredUsers;

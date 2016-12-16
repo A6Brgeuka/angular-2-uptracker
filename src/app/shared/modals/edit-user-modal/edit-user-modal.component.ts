@@ -6,7 +6,14 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-import { UserService, AccountService, PhoneMaskService, ToasterService, FileUploadService, ModalWindowService } from '../../../core/services/index';
+import {
+  UserService,
+  AccountService,
+  PhoneMaskService,
+  ToasterService,
+  FileUploadService,
+  ModalWindowService
+} from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
 
 export class EditUserModalContext extends BSModalContext {
@@ -56,55 +63,60 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   @ViewChild('tabPermissions') tabPermissions: ElementRef;
   @ViewChild('tabTemplate') tabTemplate: ElementRef;
 
-  constructor(
-      public zone: NgZone,
-      public dialog: DialogRef<EditUserModalContext>,
-      private userService: UserService,
-      private accountService: AccountService,
-      private phoneMaskService: PhoneMaskService,
-      private toasterService: ToasterService,
-      private fileUploadService: FileUploadService,
-      public modalWindowService: ModalWindowService
-  ) {
+  constructor(public zone: NgZone,
+              public dialog: DialogRef<EditUserModalContext>,
+              private userService: UserService,
+              private accountService: AccountService,
+              private phoneMaskService: PhoneMaskService,
+              private toasterService: ToasterService,
+              private fileUploadService: FileUploadService,
+              public modalWindowService: ModalWindowService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
 
-  ngOnInit(){
-    let userData = this.context.user || { tutorial_mode: true };
+  ngOnInit() {
+    let userData = this.context.user || {tutorial_mode: true};
     this.user = new UserModel(userData);
-    if (this.context.user){ 
+    if (this.context.user) {
       this.uploadedImage = this.user.avatar;
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     }
 
-    if (!this.user.template){
+    if (!this.user.template) {
       this.user.template = this.userService.selfData.account.purchase_order_template;
     }
 
     this.locations$ = Observable
-        .combineLatest(
-          this.userService.selfData$,
-          this.locationCheckboxes$
-        )
-        .map(([selfData, checkboxes]) => {
-          this.locationArr = selfData.account.locations;
+      .combineLatest(
+        this.userService.selfData$,
+        this.locationCheckboxes$
+      )
+      .map(([selfData, checkboxes]) => {
+        this.locationArr = selfData.account.locations;
 
-          // set default location for new user or selfData (current user)
-          if (!this.user.default_location || this.user.default_location == '') {
-            let primaryLoc = _.find(this.locationArr, {'location_type': 'Primary'});
-            let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
-            this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
+        // set default location for new user or selfData (current user)
+        if (!this.user.default_location || this.user.default_location == '') {
+          let primaryLoc = _.find(this.locationArr, {'location_type': 'Primary'});
+          let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
+          this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
+        }
+
+        for (let i = 0; i < this.locationArr.length; i++) {
+          if (!this.user.locations[i]) {
+            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : false;
+            this.user.locations[i] = {location_id: this.locationArr[i].id, checked: this.locationArr[i].checkbox};
           }
-
-          for (let i=0; i<this.locationArr.length; i++){
-            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : this.user.locations[i].checked || false ;
+          else {
+            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : this.user.locations[i].checked || false;
             this.user.locations[i].checked = this.locationArr[i].checkbox;
           }
-          return this.locationArr;
-        });
-    
+        }
+
+        return this.locationArr;
+      });
+
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
 
     this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {
@@ -113,10 +125,10 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         if (!this.context.user) {
           this.setDefaultPermissions();
         } else {
-          if (this.user.permissions[0]){
+          if (this.user.permissions[0]) {
             this.permissionArr = this.user.permissions;
             _.each(this.rolesArr, (roleItem) => {
-              if (_.isEqual(roleItem.permissions, this.permissionArr)){
+              if (_.isEqual(roleItem.permissions, this.permissionArr)) {
                 this.selectedRole = roleItem.role;
               }
             });
@@ -128,42 +140,42 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     });
   }
 
-  setDefaultPermissions(){
+  setDefaultPermissions() {
     this.permissionArr = _.cloneDeep(this.rolesArr[0].permissions);
-    this.permissionArr.map((data:any) => {
+    this.permissionArr.map((data: any) => {
       data.default = false;
       return data;
     });
   }
 
-  dismissModal(){
+  dismissModal() {
     this.dialog.dismiss();
   }
 
-  closeModal(data){
+  closeModal(data) {
     this.dialog.close(data);
   }
 
-  changeLocation(event){
+  changeLocation(event) {
     this.locationDirty = true;
 
-    for (let i=0; i < this.locationArr.length; i++){
-      this.user.locations[i].checked  = this.locationArr[i].id == event.target.value ? true : this.user.locations[i].checked  || false;
+    for (let i = 0; i < this.locationArr.length; i++) {
+      this.user.locations[i].checked = this.locationArr[i].id == event.target.value ? true : this.user.locations[i].checked || false;
     }
 
     this.locationCheckboxes$.next(this.user.locations);
   }
 
-  changeLocationCheckbox(event, i){
+  changeLocationCheckbox(event, i) {
     this.user.locations[i].checked = event.target.checked;
     this.locationCheckboxes$.next(this.user.locations);
   }
 
-  changeDepartment(){
+  changeDepartment() {
     this.departmentDirty = true;
   }
 
-  changeRole(){
+  changeRole() {
     this.roleDirty = true;
   }
 
@@ -176,7 +188,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.fileToDataURL($event.target);
   }
 
-  fileToDataURL(inputValue: any): void { 
+  fileToDataURL(inputValue: any): void {
     let file: File = inputValue.files[0];
     let myReader: FileReader = new FileReader();
 
@@ -205,60 +217,60 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     img.src = imgBase64;
   }
 
-  toggleTutorialMode(){
+  toggleTutorialMode() {
     this.user.tutorial_mode = !this.user.tutorial_mode;
   }
 
-  onRoleChange(event: any = false){ 
+  onRoleChange(event: any = false) {
     let newRole;
-    if (event){
+    if (event) {
       newRole = event.target.value;
     } else {
       newRole = this.selectedRole;
     }
     _.each(this.rolesArr, (roleItem) => {
-      if (roleItem.role == newRole){
+      if (roleItem.role == newRole) {
         this.permissionArr = _.cloneDeep(roleItem.permissions);
       }
     });
   }
 
-  togglePreset(i){
+  togglePreset(i) {
     let z = 0;
     this.permissionArr[i].default = !this.permissionArr[i].default;
     _.each(this.rolesArr, (roleItem) => {
-      if (_.isEqual(roleItem.permissions, this.permissionArr)){
+      if (_.isEqual(roleItem.permissions, this.permissionArr)) {
         this.selectedRole = roleItem.role;
         this.showCustomRole = false;
         z++;
       }
     });
     // show role Custom if no matches
-    if (z == 0){
+    if (z == 0) {
       this.showCustomRole = true;
       this.selectedRole = 'custom';
     }
   }
-  
-  showAddPresetForm(){
-    if (this.showCustomRole){
+
+  showAddPresetForm() {
+    if (this.showCustomRole) {
       this.addPresetForm = true;
     }
   }
 
-  hideAddPresetForm(){
+  hideAddPresetForm() {
     this.preset.role = '';
     this.addPresetForm = false;
   }
 
-  addRole(){
+  addRole() {
     if (!this.preset.role || this.preset.role == '') {
       this.toasterService.pop('error', 'Pre-set name is required');
       return;
     }
     this.preset.account_id = this.userService.selfData.account_id;
     this.preset.permissions = this.permissionArr;
-    this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset).subscribe((res: any) => { 
+    this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset).subscribe((res: any) => {
       _.each(res.data.roles, (roleItem: any) => {
         if (roleItem.label == this.preset.role) {
           this.selectedRole = roleItem.role;
@@ -271,36 +283,36 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     });
   }
 
-  onSubmit(){
+  onSubmit() {
 
     this.user.account_id = this.userService.selfData.account_id;
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
     this.user.permissions = this.permissionArr;
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
-        (res: any) => { 
-          this.dismissModal();
-        }
+      (res: any) => {
+        this.dismissModal();
+      }
     );
   }
 
-  nextTab(){
+  nextTab() {
     if (this.tabProfile.nativeElement.className == 'active')
       this.tabPermissions.nativeElement.click();
     else this.tabTemplate.nativeElement.click();
   }
 
-  prevTab(){
+  prevTab() {
     if (this.tabTemplate.nativeElement.className == 'active')
       this.tabPermissions.nativeElement.click();
     else this.tabProfile.nativeElement.click();
   }
 
-  deleteUser(user){
+  deleteUser(user) {
     this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?', this.deleteUserFunc.bind(this));
   }
 
-  deleteUserFunc(){
+  deleteUserFunc() {
     this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
       this.dismissModal();
     });

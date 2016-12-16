@@ -79,7 +79,6 @@
                   required
                   (change)="changeLocation($event)"
                   [materializeSelectOptions]="locations$ | async">
-                <option value="">Please select one</option>
                 <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
               </select>
             </div>
