@@ -161,6 +161,12 @@ export class AccountService extends ModelService{
     return this.restangular.one('accounts', this.userService.selfData.account_id).one('locations', data.id).remove()
         .do((res: any) => {
           let account = this.userService.selfData.account;
+
+          account.users = _.map(account.users, (user: any) => {
+            _.remove(user.locations, (location: any) => location.location_id == data.id);
+            return user;
+          });
+
           _.remove(account.locations, (location: any) => {
             return location.id == data.id;
           });
