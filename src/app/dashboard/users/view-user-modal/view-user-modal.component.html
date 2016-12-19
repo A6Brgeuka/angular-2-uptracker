@@ -2,11 +2,15 @@
 <div class="title center-align">{{user.name}}</div>
 <div class="row">
   <ul class="tabs user-tabs" materialize="tabs">
-    <li class="tab col s6"><a href="#user-view">Info</a></li>
-    <li class="tab col s6"><a href="#user-message">Send Message</a></li>
+    <li class="tab col s6"
+        [class.s12]="user.id==userService.selfData.id"
+    ><a href="#user-view" [class.active]="!toSendMessage">Info</a></li>
+    <li class="tab col s6"
+        *ngIf="user.id!=userService.selfData.id"
+    ><a href="#user-message" [class.active]="toSendMessage">Send Message</a></li>
   </ul>
 </div>
-<div>
+<div *ngIf="user.id!=userService.selfData.id">
   <form class="uptracker-form" materialize (ngSubmit)="confirmMessage()" #messageForm="ngForm" autocomplete="off" *ngIf="!messageConfirm" novalidate id="user-message">
     <div class="row">
       <div class="col s12">
@@ -55,11 +59,11 @@
       <button
               type="button"
               class="confirm-btn btn white-text waves-effect waves-light left"
-              (click)="sendNewMessage()">Send and Start New Message</button>
+              (click)="dismissModal()">Send</button>
       <button
               type="button"
               class="confirm-btn btn white-text waves-effect waves-light left"
-              (click)="dismissModal()">Send</button>
+              (click)="sendNewMessage()">Send and Start New Message</button>
     </div>
   </div>
 </div>

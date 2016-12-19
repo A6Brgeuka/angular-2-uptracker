@@ -62,9 +62,13 @@ export class UsersComponent implements OnInit {
         });
   }
 
+  sendMessageToUser(user = null) {
+    this.viewUserModal(Object.assign(user,{sendMessage: true}));
+  }
+
   viewUserModal(user = null){
     this.modal
-        .open(ViewUserModal,  overlayConfigFactory({ user: user }, BSModalContext))
+        .open(ViewUserModal,  overlayConfigFactory({ user: user}, BSModalContext))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {

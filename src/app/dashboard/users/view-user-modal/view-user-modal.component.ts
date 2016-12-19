@@ -26,6 +26,7 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   public user: any;
   public message: any = {};
   public messageConfirm: boolean = false;
+  public toSendMessage: boolean = false;
 
   constructor(
       public dialog: DialogRef<ViewUserModalContext>,
@@ -40,6 +41,7 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   ngOnInit(){
     let userData = this.context.user || {};
     this.user = new UserModel(userData);
+    this.toSendMessage = userData.sendMessage || false;
   }
 
   dismissModal(){
