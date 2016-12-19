@@ -152,7 +152,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
       this.locationService.getLocationStreetView(address)
         .map( (res: any) => JSON.parse(res._body))
-        .do(res => {
+        .subscribe(res => {
           if(res.status == "OK") {
             this.location.image = this.locationService.getLocationStreetViewUrl(address);
           }
@@ -187,7 +187,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   deleteLocationFunc(){
-    this.subscribers.deleteUserSubscription = this.accountService.deleteLocation(this.location).subscribe((res: any) => {
+    this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location).subscribe((res: any) => {
       this.dismissModal();
     });
   }

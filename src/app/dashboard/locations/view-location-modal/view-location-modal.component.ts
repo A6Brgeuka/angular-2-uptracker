@@ -6,6 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { AccountService, ModalWindowService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
+import { LocationService } from "../../../core/services/location.service";
 
 export class ViewLocationModalContext extends BSModalContext {
   public location: any;
@@ -28,6 +29,7 @@ export class ViewLocationModal implements OnInit, CloseGuard, ModalComponent<Vie
   constructor(
       public dialog: DialogRef<ViewLocationModalContext>,
       public accountService: AccountService,
+      public locationService: LocationService,
       public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
@@ -64,7 +66,7 @@ export class ViewLocationModal implements OnInit, CloseGuard, ModalComponent<Vie
   }
 
   deleteLocationFunc(){
-    this.subscribers.deleteUserSubscription = this.accountService.deleteLocation(this.location).subscribe((res: any) => {
+    this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location).subscribe((res: any) => {
       this.dismissModal();
     });
   }
