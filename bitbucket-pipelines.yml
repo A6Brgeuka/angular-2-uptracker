@@ -9,4 +9,8 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
+          - npm --version
+          - npm install -g angular-cli
+          - npm install
+          - ng -v
           - ng build
