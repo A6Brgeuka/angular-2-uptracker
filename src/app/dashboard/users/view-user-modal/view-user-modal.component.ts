@@ -24,6 +24,8 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   private subscribers: any = {};
   context: ViewUserModalContext;
   public user: any;
+  public message: any = {};
+  public messageConfirm: boolean = false;
 
   constructor(
       public dialog: DialogRef<ViewUserModalContext>,
@@ -60,5 +62,14 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
     this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
       this.dismissModal();
     });
+  }
+
+  confirmMessage() {
+    this.messageConfirm = true;
+  }
+
+  sendNewMessage() {
+    this.message = {};
+    this.messageConfirm = false;
   }
 }

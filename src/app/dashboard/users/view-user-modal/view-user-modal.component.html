@@ -1,6 +1,71 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="title center-align">{{user.name}}</div>
-<div class="row uptracker-form">
+<div class="row">
+  <ul class="tabs user-tabs" materialize="tabs">
+    <li class="tab col s6"><a href="#user-view">Info</a></li>
+    <li class="tab col s6"><a href="#user-message">Send Message</a></li>
+  </ul>
+</div>
+<div>
+  <form class="uptracker-form" materialize (ngSubmit)="confirmMessage()" #messageForm="ngForm" autocomplete="off" *ngIf="!messageConfirm" novalidate id="user-message">
+    <div class="row">
+      <div class="col s12">
+        <div class="input row">
+          <div class="col s12 title-input">
+            <div class="label left-align">Title</div>
+            <input
+                    placeholder="Title"
+                    class="validate col s12"
+                    [(ngModel)]="message.title"
+                    name="title"
+                    #title="ngModel"
+                    required minlength="1"
+                    type="text">
+            <div [hidden]="title.valid || title.pristine" class="error red-text left-align">
+              Title is required.
+            </div>
+          </div>
+          <div class="col s12">
+            <div class="label left-align">Message</div>
+            <div class="textarea">
+            <textarea
+                    placeholder="Enter your message"
+                    class="validate materialize-textarea col s12"
+                    [(ngModel)]="message.text"
+                    name="text"
+                    #text="ngModel">
+            </textarea>
+            </div>
+          </div>
+          <div class="col s12 center-align buttons">
+            <button
+                    type="submit"
+                    class="btn white-text waves-effect waves-light"
+                    [class.disabled]="!messageForm.form.valid"
+                    [disabled]="!messageForm.form.valid">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row" *ngIf="messageConfirm">
+    <div class="col s12 buttons center-align">
+      <button
+              type="button"
+              class="confirm-btn btn white-text waves-effect waves-light left"
+              (click)="sendNewMessage()">Send and Start New Message</button>
+      <button
+              type="button"
+              class="confirm-btn btn white-text waves-effect waves-light left"
+              (click)="dismissModal()">Send</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="row uptracker-form" id="user-view">
   <div class="col s12 m6 user-image">
     <div class="img-container">
       <div class="img" *ngIf="user.avatar" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
@@ -22,16 +87,16 @@
     </div>
     <div class="buttons">
       <button
-          type="button"
-          class="uptracker-form-btn btn white-text waves-effect waves-light left"
-          (click)="editUser(user)">
+              type="button"
+              class="uptracker-form-btn btn white-text waves-effect waves-light left"
+              (click)="editUser(user)">
         Edit
       </button>
       <button
-          type="button"
-          class="uptracker-form-btn btn white-text waves-effect waves-light left uptracker-form-delete-btn"
-          *ngIf="user.id!=userService.selfData.id"
-          (click)="deleteUser(user)">
+              type="button"
+              class="uptracker-form-btn btn white-text waves-effect waves-light left uptracker-form-delete-btn"
+              *ngIf="user.id!=userService.selfData.id"
+              (click)="deleteUser(user)">
         Delete
       </button>
       <div class="clearfix"></div>
