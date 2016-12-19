@@ -304,6 +304,11 @@ export class AccountingComponent implements OnInit {
     this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
   }
 
+  changeTaxRate(event) {
+    this.accounting.taxRate = event.target.value;
+
+  }
+
   viewCurrencySign(){
     let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
     return currency ? currency['html_entity'] : '$';
@@ -347,6 +352,7 @@ export class AccountingComponent implements OnInit {
   }
 
   onSubmit(){
+    debugger;
     this.accounting.account_id = this.userService.selfData.account_id;
     for (let i=0; i<this.locationArr.length;i++){
       this.accounting.budget_distribution[i] = {

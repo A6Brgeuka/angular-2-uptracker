@@ -11,7 +11,7 @@ import { AccountService } from "./account.service";
 
 @Injectable()
 @Subscribers({
-  initFunc: 'ngOnInit',
+  initFunc: 'onInit',
   destroyFunc: null,
 })
 export class LocationService extends ModelService {
@@ -35,20 +35,21 @@ export class LocationService extends ModelService {
 
     this.appConfig = injector.get(APP_CONFIG);
 
+    this.onInit();
   }
 
-  ngOnInit() {
-    this.selfData$ = Observable.merge(
-      this.updateSelfData$
-    );
-    this.updateSelfData$.subscribe(res => {
-      debugger;
-      this.selfData = res;
-
-      console.log(`${this.constructor.name} Update SELF DATA`, res);
-
-      this.accountService.updateSelfData(this.selfData);
-    })
+  onInit() {
+    // this.selfData$ = Observable.merge(
+    //   this.updateSelfData$
+    // );
+    // this.updateSelfData$.subscribe(res => {
+    //   debugger;
+    //   this.selfData = res;
+    //
+    //   console.log(`${this.constructor.name} Update SELF DATA`, res);
+    //
+    //   this.accountService.updateSelfData(this.selfData);
+    // })
   }
 
   addSubscribers() {
