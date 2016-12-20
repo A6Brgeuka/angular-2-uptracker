@@ -64,21 +64,21 @@
           <th>
             <div class="input">
               <input
-                  type="text"
-                  class="col s12 name-input"
-                  [(ngModel)]="variation.name"
-                  placeholder="Name"
-                  #name="ngModel" />
+                      type="text"
+                      class="col s12 name-input"
+                      [(ngModel)]="variation.name"
+                      placeholder="Name"
+                      #name="ngModel"/>
             </div>
           </th>
           <th>
             <div class="select">
               <select
-                  [(ngModel)]="variation.pkg"
-                  #pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changePkg($event)"
-                  [materializeSelectOptions]="">
+                      [(ngModel)]="variation.pkg"
+                      #pkg="ngModel"
+                      materialize="material_select"
+                      (change)="changePkg($event)"
+                      [materializeSelectOptions]="">
                 <option value="">Pkg Type</option>
                 <option value="type1">Type 1</option>
                 <option value="type2">Type 2</option>
@@ -88,11 +88,11 @@
           <th>
             <div class="select">
               <select
-                  [(ngModel)]="variation.unit"
-                  #unit="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnit($event)"
-                  [materializeSelectOptions]="">
+                      [(ngModel)]="variation.unit"
+                      #unit="ngModel"
+                      materialize="material_select"
+                      (change)="changeUnit($event)"
+                      [materializeSelectOptions]="">
                 <option value="">Unit Type</option>
                 <option value="type1">Type 1</option>
                 <option value="type2">Type 2</option>
@@ -102,11 +102,11 @@
           <th>
             <div class="select">
               <select
-                  [(ngModel)]="variation.units_pkg"
-                  #units_pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnitsPkg($event)"
-                  [materializeSelectOptions]="">
+                      [(ngModel)]="variation.units_pkg"
+                      #units_pkg="ngModel"
+                      materialize="material_select"
+                      (change)="changeUnitsPkg($event)"
+                      [materializeSelectOptions]="">
                 <option value="">Units/pkg.</option>
                 <option value="100">100</option>
                 <option value="200">200</option>
@@ -116,11 +116,11 @@
           <th>
             <div class="select">
               <select
-                  [(ngModel)]="variation.size"
-                  #size="ngModel"
-                  materialize="material_select"
-                  (change)="changeSize($event)"
-                  [materializeSelectOptions]="">
+                      [(ngModel)]="variation.size"
+                      #size="ngModel"
+                      materialize="material_select"
+                      (change)="changeSize($event)"
+                      [materializeSelectOptions]="">
                 <option value="">Size</option>
                 <option value="size1">Size 1</option>
                 <option value="size2">Size 2</option>
@@ -130,11 +130,11 @@
           <th>
             <div class="select">
               <select
-                  [(ngModel)]="variation.material"
-                  #material="ngModel"
-                  materialize="material_select"
-                  (change)="changeMaterial($event)"
-                  [materializeSelectOptions]="">
+                      [(ngModel)]="variation.material"
+                      #material="ngModel"
+                      materialize="material_select"
+                      (change)="changeMaterial($event)"
+                      [materializeSelectOptions]="">
                 <option value="">Material</option>
                 <option value="material1">Material 1</option>
                 <option value="material2">Material 2</option>
@@ -144,11 +144,11 @@
           <th>
             <div class="input">
               <input
-                  type="text"
-                  class="col s12 price-range-input"
-                  [(ngModel)]="variation.price_range"
-                  placeholder="Price Range"
-                  #price_range="ngModel" />
+                      type="text"
+                      class="col s12 price-range-input"
+                      [(ngModel)]="variation.price_range"
+                      placeholder="Price Range"
+                      #price_range="ngModel"/>
             </div>
           </th>
           <th></th>
@@ -204,15 +204,15 @@
     <div class="inner">
 
       <div class="uptracker-form">
-        <div class="buttons left-align">
-          <button type=submit class="btn white-text waves-effect waves-light">Send</button>
-        </div>
         <div class="input row textarea-row">
-          <div class="col s12">
+          <div class="label">Add Comment</div>
+          <div class="col s10">
             <div class="textarea">
               <textarea id="comments-textarea" class="materialize-textarea"></textarea>
-              <label for="comments-textarea">Comment</label>
             </div>
+          </div>
+          <div class="buttons col s2">
+            <button type=submit class="btn white-text waves-effect waves-light">Send</button>
           </div>
         </div>
       </div>

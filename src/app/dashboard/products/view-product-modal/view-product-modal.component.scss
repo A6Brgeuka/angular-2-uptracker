@@ -146,8 +146,13 @@
 
       .textarea {
         .materialize-textarea {
-          min-height: 150px;
+          height: 2rem;
+          min-height: 40px;
         }
+      }
+
+      .buttons {
+        margin-top: 8px;
       }
     }
 
