@@ -9,6 +9,7 @@ import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { AppConfig, APP_CONFIG } from '../../app.config';
+import { Http } from "@angular/http";
 
 @Injectable()
 @Subscribers({
@@ -33,7 +34,8 @@ export class AccountService extends ModelService{
     fiscal_year: null,
     annual_income: null,
     annual_inventory_budget: null,
-    disabledRange: []
+    disabledRange: [],
+    taxRate: null
   };
   locations$: Observable<any>;
   dashboardLocation$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -44,7 +46,8 @@ export class AccountService extends ModelService{
   constructor(
     public injector: Injector,
     public userService: UserService,
-    public restangular: Restangular
+    public restangular: Restangular,
+    public http: Http
   ) {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
@@ -287,5 +290,12 @@ export class AccountService extends ModelService{
           account.roles = res.data.roles;
           this.updateSelfData(account);
         });
+  }
+
+  getTaxRate(address) {
+    // debugger;
+    // this.http.get(this.appConfig.taxRate.endpoint + "?postal=" + address.postal_code + "&country=us").subscribe(res => {
+    //   debugger;
+    // })
   }
 }

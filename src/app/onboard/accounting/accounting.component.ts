@@ -40,6 +40,8 @@ export class AccountingComponent implements OnInit {
 
   private localAccounting: any = {};
 
+  private address = {};
+
   constructor(
       private router: Router,
       private userService: UserService,
@@ -84,6 +86,9 @@ export class AccountingComponent implements OnInit {
       this.currencyArr = res;
     });
 
+    // TODO:Tax Rate
+    // this.accountService.getTaxRate(this.accountService.selfData.address);
+    // debugger;
 
   }
 
@@ -295,7 +300,7 @@ export class AccountingComponent implements OnInit {
     let currency = _.find(this.currencyArr, {'iso_code': this.accounting.currency});
     this.currencyDirty = true;
     this.currencySign = currency ? currency['html_entity'] : '$';
-    this.accounting.currency = event.target.value
+    this.accounting.currency = event.target.value;
     this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
   }
 
@@ -305,8 +310,8 @@ export class AccountingComponent implements OnInit {
   }
 
   changeTaxRate(event) {
-    this.accounting.taxRate = event.target.value;
-
+    this.accounting.taxRate = this.amount2number(event.target.value);
+    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
   }
 
   viewCurrencySign(){

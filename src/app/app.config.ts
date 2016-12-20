@@ -9,6 +9,7 @@ export let APP_CONFIG = new OpaqueToken('app.config');
 export interface AppConfig {
   apiEndpoint: string;
   streetView: any;
+  taxRate: any;
 }
 
 export const APP_DI_CONFIG: AppConfig = {
@@ -17,6 +18,10 @@ export const APP_DI_CONFIG: AppConfig = {
   streetView: {
     apiKey: 'AIzaSyAkbvjQdD4qOQGppnPEh6nhGn5eaWicU9A',
     endpoint: 'https://maps.googleapis.com/maps/api/streetview'
+  },
+  taxRate: {
+    apiKey: '',
+    endpoint: 'https://taxrates.api.avalara.com:443/address'
   }
 };
 
