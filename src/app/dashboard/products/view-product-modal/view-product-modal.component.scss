@@ -146,8 +146,10 @@
 
       .textarea {
         .materialize-textarea {
-          height: 2rem;
-          min-height: 40px;
+          width: calc(100% - 20px - 2px);
+          min-height: 20px;
+          height: calc(40px - 20px - 2px);
+          box-sizing: content-box;
         }
       }
 
