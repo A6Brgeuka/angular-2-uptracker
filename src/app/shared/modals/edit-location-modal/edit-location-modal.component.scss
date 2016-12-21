@@ -56,6 +56,10 @@ $tealish: #33c6d9;
     .filter {
       min-height: 30px;
 
+      .filter-item {
+        margin-bottom: 10px;
+      }
+
       .input {
         position: relative;
         margin-bottom: 0;
@@ -100,6 +104,11 @@ $tealish: #33c6d9;
       }
     }
   }
+
+  .uptracker-form-btn {
+    width: 100%;
+  }
+
   .location-storage-list {
     border: none;
 

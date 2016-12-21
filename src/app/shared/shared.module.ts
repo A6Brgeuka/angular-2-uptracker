@@ -52,7 +52,7 @@ let modalsArr = [
     TextMaskModule,
     Angular2FontawesomeModule,
     AgmCoreModule.forRoot({
-      apiKey: APP_DI_CONFIG.streetView.apiKey,
+      apiKey: APP_DI_CONFIG.googlePlaces.apiKey,
       libraries: ["places"]
     }),
     GooglePlacesInputModule

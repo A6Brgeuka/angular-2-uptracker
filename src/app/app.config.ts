@@ -10,6 +10,7 @@ export interface AppConfig {
   apiEndpoint: string;
   streetView: any;
   taxRate: any;
+  googlePlaces: any;
 }
 
 export const APP_DI_CONFIG: AppConfig = {
@@ -22,6 +23,9 @@ export const APP_DI_CONFIG: AppConfig = {
   taxRate: {
     apiKey: '0nWPlT+M7Vmj9z1CWGe5Wq5HugwGSaYU06C1wE4S5KMl7iycJ9p2NedJ3D7PmMqNYXUCCnKMRFpG1nacqYRiuQ==',
     endpoint: 'https://taxrates.api.avalara.com:443/address'
+  },
+  googlePlaces: {
+    apiKey: 'AIzaSyAlyHuyNFN1NVXRLWw4To_g7IhwblXLoww',
   }
 };
 
