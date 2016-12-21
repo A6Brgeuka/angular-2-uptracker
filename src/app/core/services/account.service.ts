@@ -294,8 +294,13 @@ export class AccountService extends ModelService{
 
   getTaxRate(address) {
     // debugger;
-    // this.http.get(this.appConfig.taxRate.endpoint + "?postal=" + address.postal_code + "&country=us").subscribe(res => {
+    // let url = this.appConfig.taxRate.endpoint + "?postal=" + address.postal_code + "&country=us" + "&apikey=" + this.appConfig.taxRate.apiKey;
+    // this.restangular
+    //   .oneUrl("taxRate", url).get().subscribe(res=>{
+    //   debugger;
+    // },err => {
     //   debugger;
     // })
+
   }
 }

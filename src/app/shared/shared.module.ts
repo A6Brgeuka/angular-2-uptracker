@@ -31,6 +31,9 @@ import {
 // modals
 import { EditUserModal } from './modals/edit-user-modal/edit-user-modal.component';
 import { EditLocationModal } from './modals/edit-location-modal/edit-location-modal.component';
+import { AgmCoreModule } from "angular2-google-maps/core";
+import { APP_DI_CONFIG } from "../app.config";
+import { GooglePlacesInputModule } from "./directives";
 let modalsArr = [
   EditUserModal,
   EditLocationModal
@@ -47,7 +50,12 @@ let modalsArr = [
     MaterializeModule,
     FileDropModule,
     TextMaskModule,
-    Angular2FontawesomeModule
+    Angular2FontawesomeModule,
+    AgmCoreModule.forRoot({
+      apiKey: APP_DI_CONFIG.streetView.apiKey,
+      libraries: ["places"]
+    }),
+    GooglePlacesInputModule
   ],
   declarations: [
     ...directivesArr,
@@ -58,11 +66,13 @@ let modalsArr = [
     RouterModule,
     FormsModule,
     CommonModule,
+    ReactiveFormsModule,
 
     MaterializeModule,
     FileDropModule,
     TextMaskModule,
     Angular2FontawesomeModule,
+    GooglePlacesInputModule,
     
     ...directivesArr,
     ...pipesArr

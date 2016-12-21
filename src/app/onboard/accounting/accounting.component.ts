@@ -86,9 +86,8 @@ export class AccountingComponent implements OnInit {
       this.currencyArr = res;
     });
 
-    // TODO:Tax Rate
-    // this.accountService.getTaxRate(this.accountService.selfData.address);
-    // debugger;
+    //Tax Rate autocalc throw API
+    this.accountService.getTaxRate(this.accountService.selfData.address);
 
   }
 

@@ -84,7 +84,7 @@
       <div class="ttl">Role</div>
       <div>{{user.role}}</div>
     </div>
-    <div class="locations" *ngIf="userLocations">
+    <div class="locations" *ngIf="userLocations.length">
       <div class="ttl">Locations</div>
       <div *ngFor="let location of userLocations">{{location.name}}</div>
     </div>
