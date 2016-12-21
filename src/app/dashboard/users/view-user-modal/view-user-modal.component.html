@@ -1,13 +1,9 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="title center-align">{{user.name}}</div>
-<div class="row">
+<div class="row" [hidden]="user.id==userService.selfData.id">
   <ul class="tabs user-tabs" materialize="tabs">
-    <li class="tab col s6"
-        [class.s12]="user.id==userService.selfData.id"
-    ><a href="#user-view" [class.active]="!toSendMessage">Info</a></li>
-    <li class="tab col s6"
-        *ngIf="user.id!=userService.selfData.id"
-    ><a href="#user-message" [class.active]="toSendMessage">Send Message</a></li>
+    <li class="tab col s6"><a href="#user-view" [class.active]="!toSendMessage">Info</a></li>
+    <li class="tab col s6"><a href="#user-message" [class.active]="toSendMessage">Send Message</a></li>
   </ul>
 </div>
 <div *ngIf="user.id!=userService.selfData.id">

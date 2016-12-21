@@ -82,6 +82,16 @@ a{
   }
 }
 
+.btn-danger {
+  border-color: red !important;
+  color: red !important;
+
+  &:hover {
+    background-color: red !important;
+    color: #fff !important;
+  }
+}
+
 .select{
   &.dirty{
     .select-wrapper{

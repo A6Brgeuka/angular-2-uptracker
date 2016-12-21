@@ -100,6 +100,32 @@ $tealish: #33c6d9;
       }
     }
   }
+  .location-storage-list {
+    border: none;
+
+    .item {
+      border: none;
+      min-height: 50px;
+
+      .icon {
+        font-size: 24px;
+        color: #767676;
+        text-align: center;
+      }
+
+      .text {
+        font-weight: 500;
+        font: 28px/32px Ubuntu;
+      }
+
+      .label-text {
+        font-size: 16px;
+        font-weight: 400;
+        margin: 0 10px;
+        color: #767676;
+      }
+    }
+  }
 }
 
 

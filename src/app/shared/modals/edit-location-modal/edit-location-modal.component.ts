@@ -37,6 +37,10 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
+  public isStorageLocationFormShow = true;
+  public storageLocation: string;
+  public forStockLocation: boolean;
+
   uploadedImage;
   fileIsOver: boolean = false;
   options = {
@@ -190,5 +194,15 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location).subscribe((res: any) => {
       this.dismissModal();
     });
+  }
+
+  showAddStorageLocationFrom() {
+    this.isStorageLocationFormShow = !this.isStorageLocationFormShow;
+  }
+
+  addStorageLocation(){
+    this.storageLocation;
+    this.forStockLocation;
+    debugger;
   }
 }
