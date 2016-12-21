@@ -3,9 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import * as _ from 'lodash';
 
 import { AccountService, UserService, ModalWindowService } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
+import { Observable } from "rxjs";
 
 export class ViewUserModalContext extends BSModalContext {
   public user: any;
@@ -27,40 +29,49 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
   public message: any = {};
   public messageConfirm: boolean = false;
   public toSendMessage: boolean = false;
+  public userLocations;
 
-  constructor(
-      public dialog: DialogRef<ViewUserModalContext>,
-      public userService: UserService,
-      public accountService: AccountService,
-      public modalWindowService: ModalWindowService
-  ) {
+  constructor(public dialog: DialogRef<ViewUserModalContext>,
+              public userService: UserService,
+              public accountService: AccountService,
+              public modalWindowService: ModalWindowService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     let userData = this.context.user || {};
     this.user = new UserModel(userData);
+    this.userLocations = _.filter(this.accountService.selfData.locations, (location: any) => {
+      let userLocation: any = _.find(this.user.locations, {location_id: location.id});
+      if (userLocation) {
+        return userLocation.checked;
+      }
+      return false;
+    });
+    debugger;
+
+
     this.toSendMessage = userData.sendMessage || false;
   }
 
-  dismissModal(){
+  dismissModal() {
     this.dialog.dismiss();
   }
 
-  closeModal(data){
+  closeModal(data) {
     this.dialog.close(data);
   }
 
-  editUser(user = null){
+  editUser(user = null) {
     this.closeModal(user);
   }
-  
-  deleteUser(user){
+
+  deleteUser(user) {
     this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?', this.deleteUserFunc.bind(this));
   }
 
-  deleteUserFunc(){
+  deleteUserFunc() {
     this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
       this.dismissModal();
     });

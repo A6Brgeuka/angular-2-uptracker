@@ -64,7 +64,6 @@
   </div>
 </div>
 
-
 <div class="row uptracker-form" id="user-view">
   <div class="col s12 m6 user-image">
     <div class="img-container">
@@ -84,6 +83,10 @@
     <div class="role">
       <div class="ttl">Role</div>
       <div>{{user.role}}</div>
+    </div>
+    <div class="locations" *ngIf="userLocations">
+      <div class="ttl">Locations</div>
+      <div *ngFor="let location of userLocations">{{location.name}}</div>
     </div>
     <div class="buttons">
       <button
