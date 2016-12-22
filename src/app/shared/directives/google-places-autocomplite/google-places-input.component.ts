@@ -1,3 +1,4 @@
+import { Observable, Subject } from "rxjs";
 declare let google: any;
 
 import {
@@ -18,38 +19,63 @@ import {
 import * as _ from 'lodash';
 import { MapsAPILoader } from "angular2-google-maps/core";
 import { FormControl } from "@angular/forms";
+import { DestroySubscribers } from "ng2-destroy-subscribers";
 
 
-@Component({
-  selector: 'google-places-input',
-  templateUrl: './google-places-input.component.html',
-  styleUrls: ['./google-places-input.component.scss'],
+@Directive({
+  selector: '[googlePlacesInput]',
 })
+@DestroySubscribers()
 export class GooglePlacesInputComponent implements OnInit {
 
-  public searchControl: FormControl;
+  private autocomplete;
+  private googlePlaceAdrress$;
+  private subscribers: any = {};
 
-  @ViewChild("search")  public searchElementRef: ElementRef;
+  @Output() googleAdress = new EventEmitter();
 
-  constructor(private mapsAPILoader: MapsAPILoader) {
-    debugger;
-  }
-
-  ngOnInit(){
-
-
-    this.searchControl = new FormControl();
-
+  constructor(private mapsAPILoader: MapsAPILoader, private el: ElementRef) {
+    el.nativeElement.autocomplete = "off";
+    el.nativeElement.autocapitalize = "off";
+    el.nativeElement.spellcheck = "off";
 
   }
 
-  ngAfterContentInit() {
-    this.mapsAPILoader.load().then(() => {
-      new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+  ngOnInit() {
+
+    // Observable.fromEvent(this.el.nativeElement, "keydown")
+    //   .filter(event => event.keyCode == 13)
+    //   .subscribe(event => event.stopPropagation());
+
+    this.googlePlaceAdrress$ = Observable.fromPromise(this.mapsAPILoader.load()).switchMap(() => {
+      this.autocomplete = new google.maps.places.Autocomplete(this.el.nativeElement, {
         types: ["address"]
       });
+      return Observable.fromEventPattern(
+        (h)=> {
+          this.autocomplete.addListener("place_changed", h)
+        },
+        (h)=> {
+          this.autocomplete.unbindAll()
+        }
+      )
+        .switchMap(res => {
+          return Observable.of(this.autocomplete.getPlace());
+        });
     });
+
   }
 
+  addSubscribers() {
+    this.subscribers.googlePlaceAdrress = this.googlePlaceAdrress$.subscribe(res => {
+      this.googleAdress.emit(res);
+    });
+    this.subscribers.stopPropogotationFromEnter =  Observable.fromEvent(this.el.nativeElement, "keydown")
+      .filter((event: any) => event.keyCode == 13)
+      .subscribe((event: any) => {
+        event.preventDefault();
+        event.stopPropagation();
+      });
 
+  }
 }

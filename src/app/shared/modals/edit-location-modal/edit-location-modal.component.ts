@@ -5,7 +5,14 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { AccountService, ToasterService, UserService, PhoneMaskService, FileUploadService, ModalWindowService } from '../../../core/services/index';
+import {
+  AccountService,
+  ToasterService,
+  UserService,
+  PhoneMaskService,
+  FileUploadService,
+  ModalWindowService
+} from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
 
@@ -47,32 +54,31 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     readAs: 'DataURL'
   };
 
-  constructor(
-      public zone: NgZone,
-      public dialog: DialogRef<EditLocationModalContext>,
-      private toasterService: ToasterService,
-      private userService: UserService,
-      private accountService: AccountService,
-      private phoneMaskService: PhoneMaskService,
-      private fileUploadService: FileUploadService,
-      private modalWindowService: ModalWindowService,
-      private locationService: LocationService
-  ) {
+  constructor(public zone: NgZone,
+              public dialog: DialogRef<EditLocationModalContext>,
+              private toasterService: ToasterService,
+              private userService: UserService,
+              private accountService: AccountService,
+              private phoneMaskService: PhoneMaskService,
+              private fileUploadService: FileUploadService,
+              private modalWindowService: ModalWindowService,
+              private locationService: LocationService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     this.location = new LocationModel();
   }
 
-  ngOnInit(){
+  ngOnInit() {
     let locationData = this.context.location || {};
     this.location = new LocationModel(locationData);
-    if (this.context.location){
+    if (this.context.location) {
       this.location.street_1 = this.location.address.street_1;
       this.location.street_2 = this.location.address.street_2;
       this.location.city = this.location.address.city;
       this.location.zip_code = this.location.address.postal_code;
       this.location.state = this.location.address.state;
       this.uploadedImage = this.location.image;
+      this.location.addressGoogle = this.location.address.addressGoogle;
 
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
@@ -80,24 +86,26 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.locationFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
     }
-    
-    this.states$ = this.accountService.getStates().take(1);
+
+    // this.states$ = this.accountService.getStates().take(1);
     this.locationTypes$ = this.accountService.getLocationTypes().take(1);
+
+    debugger;
   }
 
-  dismissModal(){
+  dismissModal() {
     this.dialog.dismiss();
   }
 
-  closeModal(data){
+  closeModal(data) {
     this.dialog.close(data);
   }
 
-  changeState(){
+  changeState() {
     this.stateDirty = true;
   }
 
-  changeType(){
+  changeType() {
     this.typeDirty = true;
   }
 
@@ -143,21 +151,21 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     img.src = imgBase64;
   }
 
-  onSubmit(){
+  onSubmit() {
     this.location.account_id = this.userService.selfData.account_id;
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
-    this.location.fax = this.locationFormFax ?  this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
+    this.location.fax = this.locationFormFax ? this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
     let address = {
       location: this.location.state + ' ' + this.location.city + ' ' + this.location.street_1 + ' ' + this.location.street_2
     };
     this.location.image = this.uploadedImage;
-    if (!this.location.image){
+    if (!this.location.image) {
       // TODO: move logic to location service;
 
-      this.locationService.getLocationStreetView(address)
-        .map( (res: any) => JSON.parse(res._body))
+      this.locationService.getLocationStreetView(this.location.address)
+        .map((res: any) => JSON.parse(res._body))
         .subscribe(res => {
-          if(res.status == "OK") {
+          if (res.status == "OK") {
             this.location.image = this.locationService.getLocationStreetViewUrl(address);
           }
           else {
@@ -171,26 +179,26 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     }
   }
 
-  checkGoogleStreetImage(){
-    if (this.accountService.googleStreetEmptyImage == this.location.image)
-      console.log('+');
-    else console.log('-');
-    debugger;
-  }
+  // checkGoogleStreetImage() {
+  //   if (this.accountService.googleStreetEmptyImage == this.location.image)
+  //     console.log('+');
+  //   else console.log('-');
+  //   debugger;
+  // }
 
-  addLocation(data){
+  addLocation(data) {
     this.accountService.addLocation(data).subscribe(
-        (res: any) => {
-          this.dismissModal();
-        }
+      (res: any) => {
+        this.dismissModal();
+      }
     );
   }
 
-  deleteLocation(data){
+  deleteLocation(data) {
     this.modalWindowService.confirmModal('Delete Location?', 'Are you sure you want to delete the location?', this.deleteLocationFunc.bind(this));
   }
 
-  deleteLocationFunc(){
+  deleteLocationFunc() {
     this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location).subscribe((res: any) => {
       this.dismissModal();
     });
@@ -200,9 +208,44 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.isStorageLocationFormShow = !this.isStorageLocationFormShow;
   }
 
-  addStorageLocation(){
+  addStorageLocation() {
     this.storageLocation;
     this.forStockLocation;
-    debugger;
+  }
+
+  addGoogleAddress(event) {
+    event.address_components.forEach((item) => {
+      switch (item.types[0]) {
+        // case 'country':
+        //   this.location.country = item.long_name;
+        //   break;
+        case 'administrative_area_level_1':
+          this.location.state = item.short_name;
+          break;
+        case 'locality':
+          this.location.city = item.long_name;
+          break;
+        case 'route':
+          this.location.street_1 = item.long_name;
+          break;
+        case 'street_number':
+          this.location.street_2 = item.long_name;
+          break;
+      }
+    });
+
+
+
+    // if address has postal code
+    if (event.address_components[event.address_components.length - 1].types.indexOf("postal_code") >= 0) {
+      this.zone.run(() => {
+        this.location.zip_code = event.address_components[event.address_components.length - 1].long_name;
+      });
+    }
+    else {
+      this.zone.run(() => {
+        this.location.zip_code = null;
+      });
+    }
   }
 }
