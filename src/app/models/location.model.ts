@@ -18,6 +18,8 @@ export class LocationModel {
   postal_code: string = null;
 
   address: any = {};
+
+  addressGoogle: any = null;
   
   constructor(obj?:any) {
     for (let field in obj) {

@@ -10,22 +10,23 @@
   <div class="uptracker-form row">
     <div class="top filter">
       <div class="row">
-        <div class="col l4 m4 s12 filter-item">
+        <div class="col s4">
           <div class="input">
             <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey"/>
           </div>
         </div>
-        <div class="col l2 offset-l3 m4 s12 filter-item">
+        <div class="col s2 offset-s3">
           <div class="select input">
             <select [(ngModel)]="sortBy" materialize="material_select">
-              <option value="">All Stock</option>
-              <option value="name">Back Stock</option>
-              <option value="location_type">Floor Stock</option>
+              <option value="">All</option>
+              <option value="name">All</option>
+              <option value="location_type">All</option>
             </select>
           </div>
         </div>
-        <div class="col l3 m4 s12 filter-item">
-          <button type="button" (click)="showAddStorageLocationFrom()" class="uptracker-form-btn waves-light waves-effect">Add
+        <div class="col s3">
+          <button type="button" (click)="showAddStorageLocationFrom()"
+                  class="uptracker-form-btn waves-light waves-effect">Add
             Storage Location
           </button>
         </div>
@@ -33,18 +34,18 @@
     </div>
 
     <div class="add-storage-form" [hidden]="isStorageLocationFormShow">
-      <div class="row top" >
-        <div class="col m8 s12">
+      <div class="row top">
+        <div class="col s8">
           <div class="input">
             <input type="text" placeholder="Enter Storage Location Here" [(ngModel)]="storageLocation"/>
           </div>
         </div>
-        <div class="col m2 s6">
+        <div class="col s2">
           <button type="button" (click)="addStorageLocation()"
                   class="not-submit uptracker-form-btn waves-light waves-effect">Add
           </button>
         </div>
-        <div class="col m2 s6">
+        <div class="col s2">
           <button type="button" (click)="showAddStorageLocationFrom()"
                   class="not-submit uptracker-form-btn waves-light waves-effect">Cancel
           </button>
@@ -63,22 +64,22 @@
   <div class="location-storage-list collection row">
     <div class="item row">
       <div class="col s1 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
-      <div class="col s11 m9 text">Working Stock<span class="label-text">Floor Stock</span></div>
-      <div class="col s4  m2">
+      <div class="col s9 text">Working Stock<span class="label-text">Floor Stock</span></div>
+      <div class="col s2">
         <button type="button" (click)="editLocationModal()"
                 class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
         </button>
       </div>
     </div>
     <div class="item row">
-    <div class="col s1 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
-    <div class="col s11 m9 text">Back Stock<span class="label-text"></span></div>
-    <div class="col s4 m2">
-      <button type="button" (click)="editLocationModal()"
-              class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
-      </button>
+      <div class="col s1 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
+      <div class="col s9 text">Back Stock</div>
+      <div class="col s2">
+        <button type="button" (click)="editLocationModal()"
+                class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
+        </button>
+      </div>
     </div>
-  </div>
   </div>
 </div>
 <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #locationForm="ngForm" autocomplete="off"
@@ -119,63 +120,22 @@
   </div>
 
   <div class="input row">
-    <div class="label left-align col s12">Street Address</div>
     <div class="col s12 m8">
+      <div class="label left-align">Address</div>
       <input
-              id="street_1"
+              id="google_adrress"
               placeholder="123 Main St."
               class="validate col s12"
-              [(ngModel)]="location.street_1"
-              name="street_1"
-              #street_1="ngModel"
+              [(ngModel)]="location.addressGoogle"
+              name="google_adrress"
+              #google_adrress="ngModel"
               required
-              type="text">
-      <div [hidden]="street_1.valid || street_1.pristine" class="error red-text left-align">
-        Street Address is required.
-      </div>
-    </div>
-    <div class="col s12 m4">
-      <input
-              id="street_2"
-              placeholder="Unit #"
-              class="validate col s12"
-              [(ngModel)]="location.street_2"
-              name="street_2"
-              #street_2="ngModel"
-              type="text">
-    </div>
-  </div>
-
-  <div class="input row">
-    <div class="col s12 m4">
-      <div class="label left-align">City</div>
-      <input
-              id="city"
-              placeholder="Enter city here"
-              class="validate col s12"
-              [(ngModel)]="location.city"
-              name="city"
-              #city="ngModel"
-              required
-              type="text">
-      <div [hidden]="city.valid || city.pristine" class="error red-text left-align">
-        City is required.
-      </div>
-    </div>
-    <div class="col s12 m4">
-      <div class="label left-align">State</div>
-      <div class="select" [class.dirty]="stateDirty">
-        <select
-                [(ngModel)]="location.state"
-                name="state"
-                #state="ngModel"
-                materialize="material_select"
-                required
-                (change)="changeState()"
-                [materializeSelectOptions]="states$ | async">
-          <option value="">Please select one</option>
-          <option *ngFor="let state of states$ | async | iterable" [value]="state.key">{{state.value}}</option>
-        </select>
+              type="text"
+              (googleAdress)="addGoogleAddress($event)"
+              googlePlacesInput
+      >
+      <div [hidden]="google_adrress.valid || google_adrress.pristine" class="error red-text left-align">
+        Google Address is required.
       </div>
     </div>
     <div class="col s12 m4">
@@ -193,6 +153,33 @@
         Zip code is required.
       </div>
     </div>
+  </div>
+
+
+  <div class="hidden">
+    <input
+            id="city"
+            placeholder="Enter city here"
+            class="validate col s12"
+            [(ngModel)]="location.city"
+            name="city"
+            #city="ngModel"
+            required
+            type="hidden">
+
+    <input
+            id="street_2"
+            class="validate col s12"
+            [(ngModel)]="location.street_2"
+            name="street_2"
+            #street_2="ngModel"
+            type="hidden">
+    <input
+            [(ngModel)]="location.state"
+            name="state"
+            #state="ngModel"
+            required
+            type="hidden">
   </div>
 
   <div class="input row">

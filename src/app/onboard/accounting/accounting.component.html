@@ -93,13 +93,12 @@
           <div class="col s12 m6">
             <div class="label">Tax Rate</div>
             <div class="prefix-input">
-              <div class="prefix" [innerHTML]="viewCurrencySign()"></div>
+              <div class="prefix">%</div>
               <input
                       id="tax-rate"
                       class="validate col s12"
                       placeholder="Enter Tax Rate here"
                       [(ngModel)]="accounting.taxRate"
-                      [textMask]="{mask: amountMask, guide: false}"
                       (change)="changeTaxRate($event)"
                       (blur)="changeTaxRate($event)"
                       name="tax-rate"

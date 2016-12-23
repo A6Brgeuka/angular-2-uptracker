@@ -92,6 +92,14 @@ a{
   }
 }
 
+.pac-container {
+  z-index: 1501;
+}
+
+.hidden {
+  display: none;
+}
+
 .select{
   &.dirty{
     .select-wrapper{
