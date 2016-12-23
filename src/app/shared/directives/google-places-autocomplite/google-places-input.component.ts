@@ -60,7 +60,7 @@ export class GooglePlacesInputComponent implements OnInit {
         }
       )
         .switchMap(res => {
-          return Observable.of(this.autocomplete.getPlace());
+          return Observable.of(Object.assign(this.autocomplete.getPlace(),{ inputValue: this.el.nativeElement.value }));
         });
     });
 

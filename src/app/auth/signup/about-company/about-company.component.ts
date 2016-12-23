@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AccountService, UserService, SpinnerService } from '../../../core/services/index';
@@ -15,7 +15,8 @@ export class AboutCompanyComponent implements OnInit {
       private accountService: AccountService,
       private userService: UserService,
       private spinnerService: SpinnerService,
-      private router: Router
+      private router: Router,
+      public zone: NgZone,
   ) {
     let signupStep = this.userService.currentSignupStep();
     if (signupStep == 1) {
@@ -36,6 +37,7 @@ export class AboutCompanyComponent implements OnInit {
         street_2: this.userService.selfData.account.address.street_2,
         city: this.userService.selfData.account.address.city,
         zip: this.userService.selfData.account.address.postal_code,
+        formattedAddress: this.userService.selfData.account.address.formattedAddress,
         marys_list_member: this.userService.selfData.account.marys_list_member
       };
     }
@@ -48,6 +50,40 @@ export class AboutCompanyComponent implements OnInit {
           this.userService.updateSelfData(user);
           this.router.navigate(['/signup/payment-info']);
         });
+  }
+
+  addGoogleAddress(event) {
+    if(event.address_components) {
+      event.address_components.forEach((item) => {
+        switch (item.types[0]) {
+          // case 'country':
+          //   this.location.country = item.long_name;
+          //   break;
+          case 'administrative_area_level_1':
+            this.signupAccount.state = item.short_name;
+            break;
+          case 'locality':
+            this.signupAccount.city = item.long_name;
+            break;
+          case 'route':
+            this.signupAccount.street_1 = item.long_name;
+            break;
+          case 'street_number':
+            this.signupAccount.street_2 = item.long_name;
+            break;
+          case 'postal_code':
+            this.zone.run(() => {
+              this.signupAccount.zip = item.long_name;
+            });
+            break;
+        }
+      });
+    }
+
+
+    this.signupAccount.formattedAddress = event.inputValue;
+
+
   }
 
 }

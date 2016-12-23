@@ -7,6 +7,7 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 import { UserService, AccountService, ToasterService, SessionService } from '../../core/services/index';
 import {forEach} from "@angular/router/src/utils/collection";
+import { toast } from "angular2-materialize";
 
 @Component({
   selector: 'app-accounting',
@@ -87,7 +88,17 @@ export class AccountingComponent implements OnInit {
     });
 
     //Tax Rate autocalc throw API
-    this.accountService.getTaxRate(this.accountService.selfData.address);
+    this.subscribers.taxRateSubscription = this.accountService.getTaxRate(this.accountService.selfData.address).subscribe( (res:any) => {
+      debugger;
+      try {
+        this.accounting.taxRate = JSON.parse(res._body).totalRate;
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }, err => {
+      this.toasterService.pop("error", err);
+    });
 
   }
 
@@ -309,7 +320,7 @@ export class AccountingComponent implements OnInit {
   }
 
   changeTaxRate(event) {
-    this.accounting.taxRate = this.amount2number(event.target.value);
+    this.accounting.taxRate = event.target.value;
     this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
   }
 

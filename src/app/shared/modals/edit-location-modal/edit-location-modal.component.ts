@@ -89,8 +89,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
     // this.states$ = this.accountService.getStates().take(1);
     this.locationTypes$ = this.accountService.getLocationTypes().take(1);
-
-    debugger;
   }
 
   dismissModal() {
@@ -155,14 +153,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
     this.location.fax = this.locationFormFax ? this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
-    let address = {
-      location: this.location.state + ' ' + this.location.city + ' ' + this.location.street_1 + ' ' + this.location.street_2
-    };
+    let address = {location: this.location.addressGoogle};
     this.location.image = this.uploadedImage;
     if (!this.location.image) {
       // TODO: move logic to location service;
 
-      this.locationService.getLocationStreetView(this.location.address)
+      this.locationService.getLocationStreetView(address)
         .map((res: any) => JSON.parse(res._body))
         .subscribe(res => {
           if (res.status == "OK") {
@@ -214,38 +210,44 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   addGoogleAddress(event) {
-    event.address_components.forEach((item) => {
-      switch (item.types[0]) {
-        // case 'country':
-        //   this.location.country = item.long_name;
-        //   break;
-        case 'administrative_area_level_1':
-          this.location.state = item.short_name;
-          break;
-        case 'locality':
-          this.location.city = item.long_name;
-          break;
-        case 'route':
-          this.location.street_1 = item.long_name;
-          break;
-        case 'street_number':
-          this.location.street_2 = item.long_name;
-          break;
+    let postalFlag = false;
+    if(event.address_components) {
+      event.address_components.forEach((item) => {
+        switch (item.types[0]) {
+          // case 'country':
+          //   this.location.country = item.long_name;
+          //   break;
+          case 'administrative_area_level_1':
+            this.location.state = item.short_name;
+            break;
+          case 'locality':
+            this.location.city = item.long_name;
+            break;
+          case 'route':
+            this.location.street_1 = item.long_name;
+            break;
+          case 'street_number':
+            this.location.street_2 = item.long_name;
+            break;
+          case 'postal_code':
+            postalFlag = true;
+            this.zone.run(() => {
+              this.location.zip_code = item.long_name;
+            });
+            break;
+        }
+      });
+      //if in address no postal code change postal code to null
+      if(!postalFlag) {
+        this.zone.run(() => {
+          this.location.zip_code = null;
+        });
       }
-    });
-
-
-
-    // if address has postal code
-    if (event.address_components[event.address_components.length - 1].types.indexOf("postal_code") >= 0) {
-      this.zone.run(() => {
-        this.location.zip_code = event.address_components[event.address_components.length - 1].long_name;
-      });
     }
-    else {
-      this.zone.run(() => {
-        this.location.zip_code = null;
-      });
-    }
+
+
+    this.location.addressGoogle = event.inputValue;
+
+
   }
 }

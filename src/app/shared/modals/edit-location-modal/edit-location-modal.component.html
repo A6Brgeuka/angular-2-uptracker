@@ -120,23 +120,22 @@
   </div>
 
   <div class="input row">
-    <!--<div class="label left-align col s12">Street Address</div>-->
     <div class="col s12 m8">
-      <div class="label left-align">Street Address</div>
+      <div class="label left-align">Address</div>
       <input
-              id="street_1"
+              id="google_adrress"
               placeholder="123 Main St."
               class="validate col s12"
               [(ngModel)]="location.addressGoogle"
-              name="street_1"
-              #street_1="ngModel"
+              name="google_adrress"
+              #google_adrress="ngModel"
               required
               type="text"
               (googleAdress)="addGoogleAddress($event)"
               googlePlacesInput
       >
-      <div [hidden]="street_1.valid || street_1.pristine" class="error red-text left-align">
-        Street Address is required.
+      <div [hidden]="google_adrress.valid || google_adrress.pristine" class="error red-text left-align">
+        Google Address is required.
       </div>
     </div>
     <div class="col s12 m4">
@@ -157,34 +156,30 @@
   </div>
 
 
-  <div class="input row" [hidden]="locationForm.form.valid">
-    <div class="col s12">
-      <input
-              id="city"
-              placeholder="Enter city here"
-              class="validate col s12"
-              [(ngModel)]="location.city"
-              name="city"
-              #city="ngModel"
-              required
-              type="hidden">
-      <div [hidden]="city.valid || city.pristine" class="error red-text left-align">
-        City is required.
-      </div>
-      <input
-              id="street_2"
-              class="validate col s12"
-              [(ngModel)]="location.street_2"
-              name="street_2"
-              #street_2="ngModel"
-              type="hidden">
-        <input
-              [(ngModel)]="location.state"
-              name="state"
-              #state="ngModel"
-              required
-              type="hidden">
-    </div>
+  <div class="hidden">
+    <input
+            id="city"
+            placeholder="Enter city here"
+            class="validate col s12"
+            [(ngModel)]="location.city"
+            name="city"
+            #city="ngModel"
+            required
+            type="hidden">
+
+    <input
+            id="street_2"
+            class="validate col s12"
+            [(ngModel)]="location.street_2"
+            name="street_2"
+            #street_2="ngModel"
+            type="hidden">
+    <input
+            [(ngModel)]="location.state"
+            name="state"
+            #state="ngModel"
+            required
+            type="hidden">
   </div>
 
   <div class="input row">
