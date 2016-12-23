@@ -30,6 +30,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public variation: any = {
     pkg: ''
   };
+  public comment: any = {};
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -48,8 +49,11 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
     this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
-    this.subscribers.getProductCommentsSubscription = this.productService.getProductComments(this.context.product.id).subscribe(res => {
-      this.product.comments = res.data;
+    this.product.comments = [];
+    this.subscribers.getProductCommentsSubscription = this.productService.getProductComments(this.context.product.id)
+      .filter(res=>res.data)
+      .subscribe(res => {
+        this.product.comments = res.data.comments || [];
     });
   }
 
@@ -80,6 +84,21 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   changeUnitsPkg(event){
     this.variation.unit_pkg = event.target.value;
+  }
+
+  sendComment() {
+    this.comment;
+    Object.assign(this.comment,
+      {
+        "user_id": this.userService.selfData.id,
+        "object_type": "products",
+        "object_id": this.product.id
+      }
+      );
+    this.productService.addProductComment(this.comment).subscribe(res => {
+      this.comment.body = null;
+      this.product.comments.push(res.data)
+    });
   }
 
   // editVendor(vendor = null){

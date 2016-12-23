@@ -208,11 +208,11 @@
           <div class="label col s12">Add Comment</div>
           <div class="col s10">
             <div class="textarea">
-              <textarea id="comments-textarea" class="materialize-textarea"></textarea>
+              <textarea id="comments-textarea" class="materialize-textarea" [(ngModel)]="comment.body"></textarea>
             </div>
           </div>
           <div class="buttons col s2">
-            <button type=submit class="btn white-text waves-effect waves-light">Send</button>
+            <button (click)="sendComment()" class="btn white-text waves-effect waves-light">Send</button>
           </div>
         </div>
       </div>
@@ -221,35 +221,11 @@
         <ul class="collection">
           <li class="collection-item avatar" *ngFor="let comment of product.comments">
             <img src="../../../../assets/img/icon-nav-users.svg" class="circle">
-            <span class="title">Alvin</span>
+            <span class="title">{{comment.author_name}}</span>
             <p>
-              Comment #1
+              {{comment.body}}
             </p>
-            <span class="secondary-content">12.12.2016</span>
-          </li>
-          <li class="collection-item avatar">
-            <img src="../../../../assets/img/icon-nav-users.svg" class="circle">
-            <span class="title">Alvin</span>
-            <p>
-              Comment #2
-            </p>
-            <span class="secondary-content">12.12.2016</span>
-          </li>
-          <li class="collection-item avatar">
-            <img src="../../../../assets/img/icon-nav-users.svg" class="circle">
-            <span class="title">Alvin</span>
-            <p>
-              Comment #3
-            </p>
-            <span class="secondary-content">12.12.2016</span>
-          </li>
-          <li class="collection-item avatar">
-            <img src="../../../../assets/img/icon-nav-users.svg" class="circle">
-            <span class="title">Alvin</span>
-            <p>
-              Comment #4
-            </p>
-            <span class="secondary-content">12.12.2016</span>
+            <span class="secondary-content">{{comment.created_at | date}}</span>
           </li>
         </ul>
       </div>

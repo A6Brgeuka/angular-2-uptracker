@@ -124,6 +124,10 @@ export class ProductService extends ModelService {
     return this.restangular.one('products', id).all('comments').customGET()
   }
 
+  addProductComment(comment) {
+    return this.restangular.all('comments').post(comment)
+  }
+
   // getAccountVendors(){
   //   let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
   //   if (!vendorsLoaded) {
