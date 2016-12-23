@@ -49,7 +49,6 @@ export class ViewUserModal implements OnInit, CloseGuard, ModalComponent<ViewUse
       }
       return false;
     });
-    debugger;
 
 
     this.toSendMessage = userData.sendMessage || false;

@@ -89,7 +89,6 @@ export class AccountingComponent implements OnInit {
 
     //Tax Rate autocalc throw API
     this.subscribers.taxRateSubscription = this.accountService.getTaxRate(this.accountService.selfData.address).subscribe( (res:any) => {
-      debugger;
       try {
         this.accounting.taxRate = JSON.parse(res._body).totalRate;
       }
@@ -367,7 +366,6 @@ export class AccountingComponent implements OnInit {
   }
 
   onSubmit(){
-    debugger;
     this.accounting.account_id = this.userService.selfData.account_id;
     for (let i=0; i<this.locationArr.length;i++){
       this.accounting.budget_distribution[i] = {
