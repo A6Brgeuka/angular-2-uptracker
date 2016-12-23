@@ -78,7 +78,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.location.zip_code = this.location.address.postal_code;
       this.location.state = this.location.address.state;
       this.uploadedImage = this.location.image;
-      this.location.addressGoogle = this.location.address.addressGoogle;
+      this.location.formattedAddress = this.location.address.formattedAddress;
 
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
@@ -153,7 +153,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
     this.location.fax = this.locationFormFax ? this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
-    let address = {location: this.location.addressGoogle};
+    let address = {location: this.location.formattedAddress};
     this.location.image = this.uploadedImage;
     if (!this.location.image) {
       // TODO: move logic to location service;
@@ -246,7 +246,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     }
 
 
-    this.location.addressGoogle = event.inputValue;
+    this.location.formattedAddress = event.inputValue;
 
 
   }

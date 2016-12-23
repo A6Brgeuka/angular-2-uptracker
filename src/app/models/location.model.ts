@@ -19,7 +19,7 @@ export class LocationModel {
 
   address: any = {};
 
-  addressGoogle: any = null;
+  formattedAddress: any = null;
   
   constructor(obj?:any) {
     for (let field in obj) {
