@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 
 import { ProductModel } from '../../../models/index';
 import { UserService, AccountService } from '../../../core/services/index';
+import { ProductService } from "../../../core/services/product.service";
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -35,7 +36,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   constructor(
       public dialog: DialogRef<ViewProductModalContext>,
       public userService: UserService,
-      public accountService: AccountService
+      public accountService: AccountService,
+      public productService: ProductService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -46,6 +48,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
     this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
+    this.subscribers.getProductCommentsSubscription = this.productService.getProductComments(this.context.product.id).subscribe(res => {
+      this.product.comments = res.data;
+    });
   }
 
   ngAfterViewInit(){
