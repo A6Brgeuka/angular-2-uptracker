@@ -220,7 +220,7 @@
       <div class="comments">
         <ul class="collection">
           <li class="collection-item avatar" *ngFor="let comment of product.comments">
-            <img [src]="comment.author_avatar || '../../../../assets/img/icon-nav-users.svg'" class="circle">
+            <img [src]="comment.author_avatar || ''" class="responsive-img author-avatar">
             <span class="title">{{comment.author_name}}</span>
             <p>
               {{comment.body}}
