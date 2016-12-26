@@ -88,7 +88,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     }
 
     // this.states$ = this.accountService.getStates().take(1);
-    this.locationTypes$ = this.accountService.getLocationTypes().take(1);
+    this.locationTypes$ = this.locationService.getLocationTypes().take(1);
   }
 
   dismissModal() {
@@ -183,7 +183,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   // }
 
   addLocation(data) {
-    this.accountService.addLocation(data).subscribe(
+    this.locationService.addLocation(data).subscribe(
       (res: any) => {
         this.dismissModal();
       }

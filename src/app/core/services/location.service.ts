@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { Http } from "@angular/http";
 import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
+import { isUndefined } from "util";
 
 @Injectable()
 @Subscribers({
@@ -20,8 +21,11 @@ export class LocationService extends ModelService {
   public selfData: any;
   public updateSelfData$ = new BehaviorSubject(null);
 
-  public subscribers: any;
+  public subscribers: any = {};
 
+  locationTypeCollection$ = Observable.empty();
+  col$ = new Observable();
+  locationAccountId: string = null;
 
   constructor(
 
@@ -36,33 +40,87 @@ export class LocationService extends ModelService {
     this.appConfig = injector.get(APP_CONFIG);
 
     this.onInit();
+
   }
 
   onInit() {
-    // this.selfData$ = Observable.merge(
-    //   this.updateSelfData$
-    // );
-    // this.updateSelfData$.subscribe(res => {
-    //   debugger;
-    //   this.selfData = res;
-    //
-    //   console.log(`${this.constructor.name} Update SELF DATA`, res);
-    //
-    //   this.accountService.updateSelfData(this.selfData);
-    // })
+
+
+    // Get Locations first time when service inits
+    this.collection$ = this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
+      .map((res: any) => {
+        res.data.account_id = '583c4ec33a2b00000630d61e';
+        // set local variable with id account of this locations, need for making request when user logout-login
+        this.locationAccountId = res.data.account_id;
+        return res.data.locations;
+      })
+      .do((res: any) => {
+        this.updateCollection(res);
+      });
+
+
   }
 
   addSubscribers() {
-    // this.subscribers.selfData$ = this.selfData$.subscribe(res => {
-    //   debugger;
-    //   this.selfData = res;
-    //
-    //   console.log(`${this.constructor.name} Update SELF DATA`, res);
-    //
-    //   this.accountService.updateSelfData(this.selfData);
-    // })
+    this.subscribers.collection = this.collection$.subscribe(res => {
+      this.accountService.updateSelfDataField("locations", res);
+    })
   }
 
+  getLocations(){
+
+    return this.collection$.switchMap((res: any) => {
+      // checking if in collection$ - locations of user that logined, if not make request and set new id account
+      if (this.locationAccountId == this.userService.selfData.account_id){
+        return this.collection$;
+      } else {
+        return this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
+          .map((res: any) => {
+            this.updateCollection(res.data.locations);
+            this.locationAccountId = res.data.account_id;
+            return res.data.locations;
+          });
+      }
+    });
+  }
+
+
+  addLocation(data: any){
+    return this.restangular.one('accounts', data.account_id).all('locations').post(data)
+      .do((res: any) => {
+        this.updateCollection(res.data.account.locations);
+      });
+  }
+
+  deleteLocation(data: any){
+    return this.restangular.one('accounts', this.userService.selfData.account_id).one('locations', data.id).remove()
+      .do((res: any) => {
+        let account = this.accountService.selfData;
+
+        account.users = _.map(account.users, (user: any) => {
+          _.remove(user.locations, (location: any) => location.location_id == data.id);
+          return user;
+        });
+
+        _.remove(account.locations, (location: any) => {
+          return location.id == data.id;
+        });
+        this.accountService.updateSelfDataField('users',account.users);
+        this.updateCollection(account.locations);
+      });
+  }
+
+  getLocationTypes(){
+    return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.locationTypeCollection$ = this.restangular.all('config').all('location_types').customGET('')
+          .map((res: any) => {
+            return res.data;
+          });
+      }
+      return this.locationTypeCollection$;
+    });
+  }
 
   getLocationStreetView(params) {
     return this.http.get(this.getLocationStreetViewUrl(params, true))
@@ -80,21 +138,8 @@ export class LocationService extends ModelService {
     return imageUrl.replace(/\s/g,'%20').replace(/#/g, '');
   }
 
-  deleteLocation(data: any){
-    return this.restangular.one('accounts', this.userService.selfData.account_id).one('locations', data.id).remove()
-      .do((res: any) => {
-        let account = this.accountService.selfData;
-
-        account.users = _.map(account.users, (user: any) => {
-          _.remove(user.locations, (location: any) => location.location_id == data.id);
-          return user;
-        });
-
-        _.remove(account.locations, (location: any) => {
-          return location.id == data.id;
-        });
-        this.accountService.updateSelfData(account);
-      });
+  updateCollection(data) {
+    this.updateCollection$.next(data);
   }
 
   updateSelfData(data) {

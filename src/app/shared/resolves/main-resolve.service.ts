@@ -2,6 +2,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Injectable } from '@angular/core';
 
 import { AccountService, VendorService, ProductService } from '../../core/services/index';
+import { LocationService } from "../../core/services/location.service";
 
 @Injectable()
 export class StateCollectionResolve implements Resolve<any> {
@@ -18,12 +19,12 @@ export class StateCollectionResolve implements Resolve<any> {
 @Injectable()
 export class LocationTypesCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      private locationService: LocationService
   ) {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getLocationTypes().take(1);
+    return this.locationService.getLocationTypes().take(1);
   }
 }
 

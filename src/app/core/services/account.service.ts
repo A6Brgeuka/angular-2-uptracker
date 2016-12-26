@@ -86,6 +86,12 @@ export class AccountService extends ModelService{
     this.updateSelfData$.next(data);
   }
 
+  updateSelfDataField(field, data){
+    let account = this.selfData;
+    account[field] = data;
+    this.updateSelfData(account);
+  }
+
   createCompany(data){
     return this.restangular.all('register').all('company').post(data)
         .do(
@@ -97,85 +103,87 @@ export class AccountService extends ModelService{
         );
   }
 
-  getLocations(){
-    let account = this.userService.selfData.account;
-    let locationsLoaded = account ? !isUndefined(account.locations) ? true : false : false;
-    if (!locationsLoaded) {
-      return this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
-          .map((res: any) => {
-            return res.data.locations;
-          })
-          .do((res: any) => {
-            account.locations = res;
-            this.updateSelfData(account);
-          });
-    } else {
-      return this.userService.selfData$.map(res => res.account.locations);
-    }
-  }
-
   getStates(){
     return this.stateCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
         this.stateCollection$ = this.restangular.all('config').all('states').customGET('')
-            .map((res: any) => {
-              return res.data;
-            });
+          .map((res: any) => {
+            return res.data;
+          });
       }
       return this.stateCollection$;
     });
   }
 
-  getLocationTypes(){
-    return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
-      if(isEmpty) {
-        this.locationTypeCollection$ = this.restangular.all('config').all('location_types').customGET('')
-            .map((res: any) => {
-              return res.data;
-            });
-      }
-      return this.locationTypeCollection$;
-    });
-  }
+  // TODO: Remove when location service tested
 
-  getLocationStreetView(params: any){
-    params.key = this.appConfig.streetView.apiKey;
-    params.size = '520x293';
-    // this.restangular
-    //     .oneUrl('street', 'https://maps.googleapis.com/maps/api/streetview/metadata')
-    //     .get({location: params.location, size: params.size, key: params.key})
-    //     .subscribe((res: any) => {
-    //       debugger;
-          let imageUrl = this.appConfig.streetView.endpoint + '?size=' + params.size + '&key=' + params.key + '&location=' + params.location;
-          return imageUrl.replace(/\s/g,'%20').replace(/#/g, '');
-        // });
-  }
+  // getLocations(){
+  //   let account = this.userService.selfData.account;
+  //   let locationsLoaded = account ? !isUndefined(account.locations) ? true : false : false;
+  //   if (!locationsLoaded) {
+  //     return this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
+  //         .map((res: any) => {
+  //           return res.data.locations;
+  //         })
+  //         .do((res: any) => {
+  //           account.locations = res;
+  //           this.updateSelfData(account);
+  //         });
+  //   } else {
+  //     return this.userService.selfData$.map(res => res.account.locations);
+  //   }
+  // }
 
-  addLocation(data: any){
-    return this.restangular.one('accounts', data.account_id).all('locations').post(data)
-        .do((res: any) => {
-          let account = this.userService.selfData.account;
-          account.locations = res.data.account.locations;
-          this.updateSelfData(account);
-        });
-  }
+  // getLocationTypes(){
+  //   return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
+  //     if(isEmpty) {
+  //       this.locationTypeCollection$ = this.restangular.all('config').all('location_types').customGET('')
+  //           .map((res: any) => {
+  //             return res.data;
+  //           });
+  //     }
+  //     return this.locationTypeCollection$;
+  //   });
+  // }
 
-  deleteLocation(data: any){
-    return this.restangular.one('accounts', this.userService.selfData.account_id).one('locations', data.id).remove()
-        .do((res: any) => {
-          let account = this.userService.selfData.account;
+  // getLocationStreetView(params: any){
+  //   params.key = this.appConfig.streetView.apiKey;
+  //   params.size = '520x293';
+  //   // this.restangular
+  //   //     .oneUrl('street', 'https://maps.googleapis.com/maps/api/streetview/metadata')
+  //   //     .get({location: params.location, size: params.size, key: params.key})
+  //   //     .subscribe((res: any) => {
+  //   //       debugger;
+  //         let imageUrl = this.appConfig.streetView.endpoint + '?size=' + params.size + '&key=' + params.key + '&location=' + params.location;
+  //         return imageUrl.replace(/\s/g,'%20').replace(/#/g, '');
+  //       // });
+  // }
 
-          account.users = _.map(account.users, (user: any) => {
-            _.remove(user.locations, (location: any) => location.location_id == data.id);
-            return user;
-          });
+  // addLocation(data: any){
+  //   return this.restangular.one('accounts', data.account_id).all('locations').post(data)
+  //       .do((res: any) => {
+  //         let account = this.userService.selfData.account;
+  //         account.locations = res.data.account.locations;
+  //         this.updateSelfData(account);
+  //       });
+  // }
 
-          _.remove(account.locations, (location: any) => {
-            return location.id == data.id;
-          });
-          this.updateSelfData(account);
-        });
-  }
+  // deleteLocation(data: any){
+  //   return this.restangular.one('accounts', this.userService.selfData.account_id).one('locations', data.id).remove()
+  //       .do((res: any) => {
+  //         let account = this.userService.selfData.account;
+  //
+  //         account.users = _.map(account.users, (user: any) => {
+  //           _.remove(user.locations, (location: any) => location.location_id == data.id);
+  //           return user;
+  //         });
+  //
+  //         _.remove(account.locations, (location: any) => {
+  //           return location.id == data.id;
+  //         });
+  //         this.updateSelfData(account);
+  //       });
+  // }
 
   getDepartments(){
     return this.departmentCollection$.isEmpty().switchMap((isEmpty) => {

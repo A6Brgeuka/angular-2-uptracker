@@ -8,7 +8,7 @@ import {
     LocationCollectionResolve,
     VendorCollectionResolve,
     AccountVendorCollectionResolve,
-    ProductCollectionResolve
+    ProductCollectionResolve,
 } from '../shared/resolves/index';
 
 import { OrdersRoutes } from './orders/orders.routing';
@@ -34,7 +34,7 @@ const dashboardRoutes = [
       vendorCollection: VendorCollectionResolve,
       userCollection: UserCollectionResolve,
       locationCollection: LocationCollectionResolve,
-      productCollection: ProductCollectionResolve
+      productCollection: ProductCollectionResolve,
     }
   }
 ];
