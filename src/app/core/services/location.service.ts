@@ -58,7 +58,6 @@ export class LocationService extends ModelService {
         this.updateCollection(res);
       });
 
-
   }
 
   addSubscribers() {
@@ -110,6 +109,14 @@ export class LocationService extends ModelService {
       });
   }
 
+  updateInventoryLocations(data) {
+    debugger;
+    return this.restangular.one('accounts', data.account_id).all('locations').post(data.inventory_locations)
+      .do((res: any) => {
+        this.updateCollectionField("inventory_locations",res.data.account.locations);
+      });
+  }
+
   getLocationTypes(){
     return this.locationTypeCollection$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
@@ -140,6 +147,12 @@ export class LocationService extends ModelService {
 
   updateCollection(data) {
     this.updateCollection$.next(data);
+  }
+
+  updateCollectionField(field, data){
+    let locations = this.collection;
+    locations[field] = data;
+    this.updateSelfData(locations);
   }
 
   updateSelfData(data) {

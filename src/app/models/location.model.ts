@@ -20,6 +20,7 @@ export class LocationModel {
   address: any = {};
 
   formattedAddress: any = null;
+  inventory_locations: any = [];
   
   constructor(obj?:any) {
     for (let field in obj) {

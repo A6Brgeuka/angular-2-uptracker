@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import * as _ from 'lodash';
+
 
 import {
   AccountService,
@@ -44,9 +46,17 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
+
+  public inventory_location: any = {};
+  private locationToDelete = null;
+
+
+  public filteredStorageLocations: any = [];
+
   public isStorageLocationFormShow = true;
   public storageLocation: string;
   public forStockLocation: boolean;
+  public sortBy;
 
   uploadedImage;
   fileIsOver: boolean = false;
@@ -80,6 +90,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.uploadedImage = this.location.image;
       this.location.formattedAddress = this.location.address.formattedAddress;
 
+      this.filteredStorageLocations = _.cloneDeep(this.location.inventory_locations);
+
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
 
@@ -89,6 +101,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
     // this.states$ = this.accountService.getStates().take(1);
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
+
   }
 
   dismissModal() {
@@ -200,27 +213,47 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     });
   }
 
+  sortStorageLocations() {
+    let sort = null;
+    switch (this.sortBy) {
+      case "floor_stock":
+        sort = ['floor_stock', true];
+        break;
+      case "back_stock":
+        sort = ['floor_stock', false];
+        break;
+      case "":
+        sort = null;
+        break;
+    }
+    this.filteredStorageLocations = _.filter(this.location.inventory_locations, sort)
+  }
+
   showAddStorageLocationFrom() {
     this.isStorageLocationFormShow = !this.isStorageLocationFormShow;
+    this.inventory_location = {};
   }
 
-  addStorageLocation() {
-    this.storageLocation;
-    this.forStockLocation;
+  addStorageLocation(data) {
+    this.location.inventory_locations.push(data);
+    this.locationService.updateInventoryLocations(this.location)
   }
 
-  deleteStorageLocation() {
-    this.modalWindowService.confirmModal('Delete Storage Location?', 'Are you sure you want to delete the storage location?', this.deleteStorageLocationFunc.bind(this));
+  deleteStorageLocation(id) {
+    this.modalWindowService.confirmModal('Delete Storage Location?', 'Are you sure you want to delete the storage location?', this.deleteStorageLocationFunc.bind(this,id))
   }
 
-  deleteStorageLocationFunc() {
-    this.dismissModal();
-    // this.subscribers.deleteStorageLocationSubscription =
+  deleteStorageLocationFunc(id) {
+    _.remove(this.location.inventory_locations, {id: id});
+
+    this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
+      this.dismissModal();
+    });
   }
 
   addGoogleAddress(event) {
     let postalFlag = false;
-    if(event.address_components) {
+    if (event.address_components) {
       event.address_components.forEach((item) => {
         switch (item.types[0]) {
           // case 'country':
@@ -247,7 +280,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         }
       });
       //if in address no postal code change postal code to null
-      if(!postalFlag) {
+      if (!postalFlag) {
         this.zone.run(() => {
           this.location.zip_code = null;
         });
