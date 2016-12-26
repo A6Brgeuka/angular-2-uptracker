@@ -209,6 +209,15 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.forStockLocation;
   }
 
+  deleteStorageLocation() {
+    this.modalWindowService.confirmModal('Delete Storage Location?', 'Are you sure you want to delete the storage location?', this.deleteStorageLocationFunc.bind(this));
+  }
+
+  deleteStorageLocationFunc() {
+    this.dismissModal();
+    // this.subscribers.deleteStorageLocationSubscription =
+  }
+
   addGoogleAddress(event) {
     let postalFlag = false;
     if(event.address_components) {

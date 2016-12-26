@@ -10,12 +10,12 @@
   <div class="uptracker-form row">
     <div class="top filter">
       <div class="row">
-        <div class="col s4">
+        <div class="col m4 s12 filter-item">
           <div class="input">
             <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey"/>
           </div>
         </div>
-        <div class="col s2 offset-s3">
+        <div class="col l2 offset-l3 m4 s12 filter-item">
           <div class="select input">
             <select [(ngModel)]="sortBy" materialize="material_select">
               <option value="">All</option>
@@ -24,7 +24,7 @@
             </select>
           </div>
         </div>
-        <div class="col s3">
+        <div class="col l3 m4 s12 filter-item">
           <button type="button" (click)="showAddStorageLocationFrom()"
                   class="uptracker-form-btn waves-light waves-effect">Add
             Storage Location
@@ -63,18 +63,18 @@
   </div>
   <div class="location-storage-list collection row">
     <div class="item row">
-      <div class="col s1 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
-      <div class="col s9 text">Working Stock<span class="label-text">Floor Stock</span></div>
-      <div class="col s2">
-        <button type="button" (click)="editLocationModal()"
+      <div class="col m1 s2 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
+      <div class="col m9 s10 text">Working Stock<span class="label-text">Floor Stock</span></div>
+      <div class="col m2 s4">
+        <button type="button" (click)="deleteStorageLocation()"
                 class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
         </button>
       </div>
     </div>
     <div class="item row">
-      <div class="col s1 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
-      <div class="col s9 text">Back Stock</div>
-      <div class="col s2">
+      <div class="col m1 s2 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
+      <div class="col m9 s10 text">Back Stock</div>
+      <div class="col m2 s4">
         <button type="button" (click)="editLocationModal()"
                 class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
         </button>

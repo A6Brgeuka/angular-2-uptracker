@@ -120,9 +120,11 @@ $tealish: #33c6d9;
         font-size: 24px;
         color: #767676;
         text-align: center;
+        min-height: 36px;
       }
 
       .text {
+        min-height: 36px;
         font-weight: 500;
         font: 28px/32px Ubuntu;
       }
