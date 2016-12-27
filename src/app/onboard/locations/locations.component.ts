@@ -43,8 +43,5 @@ export class OnboardLocationsComponent implements OnInit {
     this.router.navigate(['/onboard','users']);
   }
 
-  test(event) {
-    console.log(event);
-  }
 
 }
