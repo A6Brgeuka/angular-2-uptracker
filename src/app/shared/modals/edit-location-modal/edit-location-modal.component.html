@@ -62,10 +62,9 @@
 
   </div>
   <div class="location-storage-list collection row">
-    <div class="item row" *ngFor="let storagelocation of filteredStorageLocations">
-      <div class="col m1 s2 icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
-      <div class="col m9 s10 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock</span></div>
-      <div class="col m2 s4">
+    <div class="item row" *ngFor="let storagelocation of filteredStorageLocations" >
+      <div class="col m9 s12 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock</span></div>
+      <div class="col m3 s4">
         <button type="button" (click)="deleteStorageLocation(storagelocation.id)"
                 class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
         </button>
