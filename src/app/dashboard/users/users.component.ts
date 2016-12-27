@@ -63,7 +63,9 @@ export class UsersComponent implements OnInit {
   }
 
   sendMessageToUser(user = null) {
-    this.viewUserModal(Object.assign(user,{sendMessage: true}));
+    // check not to send message to self
+    let sendMessage = this.accountService.selfData.account_owner == user.id ? false : true;
+    this.viewUserModal(Object.assign(user,{sendMessage: sendMessage}));
   }
 
   viewUserModal(user = null){
