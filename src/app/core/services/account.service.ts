@@ -87,7 +87,7 @@ export class AccountService extends ModelService{
   }
 
   updateSelfDataField(field, data){
-    let account = this.selfData;
+    let account = this.userService.selfData.account;
     account[field] = data;
     this.updateSelfData(account);
   }
