@@ -95,7 +95,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         location._id = index + 1;
         return location;
       });
-      debugger;
 
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
@@ -276,7 +275,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       _.remove(this.location.inventory_locations, {_id: id});
       _.remove(this.filteredStorageLocations, {_id: id});
     }
-    debugger;
   }
 
   addGoogleAddress(event) {
