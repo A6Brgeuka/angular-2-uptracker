@@ -47,7 +47,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
 
-  public inventory_location: any = {};
+  public inventory_location: any = { name: '', floor_stock: false};
   private locationToDelete = null;
 
 
@@ -231,12 +231,25 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
   showAddStorageLocationFrom() {
     this.isStorageLocationFormShow = !this.isStorageLocationFormShow;
-    this.inventory_location = {};
+    this.inventory_location = { name: '', floor_stock: false};
   }
 
   addStorageLocation(data) {
-    this.location.inventory_locations.push(data);
-    this.locationService.updateInventoryLocations(this.location)
+    this.location.account_id = this.userService.selfData.account_id;
+
+    let storageLocation = _.cloneDeep(data);
+
+    if(this.location.id) {
+      this.locationService.updateInventoryLocations(this.location).do(res => {
+        this.location.inventory_locations.push(storageLocation);
+        this.filteredStorageLocations.push(storageLocation);
+      })
+    }
+    else {
+      this.location.inventory_locations.push(storageLocation);
+      this.filteredStorageLocations.push(storageLocation);
+    }
+    this.inventory_location = { name: '', floor_stock: false};
   }
 
   deleteStorageLocation(id) {
@@ -244,11 +257,20 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   deleteStorageLocationFunc(id) {
-    _.remove(this.location.inventory_locations, {id: id});
+    this.location.account_id = this.userService.selfData.account_id;
 
-    this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
-      this.dismissModal();
-    });
+    if(this.location.id) {
+      this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
+        _.remove(this.location.inventory_locations, {id: id});
+        _.remove(this.filteredStorageLocations, {id: id});
+        this.dismissModal();
+      });
+    }
+    else {
+      _.remove(this.location.inventory_locations, {id: id});
+      _.remove(this.filteredStorageLocations, {id: id});
+    }
+    debugger;
   }
 
   addGoogleAddress(event) {
