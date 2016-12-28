@@ -54,6 +54,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       .filter(res=>res.data)
       .subscribe(res => {
         this.product.comments = res.data.comments || [];
+        this.product.comments.map(item => {
+          item.body = item.body.replace(/(?:\r\n|\r|\n)/g, "<br />");
+          return item;
+        })
     });
   }
 

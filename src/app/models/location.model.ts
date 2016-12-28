@@ -16,6 +16,7 @@ export class LocationModel {
   created_at: string = null;
   state: string = null;
   postal_code: string = null;
+  country: string = null;
 
   address: any = {};
 

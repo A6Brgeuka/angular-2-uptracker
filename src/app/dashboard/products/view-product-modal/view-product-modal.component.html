@@ -222,14 +222,11 @@
           <li class="collection-item avatar" *ngFor="let comment of product.comments">
             <img [src]="comment.author_avatar || ''" class="responsive-img circle author-avatar">
             <span class="title">{{comment.author_name}}</span>
-            <p>
-              {{comment.body}}
-            </p>
+            <p [innerHtml]="comment.body"></p>
             <span class="secondary-content">{{comment.created_at | date}}</span>
           </li>
         </ul>
       </div>
-
     </div>
   </div>
 </div>

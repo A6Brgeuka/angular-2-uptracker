@@ -91,6 +91,11 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.location.formattedAddress = this.location.address.formattedAddress;
 
       this.filteredStorageLocations = _.cloneDeep(this.location.inventory_locations);
+      this.filteredStorageLocations = _.map(this.filteredStorageLocations, (location,index) => {
+        location._id = index + 1;
+        return location;
+      });
+      debugger;
 
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
@@ -238,6 +243,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
 
     let storageLocation = _.cloneDeep(data);
+    storageLocation._id = this.location.inventory_locations.length;
 
     if(this.location.id) {
       this.locationService.updateInventoryLocations(this.location).do(res => {
@@ -261,14 +267,14 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
     if(this.location.id) {
       this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
-        _.remove(this.location.inventory_locations, {id: id});
-        _.remove(this.filteredStorageLocations, {id: id});
+        _.remove(this.location.inventory_locations, {_id: id});
+        _.remove(this.filteredStorageLocations, {_id: id});
         this.dismissModal();
       });
     }
     else {
-      _.remove(this.location.inventory_locations, {id: id});
-      _.remove(this.filteredStorageLocations, {id: id});
+      _.remove(this.location.inventory_locations, {_id: id});
+      _.remove(this.filteredStorageLocations, {_id: id});
     }
     debugger;
   }
@@ -278,9 +284,9 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     if (event.address_components) {
       event.address_components.forEach((item) => {
         switch (item.types[0]) {
-          // case 'country':
-          //   this.location.country = item.long_name;
-          //   break;
+          case 'country':
+            this.location.country = item.long_name;
+            break;
           case 'administrative_area_level_1':
             this.location.state = item.short_name;
             break;
