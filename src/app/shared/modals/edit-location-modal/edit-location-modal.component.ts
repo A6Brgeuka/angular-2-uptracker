@@ -54,6 +54,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public filterSearch$: any = new BehaviorSubject();
   public filterStorageOption$: any = new BehaviorSubject({});
   public filteredStorageLocations$;
+  public storageLocations$ = new BehaviorSubject([]);
 
   public isStorageLocationFormShow = true;
   public storageLocation: string;
@@ -97,8 +98,10 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         return location;
       });
 
+      this.storageLocations$.next(this.location.inventory_locations)
+
       this.filteredStorageLocations$ = Observable.combineLatest(
-        Observable.of(this.location.inventory_locations),
+        this.storageLocations$,
         this.filterSearch$,
         this.filterStorageOption$
       ) .map(([locations,searchkey,options]) => {
@@ -261,13 +264,13 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     storageLocation.id = null;
 
     this.location.inventory_locations.push(storageLocation);
-    this.filteredStorageLocations$.next(this.location.inventory_locations);
+    this.storageLocations$.next(this.location.inventory_locations);
 
     if(this.location.id) {
       this.locationService.updateInventoryLocations(this.location).subscribe(res => {
       },err => {
         _.remove(this.location.inventory_locations, {_id: storageLocation._id});
-        this.filteredStorageLocations$.next(this.location.inventory_locations);
+        this.storageLocations$.next(this.location.inventory_locations);
       })
     }
 
@@ -282,7 +285,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
 
     let removedStorageLocation: any = _.remove(this.location.inventory_locations, {_id: id});
-    this.filteredStorageLocations$.next(this.location.inventory_locations);
+    this.storageLocations$.next(this.location.inventory_locations);
 
     if(this.location.id) {
       this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
@@ -290,7 +293,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       }, err => {
         if(removedStorageLocation.length) {
           this.location.inventory_locations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);
-          this.filteredStorageLocations$.next(this.location.inventory_locations);
+          this.storageLocations$.next(this.location.inventory_locations);
         }
       });
     }
