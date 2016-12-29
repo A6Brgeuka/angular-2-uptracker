@@ -229,7 +229,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   }
 
   changeSearchName(event) {
-    this.filterSearch$.next(event.target.value)
+    this.filterSearch$.next(event.target.value.trim())
   }
 
   sortStorageLocations() {
