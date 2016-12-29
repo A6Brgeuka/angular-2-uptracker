@@ -51,10 +51,10 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   private locationToDelete = null;
 
 
-  public filterSearch$: any = new BehaviorSubject();
+  public filterSearch$: any = new BehaviorSubject(null);
   public filterStorageOption$: any = new BehaviorSubject({});
-  public filteredStorageLocations$;
   public storageLocations$ = new BehaviorSubject([]);
+  public filteredStorageLocations$;
 
   public isStorageLocationFormShow = true;
   public storageLocation: string;
@@ -98,24 +98,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         return location;
       });
 
-      this.storageLocations$.next(this.location.inventory_locations)
-
-      this.filteredStorageLocations$ = Observable.combineLatest(
-        this.storageLocations$,
-        this.filterSearch$,
-        this.filterStorageOption$
-      ) .map(([locations,searchkey,options]) => {
-
-        if (searchkey && searchkey!='') {
-          locations = _.reject(locations, (location: any) =>{
-            let key = new RegExp(searchkey, 'i');
-            return !key.test(location.name);
-          });
-        }
-
-        locations = _.filter(locations, options);
-        return locations;
-      });
+      this.storageLocations$.next(this.location.inventory_locations);
 
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
@@ -123,6 +106,24 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.locationFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
     }
+
+    this.filteredStorageLocations$ = Observable.combineLatest(
+      this.storageLocations$,
+      this.filterSearch$,
+      this.filterStorageOption$
+    )
+      .map(([locations,searchkey,options]) => {
+
+      if (searchkey && searchkey!='') {
+        locations = _.reject(locations, (location: any) =>{
+          let key = new RegExp(searchkey, 'i');
+          return !key.test(location.name);
+        });
+      }
+
+      locations = _.filter(locations, options);
+      return locations;
+    });
 
     // this.states$ = this.accountService.getStates().take(1);
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
