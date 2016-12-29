@@ -95,6 +95,10 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         location._id = index + 1;
         return location;
       });
+      this.location.inventory_locations = _.map(this.location.inventory_locations, (location: any,index) => {
+        location._id = index + 1;
+        return location;
+      });
 
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone);
@@ -271,9 +275,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
     if(this.location.id) {
       this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
-        this.location.inventory_locations.splice(removedStorageLocation._id - 1,removedStorageLocation);
-        this.filteredStorageLocations.splice(removedStorageLocation._id - 1,removedStorageLocation);
         this.dismissModal();
+      }, err => {
+        if(removedStorageLocation.length) {
+          this.location.inventory_locations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);
+          this.filteredStorageLocations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);
+        }
       });
     }
   }

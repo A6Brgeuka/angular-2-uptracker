@@ -28,9 +28,19 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   context: ViewProductModalContext;
   private product: any;
   public variation: any = {
-    pkg: ''
+    pkg: '',
+    variationArrs: {
+      package_type: [],
+      unit_type: [],
+      units_per_package: [],
+      size: [],
+      material: [],
+      price_range: []
+    }
   };
   public comment: any = {};
+
+  public variants = [];
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -59,6 +69,35 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
           return item;
         })
     });
+
+    this.subscribers.getProductSubscription = this.productService.getProduct(this.product.id)
+      .filter(res => res.data)
+      .map(res => res.data)
+      .subscribe(data => {
+        this.variants = data.variants;
+        _.each(this.variants, (variant: any)=> {
+          _.forEach(this.variation.variationArrs, (value,key) => {
+            this.variation.variationArrs[key].push(this.variation.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
+            // this.variation.package_type.push(this.variation.pkg_arr.indexOf(variant.package_type) >= 0 ? null : variant.package_type);
+            // this.variation.units_type.push(this.variation.unit_type_arr.indexOf(variant.units_type) >= 0 ? null : variant.units_type);
+            // this.variation.units_per_package.push(this.variation.unit_per_pkg_arr.indexOf(variant.units_per_package) >= 0 ? null : variant.units_per_package);
+            // this.variation.size.push(this.variation.size_arr.indexOf(variant.size) >= 0 ? null : variant.size);
+            // this.variation.material.push(this.variation.material_arr.indexOf(variant.material) >= 0 ? null : variant.material);
+            // this.variation.price_range.push(this.variation.price_range_arr.indexOf(variant.price_range) >= 0 ? null : variant.price_range);
+          })
+        });
+        _.forEach(this.variation.variationArrs, (value,key) => {
+          this.variation.variationArrs[key] = _.filter(this.variation.variationArrs[key], res => res);
+        });
+        // this.variation.pkg_arr = _.filter(this.variation.pkg_arr, (res => res));
+        debugger;
+
+        this.product.comments = data.comments || [];
+        this.product.comments.map(item => {
+          item.body = item.body.replace(/(?:\r\n|\r|\n)/g, "<br />");
+          return item;
+        })
+      })
   }
 
   ngAfterViewInit(){
@@ -91,7 +130,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   }
 
   sendComment() {
-    this.comment;
     Object.assign(this.comment,
       {
         "user_id": this.userService.selfData.id,

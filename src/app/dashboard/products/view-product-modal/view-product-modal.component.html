@@ -78,10 +78,9 @@
                       #pkg="ngModel"
                       materialize="material_select"
                       (change)="changePkg($event)"
-                      [materializeSelectOptions]="">
+                      [materializeSelectOptions]="variation.variationArrs.package_type">
                 <option value="">Pkg Type</option>
-                <option value="type1">Type 1</option>
-                <option value="type2">Type 2</option>
+                <option *ngFor="let item of variation.variationArrs.package_type" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -92,10 +91,9 @@
                       #unit="ngModel"
                       materialize="material_select"
                       (change)="changeUnit($event)"
-                      [materializeSelectOptions]="">
+                      [materializeSelectOptions]="variation.variationArrs.unit_type">
                 <option value="">Unit Type</option>
-                <option value="type1">Type 1</option>
-                <option value="type2">Type 2</option>
+                <option *ngFor="let item of variation.variationArrs.unit_type" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -106,10 +104,9 @@
                       #units_pkg="ngModel"
                       materialize="material_select"
                       (change)="changeUnitsPkg($event)"
-                      [materializeSelectOptions]="">
+                      [materializeSelectOptions]="variation.variationArrs.units_per_package">
                 <option value="">Units/pkg.</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
+                <option *ngFor="let item of variation.variationArrs.units_per_package" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -120,10 +117,9 @@
                       #size="ngModel"
                       materialize="material_select"
                       (change)="changeSize($event)"
-                      [materializeSelectOptions]="">
+                      [materializeSelectOptions]="variation.variationArrs.size">
                 <option value="">Size</option>
-                <option value="size1">Size 1</option>
-                <option value="size2">Size 2</option>
+                <option *ngFor="let item of variation.variationArrs.size" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -134,10 +130,9 @@
                       #material="ngModel"
                       materialize="material_select"
                       (change)="changeMaterial($event)"
-                      [materializeSelectOptions]="">
+                      [materializeSelectOptions]="variation.variationArrs.material">
                 <option value="">Material</option>
-                <option value="material1">Material 1</option>
-                <option value="material2">Material 2</option>
+                <option *ngFor="let item of variation.variationArrs.material" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -153,26 +148,14 @@
           </th>
           <th></th>
         </tr>
-        <tr>
-          <td>Product name here</td>
-          <td>Value Here</td>
-          <td>Value Here</td>
-          <td>100</td>
-          <td>White</td>
-          <td>Plastic</td>
-          <td>$100-$1000</td>
-          <td>
-            <button type="button" class="uptracker-form-btn not-submit">Add</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Product name here</td>
-          <td>Value Here</td>
-          <td>Value Here</td>
-          <td>100</td>
-          <td>White</td>
-          <td>Plastic</td>
-          <td>$100-$1000</td>
+        <tr *ngFor="let variant of variants">
+          <td>{{variant.name || "Product Here"}}</td>
+          <td>{{variant.package_type || "Value Here"}}</td>
+          <td>{{variant.unit_type || "Value Here"}}</td>
+          <td>{{variant.units_per_package || ""}}</td>
+          <td>{{variant.size || ""}}</td>
+          <td>{{variant.material || ""}}</td>
+          <td>{{variant.price_range || ""}}</td>
           <td>
             <button type="button" class="uptracker-form-btn not-submit">Add</button>
           </td>
