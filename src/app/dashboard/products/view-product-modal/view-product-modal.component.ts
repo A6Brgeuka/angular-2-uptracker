@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { Observable } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { ProductModel } from '../../../models/index';
@@ -27,20 +27,24 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   private subscribers: any = {};
   context: ViewProductModalContext;
   private product: any;
-  public variation: any = {
-    pkg: '',
-    variationArrs: {
-      package_type: [],
-      unit_type: [],
-      units_per_package: [],
-      size: [],
-      material: [],
-      price_range: []
-    }
+  public variation: any = { };
+  public variationArrs = {
+    package_type: [],
+    unit_type: [],
+    units_per_package: [],
+    size: [],
+    material: [],
+    price_range: []
   };
   public comment: any = {};
 
   public variants = [];
+  public variants$ = new BehaviorSubject([]);
+  public filterSelectOption$ = new BehaviorSubject({});
+  public filterName$ = new BehaviorSubject();
+  public filterPrice$ = new BehaviorSubject();
+  public filteredVariants$;
+  public variantsNotFiltered = [];
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -60,37 +64,60 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
     this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
     this.product.comments = [];
-    this.subscribers.getProductCommentsSubscription = this.productService.getProductComments(this.context.product.id)
-      .filter(res=>res.data)
-      .subscribe(res => {
-        this.product.comments = res.data.comments || [];
-        this.product.comments.map(item => {
-          item.body = item.body.replace(/(?:\r\n|\r|\n)/g, "<br />");
-          return item;
-        })
-    });
+    // this.subscribers.getProductCommentsSubscription = this.productService.getProductComments(this.context.product.id)
+    //   .filter(res=>res.data)
+    //   .subscribe(res => {
+    //     this.product.comments = res.data.comments || [];
+    //     this.product.comments.map(item => {
+    //       item.body = item.body.replace(/(?:\r\n|\r|\n)/g, "<br />");
+    //       return item;
+    //     })
+    // });
+
+    this.filteredVariants$ = Observable.combineLatest(
+      this.variants$,
+      this.filterSelectOption$,
+      this.filterName$,
+      this.filterPrice$
+    )
+      .map(([variants,filterSelectOption,filterName,filterPrice]) => {
+
+        if(filterPrice && filterPrice != "") {
+          variants = _.reject(variants, (variant: any) =>{
+            let key = new RegExp(filterPrice, 'i');
+            return !key.test(variant.name);
+          });
+        }
+        if(filterName && filterName != "") {
+          variants = _.reject(variants, (variant: any) =>{
+            let key = new RegExp(filterName, 'i');
+            return !key.test(variant.name);
+          });
+        }
+        variants = _.filter(variants,filterSelectOption);
+        return variants;
+    })
+
 
     this.subscribers.getProductSubscription = this.productService.getProduct(this.product.id)
       .filter(res => res.data)
       .map(res => res.data)
       .subscribe(data => {
         this.variants = data.variants;
+
+        this.variants$.next(data.variants);
+
+
         _.each(this.variants, (variant: any)=> {
-          _.forEach(this.variation.variationArrs, (value,key) => {
-            this.variation.variationArrs[key].push(this.variation.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
-            // this.variation.package_type.push(this.variation.pkg_arr.indexOf(variant.package_type) >= 0 ? null : variant.package_type);
-            // this.variation.units_type.push(this.variation.unit_type_arr.indexOf(variant.units_type) >= 0 ? null : variant.units_type);
-            // this.variation.units_per_package.push(this.variation.unit_per_pkg_arr.indexOf(variant.units_per_package) >= 0 ? null : variant.units_per_package);
-            // this.variation.size.push(this.variation.size_arr.indexOf(variant.size) >= 0 ? null : variant.size);
-            // this.variation.material.push(this.variation.material_arr.indexOf(variant.material) >= 0 ? null : variant.material);
-            // this.variation.price_range.push(this.variation.price_range_arr.indexOf(variant.price_range) >= 0 ? null : variant.price_range);
+          _.forEach(this.variationArrs, (value,key) => {
+            this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
           })
         });
-        _.forEach(this.variation.variationArrs, (value,key) => {
-          this.variation.variationArrs[key] = _.filter(this.variation.variationArrs[key], res => res);
+        _.forEach(this.variationArrs, (value,key) => {
+          this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
         });
-        // this.variation.pkg_arr = _.filter(this.variation.pkg_arr, (res => res));
-        debugger;
+        this.variantsNotFiltered = _.cloneDeep(this.variants);
+
 
         this.product.comments = data.comments || [];
         this.product.comments.map(item => {
@@ -117,16 +144,72 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.dialog.close(data);
   }
 
+  filterVariants() {
+    this.variants = _.filter(this.variantsNotFiltered,this.variation)
+  }
+
+  checkFilterValue(event) {
+    if(event.target.value.length) {
+      return event.target.value;
+    }
+  }
+
+  changeName(event) {
+    this.filterName$.next(event.target.value.trim())
+  }
+
+  changePrice(event) {
+    this.filterPrice$.next(event.target.value.trim())
+  }
+
   changePkg(event){
-    this.variation.pkg = event.target.value;
+    if (this.checkFilterValue(event)) {
+      this.variation.package_type = event.target.value;
+    }
+    else {
+      delete this.variation.package_type
+    }
+    this.filterSelectOption$.next(this.variation)
   }
 
   changeUnit(event){
-    this.variation.unit = event.target.value;
+    if (this.checkFilterValue(event)) {
+      this.variation.unit_type = event.target.value;
+    }
+    else {
+      delete this.variation.unit_type
+    }
+    this.filterSelectOption$.next(this.variation)
   }
 
   changeUnitsPkg(event){
-    this.variation.unit_pkg = event.target.value;
+    if (this.checkFilterValue(event)) {
+      this.variation.units_per_package = parseInt(event.target.value);
+    }
+    else {
+      delete this.variation.units_per_package
+    }
+    this.filterSelectOption$.next(this.variation)
+  }
+
+  changeSize(event){
+    if (this.checkFilterValue(event)) {
+      this.variation.size = event.target.value;
+    }
+    else {
+      delete this.variation.size
+    }
+    this.filterSelectOption$.next(this.variation)
+  }
+
+  changeMaterial(event){
+    if (this.checkFilterValue(event)) {
+      this.variation.material = event.target.value;
+    }
+    else {
+      delete this.variation.material
+    }
+    this.filterSelectOption$.next(this.variation)
   }
 
   sendComment() {

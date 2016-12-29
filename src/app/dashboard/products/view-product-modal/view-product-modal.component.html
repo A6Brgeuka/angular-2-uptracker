@@ -67,6 +67,7 @@
                       type="text"
                       class="col s12 name-input"
                       [(ngModel)]="variation.name"
+                      (input)="changeName($event)"
                       placeholder="Name"
                       #name="ngModel"/>
             </div>
@@ -74,39 +75,39 @@
           <th>
             <div class="select">
               <select
-                      [(ngModel)]="variation.pkg"
+                      [(ngModel)]="variation.package_type"
                       #pkg="ngModel"
                       materialize="material_select"
                       (change)="changePkg($event)"
-                      [materializeSelectOptions]="variation.variationArrs.package_type">
+                      [materializeSelectOptions]="variationArrs.package_type">
                 <option value="">Pkg Type</option>
-                <option *ngFor="let item of variation.variationArrs.package_type" [value]="item">{{item}}</option>
+                <option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
           <th>
             <div class="select">
               <select
-                      [(ngModel)]="variation.unit"
+                      [(ngModel)]="variation.unit_type"
                       #unit="ngModel"
                       materialize="material_select"
                       (change)="changeUnit($event)"
-                      [materializeSelectOptions]="variation.variationArrs.unit_type">
+                      [materializeSelectOptions]="variationArrs.unit_type">
                 <option value="">Unit Type</option>
-                <option *ngFor="let item of variation.variationArrs.unit_type" [value]="item">{{item}}</option>
+                <option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
           <th>
             <div class="select">
               <select
-                      [(ngModel)]="variation.units_pkg"
+                      [(ngModel)]="variation.units_per_package"
                       #units_pkg="ngModel"
                       materialize="material_select"
                       (change)="changeUnitsPkg($event)"
-                      [materializeSelectOptions]="variation.variationArrs.units_per_package">
+                      [materializeSelectOptions]="variationArrs.units_per_package">
                 <option value="">Units/pkg.</option>
-                <option *ngFor="let item of variation.variationArrs.units_per_package" [value]="item">{{item}}</option>
+                <option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -117,9 +118,9 @@
                       #size="ngModel"
                       materialize="material_select"
                       (change)="changeSize($event)"
-                      [materializeSelectOptions]="variation.variationArrs.size">
+                      [materializeSelectOptions]="variationArrs.size">
                 <option value="">Size</option>
-                <option *ngFor="let item of variation.variationArrs.size" [value]="item">{{item}}</option>
+                <option *ngFor="let item of variationArrs.size" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -130,9 +131,9 @@
                       #material="ngModel"
                       materialize="material_select"
                       (change)="changeMaterial($event)"
-                      [materializeSelectOptions]="variation.variationArrs.material">
+                      [materializeSelectOptions]="variationArrs.material">
                 <option value="">Material</option>
-                <option *ngFor="let item of variation.variationArrs.material" [value]="item">{{item}}</option>
+                <option *ngFor="let item of variationArrs.material" [value]="item">{{item}}</option>
               </select>
             </div>
           </th>
@@ -148,7 +149,7 @@
           </th>
           <th></th>
         </tr>
-        <tr *ngFor="let variant of variants">
+        <tr *ngFor="let variant of filteredVariants$ | async">
           <td>{{variant.name || "Product Here"}}</td>
           <td>{{variant.package_type || "Value Here"}}</td>
           <td>{{variant.unit_type || "Value Here"}}</td>

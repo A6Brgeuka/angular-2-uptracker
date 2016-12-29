@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col m4 s12 filter-item">
           <div class="input">
-            <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey"/>
+            <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" (input)="changeSearchName($event)"/>
           </div>
         </div>
         <div class="col l2 offset-l3 m4 s12 filter-item">
@@ -62,7 +62,7 @@
 
   </div>
   <div class="location-storage-list collection row">
-    <div class="item row" *ngFor="let storagelocation of filteredStorageLocations" >
+    <div class="item row" *ngFor="let storagelocation of filteredStorageLocations$ | async" >
       <div class="col m9 s12 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock</span></div>
       <div class="col m3 s4">
         <button type="button" (click)="deleteStorageLocation(storagelocation._id)"

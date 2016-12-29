@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -51,7 +51,9 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   private locationToDelete = null;
 
 
-  public filteredStorageLocations: any = [];
+  public filterSearch$: any = new BehaviorSubject();
+  public filterStorageOption$: any = new BehaviorSubject({});
+  public filteredStorageLocations$;
 
   public isStorageLocationFormShow = true;
   public storageLocation: string;
@@ -90,14 +92,26 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.uploadedImage = this.location.image;
       this.location.formattedAddress = this.location.address.formattedAddress;
 
-      this.filteredStorageLocations = _.cloneDeep(this.location.inventory_locations);
-      this.filteredStorageLocations = _.map(this.filteredStorageLocations, (location: any,index) => {
-        location._id = index + 1;
-        return location;
-      });
       this.location.inventory_locations = _.map(this.location.inventory_locations, (location: any,index) => {
         location._id = index + 1;
         return location;
+      });
+
+      this.filteredStorageLocations$ = Observable.combineLatest(
+        Observable.of(this.location.inventory_locations),
+        this.filterSearch$,
+        this.filterStorageOption$
+      ) .map(([locations,searchkey,options]) => {
+
+        if (searchkey && searchkey!='') {
+          locations = _.reject(locations, (location: any) =>{
+            let key = new RegExp(searchkey, 'i');
+            return !key.test(location.name);
+          });
+        }
+
+        locations = _.filter(locations, options);
+        return locations;
       });
 
       this.locationFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone);
@@ -196,13 +210,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     }
   }
 
-  // checkGoogleStreetImage() {
-  //   if (this.accountService.googleStreetEmptyImage == this.location.image)
-  //     console.log('+');
-  //   else console.log('-');
-  //   debugger;
-  // }
-
   addLocation(data) {
     this.locationService.addLocation(data).subscribe(
       (res: any) => {
@@ -221,6 +228,10 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     });
   }
 
+  changeSearchName(event) {
+    this.filterSearch$.next(event.target.value)
+  }
+
   sortStorageLocations() {
     let sort = null;
     switch (this.sortBy) {
@@ -234,7 +245,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         sort = null;
         break;
     }
-    this.filteredStorageLocations = _.filter(this.location.inventory_locations, sort)
+    this.filterStorageOption$.next(sort);
   }
 
   showAddStorageLocationFrom() {
@@ -250,13 +261,13 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     storageLocation.id = null;
 
     this.location.inventory_locations.push(storageLocation);
-    this.filteredStorageLocations.push(storageLocation);
+    this.filteredStorageLocations$.next(this.location.inventory_locations);
 
     if(this.location.id) {
       this.locationService.updateInventoryLocations(this.location).subscribe(res => {
       },err => {
         _.remove(this.location.inventory_locations, {_id: storageLocation._id});
-        _.remove(this.filteredStorageLocations, {_id: storageLocation._id});
+        this.filteredStorageLocations$.next(this.location.inventory_locations);
       })
     }
 
@@ -271,7 +282,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
 
     let removedStorageLocation: any = _.remove(this.location.inventory_locations, {_id: id});
-    _.remove(this.filteredStorageLocations, {_id: id});
+    this.filteredStorageLocations$.next(this.location.inventory_locations);
 
     if(this.location.id) {
       this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
@@ -279,7 +290,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       }, err => {
         if(removedStorageLocation.length) {
           this.location.inventory_locations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);
-          this.filteredStorageLocations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);
+          this.filteredStorageLocations$.next(this.location.inventory_locations);
         }
       });
     }
