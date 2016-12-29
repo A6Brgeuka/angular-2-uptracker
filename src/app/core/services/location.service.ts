@@ -110,7 +110,8 @@ export class LocationService extends ModelService {
   }
 
   updateInventoryLocations(data) {
-    return this.restangular.one('accounts', data.account_id).all('locations').post({inventory_locations: data.inventory_locations})
+    let location = Object.assign({},{inventory_locations: data.inventory_locations},{id: data.id});
+    return this.restangular.one('accounts', data.account_id).all('locations').post(location)
       .do((res: any) => {
         this.updateCollectionField("inventory_locations",res.data.account.locations);
       });

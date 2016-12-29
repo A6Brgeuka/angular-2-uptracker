@@ -91,7 +91,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.location.formattedAddress = this.location.address.formattedAddress;
 
       this.filteredStorageLocations = _.cloneDeep(this.location.inventory_locations);
-      this.filteredStorageLocations = _.map(this.filteredStorageLocations, (location,index) => {
+      this.filteredStorageLocations = _.map(this.filteredStorageLocations, (location: any,index) => {
         location._id = index + 1;
         return location;
       });
@@ -242,18 +242,20 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
 
     let storageLocation = _.cloneDeep(data);
-    storageLocation._id = this.location.inventory_locations.length;
+    storageLocation._id = this.location.inventory_locations.length + 1;
+    storageLocation.id = null;
+
+    this.location.inventory_locations.push(storageLocation);
+    this.filteredStorageLocations.push(storageLocation);
 
     if(this.location.id) {
-      this.locationService.updateInventoryLocations(this.location).do(res => {
-        this.location.inventory_locations.push(storageLocation);
-        this.filteredStorageLocations.push(storageLocation);
+      this.locationService.updateInventoryLocations(this.location).subscribe(res => {
+      },err => {
+        _.remove(this.location.inventory_locations, {_id: storageLocation._id});
+        _.remove(this.filteredStorageLocations, {_id: storageLocation._id});
       })
     }
-    else {
-      this.location.inventory_locations.push(storageLocation);
-      this.filteredStorageLocations.push(storageLocation);
-    }
+
     this.inventory_location = { name: '', floor_stock: false};
   }
 
@@ -264,16 +266,15 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   deleteStorageLocationFunc(id) {
     this.location.account_id = this.userService.selfData.account_id;
 
+    let removedStorageLocation: any = _.remove(this.location.inventory_locations, {_id: id});
+    _.remove(this.filteredStorageLocations, {_id: id});
+
     if(this.location.id) {
       this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
-        _.remove(this.location.inventory_locations, {_id: id});
-        _.remove(this.filteredStorageLocations, {_id: id});
+        this.location.inventory_locations.splice(removedStorageLocation._id - 1,removedStorageLocation);
+        this.filteredStorageLocations.splice(removedStorageLocation._id - 1,removedStorageLocation);
         this.dismissModal();
       });
-    }
-    else {
-      _.remove(this.location.inventory_locations, {_id: id});
-      _.remove(this.filteredStorageLocations, {_id: id});
     }
   }
 
