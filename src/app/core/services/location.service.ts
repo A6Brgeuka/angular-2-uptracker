@@ -113,7 +113,7 @@ export class LocationService extends ModelService {
     let location = Object.assign({},{inventory_locations: data.inventory_locations},{id: data.id});
     return this.restangular.one('accounts', data.account_id).all('locations').post(location)
       .do((res: any) => {
-        this.updateCollectionField("inventory_locations",res.data.account.locations);
+        this.updateCollection(res.data.account.locations);
       });
   }
 
@@ -152,7 +152,7 @@ export class LocationService extends ModelService {
   updateCollectionField(field, data){
     let locations = this.collection;
     locations[field] = data;
-    this.updateSelfData(locations);
+    this.updateCollection(locations);
   }
 
   updateSelfData(data) {
