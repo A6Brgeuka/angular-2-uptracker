@@ -39,12 +39,11 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public comment: any = {};
 
   public variants = [];
-  public variants$ = new BehaviorSubject([]);
-  public filterSelectOption$ = new BehaviorSubject({});
-  public filterName$ = new BehaviorSubject();
-  public filterPrice$ = new BehaviorSubject();
+  public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
+  public filterSelectOption$: BehaviorSubject<any> = new BehaviorSubject({});
+  public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public filterPrice$ = new BehaviorSubject(null);
   public filteredVariants$;
-  public variantsNotFiltered = [];
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -116,12 +115,12 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         _.forEach(this.variationArrs, (value,key) => {
           this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
         });
-        this.variantsNotFiltered = _.cloneDeep(this.variants);
 
 
         this.product.comments = data.comments || [];
-        this.product.comments.map(item => {
-          item.body = item.body.replace(/(?:\r\n|\r|\n)/g, "<br />");
+        this.product.comments.map((item: any) => {
+          let regKey = new RegExp('\n,\r,\r\n','g');
+          item.body = item.body.replace(regKey, "<br />");
           return item;
         })
       })
@@ -142,10 +141,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   closeModal(data){
     this.dialog.close(data);
-  }
-
-  filterVariants() {
-    this.variants = _.filter(this.variantsNotFiltered,this.variation)
   }
 
   checkFilterValue(event) {

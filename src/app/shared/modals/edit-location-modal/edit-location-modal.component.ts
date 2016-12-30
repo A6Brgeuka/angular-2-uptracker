@@ -112,7 +112,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.filterSearch$,
       this.filterStorageOption$
     )
-      .map(([locations,searchkey,options]) => {
+      .map(([locations,searchkey,options]: any) => {
 
       if (searchkey && searchkey!='') {
         locations = _.reject(locations, (location: any) =>{
