@@ -290,7 +290,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
     if(this.location.id) {
       this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
-        this.dismissModal();
       }, err => {
         if(removedStorageLocation.length) {
           this.location.inventory_locations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);
