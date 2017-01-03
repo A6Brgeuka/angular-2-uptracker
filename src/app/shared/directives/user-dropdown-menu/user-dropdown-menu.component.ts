@@ -6,6 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { EditUserModal } from '../../modals/index';
 import { UserService } from '../../../core/services/index';
+import { ModalWindowService } from "../../../core/services/modal-window.service";
 
 @Component({
   selector: 'user-dropdown-menu',
@@ -27,6 +28,7 @@ export class UserDropdownMenuDirective implements OnInit {
       vcRef: ViewContainerRef,
       overlay: Overlay,
       public modal: Modal,
+      private modalWindowService: ModalWindowService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -52,7 +54,7 @@ export class UserDropdownMenuDirective implements OnInit {
   }
 
   editUserModal(){
-    this.modal.open(EditUserModal,  overlayConfigFactory({user: this.user}, BSModalContext));
+    this.modal.open(EditUserModal,  this.modalWindowService.overlayConfigFactoryWithParams({user: this.user}));
   }
 
   logOut(){
