@@ -110,7 +110,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
           }
           else {
             this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : this.user.locations[i].checked || false;
-            this.user.locations[i].checked = this.locationArr[i].checkbox;
+            this.user.locations[i] = {location_id: this.locationArr[i].id, checked: this.locationArr[i].checkbox};
           }
         }
 
