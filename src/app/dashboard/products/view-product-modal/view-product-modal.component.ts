@@ -123,7 +123,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
           item.body = item.body.replace(regKey, "<br />");
           return item;
         });
-        this.product.comments = _.orderBy(this.product.comments, ['created_at'],['desc'])
+        this.product.comments = _.orderBy(this.product.comments, item => { return new Date(item.created_at)},['desc'])
 
       })
   }
@@ -219,7 +219,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       );
     this.productService.addProductComment(this.comment).subscribe(res => {
       this.comment.body = null;
-      this.product.comments.push(res.data)
+      this.product.comments.unshift(res.data)
     });
   }
 
