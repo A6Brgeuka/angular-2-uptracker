@@ -49,7 +49,7 @@ export class ModalWindowService {
     this.saveScrollPosition();
     this.overlay.defaultViewContainer = vcRef;
     this.modal
-        .open(modal,  overlayConfigFactory(data, BSModalContext))
+      .open(modal,  overlayConfigFactory(data, BSModalContext))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {
@@ -63,5 +63,12 @@ export class ModalWindowService {
               }
           );
         });
+  }
+
+  overlayConfigFactoryWithParams(object) {
+    if(!object.keyboard) {
+      Object.assign(object,{keyboard: []})
+    }
+    return overlayConfigFactory(object, BSModalContext)
   }
 }

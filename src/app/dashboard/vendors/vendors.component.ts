@@ -65,7 +65,7 @@ export class VendorsComponent implements OnInit {
   }
 
   viewVendorModal(vendor = null){
-    let data = { vendor: vendor };
+    let data = { vendor: vendor, keyboard: [] };
     this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
   }
   
@@ -82,7 +82,7 @@ export class VendorsComponent implements OnInit {
     }
 
 
-    let data = { vendor: accountVendors };
+    let data = { vendor: accountVendors, keyboard: [] };
     this.modalWindowService.customModal(this.vcRef, EditVendorModal, data);
   }
 

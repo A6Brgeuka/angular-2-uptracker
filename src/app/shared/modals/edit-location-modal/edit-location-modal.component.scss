@@ -37,6 +37,13 @@ $tealish: #33c6d9;
 
   .uptracker-form {
 
+    .add-storage-form {
+
+      .add-storage-form-item {
+        margin-bottom: 10px;
+      }
+    }
+
     .checkbox {
       .checkebox-input:not(:checked) + label:before {
         border-color: #d6d6d6;

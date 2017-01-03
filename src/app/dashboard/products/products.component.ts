@@ -11,6 +11,7 @@ import { EditProductModal } from './edit-product-modal/edit-product-modal.compon
 import { ProductFilterModal } from './product-filter-modal/product-filter-modal.component';
 import { RequestProductModal } from './request-product-modal/request-product-modal.component';
 import { ProductService } from '../../core/services/index';
+import { ModalWindowService } from "../../core/services/modal-window.service";
 
 @Component({
   selector: 'app-products',
@@ -29,7 +30,8 @@ export class ProductsComponent implements OnInit {
       vcRef: ViewContainerRef,
       overlay: Overlay,
       public modal: Modal,
-      private productService: ProductService
+      private productService: ProductService,
+      private modalWindowService: ModalWindowService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -73,7 +75,7 @@ export class ProductsComponent implements OnInit {
 
   viewProductModal(product){
     this.modal
-        .open(ViewProductModal,  overlayConfigFactory({ product: product }, BSModalContext))
+        .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({ product: product }))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {
@@ -85,7 +87,7 @@ export class ProductsComponent implements OnInit {
   }
 
   editProductModal(product = null){
-    this.modal.open(EditProductModal,  overlayConfigFactory({ product: product }, BSModalContext));
+    this.modal.open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({ product: product }));
   }
 
   searchFilter(event){
@@ -101,7 +103,7 @@ export class ProductsComponent implements OnInit {
 
   showFiltersModal(){
     this.modal
-        .open(ProductFilterModal,  overlayConfigFactory({}, BSModalContext))
+        .open(ProductFilterModal,  this.modalWindowService.overlayConfigFactoryWithParams({}))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {
@@ -114,7 +116,7 @@ export class ProductsComponent implements OnInit {
 
   requestProduct(){
     this.modal
-        .open(RequestProductModal,  overlayConfigFactory({}, BSModalContext))
+        .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {

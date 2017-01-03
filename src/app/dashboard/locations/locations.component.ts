@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { EditLocationModal } from '../../shared/modals/index';
 import { ViewLocationModal } from './view-location-modal/view-location-modal.component';
 import { UserService, AccountService } from '../../core/services/index';
+import { ModalWindowService } from "../../core/services/modal-window.service";
 
 @Component({
   selector: 'app-locations',
@@ -21,7 +22,7 @@ export class LocationsComponent implements OnInit {
   public searchKey: string = null;
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
-  private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  private sortBy$: any = new BehaviorSubject(null);
   public total: number;
   public locations$: Observable<any>;
 
@@ -30,7 +31,8 @@ export class LocationsComponent implements OnInit {
       overlay: Overlay,
       public modal: Modal,
       private userService: UserService,
-      private accountService: AccountService
+      private accountService: AccountService,
+      private modalWindowService: ModalWindowService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -61,7 +63,7 @@ export class LocationsComponent implements OnInit {
 
   viewLocationModal(location = null){
     this.modal
-        .open(ViewLocationModal,  overlayConfigFactory({ location: location }, BSModalContext))
+        .open(ViewLocationModal,   this.modalWindowService.overlayConfigFactoryWithParams({ location: location }))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {
@@ -73,7 +75,7 @@ export class LocationsComponent implements OnInit {
   }
 
   editLocationModal(location = null){
-    this.modal.open(EditLocationModal,  overlayConfigFactory({ location: location }, BSModalContext));
+    this.modal.open(EditLocationModal,  this.modalWindowService.overlayConfigFactoryWithParams({ location: location }));
   }
 
   locationsSort(event){

@@ -4,6 +4,7 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import { ProductModal } from './product-modal/product-modal.component';
+import { ModalWindowService } from "../../core/services/modal-window.service";
 // import { UserModel } from '../../models/index';
 // import { UserService } from '../../core/services/index';
 
@@ -19,7 +20,8 @@ export class ProductsComponent implements OnInit {
       private router: Router,
       vcRef: ViewContainerRef,
       overlay: Overlay,
-      public modal: Modal
+      public modal: Modal,
+      private modalWindowService: ModalWindowService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -28,7 +30,7 @@ export class ProductsComponent implements OnInit {
   }
 
   viewProductModal(){
-    this.modal.open(ProductModal,  overlayConfigFactory(BSModalContext));
+    this.modal.open(ProductModal, this.modalWindowService.overlayConfigFactoryWithParams({ location: location }));
   }
   
   goBack(){

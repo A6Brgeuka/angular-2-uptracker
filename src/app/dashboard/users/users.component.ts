@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { ViewUserModal } from './view-user-modal/view-user-modal.component';
 import { EditUserModal } from '../../shared/modals/index';
 import { UserService, AccountService } from '../../core/services/index';
+import { ModalWindowService } from "../../core/services/modal-window.service";
 
 
 @Component({
@@ -30,7 +31,8 @@ export class UsersComponent implements OnInit {
       overlay: Overlay,
       public modal: Modal,
       public userService: UserService,
-      private accountService: AccountService
+      private accountService: AccountService,
+      private modalWindowService: ModalWindowService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -70,7 +72,7 @@ export class UsersComponent implements OnInit {
 
   viewUserModal(user = null){
     this.modal
-        .open(ViewUserModal,  overlayConfigFactory({ user: user}, BSModalContext))
+        .open(ViewUserModal, this.modalWindowService.overlayConfigFactoryWithParams({ user: user}))
         .then((resultPromise)=>{
           resultPromise.result.then(
               (res) => {
@@ -82,7 +84,7 @@ export class UsersComponent implements OnInit {
   }
 
   editUserModal(user = null){
-    this.modal.open(EditUserModal,  overlayConfigFactory({ user: user }, BSModalContext));
+    this.modal.open(EditUserModal, this.modalWindowService.overlayConfigFactoryWithParams({ user: user}));
   }
 
   usersFilter(event){
