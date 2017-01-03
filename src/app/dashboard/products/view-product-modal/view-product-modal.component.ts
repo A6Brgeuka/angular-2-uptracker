@@ -27,7 +27,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   private subscribers: any = {};
   context: ViewProductModalContext;
   private product: any;
-  public variation: any = { };
+  public variation: any = {};
   public variationArrs = {
     package_type: [],
     unit_type: [],
@@ -95,7 +95,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         }
         variants = _.filter(variants,filterSelectOption);
         return variants;
-    })
+    });
 
 
     this.subscribers.getProductSubscription = this.productService.getProduct(this.product.id)
@@ -122,7 +122,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
           let regKey = new RegExp('\n,\r,\r\n','g');
           item.body = item.body.replace(regKey, "<br />");
           return item;
-        })
+        });
+        this.product.comments = _.orderBy(this.product.comments, ['created_at'],['desc'])
+
       })
   }
 
