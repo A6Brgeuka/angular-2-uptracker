@@ -65,9 +65,11 @@
     <div class="item row" *ngFor="let storagelocation of filteredStorageLocations$ | async" >
       <div class="col m9 s12 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock</span></div>
       <div class="col m3 s4">
-        <button type="button" (click)="deleteStorageLocation(storagelocation._id)"
-                class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
-        </button>
+        <div class="delete-btn-wrapper">
+          <button type="button" (click)="deleteStorageLocation(storagelocation._id)"
+                  class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
