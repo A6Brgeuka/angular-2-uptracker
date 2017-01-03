@@ -21,7 +21,7 @@
           <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }" (click)="viewUserModal(user)"></div>
           <div class="info">
             <div class="ttl" (click)="viewUserModal(user)">{{user.name}}</div>
-            <div class="send-msg" (click)="sendMessageToUser(user)"></div>
+            <div class="send-msg" [class.hidden]="user.id==userService.selfData.id" (click)="sendMessageToUser(user)"></div>
             <div class="edit" (click)="editUserModal(user)"></div>
           </div>
         </div>

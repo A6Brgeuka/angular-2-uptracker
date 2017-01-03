@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit {
       vcRef: ViewContainerRef,
       overlay: Overlay,
       public modal: Modal,
-      private userService: UserService,
+      public userService: UserService,
       private accountService: AccountService
   ) {
     overlay.defaultViewContainer = vcRef;
