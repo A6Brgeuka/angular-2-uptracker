@@ -73,9 +73,8 @@ export class ChangePasswordUserModal implements OnInit, CloseGuard, ModalCompone
       return false;
     }
     if(this.changePass.password && this.changePass.password_confirmation) {
-      debugger;
-      this.accountService.changeUserPassword(this.user.id, this.changePass).subscribe(res => {
-        debugger;
+      this.subscribers.changePasswordSubscriber = this.accountService.changeUserPassword(this.user.id, this.changePass).subscribe(res => {
+        this.dismissModal();
       })
     }
 

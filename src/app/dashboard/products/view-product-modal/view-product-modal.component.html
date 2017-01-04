@@ -203,7 +203,7 @@
 
       <div class="comments">
         <ul class="collection">
-          <li class="collection-item avatar" *ngFor="let comment of product.comments">
+          <li class="collection-item avatar" *ngFor="let comment of filteredComments$ | async">
             <img [src]="comment.author_avatar || ''" class="responsive-img circle author-avatar">
             <span class="title">{{comment.author_name}}</span>
             <p [innerHtml]="comment.body"></p>

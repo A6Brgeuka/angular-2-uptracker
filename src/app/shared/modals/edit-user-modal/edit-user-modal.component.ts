@@ -323,14 +323,13 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
 
   changePassword() {
     this.modal
-      .open(ChangePasswordUserModal, this.modalWindowService.overlayConfigFactoryWithParams({user: this.user, dialogClass: "change-password-modal"}))
+      .open(ChangePasswordUserModal, this.modalWindowService.overlayConfigFactoryWithParams({user: this.user}))
       .then((resultPromise)=>{
         resultPromise.result.then(
           (res) => {
-            debugger;
-            this.dismissModal();
           },
-          (err)=>{}
+          (err)=>{
+          }
         );
       });
   }

@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { ProductModel } from '../../../models/index';
@@ -44,6 +44,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
   public filterPrice$ = new BehaviorSubject(null);
   public filteredVariants$;
+  public comments$ = new BehaviorSubject([]);
+  public addToComments$ = new Subject();
+  public filteredComments$;
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -72,6 +75,24 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     //       return item;
     //     })
     // });
+    let addToComments$ = this.addToComments$.switchMap((item: any) => {
+      return this.comments$.first().map(collection => {
+        collection.unshift(item);
+        return collection;
+      })
+    });
+
+    this.filteredComments$ = Observable.merge(
+      this.comments$,
+      addToComments$
+    ).map(comments => {
+      let filteredComments = _.map(comments, (item: any) => {
+        let regKey = new RegExp('\n,\r,\r\n','g');
+        item.body = item.body.replace(regKey, "<br />");
+        return item;
+      });
+      return _.orderBy(filteredComments, (item: any) => { return new Date(item.created_at)},['desc'])
+    });
 
     this.filteredVariants$ = Observable.combineLatest(
       this.variants$,
@@ -104,7 +125,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       .subscribe(data => {
         this.variants = data.variants;
 
-        this.variants$.next(data.variants);
+        this.variants$.next(data.variants); // update variants
+        this.comments$.next(data.comments); // update comments
 
 
         _.each(this.variants, (variant: any)=> {
@@ -219,7 +241,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       );
     this.productService.addProductComment(this.comment).subscribe(res => {
       this.comment.body = null;
-      this.product.comments.unshift(res.data)
+      this.addToComments$.next(res.data)
+      // this.product.comments.unshift(res.data)
     });
   }
 
