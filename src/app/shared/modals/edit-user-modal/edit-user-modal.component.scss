@@ -1,3 +1,5 @@
+$tealish: #33c6d9;
+
 .tabs{
   margin:-10px 0 29px;
 }
@@ -110,6 +112,12 @@
   padding:15px 0 0;
 }
 
+.change-pass-btn {
+  button {
+    background-color: $tealish;
+    width: 100%;
+  }
+}
 
 
 .buttons{

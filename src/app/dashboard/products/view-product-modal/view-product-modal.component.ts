@@ -123,7 +123,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
           item.body = item.body.replace(regKey, "<br />");
           return item;
         });
-        this.product.comments = _.orderBy(this.product.comments, item => { return new Date(item.created_at)},['desc'])
+        this.product.comments = _.orderBy(this.product.comments, (item: any) => { return new Date(item.created_at)},['desc'])
 
       })
   }

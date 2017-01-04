@@ -11,6 +11,9 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
+import { AgmCoreModule } from "angular2-google-maps/core";
+import { APP_DI_CONFIG } from "../app.config";
+import { GooglePlacesInputModule } from "./directives";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -31,12 +34,12 @@ import {
 // modals
 import { EditUserModal } from './modals/edit-user-modal/edit-user-modal.component';
 import { EditLocationModal } from './modals/edit-location-modal/edit-location-modal.component';
-import { AgmCoreModule } from "angular2-google-maps/core";
-import { APP_DI_CONFIG } from "../app.config";
-import { GooglePlacesInputModule } from "./directives";
+import { ChangePasswordUserModal } from "./modals/change-password-user-modal/change-password-user-modal.component";
+
 let modalsArr = [
   EditUserModal,
-  EditLocationModal
+  EditLocationModal,
+  ChangePasswordUserModal
 ];
 
 

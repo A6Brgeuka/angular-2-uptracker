@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
@@ -15,6 +15,8 @@ import {
   ModalWindowService
 } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
+import { ViewUserModal } from "../../../dashboard/users/view-user-modal/view-user-modal.component";
+import { ChangePasswordUserModal } from "../change-password-user-modal/change-password-user-modal.component";
 
 export class EditUserModalContext extends BSModalContext {
   public user: any;
@@ -70,6 +72,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
               private phoneMaskService: PhoneMaskService,
               private toasterService: ToasterService,
               private fileUploadService: FileUploadService,
+              private modal: Modal,
               public modalWindowService: ModalWindowService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -316,5 +319,19 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
       this.dismissModal();
     });
+  }
+
+  changePassword() {
+    this.modal
+      .open(ChangePasswordUserModal, this.modalWindowService.overlayConfigFactoryWithParams({user: this.user, dialogClass: "change-password-modal"}))
+      .then((resultPromise)=>{
+        resultPromise.result.then(
+          (res) => {
+            debugger;
+            this.dismissModal();
+          },
+          (err)=>{}
+        );
+      });
   }
 }

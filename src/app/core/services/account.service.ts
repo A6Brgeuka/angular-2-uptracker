@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { AppConfig, APP_CONFIG } from '../../app.config';
 import { Http } from "@angular/http";
+import { ToasterService } from "./toaster.service";
 
 @Injectable()
 @Subscribers({
@@ -46,6 +47,7 @@ export class AccountService extends ModelService{
   constructor(
     public injector: Injector,
     public userService: UserService,
+    public toasterService: ToasterService,
     public restangular: Restangular,
     public http: Http
   ) {
@@ -252,6 +254,13 @@ export class AccountService extends ModelService{
           });
           this.updateSelfData(account);
         });
+  }
+
+  changeUserPassword(id, passObj) {
+    return this.restangular.one('users',id).post("password",passObj)
+      .do(res => {
+        this.toasterService.pop("",res.message);
+      })
   }
 
   putAccounting(data: any){

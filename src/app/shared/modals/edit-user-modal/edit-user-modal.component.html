@@ -50,6 +50,11 @@
             </div>
           </div>
         </div>
+        <div class="row" *ngIf="user.id && user.id==userService.selfData.id">
+          <div class="col s12 change-pass-btn">
+            <button class="btn btn-floating" (click)="changePassword(); $event.preventDefault()">Change Password</button>
+          </div>
+        </div>
       </div>
       <div class="col s12 m8 input second-column">
         <div class="row">
