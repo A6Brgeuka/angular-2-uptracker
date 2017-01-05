@@ -8,6 +8,8 @@ import { LocationsModule } from './locations/locations.module';
 import { UsersModule } from './users/users.module';
 import { VendorsModule } from './vendors/vendors.module';
 import { ProductsModule } from './products/products.module';
+import { InventoryModule } from "./inventory/inventory.module";
+import { TranseferModule } from "./transfer/transfer.module";
 
 // for lazy loading
 import { routing } from './index';
@@ -24,7 +26,9 @@ import { routing } from './index';
     LocationsModule,
     UsersModule,
     VendorsModule,
-    ProductsModule
+    ProductsModule,
+    InventoryModule,
+    TranseferModule
   ],
   providers: []
 })
