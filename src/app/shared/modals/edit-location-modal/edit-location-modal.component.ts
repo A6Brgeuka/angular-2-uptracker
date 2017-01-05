@@ -17,6 +17,7 @@ import {
 } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
+import { InventoryLocationModel } from "../../../models/inventory-location.model";
 
 export class EditLocationModalContext extends BSModalContext {
   public location: any;
@@ -50,7 +51,11 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public inventory_location: any = { name: '', floor_stock: false};
   private locationToDelete = null;
 
-
+  // setting default storage locations when creating new one location
+  public defaultStorageLocations = [
+    new InventoryLocationModel({name: "Working Stock", floor_stock: true, _id: 1}),
+    new InventoryLocationModel({name: "Back Stock", floor_stock: false, _id: 2})
+  ];
   public filterSearch$: any = new BehaviorSubject(null);
   public filterStorageOption$: any = new BehaviorSubject({});
   public storageLocations$ = new BehaviorSubject([]);
@@ -83,7 +88,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
   ngOnInit() {
     let locationData = this.context.location || {};
+
+    // set default storage locations if no one get from context
+    locationData.inventory_locations = locationData.inventory_locations ? locationData.inventory_locations : this.defaultStorageLocations;
+
     this.location = new LocationModel(locationData);
+
     if (this.context.location) {
       this.location.street_1 = this.location.address.street_1;
       this.location.street_2 = this.location.address.street_2;
@@ -105,6 +115,9 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
       this.locationFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
+    }
+    else {
+      this.storageLocations$.next(this.location.inventory_locations);
     }
 
     this.filteredStorageLocations$ = Observable.combineLatest(
