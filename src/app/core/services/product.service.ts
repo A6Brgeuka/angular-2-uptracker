@@ -130,7 +130,6 @@ export class ProductService extends ModelService {
 
   deleteProductComment(id) {
     return this.restangular.one('comment',id).remove()
-
   }
 
   // getAccountVendors(){

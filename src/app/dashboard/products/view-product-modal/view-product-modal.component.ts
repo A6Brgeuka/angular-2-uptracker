@@ -241,7 +241,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         "object_id": this.product.id
       }
       );
-    this.productService.addProductComment(this.comment).subscribe(res => {
+    this.subscribers.addProductSubscriber = this.productService.addProductComment(this.comment).subscribe(res => {
       this.comment.body = null;
       this.addToComments$.next(res.data)
       // this.product.comments.unshift(res.data)
@@ -254,7 +254,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   }
 
   deleteCommentFunc(id) {
-    this.productService.deleteProductComment(id)
+    this.subscribers.deleteProductSubscriber = this.productService.deleteProductComment(id).subscribe(res => {
+      debugger;
+    })
   }
 
   // editVendor(vendor = null){
