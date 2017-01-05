@@ -203,6 +203,9 @@
             <span class="title">{{comment.author_name}}</span>
             <p [innerHtml]="comment.body"></p>
             <span class="secondary-content">{{comment.created_at | date}}</span>
+            <div class="delete-comment" (click)="deleteComment(comment)">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
           </li>
         </ul>
       </div>

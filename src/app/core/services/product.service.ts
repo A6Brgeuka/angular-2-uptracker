@@ -128,6 +128,11 @@ export class ProductService extends ModelService {
     return this.restangular.all('comments').post(comment)
   }
 
+  deleteProductComment(id) {
+    return this.restangular.one('comment',id).remove()
+
+  }
+
   // getAccountVendors(){
   //   let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
   //   if (!vendorsLoaded) {

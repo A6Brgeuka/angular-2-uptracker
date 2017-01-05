@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { ProductModel } from '../../../models/index';
 import { UserService, AccountService } from '../../../core/services/index';
 import { ProductService } from "../../../core/services/product.service";
+import { ModalWindowService } from "../../../core/services/modal-window.service";
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -54,7 +55,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       public dialog: DialogRef<ViewProductModalContext>,
       public userService: UserService,
       public accountService: AccountService,
-      public productService: ProductService
+      public productService: ProductService,
+      public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -244,6 +246,15 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       this.addToComments$.next(res.data)
       // this.product.comments.unshift(res.data)
     });
+  }
+
+  deleteComment(comment) {
+    this.modalWindowService.confirmModal('Delete Comment?', 'Are you sure you want to delete this comment?', this.deleteCommentFunc.bind(this, comment.id));
+
+  }
+
+  deleteCommentFunc(id) {
+    this.productService.deleteProductComment(id)
   }
 
   // editVendor(vendor = null){
