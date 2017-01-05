@@ -59,57 +59,57 @@ $tealish: #33c6d9;
         margin: 0;
       }
     }
-
-    .filter {
-      min-height: 30px;
-
-      .filter-item {
-        margin-bottom: 10px;
-      }
-
-      .input {
-        position: relative;
-        margin-bottom: 0;
-
-        input {
-          font-size: 12px;
-          height: 30px;
-          margin-top: 0;
-          box-sizing: border-box;
-          padding-left: 8px;
-        }
-      }
-
-      .select {
-        height: 30px;
-
-        .select-wrapper input.select-dropdown {
-          font-size: 12px;
-          height: 30px;
-          border-color: #d6d6d6 !important;
-        }
-
-        .select-wrapper .dropdown-content {
-          margin: 0;
-
-          li span {
-            font-size: 12px;
-            line-height: 30px;
-          }
-        }
-      }
-
-      .uptracker-form-btn {
-        font-size: 12px;
-        height: 30px;
-        width: 100%;
-        background: $tealish;
-        color: #fff;
-        padding-left: 5px;
-        padding-right: 5px;
-
-      }
-    }
+    //
+    //.filter {
+    //  min-height: 30px;
+    //
+    //  .filter-item {
+    //    margin-bottom: 10px;
+    //  }
+    //
+    //  .input {
+    //    position: relative;
+    //    margin-bottom: 0;
+    //
+    //    input {
+    //      font-size: 12px;
+    //      height: 30px;
+    //      margin-top: 0;
+    //      box-sizing: border-box;
+    //      padding-left: 8px;
+    //    }
+    //  }
+    //
+    //  .select {
+    //    height: 30px;
+    //
+    //    .select-wrapper input.select-dropdown {
+    //      font-size: 12px;
+    //      height: 30px;
+    //      border-color: #d6d6d6 !important;
+    //    }
+    //
+    //    .select-wrapper .dropdown-content {
+    //      margin: 0;
+    //
+    //      li span {
+    //        font-size: 12px;
+    //        line-height: 30px;
+    //      }
+    //    }
+    //  }
+    //
+    //  .uptracker-form-btn {
+    //    font-size: 12px;
+    //    height: 30px;
+    //    width: 100%;
+    //    background: $tealish;
+    //    color: #fff;
+    //    padding-left: 5px;
+    //    padding-right: 5px;
+    //
+    //  }
+    //}
   }
 
   .uptracker-form-btn {

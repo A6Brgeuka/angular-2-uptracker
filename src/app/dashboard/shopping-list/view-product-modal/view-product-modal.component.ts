@@ -10,7 +10,6 @@ import { ProductModel } from '../../../models/index';
 import { UserService, AccountService } from '../../../core/services/index';
 import { ProductService } from "../../../core/services/product.service";
 import { ModalWindowService } from "../../../core/services/modal-window.service";
-import { ToasterService } from "../../../core/services/toaster.service";
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -48,7 +47,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public filteredVariants$;
   public comments$ = new BehaviorSubject([]);
   public addToComments$ = new Subject();
-  public deleteFromComments$ = new Subject();
   public filteredComments$;
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
@@ -58,8 +56,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       public userService: UserService,
       public accountService: AccountService,
       public productService: ProductService,
-      public modalWindowService: ModalWindowService,
-      public toasterService: ToasterService
+      public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -87,17 +84,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       })
     });
 
-    let deleteFromComments$ = this.deleteFromComments$.switchMap((id: any) => {
-      return this.comments$.first().map(collection => {
-        _.remove(collection, {id: id});
-        return collection;
-      })
-    });
-
     this.filteredComments$ = Observable.merge(
       this.comments$,
-      addToComments$,
-      deleteFromComments$
+      addToComments$
     ).map(comments => {
       let filteredComments = _.map(comments, (item: any) => {
 
@@ -271,8 +260,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   deleteCommentFunc(id) {
     this.subscribers.deleteProductSubscriber = this.productService.deleteProductComment(id).subscribe(res => {
-      this.deleteFromComments$.next(id);
-      this.toasterService.pop("",res.message)
+      debugger;
     })
   }
 

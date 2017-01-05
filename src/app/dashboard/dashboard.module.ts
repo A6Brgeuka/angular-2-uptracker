@@ -10,6 +10,7 @@ import { VendorsModule } from './vendors/vendors.module';
 import { ProductsModule } from './products/products.module';
 import { InventoryModule } from "./inventory/inventory.module";
 import { TranseferModule } from "./transfer/transfer.module";
+import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
 import { routing } from './index';
@@ -28,7 +29,8 @@ import { routing } from './index';
     VendorsModule,
     ProductsModule,
     InventoryModule,
-    TranseferModule
+    TranseferModule,
+    ShoppingListModule
   ],
   providers: []
 })

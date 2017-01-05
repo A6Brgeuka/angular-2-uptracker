@@ -1,0 +1,63 @@
+<div class="products content">
+  <div class="top">
+    <div class="title left">
+      <div class="main-title left">Shopping List</div>
+      <div class="sub-title">{{total}} items</div>
+    </div>
+    <div class="filter uptracker-form clearfix">
+      <div class="left">
+        <div class="left input">
+          <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" class="col s12"
+                 (input)="searchFilter($event)"/>
+        </div>
+        <div class="left select">
+          <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+            <option value="">Sort by</option>
+            <option value="A-Z">A-Z</option>
+            <option value="Z-A">Z-A</option>
+          </select>
+        </div>
+      </div>
+      <div class="right filter-right">
+        <div class="left">
+          <button type="button" (click)="addProduct()" class="uptracker-form-btn waves-light waves-effect">Add
+            Product
+          </button>
+        </div>
+        <div class="left">
+          <div class="right red-helper waves-light waves-effect">
+            <div class="helper"></div>
+          </div>
+          <button type="button" (click)="placeOrder()" class="uptracker-form-btn red-btn waves-light waves-effect">Place
+            Order
+          </button>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="list">
+      <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
+        <div class="inner">
+          <div class="hazardous" *ngIf="product.hazardous"><i class="material-icons">warning</i></div>
+          <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }"
+               (click)="viewProductModal(product)">
+            <div class="trackable" *ngIf="product.trackable">
+              <fa [name]="'barcode'"></fa>
+            </div>
+          </div>
+          <div class="info">
+            <div class="ttl" (click)="viewProductModal(product)">{{product.name}}</div>
+            <div class="bottom">
+              <div class="variations left">{{product.variant_count}} Variations</div>
+              <!--<div class="price right">${{product.priceMin}} - ${{product.priceMax}}</div>-->
+              <div class="price right">{{product.price_range}}</div>
+            </div>
+            <!--<div class="edit" (click)="editProductModal(vendor)"></div>-->
+          </div>
+        </div>
+      </div>
+      <div class="empty item" (click)="editProductModal()"></div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
