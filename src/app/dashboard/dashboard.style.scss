@@ -20,9 +20,14 @@
 :host /deep/ {
   .dashboard{
     min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+    align-content: stretch;
+    //justify-content: flex-end;
+    //flex-shrink: 0;
 
     .left-panel{
-      float:left;
+      //float:left;
       width:70px;
       transition: width .3s ease-out 0.05s;
       overflow: hidden;
@@ -180,7 +185,8 @@
     }
 
     .main-column{
-      margin-left:70px;
+      flex: 1;
+      //margin-left:70px;
       min-height: 100vh;
       background:#f5f6f7;
       overflow:hidden;
@@ -380,7 +386,7 @@
 @media all and (max-width: 480px) {
   .dashboard{
     .main-column {
-      margin-left: 70px;
+      //margin-left: 70px;
 
       .header {
         .select {
