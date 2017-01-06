@@ -201,10 +201,15 @@
           <li class="collection-item avatar" *ngFor="let comment of filteredComments$ | async">
             <img [src]="comment.author_avatar || ''" class="responsive-img circle author-avatar">
             <span class="title">{{comment.author_name}}</span>
+            <span class="date">{{comment.created_at}}</span>
+            <span class="edit-comment ">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </span>
             <p [innerHtml]="comment.body"></p>
-            <span class="secondary-content">{{comment.created_at}}</span>
-            <div class="delete-comment" *ngIf="comment.author_id==userService.selfData.id" (click)="deleteComment(comment)">
-              <i class="fa fa-times" aria-hidden="true"></i>
+            <div class="comment-func-wrapper" *ngIf="comment.author_id==userService.selfData.id" >
+              <div class="delete-comment " (click)="deleteComment(comment)">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </div>
             </div>
           </li>
         </ul>

@@ -156,14 +156,14 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
           this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
         });
 
-
-        this.product.comments = data.comments || [];
-        this.product.comments.map((item: any) => {
-          let regKey = new RegExp('\n,\r,\r\n','g');
-          item.body = item.body.replace(regKey, "<br />");
-          return item;
-        });
-        this.product.comments = _.orderBy(this.product.comments, (item: any) => { return new Date(item.created_at)},['desc'])
+        //
+        // this.product.comments = data.comments || [];
+        // this.product.comments.map((item: any) => {
+        //   let regKey = new RegExp('\n,\r,\r\n','g');
+        //   item.body = item.body.replace(regKey, "<br />");
+        //   return item;
+        // });
+        // this.product.comments = _.orderBy(this.product.comments, (item: any) => { return new Date(item.created_at)},['desc'])
 
       })
   }
