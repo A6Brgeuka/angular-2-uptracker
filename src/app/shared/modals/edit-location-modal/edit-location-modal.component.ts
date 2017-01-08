@@ -265,7 +265,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.filterStorageOption$.next(sort);
   }
 
-  showAddStorageLocationFrom() {
+  showAddStorageLocationForm() {
     this.isStorageLocationFormShow = !this.isStorageLocationFormShow;
     this.inventory_location = { name: '', floor_stock: false};
   }
@@ -289,6 +289,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     }
 
     this.inventory_location = { name: '', floor_stock: false};
+    this.isStorageLocationFormShow = true;
+  }
+
+  editStorageLocation(data){
+    this.isStorageLocationFormShow = false;
+    this.inventory_location = data;
   }
 
   deleteStorageLocation(id) {
