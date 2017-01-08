@@ -33,7 +33,7 @@ export class ModelService {
     let deleteEntity$ = this.deleteEntity$
     .switchMap((id) => {
       return this.entity$.first()
-      .filter(entity => {
+      .filter((entity: any) => {
         return entity && entity.id == id;
       })
       .mapTo(null);

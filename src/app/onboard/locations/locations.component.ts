@@ -32,7 +32,7 @@ export class OnboardLocationsComponent implements OnInit {
         .filter(() => {
           return !this.userService.isGuest();
         })
-        .map(res => res.account.locations);
+        .map((res: any) => res.account.locations);
   }
 
   viewLocationModal(location = null){
