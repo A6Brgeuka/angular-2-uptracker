@@ -283,7 +283,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
       this.location.inventory_locations.push(storageLocation);
     }
-    //
+    // if _id exists edit storage location with current _id
     else {
       this.location.inventory_locations[storageLocation._id - 1] = storageLocation;
     }
