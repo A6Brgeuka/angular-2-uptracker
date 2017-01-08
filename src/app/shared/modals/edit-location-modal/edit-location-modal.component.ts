@@ -275,18 +275,28 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
 
     let storageLocation = _.cloneDeep(data);
-    storageLocation._id = this.location.inventory_locations.length + 1;
-    storageLocation.id = null;
 
-    this.location.inventory_locations.push(storageLocation);
+    // if new storage location push storage location to inventory locations
+    if (!storageLocation._id) {
+      storageLocation._id = this.location.inventory_locations.length + 1;
+      storageLocation.id = null;
+
+      this.location.inventory_locations.push(storageLocation);
+    }
+    //
+    else {
+      this.location.inventory_locations[storageLocation._id - 1] = storageLocation;
+    }
+
     this.storageLocations$.next(this.location.inventory_locations);
 
-    if(this.location.id) {
-      this.locationService.updateInventoryLocations(this.location).subscribe(res => {
-      },err => {
-        _.remove(this.location.inventory_locations, {_id: storageLocation._id});
-        this.storageLocations$.next(this.location.inventory_locations);
-      })
+    if (this.location.id) {
+      this.locationService.updateInventoryLocations(this.location).subscribe(
+          res => {},
+          err => {
+            _.remove(this.location.inventory_locations, {_id: storageLocation._id});
+            this.storageLocations$.next(this.location.inventory_locations);
+          });
     }
 
     this.inventory_location = { name: '', floor_stock: false};
@@ -295,7 +305,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
   editStorageLocation(data){
     this.isStorageLocationFormShow = false;
-    this.inventory_location = data;
+    this.inventory_location = _.cloneDeep(data);
   }
 
   deleteStorageLocation(id) {
