@@ -125,7 +125,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.filterSearch$,
       this.filterStorageOption$
     )
-      .map(([locations,searchkey,options]: any) => {
+      .map(([locations, searchkey, options]: any) => {
 
       if (searchkey && searchkey!='') {
         locations = _.reject(locations, (location: any) =>{
@@ -135,6 +135,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       }
 
       locations = _.filter(locations, options);
+      locations = _.sortBy(locations, 'name');
       return locations;
     });
 
@@ -265,7 +266,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.filterStorageOption$.next(sort);
   }
 
-  showAddStorageLocationFrom() {
+  showAddStorageLocationForm() {
     this.isStorageLocationFormShow = !this.isStorageLocationFormShow;
     this.inventory_location = { name: '', floor_stock: false};
   }
@@ -274,21 +275,37 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
 
     let storageLocation = _.cloneDeep(data);
-    storageLocation._id = this.location.inventory_locations.length + 1;
-    storageLocation.id = null;
 
-    this.location.inventory_locations.push(storageLocation);
+    // if new storage location push storage location to inventory locations
+    if (!storageLocation._id) {
+      storageLocation._id = this.location.inventory_locations.length + 1;
+      storageLocation.id = null;
+
+      this.location.inventory_locations.push(storageLocation);
+    }
+    // if _id exists edit storage location with current _id
+    else {
+      this.location.inventory_locations[storageLocation._id - 1] = storageLocation;
+    }
+
     this.storageLocations$.next(this.location.inventory_locations);
 
-    if(this.location.id) {
-      this.locationService.updateInventoryLocations(this.location).subscribe(res => {
-      },err => {
-        _.remove(this.location.inventory_locations, {_id: storageLocation._id});
-        this.storageLocations$.next(this.location.inventory_locations);
-      })
+    if (this.location.id) {
+      this.locationService.updateInventoryLocations(this.location).subscribe(
+          res => {},
+          err => {
+            _.remove(this.location.inventory_locations, {_id: storageLocation._id});
+            this.storageLocations$.next(this.location.inventory_locations);
+          });
     }
 
     this.inventory_location = { name: '', floor_stock: false};
+    this.isStorageLocationFormShow = true;
+  }
+
+  editStorageLocation(data){
+    this.isStorageLocationFormShow = false;
+    this.inventory_location = _.cloneDeep(data);
   }
 
   deleteStorageLocation(id) {

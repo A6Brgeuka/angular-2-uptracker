@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col m4 s12 filter-item">
           <div class="input">
-            <input type="text" placeholder="Keywork search" [(ngModel)]="searchKey" (input)="changeSearchName($event)"/>
+            <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" (input)="changeSearchName($event)"/>
           </div>
         </div>
         <div class="col l2 offset-l3 m4 s12 filter-item">
@@ -25,36 +25,39 @@
           </div>
         </div>
         <div class="col l3 m4 s12 filter-item">
-          <button type="button" (click)="showAddStorageLocationFrom()"
-                  class="uptracker-form-btn waves-light waves-effect">Add
-            Storage Location
-          </button>
+          <button type="button" (click)="showAddStorageLocationForm()" class="uptracker-form-btn waves-light waves-effect">Add Storage Location </button>
         </div>
       </div>
     </div>
 
-    <form class="add-storage-form row" [hidden]="isStorageLocationFormShow" (submit)="addStorageLocation(inventory_location)">
-      <div class="top">
-        <div class="col m8 s12 add-storage-form-item">
+    <form class="add-storage-form" [hidden]="isStorageLocationFormShow" #addStorageForm="ngForm" (ngSubmit)="addStorageLocation(inventory_location)" novalidate materialize autocomplete="off">
+      <div class="top row">
+        <div class="col m8 s12">
           <div class="input">
-            <input type="text" placeholder="Enter Storage Location Here" required name="name" [(ngModel)]="inventory_location.name"/>
+            <input type="text" class="col s12" placeholder="Enter Storage Location Here" required name="name" [(ngModel)]="inventory_location.name" #storageName="ngModel" />
+            <div class="clearfix"></div>
           </div>
         </div>
-        <div class="col m2 s6 add-storage-form-item">
+        <div class="col m2 s6">
           <button type="submit"
-                  class="not-submit uptracker-form-btn waves-light waves-effect">Add
+                  [class.disabled]="!addStorageForm.form.valid"
+                  [disabled]="!addStorageForm.form.valid"
+                  class="not-submit uptracker-form-btn waves-light waves-effect">
+            <span *ngIf="!inventory_location._id">Add</span>
+            <span *ngIf="inventory_location._id">Save</span>
           </button>
         </div>
-        <div class="col m2 s6 add-storage-form-item">
-          <button type="button" (click)="showAddStorageLocationFrom()"
+        <div class="col m2 s6">
+          <button type="button" (click)="showAddStorageLocationForm()"
                   class="not-submit uptracker-form-btn waves-light waves-effect">Cancel
           </button>
         </div>
+        <div class="clearfix"></div>
       </div>
-      <div>
-        <div class="col s12 checkbox add-storage-form-item">
+      <div class="bottom row">
+        <div class="col s12 checkbox input-checkbox">
           <input type="checkbox" [(ngModel)]="inventory_location.floor_stock" name="floor_stock" class="checkebox-input" id="for-stock-location"/>
-          <label for="for-stock-location">Floor Stock Location</label>
+          <label for="for-stock-location">Floor Stock | Working Stock Location</label>
         </div>
       </div>
     </form>
@@ -63,8 +66,15 @@
   </div>
   <div class="location-storage-list collection">
     <div class="item row" *ngFor="let storagelocation of filteredStorageLocations$ | async" >
-      <div class="col m9 s12 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock</span></div>
-      <div class="col m3 s4">
+      <div class="col m8 s12 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock | Working Stock</span></div>
+      <div class="col m2 s4">
+        <div class="edit-btn-wrapper">
+          <button type="button" (click)="editStorageLocation(storagelocation)"
+                  class="not-submit uptracker-form-btn waves-light waves-effect">Edit
+          </button>
+        </div>
+      </div>
+      <div class="col m2 s4">
         <div class="delete-btn-wrapper">
           <button type="button" (click)="deleteStorageLocation(storagelocation._id)"
                   class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete

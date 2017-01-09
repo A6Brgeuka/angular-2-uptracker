@@ -36,30 +36,20 @@ $tealish: #33c6d9;
   }
 
   .uptracker-form {
-
     .add-storage-form {
+      .top {
+        margin-bottom:0;
 
-      .add-storage-form-item {
-        margin-bottom: 10px;
+        .input, button{
+          margin-bottom: 15px;
+
+          input{
+            margin: 0;
+          }
+        }
       }
     }
 
-    .checkbox {
-      .checkebox-input:not(:checked) + label:before {
-        border-color: #d6d6d6;
-      }
-    }
-
-    .top .input {
-      margin-bottom: 5px;
-
-      input {
-        box-sizing: border-box;
-        padding-left: 8px;
-        margin: 0;
-      }
-    }
-    //
     //.filter {
     //  min-height: 30px;
     //
