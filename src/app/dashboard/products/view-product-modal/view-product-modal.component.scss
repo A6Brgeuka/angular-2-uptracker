@@ -1,88 +1,88 @@
 $tealish: #33c6d9;
 
 :host /deep/ {
-  .inner{
-    .img-container{
-      width:140px;
-      height:140px;
-      border:1px solid #d6d6d6;
+  .inner {
+    .img-container {
+      width: 140px;
+      height: 140px;
+      border: 1px solid #d6d6d6;
 
-      .img{
-        height:100%;
+      .img {
+        height: 100%;
         background-position: center center;
-        background-size:cover;
+        background-size: cover;
       }
     }
 
-    .info-box{
-      .ttl{
-        color:#9a9c9e;
+    .info-box {
+      .ttl {
+        color: #9a9c9e;
       }
 
-      label{
-        color:#9a9c9e;
+      label {
+        color: #9a9c9e;
       }
 
-      .value{
-        font-size:12px;
-        color:#000;
+      .value {
+        font-size: 12px;
+        color: #000;
       }
 
-      span.value{
-        margin-left:5px;
+      span.value {
+        margin-left: 5px;
       }
     }
 
-    .tabs{
+    .tabs {
       overflow-x: hidden;
 
-      .tab{
-        a{
+      .tab {
+        a {
           text-transform: capitalize;
-          padding:0 10px;
+          padding: 0 10px;
         }
       }
     }
 
-    .inner{
+    .inner {
       table {
-        font-size:11px;
+        font-size: 11px;
 
         .price-range-head {
           color: #9a9c9e;
         }
 
-        .uptracker-form{
-          input{
-            margin:0;
-            height:25px;
-            font-size:11px;
+        .uptracker-form {
+          input {
+            margin: 0;
+            height: 25px;
+            font-size: 11px;
             background: transparent;
-            padding-left:8px;
+            padding-left: 8px;
             text-indent: 0;
             text-overflow: ellipsis;
-            color:#9a9c9e;
+            color: #9a9c9e;
 
-            &.empty{
-              color:#d6d6d6;
+            &.empty {
+              color: #d6d6d6;
             }
           }
 
           .select {
             .select-wrapper {
-              &.ng-valid{
-                input.select-dropdown{
-                  border-color:#d6d6d6;
+              &.ng-valid {
+                input.select-dropdown {
+                  border-color: #d6d6d6;
                 }
               }
 
-              &.empty{
-                input.select-dropdown{
-                  color:#d6d6d6;
+              &.empty {
+                input.select-dropdown {
+                  color: #d6d6d6;
                 }
               }
 
-              input.select-dropdown{
+              input.select-dropdown {
                 padding-right: 15px;
               }
 
@@ -100,50 +100,50 @@ $tealish: #33c6d9;
           }
         }
 
-        tr{
-          & > *:first-child{
-            padding-left:0;
-            max-width:inherit;
+        tr {
+          & > *:first-child {
+            padding-left: 0;
+            max-width: inherit;
           }
 
-          & > *:last-child{
-            padding-right:0;
+          & > *:last-child {
+            padding-right: 0;
           }
         }
 
-        th{
-          border:1px solid #d6d6d6;
-          border-width:1px 0;
-          padding:10px 5px;
-          max-width:85px;
+        th {
+          border: 1px solid #d6d6d6;
+          border-width: 1px 0;
+          padding: 10px 5px;
+          max-width: 85px;
         }
 
-        .not-submit{
-          height:25px;
-          width:auto;
-          padding:0 15px;
+        .not-submit {
+          height: 25px;
+          width: auto;
+          padding: 0 15px;
         }
       }
     }
     @media (max-width: 768px) {
-      .img-container{
-        width:110px;
-        height:110px;
+      .img-container {
+        width: 110px;
+        height: 110px;
       }
 
-      #variations{
+      #variations {
         overflow-x: scroll;
 
-        .inner{
+        .inner {
           width: 631px;
         }
       }
     }
 
     @media (max-width: 600px) {
-      .img-container{
-        width:140px;
-        height:140px;
+      .img-container {
+        width: 140px;
+        height: 140px;
         margin: 0 auto;
       }
     }
@@ -174,34 +174,24 @@ $tealish: #33c6d9;
 
           .author-avatar {
             background-color: #F5F6F7;
-            border-colot: #F5F6F7;
+            border-color: #F5F6F7;
             outline: none;
           }
 
-          .comment-func-wrapper {
+          .delete-comment {
+            transition: all 0.2s linear;
             position: absolute;
             right: 0;
             top: 0;
-            font-size: 20px;
-            top: 50%;
-            transform: translate(50%, -50%);
-
-            div {
-              margin-bottom: 10px;
-
-              &:last-child {
-                margin-bottom: 0;
-              }
-            }
-
-            .delete-comment {
-              color: #F1594E;
-              cursor: pointer;
-            }
-
+            font-size: 18px;
+            opacity: 0;
+            color: #F1594E;
+            cursor: pointer;
           }
 
           .edit-comment {
+            transition: all 0.2s linear;
+            opacity: 0;
             color: $tealish;
             cursor: pointer;
           }
@@ -215,6 +205,17 @@ $tealish: #33c6d9;
             font-size: 12px;
             color: #9d9d9d;
             margin-right: 5px;
+          }
+
+          &:hover {
+
+            .edit-comment {
+              opacity: 1;
+            }
+
+            .delete-comment {
+              opacity: 1;
+            }
           }
         }
       }

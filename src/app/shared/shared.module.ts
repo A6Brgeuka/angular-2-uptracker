@@ -35,11 +35,13 @@ import {
 import { EditUserModal } from './modals/edit-user-modal/edit-user-modal.component';
 import { EditLocationModal } from './modals/edit-location-modal/edit-location-modal.component';
 import { ChangePasswordUserModal } from "./modals/change-password-user-modal/change-password-user-modal.component";
+import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal.component";
 
 let modalsArr = [
   EditUserModal,
   EditLocationModal,
-  ChangePasswordUserModal
+  ChangePasswordUserModal,
+  EditCommentModal
 ];
 
 

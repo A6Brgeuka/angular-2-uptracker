@@ -182,19 +182,19 @@
   <div id="comments">
     <div class="inner">
 
-      <div class="uptracker-form">
+      <form class="uptracker-form" (submit)="sendComment()" #commentForm="ngForm" novalidate autocomplete="off">
         <div class="input row textarea-row">
           <div class="label col s12">Add Comment</div>
           <div class="col s10">
             <div class="textarea">
-              <textarea id="comments-textarea" class="materialize-textarea" [(ngModel)]="comment.body"></textarea>
+              <textarea id="comments-textarea" class="validate materialize-textarea" name="comment_body" required #inputComment [(ngModel)]="comment.body"></textarea>
             </div>
           </div>
           <div class="buttons col s2">
-            <button (click)="sendComment()" class="btn white-text waves-effect waves-light">Send</button>
+            <button class="btn white-text waves-effect waves-light" [disabled]="!commentForm.valid">Send</button>
           </div>
         </div>
-      </div>
+      </form>
 
       <div class="comments">
         <ul class="collection">
@@ -202,11 +202,11 @@
             <img [src]="comment.author_avatar || ''" class="responsive-img circle author-avatar">
             <span class="title">{{comment.author_name}}</span>
             <span class="date">{{comment.created_at}}</span>
-            <span class="edit-comment ">
+            <span class="edit-comment" *ngIf="comment.author_id==userService.selfData.id" (click)="editComment(comment)">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </span>
             <p [innerHtml]="comment.body"></p>
-            <div class="comment-func-wrapper" *ngIf="comment.author_id==userService.selfData.id" >
+            <div class="comment-func-wrapper" *ngIf="comment.author_id==userService.selfData.id">
               <div class="delete-comment " (click)="deleteComment(comment)">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </div>

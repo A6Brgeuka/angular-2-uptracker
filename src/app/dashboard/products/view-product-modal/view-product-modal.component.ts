@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
@@ -11,6 +11,7 @@ import { UserService, AccountService } from '../../../core/services/index';
 import { ProductService } from "../../../core/services/product.service";
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { ToasterService } from "../../../core/services/toaster.service";
+import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit-comment-modal.component";
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -49,23 +50,24 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public comments$ = new BehaviorSubject([]);
   public addToComments$ = new Subject();
   public deleteFromComments$ = new Subject();
+  public editCommentComments$ = new Subject();
   public filteredComments$;
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
-  constructor(
-      public dialog: DialogRef<ViewProductModalContext>,
-      public userService: UserService,
-      public accountService: AccountService,
-      public productService: ProductService,
-      public modalWindowService: ModalWindowService,
-      public toasterService: ToasterService
-  ) {
+  constructor(public dialog: DialogRef<ViewProductModalContext>,
+              public userService: UserService,
+              public accountService: AccountService,
+              public productService: ProductService,
+              public modalWindowService: ModalWindowService,
+              public toasterService: ToasterService,
+              private zone: NgZone,
+              private modal: Modal) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.product = this.context.product;
     this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
@@ -94,22 +96,39 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       })
     });
 
+    let editCommentComments$ = this.editCommentComments$.switchMap((commentToUpdate: any) => {
+      return this.comments$.first().map(collection => {
+        return collection.map((comment: any) => {
+          if(comment.id == commentToUpdate.id) {
+            return commentToUpdate
+          }
+          return comment;
+        });
+      })
+    });
+
     this.filteredComments$ = Observable.merge(
       this.comments$,
       addToComments$,
-      deleteFromComments$
+      deleteFromComments$,
+      editCommentComments$
     ).map(comments => {
       let filteredComments = _.map(comments, (item: any) => {
+        if (item.body) {
+          let regKey = new RegExp('(?:\r\n|\r|\n)', 'g');
+          item.body = item.body.replace(regKey, "<br/>"); // adding many lines comment
+        }
 
-        let regKey = new RegExp('\n,\r,\r\n','g');
-        item.body = item.body.replace(regKey, "<br />"); // adding many lines comment
-
-        let date = new Date(item.created_at);
-        item.created_at = date.toDateString();
+        if (item.created_at) {
+          let date = new Date(item.created_at);
+          item.created_at = date.toDateString();
+        }
 
         return item;
       });
-      return _.orderBy(filteredComments, (item: any) => { return new Date(item.created_at)},['desc'])
+      return _.orderBy(filteredComments, (item: any) => {
+        return new Date(item.created_at)
+      }, ['desc'])
     });
 
     this.filteredVariants$ = Observable.combineLatest(
@@ -120,21 +139,21 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     )
       .map(([variants,filterSelectOption,filterName,filterPrice]) => {
 
-        if(filterPrice && filterPrice != "") {
-          variants = _.reject(variants, (variant: any) =>{
+        if (filterPrice && filterPrice != "") {
+          variants = _.reject(variants, (variant: any) => {
             let key = new RegExp(filterPrice, 'i');
             return !key.test(variant.name);
           });
         }
-        if(filterName && filterName != "") {
-          variants = _.reject(variants, (variant: any) =>{
+        if (filterName && filterName != "") {
+          variants = _.reject(variants, (variant: any) => {
             let key = new RegExp(filterName, 'i');
             return !key.test(variant.name);
           });
         }
-        variants = _.filter(variants,filterSelectOption);
+        variants = _.filter(variants, filterSelectOption);
         return variants;
-    });
+      });
 
 
     this.subscribers.getProductSubscription = this.productService.getProduct(this.product.id)
@@ -148,11 +167,11 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
 
         _.each(this.variants, (variant: any)=> {
-          _.forEach(this.variationArrs, (value,key) => {
+          _.forEach(this.variationArrs, (value, key) => {
             this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
           })
         });
-        _.forEach(this.variationArrs, (value,key) => {
+        _.forEach(this.variationArrs, (value, key) => {
           this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
         });
 
@@ -168,7 +187,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       })
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     // this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
     //   this.chooseTabLocation(res);
     //   if (res && res.id != this.primaryLocation.id){
@@ -177,16 +196,16 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     // });
   }
 
-  dismissModal(){
+  dismissModal() {
     this.dialog.dismiss();
   }
 
-  closeModal(data){
+  closeModal(data) {
     this.dialog.close(data);
   }
 
   checkFilterValue(event) {
-    if(event.target.value.length) {
+    if (event.target.value.length) {
       return event.target.value;
     }
   }
@@ -199,7 +218,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.filterPrice$.next(event.target.value.trim())
   }
 
-  changePkg(event){
+  changePkg(event) {
     if (this.checkFilterValue(event)) {
       this.variation.package_type = event.target.value;
     }
@@ -209,7 +228,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.filterSelectOption$.next(this.variation)
   }
 
-  changeUnit(event){
+  changeUnit(event) {
     if (this.checkFilterValue(event)) {
       this.variation.unit_type = event.target.value;
     }
@@ -219,7 +238,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.filterSelectOption$.next(this.variation)
   }
 
-  changeUnitsPkg(event){
+  changeUnitsPkg(event) {
     if (this.checkFilterValue(event)) {
       this.variation.units_per_package = parseInt(event.target.value);
     }
@@ -229,7 +248,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.filterSelectOption$.next(this.variation)
   }
 
-  changeSize(event){
+  changeSize(event) {
     if (this.checkFilterValue(event)) {
       this.variation.size = event.target.value;
     }
@@ -239,7 +258,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.filterSelectOption$.next(this.variation)
   }
 
-  changeMaterial(event){
+  changeMaterial(event) {
     if (this.checkFilterValue(event)) {
       this.variation.material = event.target.value;
     }
@@ -250,18 +269,40 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   }
 
   sendComment() {
+
     Object.assign(this.comment,
       {
         "user_id": this.userService.selfData.id,
         "object_type": "products",
         "object_id": this.product.id
       }
-      );
+    );
     this.subscribers.addProductSubscriber = this.productService.addProductComment(this.comment).subscribe(res => {
-      this.comment.body = null;
-      this.addToComments$.next(res.data)
-      // this.product.comments.unshift(res.data)
+      this.comment = {};
+      this.addToComments$.next(res.data);
     });
+
+  }
+
+  editComment(comment) {
+    let clonedComment = _.cloneDeep(comment);
+    if (clonedComment.body) {
+      let regKey = new RegExp('<br/>', 'g');
+      clonedComment.body = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
+    }
+    this.modal
+      .open(EditCommentModal, this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment}))
+      .then((resultPromise)=> {
+        resultPromise.result.then(
+          (comment) => {
+            this.subscribers.editProductComment = this.productService.editProductComment(comment).subscribe(res => {
+              this.editCommentComments$.next(res.data);
+            })
+          },
+          (err)=> {
+          }
+        );
+      });
   }
 
   deleteComment(comment) {
@@ -272,7 +313,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   deleteCommentFunc(id) {
     this.subscribers.deleteProductSubscriber = this.productService.deleteProductComment(id).subscribe(res => {
       this.deleteFromComments$.next(id);
-      this.toasterService.pop("",res.message)
+      this.toasterService.pop("", res.message)
     })
   }
 

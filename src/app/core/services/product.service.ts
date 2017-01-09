@@ -132,6 +132,11 @@ export class ProductService extends ModelService {
     return this.restangular.one('comments',id).remove()
   }
 
+  editProductComment(comment) {
+    let commentRestangularized = this.restangular.restangularizeElement(null,comment,"comments");
+    return commentRestangularized.put()
+  }
+
   // getAccountVendors(){
   //   let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
   //   if (!vendorsLoaded) {
