@@ -17,12 +17,12 @@
   <div class="users-row">
     <div class="list">
       <div class="item center-align" *ngFor="let user of users$ | async">
-        <div class="inner">
-          <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }" (click)="viewUserModal(user)"></div>
+        <div class="inner" (click)="viewUserModal(user)">
+          <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
           <div class="info">
-            <div class="ttl" (click)="viewUserModal(user)">{{user.name}}</div>
-            <div class="send-msg" [class.hidden]="user.id==userService.selfData.id" (click)="sendMessageToUser(user)"></div>
-            <div class="edit" (click)="editUserModal(user)"></div>
+            <div class="ttl" >{{user.name}}</div>
+            <div class="send-msg" [class.hidden]="user.id==userService.selfData.id" (click)="sendMessageToUser(user); $event.stopPropagation()"></div>
+            <div class="edit" (click)="editUserModal(user); $event.stopPropagation()"></div>
           </div>
         </div>
       </div>

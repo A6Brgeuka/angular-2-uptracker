@@ -80,7 +80,7 @@
                       materialize="material_select"
                       (change)="changePkg($event)"
                       [materializeSelectOptions]="variationArrs.package_type">
-                <option value="">Pkg Type</option>
+                <option value="">Pkg</option>
                 <option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>
               </select>
             </div>
@@ -93,7 +93,7 @@
                       materialize="material_select"
                       (change)="changeUnit($event)"
                       [materializeSelectOptions]="variationArrs.unit_type">
-                <option value="">Unit Type</option>
+                <option value="">Unit</option>
                 <option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>
               </select>
             </div>
@@ -106,7 +106,7 @@
                       materialize="material_select"
                       (change)="changeUnitsPkg($event)"
                       [materializeSelectOptions]="variationArrs.units_per_package">
-                <option value="">Units/pkg.</option>
+                <option value="">Qty</option>
                 <option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}</option>
               </select>
             </div>

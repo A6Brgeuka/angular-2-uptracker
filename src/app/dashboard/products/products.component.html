@@ -32,13 +32,13 @@
     </div>
     <div class="list">
       <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
-        <div class="inner">
+        <div class="inner" (click)="viewProductModal(product)">
           <div class="hazardous" *ngIf="product.hazardous"><i class="material-icons">warning</i></div>
-          <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }" (click)="viewProductModal(product)">
+          <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }" >
             <div class="trackable" *ngIf="product.trackable"><fa [name]="'barcode'"></fa></div>
           </div>
           <div class="info">
-            <div class="ttl" (click)="viewProductModal(product)">{{product.name}}</div>
+            <div class="ttl">{{product.name}}</div>
             <div class="bottom">
               <div class="variations left">{{product.variant_count}} Variations</div>
               <!--<div class="price right">${{product.priceMin}} - ${{product.priceMax}}</div>-->
