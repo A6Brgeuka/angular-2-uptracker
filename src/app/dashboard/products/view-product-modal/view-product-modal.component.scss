@@ -180,10 +180,8 @@ $tealish: #33c6d9;
 
           .delete-comment {
             transition: all 0.2s linear;
-            position: absolute;
-            right: 0;
-            top: 0;
             font-size: 18px;
+            line-height: 18px;
             opacity: 0;
             color: #F1594E;
             cursor: pointer;

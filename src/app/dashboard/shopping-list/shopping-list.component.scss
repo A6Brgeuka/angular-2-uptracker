@@ -72,6 +72,12 @@
           background:#fff;
           cursor:pointer;
           border-radius:5px;
+          padding: 2px;
+
+          &.selected {
+            padding: 0;
+            border: 3px solid #000;
+          }
 
           .hazardous{
             position: absolute;

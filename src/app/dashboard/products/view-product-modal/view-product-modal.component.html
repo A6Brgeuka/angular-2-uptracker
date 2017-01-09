@@ -206,7 +206,7 @@
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </span>
             <p [innerHtml]="comment.body"></p>
-            <div class="comment-func-wrapper" *ngIf="comment.author_id==userService.selfData.id">
+            <div class="secondary-content" *ngIf="comment.author_id==userService.selfData.id">
               <div class="delete-comment " (click)="deleteComment(comment)">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </div>
