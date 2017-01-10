@@ -62,6 +62,17 @@
       <table>
         <tr class="uptracker-form row">
           <th>
+            <div class="checkbox input-checkbox variant-checkbox">
+              <input
+                      type="checkbox"
+                      class="checkbox-input"
+                      [(ngModel)]="variation.checked"
+                      id="variation-checkbox"
+              />
+              <label for="variation-checkbox"></label>
+            </div>
+          </th>
+          <th class="name-heading">
             <div class="input">
               <input
                       type="text"
@@ -124,42 +135,71 @@
               </select>
             </div>
           </th>
-          <th>
-            <div class="price-range-head">
+          <th class="text-heading">
+            <div class="text-head">
               UPC
             </div>
             <!--<div class="select">-->
-              <!--<select-->
-                      <!--[(ngModel)]="variation.material"-->
-                      <!--#material="ngModel"-->
-                      <!--materialize="material_select"-->
-                      <!--(change)="changeMaterial($event)"-->
-                      <!--[materializeSelectOptions]="variationArrs.material">-->
-                <!--<option value="">Material</option>-->
-                <!--<option *ngFor="let item of variationArrs.material" [value]="item">{{item}}</option>-->
-              <!--</select>-->
+            <!--<select-->
+            <!--[(ngModel)]="variation.material"-->
+            <!--#material="ngModel"-->
+            <!--materialize="material_select"-->
+            <!--(change)="changeMaterial($event)"-->
+            <!--[materializeSelectOptions]="variationArrs.material">-->
+            <!--<option value="">Material</option>-->
+            <!--<option *ngFor="let item of variationArrs.material" [value]="item">{{item}}</option>-->
+            <!--</select>-->
             <!--</div>-->
           </th>
-          <th>
-            <div class="price-range-head">
+          <th class="text-heading">
+            <div class="text-head">
               Price Range
             </div>
           </th>
-          <th></th>
-        </tr>
-        <tr *ngFor="let variant of filteredVariants$ | async">
-          <td>{{variant.name || "Product Here"}}</td>
-          <td>{{variant.package_type || "Value Here"}}</td>
-          <td>{{variant.unit_type || "Value Here"}}</td>
-          <td>{{variant.units_per_package || ""}}</td>
-          <td>{{variant.size || ""}}</td>
-          <td>{{variant.upc || ""}}</td>
-          <td>{{variant.price_range || ""}}</td>
-          <td>
-            <button type="button" class="uptracker-form-btn not-submit">Add</button>
-          </td>
+          <th class="filter-heading">
+            <fa [name]="'filter'"></fa>
+          </th>
+          <th class="visibility-heading"><i class="material-icons">visibility</i></th>
+          <th class="add-order-heading">
+            <button class="uptracker-form-btn waves-light waves-effect add-order-btn"><i class="fa fa-shopping-cart"
+                                                                                         aria-hidden="true"></i>Add to
+              Order
+            </button>
+          </th>
         </tr>
       </table>
+      <div class="table-body">
+        <table>
+          <tr class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
+            <td>
+              <div class="checkbox input-checkbox variant-checkbox">
+                <input
+                        type="checkbox"
+                        class="checkbox-input"
+                        [(ngModel)]="variant.checked"
+                        id="{{variant.name}}"
+                />
+                <label for="{{variant.name}}"></label>
+              </div>
+            </td>
+            <td class="name-heading variant-name">{{variant.name || "Product Here"}}</td>
+            <td class="small-heading">{{variant.package_type || "Value Here"}}</td>
+            <td class="small-heading">{{variant.unit_type || "Value Here"}}</td>
+            <td class="small-heading">{{variant.units_per_package || ""}}</td>
+            <td class="small-heading">{{variant.size || ""}}</td>
+            <td class="text-heading">{{variant.upc || ""}}</td>
+            <td class="text-heading">{{variant.price_range || ""}}</td>
+            <td class="edit-variant filter-heading"><i class="fa fa-pencil variant-func" aria-hidden="true"></i></td>
+            <td class="edit-variant visibility-heading"><i class="material-icons variant-func">visibility</i></td>
+            <td class="add-order-col add-order-heading">
+              <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn"><i
+                      class="fa fa-shopping-cart" aria-hidden="true"></i>Add to Order
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
     </div>
   </div>
   <div id="info">
@@ -190,7 +230,8 @@
           <div class="label col s12">Add Comment</div>
           <div class="col s10">
             <div class="textarea">
-              <textarea id="comments-textarea" class="validate materialize-textarea" name="comment_body" required #inputComment [(ngModel)]="comment.body"></textarea>
+              <textarea id="comments-textarea" class="validate materialize-textarea" name="comment_body" required
+                        #inputComment [(ngModel)]="comment.body"></textarea>
             </div>
           </div>
           <div class="buttons col s2">
@@ -205,7 +246,8 @@
             <img [src]="comment.author_avatar || ''" class="responsive-img circle author-avatar">
             <span class="title">{{comment.author_name}}</span>
             <span class="date">{{comment.created_at}}</span>
-            <span class="edit-comment" *ngIf="comment.author_id==userService.selfData.id" (click)="editComment(comment)">
+            <span class="edit-comment" *ngIf="comment.author_id==userService.selfData.id"
+                  (click)="editComment(comment)">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </span>
             <p [innerHtml]="comment.body"></p>

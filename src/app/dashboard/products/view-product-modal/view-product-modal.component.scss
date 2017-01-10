@@ -44,16 +44,83 @@ $tealish: #33c6d9;
       }
     }
 
+    .table-body {
+      height: 372px;
+      overflow-y: auto;
+    }
+
     .inner {
+
       table {
         font-size: 11px;
 
         .small-heading {
-          width: 9%;
+          width: 8%;
         }
 
-        .price-range-head {
+        .text-head {
           color: #9a9c9e;
+        }
+
+        .name-heading {
+          width: 20%;
+        }
+
+        .filter-heading {
+          width: 5%;
+
+          i {
+            margin-right: 3px;
+            font-size: 22px;
+            cursor: pointer;
+            color: $tealish;
+          }
+        }
+
+        .visibility-heading {
+          width: 5%;
+          color: #9a9c9e;
+
+          .material-icons {
+            font-size: 22px;
+          }
+
+          &.active {
+            color: $tealish;
+          }
+        }
+
+        .text-heading {
+          width: 10%;
+        }
+
+        .add-order-heading {
+          width: 16%;
+        }
+
+        .add-order-btn {
+          width: 100%;
+          font-size: 12px;
+          padding: 0 5px 0 5px;
+          height: 24px;
+          color: #fff;
+          background-color: $tealish;
+
+          i {
+            font-size: 16px;
+            margin-right: 5px;
+          }
+        }
+
+        .variant-name {
+          color: $tealish;
+          cursor: pointer;
+        }
+
+        .edit-variant {
+          font-size: 18px;
+          color: $tealish;
+          cursor: pointer;
         }
 
         .uptracker-form {
@@ -69,6 +136,31 @@ $tealish: #33c6d9;
 
             &.empty {
               color: #d6d6d6;
+            }
+          }
+
+          .variant-checkbox {
+            text-align: center;
+
+            &.input-checkbox {
+              [type="checkbox"] {
+                & + label {
+                  padding-left: 20px;
+                  height: 20px;
+
+                  &:before {
+                    width: 17px;
+                    height: 17px;
+                  }
+                }
+
+                &:checked {
+                  & + label:before {
+                    width: 10px;
+                    height: 15px;
+                  }
+                }
+              }
             }
           }
 
@@ -104,6 +196,27 @@ $tealish: #33c6d9;
           }
         }
 
+        .table-item {
+          padding: 1px;
+          border-bottom: 1px solid #d6d6d6;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .variant-func {
+            transition: all 0s linear 0.2s;
+            visibility: hidden;
+          }
+
+          &:hover {
+            .variant-func {
+              visibility: visible;
+            }
+          }
+
+        }
+
         tr {
           & > *:first-child {
             padding-left: 0;
@@ -129,19 +242,21 @@ $tealish: #33c6d9;
         }
       }
     }
+    @media (max-width: 900px) {
+      #variations {
+        overflow-x: scroll;
+
+        .inner {
+          width: 763px;
+        }
+      }
+    }
     @media (max-width: 768px) {
       .img-container {
         width: 110px;
         height: 110px;
       }
 
-      #variations {
-        overflow-x: scroll;
-
-        .inner {
-          width: 631px;
-        }
-      }
     }
 
     @media (max-width: 600px) {
