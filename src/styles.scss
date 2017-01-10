@@ -140,7 +140,10 @@ a{
   border-color: red !important;
   color: red !important;
 
-  &:hover {
+
+
+
+  &:hover:not(:disabled) {
     background-color: red !important;
     color: #fff !important;
   }

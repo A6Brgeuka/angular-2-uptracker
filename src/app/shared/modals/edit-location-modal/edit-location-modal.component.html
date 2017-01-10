@@ -78,7 +78,7 @@
       </div>
       <div class="col m2 s4">
         <div class="delete-btn-wrapper">
-          <button type="button" (click)="deleteStorageLocation(storagelocation._id)"
+          <button type="button" (click)="deleteStorageLocation(storagelocation._id)" [disabled]="storagelocation.default_location"
                   class="not-submit btn-danger uptracker-form-btn waves-light waves-effect">Delete
           </button>
         </div>

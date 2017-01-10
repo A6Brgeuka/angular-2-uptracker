@@ -78,7 +78,7 @@ let modalsArr = [
     TextMaskModule,
     Angular2FontawesomeModule,
     GooglePlacesInputModule,
-    
+
     ...directivesArr,
     ...pipesArr
   ],
@@ -86,7 +86,7 @@ let modalsArr = [
     ...MAIN_RESOLVER_PROVIDERS,
     ...ACCOUNT_RESOLVER_PROVIDERS
   ],
-  entryComponents: [ 
+  entryComponents: [
     ...modalsArr
   ]
 })

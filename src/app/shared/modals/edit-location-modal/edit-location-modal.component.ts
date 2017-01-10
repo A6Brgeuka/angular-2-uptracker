@@ -53,8 +53,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
   // setting default storage locations when creating new one location
   public defaultStorageLocations = [
-    new InventoryLocationModel({name: "Working Stock", floor_stock: true, _id: 1}),
-    new InventoryLocationModel({name: "Back Stock", floor_stock: false, _id: 2})
+    new InventoryLocationModel({name: "Working Stock", floor_stock: true, default_location: true, _id: 1}),
+    new InventoryLocationModel({name: "Back Stock", floor_stock: false, default_location: true, _id: 2})
   ];
   public filterSearch$: any = new BehaviorSubject(null);
   public filterStorageOption$: any = new BehaviorSubject({});
