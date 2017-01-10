@@ -55,9 +55,11 @@
         <div class="clearfix"></div>
       </div>
       <div class="bottom row">
-        <div class="col s12 checkbox input-checkbox">
-          <input type="checkbox" [(ngModel)]="inventory_location.floor_stock" name="floor_stock" class="checkebox-input" id="for-stock-location"/>
-          <label for="for-stock-location">Floor Stock | Working Stock Location</label>
+        <div class="col m6 s12 checkbox input-checkbox">
+          <div class="switch-box">
+            <div class="switcher active" [class.active]="inventory_location.floor_stock" (click)="toggleFloorStock()">Floor Stock</div>
+            <div class="switcher" [class.active]="!inventory_location.floor_stock" (click)="toggleFloorStock()">Working Stock Location</div>
+          </div>
         </div>
       </div>
     </form>
@@ -66,7 +68,7 @@
   </div>
   <div class="location-storage-list collection">
     <div class="item row" *ngFor="let storagelocation of filteredStorageLocations$ | async" >
-      <div class="col m8 s12 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock | Working Stock</span></div>
+      <div class="col m8 s12 text">{{storagelocation.name}}<span class="label-text" *ngIf="storagelocation.floor_stock">Floor Stock</span></div>
       <div class="col m2 s4">
         <div class="edit-btn-wrapper">
           <button type="button" (click)="editStorageLocation(storagelocation)"

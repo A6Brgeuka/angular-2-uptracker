@@ -73,15 +73,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
     this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
     this.product.comments = [];
-    // this.subscribers.getProductCommentsSubscription = this.productService.getProductComments(this.context.product.id)
-    //   .filter(res=>res.data)
-    //   .subscribe(res => {
-    //     this.product.comments = res.data.comments || [];
-    //     this.product.comments.map(item => {
-    //       item.body = item.body.replace(/(?:\r\n|\r|\n)/g, "<br />");
-    //       return item;
-    //     })
-    // });
+
     let addToComments$ = this.addToComments$.switchMap((item: any) => {
       return this.comments$.first().map(collection => {
         collection.unshift(item);

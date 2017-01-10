@@ -271,6 +271,10 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.inventory_location = { name: '', floor_stock: false};
   }
 
+  toggleFloorStock() {
+    this.inventory_location.floor_stock = !this.inventory_location.floor_stock;
+  }
+
   addStorageLocation(data) {
     this.location.account_id = this.userService.selfData.account_id;
 

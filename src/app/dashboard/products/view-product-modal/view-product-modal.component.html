@@ -72,7 +72,7 @@
                       #name="ngModel"/>
             </div>
           </th>
-          <th>
+          <th class="small-heading">
             <div class="select">
               <select
                       [(ngModel)]="variation.package_type"
@@ -85,7 +85,7 @@
               </select>
             </div>
           </th>
-          <th>
+          <th class="small-heading">
             <div class="select">
               <select
                       [(ngModel)]="variation.unit_type"
@@ -98,7 +98,7 @@
               </select>
             </div>
           </th>
-          <th>
+          <th class="small-heading">
             <div class="select">
               <select
                       [(ngModel)]="variation.units_per_package"
@@ -111,7 +111,7 @@
               </select>
             </div>
           </th>
-          <th>
+          <th class="small-heading">
             <div class="select">
               <select
                       [(ngModel)]="variation.size"
@@ -125,17 +125,20 @@
             </div>
           </th>
           <th>
-            <div class="select">
-              <select
-                      [(ngModel)]="variation.material"
-                      #material="ngModel"
-                      materialize="material_select"
-                      (change)="changeMaterial($event)"
-                      [materializeSelectOptions]="variationArrs.material">
-                <option value="">Material</option>
-                <option *ngFor="let item of variationArrs.material" [value]="item">{{item}}</option>
-              </select>
+            <div class="price-range-head">
+              UPC
             </div>
+            <!--<div class="select">-->
+              <!--<select-->
+                      <!--[(ngModel)]="variation.material"-->
+                      <!--#material="ngModel"-->
+                      <!--materialize="material_select"-->
+                      <!--(change)="changeMaterial($event)"-->
+                      <!--[materializeSelectOptions]="variationArrs.material">-->
+                <!--<option value="">Material</option>-->
+                <!--<option *ngFor="let item of variationArrs.material" [value]="item">{{item}}</option>-->
+              <!--</select>-->
+            <!--</div>-->
           </th>
           <th>
             <div class="price-range-head">
@@ -150,7 +153,7 @@
           <td>{{variant.unit_type || "Value Here"}}</td>
           <td>{{variant.units_per_package || ""}}</td>
           <td>{{variant.size || ""}}</td>
-          <td>{{variant.material || ""}}</td>
+          <td>{{variant.upc || ""}}</td>
           <td>{{variant.price_range || ""}}</td>
           <td>
             <button type="button" class="uptracker-form-btn not-submit">Add</button>
