@@ -128,6 +128,9 @@ export class VendorService extends ModelService {
   getNextVendors(last_id){
     let query = last_id ? {last_id: last_id} : {};
 
+    if(!last_id) {
+      return this.collection$;
+    }
 
     return this.restangular.all('vendors').customGET('',query)
       .map((res: any) => {
