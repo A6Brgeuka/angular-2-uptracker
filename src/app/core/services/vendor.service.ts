@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { VendorModel, AccountVendorModel } from '../../models/index';
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 @Subscribers({
@@ -24,6 +25,7 @@ export class VendorService extends ModelService {
   combinedVendors$: Observable<any>;
   accountVendors$: Observable<any> = Observable.empty();
   vendors$: Observable<any> = Observable.empty();
+  lastId = null;
 
   constructor(
       public injector: Injector,
@@ -99,10 +101,12 @@ export class VendorService extends ModelService {
   }
 
   getVendors(){
+
     return this.vendors$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
         this.vendors$ = this.restangular.all('vendors').customGET('')
             .map((res: any) => {
+              this.lastId = res.data.last_id;
               this.updateCollection$.next(res.data.vendors);
               return res.data.vendors;
             });
@@ -119,6 +123,20 @@ export class VendorService extends ModelService {
     //       this.updateCollection$.next(res);
     //     });
     // return collection$;
+  }
+
+  getNextVendors(last_id){
+    let query = last_id ? {last_id: last_id} : {};
+
+
+    return this.restangular.all('vendors').customGET('',query)
+      .map((res: any) => {
+        this.lastId = res.data.last_id;
+        this.addCollectionToCollection$.next(res.data.vendors);
+
+        // this.updateCollection$.next(res.data.vendors);
+        return res.data.vendors;
+      });
   }
 
   getVendor(id){

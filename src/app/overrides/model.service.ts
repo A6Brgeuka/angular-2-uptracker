@@ -8,6 +8,7 @@ export class ModelService {
   collection$: Observable<any> = new Observable<any>();
   loadCollection$: Subject<any> = new Subject<any>();
   addToCollection$: Subject<any> = new Subject<any>();
+  addCollectionToCollection$: Subject<any> = new Subject<any>();
   deleteFromCollection$: Subject<any> = new Subject<any>();
   updateCollection$: Subject<any> = new Subject<any>();
   updateElementCollection$: Subject<any> = new Subject<any>();
@@ -60,6 +61,15 @@ export class ModelService {
         return collection;
       });
     });
+
+    let addCollectionToCollection$ = this.addCollectionToCollection$
+      .switchMap((res) => {
+        return this.collection$.first()
+          .map((collection: any) => {
+            collection = collection.concat(res);
+            return collection;
+          });
+      });
     
     // this.deleteFromCollection$.subscribe(res=>{
     //  console.log(res);
@@ -98,6 +108,7 @@ export class ModelService {
       this.updateCollection$,
       updateElementCollection$,
       addToCollection$,
+      addCollectionToCollection$,
       deleteFromCollection$
     ).publishReplay(1).refCount();
     this.collection$.subscribe(res => {

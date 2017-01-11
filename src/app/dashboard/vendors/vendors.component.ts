@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewContainerRef} from "@angular/core";
-import {Observable, BehaviorSubject} from "rxjs/Rx";
+import { Observable, BehaviorSubject, Subject } from "rxjs/Rx";
 import {Overlay} from "angular2-modal";
 import {Modal} from "angular2-modal/plugins/bootstrap";
 import {DestroySubscribers} from "ng2-destroy-subscribers";
@@ -7,6 +7,7 @@ import * as _ from "lodash";
 import {ViewVendorModal} from "./view-vendor-modal/view-vendor-modal.component";
 import {EditVendorModal} from "./edit-vendor-modal/edit-vendor-modal.component";
 import {VendorService, ModalWindowService} from "../../core/services/index";
+import { HostListener } from "@angular/core/src/metadata/directives";
 
 
 @Component({
@@ -23,6 +24,9 @@ export class VendorsComponent implements OnInit {
   public vendors$: Observable<any>;
   public vendors: any;
 
+  public infiniteScroll$ = new BehaviorSubject(false);
+  public isRequestVendors = false;
+
   constructor(
       private vcRef: ViewContainerRef,
       overlay: Overlay,
@@ -34,13 +38,28 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
+
+      this.infiniteScroll$
+      .filter((infinite)=>infinite && !this.isRequestVendors)
+      .switchMap((infinite) => {
+        this.isRequestVendors = true;
+        return this.vendorService.getNextVendors(this.vendorService.lastId);
+      })
+      .subscribe(res => {
+        this.isRequestVendors = false;
+        console.log(res);
+      },err => {
+        this.isRequestVendors = false;
+      });
+
+
     this.vendors$ = Observable
         .combineLatest(
             this.vendorService.combinedVendors$,
             this.sortBy$,
             this.searchKey$
         )
-        .map(([vendors, sortBy, searchKey]) => {  
+        .map(([vendors, sortBy, searchKey]) => {
           this.total = vendors.length;
           let filteredVendors = vendors;
           if (searchKey && searchKey!='') {
@@ -64,11 +83,16 @@ export class VendorsComponent implements OnInit {
         });
   }
 
+  ngAfterViewInit() {
+    let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 150
+    this.infiniteScroll$.next(scrollBottom);
+  }
+
   viewVendorModal(vendor = null){
     let data = { vendor: vendor, keyboard: [] };
     this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
   }
-  
+
   editVendorModal(vendor){
     let accountVendors: any = vendor.account_vendor;
     accountVendors.vendor_id = vendor.id;
@@ -96,9 +120,17 @@ export class VendorsComponent implements OnInit {
     let value = event.target.value;
     this.sortBy$.next(value);
   }
-  
+
   requestVendor(){
-    
+
   }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event) {
+    let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 150
+    // console.log(scrollBottom);
+    this.infiniteScroll$.next(scrollBottom);
+  }
+
 
 }
