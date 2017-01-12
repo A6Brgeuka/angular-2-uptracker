@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 
 import { ViewProductModal } from './view-product-modal.component';
 import { AppSharedModule } from '../../../shared/shared.module';
+import { VariantDetailComponent } from "./variant-detail/variant-detail.component";
 
 @NgModule({
   declarations: [
-    ViewProductModal
+    ViewProductModal,
+    VariantDetailComponent
   ],
   imports: [
     AppSharedModule

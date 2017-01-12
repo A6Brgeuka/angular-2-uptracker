@@ -59,10 +59,10 @@
 
   <div id="variations">
     <div class="inner">
-      <table>
-        <tr class="uptracker-form row">
-          <th>
-            <div class="checkbox input-checkbox variant-checkbox">
+      <div class="variant-table">
+        <div class="uptracker-form variant-head">
+          <div class="variant-checkbox head-item">
+            <div class="checkbox input-checkbox ">
               <input
                       type="checkbox"
                       class="checkbox-input"
@@ -72,19 +72,19 @@
               />
               <label for="variation-checkbox"></label>
             </div>
-          </th>
-          <th class="name-heading">
+          </div>
+          <div class="name-heading head-item">
             <div class="input">
               <input
                       type="text"
-                      class="col s12 name-input"
+                      class="name-input"
                       ngModel
                       (input)="changeName($event)"
                       placeholder="Name"
                       #name="ngModel"/>
             </div>
-          </th>
-          <th class="small-heading">
+          </div>
+          <div class="small-heading head-item">
             <div class="select">
               <select
                       [(ngModel)]="variation.package_type"
@@ -96,8 +96,8 @@
                 <option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>
               </select>
             </div>
-          </th>
-          <th class="small-heading">
+          </div>
+          <div class="small-heading head-item">
             <div class="select">
               <select
                       [(ngModel)]="variation.unit_type"
@@ -109,8 +109,8 @@
                 <option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>
               </select>
             </div>
-          </th>
-          <th class="small-heading">
+          </div>
+          <div class="small-heading head-item">
             <div class="select">
               <select
                       [(ngModel)]="variation.units_per_package"
@@ -122,8 +122,8 @@
                 <option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}</option>
               </select>
             </div>
-          </th>
-          <th class="small-heading">
+          </div>
+          <div class="small-heading head-item">
             <div class="select">
               <select
                       [(ngModel)]="variation.size"
@@ -135,45 +135,40 @@
                 <option *ngFor="let item of variationArrs.size" [value]="item">{{item}}</option>
               </select>
             </div>
-          </th>
-          <th class="text-heading">
-            <div class="text-head">
+          </div>
+
+          <div class="text-heading valign-wrapper head-item">
+            <div class="text-head valign">
               UPC
             </div>
-            <!--<div class="select">-->
-            <!--<select-->
-            <!--[(ngModel)]="variation.material"-->
-            <!--#material="ngModel"-->
-            <!--materialize="material_select"-->
-            <!--(change)="changeMaterial($event)"-->
-            <!--[materializeSelectOptions]="variationArrs.material">-->
-            <!--<option value="">Material</option>-->
-            <!--<option *ngFor="let item of variationArrs.material" [value]="item">{{item}}</option>-->
-            <!--</select>-->
-            <!--</div>-->
-          </th>
-          <th class="text-heading">
-            <div class="text-head">
+          </div>
+          <div class="text-heading valign-wrapper head-item">
+            <div class="text-head valign">
               Price Range
             </div>
-          </th>
-          <th class="filter-heading">
+          </div>
+          <div class="filter-heading noselect head-item">
             <fa [name]="'filter'"></fa>
-          </th>
-          <th class="visibility-heading"><i class="material-icons">visibility</i></th>
-          <th class="add-order-heading">
+          </div>
+          <div class="visibility-heading head-item">
+            <i class="material-icons noselect"  (click)="toggleVariationVisibility()">{{variation.visibility ? "visibility" : "visibility_off"}}</i>
+          </div>
+          <div class="add-order-heading head-item">
             <button class="uptracker-form-btn waves-light waves-effect add-order-btn" [disabled]="!addOrderVariantsButtonShow"><i class="fa fa-shopping-cart"
-                                                                                         aria-hidden="true"></i>Add to
+                                                                                                                                  aria-hidden="true"></i>Add to
               Order
             </button>
-          </th>
-        </tr>
-      </table>
+          </div>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
       <div class="table-body">
-        <table>
-          <tr class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
-            <td>
-              <div class="checkbox input-checkbox variant-checkbox">
+        <div class="variant-table">
+          <div class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
+            <div class="variant-checkbox row-item">
+              <div class="checkbox input-checkbox">
                 <input
                         type="checkbox"
                         class="checkbox-input"
@@ -183,23 +178,25 @@
                 />
                 <label for="{{variant.id}}"></label>
               </div>
-            </td>
-            <td class="name-heading variant-name">{{variant.name || "Product Here"}}</td>
-            <td class="small-heading">{{variant.package_type || "Value Here"}}</td>
-            <td class="small-heading">{{variant.unit_type || "Value Here"}}</td>
-            <td class="small-heading">{{variant.units_per_package || ""}}</td>
-            <td class="small-heading">{{variant.size || ""}}</td>
-            <td class="text-heading">{{variant.upc || ""}}</td>
-            <td class="text-heading">{{variant.price_range || ""}}</td>
-            <td class="edit-variant filter-heading"><i class="fa fa-pencil variant-func" aria-hidden="true"></i></td>
-            <td class="edit-variant visibility-heading"><i class="material-icons variant-func">visibility</i></td>
-            <td class="add-order-col add-order-heading">
+            </div>
+            <div class="name-heading variant-name row-item valign-wrapper"><span class="valign" (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span></div>
+            <div class="small-heading row-item">{{variant.package_type || "Value Here"}}</div>
+            <div class="small-heading row-item">{{variant.unit_type || "Value Here"}}</div>
+            <div class="small-heading row-item">{{variant.units_per_package || ""}}</div>
+            <div class="small-heading row-item">{{variant.size || ""}}</div>
+            <div class="text-heading row-item">{{variant.upc || ""}}</div>
+            <div class="text-heading row-item">{{variant.price_range || ""}}</div>
+            <div class="edit-variant filter-heading row-item"><i class="fa fa-pencil variant-func" aria-hidden="true"></i></div>
+            <div class="edit-variant visibility-heading row-item"><i class="material-icons variant-func" (click)="toggleVariantVisibility(variant)">{{variant.visibility ? "visibility" : "visibility_off"}}</i></div>
+            <div class="add-order-col add-order-heading row-item">
               <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn"><i
                       class="fa fa-shopping-cart" aria-hidden="true"></i>Add to Order
               </button>
-            </td>
-          </tr>
-        </table>
+            </div>
+            <div class="clearfix"></div>
+            <app-variant-detail [variant]="variant" *ngIf="variant.detailView"></app-variant-detail>
+          </div>
+        </div>
       </div>
 
     </div>

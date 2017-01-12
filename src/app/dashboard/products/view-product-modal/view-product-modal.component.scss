@@ -51,8 +51,27 @@ $tealish: #33c6d9;
 
     .inner {
 
-      table {
-        font-size: 11px;
+      .variant-table {
+        font-size: 12px;
+
+        .variant-head {
+          padding: 10px 0;
+          border-bottom: 1px solid #d6d6d6;
+          border-top: 1px solid #d6d6d6;
+        }
+        .head-item, .row-item {
+          float: left;
+          padding: 5px;
+          height: 35px;
+
+          &:first-child {
+            padding-left: 0;
+          }
+
+          &:last-child {
+            padding-right: 0;
+          }
+        }
 
         .small-heading {
           width: 8%;
@@ -64,6 +83,11 @@ $tealish: #33c6d9;
 
         .name-heading {
           width: 20%;
+
+          .name-input {
+            width: 100%;
+            box-sizing: border-box;
+          }
         }
 
         .filter-heading {
@@ -83,6 +107,7 @@ $tealish: #33c6d9;
 
           .material-icons {
             font-size: 22px;
+            cursor: pointer;
           }
 
           &.active {
@@ -95,7 +120,7 @@ $tealish: #33c6d9;
         }
 
         .add-order-heading {
-          width: 16%;
+          width: 15%;
         }
 
         .add-order-btn {
@@ -128,6 +153,11 @@ $tealish: #33c6d9;
         }
 
         .uptracker-form {
+
+          .input {
+            margin-bottom: 0;
+          }
+
           input {
             margin: 0;
             height: 25px;
@@ -144,24 +174,28 @@ $tealish: #33c6d9;
           }
 
           .variant-checkbox {
-            text-align: center;
+            width: 3%;
 
-            &.input-checkbox {
-              [type="checkbox"] {
-                & + label {
-                  padding-left: 20px;
-                  height: 20px;
+            div {
+              text-align: center;
 
-                  &:before {
-                    width: 17px;
-                    height: 17px;
+              &.input-checkbox {
+                [type="checkbox"] {
+                  & + label {
+                    padding-left: 20px;
+                    height: 20px;
+
+                    &:before {
+                      width: 17px;
+                      height: 17px;
+                    }
                   }
-                }
 
-                &:checked {
-                  & + label:before {
-                    width: 10px;
-                    height: 15px;
+                  &:checked {
+                    & + label:before {
+                      width: 10px;
+                      height: 15px;
+                    }
                   }
                 }
               }
@@ -201,7 +235,7 @@ $tealish: #33c6d9;
         }
 
         .table-item {
-          padding: 1px;
+          padding: 15px 0;
           border-bottom: 1px solid #d6d6d6;
 
           &:last-child {

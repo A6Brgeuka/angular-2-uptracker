@@ -30,7 +30,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   private subscribers: any = {};
   context: ViewProductModalContext;
   private product: any;
-  public variation: any = {};
+  public variation: any = {visibility: true};
   public variationArrs = {
     package_type: [],
     unit_type: [],
@@ -50,7 +50,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public filterPrice$ = new BehaviorSubject(null);
   public filteredVariants$ = Observable.of([]);
   public variantChecked$ = new BehaviorSubject(false);
-  public variantCheckAll$ = new BehaviorSubject(false);
+  public variantVisibility$ = new BehaviorSubject(false);
   public comments$ = new BehaviorSubject([]);
   public addToComments$ = new Subject();
   public deleteFromComments$ = new Subject();
@@ -137,7 +137,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     )
       .map(([variants,filterSelectOption,filterName,filterPrice,variantChecked]) => {
 
-
         // check if at least on variant is checked to show add order button
         let checkedArrVariants = _.filter(variants, {checked: true});
         if (checkedArrVariants.length) {
@@ -170,6 +169,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       .subscribe(data => {
         this.variants = _.map(data.variants, (item: any) => {
           item.checked = false;
+          item.visibility = true;
           return item;
         });
 
@@ -292,6 +292,20 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
     this.filterSelectOption$.next(this.variation)
   }
+
+  toggleVariationVisibility() {
+    this.variation.visibility = !this.variation.visibility;
+    this.filterSelectOption$.next(this.variation);
+  }
+
+  toggleVariantVisibility(variant) {
+    variant.visibility = !variant.visibility;
+  }
+
+  toggleVariantDetailView(variant) {
+    variant.detailView = !variant.detailView;
+  }
+
 
   sendComment() {
 
