@@ -48,8 +48,11 @@ export function RESTANGULAR_CONFIG (
       toasterService.pop('error', 'Your session has expired.');
       return;
     }
-    spinnerService.show();
-    
+
+    if(!(path == "vendors" && params.last_id)){
+      spinnerService.show();
+    }
+
     // let urlArr = url.split('/');
     let newHeaders = headers;
     // if (urlArr[urlArr.length - 1] != 'streetview')

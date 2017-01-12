@@ -47,7 +47,7 @@ export class VendorsComponent implements OnInit {
       })
       .subscribe(res => {
         this.isRequestVendors = false;
-        console.log(res);
+
       },err => {
         this.isRequestVendors = false;
       });
@@ -84,8 +84,7 @@ export class VendorsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 150
-    this.infiniteScroll$.next(scrollBottom);
+    this.getInfiniteScroll();
   }
 
   viewVendorModal(vendor = null){
@@ -125,11 +124,15 @@ export class VendorsComponent implements OnInit {
 
   }
 
+  getInfiniteScroll() {
+    let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285;
+    // let widthColumns = document.body.scrollHeight - document.body.scrollTop - window.innerWidth < 300;
+    this.infiniteScroll$.next(scrollBottom);
+  }
+
   @HostListener('window:scroll', ['$event'])
   onScroll(event) {
-    let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 150
-    // console.log(scrollBottom);
-    this.infiniteScroll$.next(scrollBottom);
+    this.getInfiniteScroll();
   }
 
 
