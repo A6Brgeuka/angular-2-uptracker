@@ -77,6 +77,8 @@ export class VendorsComponent implements OnInit {
             sortBy = 'name';
           }
 
+          this.getInfiniteScroll();
+
           let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
           this.vendors = sortedVendors;
           return sortedVendors;
