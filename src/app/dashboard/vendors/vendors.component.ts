@@ -19,12 +19,12 @@ import { HostListener } from "@angular/core/src/metadata/directives";
 export class VendorsComponent implements OnInit {
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
-  private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  private sortBy$: any = new BehaviorSubject(null);
   public total: number;
   public vendors$: Observable<any>;
   public vendors: any;
 
-  public infiniteScroll$ = new BehaviorSubject(false);
+  public infiniteScroll$: any = new BehaviorSubject(false);
   public isRequestVendors = false;
 
   constructor(
