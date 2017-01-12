@@ -67,6 +67,7 @@
                       type="checkbox"
                       class="checkbox-input"
                       [(ngModel)]="variation.checked"
+                      (change)="headCheckboxChange()"
                       id="variation-checkbox"
               />
               <label for="variation-checkbox"></label>
@@ -161,7 +162,7 @@
           </th>
           <th class="visibility-heading"><i class="material-icons">visibility</i></th>
           <th class="add-order-heading">
-            <button class="uptracker-form-btn waves-light waves-effect add-order-btn"><i class="fa fa-shopping-cart"
+            <button class="uptracker-form-btn waves-light waves-effect add-order-btn" [disabled]="!addOrderVariantsButtonShow"><i class="fa fa-shopping-cart"
                                                                                          aria-hidden="true"></i>Add to
               Order
             </button>
@@ -177,9 +178,10 @@
                         type="checkbox"
                         class="checkbox-input"
                         [(ngModel)]="variant.checked"
-                        id="{{variant.name}}"
+                        (change)="variantCheckedChange()"
+                        id="{{variant.id}}"
                 />
-                <label for="{{variant.name}}"></label>
+                <label for="{{variant.id}}"></label>
               </div>
             </td>
             <td class="name-heading variant-name">{{variant.name || "Product Here"}}</td>

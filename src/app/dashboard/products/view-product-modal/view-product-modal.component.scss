@@ -106,6 +106,10 @@ $tealish: #33c6d9;
           color: #fff;
           background-color: $tealish;
 
+          &:disabled {
+            background-color: #d6d6d6;
+          }
+
           i {
             font-size: 16px;
             margin-right: 5px;

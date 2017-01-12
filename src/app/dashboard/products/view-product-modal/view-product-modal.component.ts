@@ -41,12 +41,16 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   };
   public comment: any = {};
 
+  public addOrderVariantsButtonShow: boolean = false;
+
   public variants = [];
   public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
   public filterSelectOption$: BehaviorSubject<any> = new BehaviorSubject({});
   public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
   public filterPrice$ = new BehaviorSubject(null);
-  public filteredVariants$;
+  public filteredVariants$ = Observable.of([]);
+  public variantChecked$ = new BehaviorSubject(false);
+  public variantCheckAll$ = new BehaviorSubject(false);
   public comments$ = new BehaviorSubject([]);
   public addToComments$ = new Subject();
   public deleteFromComments$ = new Subject();
@@ -92,7 +96,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     let editCommentComments$ = this.editCommentComments$.switchMap((commentToUpdate: any) => {
       return this.comments$.first().map(collection => {
         return collection.map((comment: any) => {
-          if(comment.id == commentToUpdate.id) {
+          if (comment.id == commentToUpdate.id) {
             return commentToUpdate
           }
           return comment;
@@ -128,9 +132,20 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       this.variants$,
       this.filterSelectOption$,
       this.filterName$,
-      this.filterPrice$
+      this.filterPrice$,
+      this.variantChecked$,
     )
-      .map(([variants,filterSelectOption,filterName,filterPrice]) => {
+      .map(([variants,filterSelectOption,filterName,filterPrice,variantChecked]) => {
+
+
+        // check if at least on variant is checked to show add order button
+        let checkedArrVariants = _.filter(variants, {checked: true});
+        if (checkedArrVariants.length) {
+          this.addOrderVariantsButtonShow = true;
+        }
+        else {
+          this.addOrderVariantsButtonShow = false;
+        }
 
         if (filterPrice && filterPrice != "") {
           variants = _.reject(variants, (variant: any) => {
@@ -153,9 +168,13 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       .filter(res => res.data)
       .map(res => res.data)
       .subscribe(data => {
-        this.variants = data.variants;
+        this.variants = _.map(data.variants, (item: any) => {
+          item.checked = false;
+          return item;
+        });
 
-        this.variants$.next(data.variants); // update variants
+
+        this.variants$.next(this.variants); // update variants
         this.comments$.next(data.comments); // update comments
 
 
@@ -201,6 +220,19 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     if (event.target.value.length) {
       return event.target.value;
     }
+  }
+
+  // make all variant checkboxes value to be head checkbox value
+  headCheckboxChange() {
+    this.variants$.next(_.map(this.variants$.getValue(), (variant: any) => {
+      variant.checked = this.variation.checked
+      return variant;
+    }));
+  }
+
+  // detects changes on variant checkbox
+  variantCheckedChange() {
+    this.variantChecked$.next(false)
   }
 
   changeName(event) {
