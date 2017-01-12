@@ -1,9 +1,9 @@
 .variant-detail-wrapper {
   padding-left: 3.5%;
 
-  .variant-detail-table-head {
+  .variant-detail-top {
 
-    .variant-detail-head-item {
+    .variant-detail-top-item {
       float: left;
       margin-right: 5%;
       font-weight: bold;
@@ -12,5 +12,9 @@
         color: #9a9c9e;
       }
     }
+  }
+
+  .variant-detail-table-head {
+
   }
 }

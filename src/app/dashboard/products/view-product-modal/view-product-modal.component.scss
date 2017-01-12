@@ -44,10 +44,11 @@ $tealish: #33c6d9;
       }
     }
 
-    .table-body {
-      height: 372px;
-      overflow-y: auto;
-    }
+    // table vertical scroll
+    //.table-body {
+    //  height: 372px;
+    //  overflow-y: auto;
+    //}
 
     .inner {
 
@@ -143,7 +144,10 @@ $tealish: #33c6d9;
 
         .variant-name {
           color: $tealish;
-          cursor: pointer;
+
+          span {
+            cursor: pointer;
+          }
         }
 
         .edit-variant {
