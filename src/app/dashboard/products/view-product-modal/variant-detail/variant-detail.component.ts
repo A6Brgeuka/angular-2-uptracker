@@ -34,4 +34,7 @@ export class VariantDetailComponent implements OnInit, AfterViewInit {
 
   }
 
+  variantDetailCollapse() {
+    this.variant.detailView = false;
+  }
 }
