@@ -139,12 +139,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
         // check if at least on variant is checked to show add order button
         let checkedArrVariants = _.filter(variants, {checked: true});
-        if (checkedArrVariants.length) {
-          this.addOrderVariantsButtonShow = true;
-        }
-        else {
-          this.addOrderVariantsButtonShow = false;
-        }
+
+        this.variation.checked = checkedArrVariants.length == variants.length && variants.length ? true : false;
+
+        this.addOrderVariantsButtonShow =  checkedArrVariants.length ? true : false;
 
         if (filterPrice && filterPrice != "") {
           variants = _.reject(variants, (variant: any) => {
@@ -225,7 +223,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   // make all variant checkboxes value to be head checkbox value
   headCheckboxChange() {
     this.variants$.next(_.map(this.variants$.getValue(), (variant: any) => {
-      variant.checked = this.variation.checked
+      variant.checked = this.variation.checked;
       return variant;
     }));
   }

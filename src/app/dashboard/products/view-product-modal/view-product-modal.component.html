@@ -187,7 +187,10 @@
             <div class="text-heading row-item">{{variant.upc || ""}}</div>
             <div class="text-heading row-item">{{variant.price_range || ""}}</div>
             <div class="edit-variant filter-heading row-item"><i class="fa fa-pencil variant-func" aria-hidden="true"></i></div>
-            <div class="edit-variant visibility-heading row-item"><i class="material-icons variant-func" (click)="toggleVariantVisibility(variant)">{{variant.visibility ? "visibility" : "visibility_off"}}</i></div>
+            <div class="edit-variant visibility-heading row-item">
+              <i class="fa fa-eye  variant-func" [class.fa-eye]="variant.visibility" [class.fa-eye-slash]="!variant.visibility" (click)="toggleVariantVisibility(variant)" aria-hidden="true"></i>
+              <!--<i class="material-icons" >{{variant.visibility ? "visibility" : "visibility_off"}}</i>-->
+            </div>
             <div class="add-order-col add-order-heading row-item">
               <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn"><i
                       class="fa fa-shopping-cart" aria-hidden="true"></i>Add to Order
