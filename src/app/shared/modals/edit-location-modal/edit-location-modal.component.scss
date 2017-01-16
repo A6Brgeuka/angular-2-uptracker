@@ -140,8 +140,16 @@ $tealish: #33c6d9;
     }
     @media (max-width: 600px) {
       > div {
+
         &:first-child {
           border-right: none;
+          padding: 0 0.75rem;
+
+        }
+
+        &:last-child {
+          padding: 0 0.75rem;
+          border-left: none;
         }
       }
     }
