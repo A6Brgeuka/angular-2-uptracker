@@ -48,7 +48,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
 
 
-  public inventory_location: any = { name: '', floor_stock: false};
+  public inventory_location: any = { name: '', floor_stock: true};
   private locationToDelete = null;
 
   // setting default storage locations when creating new one location
@@ -271,7 +271,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
   showAddStorageLocationForm() {
     this.isStorageLocationFormShow = !this.isStorageLocationFormShow;
-    this.inventory_location = { name: '', floor_stock: false};
+    this.inventory_location = { name: '', floor_stock: true};
   }
 
   toggleFloorStock() {
@@ -306,7 +306,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
           });
     }
 
-    this.inventory_location = { name: '', floor_stock: false};
+    this.inventory_location = { name: '', floor_stock: true};
     this.isStorageLocationFormShow = true;
   }
 

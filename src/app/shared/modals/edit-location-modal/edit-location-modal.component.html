@@ -45,11 +45,11 @@
                 </div>
                 <div class="col l3 m6 s12 toggle-stock checkbox input-checkbox">
                     <div class="switch-box">
-                        <div class="switcher active" [class.active]="inventory_location.floor_stock"
-                             (click)="toggleFloorStock()">Floor Stock
+                        <div class="switcher active" [class.active]="!inventory_location.floor_stock"
+                             (click)="toggleFloorStock()">Back Stock
                         </div>
-                        <div class="switcher" [class.active]="!inventory_location.floor_stock"
-                             (click)="toggleFloorStock()">Working Stock
+                        <div class="switcher" [class.active]="inventory_location.floor_stock"
+                             (click)="toggleFloorStock()">Floor Stock
                         </div>
                     </div>
                 </div>
