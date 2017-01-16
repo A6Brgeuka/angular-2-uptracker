@@ -60,6 +60,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public filterStorageOption$: any = new BehaviorSubject({});
   public storageLocations$ = new BehaviorSubject([]);
   public filteredStorageLocations$;
+  public floorStockStorageLocations$;
+  public backStockStorageLocations$;
 
   public isStorageLocationFormShow = true;
   public storageLocation: string;
@@ -123,9 +125,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.filteredStorageLocations$ = Observable.combineLatest(
       this.storageLocations$,
       this.filterSearch$,
-      this.filterStorageOption$
     )
-      .map(([locations, searchkey, options]: any) => {
+      .map(([locations, searchkey]: any) => {
 
       if (searchkey && searchkey!='') {
         locations = _.reject(locations, (location: any) =>{
@@ -134,10 +135,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
         });
       }
 
-      locations = _.filter(locations, options);
       locations = _.sortBy(locations, 'name');
       return locations;
     });
+
+    this.floorStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: true}));
+    this.backStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: false}));
 
     // this.states$ = this.accountService.getStates().take(1);
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
@@ -312,8 +315,10 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.inventory_location = _.cloneDeep(data);
   }
 
-  deleteStorageLocation(id) {
-    this.modalWindowService.confirmModal('Delete Storage Location?', 'Are you sure you want to delete the storage location?', this.deleteStorageLocationFunc.bind(this,id))
+  deleteStorageLocation(storageLocation) {
+    if (!storageLocation.default_location) {
+      this.modalWindowService.confirmModal('Delete Storage Location?', 'Are you sure you want to delete the storage location?', this.deleteStorageLocationFunc.bind(this,storageLocation._id))
+    }
   }
 
   deleteStorageLocationFunc(id) {
