@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, NgZone} from '@angular/core';
 
 import * as _ from 'lodash';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { UserService, StateService, AccountService } from '../core/services/index';
+import {ActivatedRoute} from "@angular/router";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
@@ -20,8 +22,10 @@ export class DashboardComponent implements OnInit{
   constructor(
       private userService: UserService,
       private accountService: AccountService,
-      private stateService: StateService
-  ) { 
+      private stateService: StateService,
+      private activatedRoute: ActivatedRoute,
+      private zone: NgZone
+  ) {
   }
   
   ngOnInit(){

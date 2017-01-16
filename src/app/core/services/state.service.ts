@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import {Observable} from "rxjs";
 
 @Injectable()
 export class StateService {
   url: string;
   navigationEndUrl: string = '';
+  public navigationEndUrl$: Observable<any>;
+
   
   constructor(
     public router: Router,
   ) {
+    this.navigationEndUrl$ =  router.events
+        .filter(event => event instanceof NavigationEnd)
+        .map(event => event.url);
+
     router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event) => {
