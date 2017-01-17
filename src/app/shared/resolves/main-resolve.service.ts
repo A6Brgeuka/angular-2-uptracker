@@ -74,11 +74,10 @@ export class ProductCollectionResolve implements Resolve<any> {
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     debugger;
-    return this.accountService.dashboardLocation$.switchMap(res => {
-      debugger
+    return this.accountService.dashboardLocation$.switchMap((res) => {
       this.productService.getProducts().take(1)
     });
-    return this.productService.getProducts().take(1);
+    //return this.productService.getProducts().take(1);
   }
 }
 
