@@ -74,15 +74,13 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
-  
-  showEditFields(){
+
+  showEditFields() {
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
-    this.departmentCollection$.subscribe(r => {
-      this.showEdit = !this.showEdit;
-      this.productCopy = _.clone(this.product);
-      this.productCopy.departments = r;
-    });
+    this.showEdit = !this.showEdit;
+    this.productCopy = _.clone(this.product);
   }
+
   closeEditFields(){
     this.showEdit = !this.showEdit;
     this.productCopy = [];

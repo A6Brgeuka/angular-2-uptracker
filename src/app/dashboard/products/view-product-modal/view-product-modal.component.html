@@ -78,6 +78,10 @@
           <!--TODO productCopy.departments-->
 
           <div class="value">{{product.department}}</div>
+
+          <select>
+            <option *ngFor="let dep of departmentCollection$ | async" value="{{dep}}">{{dep}}</option>
+          </select>
         </div>
         <div class="col s4 input">
           <label>Category</label>
