@@ -57,7 +57,7 @@ export class ProductsComponent implements OnInit {
             this.sortBy$,
             this.searchKey$
         )
-        .map(([products, sortBy, searchKey]):any => {
+        .map(([products, sortBy, searchKey]: [any,any,any]) => {
           this.total = products.length;
           let filteredProducts:any = products;
 

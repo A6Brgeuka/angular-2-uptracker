@@ -30,6 +30,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   private subscribers: any = {};
   context: ViewProductModalContext;
   private product: any;
+  private productCopy: any;
   public variation: any = {visibility: true};
   public variationArrs = {
     package_type: [],
@@ -40,8 +41,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     price_range: []
   };
   public comment: any = {};
+  public showEdit:boolean =false;
 
   public addOrderVariantsButtonShow: boolean = false;
+  public departmentCollection$: Observable<any> = new Observable<any>();
 
   public variants = [];
   public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -71,13 +74,37 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
+  
+  showEditFields(){
+    this.departmentCollection$ = this.accountService.getDepartments().take(1);
+    this.departmentCollection$.subscribe(r => {
+      this.showEdit = !this.showEdit;
+      this.productCopy = _.clone(this.product);
+      this.productCopy.departments = r;
+    });
+  }
+  closeEditFields(){
+    this.showEdit = !this.showEdit;
+    this.productCopy = [];
+  }
+  
+  saveAfterEdit(){
+    console.log( this.product , this.productCopy);
+    this.product = this.productCopy;
+    this.closeEditFields();
+    this.resetText();
+  }
 
-  ngOnInit() {
-    this.product = this.context.product;
+  resetText(){
     this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
     this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
     this.product.account_category = this.product.account_category ? this.product.account_category : 'Not Specified';
+  }
+  
+  ngOnInit() {
+    this.product = this.context.product;
+    this.resetText();
     this.product.comments = [];
     this.location_id = this.product.location_id;
 

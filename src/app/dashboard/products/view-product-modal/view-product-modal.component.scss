@@ -1,6 +1,33 @@
 $tealish: #33c6d9;
+$red: #f00;
+$white: #fff;
+$greeny: #4CAF50;
+$dark: #444;
 
 :host /deep/ {
+
+  .edbtn {
+    margin-left: 10px;
+    height: 26px;
+    font-size: 12px;
+    font-weight: normal;
+    border-radius: 7px;
+    padding:3px 10px;
+  }
+  .edbtn:hover {
+    opacity: .9;
+  }
+  .bluebtn {
+    background: $tealish;
+    color: $white;
+    border: 1px solid $tealish;
+  }
+  .redbtn {
+    border:1px solid $red;
+    color:$red;
+    background: $white;
+  }
+
   .inner {
     .img-container {
       width: 140px;
@@ -15,6 +42,19 @@ $tealish: #33c6d9;
     }
 
     .info-box {
+
+      height:190px;
+
+      input[type="text"]{
+        border-color:  $greeny;
+        color:$dark;
+      }
+      .name-field {
+        height: 36px;
+        margin-bottom: -5px;
+        margin-top: 0;
+      }
+
       .ttl {
         color: #9a9c9e;
       }
@@ -51,6 +91,8 @@ $tealish: #33c6d9;
     //}
 
     .inner {
+
+
 
       .variant-table {
         font-size: 12px;

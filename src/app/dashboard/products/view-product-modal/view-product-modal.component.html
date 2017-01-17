@@ -1,40 +1,89 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
   <div class="title center-align">{{product.name}}</div>
-  <div class="row">
+  <div class="row center edit-buttons">
+    <button class="bt-edit-product edbtn bluebtn" *ngIf="!showEdit" (click)="showEditFields()"><fa [name]="'pencil'"></fa>Edit</button>
+    <button class="bt-edit-product-save edbtn bluebtn" (click)="saveAfterEdit()" *ngIf="showEdit"><fa [name]="'check'"></fa>Save</button>
+    <button class="bt-edit-product-cancel edbtn redbtn"  *ngIf="showEdit"  (click)="closeEditFields()"><fa [name]="'close'"></fa>Cancel</button>
+  </div>
+  <div class="row uptracker-form">
     <div class="col s12 m3">
       <div class="img-container">
         <div class="img" *ngIf="product?.image" [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }"></div>
       </div>
     </div>
     <div class="info-box col s12 m9">
-      <div class="ttl-box row">
-        <div class="ttl col s12">{{product.name}}</div>
+      <div class="ttl-box row input">
+        <div  *ngIf="!showEdit"  class="ttl col s12">{{product.name}}</div>
+        <input class="ttl col s12 name-field"  *ngIf="showEdit"   [(ngModel)]="productCopy.name"  type="text">
       </div>
       <div class="row">
-        <div class="col s4">
-          <label>Hazardous</label>
-          <span class="value">{{product.hazardous_string}}</span>
+
+        <div class="col s4 ">
+          <div *ngIf="!showEdit"   class="">
+            <label>Hazardous</label>
+            <span class="value">{{product.hazardous_string}}</span>
+          </div>
+          <div *ngIf="showEdit" class="input-checkbox checkbox">
+            <label>Hazardous</label>
+            <input
+              type="checkbox"
+              class="checkbox-input"
+              [(ngModel)]="productCopy.hazardous"
+              id="checkbox1"
+            />
+            <label for="checkbox1"></label>
+          </div>
         </div>
-        <div class="col s4">
-          <label>Trackable</label>
-          <span class="value">{{product.trackable_string}}</span>
+
+        <div class="col s4 ">
+          <div *ngIf="!showEdit"   class="">
+            <label>Trackable</label>
+            <span class="value">{{product.trackable_string}}</span>
+          </div>
+          <div *ngIf="showEdit" class="input-checkbox checkbox">
+            <label>Trackable</label>
+            <input
+              type="checkbox"
+              class="checkbox-input"
+              [(ngModel)]="productCopy.trackable"
+              id="checkbox2"
+            />
+            <label for="checkbox2"></label>
+          </div>
         </div>
-        <div class="col s4">
-          <label>Tax Exempt</label>
-          <span class="value">{{product.tax_exempt_string}}</span>
+
+        <div class="col s4 ">
+          <div *ngIf="!showEdit"   class="">
+            <label>Tax Exempt</label>
+            <span class="value">{{product.tax_exempt_string}}</span>
+          </div>
+          <div *ngIf="showEdit" class="input-checkbox checkbox">
+            <label>Tax Exempt</label>
+            <input
+              type="checkbox"
+              class="checkbox-input"
+              [(ngModel)]="productCopy.tax_exempt"
+              id="checkbox3"
+            />
+            <label for="checkbox3"></label>
+          </div>
         </div>
+
       </div>
       <div class="row">
-        <div class="col s4">
+        <div class="col s4 input">
           <label>Department</label>
+
+          <!--TODO productCopy.departments-->
+
           <div class="value">{{product.department}}</div>
         </div>
-        <div class="col s4">
+        <div class="col s4 input">
           <label>Category</label>
           <div class="value">{{product.category}}</div>
         </div>
-        <div class="col s4">
+        <div class="col s4 input">
           <label>Accounting</label>
           <div class="value">{{product.account_category}}</div>
         </div>

@@ -427,12 +427,13 @@ button{
   .input-checkbox {
     [type="checkbox"] {
       & + label {
+        vertical-align: middle;
         padding-left: 25px;
         font-size: 14px;
 
         &:before {
-          width: 20px;
-          height: 20px;
+          width: 17px;
+          height: 17px;
           background-color: #f5f6f7;
           border-color: #d6d6d6;
           border-radius: 3px;
@@ -818,7 +819,7 @@ modal-overlay{
 
     .title{
       font:bold 28px/32px Ubuntu;
-      margin-bottom:46px;
+      margin-bottom:10px;
     }
 
     .row{
