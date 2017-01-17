@@ -19,7 +19,7 @@
     <header class="header">
       <div class="row">
         <div class="col s6 m6">
-          <div class="select input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard') && !stateService.isUrl('/dashboard/products')">
+          <div class="select input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard') && !stateService.isUrl('/products')">
             <select
                 [(ngModel)]="selectedLocation"
                 name="location"
@@ -28,17 +28,6 @@
                 [materializeActions]=""
                 (change)="changeLocation($event)">
               <option value="">All Locations</option>
-              <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
-            </select>
-          </div>
-          <div class="select input-field" *ngIf="stateService.isUrl('/dashboard/products')">
-            <select
-                    [(ngModel)]="selectedLocation"
-                    name="location"
-                    materialize="material_select"
-                    [materializeSelectOptions]="locations$ | async"
-                    [materializeActions]=""
-                    (change)="changeLocation($event)">
               <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
             </select>
           </div>
