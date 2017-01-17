@@ -40,7 +40,7 @@ const dashboardRoutes = [
       vendorCollection: VendorCollectionResolve,
       userCollection: UserCollectionResolve,
       locationCollection: LocationCollectionResolve,
-      productCollection: ProductCollectionResolve,
+      // productCollection: ProductCollectionResolve,
     }
   }
 ];

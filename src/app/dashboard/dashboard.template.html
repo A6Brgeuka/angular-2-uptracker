@@ -24,10 +24,10 @@
                 [(ngModel)]="selectedLocation"
                 name="location"
                 materialize="material_select"
-                [materializeSelectOptions]="locations$ | async"
+                [materializeSelectOptions]="isnotProductUrl$ | async"
                 [materializeActions]=""
                 (change)="changeLocation($event)">
-              <option value="">All Locations</option>
+              <option value="" *ngIf="isnotProductUrl$ | async">All Locations</option>
               <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
             </select>
           </div>

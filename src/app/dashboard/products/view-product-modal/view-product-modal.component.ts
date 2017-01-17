@@ -56,6 +56,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public deleteFromComments$ = new Subject();
   public editCommentComments$ = new Subject();
   public filteredComments$;
+  public location_id;
 
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -78,6 +79,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
     this.product.account_category = this.product.account_category ? this.product.account_category : 'Not Specified';
     this.product.comments = [];
+    this.location_id = this.product.location_id;
 
     let addToComments$ = this.addToComments$.switchMap((item: any) => {
       return this.comments$.first().map(collection => {
@@ -161,7 +163,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       });
 
 
-    this.subscribers.getProductSubscription = this.productService.getProduct(this.product.id)
+    this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product.id, this.location_id)
       .filter(res => res.data)
       .map(res => res.data)
       .subscribe(data => {

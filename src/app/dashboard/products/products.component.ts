@@ -12,6 +12,7 @@ import { ProductFilterModal } from './product-filter-modal/product-filter-modal.
 import { RequestProductModal } from './request-product-modal/request-product-modal.component';
 import { ProductService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
+import { AccountService } from "../../core/services/account.service";
 
 @Component({
   selector: 'app-products',
@@ -25,13 +26,15 @@ export class ProductsComponent implements OnInit {
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public products$: Observable<any>;
+  public dashboardLocation;
 
   constructor(
       vcRef: ViewContainerRef,
       overlay: Overlay,
       public modal: Modal,
       private productService: ProductService,
-      private modalWindowService: ModalWindowService
+      private modalWindowService: ModalWindowService,
+      private accountService: AccountService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -40,10 +43,17 @@ export class ProductsComponent implements OnInit {
     // this.products$ = Observable.of([
     //   { name: 'First', variations: 3, priceMin: 79, priceMax: 112},
     //   { name: 'Second with long name length for two lines', variations: 100, priceMin: 8, priceMax: 34},
-    // ]);
+    // ])
+
+    let products$ = this.accountService.dashboardLocation$.filter(res => res).switchMap(location => {
+        this.dashboardLocation = location;
+        return this.productService.getProductsLocation(location.id)
+    });
+
     this.products$ = Observable
         .combineLatest(
-            this.productService.products$,
+            // this.productService.products$,
+            products$,
             this.sortBy$,
             this.searchKey$
         )
@@ -74,6 +84,7 @@ export class ProductsComponent implements OnInit {
   }
 
   viewProductModal(product){
+      product = Object.assign(product,{location_id: this.dashboardLocation.id});
     this.modal
         .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({ product: product }))
         .then((resultPromise)=>{

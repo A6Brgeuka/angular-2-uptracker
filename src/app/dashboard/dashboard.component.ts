@@ -18,23 +18,40 @@ export class DashboardComponent implements OnInit{
   public selectedLocation: string = '';
   public locations$: any;
   private locationArr: any;
+  public isnotProductUrl$: Observable<any>;
 
   constructor(
       private userService: UserService,
       private accountService: AccountService,
       private stateService: StateService,
-      private activatedRoute: ActivatedRoute,
-      private zone: NgZone
   ) {
   }
   
   ngOnInit(){
-    this.locations$ = this.accountService.locations$.do((res: any) => {
+    this.locations$ =  Observable.combineLatest(
+        this.accountService.locations$,
+        this.stateService.navigationEndUrl$
+    )
+        .map(([locations,navigationEndUrl]): any => locations)
+        .do((res: any) => {
       this.locationArr = res;
     });
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.selectedLocation = res ? res.id : '';
     });
+    this.isnotProductUrl$ = this.stateService.navigationEndUrl$.map(url => url != "/dashboard/products");
+
+    this.subscribers.dashboardLocationProductSubscription = Observable.combineLatest(
+        this.accountService.dashboardLocation$,
+        this.isnotProductUrl$
+    )
+        .filter(([dashloc,isPrdUrl]): any => !isPrdUrl && !dashloc)
+        .switchMap(res => {
+          return this.accountService.locations$
+        })
+        .subscribe( res => {
+          this.accountService.dashboardLocation$.next(res[0])
+        });
   }
 
   changeLocation(event){

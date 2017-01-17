@@ -112,8 +112,19 @@ export class ProductService extends ModelService {
     // return this.collection$;
   }
 
+  getProductsLocation(id){
+    return this.products$ = this.restangular.all('products').customGET('',{location_id: id})
+            .map((res: any) => {
+              return res.data.results;
+            });
+  }
+
   getProduct(id){
     return this.restangular.one('products', id).get();
+  }
+
+  getProductLocation(id, location_id){
+    return this.restangular.one('products', id).get({location_id: location_id});
   }
 
   searchProduct(query){

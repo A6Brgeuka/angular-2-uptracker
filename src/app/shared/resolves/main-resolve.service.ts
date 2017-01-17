@@ -67,11 +67,17 @@ export class VendorCollectionResolve implements Resolve<any> {
 @Injectable()
 export class ProductCollectionResolve implements Resolve<any> {
   constructor(
-      private productService: ProductService
+      private productService: ProductService,
+      private accountService: AccountService
   ) {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    debugger;
+    return this.accountService.dashboardLocation$.switchMap(res => {
+      debugger
+      this.productService.getProducts().take(1)
+    });
     return this.productService.getProducts().take(1);
   }
 }
