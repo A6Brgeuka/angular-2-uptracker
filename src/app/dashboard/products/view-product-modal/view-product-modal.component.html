@@ -17,7 +17,7 @@
         <div  *ngIf="!showEdit"  class="ttl col s12">{{product.name}}</div>
         <input class="ttl col s12 name-field"  *ngIf="showEdit"   [(ngModel)]="productCopy.name"  type="text">
       </div>
-      <div class="row">
+      <div class="row" [ngClass]="{'checks':showEdit}">
 
         <div class="col s4 ">
           <div *ngIf="!showEdit"   class="">
@@ -77,11 +77,17 @@
 
           <!--TODO productCopy.departments-->
 
-          <div class="value">{{product.department}}</div>
+          <div  *ngIf="!showEdit"  class="value">{{product.department}}</div>
 
-          <select>
-            <option *ngFor="let dep of departmentCollection$ | async" value="{{dep}}">{{dep}}</option>
-          </select>
+          <div *ngIf="showEdit"  class="select">
+            <select
+                    [(ngModel)]="productCopy.department"
+                    materialize="material_select"
+                    [materializeSelectOptions]="variationArrs.package_type">
+              <option value="">Department</option>
+              <option *ngFor="let item of productCopy.departments" [value]="item">{{item}}</option>
+            </select>
+          </div>
         </div>
         <div class="col s4 input">
           <label>Category</label>
@@ -203,8 +209,8 @@
           <div class="filter-heading noselect head-item">
             <fa [name]="'filter'"></fa>
           </div>
-          <div class="visibility-heading head-item">
-            <i class="material-icons noselect"  (click)="toggleVariationVisibility()">{{variation.visibility ? "visibility" : "visibility_off"}}</i>
+          <div  class="visibility-heading head-item">
+            <i  class="material-icons noselect"  (click)="toggleVariationVisibility()">{{variation.visibility ? "visibility" : "visibility_off"}}</i>
           </div>
           <div class="add-order-heading head-item">
             <button class="uptracker-form-btn waves-light waves-effect add-order-btn" [disabled]="!addOrderVariantsButtonShow"><i class="fa fa-shopping-cart"
@@ -239,10 +245,11 @@
             <div class="small-heading row-item">{{variant.size || ""}}</div>
             <div class="text-heading row-item">{{variant.upc || ""}}</div>
             <div class="text-heading row-item">{{variant.price_range || ""}}</div>
-            <div class="edit-variant filter-heading row-item"><i class="fa fa-pencil variant-func" aria-hidden="true"></i></div>
+            <div class="edit-variant filter-heading row-item">
+              <i *ngIf="showEdit" class="fa fa-pencil variant-func" aria-hidden="true"></i>
+            </div>
             <div class="edit-variant visibility-heading row-item">
-              <i class="fa fa-eye  variant-func" [class.fa-eye]="variant.visibility" [class.fa-eye-slash]="!variant.visibility" (click)="toggleVariantVisibility(variant)" aria-hidden="true"></i>
-              <!--<i class="material-icons" >{{variant.visibility ? "visibility" : "visibility_off"}}</i>-->
+              <i *ngIf="showEdit" class="fa fa-eye  variant-func" [class.fa-eye]="variant.visibility" [class.fa-eye-slash]="!variant.visibility" (click)="toggleVariantVisibility(variant)" aria-hidden="true"></i>
             </div>
             <div class="add-order-col add-order-heading row-item">
               <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn"><i

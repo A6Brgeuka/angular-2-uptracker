@@ -5,6 +5,10 @@ $greeny: #4CAF50;
 $dark: #444;
 
 :host /deep/ {
+  .checks {
+    margin-bottom:5px;
+  }
+  .invis {opacity: 0;}
 
   .edbtn {
     margin-left: 10px;
@@ -191,7 +195,7 @@ $dark: #444;
           }
         }
 
-        .edit-variant {
+        .edit-variant i {
           font-size: 18px;
           color: $tealish;
           cursor: pointer;
