@@ -45,6 +45,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   public addOrderVariantsButtonShow: boolean = false;
   public departmentCollection$: Observable<any> = new Observable<any>();
+  public productAccountingCollection$: Observable<any> = new Observable<any>();
+  public productCategoriesCollection$: Observable<any> = new Observable<any>();
 
   public variants = [];
   public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -52,6 +54,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
   public filterPrice$ = new BehaviorSubject(null);
   public filteredVariants$ = Observable.of([]);
+  public variantsCopy = [];
   public variantChecked$ = new BehaviorSubject(false);
   public variantVisibility$ = new BehaviorSubject(false);
   public comments$ = new BehaviorSubject([]);
@@ -77,22 +80,31 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   showEditFields() {
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
-    this.departmentCollection$.subscribe(r => {
-      this.showEdit = !this.showEdit;
-      this.productCopy = _.clone(this.product);
-      this.productCopy.departments = r;
+    this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
+    this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
+  
+    this.showEdit = !this.showEdit;
+    this.productCopy = _.clone(this.product);
+
+    this.filteredVariants$.take(1).subscribe(r=>{
+      this.variantsCopy= _.cloneDeep(r);
     });
   }
 
   closeEditFields(){
     this.showEdit = !this.showEdit;
     this.productCopy = [];
+    
+    this.variants$.next(this.variantsCopy);
   }
   
   saveAfterEdit(){
     console.log( this.product , this.productCopy);
     this.product = this.productCopy;
-    this.closeEditFields();
+    
+    //this.filteredVariants$ = Observable.of(this.variantsCopy);
+    this.showEdit = !this.showEdit;
+    this.productCopy = [];
     this.resetText();
   }
 
@@ -157,8 +169,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         return new Date(item.created_at)
       }, ['desc'])
     });
-
-    this.filteredVariants$ = Observable.combineLatest(
+  
+    
+    this.filteredVariants$ =  Observable.combineLatest(
       this.variants$,
       this.filterSelectOption$,
       this.filterName$,
@@ -166,7 +179,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       this.variantChecked$,
     )
       .map(([variants,filterSelectOption,filterName,filterPrice,variantChecked]) => {
-
+        
         // check if at least on variant is checked to show add order button
         let checkedArrVariants = _.filter(variants, {checked: true});
 
@@ -253,6 +266,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   // make all variant checkboxes value to be head checkbox value
   headCheckboxChange() {
     this.variants$.next(_.map(this.variants$.getValue(), (variant: any) => {
+       // headcheckbox
       variant.checked = this.variation.checked;
       return variant;
     }));

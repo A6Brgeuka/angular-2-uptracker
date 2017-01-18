@@ -15,7 +15,9 @@
     <div class="info-box col s12 m9">
       <div class="ttl-box row input">
         <div  *ngIf="!showEdit"  class="ttl col s12">{{product.name}}</div>
-        <input class="ttl col s12 name-field"  *ngIf="showEdit"   [(ngModel)]="productCopy.name"  type="text">
+        <div class="col s12">
+          <input class="ttl col s12 name-field"  *ngIf="showEdit"   [(ngModel)]="productCopy.name"  type="text">
+        </div>
       </div>
       <div class="row" [ngClass]="{'checks':showEdit}">
 
@@ -72,31 +74,47 @@
 
       </div>
       <div class="row">
+
         <div class="col s4 input">
           <label>Department</label>
-
-          <!--TODO productCopy.departments-->
-
           <div  *ngIf="!showEdit"  class="value">{{product.department}}</div>
 
           <div *ngIf="showEdit"  class="select">
             <select
                     [(ngModel)]="productCopy.department"
                     materialize="material_select"
-                    [materializeSelectOptions]="variationArrs.package_type">
-              <option value="">Department</option>
-              <option *ngFor="let item of productCopy.departments" [value]="item">{{item}}</option>
+                    [materializeSelectOptions]="departmentCollection$ | async">
+              <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
             </select>
           </div>
         </div>
+
         <div class="col s4 input">
           <label>Category</label>
-          <div class="value">{{product.category}}</div>
+          <div  *ngIf="!showEdit"  class="value">{{product.category}}</div>
+          <div *ngIf="showEdit"  class="select">
+            <select
+              [(ngModel)]="productCopy.category"
+              materialize="material_select"
+              [materializeSelectOptions]="productCategoriesCollection$ | async">
+              <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}</option>
+            </select>
+          </div>
         </div>
+
         <div class="col s4 input">
           <label>Accounting</label>
-          <div class="value">{{product.account_category}}</div>
+          <div  *ngIf="!showEdit"  class="value">{{product.account_category}}</div>
+          <div *ngIf="showEdit"  class="select">
+            <select
+              [(ngModel)]="productCopy.account_category"
+              materialize="material_select"
+              [materializeSelectOptions]="productAccountingCollection$ | async">
+              <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}</option>
+            </select>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -245,17 +263,17 @@
             <div class="small-heading row-item">{{variant.size || ""}}</div>
             <div class="text-heading row-item">{{variant.upc || ""}}</div>
             <div class="text-heading row-item">{{variant.price_range || ""}}</div>
-            <div class="edit-variant filter-heading row-item">
-              <i *ngIf="showEdit" class="fa fa-pencil variant-func" aria-hidden="true"></i>
+            <div *ngIf="showEdit"  class="edit-variant filter-heading row-item">
+              <i class="fa fa-pencil variant-func" aria-hidden="true"></i>
             </div>
-            <div class="edit-variant visibility-heading row-item">
-              <i *ngIf="showEdit" class="fa fa-eye  variant-func" [class.fa-eye]="variant.visibility" [class.fa-eye-slash]="!variant.visibility" (click)="toggleVariantVisibility(variant)" aria-hidden="true"></i>
+            <div *ngIf="showEdit"  class="edit-variant visibility-heading row-item">
+              <i  class="fa fa-eye  variant-func" [class.fa-eye]="variant.visibility" [class.fa-eye-slash]="!variant.visibility" (click)="toggleVariantVisibility(variant)" aria-hidden="true"></i>
             </div>
-            <div class="add-order-col add-order-heading row-item">
-              <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn"><i
-                      class="fa fa-shopping-cart" aria-hidden="true"></i>Add to Order
-              </button>
-            </div>
+            <!--<div class="add-order-col add-order-heading row-item">-->
+              <!--<button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn"><i-->
+                      <!--class="fa fa-shopping-cart" aria-hidden="true"></i>Add to Order-->
+              <!--</button>-->
+            <!--</div>-->
             <div class="clearfix"></div>
             <app-variant-detail [variant]="variant" *ngIf="variant.detailView"></app-variant-detail>
           </div>

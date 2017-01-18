@@ -26,6 +26,8 @@ export class AccountService extends ModelService{
   stateCollection$ = Observable.empty();
   currencyCollection$ = Observable.empty();
   departmentCollection$ = Observable.empty();
+  productCategoriesCollection$ = Observable.empty();
+  productAccountingCollection$ = Observable.empty();
   roleCollection$ = Observable.empty();
 
   onboardAccounting: any = {
@@ -126,6 +128,30 @@ export class AccountService extends ModelService{
             });
       }
       return this.departmentCollection$;
+    });
+  }
+
+  getProductCategories(){
+    return this.productCategoriesCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.productCategoriesCollection$ = this.restangular.all('config').all('product_categories').customGET('')
+            .map((res: any) => {
+              return res.data;
+            });
+      }
+      return this.productCategoriesCollection$;
+    });
+  }
+  
+  getProductAccounting(){
+    return this.productAccountingCollection$.isEmpty().switchMap((isEmpty) => {
+      if(isEmpty) {
+        this.productAccountingCollection$ = this.restangular.all('config').all('accounting_categories').customGET('')
+            .map((res: any) => {
+              return res.data;
+            });
+      }
+      return this.productAccountingCollection$;
     });
   }
 

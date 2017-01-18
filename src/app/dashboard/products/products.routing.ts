@@ -1,7 +1,10 @@
 import { ProductsComponent } from './products.component';
 
 import { CurrencyCollectionResolve } from '../../shared/resolves/index'
-import { ProductCollectionResolve } from "../../shared/resolves/main-resolve.service";
+import {
+  ProductCollectionResolve,
+  ProductAccountingCollectionResolve, ProductCategoriesCollectionResolve, DepartmentCollectionResolve
+} from "../../shared/resolves/main-resolve.service";
 
 export const ProductsRoutes = [
   {
@@ -9,8 +12,10 @@ export const ProductsRoutes = [
     component: ProductsComponent,
     resolve: {
       CurrencyCollectionResolve,
+      ProductAccountingCollectionResolve,
+      ProductCategoriesCollectionResolve,
+      DepartmentCollectionResolve
       // productCollection: ProductCollectionResolve,
-
     },
     canActivate: []
   },

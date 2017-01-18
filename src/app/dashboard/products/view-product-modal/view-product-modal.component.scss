@@ -5,6 +5,7 @@ $greeny: #4CAF50;
 $dark: #444;
 
 :host /deep/ {
+
   .checks {
     margin-bottom:5px;
   }
@@ -44,7 +45,9 @@ $dark: #444;
         background-size: cover;
       }
     }
-
+    .uptracker-form .input{
+      margin-bottom:14px;
+    }
     .info-box {
 
       height:190px;
@@ -52,9 +55,9 @@ $dark: #444;
       input[type="text"]{
         border-color:  $greeny;
         color:$dark;
+        height: 36px;
       }
       .name-field {
-        height: 36px;
         margin-bottom: -5px;
         margin-top: 0;
       }

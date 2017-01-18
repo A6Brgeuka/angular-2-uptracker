@@ -41,6 +41,30 @@ export class DepartmentCollectionResolve implements Resolve<any> {
 }
 
 @Injectable()
+export class ProductAccountingCollectionResolve implements Resolve<any> {
+  constructor(
+      private accountService: AccountService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.accountService.getProductAccounting().take(1);
+  }
+}
+
+@Injectable()
+export class ProductCategoriesCollectionResolve implements Resolve<any> {
+  constructor(
+      private accountService: AccountService
+  ) {
+
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.accountService.getProductCategories().take(1);
+  }
+}
+
+@Injectable()
 export class CurrencyCollectionResolve implements Resolve<any> {
   constructor(
       private accountService: AccountService
@@ -85,5 +109,7 @@ export const MAIN_RESOLVER_PROVIDERS = [
   DepartmentCollectionResolve,
   CurrencyCollectionResolve,
   VendorCollectionResolve,
-  ProductCollectionResolve
+  ProductCollectionResolve,
+  ProductAccountingCollectionResolve,
+  ProductCategoriesCollectionResolve
 ];
