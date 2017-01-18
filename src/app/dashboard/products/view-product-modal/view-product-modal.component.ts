@@ -88,6 +88,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     this.filteredVariants$.take(1).subscribe(r=>{
       this.variantsCopy= _.cloneDeep(r);
+      // console.log(this.variantsCopy);
+      // .vendor_variants vendor_name catalog_number
     });
   }
 
