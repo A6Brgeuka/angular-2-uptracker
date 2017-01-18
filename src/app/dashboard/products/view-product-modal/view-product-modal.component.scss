@@ -107,6 +107,10 @@ $dark: #444;
         .variant-head {
           padding: 10px 0;
           border-bottom: 1px solid #d6d6d6;
+
+          .flor > div {
+            float: right;
+          }
         }
         .head-item, .row-item {
           float: left;
@@ -140,7 +144,7 @@ $dark: #444;
         }
 
         .filter-heading {
-          width: 5%;
+          width: 8%;
 
           i {
             margin-right: 3px;
@@ -198,12 +202,16 @@ $dark: #444;
           }
         }
 
-        .edit-variant i {
-          font-size: 18px;
-          color: $tealish;
-          cursor: pointer;
+        .edit-variant {
+          i {
+            font-size: 18px;
+            color: $tealish;
+            cursor: pointer;
+          }
+          i.fa-eye-slash {
+            color:$red;
+          }
         }
-
         .uptracker-form {
 
           .input {
@@ -331,6 +339,9 @@ $dark: #444;
           padding: 0 15px;
         }
       }
+      .flor .row-item {
+        float:right;
+      }
     }
     @media (max-width: 900px) {
       #variations {
@@ -428,4 +439,12 @@ $dark: #444;
       }
     }
   }
+  .edit-mode .filter-heading.head-item {
+    width:18%!important;
+  }
+  .filter-heading.row-item {
+    width:5%!important;
+  }
+
+
 }
