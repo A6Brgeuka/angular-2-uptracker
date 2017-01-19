@@ -76,6 +76,16 @@
              background-position:19px center;
            }
 
+           &.dash{
+             background-image: url(/assets/img/icon-nav-dashboard.svg);
+             background-position:13px center;
+           }
+
+           &.shopping{
+             background-image: url(/assets/img/icon-nav-shoppinglist.svg);
+             background-position:15px center;
+           }
+
            &.products{
              background-image: url(/assets/img/icon-nav-products.svg);
              background-position:22px center;
