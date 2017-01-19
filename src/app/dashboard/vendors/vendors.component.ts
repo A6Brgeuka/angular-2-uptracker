@@ -45,7 +45,7 @@ export class VendorsComponent implements OnInit {
       .filter((infinite)=>infinite && !this.isRequestVendors)
       .switchMap((infinite) => {
         this.isRequestVendors = true;
-        return this.vendorService.getNextVendors(this.vendorService.lastId);
+        return this.vendorService.getNextVendors(this.vendorService.lastId,);
       })
       .subscribe(res => {
         this.isRequestVendors = false;
