@@ -100,6 +100,8 @@ export class VendorService extends ModelService {
     this.updateSelfData$.next(data);
   }
 
+  //TODO add to resolver
+
   getVendors(last_id?,search_string?){
     search_string = search_string ? search_string : '';
     let query:any = {};
@@ -114,7 +116,11 @@ export class VendorService extends ModelService {
         this.vendors$ = this.restangular.all('vendors').customGET('',query)
             .map((res: any) => {
               this.lastId = res.data.last_id;
-              this.updateCollection$.next(res.data.vendors);
+              if (last_id) {
+                this.updateCollection$.next(res.data.vendors);
+              } else {
+                this.addCollectionToCollection$.next(res.data.vendors);
+              }
               this.totalCount$.next(res.data.count);
               return res.data.vendors;
             });
@@ -135,7 +141,6 @@ export class VendorService extends ModelService {
     // return collection$;
   }
   
- 
 
   getNextVendors(last_id,search_string?){
     search_string = search_string ? search_string : '';

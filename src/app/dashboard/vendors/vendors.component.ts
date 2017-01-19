@@ -18,6 +18,7 @@ import { HostListener } from "@angular/core/src/metadata/directives";
 @DestroySubscribers()
 export class VendorsComponent implements OnInit {
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public  searchKey:string;
   public sortBy: string;
   private sortBy$: any = new BehaviorSubject(null);
   public total: number;
@@ -45,7 +46,7 @@ export class VendorsComponent implements OnInit {
       .filter((infinite)=>infinite && !this.isRequestVendors)
       .switchMap((infinite) => {
         this.isRequestVendors = true;
-        return this.vendorService.getNextVendors(this.vendorService.lastId,);
+        return this.vendorService.getNextVendors(this.vendorService.lastId, this.searchKey);
       })
       .subscribe(res => {
         this.isRequestVendors = false;
