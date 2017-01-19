@@ -11,6 +11,7 @@ export class ModelService {
   addCollectionToCollection$: Subject<any> = new Subject<any>();
   deleteFromCollection$: Subject<any> = new Subject<any>();
   updateCollection$: Subject<any> = new Subject<any>();
+  updateTotalCount$: Subject<any> = new Subject<any>();
   updateElementCollection$: Subject<any> = new Subject<any>();
   
   entity$: Observable<any>;

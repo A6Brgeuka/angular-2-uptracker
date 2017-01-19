@@ -38,6 +38,8 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    this.vendorService.totalCount$.subscribe(res => {this.total = res});
 
       this.infiniteScroll$
       .filter((infinite)=>infinite && !this.isRequestVendors)
@@ -57,10 +59,11 @@ export class VendorsComponent implements OnInit {
         .combineLatest(
             this.vendorService.combinedVendors$,
             this.sortBy$,
-            this.searchKey$
+            this.searchKey$,
+          
         )
         .map(([vendors, sortBy, searchKey]) => {
-          this.total = vendors.length;
+          console.log(vendors);
           let filteredVendors = vendors;
           if (searchKey && searchKey!='') {
             filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
@@ -82,7 +85,10 @@ export class VendorsComponent implements OnInit {
           let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
           this.vendors = sortedVendors;
           return sortedVendors;
-        });
+        }).debounce((x)=>Observable.timer(1000));
+  
+    
+    
   }
 
   ngAfterViewInit() {

@@ -21,7 +21,7 @@ export class VendorService extends ModelService {
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
-  
+  totalCount$: Subject<any> = new Subject<any>();
   combinedVendors$: Observable<any>;
   accountVendors$: Observable<any> = Observable.empty();
   vendors$: Observable<any> = Observable.empty();
@@ -108,11 +108,13 @@ export class VendorService extends ModelService {
             .map((res: any) => {
               this.lastId = res.data.last_id;
               this.updateCollection$.next(res.data.vendors);
+              this.totalCount$.next(res.data.count);
               return res.data.vendors;
             });
       }
       return this.vendors$;
     });
+    
 
     // TODO: set collection$ to account vendors
     // let collection$ = this.restangular.all('vendors').customGET('')
@@ -124,9 +126,12 @@ export class VendorService extends ModelService {
     //     });
     // return collection$;
   }
+  
+ 
 
-  getNextVendors(last_id){
+  getNextVendors(last_id,search_string?){
     let query = last_id ? {last_id: last_id} : {};
+    search_string = search_string ? search_string : '';
 
     if(!last_id) {
       return this.collection$;
@@ -136,7 +141,7 @@ export class VendorService extends ModelService {
       .map((res: any) => {
         this.lastId = res.data.last_id;
         this.addCollectionToCollection$.next(res.data.vendors);
-
+        this.totalCount$.next(res.data.count);
         // this.updateCollection$.next(res.data.vendors);
         return res.data.vendors;
       });
