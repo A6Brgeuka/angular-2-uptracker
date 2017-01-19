@@ -100,32 +100,27 @@ export class VendorService extends ModelService {
     this.updateSelfData$.next(data);
   }
 
-  //TODO add to resolver
-
-  getVendors(last_id?,search_string?){
-    search_string = search_string ? search_string : '';
-    let query:any = {};
+  private cleanSearch(ins:string){
+    return ins.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+  }
+  
+  getVendors(search_string?:string){
+    let query:any ={
+      limit:20
+    };
     if (search_string) {
-      query = last_id ? {last_id: last_id, query:search_string} : {};
-    } else {
-      query = last_id ? {last_id: last_id} : {};
+      query.query = this.cleanSearch(search_string);
     }
-
     return this.vendors$.isEmpty().switchMap((isEmpty) => {
       if(isEmpty) {
         this.vendors$ = this.restangular.all('vendors').customGET('',query)
             .map((res: any) => {
               this.lastId = res.data.last_id;
-              if (last_id) {
-                this.updateCollection$.next(res.data.vendors);
-              } else {
-                this.addCollectionToCollection$.next(res.data.vendors);
-              }
+              this.updateCollection$.next(res.data.vendors);
               this.totalCount$.next(res.data.count);
               return res.data.vendors;
             });
       }
-      debugger;
       return this.vendors$;
     });
     
@@ -141,28 +136,24 @@ export class VendorService extends ModelService {
     // return collection$;
   }
   
+ 
 
   getNextVendors(last_id,search_string?){
-    search_string = search_string ? search_string : '';
-    let query:any = {};
+    
+    search_string = search_string ? this.cleanSearch(search_string) : '';
+    let query:any =  last_id ? {last_id: last_id} : {};
     if (search_string) {
       query = last_id ? {last_id: last_id, query:search_string} : {};
-    } else {
-      query = last_id ? {last_id: last_id} : {};
     }
-
     if(!last_id) {
       return this.collection$;
     }
-
     return this.restangular.all('vendors').customGET('',query)
       .map((res: any) => {
         this.lastId = res.data.last_id;
         this.addCollectionToCollection$.next(res.data.vendors);
         this.totalCount$.next(res.data.count);
         // this.updateCollection$.next(res.data.vendors);
-        debugger;
-
         return res.data.vendors;
       });
   }

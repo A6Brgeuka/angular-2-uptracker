@@ -120,8 +120,8 @@ export class VendorsComponent implements OnInit {
 
   vendorsFilter(event){
     // replace forbidden characters
-    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-    this.searchKey$.next(value);
+    let value = event.target.value;
+    this.vendorService.getVendors(value).take(1);
   }
 
   vendorsSort(event) {
