@@ -40,6 +40,12 @@ export class VendorsComponent implements OnInit {
   }
 
   ngOnInit() {
+  
+    this.searchKey$.debounceTime(1000)
+    .filter(r => r)
+    .subscribe(
+      (r) => this.vendorService.getNextVendors(false, r)
+    );
     
     this.vendorService.totalCount$.subscribe(res => {this.total = res});
 
@@ -54,7 +60,6 @@ export class VendorsComponent implements OnInit {
       })
       .subscribe(res => {
         this.isRequestVendors = false;
-
       },err => {
         this.isRequestVendors = false;
       });
@@ -64,18 +69,17 @@ export class VendorsComponent implements OnInit {
         .combineLatest(
             this.vendorService.combinedVendors$,
             this.sortBy$,
-            this.searchKey$,
-          
+            //this.searchKey$,
         )
-        .map(([vendors, sortBy, searchKey]) => {
+        .map(([vendors, sortBy/*, searchKey*/]) => {
           console.log(vendors);
           let filteredVendors = vendors;
-          if (searchKey && searchKey!='') {
-            filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
-              let key = new RegExp(searchKey, 'i');
-              return !key.test(vendor.name);
-            });
-          }
+          //if (searchKey && searchKey!='') {
+          //  filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
+          //    let key = new RegExp(searchKey, 'i');
+          //    return !key.test(vendor.name);
+          //  });
+          //}
           let order = 'desc';
           if (sortBy == 'A-Z') {
             sortBy = 'name';
@@ -91,8 +95,7 @@ export class VendorsComponent implements OnInit {
           this.vendors = sortedVendors;
           this.searchKeyLast = this.searchKey;
           return sortedVendors;
-        }).debounce((x)=>Observable.timer(1000));
-  
+        });
     
     
   }
@@ -127,8 +130,6 @@ export class VendorsComponent implements OnInit {
     
     // replace forbidden characters
     let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-    //this.vendorService.getNextVendors(this.vendorService.lastId, value);
-    this.vendorService.getNextVendors(false, this.searchKey);
     this.searchKey$.next(value); // TODO а надо ли это если на бэке правильно фильтруется?
   
   }
