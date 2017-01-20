@@ -201,6 +201,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
           });
         }
         variants = _.filter(variants, filterSelectOption);
+        debugger;
         return variants;
       });
 
@@ -339,6 +340,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   toggleVariationVisibility() {
     this.variation.visibility = !this.variation.visibility;
     this.filterSelectOption$.next(this.variation);
+    debugger;
   }
 
   toggleVariantVisibility(variant) {
