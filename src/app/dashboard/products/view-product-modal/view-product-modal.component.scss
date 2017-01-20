@@ -5,7 +5,9 @@ $greeny: #4CAF50;
 $dark: #444;
 
 :host /deep/ {
-
+  .reddish {
+    color:$red;
+  }
   .checks {
     margin-bottom:5px;
   }

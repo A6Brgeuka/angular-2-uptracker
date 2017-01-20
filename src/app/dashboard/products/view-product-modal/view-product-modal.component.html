@@ -284,7 +284,7 @@
               </div>
             </div>
             <div class="name-heading variant-name row-item valign-wrapper">
-              <span class="valign" (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
+              <span [class.reddish]="!variant.visibility" class="valign" (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
             </div>
             <div class="small-heading row-item">{{variant.package_type || "Value Here"}}</div>
             <div class="small-heading row-item">{{variant.unit_type || "Value Here"}}</div>

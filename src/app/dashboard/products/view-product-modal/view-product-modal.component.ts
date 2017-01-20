@@ -181,7 +181,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       this.variantChecked$,
     )
       .map(([variants,filterSelectOption,filterName,filterPrice,variantChecked]) => {
-        
         // check if at least on variant is checked to show add order button
         let checkedArrVariants = _.filter(variants, {checked: true});
 
