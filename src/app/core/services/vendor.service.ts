@@ -18,6 +18,7 @@ import { BehaviorSubject } from "rxjs";
   destroyFunc: null,
 })
 export class VendorService extends ModelService {
+  initial_quantity:number = 6;
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
@@ -104,26 +105,33 @@ export class VendorService extends ModelService {
     return ins.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
   }
   
-  getVendors(search_string?:string){
+  private getVendorsData (query:any={},reset:boolean = true){
+    return this.restangular.all('vendors').customGET('',query)
+    .map((res: any) => {
+      this.lastId = res.data.last_id;
+      if (reset) {
+        this.updateCollection$.next(res.data.vendors);
+        
+      } else {
+        this.addCollectionToCollection$.next(res.data.vendors);
+      }
+      this.totalCount$.next(res.data.count);
+      // this.updateCollection$.next(res.data.vendors);
+      return res.data.vendors;
+    });
+  }
+  
+  getVendors(){
     let query:any ={
-      limit:20
+      limit:this.initial_quantity,
     };
-    if (search_string) {
-      query.query = this.cleanSearch(search_string);
-    }
     return this.vendors$.isEmpty().switchMap((isEmpty) => {
-      if(isEmpty) {
-        this.vendors$ = this.restangular.all('vendors').customGET('',query)
-            .map((res: any) => {
-              this.lastId = res.data.last_id;
-              this.updateCollection$.next(res.data.vendors);
-              this.totalCount$.next(res.data.count);
-              return res.data.vendors;
-            });
+      
+        if(isEmpty) {
+        this.vendors$ = this.getVendorsData(query,true);
       }
       return this.vendors$;
     });
-    
 
     // TODO: set collection$ to account vendors
     // let collection$ = this.restangular.all('vendors').customGET('')
@@ -135,27 +143,19 @@ export class VendorService extends ModelService {
     //     });
     // return collection$;
   }
-  
- 
 
   getNextVendors(last_id,search_string?){
-    
     search_string = search_string ? this.cleanSearch(search_string) : '';
     let query:any =  last_id ? {last_id: last_id} : {};
     if (search_string) {
-      query = last_id ? {last_id: last_id, query:search_string} : {};
+      query = last_id ? {last_id: last_id, query:search_string} : {query:search_string};
     }
-    if(!last_id) {
+    // When the end is reached
+    if(last_id == -1) {
       return this.collection$;
     }
-    return this.restangular.all('vendors').customGET('',query)
-      .map((res: any) => {
-        this.lastId = res.data.last_id;
-        this.addCollectionToCollection$.next(res.data.vendors);
-        this.totalCount$.next(res.data.count);
-        // this.updateCollection$.next(res.data.vendors);
-        return res.data.vendors;
-      });
+    
+    return this.getVendorsData(query,last_id ? false : true);
   }
 
   getVendor(id){

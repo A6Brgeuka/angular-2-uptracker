@@ -19,6 +19,7 @@ import { HostListener } from "@angular/core/src/metadata/directives";
 export class VendorsComponent implements OnInit {
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public  searchKey:string;
+  public  searchKeyLast:string;
   public sortBy: string;
   private sortBy$: any = new BehaviorSubject(null);
   public total: number;
@@ -46,7 +47,10 @@ export class VendorsComponent implements OnInit {
       .filter((infinite)=>infinite && !this.isRequestVendors)
       .switchMap((infinite) => {
         this.isRequestVendors = true;
-        return this.vendorService.getNextVendors(this.vendorService.lastId, this.searchKey);
+        if (!this.vendorService.lastId) {this.vendorService.lastId = -1} //end reached
+        let last = (this.searchKey!=this.searchKeyLast) ? false : this.vendorService.lastId;
+        this.searchKeyLast = this.searchKey;
+        return this.vendorService.getNextVendors(last, this.searchKey);
       })
       .subscribe(res => {
         this.isRequestVendors = false;
@@ -85,6 +89,7 @@ export class VendorsComponent implements OnInit {
 
           let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
           this.vendors = sortedVendors;
+          this.searchKeyLast = this.searchKey;
           return sortedVendors;
         }).debounce((x)=>Observable.timer(1000));
   
@@ -119,9 +124,13 @@ export class VendorsComponent implements OnInit {
   }
 
   vendorsFilter(event){
+    
     // replace forbidden characters
-    let value = event.target.value;
-    this.vendorService.getVendors(value).take(1);
+    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+    //this.vendorService.getNextVendors(this.vendorService.lastId, value);
+    this.vendorService.getNextVendors(false, this.searchKey);
+    this.searchKey$.next(value); // TODO а надо ли это если на бэке правильно фильтруется?
+  
   }
 
   vendorsSort(event) {
