@@ -18,8 +18,7 @@ import { BehaviorSubject } from "rxjs";
   destroyFunc: null,
 })
 export class VendorService extends ModelService {
-  initial_quantity:number = 50;
-  pagination_limit:number = 50;
+  pagination_limit:number = 10;
   current_page:number = 1;
   selfData: any;
   selfData$: Observable<any>;
@@ -28,6 +27,7 @@ export class VendorService extends ModelService {
   combinedVendors$: Observable<any>;
   accountVendors$: Observable<any> = Observable.empty();
   vendors$: Observable<any> = Observable.empty();
+  public  isDataLoaded$: any = new BehaviorSubject(false);
 
   constructor(
       public injector: Injector,
@@ -111,23 +111,22 @@ export class VendorService extends ModelService {
     .map((res: any) => {
       if (reset) {
         this.updateCollection$.next(res.data.vendors);
-        
       } else {
         this.addCollectionToCollection$.next(res.data.vendors);
       }
       this.totalCount$.next(res.data.count);
+      this.isDataLoaded$.next(true);
       // this.updateCollection$.next(res.data.vendors);
       return res.data.vendors;
     });
   }
-  
+
   getVendors(){
     let query:any ={
       page:1,
       limit:this.pagination_limit,
     };
     return this.vendors$.isEmpty().switchMap((isEmpty) => {
-      
         if(isEmpty) {
         this.vendors$ = this.getVendorsData(query,true);
       }
@@ -160,7 +159,8 @@ export class VendorService extends ModelService {
     if (sortBy && sortBy == 'Z-A') {
       query.sort= 'desc';
     }
-    return this.getVendorsData(!query,page);
+
+    return this.getVendorsData(query,page ? false : true);
   }
 
   getVendor(id){

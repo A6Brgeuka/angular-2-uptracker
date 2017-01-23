@@ -26,7 +26,7 @@ export class VendorsComponent implements OnInit {
     public  vendors$: Observable<any>;
     public  vendors: any;
     public  infiniteScroll$: any = new BehaviorSubject(false);
-    public  isRequestVendors = false;
+    public  isRequestVendors = true;
 
     constructor(private vcRef: ViewContainerRef,
                 overlay: Overlay,
@@ -38,6 +38,15 @@ export class VendorsComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.vendorService.isDataLoaded$
+            .delay(500)
+            .filter(r=>r)
+            .subscribe((r)=>{
+            this.isRequestVendors = false;
+            this.getInfiniteScroll()
+        });
+
         this.searchKey$.debounceTime(1000)
             .filter(r => r)
             .subscribe(
@@ -97,16 +106,17 @@ export class VendorsComponent implements OnInit {
                 if (sortBy == 'Z-A') {
                     sortBy = 'name';
                 }
-                this.getInfiniteScroll();
+                // this.getInfiniteScroll();
                 let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
                 this.vendors = sortedVendors;
                 this.searchKeyLast = this.searchKey;
                 return sortedVendors;
             });
+
     }
 
     ngAfterViewInit() {
-        this.getInfiniteScroll();
+
     }
 
     viewVendorModal(vendor = null) {
@@ -149,6 +159,7 @@ export class VendorsComponent implements OnInit {
 
     getInfiniteScroll() {
         let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285;
+        console.log('bottom',document.body.scrollHeight - document.body.scrollTop - window.innerHeight);
         // let widthColumns = document.body.scrollHeight - document.body.scrollTop - window.innerWidth < 300;
         this.infiniteScroll$.next(scrollBottom);
     }
