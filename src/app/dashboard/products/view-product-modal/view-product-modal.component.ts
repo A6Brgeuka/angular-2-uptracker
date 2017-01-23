@@ -31,7 +31,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   context: ViewProductModalContext;
   private product: any;
   private productCopy: any;
-  public variation: any = {visibility: true};
+  public variation: any = {};
   public variationArrs = {
     package_type: [],
     unit_type: [],
@@ -201,7 +201,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
           });
         }
         variants = _.filter(variants, filterSelectOption);
-        debugger;
+        // debugger;
         return variants;
       });
 

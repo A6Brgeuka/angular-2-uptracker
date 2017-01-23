@@ -18,7 +18,9 @@ import { BehaviorSubject } from "rxjs";
   destroyFunc: null,
 })
 export class VendorService extends ModelService {
-  initial_quantity:number = 6;
+  initial_quantity:number = 50;
+  pagination_limit:number = 50;
+  current_page:number = 1;
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
@@ -26,7 +28,6 @@ export class VendorService extends ModelService {
   combinedVendors$: Observable<any>;
   accountVendors$: Observable<any> = Observable.empty();
   vendors$: Observable<any> = Observable.empty();
-  lastId = null;
 
   constructor(
       public injector: Injector,
@@ -108,7 +109,6 @@ export class VendorService extends ModelService {
   private getVendorsData (query:any={},reset:boolean = true){
     return this.restangular.all('vendors').customGET('',query)
     .map((res: any) => {
-      this.lastId = res.data.last_id;
       if (reset) {
         this.updateCollection$.next(res.data.vendors);
         
@@ -123,7 +123,8 @@ export class VendorService extends ModelService {
   
   getVendors(){
     let query:any ={
-      limit:this.initial_quantity,
+      page:1,
+      limit:this.pagination_limit,
     };
     return this.vendors$.isEmpty().switchMap((isEmpty) => {
       
@@ -144,18 +145,22 @@ export class VendorService extends ModelService {
     // return collection$;
   }
 
-  getNextVendors(last_id,search_string?){
+  getNextVendors(page?,search_string?, sortBy?){
     search_string = search_string ? this.cleanSearch(search_string) : '';
-    let query:any =  last_id ? {last_id: last_id} : {};
+    if (!page) {
+      this.current_page=1;
+    }
+    let query:any =  {
+      page: this.current_page,
+      limit: this.pagination_limit,
+    };
     if (search_string) {
-      query = last_id ? {last_id: last_id, query:search_string} : {query:search_string};
+      query.query = search_string;
     }
-    // When the end is reached
-    if(last_id == -1) {
-      return this.collection$;
+    if (sortBy && sortBy == 'Z-A') {
+      query.sort= 'desc';
     }
-    
-    return this.getVendorsData(query,last_id ? false : true);
+    return this.getVendorsData(!query,page);
   }
 
   getVendor(id){
