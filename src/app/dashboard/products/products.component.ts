@@ -31,6 +31,7 @@ export class ProductsComponent implements OnInit {
     private isRequest:boolean = false;
     public searchKey:string;
     public  searchKeyLast: string;
+    public  locationId: string;
 
     constructor(vcRef: ViewContainerRef,
                 overlay: Overlay,
@@ -51,6 +52,9 @@ export class ProductsComponent implements OnInit {
                 this.isRequest = false;
                 this.getInfiniteScroll()
             });
+    
+        //this.accountService.dashboardLocation$.filter(res => res)
+        //    .subscribe(r=>{debugger});
 
         this.searchKey$.debounceTime(1000)
             .filter(r => r)
@@ -72,6 +76,8 @@ export class ProductsComponent implements OnInit {
 
         let products$ = this.accountService.dashboardLocation$.filter(res => res).switchMap(location => {
             this.dashboardLocation = location;
+            this.productService.location$.next(location);
+            this.productService.location=location;
             return this.productService.getProductsLocation(location.id)
         });
 
