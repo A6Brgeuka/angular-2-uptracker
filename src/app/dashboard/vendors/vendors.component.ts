@@ -38,6 +38,7 @@ export class VendorsComponent implements OnInit {
     }
 
     ngOnInit() {
+        //TODO delayWhen
 
         this.vendorService.isDataLoaded$
             .delay(500)
@@ -72,7 +73,6 @@ export class VendorsComponent implements OnInit {
             .filter((infinite) => infinite && !this.isRequestVendors)
             .switchMap((infinite) => {
                 this.isRequestVendors = true;
-                let page: number = 0;
                 if (this.searchKey == this.searchKeyLast) {
                     ++this.vendorService.current_page;
                 }
@@ -159,7 +159,6 @@ export class VendorsComponent implements OnInit {
 
     getInfiniteScroll() {
         let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285;
-        console.log('bottom',document.body.scrollHeight - document.body.scrollTop - window.innerHeight);
         // let widthColumns = document.body.scrollHeight - document.body.scrollTop - window.innerWidth < 300;
         this.infiniteScroll$.next(scrollBottom);
     }
