@@ -104,10 +104,12 @@ export class ProductService extends ModelService {
     }
     
     private getProductsData(query: any = {}, reset: boolean = true) {
-        //this.location$.filter(r=>r).subscribe(l=> {
+            this.location$.filter(r=>r).subscribe(l=> {
+            query.location = l.id;
             return this.products$ =  this.restangular.all('products').customGET('', query)
-            .delayWhen(this.location$)
+            // .delayWhen(this.location$)
             .map((res: any) => {
+                debugger;
                 if (0) {
                     this.updateCollection$.next(res.data.results);
                 } else {
@@ -117,7 +119,7 @@ export class ProductService extends ModelService {
                 this.isDataLoaded$.next(true);
                 return res.data.results;
             });
-        //});
+        });
     }
     
     

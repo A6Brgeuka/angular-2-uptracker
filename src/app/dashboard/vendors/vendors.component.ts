@@ -50,9 +50,9 @@ export class VendorsComponent implements OnInit {
 
         this.searchKey$.debounceTime(1000)
             .filter(r => r)
+            .switchMap(r=>this.vendorService.getNextVendors(false, r, this.sortBy))
             .subscribe(
                 (r) => {
-                    this.vendorService.getNextVendors(false, r, this.sortBy);
                     this.vendorService.current_page = 1;
                 }
             );
