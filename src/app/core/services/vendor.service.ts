@@ -107,18 +107,13 @@ export class VendorService extends ModelService {
   }
   
   private getVendorsData (query:any={},reset:boolean = true){
-    debugger;
     return this.restangular.all('vendors').customGET('',query)
     .map((res: any) => {
-      debugger;
       console.log('vnd',res.data.vendors);
       if (reset) {
-
         this.updateCollection$.next(res.data.vendors);
-        debugger;
       } else {
         this.addCollectionToCollection$.next(res.data.vendors);
-        debugger;
       }
       this.totalCount$.next(res.data.count);
       this.isDataLoaded$.next(true);
@@ -166,7 +161,6 @@ export class VendorService extends ModelService {
     if (sortBy && sortBy == 'Z-A') {
       query.sort= 'desc';
     }
-debugger;
     return this.getVendorsData(query, page ? false : true);
   }
 

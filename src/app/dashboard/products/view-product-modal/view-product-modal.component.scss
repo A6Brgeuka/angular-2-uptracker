@@ -3,6 +3,8 @@ $red: #f00;
 $white: #fff;
 $greeny: #4CAF50;
 $dark: #444;
+$grey:  #9a9c9e;
+$light-grey: #d6d6d6;
 
 :host /deep/ {
   .reddish {
@@ -39,7 +41,7 @@ $dark: #444;
     .img-container {
       width: 140px;
       height: 140px;
-      border: 1px solid #d6d6d6;
+      border: 1px solid $light-grey;
 
       .img {
         height: 100%;
@@ -49,6 +51,17 @@ $dark: #444;
     }
     .uptracker-form .input{
       margin-bottom:14px;
+    }
+    #info {
+
+      .bold {
+        font-weight:bold;
+      }
+
+      .ttl {
+        color: $grey;
+      }
+
     }
     .info-box {
 
@@ -65,11 +78,11 @@ $dark: #444;
       }
 
       .ttl {
-        color: #9a9c9e;
+        color: $grey;
       }
 
       label {
-        color: #9a9c9e;
+        color: $grey;
       }
 
       .value {
@@ -108,7 +121,7 @@ $dark: #444;
 
         .variant-head {
           padding: 10px 0;
-          border-bottom: 1px solid #d6d6d6;
+          border-bottom: 1px solid $light-grey;
 
           .flor > div {
             float: right;
@@ -133,7 +146,7 @@ $dark: #444;
         }
 
         .text-head {
-          color: #9a9c9e;
+          color: $grey;
         }
 
         .name-heading {
@@ -158,7 +171,7 @@ $dark: #444;
 
         .visibility-heading {
           width: 5%;
-          color: #9a9c9e;
+          color: $grey;
 
           .material-icons {
             font-size: 22px;
@@ -187,7 +200,7 @@ $dark: #444;
           background-color: $tealish;
 
           &:disabled {
-            background-color: #d6d6d6;
+            background-color: $light-grey;
           }
 
           i {
@@ -228,10 +241,10 @@ $dark: #444;
             padding-left: 8px;
             text-indent: 0;
             text-overflow: ellipsis;
-            color: #9a9c9e;
+            color: $grey;
 
             &.empty {
-              color: #d6d6d6;
+              color: $light-grey;
             }
           }
 
@@ -268,13 +281,13 @@ $dark: #444;
             .select-wrapper {
               &.ng-valid {
                 input.select-dropdown {
-                  border-color: #d6d6d6;
+                  border-color: $light-grey;
                 }
               }
 
               &.empty {
                 input.select-dropdown {
-                  color: #d6d6d6;
+                  color: $light-grey;
                 }
               }
 
@@ -298,7 +311,7 @@ $dark: #444;
 
         .table-item {
           padding: 15px 0;
-          border-bottom: 1px solid #d6d6d6;
+          border-bottom: 1px solid $light-grey;
 
           &:last-child {
             border-bottom: none;
@@ -329,7 +342,7 @@ $dark: #444;
         }
 
         th {
-          border: 1px solid #d6d6d6;
+          border: 1px solid $light-grey;
           border-width: 1px 0;
           padding: 10px 5px;
           max-width: 85px;

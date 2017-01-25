@@ -109,7 +109,6 @@ export class ProductService extends ModelService {
             return this.products$ =  this.restangular.all('products').customGET('', query)
             // .delayWhen(this.location$)
             .map((res: any) => {
-                debugger;
                 if (0) {
                     this.updateCollection$.next(res.data.results);
                 } else {
