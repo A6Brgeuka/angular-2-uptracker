@@ -92,23 +92,23 @@ export class ProductsComponent implements OnInit {
 
                 // this.viewProductModal(products[0]);
 
-                if (searchKey && searchKey != '') {
-                    filteredProducts = _.reject(filteredProducts, (product: any) => {
-                        let key = new RegExp(searchKey, 'i');
-                        return !key.test(product.name);
-                    });
-                }
-                let order = 'desc';
-                if (sortBy == 'A-Z') {
-                    sortBy = 'name';
-                    order = 'asc';
-                }
-                if (sortBy == 'Z-A') {
-                    sortBy = 'name';
-                }
+                // if (searchKey && searchKey != '') {
+                //     filteredProducts = _.reject(filteredProducts, (product: any) => {
+                //         let key = new RegExp(searchKey, 'i');
+                //         return !key.test(product.name);
+                //     });
+                // }
+                // let order = 'desc';
+                // if (sortBy == 'A-Z') {
+                //     sortBy = 'name';
+                //     order = 'asc';
+                // }
+                // if (sortBy == 'Z-A') {
+                //     sortBy = 'name';
+                // }
 
-                let sortedProducts = _.orderBy(filteredProducts, [sortBy], [order]);
-                return sortedProducts;
+                // let sortedProducts = _.orderBy(filteredProducts, [sortBy], [order]);
+                return filteredProducts;
             });
 
 
@@ -124,8 +124,9 @@ export class ProductsComponent implements OnInit {
                 }
                 this.searchKeyLast = this.searchKey;
                 //TODO remove
-                if (0 && this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
+                if (this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
                     this.productService.current_page = -1; //end reached
+                    return false;
                 } else {
                     return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
                 }
@@ -199,7 +200,7 @@ export class ProductsComponent implements OnInit {
 
     getInfiniteScroll() {
         let toBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight;
-        console.log('toBottom',toBottom);
+        // console.log('toBottom',toBottom);
         let scrollBottom = toBottom < 285;
         this.infiniteScroll$.next(scrollBottom);
     }
