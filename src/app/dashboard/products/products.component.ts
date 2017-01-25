@@ -69,15 +69,12 @@ export class ProductsComponent implements OnInit {
                 }
             );
 
-
         let products$ = this.accountService.dashboardLocation$.filter(res => res).switchMap(location => {
             this.dashboardLocation = location;
             this.productService.location$.next(location);
             this.productService.location=location;
             return this.productService.getProductsLocation(location.id)
         });
-
-
 
         this.products$ = Observable
             .combineLatest(

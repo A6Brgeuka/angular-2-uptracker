@@ -70,7 +70,10 @@ export class VendorsComponent implements OnInit {
         });
 
         this.infiniteScroll$
-            .filter((infinite) => infinite && !this.isRequestVendors)
+            .withLatestFrom(this.vendors$)
+            .filter(([infinite,vendors]) => {
+                return infinite && !this.isRequestVendors && vendors.length
+            })
             .switchMap((infinite) => {
                 this.isRequestVendors = true;
                 if (this.searchKey == this.searchKeyLast) {
