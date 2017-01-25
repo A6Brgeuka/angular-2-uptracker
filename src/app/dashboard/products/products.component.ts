@@ -43,7 +43,6 @@ export class ProductsComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.productService.collection$.subscribe(r=>{debugger});
 
         this.productService.isDataLoaded$
             .delay(500)
@@ -52,9 +51,6 @@ export class ProductsComponent implements OnInit {
                 this.isRequest = false;
                 this.getInfiniteScroll()
             });
-    
-        //this.accountService.dashboardLocation$.filter(res => res)
-        //    .subscribe(r=>{debugger});
 
         this.searchKey$.debounceTime(1000)
             .filter(r => r)
@@ -81,26 +77,7 @@ export class ProductsComponent implements OnInit {
             return this.productService.getProductsLocation(location.id)
         });
 
-        this.infiniteScroll$
-            .filter((infinite) => infinite && !this.isRequest)
-            .switchMap((infinite) => {
-                this.isRequest = true;
-                if (this.searchKey == this.searchKeyLast) {
-                    ++this.productService.current_page;
-                }
-                this.searchKeyLast = this.searchKey;
-                //TODO remove
-                if (0 && this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
-                    this.productService.current_page = -1; //end reached
-                } else {
-                    return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
-                }
-            })
-            .subscribe(res => {
-                this.isRequest = false;
-            }, err => {
-                this.isRequest = false;
-            });
+
 
         this.products$ = Observable
             .combineLatest(
@@ -132,6 +109,33 @@ export class ProductsComponent implements OnInit {
 
                 let sortedProducts = _.orderBy(filteredProducts, [sortBy], [order]);
                 return sortedProducts;
+            });
+
+
+        this.infiniteScroll$
+            .withLatestFrom(this.products$)
+            .filter(([infinite,products]) =>  {
+                return infinite && !this.isRequest && products.length
+            })
+            .switchMap((infinite) => {
+                this.isRequest = true;
+                if (this.searchKey == this.searchKeyLast) {
+                    ++this.productService.current_page;
+                }
+                this.searchKeyLast = this.searchKey;
+                //TODO remove
+                if (0 && this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
+                    this.productService.current_page = -1; //end reached
+                } else {
+                    return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
+                }
+            })
+            .subscribe(res => {
+
+                this.isRequest = false;
+            }, err => {
+
+                this.isRequest = false;
             });
     }
 
@@ -194,7 +198,9 @@ export class ProductsComponent implements OnInit {
     }
 
     getInfiniteScroll() {
-        let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285;
+        let toBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight;
+        console.log('toBottom',toBottom);
+        let scrollBottom = toBottom < 285;
         this.infiniteScroll$.next(scrollBottom);
     }
 

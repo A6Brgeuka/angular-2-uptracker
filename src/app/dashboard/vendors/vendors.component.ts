@@ -83,7 +83,7 @@ export class VendorsComponent implements OnInit {
                     return this.vendorService.getNextVendors(this.vendorService.current_page, this.searchKey, this.sortBy);
                 }
             })
-            .subscribe(res => {
+                .subscribe(res => {
                 this.isRequestVendors = false;
             }, err => {
                 this.isRequestVendors = false;

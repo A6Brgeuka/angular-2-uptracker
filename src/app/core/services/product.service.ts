@@ -28,6 +28,7 @@ export class ProductService extends ModelService {
     public isDataLoaded$: any = new BehaviorSubject(false);
     totalCount$: Subject<any> = new Subject<any>();
     location$: any = new BehaviorSubject(false);
+    getProductsData$: any = new Subject();
     location:string;
     
     constructor(public injector: Injector,
@@ -69,6 +70,32 @@ export class ProductService extends ModelService {
     }
 
     onInit() {
+
+
+
+        this.getProductsData$
+            .withLatestFrom(this.location$)
+            .map(([queryParams, location])=>{
+             queryParams.query.location = location.id;
+             return queryParams;
+            })
+            .switchMap((queryParams) => {
+              return this.restangular.all('products').customGET('', queryParams.query)
+            })
+            .subscribe((res) => {
+                if (0) {
+                    this.updateCollection$.next(res.data.results);
+                } else {
+                    this.addCollectionToCollection$.next(res.data.results);
+                }
+                this.totalCount$.next(res.data.count);
+                this.isDataLoaded$.next(true);
+                
+
+                return res.data.results;
+            }
+        );
+
         this.selfData$ = Observable.merge(
             this.updateSelfData$
         );
@@ -104,25 +131,10 @@ export class ProductService extends ModelService {
     }
     
     private getProductsData(query: any = {}, reset: boolean = true) {
-            this.location$.filter(r=>r).subscribe(l=> {
-            query.location = l.id;
-            return this.products$ =  this.restangular.all('products').customGET('', query)
-            // .delayWhen(this.location$)
-            .map((res: any) => {
-                if (0) {
-                    this.updateCollection$.next(res.data.results);
-                } else {
-                    this.addCollectionToCollection$.next(res.data.results);
-                }
-                this.totalCount$.next(res.data.count);
-                this.isDataLoaded$.next(true);
-                return res.data.results;
-            });
-        });
+            this.getProductsData$.next({query,reset});
+            return this.getProductsData$;
     }
-    
-    
-    
+
     addSubscribers() {
         this.entity$.subscribe((res) => {
             this.updateSelfData(res);
