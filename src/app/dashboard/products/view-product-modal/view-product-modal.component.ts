@@ -42,7 +42,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
   };
   public comment: any = {};
   public showEdit:boolean =false;
-
+  public hasDocs:boolean=false;
   public addOrderVariantsButtonShow: boolean = false;
   public departmentCollection$: Observable<any> = new Observable<any>();
   public productAccountingCollection$: Observable<any> = new Observable<any>();

@@ -52,16 +52,46 @@ $light-grey: #d6d6d6;
     .uptracker-form .input{
       margin-bottom:14px;
     }
-    #info {
 
+    &.edit-mode {
+      #info {
+        .ttl {
+          color: $dark;
+          font-weight: bold;
+        }
+      }
+    }
+
+    #info {
+      .img-container-edit {
+        border:2px dashed $light-grey;
+        border-radius:7px;
+        background-color: #f5f6f7;
+        background-image: url(/assets/img/img-placeholder-docs.svg);
+        background-size: auto 50%;
+        background-position: 50% 50%;
+        height:150px;
+        background-repeat: no-repeat;
+      }
+      .no-docs {
+        margin-top:30px;
+      }
+      .col.s2 {
+        text-align: right;
+      }
+      .fa-trash {
+        color:$red;
+        cursor:pointer;
+      }
+      textarea {
+        min-height:100px;
+      }
       .bold {
         font-weight:bold;
       }
-
       .ttl {
         color: $grey;
       }
-
     }
     .info-box {
 
@@ -460,6 +490,7 @@ $light-grey: #d6d6d6;
   .filter-heading.row-item {
     width:5%!important;
   }
-
+  .mbot0 {margin-bottom: 0;}
+  .mbot10 {margin-bottom: 10px;}
 
 }

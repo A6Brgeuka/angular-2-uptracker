@@ -1,27 +1,10 @@
 <div class="variant-detail-wrapper">
-  {{variant.vendor_variants[0] | json}}
   <div class="variant-detail-top">
-    <div class="variant-detail-top-item">
-      <div class="top">Material</div>
-      <div >{{variant.vendor_variants[0]?.material}}</div>
-    </div>
-    <div class="variant-detail-top-item">
-      <div class="top">Attachment</div>
-      <div>{{variant.vendor_variants[0]?.package_type}}</div>
-    </div>
-    <div class="variant-detail-top-item">
-      <div class="top">Type</div>
-      <div>First Molar</div>
-    </div>
-    <div class="variant-detail-top-item">
-      <div class="top">Quadrant</div>
-      <div>Upper</div>
-    </div>
-    <div class="variant-detail-top-item">
-      <div class="top">Side</div>
-      <div>Right</div>
-    </div>
-    <div class="clearfix"></div>
+    {{product | json}}
+    <!--<div *ngIf="variant.custom_attr" *ngFor="let attr of variant.custom_attr" class="variant-detail-top-item">-->
+      <!--<div class="top">attr.name</div>-->
+      <!--<div >{{attr.value}}</div>-->
+    <!--</div>-->
   </div>
 
   <div class="variant-detail-table">
