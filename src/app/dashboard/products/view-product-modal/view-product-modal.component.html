@@ -325,7 +325,10 @@
         <div class="ttl col s12">
           Description
         </div>
-        <div class="col s12 bold">
+        <div *ngIf="showEdit" class="col s12 textarea">
+          <textarea class="col s12 " [(ngModel)]="productCopy.description"></textarea>
+        </div>
+        <div  *ngIf="!showEdit"   class="col s12 bold">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
@@ -337,7 +340,10 @@
         <div class="ttl col s12">
           Notes
         </div>
-        <div class="col s12 bold">
+        <div *ngIf="showEdit" class="col s12 textarea">
+          <textarea class=" col s12 " [(ngModel)]="productCopy.description"></textarea>
+        </div>
+        <div  *ngIf="!showEdit"  class="col s12 bold">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat.
@@ -349,7 +355,10 @@
             <div class="ttl col s12">
               MSDS
             </div>
-            <div class="col s12">
+            <div *ngIf="showEdit" class="col s12 input">
+              <input class="col s12"  [(ngModel)]="productCopy.description" type="text"></input>
+            </div>
+            <div  *ngIf="!showEdit"  class="col s12">
               <a href="#">http://link.com/</a>
             </div>
           </div>
