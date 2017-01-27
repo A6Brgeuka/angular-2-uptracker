@@ -72,6 +72,11 @@ $light-grey: #d6d6d6;
         background-position: 50% 50%;
         height:150px;
         background-repeat: no-repeat;
+
+        &.file-is-over {
+          border-style: solid;
+          border-color: $tealish;
+        }
       }
       .no-docs {
         margin-top:30px;

@@ -409,29 +409,35 @@
                 <div class="ttl col s12 mbot10">
                     Documents
                 </div>
-                <div class="col s6">
-                    <div class="img-container-edit  col s12" title="Drop files here">
+                <div class="col s6" >
+                    <div class="img-container-edit col s12" title="Drop files here" fileDrop
+                         [ngClass]="{'file-is-over': fileIsOver}"
+                         [options]="options"
+                         (fileOver)="fileOver($event)"
+                         (onFileDrop)="onFileDrop($event)">
                     </div>
                 </div>
                 <div *ngIf="hasDocs" class="col s6">
-                    <div class="col s10">
-                        <a href="#">Product Spec.pdf</a>
+                    <div *ngFor="let file of files$ | async; let index = $index">
+                        <div class="col s10">
+                            <a href="#">{{file.name}}</a>
+                        </div>
+                        <div class="col s2" (click)="removeFile(file, index)">
+                            <i class="fa fa-trash"></i>
+                        </div>
                     </div>
-                    <div class="col s2" (click)="removeDoc()">
-                        <i class="fa fa-trash"></i>
-                    </div>
-                    <div class="col s10">
-                        <a href="#">Order Form.pdf</a>
-                    </div>
-                    <div class="col s2" (click)="removeDoc()">
-                        <i class="fa fa-trash"></i>
-                    </div>
-                    <div class="col s10">
-                        <a href="#">Marketing.pdf</a>
-                    </div>
-                    <div class="col s2" (click)="removeDoc()">
-                        <i class="fa fa-trash"></i>
-                    </div>
+                    <!--<div class="col s10">-->
+                        <!--<a href="#">Order Form.pdf</a>-->
+                    <!--</div>-->
+                    <!--<div class="col s2" (click)="removeDoc()">-->
+                        <!--<i class="fa fa-trash"></i>-->
+                    <!--</div>-->
+                    <!--<div class="col s10">-->
+                        <!--<a href="#">Marketing.pdf</a>-->
+                    <!--</div>-->
+                    <!--<div class="col s2" (click)="removeDoc()">-->
+                        <!--<i class="fa fa-trash"></i>-->
+                    <!--</div>-->
                 </div>
                 <div *ngIf="!hasDocs" class="col s6 no-docs">
                     <div class="ttl">Document</div>

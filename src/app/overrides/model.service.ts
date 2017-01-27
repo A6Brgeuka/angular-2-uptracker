@@ -71,11 +71,11 @@ export class ModelService {
             return collection;
           });
       });
-    
+
     // this.deleteFromCollection$.subscribe(res=>{
     //  console.log(res);
     // })
-    
+
     let deleteFromCollection$ = this.deleteFromCollection$
     .switchMap((id) => {
       
