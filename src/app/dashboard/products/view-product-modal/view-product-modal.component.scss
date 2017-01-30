@@ -5,6 +5,7 @@ $greeny: #4CAF50;
 $dark: #444;
 $grey:  #9a9c9e;
 $light-grey: #d6d6d6;
+$black: #000;
 
 :host /deep/ {
   .reddish {
@@ -38,6 +39,42 @@ $light-grey: #d6d6d6;
   }
 
   .inner {
+
+    #inventory {
+      .variant-table .table-item {
+        padding:0;
+      }
+      .head-item {
+        width:20%;
+        font-size: 14px;
+        color:$grey;
+        text-align: center;
+        font-weight: bold;
+        &:first-of-type {
+          text-align: left;
+          width:30%;
+        }
+        &:nth-of-type(2) {
+          width:10%;
+        }
+      }
+      .row-item {
+        width:20%;
+        text-align: center;
+        color:$grey;
+        &:first-of-type {
+          text-align: left;
+          width:30%;
+          color: $tealish;
+        }
+        &:nth-of-type(2) {
+          width:10%;
+          font-size: 14px;
+          color:$black;
+        }
+      }
+    }
+
     .img-container {
       width: 140px;
       height: 140px;
@@ -148,8 +185,6 @@ $light-grey: #d6d6d6;
     //}
 
     .inner {
-
-
 
       .variant-table {
         font-size: 12px;

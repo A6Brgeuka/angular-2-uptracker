@@ -450,9 +450,46 @@
         </div>
     </div>
     <div id="inventory">
-        <div class="inner">
-            Inventory tab
+      <div class="inner">
+        <div class="variant-table">
+          <div class="uptracker-form variant-head">
+            <div class="head-item">
+              Variation
+            </div>
+            <div class="head-item">
+              Total
+            </div>
+            <div class="head-item">
+              Primary Location
+            </div>
+            <div class="head-item">
+              Secondary Location
+            </div>
+            <div class="head-item">
+              Tertiary Location
+            </div>
+            <div class="clearfix"></div>
+          </div>
         </div>
+
+        <div class="table-body">
+          <div class="variant-table">
+            <div class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
+              <div class="name-heading variant-name row-item valign-wrapper">
+                            <span [class.reddish]="!variant.visibility" class="valign"
+                              (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
+              </div>
+              <div class="small-heading row-item">3</div>
+              <div class="small-heading row-item">1</div>
+              <div class="small-heading row-item">1</div>
+              <div class="small-heading row-item">1</div>
+              <div class="clearfix"></div>
+              <app-inventory-detail [variant]="variant" *ngIf="variant.detailView"></app-inventory-detail>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
     <div id="tracking" *ngIf="product.trackable">
         <div class="inner">

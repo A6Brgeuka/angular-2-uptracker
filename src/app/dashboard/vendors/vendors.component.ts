@@ -27,7 +27,8 @@ export class VendorsComponent implements OnInit {
     public  vendors: any;
     public  infiniteScroll$: any = new BehaviorSubject(false);
     public  isRequestVendors = true;
-
+    public body = document.getElementsByTagName("body")[0];
+    
     constructor(private vcRef: ViewContainerRef,
                 overlay: Overlay,
                 public modal: Modal,
@@ -123,6 +124,7 @@ export class VendorsComponent implements OnInit {
 
     viewVendorModal(vendor = null) {
         let data = {vendor: vendor, keyboard: []};
+        this.body.classList.add("noscroll");
         this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
     }
 
@@ -158,13 +160,13 @@ export class VendorsComponent implements OnInit {
     requestVendor() {
 
     }
-
+    
     getInfiniteScroll() {
-        let scrollBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285;
+        let scrollBottom = (document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285) && !this.body.classList.contains("noscroll");
         // let widthColumns = document.body.scrollHeight - document.body.scrollTop - window.innerWidth < 300;
         this.infiniteScroll$.next(scrollBottom);
     }
-
+    
     @HostListener('window:scroll', ['$event'])
     onScroll(event) {
         this.getInfiniteScroll();

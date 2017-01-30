@@ -803,6 +803,7 @@ modal-overlay{
   box-shadow:none;
   outline:0;
   overflow:visible;
+  min-height: calc(100vh - 160px);
 
   .modal-content{
     padding:60px 60px 75px;
@@ -915,4 +916,8 @@ modal-overlay{
       padding-right: 15px;
     }
   }
+}
+body.noscroll{
+  position:fixed;
+  overflow: hidden;
 }

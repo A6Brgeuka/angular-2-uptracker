@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -37,6 +37,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public locVendorChosen: boolean = false;
   private currencyArr: any = [];
   public currencySign: string;
+  public body = document.getElementsByTagName("body")[0];
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
@@ -97,6 +98,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   dismissModal(){
+    this.body.classList.remove("noscroll");
     this.dialog.dismiss();
     this.modalWindowService.setScrollPosition();
   }
