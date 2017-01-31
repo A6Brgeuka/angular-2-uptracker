@@ -133,16 +133,16 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             variants:variants
         };
         console.log(updateData);
-        debugger;
         this.subscribers.updateProduct = this.productService.updateProduct(updateData);
         this.subscribers.updateProduct
         .subscribe(
           resp => {
-              debugger;
+              console.log(resp);
               this.product = this.productCopy;
               this.showEdit = !this.showEdit;
               this.productCopy = [];
               this.filterSelectOption$.next({visibility: true});
+              this.variants$.next(this.variants); // update variants
           },
           err => {
               console.log(err);
@@ -153,8 +153,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     resetText() {
+        console.log(this.product);
         this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
-        this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
+        this.product.trackable_string = this.product.tracked ? 'Yes' : 'No';
         this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
         this.product.account_category = this.product.account_category ? this.product.account_category : 'Not Specified';
     }
