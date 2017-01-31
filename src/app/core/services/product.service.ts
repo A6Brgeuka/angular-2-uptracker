@@ -18,6 +18,7 @@ import {BehaviorSubject} from "rxjs";
     destroyFunc: null,
 })
 export class ProductService extends ModelService {
+    
     selfData: any;
     selfData$: Observable<any>;
     updateSelfData$: Subject<any> = new Subject<any>();
@@ -202,6 +203,57 @@ export class ProductService extends ModelService {
         return commentRestangularized.put()
     }
 
+    updateProduct(data) {
+        return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
+    }
+    
+    deepDiff(obj1: any, obj2: any):any {
+        if (this.isFunction(obj1) || this.isFunction(obj2)) {
+            throw 'Invalid argument. Function given, object expected.';
+        }
+        if (this.isValue(obj1) || this.isValue(obj2)) {
+            if (obj1!=obj2) {
+                return obj1;
+            } else {
+                return 'unmdf';
+            }
+        }
+        let diff = {};
+        for (let key in obj1) {
+            if (this.isFunction(obj1[key])) {
+                continue;
+            }
+            let value2 = undefined;
+            if ('undefined' != typeof(obj2[key])) {
+                value2 = obj2[key];
+            }
+            let val = this.deepDiff(obj1[key], value2);
+            if (val!="unmdf") {diff[key] = val;}
+        }
+        return diff;
+    };
+    isFunction(obj) {
+        return {}.toString.apply(obj) === '[object Function]';
+    };
+    isArray(obj) {
+        return {}.toString.apply(obj) === '[object Array]';
+    };
+    isObject(obj) {
+        return {}.toString.apply(obj) === '[object Object]';
+    };
+    isValue(obj) {
+        return !this.isObject(obj) && !this.isArray(obj);
+    }
+    
+    emptyValues(obj: any): any {
+        if (obj === false || this.isValue(obj)) {return true;}
+        if (_.isEmpty(obj)) {return false;}
+        for (let i in obj) {
+            if (this.emptyValues(obj[i])) {return true};
+        }
+        return false;
+    }
+    
     // getAccountVendors(){
     //   let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
     //   if (!vendorsLoaded) {

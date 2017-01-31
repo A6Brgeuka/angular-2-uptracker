@@ -101,31 +101,54 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.departmentCollection$ = this.accountService.getDepartments().take(1);
         this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
         this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
-
         this.showEdit = !this.showEdit;
         this.productCopy = _.clone(this.product);
-
         this.filteredVariants$.take(1).subscribe(r => {
             this.variantsCopy = _.cloneDeep(r);
-            // console.log(this.variantsCopy);
-            // .vendor_variants vendor_name catalog_number
         });
     }
 
     closeEditFields() {
         this.showEdit = !this.showEdit;
         this.productCopy = [];
-
         this.variants$.next(this.variantsCopy);
     }
-
+    
     saveAfterEdit() {
-        console.log(this.product, this.productCopy);
-        this.product = this.productCopy;
-
-        //this.filteredVariants$ = Observable.of(this.variantsCopy);
-        this.showEdit = !this.showEdit;
-        this.productCopy = [];
+        let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
+        let vars_diff = this.productService.deepDiff(this.variantsCopy,this.variants);
+        prod_diff.id = this.product.id;
+        let variants:any=[];
+        console.log(vars_diff);
+        for (let item in vars_diff) {
+            if (!item,this.productService.emptyValues(vars_diff[item])) {
+                vars_diff[item].id = this.variants[item].id;
+                variants.push(vars_diff[item]);
+            };
+            
+        }
+        let updateData: any = {
+            location_id: this.location_id,
+            product: prod_diff,
+            variants:variants
+        };
+        console.log(updateData);
+        debugger;
+        this.subscribers.updateProduct = this.productService.updateProduct(updateData);
+        this.subscribers.updateProduct
+        .subscribe(
+          resp => {
+              debugger;
+              this.product = this.productCopy;
+              this.showEdit = !this.showEdit;
+              this.productCopy = [];
+              this.filterSelectOption$.next({visibility: true});
+          },
+          err => {
+              console.log(err);
+              alert(err);
+          }
+        );
         this.resetText();
     }
 
@@ -360,6 +383,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         //     this.secondaryLocationLink.nativeElement.click();
         //   }
         // });
+        this.filterSelectOption$.next({visibility:true});
     }
 
     dismissModal() {
@@ -462,9 +486,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         variant.detailView = !variant.detailView;
     }
 
-
     sendComment() {
-
         Object.assign(this.comment,
             {
                 "user_id": this.userService.selfData.id,
@@ -476,7 +498,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             this.comment = {};
             this.addToComments$.next(res.data);
         });
-
     }
 
     editComment(comment) {
