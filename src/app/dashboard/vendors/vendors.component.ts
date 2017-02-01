@@ -139,9 +139,13 @@ export class VendorsComponent implements OnInit {
             accountVendors.vendor_id = globalVendor.id;
         }
 
-
+        this.body.classList.remove("noscroll");
         let data = {vendor: accountVendors, keyboard: []};
         this.modalWindowService.customModal(this.vcRef, EditVendorModal, data);
+    }
+
+    saveVendor(){
+        this.body.classList.add("noscroll");
     }
 
     vendorsFilter(event) {

@@ -288,7 +288,10 @@
           type="submit"
           class="btn white-text waves-effect waves-light"
           [class.disabled]="!vendorForm.form.valid"
-          [disabled]="!vendorForm.form.valid">
+          [disabled]="!vendorForm.form.valid"
+          (click)="saveVendor()"
+      >
+
         Save
       </button>
     </div>

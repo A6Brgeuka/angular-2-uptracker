@@ -74,7 +74,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     public file$: Observable<any>;
     public file;
-    public addFile$:Subject<any> = new Subject<any>();
+    public addFile$: Subject<any> = new Subject<any>();
     public loadFile$: Subject<any> = new Subject<any>();
     public addToFile$: Subject<any> = new Subject<any>();
     public addFileToFile$: Subject<any> = new Subject<any>();
@@ -113,42 +113,54 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.productCopy = [];
         this.variants$.next(this.variantsCopy);
     }
-    
+
     saveAfterEdit() {
         let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
-        let vars_diff = this.productService.deepDiff(this.variantsCopy,this.variants);
+        let vars_diff = this.productService.deepDiff(this.variantsCopy, this.variants);
         prod_diff.id = this.product.id;
-        let variants:any=[];
+        let variants: any = [];
         console.log(vars_diff);
         for (let item in vars_diff) {
-            if (!item,this.productService.emptyValues(vars_diff[item])) {
+            if (!item, this.productService.emptyValues(vars_diff[item])) {
                 vars_diff[item].id = this.variants[item].id;
                 variants.push(vars_diff[item]);
-            };
-            
+            }
         }
         let updateData: any = {
             location_id: this.location_id,
             product: prod_diff,
-            variants:variants
+            variants: variants
         };
         console.log(updateData);
         this.subscribers.updateProduct = this.productService.updateProduct(updateData);
         this.subscribers.updateProduct
-        .subscribe(
-          resp => {
-              console.log(resp);
-              this.product = this.productCopy;
-              this.showEdit = !this.showEdit;
-              this.productCopy = [];
-              this.filterSelectOption$.next({visibility: true});
-              this.variants$.next(this.variants); // update variants
-          },
-          err => {
-              console.log(err);
-              alert(err);
-          }
-        );
+            .filter(res => res.data)
+            .map(res => res.data)
+            .subscribe(data => {
+                    this.variants = _.map(data.variants, (item: any) => {
+                        item.checked = false;
+                        item.visibility = true;
+                        return item;
+                    });
+                    this.variants$.next(this.variants); // update variants
+                    this.comments$.next(data.comments); // update comments
+                    _.each(this.variants, (variant: any) => {
+                        _.forEach(this.variationArrs, (value, key) => {
+                            this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
+                        })
+                    });
+                    _.forEach(this.variationArrs, (value, key) => {
+                        this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
+                    });
+                    this.showEdit = !this.showEdit;
+                    this.productCopy = [];
+                    debugger;
+                    this.filterSelectOption$.next({visibility: true});
+                },
+                err => {
+                    console.log(err);
+                    alert(err);
+                });
         this.resetText();
     }
 
@@ -284,7 +296,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
             });
 
-        
 
         // this.files$ = Observable.combineLatest(
         //     this.newFiles$,
@@ -374,7 +385,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             console.log(`${this.constructor.name} File Updated`, res);
         });
 
-        addFileToFile$.subscribe(r=>console.log(r))
+        addFileToFile$.subscribe(r => console.log(r))
     }
 
     ngAfterViewInit() {
@@ -384,7 +395,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         //     this.secondaryLocationLink.nativeElement.click();
         //   }
         // });
-        this.filterSelectOption$.next({visibility:true});
+        this.filterSelectOption$.next({visibility: true});
     }
 
     dismissModal() {
@@ -551,7 +562,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         debugger;
     }
 
-    removeFile(fileName,index) {
+    removeFile(fileName, index) {
         debugger;
         console.log(`remove ${fileName}`)
     }
