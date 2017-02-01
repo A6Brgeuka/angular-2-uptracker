@@ -30,6 +30,7 @@ export class ViewProductModalContext extends BSModalContext {
 export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewProductModalContext> {
     private subscribers: any = {};
     context: ViewProductModalContext;
+    // public product$: BehaviorSubject<any> = new BehaviorSubject([]);
     private product: any;
     private productCopy: any;
     public variation: any = {};
@@ -142,6 +143,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                         item.visibility = true;
                         return item;
                     });
+                    this.product = data.product;
+                    // this.product$.next(data.product); // update variants
                     this.variants$.next(this.variants); // update variants
                     this.comments$.next(data.comments); // update comments
                     _.each(this.variants, (variant: any) => {
@@ -154,18 +157,17 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                     });
                     this.showEdit = !this.showEdit;
                     this.productCopy = [];
-                    debugger;
                     this.filterSelectOption$.next({visibility: true});
+                    this.resetText();
+
                 },
                 err => {
                     console.log(err);
                     alert(err);
                 });
-        this.resetText();
     }
 
     resetText() {
-        console.log(this.product);
         this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
         this.product.trackable_string = this.product.tracked ? 'Yes' : 'No';
         this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
@@ -174,6 +176,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     ngOnInit() {
         this.product = this.context.product;
+        
         this.resetText();
         this.product.comments = [];
         this.location_id = this.product.location_id;
@@ -202,6 +205,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 });
             })
         });
+
 
         this.filteredComments$ = Observable.merge(
             this.comments$,
@@ -256,26 +260,25 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                     });
                 }
                 variants = _.filter(variants, filterSelectOption);
-                // debugger;
+                // 
                 return variants;
             });
 
-
+// no "trackable" property in product, but there is "tracked". Anyway it is read-only now
+// now I can save product info by api, but there is an error on uploading any "variants"
         this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product.id, this.location_id)
             .filter(res => res.data)
             .map(res => res.data)
             .subscribe(data => {
+                this.product = data.product;
+                this.resetText();
                 this.variants = _.map(data.variants, (item: any) => {
                     item.checked = false;
                     item.visibility = true;
                     return item;
                 });
-
-
                 this.variants$.next(this.variants); // update variants
                 this.comments$.next(data.comments); // update comments
-
-
                 _.each(this.variants, (variant: any) => {
                     _.forEach(this.variationArrs, (value, key) => {
                         this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
@@ -284,15 +287,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 _.forEach(this.variationArrs, (value, key) => {
                     this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
                 });
-
-                //
-                // this.product.comments = data.comments || [];
-                // this.product.comments.map((item: any) => {
-                //   let regKey = new RegExp('\n,\r,\r\n','g');
-                //   item.body = item.body.replace(regKey, "<br />");
-                //   return item;
-                // });
-                // this.product.comments = _.orderBy(this.product.comments, (item: any) => { return new Date(item.created_at)},['desc'])
 
             });
 
@@ -307,7 +301,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         //         } else {
         //             this.hasDocs = false;
         //         }
-        //         debugger;
+        //         
         //         return files;
         //     }
         // );
@@ -333,7 +327,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 return this.file$.first()
                     .map((file: any) => {
                         file = file.concat(res);
-                        debugger;
                         return file;
                     });
             });
@@ -380,7 +373,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         ).publishReplay(1).refCount();
         this.file$.subscribe(res => {
 
-            debugger;
             this.file = res;
             console.log(`${this.constructor.name} File Updated`, res);
         });
@@ -487,7 +479,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     toggleVariationVisibility() {
         this.variation.visibility = !this.variation.visibility;
         this.filterSelectOption$.next(this.variation);
-        debugger;
     }
 
     toggleVariantVisibility(variant) {
@@ -559,11 +550,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     addFile(file) {
         this.addFileToFile$.next(file);
-        debugger;
     }
 
     removeFile(fileName, index) {
-        debugger;
         console.log(`remove ${fileName}`)
     }
 

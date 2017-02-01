@@ -58,7 +58,7 @@
                         <input
                                 type="checkbox"
                                 class="checkbox-input"
-                                [(ngModel)]="productCopy.trackable"
+                                [(ngModel)]="productCopy.tracked"
                                 id="checkbox2"
                         />
                         <label for="checkbox2"></label>
@@ -144,7 +144,7 @@
                 <li class="tab col s2">
                     <a href="#inventory">Inventory</a>
                 </li>
-                <li class="tab col s2" *ngIf="product.trackable">
+                <li class="tab col s2" *ngIf="product.tracked">
                     <a href="#tracking">Tracking</a>
                 </li>
                 <li class="tab col s2">
@@ -491,7 +491,7 @@
 
       </div>
     </div>
-    <div id="tracking" *ngIf="product.trackable">
+    <div id="tracking" *ngIf="product.tracked">
         <div class="inner">
             Tracking tab
         </div>
