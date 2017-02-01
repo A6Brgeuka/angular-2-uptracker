@@ -23,7 +23,7 @@ export class ProductService extends ModelService {
     selfData$: Observable<any>;
     updateSelfData$: Subject<any> = new Subject<any>();
     current_page: number = 1;
-    pagination_limit: number = 10;
+    pagination_limit: number = 3;
     combinedProducts$: Observable<any>;
     products$: Observable<any> = Observable.empty();
     public isDataLoaded$: any = new BehaviorSubject(false);
@@ -31,7 +31,7 @@ export class ProductService extends ModelService {
     location$: any = new BehaviorSubject(false);
     getProductsData$: any = new Subject();
     location:string;
-    
+
     constructor(public injector: Injector,
                 public userService: UserService,
                 public accountService: AccountService,
@@ -77,18 +77,14 @@ export class ProductService extends ModelService {
         this.getProductsData$
             .withLatestFrom(this.location$)
             .map(([queryParams, location])=>{
-             queryParams.query.location = location.id;
+             queryParams.query.location_id = location.id;
              return queryParams;
             })
             .switchMap((queryParams) => {
               return this.restangular.all('products').customGET('', queryParams.query)
             })
             .subscribe((res) => {
-                if (0) {
-                    this.updateCollection$.next(res.data.results);
-                } else {
-                    this.addCollectionToCollection$.next(res.data.results);
-                }
+                this.addCollectionToCollection$.next(res.data.results);
                 this.totalCount$.next(res.data.count);
                 this.isDataLoaded$.next(true);
                 
@@ -127,11 +123,12 @@ export class ProductService extends ModelService {
         if (sortBy && sortBy == 'Z-A') {
             query.sort = 'desc';
         }
-
+debugger;
         return this.getProductsData(query, page ? false : true);
     }
     
     private getProductsData(query: any = {}, reset: boolean = true) {
+        debugger;
             this.getProductsData$.next({query,reset});
             return this.getProductsData$;
     }
@@ -166,7 +163,7 @@ export class ProductService extends ModelService {
     }
 
     getProductsLocation(id) {
-        return this.products$ = this.restangular.all('products').customGET('', {location_id: id})
+        return this.products$ = this.restangular.all('products').customGET('', {location_id: id, limit:this.pagination_limit})
             .map((res: any) => {
                 return res.data.results;
             }).do(res => {
@@ -206,9 +203,9 @@ export class ProductService extends ModelService {
     updateProduct(data) {
         return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
     }
-    
+
     deepDiff(obj1: any, obj2: any):any {
-        if (this.isFunction(obj1) || this.isFunction(obj2)) {
+        if (_.isFunction(obj1) || _.isFunction(obj2)) {
             throw 'Invalid argument. Function given, object expected.';
         }
         if (this.isValue(obj1) || this.isValue(obj2)) {
@@ -220,29 +217,20 @@ export class ProductService extends ModelService {
         }
         let diff = {};
         for (let key in obj1) {
-            if (this.isFunction(obj1[key])) {
+            if (_.isFunction(obj1[key])) {
                 continue;
             }
             let value2 = undefined;
             if ('undefined' != typeof(obj2[key])) {
                 value2 = obj2[key];
             }
-            let val = this.deepDiff(obj1[key], value2);
-            if (val!="unmdf") {diff[key] = val;}
+            let val =  this.deepDiff(obj1[key], value2);
+            if (val!="unmdf" && (!_.isEmpty(val) || this.isValue(val))) {diff[key] = val;}
         }
         return diff;
     };
-    isFunction(obj) {
-        return {}.toString.apply(obj) === '[object Function]';
-    };
-    isArray(obj) {
-        return {}.toString.apply(obj) === '[object Array]';
-    };
-    isObject(obj) {
-        return {}.toString.apply(obj) === '[object Object]';
-    };
     isValue(obj) {
-        return !this.isObject(obj) && !this.isArray(obj);
+        return !_.isObject(obj) && !_.isArray(obj);
     }
     
     emptyValues(obj: any): any {

@@ -115,24 +115,28 @@ export class ProductsComponent implements OnInit {
                 return infinite && !this.isRequest && products.length
             })
             .switchMap((infinite) => {
+                debugger;
                 this.isRequest = true;
                 if (this.searchKey == this.searchKeyLast) {
                     ++this.productService.current_page;
                 }
                 this.searchKeyLast = this.searchKey;
                 //TODO remove
-                if (this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
+                if (6 <= (this.productService.current_page-1) * this.productService.pagination_limit) {
                     this.productService.current_page = -1; //end reached
-                    return false;
+                    debugger;
+                    return Observable.of(false);
                 } else {
+                    debugger;
                     return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
                 }
             })
             .subscribe(res => {
 
+                debugger;
                 this.isRequest = false;
             }, err => {
-
+                debugger;
                 this.isRequest = false;
             });
     }

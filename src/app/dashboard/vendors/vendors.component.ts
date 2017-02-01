@@ -50,7 +50,7 @@ export class VendorsComponent implements OnInit {
         });
 
         this.searchKey$.debounceTime(1000)
-            .filter(r => r)
+            .filter(r => (r || r === ''))
             .switchMap(r=>this.vendorService.getNextVendors(false, r, this.sortBy))
             .subscribe(
                 (r) => {
