@@ -43,7 +43,8 @@ export class ProductsComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.productService.totalCount$.subscribe(total => this.total=total);
+        
         this.productService.isDataLoaded$
             .delay(500)
             .filter(r=>r)
@@ -69,74 +70,57 @@ export class ProductsComponent implements OnInit {
                 }
             );
 
-        let products$ = this.accountService.dashboardLocation$.filter(res => res).switchMap(location => {
+        let start_products$ = this.accountService.dashboardLocation$.filter(res => res).switchMap(location => {
             this.dashboardLocation = location;
             this.productService.location$.next(location);
             this.productService.location=location;
             return this.productService.getProductsLocation(location.id)
-        });
-
+        }).subscribe();
+        
+    ///////////////////////?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         this.products$ = Observable
             .combineLatest(
-                // this.productService.products$,
-                products$,
+              //start_products$,
+              this.productService.collection$,
                 this.sortBy$,
                 this.searchKey$
             )
-            .map(([products, sortBy, searchKey]: [any, any, any]) => {
-                this.total = products.length;
-                let filteredProducts: any = products;
+            .map(([/*start_products,*/products, sortBy, searchKey]: [any, any, any,any]) => {
+               
+                
+                return products;
 
-                // this.viewProductModal(products[0]);
-
-                // if (searchKey && searchKey != '') {
-                //     filteredProducts = _.reject(filteredProducts, (product: any) => {
-                //         let key = new RegExp(searchKey, 'i');
-                //         return !key.test(product.name);
-                //     });
-                // }
-                // let order = 'desc';
-                // if (sortBy == 'A-Z') {
-                //     sortBy = 'name';
-                //     order = 'asc';
-                // }
-                // if (sortBy == 'Z-A') {
-                //     sortBy = 'name';
-                // }
-
-                // let sortedProducts = _.orderBy(filteredProducts, [sortBy], [order]);
-                return filteredProducts;
             });
 
 
         this.infiniteScroll$
             .withLatestFrom(this.products$)
             .filter(([infinite,products]) =>  {
+            
                 return infinite && !this.isRequest && products.length
             })
             .switchMap((infinite) => {
-                debugger;
+                
                 this.isRequest = true;
                 if (this.searchKey == this.searchKeyLast) {
                     ++this.productService.current_page;
                 }
                 this.searchKeyLast = this.searchKey;
-                //TODO remove
+                //TODO removev
                 if (6 <= (this.productService.current_page-1) * this.productService.pagination_limit) {
-                    this.productService.current_page = -1; //end reached
-                    debugger;
                     return Observable.of(false);
                 } else {
-                    debugger;
+                    
                     return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
                 }
             })
             .subscribe(res => {
 
-                debugger;
+                
                 this.isRequest = false;
             }, err => {
-                debugger;
+                
                 this.isRequest = false;
             });
     }

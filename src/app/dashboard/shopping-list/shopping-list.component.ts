@@ -44,7 +44,7 @@ export class ShoppingListComponent implements OnInit {
     // ]);
     this.products$ = Observable
         .combineLatest(
-            this.productService.products$,
+            this.productService.collection$,
             this.sortBy$,
             this.searchKey$
         )

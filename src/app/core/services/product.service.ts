@@ -30,7 +30,9 @@ export class ProductService extends ModelService {
     totalCount$: Subject<any> = new Subject<any>();
     location$: any = new BehaviorSubject(false);
     getProductsData$: any = new Subject();
+    addProducts: any = new Subject();
     location:string;
+    total:number;
 
     constructor(public injector: Injector,
                 public userService: UserService,
@@ -84,6 +86,8 @@ export class ProductService extends ModelService {
               return this.restangular.all('products').customGET('', queryParams.query)
             })
             .subscribe((res) => {
+            
+                       
                 this.addCollectionToCollection$.next(res.data.results);
                 this.totalCount$.next(res.data.count);
                 this.isDataLoaded$.next(true);
@@ -109,6 +113,8 @@ export class ProductService extends ModelService {
         // .do((res: any) => {
         //   this.updateCollection$.next(res);
         // });
+    
+        
     }
     
 
@@ -123,12 +129,12 @@ export class ProductService extends ModelService {
         if (sortBy && sortBy == 'Z-A') {
             query.sort = 'desc';
         }
-debugger;
+//
         return this.getProductsData(query, page ? false : true);
     }
     
     private getProductsData(query: any = {}, reset: boolean = true) {
-        debugger;
+        
             this.getProductsData$.next({query,reset});
             return this.getProductsData$;
     }
@@ -165,10 +171,11 @@ debugger;
     getProductsLocation(id) {
         return this.products$ = this.restangular.all('products').customGET('', {location_id: id, limit:this.pagination_limit})
             .map((res: any) => {
+                this.totalCount$.next(res.data.count);
                 return res.data.results;
             }).do(res => {
                 this.updateCollection$.next(res);
-            });
+        });
     }
 
     getProduct(id) {

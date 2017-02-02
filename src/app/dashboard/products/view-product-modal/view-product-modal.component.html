@@ -88,7 +88,6 @@
                 <div class="col s4 input">
                     <label>Department</label>
                     <div *ngIf="!showEdit" class="value">{{product.department}}</div>
-
                     <div *ngIf="showEdit" class="select">
                         <select
                                 [(ngModel)]="productCopy.department"
@@ -318,7 +317,7 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <app-variant-detail [variant]="variant" *ngIf="variant.detailView"></app-variant-detail>
+                        <app-variant-detail [showEdit]="showEdit" [variant]="variant" *ngIf="variant.detailView"></app-variant-detail>
                     </div>
                 </div>
             </div>
@@ -351,6 +350,7 @@
                     Notes
                 </div>
                 <div *ngIf="showEdit" class="col s12 textarea">
+                    .
                     <textarea placeholder="Type here" class=" col s12 " [(ngModel)]="productCopy.notes"></textarea>
                 </div>
                 <div *ngIf="!showEdit" class="col s12 bold">

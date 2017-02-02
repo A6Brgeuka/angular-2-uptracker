@@ -22,6 +22,7 @@ export class ViewProductModalContext extends BSModalContext {
 export class VariantDetailComponent implements OnInit, AfterViewInit {
 
   @Input("variant") private variant;
+  @Input("showEdit") private showEdit;
 
   constructor() {
 
