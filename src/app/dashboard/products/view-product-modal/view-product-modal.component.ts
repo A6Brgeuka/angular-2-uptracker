@@ -52,6 +52,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     public variants = [];
     public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
+    public showEdit$: BehaviorSubject<any> = new BehaviorSubject([]);
     public filterSelectOption$: BehaviorSubject<any> = new BehaviorSubject({});
     public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
     public filterPrice$ = new BehaviorSubject(null);
@@ -96,28 +97,34 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.context = dialog.context;
         dialog.setCloseGuard(this);
         this.fileActions();
+        this.showEdit$.next(false);
     }
 
     showEditFields() {
         this.departmentCollection$ = this.accountService.getDepartments().take(1);
         this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
         this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
-        this.showEdit = !this.showEdit;
+        this.showEdit = true;
         this.productCopy = _.clone(this.product);
-        this.filteredVariants$.take(1).subscribe(r => {
+        this.variants$.take(1).subscribe(r => {
+            
             this.variantsCopy = _.cloneDeep(r);
         });
+        this.showEdit$.next(true);
     }
 
     closeEditFields() {
         this.showEdit = !this.showEdit;
+        this.showEdit$.next(false);
+    
         this.productCopy = [];
         this.variants$.next(this.variantsCopy);
     }
 
     saveAfterEdit() {
         let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
-        let vars_diff = this.productService.deepDiff(this.variantsCopy, this.variants);
+        let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
+        
         prod_diff.id = this.product.id;
         let variants: any = [];
         console.log(vars_diff);
@@ -140,7 +147,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             .subscribe(data => {
                     this.variants = _.map(data.variants, (item: any) => {
                         item.checked = false;
-                        item.visibility = true;
+                        item.status = item.status ? item.status : 1;
                         return item;
                     });
                     this.product = data.product;
@@ -155,11 +162,12 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                     _.forEach(this.variationArrs, (value, key) => {
                         this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
                     });
-                    this.showEdit = !this.showEdit;
-                    this.productCopy = [];
-                    this.filterSelectOption$.next({visibility: true});
-                    this.resetText();
-
+                    this.showEdit = false;
+                    
+                  this.showEdit$.next(false);
+                  this.productCopy = [];
+                  this.filterSelectOption$.next({status: 1});
+                  this.resetText();
                 },
                 err => {
                     console.log(err);
@@ -169,7 +177,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     resetText() {
         this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
-        this.product.trackable_string = this.product.tracked ? 'Yes' : 'No';
+        this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
         this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
         this.product.account_category = this.product.account_category ? this.product.account_category : 'Not Specified';
     }
@@ -238,8 +246,13 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             this.filterName$,
             this.filterPrice$,
             this.variantChecked$,
+            this.showEdit$,
         )
-            .map(([variants, filterSelectOption, filterName, filterPrice, variantChecked]) => {
+            .map(([variants, filterSelectOption, filterName, filterPrice, variantChecked,showEdit]) => {
+                if (showEdit) {
+                    
+                    return variants;
+                }
                 // check if at least on variant is checked to show add order button
                 let checkedArrVariants = _.filter(variants, {checked: true});
 
@@ -264,8 +277,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 return variants;
             });
 
-// no "trackable" property in product, but there is "tracked". Anyway it is read-only now
-// now I can save product info by api, but there is an error on uploading any "variants"
         this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product.id, this.location_id)
             .filter(res => res.data)
             .map(res => res.data)
@@ -274,7 +285,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 this.resetText();
                 this.variants = _.map(data.variants, (item: any) => {
                     item.checked = false;
-                    item.visibility = true;
+                    item.status = item.status ? item.status : 1;
                     return item;
                 });
                 this.variants$.next(this.variants); // update variants
@@ -387,7 +398,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         //     this.secondaryLocationLink.nativeElement.click();
         //   }
         // });
-        this.filterSelectOption$.next({visibility: true});
+        this.filterSelectOption$.next({status:1});
     }
 
     dismissModal() {
@@ -477,12 +488,15 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     toggleVariationVisibility() {
-        this.variation.visibility = !this.variation.visibility;
+        this.variation.status = this.variation.status == 2 ? this.variation.status =1 : this.variation.status = 2;
         this.filterSelectOption$.next(this.variation);
+        
     }
 
     toggleVariantVisibility(variant) {
-        variant.visibility = !variant.visibility;
+    
+        variant.status = variant.status == 2 ? variant.status =1 : variant.status = 2;
+        
     }
 
     toggleVariantDetailView(variant) {

@@ -58,7 +58,7 @@
                         <input
                                 type="checkbox"
                                 class="checkbox-input"
-                                [(ngModel)]="productCopy.tracked"
+                                [(ngModel)]="productCopy.trackable"
                                 id="checkbox2"
                         />
                         <label for="checkbox2"></label>
@@ -143,7 +143,7 @@
                 <li class="tab col s2">
                     <a href="#inventory">Inventory</a>
                 </li>
-                <li class="tab col s2" *ngIf="product.tracked">
+                <li class="tab col s2" *ngIf="product.trackable">
                     <a href="#tracking">Tracking</a>
                 </li>
                 <li class="tab col s2">
@@ -258,9 +258,8 @@
                             </button>
                         </div>
                         <div *ngIf="showEdit" class="visibility-heading head-item">
-                            <i class="material-icons noselect" (click)="toggleVariationVisibility()">{{variation.visibility
-                                ?
-                                "visibility" : "visibility_off"}}
+                            <i class="material-icons noselect" (click)="toggleVariationVisibility()">
+                                {{variation.status != 2 ? "visibility" : "visibility_off"}}
                             </i>
                         </div>
                         <div class="filter-heading noselect head-item">
@@ -288,7 +287,7 @@
                             </div>
                         </div>
                         <div class="name-heading variant-name row-item valign-wrapper">
-                            <span [class.reddish]="!variant.visibility" class="valign"
+                            <span [class.reddish]="variant.status == 2" class="valign"
                                   (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
                         </div>
                         <div class="small-heading row-item">{{variant.package_type || "Value Here"}}</div>
@@ -300,8 +299,8 @@
                         <div class="flor">
                             <div *ngIf="showEdit" class="edit-variant visibility-heading row-item">
                                 <i class="fa fa-eye  variant-func"
-                                   [class.fa-eye]="variant.visibility"
-                                   [class.fa-eye-slash]="!variant.visibility"
+                                   [class.fa-eye]="variant.status == 1"
+                                   [class.fa-eye-slash]="variant.status == 2"
                                    (click)="toggleVariantVisibility(variant)"
                                    aria-hidden="true"></i>
                             </div>
@@ -476,7 +475,7 @@
           <div class="variant-table">
             <div class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
               <div class="name-heading variant-name row-item valign-wrapper">
-                            <span [class.reddish]="!variant.visibility" class="valign"
+                            <span [class.reddish]="variant.status == 2" class="valign"
                               (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
               </div>
               <div class="small-heading row-item">3</div>
@@ -491,7 +490,7 @@
 
       </div>
     </div>
-    <div id="tracking" *ngIf="product.tracked">
+    <div id="tracking" *ngIf="product.trackable">
         <div class="inner">
             Tracking tab
         </div>

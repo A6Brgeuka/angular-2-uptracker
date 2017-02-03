@@ -75,7 +75,7 @@ export class ProductsComponent implements OnInit {
             this.productService.location$.next(location);
             this.productService.location=location;
             return this.productService.getProductsLocation(location.id)
-        }).subscribe();
+        }).subscribe(()=>this.getInfiniteScroll());
         
     ///////////////////////?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
