@@ -36,6 +36,8 @@
           background:#fff;
           cursor:pointer;
           border-radius:5px;
+          transition: all .3s;
+
 
           &:hover{
             width:260px;
@@ -46,8 +48,8 @@
             .img{
               margin-top:33px;
               margin-bottom:40px;
-              height:147px;
-              width:147px;
+              height:150px;
+              width:150px;
             }
           }
         }
@@ -59,6 +61,8 @@
           border-radius:50%;
           background:transparent no-repeat center center;
           background-size:cover;
+          transition: all .3s;
+
         }
 
         .info{

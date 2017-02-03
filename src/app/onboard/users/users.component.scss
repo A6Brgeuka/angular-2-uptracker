@@ -36,6 +36,8 @@
         max-width:100%;
         margin-left:20px;
         cursor:pointer;
+        transition: all .3s;
+
 
         &:first-child{
           margin:0;
@@ -48,6 +50,8 @@
           border-radius:50%;
           background:transparent no-repeat center center;
           background-size:cover;
+          transition: all .3s;
+
 
           //TODO: remove after check
           //img{
