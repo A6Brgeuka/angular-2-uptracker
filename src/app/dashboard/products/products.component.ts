@@ -54,10 +54,10 @@ export class ProductsComponent implements OnInit {
             });
 
         this.searchKey$.debounceTime(1000)
-            .filter(r => r)
+            .filter(r => (r || r === ''))
             .subscribe(
                 (r) => {
-                    this.productService.getNextProducts(false, r, this.sortBy);
+                    this.productService.getNextProducts(0, r, this.sortBy);
                     this.productService.current_page = 1;
                 }
             );

@@ -30,7 +30,6 @@ export class ProductService extends ModelService {
     totalCount$: Subject<any> = new Subject<any>();
     location$: any = new BehaviorSubject(false);
     getProductsData$: any = new Subject();
-    addProducts: any = new Subject();
     location:string;
     total:number;
 
@@ -40,33 +39,14 @@ export class ProductService extends ModelService {
                 public restangular: Restangular) {
         super(restangular);
 
-        // combine global vendors observable with account vendors from account observable
         this.combinedProducts$ = Observable
             .combineLatest(
                 this.collection$,
                 this.userService.selfData$
             )
-            // filter for emitting only if user account exists (for logout user updateSelfData)
             .filter(([vendors, user]) => {
                 return user.account;
             })
-            // .map(([vendors, user]) => {
-            //   let accountVendors = user.account.vendors;
-            //   // find and combine vendors
-            //   let commonVendors = _.map(vendors, (globalVendor: any) => {
-            //     globalVendor = new VendorModel(globalVendor);
-            //     _.each(accountVendors, (accountVendor: AccountVendorModel) => {
-            //       if (accountVendor.vendor_id == globalVendor.id){
-            //         // globalVendor.account_vendor = accountVendor;
-            //         globalVendor.account_vendor.push(accountVendor);
-            //         if (!accountVendor.location_id)
-            //           globalVendor.priority = accountVendor.priority;
-            //       }
-            //     });
-            //     return globalVendor;
-            //   });
-            //   return commonVendors;
-            // })
             .publishReplay(1).refCount();
 
         this.onInit();
@@ -119,6 +99,10 @@ export class ProductService extends ModelService {
     
 
     getNextProducts(page?, search_string?, sortBy?) {
+        if (page==0) {
+            this.loadCollection$.next([]);
+            this.current_page = 1;
+        }
         let query: any = {
             page: this.current_page,
             limit: this.pagination_limit,

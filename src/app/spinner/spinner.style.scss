@@ -2,12 +2,14 @@ $tealish: #33c6d9;
 
 .spinner-wrapper{
   position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#000;
+  left:     calc(50% - 50px);
+  top:      calc(50% - 50px);
+  right:    calc(50% - 50px);
+  bottom:   calc(50% - 50px);
+  border-radius: 50px;
+  background:#fff;
   z-index: 9999;
+  box-shadow: 0 0 10px rgba(0,0,0,.2);
 }
 
 //.spinner {
