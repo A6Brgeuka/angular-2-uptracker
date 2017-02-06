@@ -25,17 +25,20 @@ export class DashboardComponent implements OnInit{
       private accountService: AccountService,
       private stateService: StateService,
   ) {
-  }
-  
-  ngOnInit(){
     this.locations$ =  Observable.combineLatest(
         this.accountService.locations$,
         this.stateService.navigationEndUrl$
     )
         .map(([locations,navigationEndUrl]): any => locations)
         .do((res: any) => {
-      this.locationArr = res;
-    });
+          this.locationArr = res;
+          console.log('location arr',res);
+        });
+
+  }
+  
+  ngOnInit(){
+
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.selectedLocation = res ? res.id : '';
     });

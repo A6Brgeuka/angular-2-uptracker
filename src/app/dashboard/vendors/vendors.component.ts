@@ -39,7 +39,6 @@ export class VendorsComponent implements OnInit {
     }
 
     ngOnInit() {
-        //TODO delayWhen
 
         this.vendorService.isDataLoaded$
             .delay(500)
@@ -65,10 +64,6 @@ export class VendorsComponent implements OnInit {
                   this.vendorService.current_page = 1;
               }
             );
-
-        this.vendorService.totalCount$.subscribe(res => {
-            this.total = res
-        });
 
         this.infiniteScroll$
             .filter((infinite) => {

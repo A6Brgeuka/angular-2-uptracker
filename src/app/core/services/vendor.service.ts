@@ -19,6 +19,7 @@ import { BehaviorSubject } from "rxjs";
 })
 export class VendorService extends ModelService {
   pagination_limit:number = 10;
+  total:number = 0;
   current_page:number = 1;
   selfData: any;
   selfData$: Observable<any>;
@@ -116,6 +117,7 @@ export class VendorService extends ModelService {
         this.addCollectionToCollection$.next(res.data.vendors);
       }
       this.totalCount$.next(res.data.count);
+      this.total = res.data.count;
       this.isDataLoaded$.next(true);
       // this.updateCollection$.next(res.data.vendors);
       return res.data.vendors;
