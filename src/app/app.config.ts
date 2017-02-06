@@ -49,7 +49,7 @@ export function RESTANGULAR_CONFIG (
       return;
     }
 
-    if(!(path == "vendors" && params.last_id)){
+    if(!(path == "vendors" || path == "products")){
       spinnerService.show();
     }
 

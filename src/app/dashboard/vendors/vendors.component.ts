@@ -51,7 +51,7 @@ export class VendorsComponent implements OnInit {
 
         this.searchKey$.debounceTime(1000)
             .filter(r => (r || r === ''))
-            .switchMap(r=>this.vendorService.getNextVendors(false, r, this.sortBy))
+            .switchMap(r=>this.vendorService.getNextVendors(0, r, this.sortBy))
             .subscribe(
                 (r) => {
                     this.vendorService.current_page = 1;
@@ -59,11 +59,11 @@ export class VendorsComponent implements OnInit {
             );
         this.sortBy$
             .filter(r => r)
+            .switchMap(r=>this.vendorService.getNextVendors(0, this.searchKey, r))
             .subscribe(
-                (r) => {
-                    this.vendorService.getNextVendors(this.vendorService.current_page, this.searchKey, r);
-                    this.vendorService.current_page = 1;
-                }
+              (r) => {
+                  this.vendorService.current_page = 1;
+              }
             );
 
         this.vendorService.totalCount$.subscribe(res => {
@@ -75,13 +75,14 @@ export class VendorsComponent implements OnInit {
                 return infinite && !this.isRequestVendors/* && vendors.length*/
             })
             .switchMap((infinite) => {
+            console.log('scroll');
                 this.isRequestVendors = true;
                 if (this.searchKey == this.searchKeyLast) {
                     ++this.vendorService.current_page;
                 }
                 this.searchKeyLast = this.searchKey;
                 if (this.total <= (this.vendorService.current_page-1) * this.vendorService.pagination_limit) {
-                    this.vendorService.current_page = -1; //end reached
+                    return Observable.of({});
                 } else {
                     return this.vendorService.getNextVendors(this.vendorService.current_page, this.searchKey, this.sortBy);
                 }
@@ -89,6 +90,7 @@ export class VendorsComponent implements OnInit {
                 .subscribe(res => {
                 this.isRequestVendors = false;
             }, err => {
+                console.error('error on infinite scroll ',err);
                 this.isRequestVendors = false;
             });
 
@@ -168,6 +170,7 @@ export class VendorsComponent implements OnInit {
     getInfiniteScroll() {
         let scrollBottom = (document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285) && !this.body.classList.contains("noscroll");
         // let widthColumns = document.body.scrollHeight - document.body.scrollTop - window.innerWidth < 300;
+        console.log(scrollBottom);
         this.infiniteScroll$.next(scrollBottom);
     }
     

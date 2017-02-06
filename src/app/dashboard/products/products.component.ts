@@ -116,8 +116,6 @@ export class ProductsComponent implements OnInit {
                 }
             })
             .subscribe(res => {
-
-                
                 this.isRequest = false;
             }, err => {
                 
