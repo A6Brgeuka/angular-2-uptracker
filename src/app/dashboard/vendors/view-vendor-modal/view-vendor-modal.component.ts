@@ -29,6 +29,7 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   private accountVendors: any;
   public locationArr: any = [];
   public locations$: Observable<any>;
+  public all_locations$: Observable<any>;
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
@@ -54,8 +55,10 @@ export class ViewVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   ngOnInit(){
     this.accountVendors = this.context.vendor.account_vendor;
     this.vendor = new VendorModel(this.context.vendor);
+    this.all_locations$ = this.accountService.locations$;
     this.locations$ = this.accountService.locations$
         .map((res: any) => {
+      console.log('locations',res);
           this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
           this.secondaryLocationArr = _.filter(res, (loc) => {
             return this.primaryLocation != loc;
