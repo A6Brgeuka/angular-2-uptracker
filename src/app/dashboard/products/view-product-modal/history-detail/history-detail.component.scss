@@ -14,23 +14,16 @@ $black: #000;
     padding: 2%;
     margin-bottom: 0;
   }
-  .w20p {
-    width: 20%;
+  .col {
     padding: 0 2%;
     border-right: 2px solid #fff;
-    min-height: 100px;
     &:last-of-type {
       border-right: none;
     }
     .row {
-      margin-bottom: 0;
-      .col.s3 {
-        text-align: center;
-      }
-      &:nth-of-type(1) {
-        margin-bottom: 5px;
-      }
+      margin-bottom:10px;
     }
+
     &:nth-of-type(4), &:nth-of-type(5) {
       .row:not(.ttl) {
         .col.s9 {
@@ -45,6 +38,7 @@ $black: #000;
   }
   .ttl {
     font-weight: bold;
+    color: $grey;
   }
 }
 

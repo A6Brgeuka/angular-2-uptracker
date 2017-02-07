@@ -503,16 +503,19 @@
                         Variation
                     </div>
                     <div class="head-item">
-                        Total
+                        Qty
                     </div>
                     <div class="head-item">
-                        Primary Location
+                        Location
                     </div>
                     <div class="head-item">
-                        Secondary Location
+                        Status
                     </div>
                     <div class="head-item">
-                        Tertiary Location
+                        Ordered
+                    </div>
+                    <div class="head-item">
+                        Received
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -526,9 +529,10 @@
                                   (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
                         </div>
                         <div class="small-heading row-item">3</div>
-                        <div class="small-heading row-item">1</div>
-                        <div class="small-heading row-item">1</div>
-                        <div class="small-heading row-item">1</div>
+                        <div class="small-heading row-item">Primary Location</div>
+                        <div class="small-heading row-item">Pending</div>
+                        <div class="small-heading row-item">12/12/16</div>
+                        <div class="small-heading row-item">12/12/16</div>
                         <div class="clearfix"></div>
                         <app-history-detail [variant]="variant" *ngIf="variant.detailView"></app-history-detail>
                     </div>
