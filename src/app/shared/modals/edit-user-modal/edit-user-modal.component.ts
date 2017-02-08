@@ -149,6 +149,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   addPhone() {
     let lastId = _.findLastIndex(this.additionalPhones,o => o);
     this.additionalPhones.push({id: ++lastId,number:"", country:this.phoneMaskService.defaultCountry});
+    debugger;
   }
   
   setDefaultPermissions() {

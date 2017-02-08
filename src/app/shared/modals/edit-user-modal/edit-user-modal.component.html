@@ -146,10 +146,10 @@
                       placeholder="Enter a phone number"
                       class="validate col s12"
                       [(ngModel)]="phone.number"
-                      #addphone = "ngModel"
+                      #addphone_{{phone.id}} = "ngModel"
                       minlength="11"
                       type="text">
-                    <div [hidden]="addphone.valid || addphone.pristine" class="error red-text left-align">
+                    <div [hidden]="addphone_.valid || addphone.pristine" class="error red-text left-align">
                       Phone number required.
                     </div>
                   </phone-input>
