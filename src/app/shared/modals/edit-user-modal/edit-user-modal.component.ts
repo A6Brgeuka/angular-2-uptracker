@@ -148,8 +148,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   
   addPhone() {
     let lastId = _.findLastIndex(this.additionalPhones,o => o);
-    this.additionalPhones.push({id: ++lastId,number:"",country:this.phoneMaskService.defaultCountry});
-    console.log(this.additionalPhones);
+    this.additionalPhones.push({id: ++lastId,number:"", country:this.phoneMaskService.defaultCountry});
   }
   
   setDefaultPermissions() {
@@ -193,6 +192,10 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
 
   onCountryChange($event) {
     this.selectedCountry = $event;
+  }
+
+  onCountryChangeAdditional($event,id) {
+    this.additionalPhones[id].country = $event;
   }
 
   // upload by input type=file
@@ -301,7 +304,9 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
     this.user.permissions = this.permissionArr;
-    this.user.additional_phones = this.additionalPhones;
+    this.user.additional_phones = this.additionalPhones.map(item =>
+        (item.country[2] + ' ' + item.number)
+    );
     
     console.log(this.user);
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(

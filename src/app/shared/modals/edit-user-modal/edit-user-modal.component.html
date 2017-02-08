@@ -136,19 +136,22 @@
               </div>
               <!--Additional phone numbers-->
                 <div *ngFor="let phone of additionalPhones"  class="col s12">
-                  <span>{{phone.id}}
-                    {{phone.number}}</span>
+                  {{phone | json}}
                   <phone-input
-                    (onCountryChange)="onCountryChange($event)"
-                    [selectedCountry]="selectedCountry">
+                    (onCountryChange)="onCountryChangeAdditional($event,phone.id)"
+                    [selectedCountry]="phone.country">
                     <input
-                      name="phone.number"
+                      name="addphone"
                       [textMask]="phoneMask"
                       placeholder="Enter a phone number"
                       class="validate col s12"
                       [(ngModel)]="phone.number"
+                      #addphone = "ngModel"
                       minlength="11"
                       type="text">
+                    <div [hidden]="addphone.valid || addphone.pristine" class="error red-text left-align">
+                      Phone number required.
+                    </div>
                   </phone-input>
                 </div>
             </div>
