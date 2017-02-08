@@ -60,6 +60,9 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public showCustomRole: boolean = false;
   public addPresetForm: boolean = false;
   public preset: any = {};
+  public asd:string = "";
+  
+  public additionalPhones:any = [];
 
   @ViewChild('tabProfile') tabProfile: ElementRef;
   @ViewChild('tabPermissions') tabPermissions: ElementRef;
@@ -142,7 +145,13 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
       }
     });
   }
-
+  
+  addPhone() {
+    let lastId = _.findLastIndex(this.additionalPhones,o => o);
+    this.additionalPhones.push({id: ++lastId,number:"",country:this.phoneMaskService.defaultCountry});
+    console.log(this.additionalPhones);
+  }
+  
   setDefaultPermissions() {
     this.permissionArr = _.cloneDeep(this.rolesArr[0].permissions);
     this.permissionArr.map((data: any) => {
@@ -292,6 +301,9 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
     this.user.permissions = this.permissionArr;
+    this.user.additional_phones = this.additionalPhones;
+    
+    console.log(this.user);
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
       (res: any) => {
         this.dismissModal();
