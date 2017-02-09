@@ -1,6 +1,6 @@
 <div class="close" (click)="dismissModal()"></div>
-<div class="title center-align">Vendor Info</div>
-<div class="row">
+<div [class.notabs]="(locations$ | async)?.length < 2" class="title center-align">Vendor Info</div>
+<div  *ngIf="(locations$ | async)?.length > 1"  class="row">
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col" [class.s12]="(locations$ | async)?.length < 2" [class.s4]="(locations$ | async)?.length > 1"><a>All Locations</a></li>
     <li class="tab col s4"><a href="#general" *ngIf="(locations$ | async)?.length > 1" (click)="chooseTabLocation(primaryLocation)" [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">{{primaryLocation?.name}}</a></li>

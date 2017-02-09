@@ -82,11 +82,25 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   ngOnInit() {
+    
     let userData = this.context.user || {tutorial_mode: true};
     this.user = new UserModel(userData);
     if (this.context.user) {
       this.uploadedImage = this.user.avatar;
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
+      this.user.additional_phones =[
+        '496 348-253-3533',
+        '598 347-253-3534',
+        '39 123-456-7890'
+      ];
+      this.additionalPhones = _.map(this.user.additional_phones,(val,i) =>
+      {
+        return {
+          id:i,
+          number:this.phoneMaskService.getPhoneByIntlPhone(val),
+          country: this.phoneMaskService.getCountryArrayByIntlPhone(val)
+        }
+      });
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     }
 
@@ -148,11 +162,11 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   
   addPhone() {
     let lastId = _.findLastIndex(this.additionalPhones,o => o);
-    this.additionalPhones.push({id: ++lastId,number:"", country:this.phoneMaskService.defaultCountry});
-    debugger;
+    this.additionalPhones.push({id: ++lastId, country:this.phoneMaskService.defaultCountry});
   }
   
   setDefaultPermissions() {
+    
     this.permissionArr = _.cloneDeep(this.rolesArr[0].permissions);
     this.permissionArr.map((data: any) => {
       data.default = false;

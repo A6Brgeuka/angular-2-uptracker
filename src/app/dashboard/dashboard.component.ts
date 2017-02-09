@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit{
         .map(([locations,navigationEndUrl]): any => locations)
         .do((res: any) => {
           this.locationArr = res;
-          console.log('ocation arr',res);
+          console.log('location arr',res);
         });
 
   }
@@ -40,25 +40,11 @@ export class DashboardComponent implements OnInit{
   ngOnInit(){
 
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
-
       this.selectedLocation = res ? res.id : '';
     });
-
-    this.isnotProductUrl$ = this.stateService.navigationEndUrl$.map(url => {
-      return url != "/dashboard/products";
-    });
-    // this.isnotProductUrl$.subscribe();
-
-    this.subscribers.dashboardLocationProductSubscription = Observable.combineLatest(
-        this.accountService.dashboardLocation$,
-        this.isnotProductUrl$
-    )
-        .filter(([dashloc,isPrdUrl]): any => !isPrdUrl && !dashloc)
-        .switchMap(res => {
-          return this.accountService.locations$
-        })
+    this.subscribers.dashboardLocationProductSubscription = this.accountService.locations$
         .subscribe( res => {
-          this.accountService.dashboardLocation$.next(res[0])
+          //this.accountService.dashboardLocation$.next(res[0])
         });
   }
 
