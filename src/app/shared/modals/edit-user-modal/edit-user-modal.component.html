@@ -135,13 +135,12 @@
                 </phone-input>
               </div>
               <!--Additional phone numbers-->
-                <div *ngFor="let p of additionalPhones"  class="col s12">
-                  {{p | json}}
-                  <phone-input
+                <div *ngFor="let p of additionalPhones"  class="col s12 additional-phone">
+                  <phone-input class=""
                     (onCountryChange)="onCountryChangeAdditional($event, p.id)"
                     [selectedCountry]="p.country">
                     <input
-                      name="addphone"
+                      [name]="'addphone'+p.id"
                       [textMask]="phoneMask"
                       placeholder="Enter a phone number"
                       class="validate col s12"
@@ -149,6 +148,9 @@
                       minlength="11"
                       type="text">
                   </phone-input>
+                  <div (click)="rmAdditionalPhone(p.id)" class="remove-additional-phone">
+                    <i class="material-icons">remove_circle_outline</i>
+                  </div>
                 </div>
             </div>
 

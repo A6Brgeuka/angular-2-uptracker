@@ -40,7 +40,6 @@ export class DashboardComponent implements OnInit{
   ngOnInit(){
 
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
-      debugger;
       this.selectedLocation = res ? res.id : '';
     });
     this.subscribers.dashboardLocationProductSubscription = this.accountService.locations$

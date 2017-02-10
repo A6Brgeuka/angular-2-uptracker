@@ -63,6 +63,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public asd:string = "";
   
   public additionalPhones:any = [];
+  public additionalPhones$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   @ViewChild('tabProfile') tabProfile: ElementRef;
   @ViewChild('tabPermissions') tabPermissions: ElementRef;
@@ -101,6 +102,8 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
           country: this.phoneMaskService.getCountryArrayByIntlPhone(val)
         }
       });
+      this.additionalPhones$.next(this.additionalPhones);
+      
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
     }
 
@@ -158,11 +161,18 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         }
       }
     });
+    
   }
   
+  
   addPhone() {
-    let lastId = _.findLastIndex(this.additionalPhones,o => o);
+    let lastId = _.maxBy(this.additionalPhones,o => o['id'])['id'];
     this.additionalPhones.push({id: ++lastId, country:this.phoneMaskService.defaultCountry});
+    console.log(this.additionalPhones);
+  }
+  
+  rmAdditionalPhone(id){
+    return _.remove(this.additionalPhones, (res)=>res['id'] == id);
   }
   
   setDefaultPermissions() {
