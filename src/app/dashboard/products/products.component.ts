@@ -70,7 +70,11 @@ export class ProductsComponent implements OnInit {
                 }
             );
 
-        let start_products$ = this.accountService.dashboardLocation$.filter(res => res).switchMap(location => {
+        let start_products$ = this.accountService.dashboardLocation$.switchMap(location => {
+            debugger;
+            if (!location) {
+                location = {};
+            }
             this.dashboardLocation = location;
             this.productService.location$.next(location);
             this.productService.location=location;

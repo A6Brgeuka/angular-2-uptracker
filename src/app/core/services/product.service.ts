@@ -53,12 +53,9 @@ export class ProductService extends ModelService {
     }
 
     onInit() {
-
-
-
         this.getProductsData$
-            .withLatestFrom(this.location$)
             .map(([queryParams, location])=>{
+            debugger;
              queryParams.query.location_id = location.id;
              return queryParams;
             })
@@ -66,13 +63,9 @@ export class ProductService extends ModelService {
               return this.restangular.all('products').customGET('', queryParams.query)
             })
             .subscribe((res) => {
-            
-                       
                 this.addCollectionToCollection$.next(res.data.results);
                 this.totalCount$.next(res.data.count);
                 this.isDataLoaded$.next(true);
-                
-
                 return res.data.results;
             }
         );
