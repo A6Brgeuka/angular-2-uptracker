@@ -71,7 +71,6 @@ export class ProductsComponent implements OnInit {
             );
 
         let start_products$ = this.accountService.dashboardLocation$.switchMap(location => {
-            debugger;
             if (!location) {
                 location = {};
             }

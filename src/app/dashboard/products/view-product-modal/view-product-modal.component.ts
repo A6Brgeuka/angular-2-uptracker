@@ -60,12 +60,14 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     public variantsCopy = [];
     public variantChecked$ = new BehaviorSubject(false);
     public variantVisibility$ = new BehaviorSubject(false);
+    public currentLocation$ = new BehaviorSubject("");
     public comments$ = new BehaviorSubject([]);
     public addToComments$ = new Subject();
     public deleteFromComments$ = new Subject();
     public editCommentComments$ = new Subject();
     public filteredComments$;
     public location_id;
+    public currentLocation = {};
 
     fileIsOver: boolean = false;
     public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -99,7 +101,11 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.fileActions();
         this.showEdit$.next(false);
     }
-
+    
+    changeSelected(loc_id,var_id){
+        this.currentLocation[var_id] = loc_id;
+    }
+    
     showEditFields() {
         this.departmentCollection$ = this.accountService.getDepartments().take(1);
         this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
@@ -107,7 +113,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.showEdit = true;
         this.productCopy = _.clone(this.product);
         this.variants$.take(1).subscribe(r => {
-            
             this.variantsCopy = _.cloneDeep(r);
         });
         this.showEdit$.next(true);
@@ -286,10 +291,64 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 this.variants = _.map(data.variants, (item: any) => {
                     item.checked = false;
                     item.status = item.status ? item.status : 1;
+                    item.inventory = [
+                        {
+                            "location_id": "583cc2553a2b00000630d62a",
+                            "storage_locations": [
+                                {
+                                    "storage_location_name": "Working Stock",
+                                    "storage_location_id": "586e8d113cd3d2000b2d1dd6",
+                                    "qty": 10,
+                                    "floorstock": true
+                                },
+                                {
+                                    "storage_location_name": "Back Stock",
+                                    "storage_location_id": "586e8d113cd3d2000b2d1dd7",
+                                    "qty": 2,
+                                    "floorstock": false
+                                }
+                            ],
+                            "usage": [
+                              {"date":"12/01/2017","qty":"32"},
+                              {"date":"12/04/2017","qty":"2"},
+                              {"date":"12/02/2014","qty":"6"},
+                              ],
+                            "orders": [
+                                {"date":"11/05/2015","qty":"2"},
+                                {"date":"04/02/2012","qty":"32"},
+                                {"date":"03/02/2016","qty":"63"},
+                            ],
+                            "critical": 2,
+                            "fully_stocked": 8,
+                            "pending_qty": 0,
+                            "current_inventory": 12,
+                            "overstocked": 4
+                        },
+                        {
+                            "location_id": "586e95e5ac14af000b6bda6e",
+                            "storage_locations": [
+                                {
+                                    "storage_location_name": "Working Stock",
+                                    "storage_location_id": "586e95e5ac14af000b6bda6f",
+                                    "qty": 5,
+                                    "floorstock": true
+                                }
+                            ],
+                            "usage": [],
+                            "orders": [],
+                            "critical": 0,
+                            "fully_stocked": 0,
+                            "pending_qty": 0,
+                            "current_inventory": 5,
+                            "overstocked": 5
+                        }
+                    ];
+                    item.total_inventory = _.sumBy(item.inventory,(i:any)=>i.current_inventory);
                     return item;
                 });
                 this.variants$.next(this.variants); // update variants
                 this.comments$.next(data.comments); // update comments
+                console.log(this.variants[0]);
                 _.each(this.variants, (variant: any) => {
                     _.forEach(this.variationArrs, (value, key) => {
                         this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
@@ -569,8 +628,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     removeFile(fileName, index) {
         console.log(`remove ${fileName}`)
     }
-
-
+    
+    inventoryDetailCollapse(v) {
+        v.detailView = false;
+    }
     // editVendor(vendor = null){
     //   if (this.currentLocation) {
     //     this.accountService.dashboardLocation$.next(this.currentLocation);

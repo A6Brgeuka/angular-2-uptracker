@@ -4,6 +4,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
 import * as _ from 'lodash';
+import { validateConfig } from '@angular/router/src/config';
 
 
 export class ViewProductModalContext extends BSModalContext {
@@ -22,19 +23,17 @@ export class ViewProductModalContext extends BSModalContext {
 export class InventoryDetailComponent implements OnInit, AfterViewInit {
 
   @Input("variant") private variant;
+  @Input("vis") public vis;
+  @Input("currentLocation") private currentLocation;
 
   constructor() {
-
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-
   }
 
-  variantDetailCollapse() {
-    this.variant.detailView = false;
-  }
+  
 }

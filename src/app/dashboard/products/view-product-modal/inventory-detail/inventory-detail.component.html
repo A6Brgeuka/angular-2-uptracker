@@ -7,19 +7,19 @@
       </div>
       <div class="row">
         <div class="col s9">Critical</div>
-        <div class="col s3">2</div>
+        <div class="col s3">{{variant.critical}}</div>
       </div>
       <div class="row ">
         <div class="col s9">Fully Stocked</div>
-        <div class="col s3">4</div>
+        <div class="col s3">{{variant.fully_stocked}}</div>
       </div>
       <div class="row ">
         <div class="col s9">Pending Qty.</div>
-        <div class="col s3">0</div>
+        <div class="col s3">{{variant.pending_qty}}</div>
       </div>
       <div class="row reddish">
         <div class="col s9">Overstocked</div>
-        <div class="col s3">2</div>
+        <div class="col s3">{{variant.overstocked}}</div>
       </div>
     </div>
 
@@ -28,25 +28,24 @@
         <div class="col s9">Storage location</div>
         <div class="col s3">Qty</div>
       </div>
-      <div class="row">
-        <div class="col s9">Back Stock 1</div>
-        <div class="col s3">1</div>
-      </div>
-      <div class="row ">
-        <div class="col s9">Back Stock 2</div>
-        <div class="col s3">1</div>
+      <div *ngFor="let storage_location of variant.storage_locations" class="row">
+        <div *ngIf="!storage_location.floorstock">
+          <div class="col s9">{{storage_location.storage_location_name}}</div>
+          <div class="col s3">{{storage_location.qty}}</div>
+        </div>
       </div>
     </div>
-
 
     <div class="col w20p">
       <div class="row ttl">
         <div class="col s9">Floor location</div>
         <div class="col s3">Qty</div>
       </div>
-      <div class="row">
-        <div class="col s9">Center Island</div>
-        <div class="col s3">2</div>
+      <div *ngFor="let storage_location of variant.storage_locations" class="row">
+        <div *ngIf="storage_location.floorstock">
+          <div class="col s9">{{storage_location.storage_location_name}}</div>
+          <div class="col s3">{{storage_location.qty}}</div>
+        </div>
       </div>
       <div class="row small grey-text">
         <div class="col s12">
@@ -60,21 +59,9 @@
         <div class="col s9">Usage Date</div>
         <div class="col s3">Qty</div>
       </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
-      </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
-      </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
-      </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
+      <div *ngFor="let item of variant.usage" class="row">
+          <div class="col s9">{{item.date}}</div>
+          <div class="col s3">{{item.qty}}</div>
       </div>
     </div>
 
@@ -83,26 +70,10 @@
         <div class="col s9">Order Date</div>
         <div class="col s3">Qty</div>
       </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
-      </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
-      </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
-      </div>
-      <div class="row">
-        <div class="col s9">12/31/16</div>
-        <div class="col s3">10</div>
+      <div *ngFor="let item of variant.orders" class="row">
+          <div class="col s9">{{item.date}}</div>
+          <div class="col s3">{{item.qty}}</div>
       </div>
     </div>
   </div>
 </div>
-<div class="right variant-detail-collapse">
-  <span (click)="variantDetailCollapse()"><i class="fa fa-chevron-up" aria-hidden="true"></i> Collapse</span>
-</div>
-<div class="clearfix"></div>
