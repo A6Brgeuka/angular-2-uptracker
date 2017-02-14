@@ -265,7 +265,7 @@ $black: #000;
           float: left;
           padding: 5px;
           height: 35px;
-          line-height: 24px;
+          line-height: 22px;
 
           &:first-child {
             padding-left: 0;
@@ -284,6 +284,9 @@ $black: #000;
 
         .small-heading {
           width: 8%;
+          &.wider{
+            width: 11%;
+          }
         }
 
         .text-head {
@@ -326,6 +329,9 @@ $black: #000;
 
         .text-heading {
           width: 10%;
+          &.wider{
+            width:11%
+          }
         }
 
         .add-order-heading {
@@ -611,6 +617,7 @@ $black: #000;
   }
   .variant-detail-table-head-item .yourprice {
     width: 40px;
+    box-sizing: border-box;
     margin-left: -5px!important;
     color: $dark!important;
     background-color: #fff!important;
@@ -620,9 +627,15 @@ $black: #000;
     padding: 2px 10px 6px!important;
     line-height:28px;
   }
-
-    i.fa-eye-slash {
-      color:$red;
-    }
+  i.fa-eye-slash {
+    color:$red;
+  }
+  .table-item .row-item {
+    padding-left:15px!important;
+  }
+  .table-item .row-item:last-of-type {
+    padding-left:0!important;
+    padding-right: 5px!important;
+  }
 
 }

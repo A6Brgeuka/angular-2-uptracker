@@ -238,16 +238,16 @@
             </div>
           </div>
 
-          <div class="small-heading head-item">
+          <div class="small-heading wider head-item">
             <div class="select">
               <select
-                [(ngModel)]="variation.size"
+                [(ngModel)]="variation.material"
                 #size="ngModel"
                 materialize="material_select"
-                (change)="changeSize($event)"
-                [materializeSelectOptions]="variationArrs.size">
-                <option value="">Size</option>
-                <option *ngFor="let item of variationArrs.size" [value]="item">{{item}}</option>
+                (change)="changeMaterial($event)"
+                [materializeSelectOptions]="variationArrs.material">
+                <option value="">Material</option>
+                <option *ngFor="let item of variationArrs.material" [value]="item">{{item}}</option>
               </select>
             </div>
           </div>
@@ -306,7 +306,7 @@
             <div class="small-heading row-item">{{variant.unit_type || ""}}</div>
             <div class="small-heading row-item">{{variant.units_per_package || ""}}</div>
             <div class="small-heading row-item">{{variant.size || ""}}</div>
-            <div class="text-heading row-item">{{variant.upc || ""}}</div>
+            <div class="text-heading row-item wider">{{variant.material || ""}}</div>
             <div class="text-heading row-item">{{variant.price_range || ""}}</div>
             <div class="flor">
               <div *ngIf="showEdit" class="edit-variant visibility-heading row-item">
