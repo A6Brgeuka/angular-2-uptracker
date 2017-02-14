@@ -553,9 +553,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     toggleVariantVisibility(variant) {
-    
         variant.status = variant.status == 2 ? variant.status =1 : variant.status = 2;
-        
     }
 
     toggleVariantDetailView(variant) {

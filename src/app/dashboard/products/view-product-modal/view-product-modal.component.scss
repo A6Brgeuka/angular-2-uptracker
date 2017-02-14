@@ -9,6 +9,8 @@ $black: #000;
 
 :host /deep/ {
 
+
+
   .variant-detail-collapse {
     color: $tealish;
     margin: 10px 0;
@@ -24,12 +26,12 @@ $black: #000;
   .invis {opacity: 0;}
 
   .edbtn {
-    margin-left: 10px;
-    height: 26px;
-    font-size: 12px;
+    margin-left: 1px;
+    height: 20px;
+    font-size: 10px;
     font-weight: normal;
-    border-radius: 7px;
-    padding:3px 10px;
+    border-radius: 5px;
+    padding: 2px 6px;
   }
   .edbtn:hover {
     opacity: .9;
@@ -130,8 +132,18 @@ $black: #000;
         background-size: cover;
       }
     }
+
+    .row.uptracker-form {
+      margin-bottom: 0;
+
+    }
+    .row.table-head-filter {
+        margin-bottom:0;
+    }
+
+
     .uptracker-form .input{
-      margin-bottom:14px;
+      margin-bottom:17px;
     }
 
     &.edit-mode {
@@ -253,6 +265,7 @@ $black: #000;
           float: left;
           padding: 5px;
           height: 35px;
+          line-height: 24px;
 
           &:first-child {
             padding-left: 0;
@@ -260,6 +273,12 @@ $black: #000;
 
           &:last-child {
             padding-right: 0;
+          }
+
+          &:nth-child(8),
+          &:nth-child(2)
+          {
+            line-height: 14px;
           }
         }
 
@@ -432,7 +451,7 @@ $black: #000;
         }
 
         .table-item {
-          padding: 15px 0;
+          padding: 0;
           border-bottom: 1px solid $light-grey;
 
           &:last-child {
@@ -585,5 +604,25 @@ $black: #000;
   }
   .mbot0 {margin-bottom: 0;}
   .mbot10 {margin-bottom: 10px;}
+
+  .greenborder{
+    border-color: $greeny!important;
+    color: $dark!important;
+  }
+  .variant-detail-table-head-item .yourprice {
+    width: 40px;
+    margin-left: -5px!important;
+    color: $dark!important;
+    background-color: #fff!important;
+    padding-left:4px!important;
+  }
+  .variant-detail-table-body-row {
+    padding: 2px 10px 6px!important;
+    line-height:28px;
+  }
+
+    i.fa-eye-slash {
+      color:$red;
+    }
 
 }

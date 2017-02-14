@@ -35,6 +35,10 @@ export class VariantDetailComponent implements OnInit, AfterViewInit {
 
   }
 
+  toggleVariantVisibility(variant) {
+    variant.status = variant.status == 2 ? variant.status =1 : variant.status = 2;
+  }
+
   variantDetailCollapse() {
     this.variant.detailView = false;
   }
