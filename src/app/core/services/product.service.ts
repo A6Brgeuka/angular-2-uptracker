@@ -54,9 +54,11 @@ export class ProductService extends ModelService {
 
     onInit() {
         this.getProductsData$
+            .withLatestFrom(this.location$)
             .map(([queryParams, location])=>{
-            debugger;
-             queryParams.query.location_id = location.id;
+            if (location) {
+                queryParams.query.location_id = location.id;
+            }
              return queryParams;
             })
             .switchMap((queryParams) => {

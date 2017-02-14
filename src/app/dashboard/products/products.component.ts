@@ -58,7 +58,7 @@ export class ProductsComponent implements OnInit {
             .subscribe(
                 (r) => {
                     this.productService.getNextProducts(0, r, this.sortBy);
-                    this.productService.current_page = 1;
+                    this.productService.current_page = 2;
                 }
             );
         this.sortBy$
@@ -66,7 +66,7 @@ export class ProductsComponent implements OnInit {
             .subscribe(
                 (r) => {
                     this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
-                    this.productService.current_page = 1;
+                    this.productService.current_page = 2;
                 }
             );
 
