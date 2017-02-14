@@ -59,9 +59,9 @@
       </div>
       <div class="clearfix"></div>
     </div>
-    <div *ngIf="!total">
+    <div class="no_results_container" *ngIf="!total">
       <img src="/assets/img/no_results.gif" alt="No results available"/>
-      We could not find 
+      <div class="text">We could not find any products, matching the search criteria </div>
     </div>
   </div>
 </div>

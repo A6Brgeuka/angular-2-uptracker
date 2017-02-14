@@ -31,7 +31,7 @@ export class ProductService extends ModelService {
     location$: any = new BehaviorSubject(false);
     getProductsData$: any = new Subject();
     location:string;
-    total:number;
+    total:number = 0;
 
     constructor(public injector: Injector,
                 public userService: UserService,
