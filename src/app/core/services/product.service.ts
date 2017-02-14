@@ -211,7 +211,7 @@ export class ProductService extends ModelService {
                 value2 = obj2[key];
             }
             let val =  this.deepDiff(obj1[key], value2);
-            if (val!="unmdf" && (!_.isEmpty(val) || this.isValue(val))) {diff[key] = val;}
+            if (val!="unmdf" && (!_.isEmpty(val) || this.isValue(val) || key == 'id')) {diff[key] = val;}
         }
         return diff;
     };

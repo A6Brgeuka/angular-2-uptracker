@@ -30,6 +30,8 @@
       </div>
       <div class="clearfix"></div>
     </div>
+
+
     <div class="list">
       <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
         <div class="inner" (click)="viewProductModal(product)">
@@ -48,7 +50,6 @@
           </div>
         </div>
       </div>
-      <div class="empty item" (click)="editProductModal()"></div>
       <div *ngIf="isRequest" class="vendor-bottom-spinner">
         <div class="cssload-loader">
           <div class="cssload-inner cssload-one"></div>
@@ -57,8 +58,9 @@
         </div>
       </div>
       <div class="clearfix"></div>
-      <div *ngIf="total==0">Empty</div>
-
+    </div>
+    <div *ngIf="!total">
+      Empty
     </div>
   </div>
 </div>
