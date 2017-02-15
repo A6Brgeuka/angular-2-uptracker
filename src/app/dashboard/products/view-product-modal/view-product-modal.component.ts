@@ -392,14 +392,14 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                     });
             });
 
-        let addFileToFile$ = this.addFileToFile$
-            .switchMap((res) => {
-                return this.file$.first()
-                    .map((file: any) => {
-                        file = file.concat(res);
-                        return file;
-                    });
-            });
+        let addFileToFile$ = this.addFileToFile$;
+            //.switchMap((res) => {
+            //    return this.file$.first()
+            //        .map((file: any) => {
+            //            file = file.concat(res);
+            //            return file;
+            //        });
+            //});
 
         // this.deleteFromFile$.subscribe(res=>{
         //  console.log(res);
@@ -438,16 +438,14 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             this.updateFile$,
             // updateElementFile$,
             // addToFile$,
-            this.addFileToFile$,
+            addFileToFile$,
             // deleteFromFile$
         ).publishReplay(1).refCount();
         this.file$.subscribe(res => {
-
             this.file = res;
-            console.log(`${this.constructor.name} File Updated`, res);
         });
 
-        addFileToFile$.subscribe(r => console.log(r))
+        this.file$.subscribe(r => console.log(r))
     }
 
     ngAfterViewInit() {
@@ -461,6 +459,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     dismissModal() {
+        this.productService.getNextProducts(this.productService.current_page, '', '');
         this.dialog.dismiss();
     }
 
@@ -477,7 +476,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     // make all variant checkboxes value to be head checkbox value
     headCheckboxChange() {
         this.variants$.next(_.map(this.variants$.getValue(), (variant: any) => {
-            // headcheckbox
             variant.checked = this.variation.checked;
             return variant;
         }));
@@ -617,6 +615,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         let myReader: any = new FileReader();
         myReader.fileName = file.name;
         this.addFile(file);
+        debugger;
     }
 
     addFile(file) {

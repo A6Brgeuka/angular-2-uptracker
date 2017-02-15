@@ -201,7 +201,12 @@ export class ProductService extends ModelService {
                 return 'unmdf';
             }
         }
-        let diff = {};
+        let diff:any;
+        if (_.isArray(obj1)) {
+            diff=[];
+        } else {
+            diff={};
+        }
         let cnt=0;
         for (let key in obj1) {
             if (_.isFunction(obj1[key])) {
@@ -213,7 +218,11 @@ export class ProductService extends ModelService {
             }
             let val =  this.deepDiff(obj1[key], value2);
             if ( val!="unmdf" && (!_.isEmpty(val) || this.isValue(val)) && key!='detailView') {
-                diff[key] = val;
+                if (_.isArray(obj1)) {
+                    diff.push(val);
+                } else {
+                    diff[key] = val;
+                }
                 cnt++;
             }
         }
