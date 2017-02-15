@@ -350,15 +350,7 @@
           <textarea placeholder="Type here" class="col s12 " [(ngModel)]="productCopy.description"></textarea>
         </div>
         <div *ngIf="!showEdit" class="col s12 bold">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-          et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-          ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-          nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-          anim id
-          est laborum.
+          {{product.description}}
         </div>
       </div>
       <div class="row">
@@ -366,15 +358,10 @@
           Notes
         </div>
         <div *ngIf="showEdit" class="col s12 textarea">
-          .
           <textarea placeholder="Type here" class=" col s12 " [(ngModel)]="productCopy.notes"></textarea>
         </div>
         <div *ngIf="!showEdit" class="col s12 bold">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-          et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-          ea commodo
-          consequat.
+          {{product.notes}}
         </div>
       </div>
       <div class="row mbot0">
@@ -387,7 +374,7 @@
               <input placeholder="Enter URL" class="col s12" [(ngModel)]="productCopy.msds" type="text">
             </div>
             <div *ngIf="!showEdit" class="col s12">
-              <a href="#">http://link.com/</a>
+              <a href="#">{{product.msds}}</a>
             </div>
           </div>
           <div *ngIf="!showEdit" class="row">
@@ -395,7 +382,7 @@
               Hazardous Form
             </div>
             <div class="col s12">
-              <a href="#">http://link.com/</a>
+              <a href="#">{{product.hazardous_form}}</a>
             </div>
           </div>
         </div>
@@ -414,11 +401,9 @@
               Documents
             </div>
             <div class="col s12">
-              <a href="#">Product Spec.pdf</a>
-              <br>
-              <a href="#">Order Form.pdf/</a>
-              <br>
-              <a href="#">Marketing.pdf/</a>
+              <div *ngFor="let doc of product.documents">
+                <a href="{{doc.link}}">{{doc.name}}</a>
+              </div>
             </div>
           </div>
         </div>
