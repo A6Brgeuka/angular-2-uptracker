@@ -168,7 +168,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                         this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
                     });
                     this.showEdit = false;
-                    
+
                   this.showEdit$.next(false);
                   this.productCopy = [];
                   this.filterSelectOption$.next({status: 1});

@@ -59,9 +59,13 @@
       </div>
       <div class="clearfix"></div>
     </div>
-    <div class="no_results_container" *ngIf="!total">
+    <div class="no_results_container"  [class.not_hidden]="!total">
       <img src="/assets/img/no_results.gif" alt="No results available"/>
-      <div class="text">We could not find any products, matching the search criteria </div>
+      <div class="text">We could not find any products, matching the search criteria. </div>
+      <div class="sub-buttons">
+        <button class="uptracker-form-btn">Broaden Search</button>
+        <button class="uptracker-form-btn">Request Product</button>
+      </div>
     </div>
   </div>
 </div>

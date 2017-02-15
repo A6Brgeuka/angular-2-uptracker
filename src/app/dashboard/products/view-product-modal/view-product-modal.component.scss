@@ -633,6 +633,10 @@ $black: #000;
   .table-item .row-item {
     padding-left:15px!important;
   }
+  .table-item .row-item:first-of-type {
+    padding-left:0px!important;
+
+  }
   .table-item .row-item:last-of-type {
     padding-left:0!important;
     padding-right: 5px!important;

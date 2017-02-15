@@ -412,3 +412,10 @@
     }
   }
 }
+@media all and (min-width: 1200px){
+  :host /deep/ {
+    .dashboard .left-panel{
+      @include collapsed-left-panel;
+    }
+  }
+}

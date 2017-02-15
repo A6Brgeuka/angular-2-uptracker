@@ -168,10 +168,43 @@
 }
 
 .no_results_container{
+  opacity:0;
+  z-index: -999;
   text-align: center;
+  transition: opacity .3s;
+  position: absolute;
+  left: 0;
+  top: 100px;
+  width: 100%;
 
+  &.not_hidden{
+    opacity:1;
+    z-index: 999;
+  }
+  img, .sub-buttons {
+    display: inline-block;
+    clear: both;
+    margin: 10px auto 0;
+  }
+  img{
+    width: 80px;
+  }
+  button {
+    margin: 0 15px;
+  }
  .text {
-  font-size: 20px;
-  color:#ccc; 
- } 
+   clear:both;
+    margin: 20px 10%;
+   font-size: 34px;
+   color: #bbb;
+   font-family: Ubuntu;
+   line-height: 1;
+   width: 80%;
+   display: inline-block;
+ }
+
+}
+div.top {
+  position: relative;
+  z-index:1;
 }

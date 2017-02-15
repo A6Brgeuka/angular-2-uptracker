@@ -27,11 +27,11 @@ export class ProductService extends ModelService {
     combinedProducts$: Observable<any>;
     products$: Observable<any> = Observable.empty();
     public isDataLoaded$: any = new BehaviorSubject(false);
-    totalCount$: Subject<any> = new Subject<any>();
+    totalCount$: any = new BehaviorSubject(1);
     location$: any = new BehaviorSubject(false);
     getProductsData$: any = new Subject();
     location:string;
-    total:number = 0;
+    total:number = 1;
 
     constructor(public injector: Injector,
                 public userService: UserService,
@@ -202,6 +202,7 @@ export class ProductService extends ModelService {
             }
         }
         let diff = {};
+        let cnt=0;
         for (let key in obj1) {
             if (_.isFunction(obj1[key])) {
                 continue;
@@ -211,7 +212,13 @@ export class ProductService extends ModelService {
                 value2 = obj2[key];
             }
             let val =  this.deepDiff(obj1[key], value2);
-            if (val!="unmdf" && (!_.isEmpty(val) || this.isValue(val) || key == 'id')) {diff[key] = val;}
+            if ( val!="unmdf" && (!_.isEmpty(val) || this.isValue(val)) && key!='detailView') {
+                diff[key] = val;
+                cnt++;
+            }
+        }
+        if (cnt!=0 && obj1.id) {
+            diff['id'] = obj1.id;
         }
         return diff;
     };
@@ -228,67 +235,5 @@ export class ProductService extends ModelService {
         return false;
     }
     
-    // getAccountVendors(){
-    //   let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
-    //   if (!vendorsLoaded) {
-    //     return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
-    //         .map((res: any) => {
-    //           return res.data.vendors;
-    //         })
-    //         .do((res: any) => {
-    //           let account = this.userService.selfData.account;
-    //           account.vendors = res;
-    //           this.accountService.updateSelfData(account);
-    //         });
-    //   } else {
-    //     return this.userService.selfData$.map(res => res.account.vendors);
-    //   }
-    // }
-    //
-    // addAccountVendor(data){
-    //   let account = this.userService.selfData.account;
-    //   let entity$ = this.restangular
-    //       .one('accounts', account.id)
-    //       .all('vendors')
-    //       // .allUrl('post', 'http://api.pacific-grid.2muchcoffee.com/v1/deployments/test-post')
-    //       .post(data);
-    //
-    //   // TODO: remove after testing
-    //   // let entity$ = this.httpService.post('http://uptracker-api.herokuapp.com/api/v1/accounts/' + data.get('account_id') + '/vendors', data);
-    //
-    //
-    //   return entity$
-    //       .map((res: any) => {
-    //         return res.data.vendor;
-    //       })
-    //       .do((res: any) => {
-    //         account.vendors.push(res);
-    //         this.accountService.updateSelfData(account);
-    //       });
-    // }
-    //
-    // editAccountVendor(vendorInfo: any, data){
-    //   let account = this.userService.selfData.account;
-    //   // if no id then add new vendor
-    //   if (!vendorInfo.id) {
-    //     return this.addAccountVendor(data);
-    //   } else {
-    //     let entity$ = this.restangular
-    //         .one('accounts', vendorInfo.account_id)
-    //         .one('vendors', vendorInfo.id)
-    //         .customPUT(data, undefined, undefined, {'Content-Type': undefined});
-    //
-    //     return entity$
-    //         .map((res: any) => {
-    //           return res.data.vendor;
-    //         })
-    //         .do((res: any) => {
-    //           let vendorArr = _.map(account.vendors, function(vendor){
-    //             return vendor['id'] == res.id ? res : vendor;
-    //           });
-    //           account.vendors = vendorArr;
-    //           this.accountService.updateSelfData(account);
-    //         });
-    //   }
-    // }
+  
 }
