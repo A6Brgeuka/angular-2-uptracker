@@ -42,8 +42,12 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
   public profileFormPhone: string = null;
+  public phone_ext: string = "956 454-454-7895";
+  public fax_ext: string = "956 454-454-7895";
   // default country for phone input
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
+  public selectedCountryPhoneExt: any = this.phoneMaskService.defaultCountry;
+  public selectedCountryFaxExt: any = this.phoneMaskService.defaultCountry;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
 
   public uploadedImage: any;
@@ -62,8 +66,6 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public preset: any = {};
   public asd:string = "";
   
-  public additionalPhones:any = [];
-  public additionalPhones$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   @ViewChild('tabProfile') tabProfile: ElementRef;
   @ViewChild('tabPermissions') tabPermissions: ElementRef;
@@ -88,23 +90,15 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.user = new UserModel(userData);
     if (this.context.user) {
       this.uploadedImage = this.user.avatar;
+
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
-      this.user.additional_phones =[
-        '496 348-253-3533',
-        '598 347-253-3534',
-        '39 123-456-7890'
-      ];
-      this.additionalPhones = _.map(this.user.additional_phones,(val,i) =>
-      {
-        return {
-          id:i,
-          number:this.phoneMaskService.getPhoneByIntlPhone(val),
-          country: this.phoneMaskService.getCountryArrayByIntlPhone(val)
-        }
-      });
-      this.additionalPhones$.next(this.additionalPhones);
-      
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
+  
+      this.selectedCountryPhoneExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.phone_ext );
+      this.phone_ext = this.phoneMaskService.getPhoneByIntlPhone(this.phone_ext );
+  
+      this.selectedCountryFaxExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.fax_ext);
+      this.fax_ext = this.phoneMaskService.getPhoneByIntlPhone(this.fax_ext);
     }
 
     if (!this.user.template) {
@@ -164,17 +158,6 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     
   }
   
-  
-  addPhone() {
-    let lastId = _.maxBy(this.additionalPhones,o => o['id'])['id'];
-    this.additionalPhones.push({id: ++lastId, country:this.phoneMaskService.defaultCountry});
-    console.log(this.additionalPhones);
-  }
-  
-  rmAdditionalPhone(id){
-    return _.remove(this.additionalPhones, (res)=>res['id'] == id);
-  }
-  
   setDefaultPermissions() {
     
     this.permissionArr = _.cloneDeep(this.rolesArr[0].permissions);
@@ -219,9 +202,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.selectedCountry = $event;
   }
 
-  onCountryChangeAdditional($event,id) {
-    this.additionalPhones[id].country = $event;
-  }
+  
 
   // upload by input type=file
   changeListener($event): void {
@@ -329,9 +310,6 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.avatar = this.uploadedImage;
     this.user.permissions = this.permissionArr;
-    this.user.additional_phones = this.additionalPhones.map(item =>
-        (item.country[2] + ' ' + item.number)
-    );
     
     console.log(this.user);
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(

@@ -111,47 +111,62 @@
             <div class="row">
               <div class="col s12">
                 <div class="row phone-row">
-                  <div class="label left-align s10 col">Phone numbers</div>
-                  <div class="add-phone-number s2 col">
-                    <i (click)="addPhone()" class="material-icons">playlist_add</i>
-                  </div>
+                  <div class="label left-align s10 col">Phone number</div>
                 </div>
                 <phone-input
-                    (onCountryChange)="onCountryChange($event)"
-                    [selectedCountry]="selectedCountry">
+                  (onCountryChange)="onCountryChange($event)"
+                  [selectedCountry]="selectedCountry">
                   <input
-                      [textMask]="phoneMask"
-                      id="phone"
-                      placeholder="Enter a phone number"
-                      class="validate col s12"
-                      [(ngModel)]="profileFormPhone"
-                      name="phone"
-                      #phone="ngModel"
-                      minlength="11"
-                      type="text">
+                    [textMask]="phoneMask"
+                    id="phone"
+                    placeholder="Enter a phone number"
+                    class="validate col s12"
+                    [(ngModel)]="profileFormPhone"
+                    name="phone"
+                    #phone="ngModel"
+                    minlength="11"
+                    type="text">
                   <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
                     Phone number required.
                   </div>
                 </phone-input>
               </div>
-              <!--Additional phone numbers-->
-                <div *ngFor="let p of additionalPhones"  class="col s12 additional-phone">
-                  <phone-input class=""
-                    (onCountryChange)="onCountryChangeAdditional($event, p.id)"
-                    [selectedCountry]="p.country">
-                    <input
-                      [name]="'addphone'+p.id"
-                      [textMask]="phoneMask"
-                      placeholder="Enter a phone number"
-                      class="validate col s12"
-                      [(ngModel)]="p.number"
-                      minlength="11"
-                      type="text">
-                  </phone-input>
-                  <div (click)="rmAdditionalPhone(p.id)" class="remove-additional-phone">
-                    <i class="material-icons">remove_circle_outline</i>
-                  </div>
+
+              <div class="col s12 tiny-margin">
+                <div class="row phone-row">
+                  <div class="label left-align s10 col">Additional phone number</div>
                 </div>
+                <phone-input
+                  (onCountryChange)="onCountryChange($event)"
+                  [selectedCountry]="selectedCountryPhoneExt">
+                  <input
+                  name="phone_ext"
+                  [textMask]="phoneMask"
+                  placeholder="Enter a phone number"
+                  class="validate col s12"
+                  [(ngModel)]="phone_ext"
+                  minlength="11"
+                  type="text">
+                </phone-input>
+              </div>
+              <div class="col s12 tiny-margin">
+                <div class="row phone-row">
+                  <div class="label left-align s10 col">Fax number</div>
+                </div>
+                <phone-input
+                  (onCountryChange)="onCountryChange($event)"
+                  [selectedCountry]="selectedCountryFaxExt">
+                  <input
+                    name="fax_ext"
+                    [textMask]="phoneMask"
+                    placeholder="Enter a phone number"
+                    class="validate col s12"
+                    [(ngModel)]="fax_ext"
+                    minlength="11"
+                    type="text">
+                </phone-input>
+              </div>
+
             </div>
 
             <div class="row">

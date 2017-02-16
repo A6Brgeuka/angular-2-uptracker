@@ -181,13 +181,23 @@
     opacity:1;
     z-index: 999;
   }
-  img, .sub-buttons {
+  .img, .sub-buttons {
     display: inline-block;
     clear: both;
     margin: 10px auto 0;
   }
-  img{
+  .img{
     width: 80px;
+    background-color: #ccc;
+    border-radius: 40px;
+    height:80px;
+    text-align: center;
+  }
+  .img i {
+    font-size:72px;
+    color:#fff;
+    line-height:80px;
+    margin-left:-4px;
   }
   button {
     margin: 0 15px;
@@ -197,7 +207,7 @@
     margin: 20px 10%;
    font-size: 34px;
    color: #bbb;
-   font-family: Ubuntu;
+   font-family: Ubuntu, sans-serif;
    line-height: 1;
    width: 80%;
    display: inline-block;

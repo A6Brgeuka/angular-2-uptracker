@@ -86,23 +86,9 @@ $tealish: #33c6d9;
     }
   }
 }
-.additional-phone {
-  position:relative;
+.tiny-margin {
+  margin-top:10px;
 }
-.remove-additional-phone{
-  display: block;
-  position: absolute;
-  right: 18px;
-  top: 19px;
-  z-index: 200;
-  cursor: pointer;
-}
-
-.remove-additional-phone i {
-  font-size:18px;
-  color:#f00;
-}
-
 #permissions{
   button.not-submit{
     margin-top:8px;
@@ -160,4 +146,6 @@ $tealish: #33c6d9;
   button{
     margin:0 5px;
   }
+
+
 }
