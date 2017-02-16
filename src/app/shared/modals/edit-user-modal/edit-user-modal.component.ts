@@ -42,12 +42,10 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
   public profileFormPhone: string = null;
-  public phone_ext: string = "956 454-454-7895";
-  public fax_ext: string = "956 454-454-7895";
+  public phone_ext: string = "";
   // default country for phone input
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public selectedCountryPhoneExt: any = this.phoneMaskService.defaultCountry;
-  public selectedCountryFaxExt: any = this.phoneMaskService.defaultCountry;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
 
   public uploadedImage: any;
@@ -93,12 +91,9 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
 
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
-  
-      this.selectedCountryPhoneExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.phone_ext );
-      this.phone_ext = this.phoneMaskService.getPhoneByIntlPhone(this.phone_ext );
-  
-      this.selectedCountryFaxExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.fax_ext);
-      this.fax_ext = this.phoneMaskService.getPhoneByIntlPhone(this.fax_ext);
+
+      this.selectedCountryPhoneExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone_ext);
+      this.phone_ext =this.user.phone_ext ? this.phoneMaskService.getPhoneByIntlPhone(this.user.phone_ext) : '';
     }
 
     if (!this.user.template) {
@@ -200,6 +195,10 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
 
   onCountryChange($event) {
     this.selectedCountry = $event;
+  }
+
+  onCountryChangePhoneExt($event) {
+    this.selectedCountryPhoneExt = $event;
   }
 
   
@@ -308,6 +307,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
 
     this.user.account_id = this.userService.selfData.account_id;
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
+    this.user.phone_ext = this.selectedCountryPhoneExt[2] + ' ' + this.phone_ext;
     this.user.avatar = this.uploadedImage;
     this.user.permissions = this.permissionArr;
     

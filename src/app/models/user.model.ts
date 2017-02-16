@@ -10,6 +10,8 @@ export class UserModel {
   locations: any = [];
   permissions: any = [];
   phone: string = null;
+  phone_ext: string = null;
+
   account_id: string = null;
   signup: boolean = null; // for SelfDataActions in user.service to avoid putting user_id in cookies (for isGuest functionality)
   tutorial_mode: boolean = null;
@@ -29,7 +31,6 @@ export class UserModel {
   welcome_email: string = null;
   role: string = null;
 
-  
   constructor(obj?: any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {

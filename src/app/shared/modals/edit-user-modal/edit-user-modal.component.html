@@ -137,7 +137,7 @@
                   <div class="label left-align s10 col">Additional phone number</div>
                 </div>
                 <phone-input
-                  (onCountryChange)="onCountryChange($event)"
+                  (onCountryChange)="onCountryChangePhoneExt($event)"
                   [selectedCountry]="selectedCountryPhoneExt">
                   <input
                   name="phone_ext"
@@ -147,23 +147,6 @@
                   [(ngModel)]="phone_ext"
                   minlength="11"
                   type="text">
-                </phone-input>
-              </div>
-              <div class="col s12 tiny-margin">
-                <div class="row phone-row">
-                  <div class="label left-align s10 col">Fax number</div>
-                </div>
-                <phone-input
-                  (onCountryChange)="onCountryChange($event)"
-                  [selectedCountry]="selectedCountryFaxExt">
-                  <input
-                    name="fax_ext"
-                    [textMask]="phoneMask"
-                    placeholder="Enter a phone number"
-                    class="validate col s12"
-                    [(ngModel)]="fax_ext"
-                    minlength="11"
-                    type="text">
                 </phone-input>
               </div>
 

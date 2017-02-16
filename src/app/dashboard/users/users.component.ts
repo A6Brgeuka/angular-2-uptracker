@@ -60,6 +60,8 @@ export class UsersComponent implements OnInit {
             let userIsFromCurrentLocation: boolean = !location || userLocation.indexOf(location.id) >= 0  ;
             return ((!searchKey || key.test(user.name)) && userIsFromCurrentLocation);
           });
+
+          debugger;
           return filteredUsers;
         });
   }
@@ -84,6 +86,7 @@ export class UsersComponent implements OnInit {
   }
 
   editUserModal(user = null){
+    debugger;
     this.modal.open(EditUserModal, this.modalWindowService.overlayConfigFactoryWithParams({ user: user}));
   }
 
