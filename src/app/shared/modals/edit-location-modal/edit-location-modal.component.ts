@@ -41,12 +41,15 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public typeDirty: boolean = false;
   public stateDirty: boolean = false;
   public locationFormPhone: string = null;
+  public locationFormPhoneExt: string = null;
   public locationFormFax: string = null;
+  public locationFormFaxExt: string = null;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
   // default country for phone input
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
+  public selectedCountryExt: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
-
+  public selectedFaxCountryExt: any = this.phoneMaskService.defaultCountry;
 
   public inventory_location: any = { name: '', floor_stock: true};
   private locationToDelete = null;
@@ -117,6 +120,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
       this.locationFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
+      
+      this.locationFormPhoneExt = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone_ext);
+      this.selectedCountryExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone_ext);
+
+      this.locationFormFaxExt = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax_ext);
+      this.selectedFaxCountryExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax_ext);
     }
     else {
       this.storageLocations$.next(this.location.inventory_locations);
@@ -170,6 +179,14 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   onFaxCountryChange($event) {
     this.selectedFaxCountry = $event;
   }
+  
+  onCountryChangeExt($event) {
+    this.selectedCountryExt = $event;
+  }
+
+  onFaxCountryChangeExt($event) {
+    this.selectedFaxCountryExt = $event;
+  }
 
   // upload by input type=file
   changeListener($event): void {
@@ -207,8 +224,12 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
   onSubmit() {
     this.location.account_id = this.userService.selfData.account_id;
+
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
+    this.location.phone_ext = this.locationFormPhoneExt ? this.selectedCountryExt[2] + ' ' + this.locationFormPhoneExt : null;
     this.location.fax = this.locationFormFax ? this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
+    this.location.fax_ext =this.locationFormFaxExt ? this.selectedFaxCountryExt[2] + ' ' + this.locationFormFaxExt : null;
+    debugger;
     let address = {location: this.location.formattedAddress};
     this.location.image = this.uploadedImage;
     if (!this.location.image) {

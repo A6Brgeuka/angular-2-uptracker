@@ -230,9 +230,19 @@
                     Phone number required.
                 </div>
             </phone-input>
-            <div class="add-phone">
-
-            </div>
+            <div class="label tiny-margin left-align">Additional Phone</div>
+            <phone-input
+              (onCountryChange)="onCountryChangeExt($event)"
+              [selectedCountry]="selectedCountryExt">
+                <input
+                  name="phone_ext"
+                  [textMask]="phoneMask"
+                  placeholder="Enter a phone number"
+                  class="validate col s12"
+                  [(ngModel)]="locationFormPhoneExt"
+                  minlength="11"
+                  type="text">
+            </phone-input>
         </div>
         <div class="col s12 m4">
             <div class="label left-align">Email</div>
@@ -264,7 +274,21 @@
                         #fax="ngModel"
                         type="text">
             </phone-input>
+            <div class="label tiny-margin left-align">Additional Fax</div>
+            <phone-input
+              (onCountryChange)="onFaxCountryChangeExt($event)"
+              [selectedCountry]="selectedFaxCountryExt">
+                <input
+                  name="fax_ext"
+                  [textMask]="phoneMask"
+                  placeholder="Enter a phone number"
+                  class="validate col s12"
+                  [(ngModel)]="locationFormFaxExt"
+                  minlength="11"
+                  type="text">
+            </phone-input>
         </div>
+
     </div>
 
     <div class="input row location-image">

@@ -4,6 +4,7 @@ export class LocationModel {
   name: string = null;
   email: string = null;
   fax: string = null;
+  fax_ext: string = null;
   street_1: string = null;
   street_2: string = null;
   city: string = null;
@@ -12,6 +13,7 @@ export class LocationModel {
 
   location_type: string = null;
   phone: string = null;
+  phone_ext: string = null;
   updated_at: string = null;
   created_at: string = null;
   state: string = null;
