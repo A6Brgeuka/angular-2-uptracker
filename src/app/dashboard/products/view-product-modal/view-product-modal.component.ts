@@ -78,6 +78,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     public file$: Observable<any>;
     public file;
+    public filesToDelete;
     public oldFiles;
     public addFile$: Subject<any> = new Subject<any>();
     public loadFile$: Subject<any> = new Subject<any>();
@@ -140,8 +141,13 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     ngOnInit() {
+        //TODO load files on start
         this.loadFile$.next([]);
-        
+
+        this.loadFile$.subscribe((files)=>
+            this.oldFiles = files
+        );
+
         this.product = this.context.product;
         
         this.resetText();
@@ -530,27 +536,32 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
         let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
         let files_diff = this.productService.filesDiff(this.file, this.oldFiles);
-        debugger;
-        
+
         prod_diff.id = this.product.id;
         let variants: any = [];
-        console.log(vars_diff);
+        console.log(files_diff);
         for (let item in vars_diff) {
             if (!item, this.productService.emptyValues(vars_diff[item])) {
                 vars_diff[item].id = this.variants[item].id;
                 variants.push(vars_diff[item]);
             }
         }
+        let files = _.map(files_diff, (f:any) =>
+        {
+            return {
+                name: window.btoa(f.name),
+                size: window.btoa(f.size),
+                // data: window.btoa(f.getBlob()),
+            }
+        });
         let updateData: any = {
             location_id: this.location_id,
             product: prod_diff,
-            variants: variants
+            variants: variants,
+            files: files
         };
-        //console.log(updateData);
-        console.log(_.concat(updateData, files_diff));
-        debugger;
-        this.subscribers.updateProduct = this.productService.updateProduct(_.concat(updateData, files_diff));
-        //this.subscribers.updateProduct = this.productService.updateProduct(updateData);
+        // this.subscribers.updateProduct = this.productService.updateProduct(_.concat(updateData, files_diff));
+        this.subscribers.updateProduct = this.productService.updateProduct(updateData);
         this.subscribers.updateProduct
         .filter(res => res.data)
         .map(res => res.data)
@@ -584,5 +595,5 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
               alert(err);
           });
     }
-    
+
 }

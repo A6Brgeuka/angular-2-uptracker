@@ -296,6 +296,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
       i++;
     });
 
+
     // append old files
     let j = 0;
     _.each(this.fileArr, (value, key) => {
