@@ -251,58 +251,9 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 this.variants = _.map(data.variants, (item: any) => {
                     item.checked = false;
                     item.status = item.status ? item.status : 1;
-                    item.inventory = [
-                        {
-                            "location_id": "583cc2553a2b00000630d62a",
-                            "storage_locations": [
-                                {
-                                    "storage_location_name": "Working Stock",
-                                    "storage_location_id": "586e8d113cd3d2000b2d1dd6",
-                                    "qty": 10,
-                                    "floorstock": true
-                                },
-                                {
-                                    "storage_location_name": "Back Stock",
-                                    "storage_location_id": "586e8d113cd3d2000b2d1dd7",
-                                    "qty": 2,
-                                    "floorstock": false
-                                }
-                            ],
-                            "usage": [
-                              {"date":"12/01/2017","qty":"32"},
-                              {"date":"12/04/2017","qty":"2"},
-                              {"date":"12/02/2014","qty":"6"},
-                              ],
-                            "orders": [
-                                {"date":"11/05/2015","qty":"2"},
-                                {"date":"04/02/2012","qty":"32"},
-                                {"date":"03/02/2016","qty":"63"},
-                            ],
-                            "critical": 2,
-                            "fully_stocked": 8,
-                            "pending_qty": 0,
-                            "current_inventory": 12,
-                            "overstocked": 4
-                        },
-                        {
-                            "location_id": "586e95e5ac14af000b6bda6e",
-                            "storage_locations": [
-                                {
-                                    "storage_location_name": "Working Stock",
-                                    "storage_location_id": "586e95e5ac14af000b6bda6f",
-                                    "qty": 5,
-                                    "floorstock": true
-                                }
-                            ],
-                            "usage": [],
-                            "orders": [],
-                            "critical": 0,
-                            "fully_stocked": 0,
-                            "pending_qty": 0,
-                            "current_inventory": 5,
-                            "overstocked": 5
-                        }
-                    ];
+                    
+                    item.inventory = !_.isEmpty(item.inventory) ?  _.slice(item.inventory, 0 ,3) : [];
+                    
                     item.total_inventory = _.sumBy(item.inventory,(i:any)=>i.current_inventory);
                     return item;
                 });
@@ -548,11 +499,16 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         }
         let files = _.map(files_diff, (f:any) =>
         {
-            return {
-                name: window.btoa(f.name),
-                size: window.btoa(f.size),
-                // data: window.btoa(f.getBlob()),
-            }
+            let reader = new FileReader();
+            let blob = f.slice(0, 100);
+            console.log(reader.readAsBinaryString(blob));
+            debugger;
+            //let binaryData = new FileReader();
+            //return {
+            //    name: window.btoa(f.name),
+            //    size: window.btoa(f.size),
+            //    content: binaryData.readAsBinaryString(f)
+            //}
         });
         let updateData: any = {
             location_id: this.location_id,
