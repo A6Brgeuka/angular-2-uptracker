@@ -78,6 +78,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     public file$: Observable<any>;
     public file;
+    public oldFiles;
     public addFile$: Subject<any> = new Subject<any>();
     public loadFile$: Subject<any> = new Subject<any>();
     public addToFile$: Subject<any> = new Subject<any>();
@@ -86,7 +87,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     public updateFile$: Subject<any> = new Subject<any>();
     public updateTotalCount$: Subject<any> = new Subject<any>();
     public updateElementFile$: Subject<any> = new Subject<any>();
-
+    
+    private formData: FormData = new FormData();
+    
+    
     constructor(public dialog: DialogRef<ViewProductModalContext>,
                 public userService: UserService,
                 public accountService: AccountService,
@@ -126,59 +130,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.variants$.next(this.variantsCopy);
     }
 
-    saveAfterEdit() {
-        let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
-        let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
-        
-        prod_diff.id = this.product.id;
-        let variants: any = [];
-        console.log(vars_diff);
-        for (let item in vars_diff) {
-            if (!item, this.productService.emptyValues(vars_diff[item])) {
-                vars_diff[item].id = this.variants[item].id;
-                variants.push(vars_diff[item]);
-            }
-        }
-        let updateData: any = {
-            location_id: this.location_id,
-            product: prod_diff,
-            variants: variants
-        };
-        console.log(updateData);
-        this.subscribers.updateProduct = this.productService.updateProduct(updateData);
-        this.subscribers.updateProduct
-            .filter(res => res.data)
-            .map(res => res.data)
-            .subscribe(data => {
-                    this.variants = _.map(data.variants, (item: any) => {
-                        item.checked = false;
-                        item.status = item.status ? item.status : 1;
-                        return item;
-                    });
-                    this.product = data.product;
-                    // this.product$.next(data.product); // update variants
-                    this.variants$.next(this.variants); // update variants
-                    this.comments$.next(data.comments); // update comments
-                    _.each(this.variants, (variant: any) => {
-                        _.forEach(this.variationArrs, (value, key) => {
-                            this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
-                        })
-                    });
-                    _.forEach(this.variationArrs, (value, key) => {
-                        this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
-                    });
-                    this.showEdit = false;
-
-                  this.showEdit$.next(false);
-                  this.productCopy = [];
-                  this.filterSelectOption$.next({status: 1});
-                  this.resetText();
-                },
-                err => {
-                    console.log(err);
-                    alert(err);
-                });
-    }
+    
 
     resetText() {
         this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
@@ -188,6 +140,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     ngOnInit() {
+        this.loadFile$.next([]);
+        
         this.product = this.context.product;
         
         this.resetText();
@@ -359,102 +313,44 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 });
 
             });
-
-
-        // this.files$ = Observable.combineLatest(
-        //     this.newFiles$,
-        //     this.oldFiles$,
-        //     (newFiles, oldFiles) => {
-        //         let files = _.union(oldFiles, newFiles);
-        //         if (files.length) {
-        //             this.hasDocs = true;
-        //         } else {
-        //             this.hasDocs = false;
-        //         }
-        //         
-        //         return files;
-        //     }
-        // );
-        //
-        // this.file$.subscribe();
-
-        // this.oldFiles$.next({});
-
     }
 
+    // File load, add, delete actions
     fileActions() {
-        let addToFile$ = this.addToFile$
+        let addFileToFile$ = this.addFileToFile$
             .switchMap((res) => {
                 return this.file$.first()
                     .map((file: any) => {
-                        file.push(res);
+                        file = file.concat(res);
                         return file;
                     });
             });
-
-        let addFileToFile$ = this.addFileToFile$;
-            //.switchMap((res) => {
-            //    return this.file$.first()
-            //        .map((file: any) => {
-            //            file = file.concat(res);
-            //            return file;
-            //        });
-            //});
-
-        // this.deleteFromFile$.subscribe(res=>{
-        //  console.log(res);
-        // })
-
         let deleteFromFile$ = this.deleteFromFile$
-            .switchMap((id) => {
-
+            .switchMap((deleteFile) => {
                 this.file$.subscribe((res) => {
                     console.log('Model Service delete from file ' + res);
                 });
-
                 return this.file$.first()
                     .map((file: any) => {
                         return file.filter((el: any) => {
-                            return el.id != id;
+                            return el.name != deleteFile.name;
                         });
                     });
             });
-
-        let updateElementFile$ = this.updateElementFile$
-            .switchMap((entity) => {
-                return this.file$.first()
-                    .map((file: any) => {
-                        return file.map((el: any) => {
-                            if (el.id == entity.id) {
-                                return entity;
-                            }
-                            return el;
-                        });
-                    });
-            });
-
         this.file$ = Observable.merge(
             this.loadFile$,
             this.updateFile$,
-            // updateElementFile$,
-            // addToFile$,
             addFileToFile$,
-            // deleteFromFile$
+            deleteFromFile$
         ).publishReplay(1).refCount();
         this.file$.subscribe(res => {
             this.file = res;
+            this.hasDocs = res.length > 0;
         });
-
-        this.file$.subscribe(r => console.log(r))
+        //this.file$.subscribe(r => console.log(r))
     }
 
     ngAfterViewInit() {
-        // this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
-        //   this.chooseTabLocation(res);
-        //   if (res && res.id != this.primaryLocation.id){
-        //     this.secondaryLocationLink.nativeElement.click();
-        //   }
-        // });
         this.filterSelectOption$.next({status:1});
     }
 
@@ -615,44 +511,78 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         let myReader: any = new FileReader();
         myReader.fileName = file.name;
         this.addFile(file);
-        debugger;
     }
 
     addFile(file) {
-        this.addFileToFile$.next(file);
+        this.addFileToFile$.next([file]);
     }
 
-    removeFile(fileName, index) {
-        console.log(`remove ${fileName}`)
+    removeFile(file, index) {
+        console.log(`remove ${file.name}`);
+        this.deleteFromFile$.next(file);
     }
     
     inventoryDetailCollapse(v) {
         v.detailView = false;
     }
-    // editVendor(vendor = null){
-    //   if (this.currentLocation) {
-    //     this.accountService.dashboardLocation$.next(this.currentLocation);
-    //   }
-    //   this.closeModal(vendor);
-    // }
-
-    // chooseTabLocation(location = null){
-    //   if (location && location != this.primaryLocation) {
-    //     this.sateliteLocationActive = true;
-    //     this.secondaryLocation = location;
-    //   } else {
-    //     this.sateliteLocationActive = false;
-    //   }
-    //   this.currentLocation = location;
-    //
-    //   // fill vendor info for modal view vendor
-    //   this.vendor = new VendorModel(this.context.vendor);
-    //   if (location){
-    //     let locationAccountVendor = _.find(this.accountVendors, {'location_id': this.currentLocation.id});
-    //     _.each(locationAccountVendor, (value, key) => {
-    //       if (value)
-    //           this.vendor[key] = value;
-    //     });
-    //   }
-    // }
+    
+    saveAfterEdit() {
+        let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
+        let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
+        let files_diff = this.productService.filesDiff(this.file, this.oldFiles);
+        debugger;
+        
+        prod_diff.id = this.product.id;
+        let variants: any = [];
+        console.log(vars_diff);
+        for (let item in vars_diff) {
+            if (!item, this.productService.emptyValues(vars_diff[item])) {
+                vars_diff[item].id = this.variants[item].id;
+                variants.push(vars_diff[item]);
+            }
+        }
+        let updateData: any = {
+            location_id: this.location_id,
+            product: prod_diff,
+            variants: variants
+        };
+        //console.log(updateData);
+        console.log(_.concat(updateData, files_diff));
+        debugger;
+        this.subscribers.updateProduct = this.productService.updateProduct(_.concat(updateData, files_diff));
+        //this.subscribers.updateProduct = this.productService.updateProduct(updateData);
+        this.subscribers.updateProduct
+        .filter(res => res.data)
+        .map(res => res.data)
+        .subscribe(data => {
+              this.variants = _.map(data.variants, (item: any) => {
+                  item.checked = false;
+                  item.status = item.status ? item.status : 1;
+                  return item;
+              });
+              this.product = data.product;
+              // this.product$.next(data.product); // update variants
+              this.variants$.next(this.variants); // update variants
+              this.comments$.next(data.comments); // update comments
+              _.each(this.variants, (variant: any) => {
+                  _.forEach(this.variationArrs, (value, key) => {
+                      this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
+                  })
+              });
+              _.forEach(this.variationArrs, (value, key) => {
+                  this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
+              });
+              this.showEdit = false;
+              
+              this.showEdit$.next(false);
+              this.productCopy = [];
+              this.filterSelectOption$.next({status: 1});
+              this.resetText();
+          },
+          err => {
+              console.log(err);
+              alert(err);
+          });
+    }
+    
 }

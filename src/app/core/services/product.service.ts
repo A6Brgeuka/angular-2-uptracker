@@ -186,8 +186,10 @@ export class ProductService extends ModelService {
         return commentRestangularized.put()
     }
 
-    updateProduct(data) {
-        return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
+    updateProduct(data:any) {
+        console.log(data);
+        debugger;
+        //return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
     }
 
     deepDiff(obj1: any, obj2: any):any {
@@ -244,5 +246,10 @@ export class ProductService extends ModelService {
         return false;
     }
     
-  
+    
+    
+    filesDiff(newFiles, oldFiles){
+        return newFiles; //TODO
+    };
+    
 }

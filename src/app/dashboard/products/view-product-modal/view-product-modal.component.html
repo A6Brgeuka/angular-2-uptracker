@@ -421,7 +421,7 @@
           </div>
         </div>
         <div *ngIf="hasDocs" class="col s6">
-          <div *ngFor="let file of files$ | async; let index = $index">
+          <div *ngFor="let file of file$ | async; let index = $index">
             <div class="col s10">
               <a href="#">{{file.name}}</a>
             </div>
