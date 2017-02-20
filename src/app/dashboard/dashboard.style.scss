@@ -1,3 +1,5 @@
+$tealish: #33c6d9;
+
 @mixin collapsed-left-panel{
   width:200px;
 
@@ -310,9 +312,18 @@
               }
             }
 
-            .uptracker-form-btn{
-              width: auto;
-              min-width:130px;
+            .uptracker-toggle-view{
+              width: 30px;
+              font-size: 24px;
+              height: 30px;
+              line-height: 32px;
+              margin: 0 15px;
+              text-align: center;
+            }
+            .uptracker-toggle-view {
+              i {
+                color:$tealish;
+              }
             }
           }
 
@@ -328,6 +339,7 @@
             font-size: 12px;
             font-weight: bold;
           }
+
         }
       }
     }

@@ -32,7 +32,9 @@ export class ProductsComponent implements OnInit {
     public searchKey:string;
     public  searchKeyLast: string;
     public  locationId: string;
-
+    public isGrid: boolean = false;
+    public selectAll: boolean= false;
+    
     constructor(vcRef: ViewContainerRef,
                 overlay: Overlay,
                 public modal: Modal,
@@ -41,7 +43,15 @@ export class ProductsComponent implements OnInit {
                 private accountService: AccountService) {
         overlay.defaultViewContainer = vcRef;
     }
-
+    
+    toggleView (){
+        this.isGrid = !this.isGrid;
+    }
+    
+    toggleSelectAll(){
+        
+    }
+    
     ngOnInit() {
         this.productService.totalCount$.subscribe(total => this.total=total);
         
@@ -90,7 +100,7 @@ export class ProductsComponent implements OnInit {
                 this.searchKey$
             )
             .map(([/*start_products,*/products, sortBy, searchKey]: [any, any, any,any]) => {
-               
+               products.selected = false;
                 
                 return products;
 
