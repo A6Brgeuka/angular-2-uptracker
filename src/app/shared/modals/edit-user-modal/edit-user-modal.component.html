@@ -134,20 +134,14 @@
 
               <div class="col s12 tiny-margin">
                 <div class="row phone-row">
-                  <div class="label left-align s10 col">Additional phone number</div>
+                  <div class="label left-align s10 col">Extension</div>
                 </div>
-                <phone-input
-                  (onCountryChange)="onCountryChangePhoneExt($event)"
-                  [selectedCountry]="selectedCountryPhoneExt">
                   <input
                   name="phone_ext"
-                  [textMask]="phoneMask"
-                  placeholder="Enter a phone number"
-                  class="validate col s12"
+                  placeholder="Phone extension"
+                  class=" col s12"
                   [(ngModel)]="phone_ext"
-                  minlength="11"
                   type="text">
-                </phone-input>
               </div>
 
             </div>

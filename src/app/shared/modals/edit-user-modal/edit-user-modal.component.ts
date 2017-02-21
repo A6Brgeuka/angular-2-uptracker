@@ -92,8 +92,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
       this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
 
-      this.selectedCountryPhoneExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone_ext);
-      this.phone_ext =this.user.phone_ext ? this.phoneMaskService.getPhoneByIntlPhone(this.user.phone_ext) : '';
+      this.phone_ext =this.user.phone_ext;
     }
 
     if (!this.user.template) {
@@ -307,7 +306,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
 
     this.user.account_id = this.userService.selfData.account_id;
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
-    this.user.phone_ext = this.selectedCountryPhoneExt[2] + ' ' + this.phone_ext;
+    this.user.phone_ext = this.phone_ext;
     this.user.avatar = this.uploadedImage;
     this.user.permissions = this.permissionArr;
     

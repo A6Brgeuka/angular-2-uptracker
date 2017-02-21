@@ -16,8 +16,8 @@
     </div>
     <div class="contacts">
       <div class="ttl">Contacts</div>
-      <div class="phone left">+{{location.phone}},</div>
-      <div class="fax left" *ngIf="location.fax">+{{location.fax}},</div>
+      <div class="phone left">+{{location.phone}} {{location.phone_ext}}, </div>
+      <div class="fax left" *ngIf="location.fax">+{{location.fax}} {{location.fax_ext}},</div>
       <div class="clearfix"></div>
       <div class="email">{{location.email}}</div>
     </div>

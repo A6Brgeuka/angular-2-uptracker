@@ -121,11 +121,8 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
       this.locationFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax);
       
-      this.locationFormPhoneExt = this.phoneMaskService.getPhoneByIntlPhone(this.location.phone_ext);
-      this.selectedCountryExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.phone_ext);
-
-      this.locationFormFaxExt = this.phoneMaskService.getPhoneByIntlPhone(this.location.fax_ext);
-      this.selectedFaxCountryExt = this.phoneMaskService.getCountryArrayByIntlPhone(this.location.fax_ext);
+      this.locationFormPhoneExt = this.location.phone_ext;
+      this.locationFormFaxExt = this.location.fax_ext;
     }
     else {
       this.storageLocations$.next(this.location.inventory_locations);
@@ -226,10 +223,9 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.location.account_id = this.userService.selfData.account_id;
 
     this.location.phone = this.selectedCountry[2] + ' ' + this.locationFormPhone;
-    this.location.phone_ext = this.locationFormPhoneExt ? this.selectedCountryExt[2] + ' ' + this.locationFormPhoneExt : null;
+    this.location.phone_ext =  this.locationFormPhoneExt;
     this.location.fax = this.locationFormFax ? this.selectedFaxCountry[2] + ' ' + this.locationFormFax : null;
-    this.location.fax_ext =this.locationFormFaxExt ? this.selectedFaxCountryExt[2] + ' ' + this.locationFormFaxExt : null;
-    debugger;
+    this.location.fax_ext =this.locationFormFaxExt ;
     let address = {location: this.location.formattedAddress};
     this.location.image = this.uploadedImage;
     if (!this.location.image) {
