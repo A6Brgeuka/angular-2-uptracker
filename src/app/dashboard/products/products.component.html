@@ -71,7 +71,7 @@
           <div class="col s1">Trackable</div>
           <div class="col s2">Price range</div>
           <div class="col s1">
-            <button class="bulk-edit uptracker-form-btn">
+            <button class="right bulk-edit uptracker-form-btn">
               <i class="fa fa-pencil"></i>
             </button>
           </div>
@@ -116,7 +116,13 @@
             </div>
           </div>
           <div class="col s2">{{product.price_range}}</div>
-          <div class="col s1"></div>
+          <div class="col s1">
+            <i class="fa right variant-func"
+               [class.fa-eye]="product.status"
+               [class.fa-eye-slash]="!product.status"
+               (click)="toggleProductVisibility(product)"
+               aria-hidden="true"></i>
+          </div>
         </div>
 
       </div>

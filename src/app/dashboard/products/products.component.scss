@@ -106,7 +106,7 @@ $black: #000;
           .info {
             position: relative;
             font-size: 12px;
-            margin: 0 15px;
+            margin: 0 2px 0 15px;
 
             .ttl {
               font-size: 14px;
@@ -186,6 +186,16 @@ $black: #000;
             color:#888;
             &:nth-of-type(2){
               color: $tealish;
+            }
+            .fa-eye, .fa-eye-slash {
+              margin-right:8px;
+              line-height:35px;
+            }
+            .fa-eye {
+              color:$tealish;
+            }
+            .fa-eye-slash {
+              color:$red;
             }
           }
         }

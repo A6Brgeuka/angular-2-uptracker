@@ -151,6 +151,10 @@ export class ProductsComponent implements OnInit {
             });
     }
 
+    toggleProductVisibility(product){
+        product.status=!product.status;
+    }
+
     editProductModal(product = null) {
         this.modal.open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
     }
