@@ -304,13 +304,6 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             this.file = res;
             this.hasDocs = res.length > 0;
         });
-        
-        console.log("file upload");
-        
-        this.file$
-        .subscribe(files => {
-            console.log('new file added');
-        });
     }
 
     ngAfterViewInit() {
@@ -495,6 +488,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             if (result.error) {
                 this.toasterService.pop("error","Error. " + result.error);
             } else {
+                console.log(this.productCopy, this.product);
                 let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
                 let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
                 let files_diff = this.productService.filesDiff(this.file, this.oldFiles);

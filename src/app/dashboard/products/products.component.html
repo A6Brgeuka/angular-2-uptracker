@@ -65,7 +65,7 @@
             <label for="selectAll"></label>
           </div>
           </div>
-          <div class="col s5">Product name</div>
+          <div class="col  s5" >Product name</div>
           <div class="col s1">Variations</div>
           <div class="col s1">Hazardous</div>
           <div class="col s1">Trackable</div>
@@ -89,7 +89,7 @@
               <label for="selected{{i}}"></label>
             </div>
           </div>
-          <div class="col s5">{{product.name}}</div>
+          <div class="col product-name s5" (click)="viewProductModal(product)">{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1">
             <div  class="input-checkbox checkbox">
