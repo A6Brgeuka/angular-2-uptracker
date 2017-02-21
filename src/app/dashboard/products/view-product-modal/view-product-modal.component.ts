@@ -67,7 +67,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     public editCommentComments$ = new Subject();
     public filteredComments$;
     public location_id;
-    public currentLocation = {};
+    public currentLocation:any = {};
 
     fileIsOver: boolean = false;
     public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -273,7 +273,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     // File load, add, delete actions
-    fileActions() {
+    fileActions():any {
         let addFileToFile$ = this.addFileToFile$
             .switchMap((res) => {
                 return this.file$.first()
@@ -304,7 +304,13 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             this.file = res;
             this.hasDocs = res.length > 0;
         });
-        //this.file$.subscribe(r => console.log(r))
+        
+        console.log("file upload");
+        
+        this.file$
+        .subscribe(files => {
+            console.log('new file added');
+        });
     }
 
     ngAfterViewInit() {
@@ -484,72 +490,60 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
     
     saveAfterEdit() {
-        let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
-        let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
-        let files_diff = this.productService.filesDiff(this.file, this.oldFiles);
-
-        prod_diff.id = this.product.id;
-        let variants: any = [];
-        console.log(files_diff);
-        for (let item in vars_diff) {
-            if (!item, this.productService.emptyValues(vars_diff[item])) {
-                vars_diff[item].id = this.variants[item].id;
-                variants.push(vars_diff[item]);
+        this.fileUploadService.uploadDocuments(this.userService.selfData.account_id, 'product', this.product.id, this.file)
+        .subscribe(result => {
+            if (result.error) {
+                this.toasterService.pop("error","Error. " + result.error);
+            } else {
+                let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
+                let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
+                let files_diff = this.productService.filesDiff(this.file, this.oldFiles);
+                prod_diff.id = this.product.id;
+                let variants: any = [];
+                for (let item in vars_diff) {
+                    if (!item, this.productService.emptyValues(vars_diff[item])) {
+                        vars_diff[item].id = this.variants[item].id;
+                        variants.push(vars_diff[item]);
+                    }
+                }
+                let updateData: any = {
+                    location_id: this.location_id,
+                    product: prod_diff,
+                    variants: variants,
+                };
+                this.subscribers.updateProduct = this.productService.updateProduct(updateData);
+                this.subscribers.updateProduct
+                .filter(res => res.data)
+                .map(res => res.data)
+                .subscribe(data => {
+                      this.variants = _.map(data.variants, (item: any) => {
+                          item.checked = false;
+                          item.status = item.status ? item.status : 1;
+                          return item;
+                      });
+                      this.product = data.product;
+                      this.variants$.next(this.variants); // update variants
+                      this.comments$.next(data.comments); // update comments
+                      _.each(this.variants, (variant: any) => {
+                          _.forEach(this.variationArrs, (value, key) => {
+                              this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
+                          })
+                      });
+                      _.forEach(this.variationArrs, (value, key) => {
+                          this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
+                      });
+                      this.showEdit = false;
+          
+                      this.showEdit$.next(false);
+                      this.productCopy = [];
+                      this.filterSelectOption$.next({status: 1});
+                      this.resetText();
+                  },
+                  err => {
+                      this.toasterService.pop("error", err);
+                  });
             }
-        }
-        let files = _.map(files_diff, (f:any) =>
-        {
-            let reader = new FileReader();
-            let blob = f.slice(0, 100);
-            console.log(reader.readAsBinaryString(blob));
-            debugger;
-            //let binaryData = new FileReader();
-            //return {
-            //    name: window.btoa(f.name),
-            //    size: window.btoa(f.size),
-            //    content: binaryData.readAsBinaryString(f)
-            //}
-        });
-        let updateData: any = {
-            location_id: this.location_id,
-            product: prod_diff,
-            variants: variants,
-            files: files
-        };
-        // this.subscribers.updateProduct = this.productService.updateProduct(_.concat(updateData, files_diff));
-        this.subscribers.updateProduct = this.productService.updateProduct(updateData);
-        this.subscribers.updateProduct
-        .filter(res => res.data)
-        .map(res => res.data)
-        .subscribe(data => {
-              this.variants = _.map(data.variants, (item: any) => {
-                  item.checked = false;
-                  item.status = item.status ? item.status : 1;
-                  return item;
-              });
-              this.product = data.product;
-              // this.product$.next(data.product); // update variants
-              this.variants$.next(this.variants); // update variants
-              this.comments$.next(data.comments); // update comments
-              _.each(this.variants, (variant: any) => {
-                  _.forEach(this.variationArrs, (value, key) => {
-                      this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
-                  })
-              });
-              _.forEach(this.variationArrs, (value, key) => {
-                  this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
-              });
-              this.showEdit = false;
-              
-              this.showEdit$.next(false);
-              this.productCopy = [];
-              this.filterSelectOption$.next({status: 1});
-              this.resetText();
-          },
-          err => {
-              console.log(err);
-              alert(err);
-          });
+        },
+        err => this.toasterService.pop("error", err));
     }
-
 }

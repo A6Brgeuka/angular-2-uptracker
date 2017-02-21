@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Restangular } from 'ng2-restangular';
 
 import { ExifService } from './exif.service';
+import { Observable } from 'rxjs';
+import * as _ from 'lodash';
+
 
 @Injectable()
 export class FileUploadService {
   constructor(
-    private exifService: ExifService
-  ) {
+    private exifService: ExifService,
+    public restangular: Restangular
+) {
   }
 
   getOrientedImage(file) {
@@ -221,6 +226,8 @@ export class FileUploadService {
     //draw
     ctx.putImageData(img2, 0, 0);
   }
+  
+  
 
   smoothResample() {
     // let smoothCanvas = document.getElementById('smoothCanvas');
@@ -286,5 +293,32 @@ export class FileUploadService {
     // testImage.onload = demoSetup;
     // testImage.src = testSrc;
   }
-
+  
+  // file upload universal  endpoint
+  uploadDocuments(account_id: string, type: string, id: string, documents: any) {
+    if (!account_id || !type || !id) {
+      return Observable.of({'error':'not enough input data'});
+    }
+    
+    let formData: FormData = new FormData();
+    
+    formData.append('id', id);
+    formData.append('type', type);
+    
+    let i = 0;
+    _.each(documents, (value, key) => {
+      formData.append('documents[' + i + ']', documents[i]);
+      i++;
+    });
+    
+    let entity$ = this.restangular
+    .one('accounts', account_id)
+    .one('upload')
+    .customPOST(formData, undefined, undefined, {'Content-Type': undefined});
+    
+    return entity$
+    .map((res: any) => {
+      return res;
+    })
+  }
 }
