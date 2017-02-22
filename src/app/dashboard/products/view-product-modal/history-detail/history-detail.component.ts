@@ -21,7 +21,7 @@ export class ViewProductModalContext extends BSModalContext {
 @DestroySubscribers()
 export class HistoryDetailComponent implements OnInit, AfterViewInit {
 
-  @Input("variant") private variant;
+  @Input("order") private order;
 
   constructor() {
 
@@ -35,6 +35,6 @@ export class HistoryDetailComponent implements OnInit, AfterViewInit {
   }
 
   variantDetailCollapse() {
-    this.variant.detailView = false;
+    this.order.detailView = false;
   }
 }

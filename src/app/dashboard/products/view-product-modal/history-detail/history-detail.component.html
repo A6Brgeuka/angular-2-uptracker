@@ -3,59 +3,59 @@
     <div class="col s2">
       <div class="row">
         <div class="col s12  ttl">Order #</div>
-        <div class="col s12"><a>1234567</a></div>
+        <div class="col s12"><a>{{order.order_number}}</a></div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Vendor</div>
-        <div class="col s12"><a>Patterson Dental</a></div>
+        <div class="col s12 tealish-text">{{order.vendor_name}}</div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Split From</div>
-        <div class="col s12">5</div>
+        <div class="col s12 tealish-text">NO DATA PROVIDED</div>
       </div>
     </div>
 
     <div class="col s2">
       <div class="row">
         <div class="col s12  ttl">Ordered Date</div>
-        <div class="col s12">12/12/16</div>
+        <div class="col s12">{{order.order_date}}</div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Ordered By</div>
-        <div class="col s12"><a>John Doe</a></div>
+        <div class="col s12 tealish-text">NO DATA PROVIDED</div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Approved By</div>
-        <div class="col s12"><a>Jane Doe</a></div>
+        <div class="col s12 tealish-text">{{order.approved_by}}</div>
       </div>
     </div>
 
     <div class="col s2">
       <div class="row">
         <div class="col s12  ttl">Received Date</div>
-        <div class="col s12">12/12/16</div>
+        <div class="col s12">{{order.received_date}}</div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Received By</div>
-        <div class="col s12"><a>John Doe</a></div>
+        <div class="col s12 tealish-text">{{order.received_by}}</div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Approved By</div>
-        <div class="col s12"><a>Jane Doe</a></div>
+        <div class="col s12 tealish-text">NO DATA PROVIDED</div>
       </div>
     </div>
     <div class="col s2">
       <div class="row">
         <div class="col s12  ttl">Reconciled Date</div>
-        <div class="col s12">12/12/16</div>
+        <div class="col s12">{{order.reconciled_date}}</div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Reconciled By</div>
-        <div class="col s12"><a>John Doe</a></div>
+        <div class="col s12 tealish-text">NO DATA PROVIDEDe</div>
       </div>
       <div class="row">
         <div class="col s12  ttl">Approved By</div>
-        <div class="col s12"><a>Jane Doe</a></div>
+        <div class="col s12 tealish-text">{{order.reconcile_approved_by}}</div>
       </div>
     </div>
 

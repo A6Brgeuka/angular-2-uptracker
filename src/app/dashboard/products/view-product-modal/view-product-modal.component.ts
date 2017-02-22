@@ -53,6 +53,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     public variants = [];
     public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
+    public orders$: BehaviorSubject<any> = new BehaviorSubject([]);
     public showEdit$: BehaviorSubject<any> = new BehaviorSubject([]);
     public filterSelectOption$: BehaviorSubject<any> = new BehaviorSubject({});
     public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -258,12 +259,14 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 this.variants = _.map(data.variants, (item: any) => {
                     item.checked = false;
                     item.status = item.status ? item.status : 1;
-                    
-                    item.inventory = !_.isEmpty(item.inventory) ?  _.slice(item.inventory, 0 ,3) : [];
+                    item.trimmed_inventory = !_.isEmpty(item.inventory) ?  _.slice(item.inventory, 0 ,3) : [];
                     item.total_inventory = _.sumBy(item.inventory,(i:any)=>i.current_inventory);
                     return item;
                 });
                 this.variants$.next(this.variants); // update variants
+                this.orders$.next(this.reformatOrderHistory(this.variants)); // update order history
+                this.orders$.subscribe(r=>console.log('orders',r));
+
                 this.comments$.next(data.comments); // update comments
                 console.log(this.variants[0]);
                 _.each(this.variants, (variant: any) => {
@@ -592,5 +595,19 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             }
         },
         err => this.toasterService.pop("error", err));
+    }
+
+    reformatOrderHistory(ina: any): any {
+        let out:any=[];
+         _.map(ina, vnt =>
+            _.map(vnt['inventory'], inv =>
+                _.map(inv['orders'], ord => {
+                        ord['variant_name'] = vnt['name'];
+                        out.push(ord);
+                    }
+                )
+            )
+        )
+        return out;
     }
 }

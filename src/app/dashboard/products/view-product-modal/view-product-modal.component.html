@@ -483,14 +483,14 @@
                         </span>
             </div>
             <div class="small-heading row-item">{{variant.total_inventory}}</div>
-            <div *ngFor="let inv of variant.inventory; let i=index;"
+            <div *ngFor="let inv of variant.trimmed_inventory; let i=index;"
               [class.selected]="currentLocation[variant.id] ? (inv.location_id==currentLocation[variant.id] && variant.detailView) : (i==0 && variant.detailView)"
               class="small-heading row-item"
               (click)="changeSelected(inv.location_id,variant.id)">{{inv.current_inventory}}
             </div>
             <div class="clearfix"></div>
             <div *ngIf="variant.detailView">
-              <div *ngFor="let inv of variant.inventory; let i=index;">
+              <div *ngFor="let inv of variant.trimmed_inventory; let i=index;">
                 <div *ngIf="currentLocation[variant.id] ? inv.location_id==currentLocation[variant.id] : i==0">
                   <app-inventory-detail
                     [(vis)]="variant.detailView"
@@ -541,18 +541,18 @@
 
       <div class="table-body">
         <div class="variant-table">
-          <div class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
+          <div class="uptracker-form  table-item" *ngFor="let order of orders$ | async">
             <div class="name-heading variant-name row-item valign-wrapper">
-                            <span [class.reddish]="variant.status == 2" class="valign"
-                              (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
+                            <span  class="valign"
+                              (click)="toggleVariantDetailView(order)">{{order.variant_name }}</span>
             </div>
-            <div class="small-heading row-item">3</div>
-            <div class="small-heading row-item">Primary Location</div>
-            <div class="small-heading row-item">Pending</div>
-            <div class="small-heading row-item">12/12/16</div>
-            <div class="small-heading row-item">12/12/16</div>
+            <div class="small-heading row-item">{{order.quantity}}</div>
+            <div class="small-heading row-item">{{order.location_name}}</div>
+            <div class="small-heading row-item">{{order.status}}</div>
+            <div class="small-heading row-item">{{order.order_date}}</div>
+            <div class="small-heading row-item">{{order.received_date}}</div>
             <div class="clearfix"></div>
-            <app-history-detail [variant]="variant" *ngIf="variant.detailView"></app-history-detail>
+            <app-history-detail [order]="order" *ngIf="order.detailView"></app-history-detail>
           </div>
         </div>
       </div>
