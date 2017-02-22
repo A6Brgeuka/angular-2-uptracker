@@ -156,6 +156,12 @@ $black: #000;
     }
 
     #info {
+      margin-top:20px;
+
+      .new-file-list {
+        color:$dark;
+      }
+
       .img-container-edit {
         border:2px dashed $light-grey;
         border-radius:7px;

@@ -45,6 +45,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     public comment: any = {};
     public showEdit: boolean = false;
     public hasDocs: boolean = false;
+    public hasFiles: boolean = false;
     public addOrderVariantsButtonShow: boolean = false;
     public departmentCollection$: Observable<any> = new Observable<any>();
     public productAccountingCollection$: Observable<any> = new Observable<any>();
@@ -78,16 +79,19 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     public file$: Observable<any>;
     public file;
-    public filesToDelete;
     public oldFiles;
-    public addFile$: Subject<any> = new Subject<any>();
     public loadFile$: Subject<any> = new Subject<any>();
-    public addToFile$: Subject<any> = new Subject<any>();
     public addFileToFile$: Subject<any> = new Subject<any>();
     public deleteFromFile$: Subject<any> = new Subject<any>();
     public updateFile$: Subject<any> = new Subject<any>();
-    public updateTotalCount$: Subject<any> = new Subject<any>();
-    public updateElementFile$: Subject<any> = new Subject<any>();
+    
+    public doc$: Observable<any>;
+    public doc;
+    public oldDocs;
+    public loadDoc$: Subject<any> = new Subject<any>();
+    public addDocToDoc$: Subject<any> = new Subject<any>();
+    public deleteFromDoc$: Subject<any> = new Subject<any>();
+    public updateDoc$: Subject<any> = new Subject<any>();
     
     private formData: FormData = new FormData();
     
@@ -104,6 +108,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.context = dialog.context;
         dialog.setCloseGuard(this);
         this.fileActions();
+        this.docActions();
         this.showEdit$.next(false);
     }
     
@@ -141,14 +146,12 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     ngOnInit() {
-        //TODO load files on start
-        this.loadFile$.next([]);
-
-        this.loadFile$.subscribe((files)=>
-            this.oldFiles = files
-        );
-
+        console.clear();
         this.product = this.context.product;
+    
+        this.loadFile$.next([]);
+        
+       
         
         this.resetText();
         this.product.comments = [];
@@ -247,13 +250,16 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             .map(res => res.data)
             .subscribe(data => {
                 this.product = data.product;
+                
+                this.loadDoc$.next(data.product.documents);
+                this.loadDoc$.subscribe(r=>console.log(r));
+                
                 this.resetText();
                 this.variants = _.map(data.variants, (item: any) => {
                     item.checked = false;
                     item.status = item.status ? item.status : 1;
                     
                     item.inventory = !_.isEmpty(item.inventory) ?  _.slice(item.inventory, 0 ,3) : [];
-                    
                     item.total_inventory = _.sumBy(item.inventory,(i:any)=>i.current_inventory);
                     return item;
                 });
@@ -302,6 +308,45 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         ).publishReplay(1).refCount();
         this.file$.subscribe(res => {
             this.file = res;
+            this.hasFiles = res.length > 0;
+        });
+    }
+
+    // Doc load, add, delete actions
+    docActions():any {
+        let addDocToDoc$ = this.addDocToDoc$
+            .switchMap((res) => {
+                return this.doc$.first()
+                    .map((doc: any) => {
+                        doc = doc.concat(res);
+                        return doc;
+                    });
+            });
+        let deleteFromDoc$ = this.deleteFromDoc$
+            .switchMap((deleteDoc) => {
+                this.doc$.subscribe((res) => {
+                    console.log('Model Service delete from doc ' + res);
+                });
+                return this.doc$.first()
+                    .map((doc: any) => {
+                        return doc.filter((el: any) => {
+                            return el.file_name != deleteDoc.file_name;
+                        });
+                    });
+            });
+        this.doc$ = Observable.merge(
+          this.loadDoc$,
+          this.updateDoc$,
+          addDocToDoc$,
+          deleteFromDoc$
+        )
+        .publishReplay(1)
+        .refCount();
+        
+        this.doc$
+        .subscribe(res => {
+            console.log('docs',res);
+            this.doc = res;
             this.hasDocs = res.length > 0;
         });
     }
@@ -477,6 +522,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         console.log(`remove ${file.name}`);
         this.deleteFromFile$.next(file);
     }
+    removeDoc(doc, index) {
+        console.log(`remove ${doc.file_name}`);
+        this.deleteFromDoc$.next(doc);
+    }
     
     inventoryDetailCollapse(v) {
         v.detailView = false;
@@ -488,10 +537,11 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             if (result.error) {
                 this.toasterService.pop("error","Error. " + result.error);
             } else {
-                console.log(this.productCopy, this.product);
+                if (!result.continue) {
+                    this.addDocToDoc$.next(result);
+                }
                 let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
                 let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
-                let files_diff = this.productService.filesDiff(this.file, this.oldFiles);
                 prod_diff.id = this.product.id;
                 let variants: any = [];
                 for (let item in vars_diff) {
@@ -500,6 +550,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                         variants.push(vars_diff[item]);
                     }
                 }
+                prod_diff['documents'] = this.doc;
                 let updateData: any = {
                     location_id: this.location_id,
                     product: prod_diff,
@@ -536,6 +587,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                   err => {
                       this.toasterService.pop("error", err);
                   });
+                this.loadFile$.next([]);
+                
             }
         },
         err => this.toasterService.pop("error", err));

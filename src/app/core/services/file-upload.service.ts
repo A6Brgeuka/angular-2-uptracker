@@ -296,6 +296,10 @@ export class FileUploadService {
   
   // file upload universal  endpoint
   uploadDocuments(account_id: string, type: string, id: string, documents: any) {
+    if (_.isEmpty(documents)) {
+      return Observable.of({'continue':'no docs to upload'});
+    }
+  
     if (!account_id || !type || !id) {
       return Observable.of({'error':'not enough input data'});
     }
