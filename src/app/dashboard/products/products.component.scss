@@ -184,6 +184,9 @@ $black: #000;
             min-height:40px;
             line-height:40px;
             color:#888;
+            &:nth-of-type(3),&:nth-of-type(4),&:nth-of-type(5){
+              text-align: center;
+            }
             &:nth-of-type(2){
               color: $tealish;
               cursor: pointer;
@@ -245,6 +248,36 @@ $black: #000;
                   top: 1px;
                   left: -2px;
                   border-color: $tealish;
+                }
+              }
+            }
+            &.readonly{
+              [type="checkbox"] {
+                & + label {
+                  vertical-align: middle;
+                  padding-left: 25px;
+                  font-size: 14px;
+
+                  &:before {
+                    width: 17px;
+                    height: 17px;
+                    background-color: transparent;
+                    border-color: transparent;
+                    border-radius: 3px;
+                  }
+                }
+
+                &:checked {
+                  & + label:before {
+                    border-width: 0 2px 2px 0;
+                    background: transparent;
+                    width: 10px;
+                    height: 15px;
+                    border-radius: 1px;
+                    top: 1px;
+                    left: -2px;
+                    border-color: $tealish;
+                  }
                 }
               }
             }

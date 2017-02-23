@@ -92,7 +92,7 @@
           <div class="col product-name s5" (click)="viewProductModal(product)">{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1">
-            <div  class="input-checkbox checkbox">
+            <div  class="input-checkbox checkbox readonly">
               <input
                 type="checkbox"
                 class="hazardous-input{{i}}"
@@ -104,12 +104,13 @@
           </div>
           <div class="col s1">
             <div class="input-checkbox">
-              <div  class="input-checkbox checkbox">
+              <div  class="input-checkbox checkbox readonly">
                 <input
                   type="checkbox"
                   class="trackable-input{{i}}"
                   [(ngModel)]="product.trackable"
                   id="trackable{{i}}"
+                  disabled
                 />
                 <label for="trackable{{i}}"></label>
               </div>
