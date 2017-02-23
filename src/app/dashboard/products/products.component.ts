@@ -28,6 +28,7 @@ export class ProductsComponent implements OnInit {
     public products$: Observable<any>;
     public dashboardLocation;
     public infiniteScroll$: any = new BehaviorSubject(false);
+    public selectAll$: any = new BehaviorSubject(0);
     private isRequest:boolean = false;
     public searchKey:string;
     public  searchKeyLast: string;
@@ -48,8 +49,9 @@ export class ProductsComponent implements OnInit {
         this.isGrid = !this.isGrid;
     }
     
-    toggleSelectAll(){
-        
+    toggleSelectAll(event){
+        // 0 = unused, 1 = selectAll, 2 = deselectAll
+        this.selectAll$.next(event ? 1 : 2);
     }
     
     ngOnInit() {
@@ -94,19 +96,20 @@ export class ProductsComponent implements OnInit {
         
         this.products$ = Observable
             .combineLatest(
-              //start_products$,
               this.productService.collection$,
                 this.sortBy$,
-                this.searchKey$
+                this.searchKey$,
+                this.selectAll$
             )
-            .map(([/*start_products,*/products, sortBy, searchKey]: [any, any, any,any]) => {
-               products.selected = false;
-                
-                return products;
-
-            });
-
-
+        .map(([products, sortBy, searchKey, selectAll]: [any, any, any, any]) => {
+            for (let p of products) {
+              (selectAll === 1) ? p.selected = true : p.selected = false;
+            }
+            return products;
+        });
+    
+        this.products$.subscribe(r => console.log(r));
+    
         this.infiniteScroll$
             .withLatestFrom(this.products$)
             .filter(([infinite,products]) =>  {
@@ -120,7 +123,7 @@ export class ProductsComponent implements OnInit {
                     ++this.productService.current_page;
                 }
                 this.searchKeyLast = this.searchKey;
-                //TODO removev
+                //TODO remove
                 if (6 <= (this.productService.current_page-1) * this.productService.pagination_limit) {
                     return Observable.of(false);
                 } else {
@@ -153,7 +156,9 @@ export class ProductsComponent implements OnInit {
 
     toggleProductVisibility(product){
         product.status=!product.status;
+        //TODO add save to server
     }
+    
 
     editProductModal(product = null) {
         this.modal.open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
@@ -209,5 +214,5 @@ export class ProductsComponent implements OnInit {
     onScroll(event) {
         this.getInfiniteScroll();
     }
-
+    
 }
