@@ -1,3 +1,5 @@
+$tealish: #33c6d9;
+
 .user-menu{
   position:absolute;
   max-width:100%;
@@ -6,7 +8,7 @@
   bottom:auto;
 
   .btn-floating{
-    background: #4baaf4;
+    background: $tealish;
     width:27px;
     height:27px;
     line-height:25px;
