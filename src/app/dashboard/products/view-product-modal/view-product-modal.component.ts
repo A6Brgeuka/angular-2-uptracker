@@ -80,21 +80,22 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
     public file$: Observable<any>;
     public file;
-    public oldFiles;
     public loadFile$: Subject<any> = new Subject<any>();
     public addFileToFile$: Subject<any> = new Subject<any>();
     public deleteFromFile$: Subject<any> = new Subject<any>();
     public updateFile$: Subject<any> = new Subject<any>();
     
+    
     public doc$: Observable<any>;
     public doc;
-    public oldDocs;
     public loadDoc$: Subject<any> = new Subject<any>();
     public addDocToDoc$: Subject<any> = new Subject<any>();
     public deleteFromDoc$: Subject<any> = new Subject<any>();
     public updateDoc$: Subject<any> = new Subject<any>();
     
     private formData: FormData = new FormData();
+    
+    public hasInfoTab:boolean = false;
     
     
     constructor(public dialog: DialogRef<ViewProductModalContext>,
@@ -245,42 +246,49 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 // 
                 return variants;
             });
-
-        this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product.id, this.location_id)
-            .filter(res => res.data)
-            .map(res => res.data)
-            .subscribe(data => {
-                this.product = data.product;
-                
-                this.loadDoc$.next(data.product.documents);
-                this.loadDoc$.subscribe(r=>console.log(r));
-                
-                this.resetText();
-                this.variants = _.map(data.variants, (item: any) => {
-                    item.checked = false;
-                    item.status = item.status ? item.status : 1;
-                    item.trimmed_inventory = !_.isEmpty(item.inventory) ?  _.slice(item.inventory, 0 ,3) : [];
-                    item.total_inventory = _.sumBy(item.inventory,(i:any)=>i.current_inventory);
-                    return item;
-                });
-                this.variants$.next(this.variants); // update variants
-                this.orders$.next(this.reformatOrderHistory(this.variants)); // update order history
-                this.orders$.subscribe(r=>console.log('orders',r));
-
-                this.comments$.next(data.comments); // update comments
-                console.log(this.variants[0]);
-                _.each(this.variants, (variant: any) => {
-                    _.forEach(this.variationArrs, (value, key) => {
-                        this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
-                    })
-                });
-                _.forEach(this.variationArrs, (value, key) => {
-                    this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
-                });
-
-            });
+        this.getProducts();
     }
 
+    getProducts (){
+        this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product.id, this.location_id)
+        .filter(res => res.data)
+        .map(res => res.data)
+        .subscribe(data => {
+            this.product = data.product;
+            this.hasInfoTab = (data.product.description == ''
+            || data.product.hazardous_form == ''
+            || data.product.msds == ''
+            || data.product.notes == ''
+            || !_.isEmpty(data.product.documents));
+            
+            this.loadDoc$.next(data.product.documents);
+            this.loadDoc$.subscribe(r=>console.log(r));
+        
+            this.resetText();
+            this.variants = _.map(data.variants, (item: any) => {
+                item.checked = false;
+                item.status = item.status ? item.status : 1;
+                item.trimmed_inventory = !_.isEmpty(item.inventory) ?  _.slice(item.inventory, 0 ,3) : [];
+                item.total_inventory = _.sumBy(item.inventory,(i:any)=>i.current_inventory);
+                return item;
+            });
+            this.variants$.next(this.variants); // update variants
+            this.orders$.next(this.reformatOrderHistory(this.variants)); // update order history
+            this.orders$.subscribe(r=>console.log('orders',r));
+        
+            this.comments$.next(data.comments); // update comments
+            console.log(this.variants[0]);
+            _.each(this.variants, (variant: any) => {
+                _.forEach(this.variationArrs, (value, key) => {
+                    this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
+                })
+            });
+            _.forEach(this.variationArrs, (value, key) => {
+                this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
+            });
+        
+        });
+    }
     // File load, add, delete actions
     fileActions():any {
         let addFileToFile$ = this.addFileToFile$
@@ -574,6 +582,12 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                           return item;
                       });
                       this.product = data.product;
+                      
+                      this.hasInfoTab = (data.product.description == ''
+                      || data.product.hazardous_form == ''
+                      || data.product.msds == ''
+                      || data.product.notes == ''
+                      || !_.isEmpty(data.product.documents));
                       this.variants$.next(this.variants); // update variants
                       this.comments$.next(data.comments); // update comments
                       _.each(this.variants, (variant: any) => {
@@ -599,6 +613,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             }
         },
         err => this.toasterService.pop("error", err));
+    
+        
     }
 
     reformatOrderHistory(ina: any): any {

@@ -19,6 +19,7 @@ import { ProductsRoutes } from './products/products.routing';
 import { InventoryRoutes } from "./inventory/inventory.routing";
 import { TransferRoutes } from "./transfer/transfer.routing";
 import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
+import { InventoryComponent } from './inventory/inventory.component';
 
 const dashboardRoutes = [
   {
@@ -42,6 +43,11 @@ const dashboardRoutes = [
       locationCollection: LocationCollectionResolve,
       // productCollection: ProductCollectionResolve,
     }
+  },
+  {
+    path: '/inventory',
+    component: InventoryComponent,
+    canActivate: [],
   }
 ];
 

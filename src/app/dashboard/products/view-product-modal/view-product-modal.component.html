@@ -138,7 +138,7 @@
           <a href="#variations">Variations</a>
         </li>
         <li class="tab col s2">
-          <a href="#info">Info</a>
+          <a href="#info"  [class.hidden]="!hasInfoTab && !showEdit"  >Info</a>
         </li>
         <li class="tab col s2">
           <a href="#inventory">Inventory</a>
@@ -335,117 +335,6 @@
 
     </div>
   </div>
-  <div id="info">
-    <div class="inner uptracker-form">
-      <div class="row">
-        <div class="ttl col s12">
-          Description
-        </div>
-        <div *ngIf="showEdit" class="col s12 textarea">
-          <textarea placeholder="Type here" class="col s12 " [(ngModel)]="productCopy.description"></textarea>
-        </div>
-        <div *ngIf="!showEdit" class="col s12 bold">
-          {{product.description}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="ttl col s12">
-          Notes
-        </div>
-        <div *ngIf="showEdit" class="col s12 textarea">
-          <textarea placeholder="Type here" class=" col s12 " [(ngModel)]="productCopy.notes"></textarea>
-        </div>
-        <div *ngIf="!showEdit" class="col s12 bold">
-          {{product.notes}}
-        </div>
-      </div>
-      <div class="row mbot0">
-        <div class="col s6 ">
-          <div class="row mbot0">
-            <div class="ttl col s12">
-              MSDS
-            </div>
-            <div *ngIf="showEdit" class="col s12 input">
-              <input placeholder="Enter URL" class="col s12" [(ngModel)]="productCopy.msds" type="text">
-            </div>
-            <div *ngIf="!showEdit" class="col s12">
-              <a href="#">{{product.msds}}</a>
-            </div>
-          </div>
-          <div *ngIf="!showEdit" class="row">
-            <div class="ttl col s12">
-              Hazardous Form
-            </div>
-            <div class="col s12">
-              <a href="#">{{product.hazardous_form}}</a>
-            </div>
-          </div>
-        </div>
-        <div class="col s6 ">
-          <div *ngIf="showEdit" class="row mbot0">
-            <div class="ttl col s12">
-              Hazardous Form
-            </div>
-            <div class="col s12 input">
-              <input placeholder="Enter URL" class="col s12" [(ngModel)]="productCopy.hazardous_form"
-                type="text">
-            </div>
-          </div>
-          <div *ngIf="!showEdit" class="row">
-            <div class="ttl col s12">
-              Documents
-            </div>
-            <div class="col s12">
-              <div *ngFor="let doc of doc$ | async">
-                <a href="{{doc.uri}}" target="_blank">{{doc.file_name}}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div *ngIf="showEdit" class="row">
-        <div class="ttl col s12 mbot10">
-          Documents
-        </div>
-        <div class="col s6">
-          <div class="img-container-edit col s12" title="Drop files here" fileDrop
-            [ngClass]="{'file-is-over': fileIsOver}"
-            [options]="options"
-            (fileOver)="fileOver($event)"
-            (onFileDrop)="onFileDrop($event)">
-          </div>
-        </div>
-        <div *ngIf="hasDocs || hasFiles" class="col s6">
-          <div *ngFor="let doc of doc$ | async; let index = $index">
-            <div class="col s10">
-              <a href="{{doc.uri}}">{{doc.file_name}}</a>
-            </div>
-            <div class="col s2" (click)="removeDoc(doc, index)">
-              <i class="fa fa-trash"></i>
-            </div>
-          </div>
-          <div class="new-file-list" *ngFor="let file of file$ | async; let index = $index">
-            <div class="col s10">
-              {{file.name}}
-            </div>
-            <div class="col s2" (click)="removeFile(file, index)">
-              <i class="fa fa-trash"></i>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="!hasDocs && !hasFiles" class="col s6 no-docs">
-          <div class="ttl">Document</div>
-          <div class="grey-text mbot10">Please upload documents with max size 10MB</div>
-          <div>
-            <input type="file" (change)="onFileUpload($event)" id="file-upload-dialog" class="hidden">
-            <label for="file-upload-dialog" class="tealish-text normal-size cursor-pointer">Upload a document</label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div id="inventory">
     <div class="inner">
       <div class="variant-table">
@@ -504,9 +393,124 @@
       </div>
     </div>
   </div>
+
   <div id="tracking" *ngIf="product.trackable">
     <div class="inner">
       Tracking tab
+    </div>
+  </div>
+  <div  id="info">
+    <div class="inner uptracker-form">
+      <div class="row">
+        <div class="ttl col s12">
+          Description
+        </div>
+        <div *ngIf="showEdit" class="col s12 textarea">
+          <textarea placeholder="Type here" class="col s12 " [(ngModel)]="productCopy.description"></textarea>
+        </div>
+        <div *ngIf="!showEdit" class="col s12 bold">
+          {{product.description}}
+          <i class="no-info"  *ngIf="!product.description">No additional information</i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="ttl col s12">
+          Notes
+        </div>
+        <div *ngIf="showEdit" class="col s12 textarea">
+          <textarea placeholder="Type here" class=" col s12 " [(ngModel)]="productCopy.notes"></textarea>
+        </div>
+        <div *ngIf="!showEdit" class="col s12 bold">
+          {{product.notes}}
+          <i class="no-info" *ngIf="!product.notes">No additional information</i>
+        </div>
+      </div>
+      <div class="row mbot0">
+        <div class="col s6 ">
+          <div class="row mbot0">
+            <div class="ttl col s12">
+              MSDS
+            </div>
+            <div *ngIf="showEdit" class="col s12 input">
+              <input placeholder="Enter URL" class="col s12" [(ngModel)]="productCopy.msds" type="text">
+            </div>
+            <div *ngIf="!showEdit" class="col s12">
+              <a href="#">{{product.msds}}</a>
+              <i class="no-info"  *ngIf="!product.msds">No additional information</i>
+            </div>
+          </div>
+          <div *ngIf="!showEdit" class="row">
+            <div class="ttl col s12">
+              Hazardous Form
+            </div>
+            <div class="col s12">
+              <a href="#">{{product.hazardous_form}}</a>
+              <i class="no-info"  *ngIf="!product.hazardous_form">No additional information</i>
+            </div>
+          </div>
+        </div>
+        <div class="col s6 ">
+          <div *ngIf="showEdit" class="row mbot0">
+            <div class="ttl col s12">
+              Hazardous Form
+            </div>
+            <div class="col s12 input">
+              <input placeholder="Enter URL" class="col s12" [(ngModel)]="productCopy.hazardous_form"
+                type="text">
+            </div>
+          </div>
+          <div *ngIf="!showEdit && hasDocs" class="row">
+            <div class="ttl col s12">
+              Documents
+            </div>
+            <div class="col s12">
+              <div *ngFor="let doc of doc$ | async">
+                <a href="{{doc.uri}}" target="_blank">{{doc.file_name}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="showEdit" class="row">
+        <div class="ttl col s12 mbot10">
+          Documents
+        </div>
+        <div class="col s6">
+          <div class="img-container-edit col s12" title="Drop files here" fileDrop
+            [ngClass]="{'file-is-over': fileIsOver}"
+            [options]="options"
+            (fileOver)="fileOver($event)"
+            (onFileDrop)="onFileDrop($event)">
+          </div>
+        </div>
+        <div *ngIf="hasDocs || hasFiles" class="col s6">
+          <div *ngFor="let doc of doc$ | async; let index = $index">
+            <div class="col s10">
+              <a href="{{doc.uri}}">{{doc.file_name}}</a>
+            </div>
+            <div class="col s2" (click)="removeDoc(doc, index)">
+              <i class="fa fa-trash"></i>
+            </div>
+          </div>
+          <div class="new-file-list" *ngFor="let file of file$ | async; let index = $index">
+            <div class="col s10">
+              {{file.name}}
+            </div>
+            <div class="col s2" (click)="removeFile(file, index)">
+              <i class="fa fa-trash"></i>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!hasDocs && !hasFiles" class="col s6 no-docs">
+          <div class="ttl">Document</div>
+          <div class="grey-text mbot10">Please upload documents with max size 10MB</div>
+          <div>
+            <input type="file" (change)="onFileUpload($event)" id="file-upload-dialog" class="hidden">
+            <label for="file-upload-dialog" class="tealish-text normal-size cursor-pointer">Upload a document</label>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div id="history">
