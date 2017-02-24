@@ -7,9 +7,16 @@ $grey:  #9a9c9e;
 $light-grey: #d6d6d6;
 $black: #000;
 
+$normal: 14px;
+
 :host /deep/ {
 
-
+  .normal-size {
+    font-size:$normal;
+  }
+  .cursor-pointer {
+    cursor:pointer;
+  }
 
   .variant-detail-collapse {
     color: $tealish;

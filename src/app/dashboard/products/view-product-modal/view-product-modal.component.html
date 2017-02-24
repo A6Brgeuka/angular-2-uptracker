@@ -397,7 +397,7 @@
             </div>
             <div class="col s12">
               <div *ngFor="let doc of doc$ | async">
-                <a href="{{doc.uri}}">{{doc.file_name}}</a>
+                <a href="{{doc.uri}}" target="_blank">{{doc.file_name}}</a>
               </div>
             </div>
           </div>
@@ -438,7 +438,8 @@
           <div class="ttl">Document</div>
           <div class="grey-text mbot10">Please upload documents with max size 10MB</div>
           <div>
-            <a href="#">Upload a document</a>
+            <input type="file" (change)="onFileUpload($event)" id="file-upload-dialog" class="hidden">
+            <label for="file-upload-dialog" class="tealish-text normal-size cursor-pointer">Upload a document</label>
           </div>
         </div>
       </div>

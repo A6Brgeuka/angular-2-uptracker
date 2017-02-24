@@ -516,6 +516,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         myReader.fileName = file.name;
         this.addFile(file);
     }
+    
+    onFileUpload(event){
+        this.onFileDrop(event.target.files[0]);
+    }
 
     addFile(file) {
         this.addFileToFile$.next([file]);
