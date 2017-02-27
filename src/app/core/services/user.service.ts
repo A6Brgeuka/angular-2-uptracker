@@ -84,8 +84,9 @@ export class UserService extends ModelService {
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     )
-    .filter((res: any) => { 
-      let condition = !this.getSessionId() || res.id == this.getSessionId();
+    .filter((res: any) => {
+      
+      let condition = !this.getSessionId() || res.id == this.getSessionId() /*|| res.prev_id == this.getSessionId()*/;
       return condition;
     })
     .publishReplay(1).refCount();
@@ -145,6 +146,13 @@ export class UserService extends ModelService {
   }
 
   updateSelfData(data){
+    if (data.account) {
+      
+      // data.prev_id = data.id;
+      // data.id = data.account.id;
+      data.token = data.new_token;
+    }
+    
     this.updateSelfData$.next(data);
   }
   
@@ -213,7 +221,10 @@ export class UserService extends ModelService {
   }
 
   transformAccountInfo(data){
+    
     data.user.account = data.account || null;
+    data.user.new_token = data.token;
+    
     return data.user;
   }
 
