@@ -14,10 +14,10 @@ const appRoutes = [
     path: '',
     component: AppComponent,
     children: [
-      { path: '', redirectTo: "/dashboard", pathMatch: "full" },
+      { path: '', redirectTo: "/products", pathMatch: "full" },
       { path: 'dashboard', canLoad: [AuthGuard], loadChildren: './dashboard/dashboard.module#DashboardModule' },
-      { path: 'onboard', canLoad: [AuthGuard], loadChildren: './onboard/onboard.module#OnboardModule' },
       { path: 'products', canLoad: [AuthGuard], loadChildren: './dashboard/products/products.module#ProductsModule' },
+      { path: 'onboard', canLoad: [AuthGuard], loadChildren: './onboard/onboard.module#OnboardModule' },
       ...AuthRoutes,
       ...DashboardRoutes
     ]
