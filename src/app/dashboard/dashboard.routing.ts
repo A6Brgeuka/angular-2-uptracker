@@ -1,5 +1,6 @@
-import { ModuleWithProviders } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+// import { ModuleWithProviders } from '@angular/core';
+// import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '../auth-guard.service';
 
 import { DashboardComponent } from './dashboard.component';
 
@@ -11,30 +12,31 @@ import {
     ProductCollectionResolve,
 } from '../shared/resolves/index';
 
-import { OrdersRoutes } from './orders/orders.routing';
-import { LocationsRoutes } from './locations/locations.routing';
-import { UsersRoutes } from './users/users.routing';
-import { VendorsRoutes } from './vendors/vendors.routing';
-import { ProductsRoutes } from './products/products.routing';
-import { InventoryRoutes } from "./inventory/inventory.routing";
-import { TransferRoutes } from "./transfer/transfer.routing";
-import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
-import { InventoryComponent } from './inventory/inventory.component';
+// import { OrdersRoutes } from './orders/orders.routing';
+// import { LocationsRoutes } from './locations/locations.routing';
+// import { UsersRoutes } from './users/users.routing';
+// import { VendorsRoutes } from './vendors/vendors.routing';
+// import { ProductsRoutes } from './products/products.routing';
+// import { InventoryRoutes } from "./inventory/inventory.routing";
+////import { TransferRoutes } from "./transfer/transfer.routing";
+// import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
+// import { InventoryComponent } from './inventory/inventory.component';
 
-const dashboardRoutes = [
+export const DashboardRoutes = [
   {
     path: '',
     component: DashboardComponent,
     children: [
-      { path: '' },
-      ...OrdersRoutes,
-      ...LocationsRoutes,
-      ...UsersRoutes,
-      ...VendorsRoutes,
-      ...ProductsRoutes,
-      ...InventoryRoutes,
-      ...TransferRoutes,
-      ...ShoppingListRoutes
+      { path: 'products', canLoad: [AuthGuard], loadChildren: './dashboard/products/products.module#ProductsModule' },
+      // { path: '' },
+      // ...OrdersRoutes,
+      // ...LocationsRoutes,
+      // ...UsersRoutes,
+      // ...VendorsRoutes,
+      // ...ProductsRoutes,
+      // ...InventoryRoutes,
+      // ...TransferRoutes,
+      // ...ShoppingListRoutes
     ],
     resolve: {
       accountVendorCollection: AccountVendorCollectionResolve,
@@ -44,11 +46,7 @@ const dashboardRoutes = [
       // productCollection: ProductCollectionResolve,
     }
   },
-  {
-    path: '/inventory',
-    component: InventoryComponent,
-    canActivate: [],
-  }
+
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);
+// export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);

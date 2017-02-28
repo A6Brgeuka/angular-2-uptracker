@@ -9,6 +9,7 @@ import { CoreModule } from './core/core.module';
 import { NoContentModule } from './no-content/no-content.module';
 import { AuthModule } from './auth/auth.module';
 import { SpinnerModule } from './spinner/spinner.module';
+import {DashboardModule} from "./dashboard/dashboard.module";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SpinnerModule } from './spinner/spinner.module';
 
     AuthModule,
     NoContentModule,
-    SpinnerModule
+    SpinnerModule,
+      DashboardModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

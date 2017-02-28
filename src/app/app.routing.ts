@@ -7,6 +7,7 @@ import { AuthGuard } from './auth-guard.service';
 
 // routings
 import { AuthRoutes } from './auth/index';
+import { DashboardRoutes } from './dashboard/index';
 
 const appRoutes = [
   {
@@ -16,7 +17,9 @@ const appRoutes = [
       { path: '', redirectTo: "/dashboard", pathMatch: "full" },
       { path: 'dashboard', canLoad: [AuthGuard], loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'onboard', canLoad: [AuthGuard], loadChildren: './onboard/onboard.module#OnboardModule' },
-      ...AuthRoutes
+      { path: 'products', canLoad: [AuthGuard], loadChildren: './dashboard/products/products.module#ProductsModule' },
+      ...AuthRoutes,
+      ...DashboardRoutes
     ]
   },
   { path: '**', component: NoContentComponent }
