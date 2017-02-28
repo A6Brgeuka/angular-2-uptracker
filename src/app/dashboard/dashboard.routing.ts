@@ -1,6 +1,5 @@
-// import { ModuleWithProviders } from '@angular/core';
-// import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from '../auth-guard.service';
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
 
@@ -22,7 +21,7 @@ import {
  import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
  import { InventoryComponent } from './inventory/inventory.component';
 
-export const DashboardRoutes = [
+export const dashboardRoutes = [
   {
     path: '',
     component: DashboardComponent,
@@ -42,10 +41,10 @@ export const DashboardRoutes = [
       vendorCollection: VendorCollectionResolve,
       userCollection: UserCollectionResolve,
       locationCollection: LocationCollectionResolve,
-      // productCollection: ProductCollectionResolve,
+      productCollection: ProductCollectionResolve,
     }
   },
 
 ];
 
-// export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);
+ export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);

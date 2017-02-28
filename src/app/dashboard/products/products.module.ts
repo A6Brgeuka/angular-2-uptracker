@@ -6,6 +6,7 @@ import { EditProductModalModule } from './edit-product-modal/edit-product-modal.
 import { ViewProductModalModule } from './view-product-modal/view-product-modal.module';
 import { ProductFilterModalModule } from './product-filter-modal/product-filter-modal.module';
 import { RequestProductModalModule } from './request-product-modal/request-product-modal.module';
+import { BulkEditModalModule } from './bulk-edit-modal/bulk-edit-modal.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { RequestProductModalModule } from './request-product-modal/request-produ
     EditProductModalModule,
     ViewProductModalModule,
     ProductFilterModalModule,
-    RequestProductModalModule
+    RequestProductModalModule,
+    BulkEditModalModule
   ],
   providers: []
 })

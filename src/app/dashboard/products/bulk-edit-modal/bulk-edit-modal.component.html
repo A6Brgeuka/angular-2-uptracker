@@ -1,0 +1,148 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="title center-align">Bulk edit</div>
+
+<div class="row">
+  <div class="col s6 input">
+    <label>Department</label>
+    <div class="select">
+      <select
+        [(ngModel)]="bulk.department"
+        materialize="material_select"
+        [materializeSelectOptions]="departmentCollection$ | async">
+        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col s6 input">
+    <label>Working stock location</label>
+    <div class="select">
+      <select
+        [(ngModel)]="bulk.working_stock_location"
+        materialize="material_select"
+        [materializeSelectOptions]="departmentCollection$ | async">
+        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col s6 input">
+    <label>Category</label>
+    <div class="select">
+      <select
+        [(ngModel)]="bulk.category"
+        materialize="material_select"
+        [materializeSelectOptions]="departmentCollection$ | async">
+        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col s6 input">
+    <label>Back Stock Location</label>
+    <div class="select">
+      <select
+        [(ngModel)]="bulk.back_stock_location"
+        materialize="material_select"
+        [materializeSelectOptions]="departmentCollection$ | async">
+        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col s6 input">
+    <label>Accounting</label>
+    <div class="select">
+      <select
+        [(ngModel)]="bulk.accounting"
+        materialize="material_select"
+        [materializeSelectOptions]="departmentCollection$ | async">
+        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col s6 input">
+    <label>Preferred Vendor</label>
+    <div class="select">
+      <select
+        [(ngModel)]="bulk.preferred_vendor"
+        materialize="material_select"
+        [materializeSelectOptions]="departmentCollection$ | async">
+        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="checkbox input-checkbox col s6">
+    <input
+      type="checkbox"
+      class="checkbox-input"
+      [(ngModel)]="hazardous.checked"
+      (change)="headCheckboxChange()"
+      id="hazardous-checkbox"
+    />
+    <label for="hazardous-checkbox"></label>
+    <label>Hazardous</label>
+  </div>
+  <div class="checkbox input-checkbox col s6 ">
+    <input
+      type="checkbox"
+      class="checkbox-input"
+      [(ngModel)]="perpetual_inventory.checked"
+      (change)="headCheckboxChange()"
+      id="inv-checkbox"
+    />
+    <label for="inv-checkbox"></label>
+    <label>Perpetual Inventory</label>
+  </div>
+</div>
+<div class="row">
+  <div class="checkbox input-checkbox col s6 ">
+    <input
+      type="checkbox"
+      class="checkbox-input"
+      [(ngModel)]="trackable.checked"
+      (change)="headCheckboxChange()"
+      id="trackable-checkbox"
+    />
+    <label for="trackable-checkbox"></label>
+    <label>Trackable</label>
+  </div>
+  <div class="checkbox input-checkbox col s6 ">
+    <input
+      type="checkbox"
+      class="checkbox-input"
+      [(ngModel)]="isHidden.checked"
+      (change)="headCheckboxChange()"
+      id="hidden-checkbox"
+    />
+    <label for="hidden-checkbox"></label>
+    <label>Hidden</label>
+  </div>
+</div>
+<div class="row">
+  <div class="checkbox input-checkbox col s6 ">
+    <input
+      type="checkbox"
+      class="checkbox-input"
+      [(ngModel)]="tax_exempt.checked"
+      (change)="headCheckboxChange()"
+      id="ex-checkbox"
+    />
+    <label for="ex-checkbox"></label>
+    <label>Tax Exempt</label>
+  </div>
+  <div class="checkbox input-checkbox col s6 ">
+    <input
+      type="checkbox"
+      class="checkbox-input"
+      [(ngModel)]="msds.checked"
+      (change)="headCheckboxChange()"
+      id="msds-checkbox"
+    />
+    <label for="msds-checkbox"></label>
+    <label>Reset MSDS</label>
+  </div>
+</div>

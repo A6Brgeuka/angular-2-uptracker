@@ -13,14 +13,14 @@ import { TranseferModule } from "./transfer/transfer.module";
 import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
-// import { routing } from './index';
+import { routing } from './index';
 
 @NgModule({
   declarations: [
     DashboardComponent,
   ],
   imports: [
-    // routing,
+    routing,
     AppSharedModule,
       
     OrdersModule,

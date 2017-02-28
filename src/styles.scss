@@ -813,9 +813,16 @@ modal-overlay{
       height:41px;
       position:absolute;
       top:-18px;
-      right:-18px;
+      left:-18px;
       background: url(/assets/img/onboard/close-button.svg) no-repeat;
       cursor:pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .close {
+        left: 10px;
+        top: 10px;
+      }
     }
 
     .title{

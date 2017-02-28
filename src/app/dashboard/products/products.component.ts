@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 
 import {ViewProductModal} from './view-product-modal/view-product-modal.component';
 import {EditProductModal} from './edit-product-modal/edit-product-modal.component';
+import {BulkEditModal} from './bulk-edit-modal/bulk-edit-modal.component';
 import {ProductFilterModal} from './product-filter-modal/product-filter-modal.component';
 import {RequestProductModal} from './request-product-modal/request-product-modal.component';
 import {ProductService} from '../../core/services/index';
@@ -162,6 +163,10 @@ export class ProductsComponent implements OnInit {
 
     editProductModal(product = null) {
         this.modal.open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
+    }
+    
+    bulkEditModal(selectedProducts){
+        this.modal.open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({selectedProducts}));
     }
 
     searchFilter(event) {
