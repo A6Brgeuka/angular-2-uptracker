@@ -1,5 +1,8 @@
 <div class="close" (click)="dismissModal()"></div>
-<div class="title center-align">Bulk edit</div>
+<div class="title center-align">
+  Bulk Edit
+  <button class="uptracker-form-btn right" (click)="saveBulkEdit()"><i class="fa fa-check"></i> Save</button>
+</div>
 
 <div class="row">
   <div class="col s6 input">
@@ -9,18 +12,20 @@
         [(ngModel)]="bulk.department"
         materialize="material_select"
         [materializeSelectOptions]="departmentCollection$ | async">
+        <option value="" disabled selected>Select Department</option>
         <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
       </select>
     </div>
   </div>
   <div class="col s6 input">
-    <label>Working stock location</label>
+    <label>Working Stock Location</label>
     <div class="select">
       <select
-        [(ngModel)]="bulk.working_stock_location"
+        [(ngModel)]="bulk.working_stock"
         materialize="material_select"
-        [materializeSelectOptions]="departmentCollection$ | async">
-        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+        [materializeSelectOptions]="workingStockCollection$ | async">
+        <option value="" disabled selected>Select Working Stock Location</option>
+        <option *ngFor="let item of workingStockCollection$ | async" [value]="item">{{item}}</option>
       </select>
     </div>
   </div>
@@ -32,8 +37,9 @@
       <select
         [(ngModel)]="bulk.category"
         materialize="material_select"
-        [materializeSelectOptions]="departmentCollection$ | async">
-        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+        [materializeSelectOptions]="productCategoriesCollection$ | async">
+        <option value="" disabled selected>Select Category</option>
+        <option *ngFor="let item of productCategoriesCollection$ | async" [value]="item">{{item}}</option>
       </select>
     </div>
   </div>
@@ -41,23 +47,25 @@
     <label>Back Stock Location</label>
     <div class="select">
       <select
-        [(ngModel)]="bulk.back_stock_location"
+        [(ngModel)]="bulk.back_stock"
         materialize="material_select"
-        [materializeSelectOptions]="departmentCollection$ | async">
-        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+        [materializeSelectOptions]="backStockCollection$ | async">
+        <option value="" disabled selected>Select Back Stock Location</option>
+        <option *ngFor="let item of backStockCollection$ | async" [value]="item">{{item}}</option>
       </select>
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row last-row">
   <div class="col s6 input">
     <label>Accounting</label>
     <div class="select">
       <select
         [(ngModel)]="bulk.accounting"
         materialize="material_select"
-        [materializeSelectOptions]="departmentCollection$ | async">
-        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+        [materializeSelectOptions]="productAccountingCollection$ | async">
+        <option value="" disabled selected>Select Accounting</option>
+        <option *ngFor="let item of productAccountingCollection$ | async" [value]="item">{{item}}</option>
       </select>
     </div>
   </div>
@@ -67,20 +75,22 @@
       <select
         [(ngModel)]="bulk.preferred_vendor"
         materialize="material_select"
-        [materializeSelectOptions]="departmentCollection$ | async">
-        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+        [materializeSelectOptions]="vendorCollection$ | async">
+        <option value="" disabled selected>Select Preferred Vendor</option>
+        <option *ngFor="let item of vendorCollection$ | async" [value]="item">{{item}}</option>
       </select>
     </div>
   </div>
 </div>
 
-<div class="row">
+<div class="row tiny-margin">
   <div class="checkbox input-checkbox col s6">
     <input
       type="checkbox"
+      [indeterminate]="bulk.hazardous === null"
       class="checkbox-input"
-      [(ngModel)]="hazardous.checked"
-      (change)="headCheckboxChange()"
+      [(ngModel)]="bulk.hazardous"
+      (change)="checkboxChange($event,bulk.hazardous)"
       id="hazardous-checkbox"
     />
     <label for="hazardous-checkbox"></label>
@@ -89,22 +99,24 @@
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
+      [indeterminate]="bulk.perpetual === null"
       class="checkbox-input"
-      [(ngModel)]="perpetual_inventory.checked"
-      (change)="headCheckboxChange()"
+      [(ngModel)]="bulk.perpetual"
+      (change)="checkboxChange($event,bulk.perpetual)"
       id="inv-checkbox"
     />
     <label for="inv-checkbox"></label>
     <label>Perpetual Inventory</label>
   </div>
 </div>
-<div class="row">
+<div class="row tiny-margin">
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
+      [indeterminate]="bulk.trackable === null"
       class="checkbox-input"
-      [(ngModel)]="trackable.checked"
-      (change)="headCheckboxChange()"
+      [(ngModel)]="bulk.trackable"
+      (change)="checkboxChange($event,bulk.trackable)"
       id="trackable-checkbox"
     />
     <label for="trackable-checkbox"></label>
@@ -113,22 +125,24 @@
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
+      [indeterminate]="bulk.hidden === null"
       class="checkbox-input"
-      [(ngModel)]="isHidden.checked"
-      (change)="headCheckboxChange()"
+      [(ngModel)]="bulk.hidden"
+      (change)="checkboxChange($event,bulk.hidden)"
       id="hidden-checkbox"
     />
     <label for="hidden-checkbox"></label>
     <label>Hidden</label>
   </div>
 </div>
-<div class="row">
+<div class="row tiny-margin">
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
+      [indeterminate]="bulk.tax_exempt === null"
       class="checkbox-input"
-      [(ngModel)]="tax_exempt.checked"
-      (change)="headCheckboxChange()"
+      [(ngModel)]="bulk.tax_exempt"
+      (change)="checkboxChange($event,bulk.tax_excempt)"
       id="ex-checkbox"
     />
     <label for="ex-checkbox"></label>
@@ -137,12 +151,14 @@
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
+      [indeterminate]="bulk.reset_msds === null"
       class="checkbox-input"
-      [(ngModel)]="msds.checked"
-      (change)="headCheckboxChange()"
+      [(ngModel)]="bulk.reset_msds"
+      (change)="checkboxChange($event,bulk.reset_msds)"
       id="msds-checkbox"
     />
     <label for="msds-checkbox"></label>
     <label>Reset MSDS</label>
   </div>
+
 </div>

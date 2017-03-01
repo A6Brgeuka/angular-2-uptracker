@@ -27,6 +27,7 @@ export class ProductsComponent implements OnInit {
     private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
     public total: number;
     public products$: Observable<any>;
+    public products:any;
     public dashboardLocation;
     public infiniteScroll$: any = new BehaviorSubject(false);
     public selectAll$: any = new BehaviorSubject(0);
@@ -109,7 +110,7 @@ export class ProductsComponent implements OnInit {
             return products;
         });
     
-        this.products$.subscribe(r => console.log(r));
+        this.products$.subscribe(r => this.products = r);
     
         this.infiniteScroll$
             .withLatestFrom(this.products$)
@@ -162,11 +163,14 @@ export class ProductsComponent implements OnInit {
     
 
     editProductModal(product = null) {
-        this.modal.open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
+        this.modal
+        .open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
     }
     
-    bulkEditModal(selectedProducts){
-        this.modal.open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({selectedProducts}));
+    bulkEditModal(){
+        let products = _.cloneDeep(this.products);
+        this.modal
+        .open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({products:products}));
     }
 
     searchFilter(event) {

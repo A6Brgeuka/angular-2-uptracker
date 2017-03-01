@@ -5,6 +5,8 @@ $greeny: #4CAF50;
 $dark: #444;
 $grey:  #9a9c9e;
 $light-grey: #d6d6d6;
+$light-light-grey: #f5f5f5;
+
 $black: #000;
 
 $normal: 14px;
@@ -76,22 +78,100 @@ $normal: 14px;
     margin:44px 0 0;
   }
 
-  input[type="text"]{
-    border-color:  $greeny;
-    color:$dark;
-    height: 36px;
-  }
   .name-field {
     margin-bottom: -5px;
     margin-top: 0;
   }
 
   .ttl {
-    color: $grey;
+    color: #000;
   }
 
   label {
-    color: $grey;
+    color: #000;
+    font-size:$normal;
+    vertical-align: top;
+  }
+
+  .input {
+
+    input[type="text"]{
+      border-color:  $light-grey;
+      color:$grey;
+      height: 40px;
+      background-color: $light-light-grey;
+      margin-bottom:0;
+    }
+
+    label {
+      display: block;
+      margin-bottom:5px;
+    }
+  }
+  .title + div {
+    margin-top:45px;
+  }
+  .row {
+    padding: 0 7%;
+    margin-bottom: 20px;
+    &.tiny-margin {
+      margin-bottom:12px;
+    }
+    .col {
+      padding: 0 3.5%;
+    }
+    &.last-row{
+      margin-bottom:40px;
+    }
+  }
+
+  .input-checkbox {
+    [type="checkbox"] {
+      & + label {
+        vertical-align: middle;
+        padding-left: 25px;
+        font-size: 14px;
+
+        &:before {
+          width:20px;
+          height:20px;
+          background-color: $light-light-grey;
+          border-color: #d6d6d6;
+          border-radius: 3px;
+        }
+      }
+
+      &:checked {
+        & + label:before {
+          border-width: 0 2px 2px 0;
+          background: transparent;
+          width: 10px;
+          height: 15px;
+          border-radius: 1px;
+          top: 1px;
+          left: -2px;
+          border-color: $tealish;
+        }
+      }
+      &:indeterminate {
+        & + label:before {
+          border-color: red;
+          border-radius: 0;
+          background-color: transparent;
+          left:-20px;
+        }
+      }
+    }
+  }
+  .uptracker-form-btn {
+    font-size: $normal;
+    height: 30px;
+    min-width: 0;
+    width:80px;
+    margin-left:-80px;
+    line-height: 30px;
+    background: $tealish;
+    color: #fff;
   }
 
 }
