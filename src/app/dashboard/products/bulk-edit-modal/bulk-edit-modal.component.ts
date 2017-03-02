@@ -68,7 +68,7 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     this.backStockCollection$ = this.accountService.getDepartments().take(1);
     this.vendorCollection$ = this.accountService.getDepartments().take(1);
     
-    this.selectedProducts = _.filter(this.context.products, r=>r['selected']);
+    this.selectedProducts =this.context.products;
     console.log(this.selectedProducts);
   }
   

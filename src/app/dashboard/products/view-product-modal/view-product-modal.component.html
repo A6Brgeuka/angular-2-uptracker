@@ -1,19 +1,23 @@
 <div class="close" (click)="dismissModal()"></div>
+<div class="row right edit-buttons">
+  <button class="bt-edit-product edbtn bluebtn" *ngIf="!showEdit" (click)="showEditFields()">
+    <fa [name]="'pencil'"></fa>
+    Edit
+  </button>
+  <button class="bt-edit-product-save edbtn bluebtn" (click)="saveAfterEdit()" *ngIf="showEdit">
+    <fa [name]="'check'"></fa>
+    Save
+  </button>
+  <button class="bt-edit-product-cancel edbtn redbtn" *ngIf="showEdit" (click)="closeEditFields()">
+    <fa [name]="'close'"></fa>
+    Cancel
+  </button>
+</div>
 <div class="inner" [ngClass]="{'edit-mode':showEdit}">
-  <div class="title center-align">{{product.name}}</div>
-  <div class="row center edit-buttons">
-    <button class="bt-edit-product edbtn bluebtn" *ngIf="!showEdit" (click)="showEditFields()">
-      <fa [name]="'pencil'"></fa>
-      Edit
-    </button>
-    <button class="bt-edit-product-save edbtn bluebtn" (click)="saveAfterEdit()" *ngIf="showEdit">
-      <fa [name]="'check'"></fa>
-      Save
-    </button>
-    <button class="bt-edit-product-cancel edbtn redbtn" *ngIf="showEdit" (click)="closeEditFields()">
-      <fa [name]="'close'"></fa>
-      Cancel
-    </button>
+  <div class="back-to-product-view" [class.hidden]="!showVariant" (click)="hideVariantDetails()">
+    <i class="fa fa-chevron-left"></i> Product
+  </div>
+  <div class="title center-align">{{showVariant ? 'Product Variation' : product.name }}
   </div>
   <div class="row uptracker-form">
     <div class="col s12 m3">
@@ -24,7 +28,7 @@
     </div>
     <div class="info-box col s12 m9">
       <div class="ttl-box row input">
-        <div *ngIf="!showEdit" class="ttl col s12">{{product.name}}</div>
+        <div *ngIf="(!showEdit && showVariant)" class="ttl col s12 variant-show-name">{{currentVariant.name}}</div>
         <div class="col s12">
           <input class="ttl col s12 name-field" *ngIf="showEdit" [(ngModel)]="productCopy.name" type="text">
         </div>
@@ -125,20 +129,29 @@
             </select>
           </div>
         </div>
-
       </div>
+
+      <div class="row">
+        <div *ngFor="let attr of currentVariant.custom_attr" class="col s2">
+          <label class="top">{{attr.name}}</label>
+          <div class="value">{{attr.value}}</div>
+        </div>
+      </div>
+
+
     </div>
   </div>
+  <div class="clearfix"></div>
 
 
   <div class="row table-head-filter">
     <div class="col s12">
       <ul class="tabs" materialize="tabs">
         <li class="tab col s2">
-          <a href="#variations">Variations</a>
+          <a href="#variations">{{showVariant ? 'Vendors' : 'Variations'}}</a>
         </li>
         <li class="tab col s2">
-          <a href="#info"  [class.hidden]="!hasInfoTab && !showEdit"  >Info</a>
+          <a href="#info">Info</a>
         </li>
         <li class="tab col s2">
           <a href="#inventory">Inventory</a>
@@ -282,7 +295,9 @@
 
       <div class="table-body">
         <div class="variant-table">
-          <div class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
+          <div class="uptracker-form  table-item"
+            *ngFor="let variant of filteredVariants$ | async"
+            (click)="toggleVariantDetailView(variant)">
             <div class="variant-checkbox row-item">
               <div class="checkbox input-checkbox">
                 <input
@@ -296,10 +311,10 @@
               </div>
             </div>
             <div class="name-heading variant-name row-item valign-wrapper">
-              <span *ngIf="!showEdit" [class.reddish]="variant.status == 2" class="valign"
-                (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}</span>
+              <span (click)="showVariantDetails($event,variant)" *ngIf="!showEdit" [class.reddish]="variant.status == 2" class="valign"
+                >{{variant.name || "Product Here"}}</span>
               <div *ngIf="showEdit" class="input">
-                <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
+                <input  class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
               </div>
             </div>
             <div class="small-heading row-item">{{variant.package_type || ""}}</div>

@@ -40,14 +40,27 @@ $normal: 14px;
   }
   .invis {opacity: 0;}
 
-  .edbtn {
-    margin-left: 1px;
-    height: 20px;
-    font-size: 10px;
-    font-weight: normal;
-    border-radius: 5px;
-    padding: 2px 6px;
+  .edit-buttons {
+    position: absolute;
+    right:36px;
+    top:26px;
   }
+
+  .title{
+    margin-bottom:30px!important;
+  }
+
+  .edbtn {
+    font-size: $normal;
+    line-height: 28px;
+    height: 30px;
+    min-width: 0;
+    width:80px;
+    background: $tealish;
+    color: #fff;
+    border-radius:5px;
+  }
+
   .edbtn:hover {
     opacity: .9;
   }
@@ -667,4 +680,16 @@ $normal: 14px;
     padding-right: 5px!important;
   }
 
+  .back-to-product-view {
+    color:$tealish;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    left:30px;
+    top:30px;
+  }
+  .variant-show-name {
+    font-size:1.5em;
+  }
 }

@@ -22,12 +22,15 @@ import {AccountService} from "../../core/services/account.service";
 })
 @DestroySubscribers()
 export class ProductsComponent implements OnInit {
+    private nothingChecked:boolean;
     private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     public sortBy: string;
     private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
     public total: number;
     public products$: Observable<any>;
-    public products:any;
+    public products:any = [];
+    public selectedProducts:any = [];
+    
     public dashboardLocation;
     public infiniteScroll$: any = new BehaviorSubject(false);
     public selectAll$: any = new BehaviorSubject(0);
@@ -168,9 +171,11 @@ export class ProductsComponent implements OnInit {
     }
     
     bulkEditModal(){
-        let products = _.cloneDeep(this.products);
-        this.modal
-        .open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({products:products}));
+        if (!this.nothingChecked) {
+            
+            this.modal
+            .open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({products: this.selectedProducts}));
+        }
     }
 
     searchFilter(event) {
@@ -223,5 +228,9 @@ export class ProductsComponent implements OnInit {
     onScroll(event) {
         this.getInfiniteScroll();
     }
-    
+
+    onCheck(){
+        this.selectedProducts = _.cloneDeep(this.products)
+        .filter(r=>r['selected']);
+    }
 }

@@ -71,7 +71,7 @@
           <div class="col s1">Trackable</div>
           <div class="col s2">Price range</div>
           <div class="col s1">
-            <button (click)="bulkEditModal()" class="right bulk-edit uptracker-form-btn">
+            <button (click)="bulkEditModal()" [disabled]="selectedProducts.length==0" class="right bulk-edit uptracker-form-btn">
               <i class="fa fa-pencil"></i>
             </button>
           </div>
@@ -85,6 +85,7 @@
                 class="selected-input{{i}}"
                 [(ngModel)]="product.selected"
                 id="selected{{i}}"
+                (change)="onCheck()"
               />
               <label for="selected{{i}}"></label>
             </div>

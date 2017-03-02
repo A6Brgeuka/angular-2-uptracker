@@ -195,6 +195,7 @@ $black: #000;
               margin-right:9px;
               line-height:35px;
               transition: color .7s;
+              cursor: pointer;
             }
             .fa-eye {
               color:$tealish;
@@ -348,6 +349,7 @@ $black: #000;
   }
   button {
     margin: 0 15px;
+
   }
  .text {
    clear:both;
@@ -365,6 +367,28 @@ $black: #000;
 div.top {
   position: relative;
   z-index:1;
+}
+.uptracker-form-btn{
+  transition: background-color, opacity, box-shadow .5s;
+  &:hover {
+    opacity: .8;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+}
+.uptracker-form-btn[disabled] {
+  background-color: $light-grey!important;
+  &:hover {
+    opacity: 1;
+    box-shadow: none;
+  }
+}
+.uptracker-toggle-view {
+  cursor: pointer;
+
+  transition: opacity .3s;
+  &:hover {
+    opacity: .8;
+  }
 }
 
 

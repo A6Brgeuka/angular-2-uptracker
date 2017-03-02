@@ -42,6 +42,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         material: [],
         price_range: []
     };
+    private currentVariant:any = {};
+    private showVariant:boolean = false;
     public comment: any = {};
     public showEdit: boolean = false;
     public hasDocs: boolean = false;
@@ -512,7 +514,19 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
             this.toasterService.pop("", res.message)
         })
     }
-
+    
+    
+    showVariantDetails($event,variant){
+        $event.stopPropagation();
+        this.showVariant = true;
+        this.currentVariant = variant;
+        
+    }
+    
+    hideVariantDetails(){
+        this.showVariant = false;
+        this.currentVariant = {};
+    }
 
     // upload by filedrop
     fileOver(fileIsOver: boolean): void {
@@ -630,4 +644,5 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         )
         return out;
     }
+    
 }
