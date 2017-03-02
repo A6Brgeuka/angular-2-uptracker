@@ -26,7 +26,7 @@
           [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }"></div>
       </div>
     </div>
-    <div class="info-box col s12 m9">
+    <div class="info-box col s12 m9" [class.condensed]="showVariant">
       <div class="ttl-box row input">
         <div *ngIf="(!showEdit && showVariant)" class="ttl col s12 variant-show-name">{{currentVariant.name}}</div>
         <div class="col s12">
@@ -171,7 +171,7 @@
 
 
   <div id="variations">
-    <div class="inner">
+    <div *ngIf="!showVariant" class="inner product">
       <div class="variant-table">
         <div class="uptracker-form variant-head">
           <div class="variant-checkbox head-item">
@@ -345,6 +345,66 @@
               *ngIf="variant.detailView">
             </app-variant-detail>
           </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="showVariant" class="inner show-variant">
+      <div class="variant-table">
+        <div class="uptracker-form variant-head">
+          <div class="name-heading head-item">
+            <div class="input">
+              <input
+                type="text"
+                class="name-input"
+                ngModel
+                (input)="changeNameVV($event)"
+                placeholder="Name"
+                #name="ngModel"/>
+            </div>
+          </div>
+          <div class=" head-item ">Catalog#</div>
+          <div class=" head-item ">Avg Time</div>
+          <div class=" head-item ">Book $</div>
+          <div class=" head-item ">Your $</div>
+          <div class=" head-item ">Club $</div>
+          <div class=" head-item ">Forum $</div>
+          <div class="flor">
+            <div *ngIf="!showEdit" class="add-order-heading head-item">
+              <button
+                class="uptracker-form-btn waves-light waves-effect add-order-btn"
+                [disabled]="!addOrderVariantsButtonShow">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                Add to Order
+              </button>
+            </div>
+
+            <div class="filter-heading noselect head-item">
+              <fa [name]="'filter'"></fa>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="table-body">
+        <div class="variant-table">
+          <div *ngFor="let item of currentVariant.vendor_variants" class="uptracker-form  table-item">
+            <div class="name-heading row-item">{{item.vendor_name || ""}}</div>
+            <div class="row-item">{{item.catalog_number || ""}}</div>
+            <div class="row-item">{{item.avg_lead_time || ""}}</div>
+            <div class="row-item">{{item.price || ""}}</div>
+            <div class="row-item">{{item.your_price || ""}}</div>
+            <div class="row-item">{{item.club_price || ""}}</div>
+            <div class="row-item">{{item.forum_price || ""}}</div>
+            <div *ngIf="!showEdit" class="add-order-heading right head-item">
+              <button
+                class="uptracker-form-btn waves-light waves-effect add-order-btn">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                Add to Order
+              </button>
+            </div>
         </div>
       </div>
 

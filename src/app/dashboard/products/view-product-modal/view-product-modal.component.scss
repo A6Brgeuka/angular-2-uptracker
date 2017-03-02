@@ -171,7 +171,7 @@ $normal: 14px;
 
 
     .uptracker-form .input{
-      margin-bottom:17px;
+      margin-bottom:0;
     }
 
     &.edit-mode {
@@ -227,7 +227,7 @@ $normal: 14px;
     }
     .info-box {
 
-      height:160px;
+      min-height:180px;
 
       input[type="text"]{
         border-color:  $greeny;
@@ -692,4 +692,37 @@ $normal: 14px;
   .variant-show-name {
     font-size:1.5em;
   }
+
+  .info-box.condensed .row {
+    margin-bottom: 5px;
+  }
+
+  .inner.show-variant {
+    .table-item {
+      min-height:40px;
+    }
+
+    .row-item, .head-item{
+      width:9%;
+      float:left;
+      font-size: 12px;
+      line-height:30px!important;
+    }
+
+    .head-item {
+      font-weight: bold;
+    }
+
+    div.add-order-heading.head-item {
+      line-height:25px!important;
+    }
+    .table-item .row-item {
+       padding-left: 5px !important;
+    }
+
+    div.add-order-heading.right.head-item {
+      padding-right:5px;
+    }
+  }
 }
+
