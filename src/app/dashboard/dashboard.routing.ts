@@ -11,6 +11,7 @@ import {
     ProductCollectionResolve,
 } from '../shared/resolves/index';
 
+import { InnerDashboardRoutes } from './inner-dashboard/inner-dashboard.routing';
 import { OrdersRoutes } from './orders/orders.routing';
 import { LocationsRoutes } from './locations/locations.routing';
 import { UsersRoutes } from './users/users.routing';
@@ -25,7 +26,8 @@ const dashboardRoutes = [
     path: '',
     component: DashboardComponent,
     children: [
-      { path: '', redirectTo: "dashboard", pathMatch: "full" },
+      //{ path: '', redirectTo: "locations", pathMatch: "full" },
+      ...InnerDashboardRoutes,
       ...OrdersRoutes,
       ...LocationsRoutes,
       ...UsersRoutes,

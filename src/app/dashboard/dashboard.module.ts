@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { DashboardComponent } from './dashboard.component';
 import { AppSharedModule } from '../shared/shared.module';
 
+import { InnerDashboardModule } from './inner-dashboard/inner-dashboard.module';
 import { OrdersModule } from './orders/orders.module';
 import { LocationsModule } from './locations/locations.module';
 import { UsersModule } from './users/users.module';
@@ -22,7 +23,8 @@ import { routing } from './index';
   imports: [
     routing,
     AppSharedModule,
-      
+  
+    InnerDashboardModule,
     OrdersModule,
     LocationsModule,
     UsersModule,
