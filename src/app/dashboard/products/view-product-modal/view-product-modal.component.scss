@@ -171,7 +171,7 @@ $normal: 14px;
 
 
     .uptracker-form .input{
-      margin-bottom:0;
+      margin-bottom: 10px;
     }
 
     &.edit-mode {
@@ -274,9 +274,7 @@ $normal: 14px;
     //  overflow-y: auto;
     //}
 
-    .row-item{
-      cursor:pointer;
-    }
+
 
     .row-item.selected {
       background-color: #f5f5f5;
@@ -694,7 +692,7 @@ $normal: 14px;
   }
 
   .info-box.condensed .row {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   .inner.show-variant {
@@ -723,6 +721,14 @@ $normal: 14px;
     div.add-order-heading.right.head-item {
       padding-right:5px;
     }
+
+    .inner .uptracker-form .input {
+      height:45px;
+    }
+
+  }
+  .inner.product .row-item{
+    cursor:pointer;
   }
 }
 
