@@ -190,6 +190,10 @@ export class ProductService extends ModelService {
         console.log(data);
         return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
     }
+    
+    bulkUpdateProducts(data:any) {
+        return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').all('bulk').post(data);
+    }
 
     deepDiff(obj1: any, obj2: any):any {
         if (_.isFunction(obj1) || _.isFunction(obj2)) {

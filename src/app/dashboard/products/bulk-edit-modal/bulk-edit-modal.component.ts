@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 
 import { AccountService, UserService } from '../../../core/services/index';
 import { AccountVendorModel } from '../../../models/index';
+import { fdatasyncSync } from 'fs';
+import { ProductService } from '../../../core/services/product.service';
 
 export class BulkEditModalContext extends BSModalContext {
   public products: any;
@@ -31,29 +33,32 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   public workingStockCollection$: Observable<any> = new Observable<any>();
   public backStockCollection$: Observable<any> = new Observable<any>();
   public vendorCollection$: Observable<any> = new Observable<any>();
+  private data:any = [];
   
   private context: BulkEditModalContext;
   private selectedProducts:any;
   public bulk: any = {
-    department: null,
+    department: null, //
     working_stock: null,
-    category: null,
+    category: null, //
     back_stock: null,
-    accounting: null,
+    account_category: null, //
     preferred_vendor: null,
-    hazardous: null,
+    hazardous: null, //
     perpetual: null,
-    trackable: null,
+    trackable: null, //
     hidden: null,
-    tax_exempt: null,
-    reset_msds: null,
+    tax_exempt: null, //
+    msds: null, //
   };
   
   
   constructor(
     public dialog: DialogRef<BulkEditModalContext>,
     private userService: UserService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    public productService: ProductService,
+
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -84,7 +89,7 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   }
   
   onSubmit() {
-    
+      
   }
   
   checkboxChange(event, value) {
@@ -111,6 +116,15 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   }
   
   saveBulkEdit(){
-    //TODO
+    //TODO rewrite
+    let dataObj:any = {};
+    let dataIds:any = [];
+    let result:any = [];
+    _.forIn(this.bulk,(value, key) => {if(value !== null){dataObj[key]=value;}});
+    _.map(this.selectedProducts, (product:any) =>dataIds.push(product.id));
+    _.map(dataIds, (id,i) => {result.push({"id":id});});
+    _.map(result, item =>  _.assign(item, dataObj));
+    this.subscribers.updateBulkProducts$ = this.productService.bulkUpdateProducts({"products":result});
+    this.dismissModal();
   }
 }
