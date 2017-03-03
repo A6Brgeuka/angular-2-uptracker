@@ -15,7 +15,8 @@
 </div>
 <div class="inner" [ngClass]="{'edit-mode':showEdit}">
   <div class="back-to-product-view" [class.hidden]="!showVariant" (click)="hideVariantDetails()">
-    <i class="fa fa-chevron-left"></i> Product
+    <i class="fa fa-chevron-left"></i>
+    Product
   </div>
   <div class="title center-align">{{showVariant ? 'Product Variation' : product.name }}
   </div>
@@ -89,7 +90,7 @@
       </div>
       <div class="row">
 
-        <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit" >
+        <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
           <label>Department</label>
           <div *ngIf="!showEdit" class="value">{{product.department}}</div>
           <div *ngIf="showEdit" class="select">
@@ -311,10 +312,13 @@
               </div>
             </div>
             <div class="name-heading variant-name row-item valign-wrapper">
-              <span (click)="showVariantDetails($event,variant)" *ngIf="!showEdit" [class.reddish]="variant.status == 2" class="valign"
-                >{{variant.name || "Product Here"}}</span>
+              <span (click)="showVariantDetails($event,variant)"
+                *ngIf="!showEdit"
+                [class.reddish]="variant.status == 2"
+                class="valign"
+              >{{variant.name || "Product Here"}}</span>
               <div *ngIf="showEdit" class="input">
-                <input  class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
+                <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
               </div>
             </div>
             <div class="small-heading row-item">{{variant.package_type || ""}}</div>
@@ -405,9 +409,9 @@
                 Add to Order
               </button>
             </div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
   <div id="inventory">
@@ -474,7 +478,7 @@
       Tracking tab
     </div>
   </div>
-  <div  id="info">
+  <div id="info">
     <div class="inner uptracker-form">
       <div class="row">
         <div class="ttl col s12">
@@ -485,7 +489,7 @@
         </div>
         <div *ngIf="!showEdit" class="col s12 bold">
           {{product.description}}
-          <i class="no-info"  *ngIf="!product.description">No additional information</i>
+          <i class="no-info" *ngIf="!product.description">No additional information</i>
         </div>
       </div>
       <div class="row">
@@ -511,7 +515,7 @@
             </div>
             <div *ngIf="!showEdit" class="col s12">
               <a href="#">{{product.msds}}</a>
-              <i class="no-info"  *ngIf="!product.msds">No additional information</i>
+              <i class="no-info" *ngIf="!product.msds">No additional information</i>
             </div>
           </div>
           <div *ngIf="!showEdit" class="row">
@@ -520,7 +524,7 @@
             </div>
             <div class="col s12">
               <a href="#">{{product.hazardous_form}}</a>
-              <i class="no-info"  *ngIf="!product.hazardous_form">No additional information</i>
+              <i class="no-info" *ngIf="!product.hazardous_form">No additional information</i>
             </div>
           </div>
         </div>
@@ -618,7 +622,7 @@
         <div class="variant-table">
           <div class="uptracker-form  table-item" *ngFor="let order of orders$ | async">
             <div class="name-heading variant-name row-item valign-wrapper">
-                            <span  class="valign"
+                            <span class="valign"
                               (click)="toggleVariantDetailView(order)">{{order.variant_name }}</span>
             </div>
             <div class="small-heading row-item">{{order.quantity}}</div>

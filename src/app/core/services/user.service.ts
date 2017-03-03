@@ -106,7 +106,7 @@ export class UserService extends ModelService {
     return !this.getSessionId() || !this.getSessionToken();
   }
 
-  logout(redirectUrl = '/') { 
+  logout(redirectUrl = 'login') {
     let data = {
       user_id: this.getSessionId()
     };
@@ -116,7 +116,7 @@ export class UserService extends ModelService {
           this.updateSelfData({});
         });
   }
-  static logout(sessionService, router, redirectUrl = '/') {
+  static logout(sessionService, router, redirectUrl = 'login') {
     sessionService.remove('uptracker_token');
     sessionService.remove('uptracker_selfId');
     router.navigate([redirectUrl]);

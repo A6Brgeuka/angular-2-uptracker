@@ -47,7 +47,7 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     hazardous: null, //
     perpetual: null,
     trackable: null, //
-    hidden: null,
+    status: null, //
     tax_exempt: null, //
     msds: null, //
   };
@@ -115,16 +115,25 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     }
   }
   
-  saveBulkEdit(){
+  saveBulkEdit() {
     //TODO rewrite
-    let dataObj:any = {};
-    let dataIds:any = [];
-    let result:any = [];
-    _.forIn(this.bulk,(value, key) => {if(value !== null){dataObj[key]=value;}});
-    _.map(this.selectedProducts, (product:any) =>dataIds.push(product.id));
-    _.map(dataIds, (id,i) => {result.push({"id":id});});
-    _.map(result, item =>  _.assign(item, dataObj));
-    this.subscribers.updateBulkProducts$ = this.productService.bulkUpdateProducts({"products":result});
+    let dataObj: any = {};
+    let dataIds: any = [];
+    let result: any = [];
+    _.forIn(this.bulk, (value, key) => {
+      if (value !== null) {
+        dataObj[key] = value;
+      }
+    });
+    if (dataObj['status'] !== null) {
+      dataObj['status'] = !dataObj['status']
+    }
+    _.map(this.selectedProducts, (product: any) => dataIds.push(product.id));
+    _.map(dataIds, (id, i) => {
+      result.push({"id": id});
+    });
+    _.map(result, item => _.assign(item, dataObj));
+    this.subscribers.updateBulkProducts$ = this.productService.bulkUpdateProducts({"products": result});
     this.dismissModal();
   }
 }

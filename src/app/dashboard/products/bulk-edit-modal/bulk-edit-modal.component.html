@@ -125,10 +125,10 @@
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
-      [indeterminate]="bulk.hidden === null"
+      [indeterminate]="bulk.status === null"
       class="checkbox-input"
-      [(ngModel)]="bulk.hidden"
-      (change)="checkboxChange($event,bulk.hidden)"
+      [(ngModel)]="bulk.status"
+      (change)="checkboxChange($event,bulk.status)"
       id="hidden-checkbox"
     />
     <label for="hidden-checkbox"></label>

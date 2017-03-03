@@ -20,33 +20,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-    // TODO: remove after testing
-    // let user$ = this.userService.loadSelfData().map((res) => {
-    //   // if logged out guest remove self data
-    //   if (this.userService.isGuest()){
-    //     this.userService.updateSelfData(new UserModel());
-    //   }
-    //   this.selfData = res;
-    //   let url: string = state.url;
-    //   let location = url.split('/')[1];
-    //   switch (location) {
-    //     case 'login':
-    //       return this.checkLogin();
-    //     case 'forgot-password':
-    //       return this.checkForgotPassword();
-    //     case 'signup':
-    //       return this.checkSignup();
-    //     case 'onboard':
-    //       return this.checkOnboard(url);
-    //     case 'dashboard':
-    //       return this.checkDashboard(url);
-    //     default:
-    //       return true;
-    //   }
-    // });
-    // return user$.take(1);
-
     let url: string = state.url;
+    
     return this.guard(url);
   }
 
@@ -82,6 +57,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         case 'onboard':
           return this.checkOnboard(url);
         case 'dashboard':
+        case 'products':
+        case 'vendors':
+        case 'locations':
+        case 'users':
           return this.checkDashboard(url);
         default:
           return true;

@@ -13,7 +13,7 @@ const appRoutes = [
     path: '',
     component: AppComponent,
     children: [
-      { path: '', redirectTo: "/dashboard", pathMatch: "full" },
+      { path: '', redirectTo: "/login", pathMatch: "full" },
       { path: '', canLoad: [AuthGuard], loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'onboard', canLoad: [AuthGuard], loadChildren: './onboard/onboard.module#OnboardModule' },
       ...AuthRoutes

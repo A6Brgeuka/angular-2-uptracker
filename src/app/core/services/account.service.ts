@@ -35,8 +35,8 @@ export class AccountService extends ModelService{
     budget_distribution: [],
     currency: 'USD',
     fiscal_year: null,
-    annual_income: null,
-    annual_inventory_budget: null,
+    annual_income: 0,
+    annual_inventory_budget: 0,
     disabledRange: [],
     taxRate: null
   };
@@ -156,7 +156,7 @@ export class AccountService extends ModelService{
   }
 
   getUsers(){
-    let usersLoaded = this.userService.selfData.account.users ? this.userService.selfData.account.users[0].name : false;
+    let usersLoaded = (this.userService.selfData.account.users && !_.isEmpty(this.userService.selfData.account.users)) ? this.userService.selfData.account.users[0].name : false;
     if (!usersLoaded) {
       return this.restangular.one('accounts', this.userService.selfData.account_id).all('users').customGET('')
           .map((res: any) => {
