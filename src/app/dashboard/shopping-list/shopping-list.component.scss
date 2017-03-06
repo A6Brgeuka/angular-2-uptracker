@@ -8,6 +8,11 @@ $light-grey: #d6d6d6;
 $black: #000;
 
 :host /deep/ {
+
+  .inbl {
+    display: inline-block;
+  }
+
   .less-title {
     line-height: 30px;
     font-size: 22px;
@@ -39,10 +44,19 @@ $black: #000;
       }
     }
 
-    .item {
+    .item, .heading.row {
       padding:10px 0;
-      .col .row {
-        margin-bottom: 0;
+      .col {
+        padding: 0 0.25rem;
+        .row {
+          margin-bottom: 0;
+        }
+      }
+      .select {
+        width:100%;
+      }
+      input {
+        box-sizing: border-box;
       }
     }
 
@@ -196,7 +210,7 @@ $black: #000;
         .col {
           min-height: 40px;
           line-height: 40px;
-          color: #888;
+          color: #444;
           &:nth-of-type(3), &:nth-of-type(4), &:nth-of-type(5) {
             text-align: center;
           }
@@ -221,7 +235,7 @@ $black: #000;
 
       input {
         margin: 0;
-        height: 25px;
+        height: 30px;
         font-size: 11px;
         background: #fff;
         padding-left: 8px;
@@ -229,7 +243,7 @@ $black: #000;
         text-overflow: ellipsis;
         color: $grey;
         border: 1px solid #9a9a9a;
-        border-radius: 7px;
+        border-radius: 5px;
 
         &.empty {
           color: $light-grey;
