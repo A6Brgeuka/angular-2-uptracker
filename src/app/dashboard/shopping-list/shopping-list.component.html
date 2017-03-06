@@ -57,13 +57,21 @@
             </div>
           </div>
         </div>
-        <div class="col s4">{{product.vendor}}</div>
+        <div class="col s4">
+            <div class="select">
+              <select [(ngModel)]="product.vendor" materialize="material_select" >
+                <option value="">Sort by</option>
+                <option value="A-Z">A-Z</option>
+                <option value="Z-A">Z-A</option>
+              </select>
+            </div>
+        </div>
         <div class="col s1">
           <div class="input">
             <input
               type="text"
               class="hazardous-input{{i}}"
-              [(ngModel)]="product.price_min"
+              [(ngModel)]="product.quantity"
               id="hazardous{{i}}"
             />
             <label for="hazardous{{i}}"></label>
