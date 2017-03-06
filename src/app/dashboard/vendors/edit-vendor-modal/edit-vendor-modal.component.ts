@@ -219,21 +219,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   }
 
   calcPriorityMargin(value){
-    let fixer: number;
-    value = parseInt(value);
-    switch (value){
-      case 1: fixer = 13; break;
-      case 2: fixer = 12; break;
-      case 3: fixer = 12; break;
-      case 4: fixer = 11; break;
-      case 5: fixer = 12; break;
-      case 6: fixer = 11; break;
-      case 7: fixer = 11; break;
-      case 8: fixer = 10; break;
-      case 9: fixer = 10; break;
-      case 10: fixer = 6; break;
-      default: fixer = 10;
-    }
+    let fixer: number = -15;
     this.priorityMargin = 'calc(' + (value - 1)*10 + '% + ' + fixer + 'px)';
   }
 

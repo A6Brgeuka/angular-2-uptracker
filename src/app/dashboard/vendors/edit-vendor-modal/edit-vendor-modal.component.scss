@@ -5,73 +5,78 @@
   //  }
   //}
 
-  #general{
+  #general {
     display: block !important;
   }
 
   .title.notabs {
-    margin-bottom:40px!important;
+    margin-bottom: 40px !important;
   }
 
-  .upload{
-    margin-bottom:59px;
+  .upload {
+    margin-bottom: 59px;
 
-    .range-field{
-      margin-top:12px;
-      megint-right:-0.5rem;
+    .range-field {
+      margin-top: 12px;
       position: relative;
-
-      .value{
-        position:absolute;
-        text-align:center;
-        color:#fff;
-        font-weight:bold;
-        bottom:7px;
-        z-index:1;
-        cursor:pointer;
-        pointer-events: none;
-      }
-    }
-
-    .img-container{
-      width:160px;
-      height:78px;
-      background-image: url(/assets/img/img-placeholder-docs.svg);
-      margin-top:5px;
-    }
-
-    .file-list{
-      margin:5px 0 0;
-
-      .item{
-        margin-top:5px;
-
-        img{
-          float:left;
-          margin-right:5px;
+      .value-container {
+        margin: 0;
+        position: relative;
+        .value {
+          position: absolute;
+          width: 30px;
+          text-align: center;
+          color: #fff;
+          font-weight: bold;
+          bottom: 7px;
+          z-index: 1;
+          cursor: pointer;
+          pointer-events: none;
+          padding-left: calc(-10px + 10%);
+          margin-left: calc(10px - 10%);
         }
       }
     }
 
-    .text{
-      margin-top:15px;
-      margin-right:-0.75rem;
+    .img-container {
+      width: 160px;
+      height: 78px;
+      background-image: url(/assets/img/img-placeholder-docs.svg);
+      margin-top: 5px;
+    }
 
-      .tip{
-        color:#9a9c9e;
+    .file-list {
+      margin: 5px 0 0;
+
+      .item {
+        margin-top: 5px;
+
+        img {
+          float: left;
+          margin-right: 5px;
+        }
       }
     }
 
-    a{
-      cursor:pointer;
+    .text {
+      margin-top: 15px;
+      margin-right: -0.75rem;
+
+      .tip {
+        color: #9a9c9e;
+      }
+    }
+
+    a {
+      cursor: pointer;
     }
   }
 
-  .textarea-row{
-    margin-top:55px;
+  .textarea-row {
+    margin-top: 55px;
   }
 
-  .buttons{
-    margin:44px 0 0;
+  .buttons {
+    margin: 44px 0 0;
   }
 }
