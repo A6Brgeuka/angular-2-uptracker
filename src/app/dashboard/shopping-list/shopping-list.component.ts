@@ -26,7 +26,9 @@ export class ShoppingListComponent implements OnInit {
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public products$: Observable<any>;
-
+  public products:any = [];
+  public selectedProducts:any = [];
+  
   constructor(
       vcRef: ViewContainerRef,
       overlay: Overlay,
@@ -72,6 +74,7 @@ export class ShoppingListComponent implements OnInit {
           let sortedProducts = _.orderBy(filteredProducts, [sortBy], [order]);
           return sortedProducts;
         });
+    this.products$.subscribe();
   }
 
   viewProductModal(product){
