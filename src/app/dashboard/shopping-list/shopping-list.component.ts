@@ -24,123 +24,187 @@ export class ShoppingListComponent implements OnInit {
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  private order$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
-  public products$: Observable<any>;
-  public products:any = [];
-  public selectedProducts:any = [];
+  public orders:any;
+  public orders$: BehaviorSubject<any> = new BehaviorSubject({});
+  public products: any = [];
+  public selectedProducts: any = [];
+  private currentOrder: string;
+  private currentOrder$: BehaviorSubject<any> = new BehaviorSubject(null);
   
   constructor(
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
-      public modal: Modal,
-      private productService: ProductService,
-      private modalWindowService: ModalWindowService
+    vcRef: ViewContainerRef,
+    overlay: Overlay,
+    public modal: Modal,
+    private productService: ProductService,
+    private modalWindowService: ModalWindowService
   ) {
     overlay.defaultViewContainer = vcRef;
   }
-
+  
   ngOnInit() {
-    // this.products$ = Observable.of([
-    //   { name: 'First', variations: 3, priceMin: 79, priceMax: 112},
-    //   { name: 'Second with long name length for two lines', variations: 100, priceMin: 8, priceMax: 34},
-    // ]);
-    this.products$ = Observable
-        .combineLatest(
-            this.productService.collection$,
-            this.sortBy$,
-            this.searchKey$
-        )
-        .map(([products, sortBy, searchKey]) => {
-          this.total = products.length;
-          let filteredProducts = products;
-
-          // this.viewProductModal(products[0]);
-
-          if (searchKey && searchKey!='') {
-            filteredProducts = _.reject(filteredProducts, (product: any) =>{
-              let key = new RegExp(searchKey, 'i');
-              return !key.test(product.name);
-            });
-          }
-          let order = 'desc';
-          if (sortBy == 'A-Z') {
-            sortBy = 'name';
-            order = 'asc';
-          }
-          if (sortBy == 'Z-A') {
-            sortBy = 'name';
-          }
-
-          let sortedProducts = _.orderBy(filteredProducts, [sortBy], [order]);
-          return sortedProducts;
-        });
-    this.products$.subscribe();
-  }
-
-  viewProductModal(product){
-    this.modal
-        .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({ product: product }))
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                this.editProductModal(res);
-              },
-              (err)=>{}
-          );
-        });
-  }
-
-  addProduct(){
-    this.modal
-      .open(AddProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
-      .then((resultPromise)=>{
-        resultPromise.result.then(
-          (res) => {
-            this.editProductModal(res);
+  
+  
+  
+    this.orders =
+      [
+        {
+          'name': "Uptracker Optimized",
+          'id': ";fjdlgefjhjfodjofho",
+          'total': 500,
+          'products': [
+            {
+              'name': 'First',
+              'selectedVendor': "yegiuyriuyuiyreyuioge",
+              'quantity':1,
+              'vendors': [
+                {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 99.0},
+                {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 139.0},
+                {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 199.0},
+              ]
+            },
+            {
+              'name': 'Second with long name length for two lines',
+              'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
+              'quantity':3,
+              'vendors': [
+                {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 99.0},
+                {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 139.0},
+                {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 199.0},
+              ]
+            }
+          ]
+        },
+        {
+          'name': "Best Price",
+          'id': ";fjdlgefjhjfodjofh3",
+          'total': 100500,
+          'products': [{
+            'name': 'Third',
+            'selectedVendor': "yegiuyriup;gkfdkgkioe",
+            'quantity':1,
+            'vendors': [
+              {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 66.0},
+              {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 159.0},
+              {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 499.0},
+            ]
           },
-          (err)=>{}
-        );
-      });
+            {
+              'name': 'Fourth with long name length for two lines',
+              'quantity':1,
+              'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
+              'vendors': [
+                {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 21.0},
+                {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 356.0},
+                {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 546.0},
+              ]
+            },
+            {
+              'name': '5th',
+              'quantity':1,
+              'selectedVendor': ";yegiuyriuyuiycreyuioge",
+              'vendors': [
+                {'id': "yegiuyriuyuiycreyuioge", 'name': 'Best Vendor', 'price': 241.0},
+                {'id': "yegiuyriup;gkfdckgkioe", 'name': 'Mid Vendor', 'price': 3562.15},
+                {'id': ";kfkgfckhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 5464.0},
+              ]
+            }
+          ]
+        }
+      ];
+  
+    this.orders$.next(this.orders);
+    this.order$.next(this.orders[0]);
+    
+    Observable
+    .combineLatest(this.orders$, this.currentOrder$)
+    .filter(([orders, current]) => current)
+    .map(([orders,current]) => {
+      let ord = _.filter(orders,(o:any)=>{return (current == o.id)});
+      this.order$.next(ord[0]);
+    }).subscribe();
+  
   }
-
-  editProductModal(product = null){
-    this.modal.open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({ product: product }));
+  
+  selectOrder(id){
+    console.log(id);
+    this.currentOrder$.next(id);
   }
-
-  searchFilter(event){
+  
+  onVendorChange(p){
+    console.log(p);
+      let selected_vendor = _.filter(p.vendors, (r:any)=>(r.id == p.selectedVendor));
+      p.selectedPrice = selected_vendor['price'];
+    console.log(p);
+    this.order$.next(p);
+    
+  }
+  
+  viewProductModal(product) {
+    this.modal
+    .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          this.editProductModal(res);
+        },
+        (err) => {
+        }
+      );
+    });
+  }
+  
+  addProduct() {
+    this.modal
+    .open(AddProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          this.editProductModal(res);
+        },
+        (err) => {
+        }
+      );
+    });
+  }
+  
+  editProductModal(product = null) {
+    this.modal.open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
+  }
+  
+  searchFilter(event) {
     // replace forbidden characters
     let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
-
-  itemsSort(event) {
-    let value = event.target.value;
-    this.sortBy$.next(value);
-  }
-
-  showFiltersModal(){
+  
+  
+  showFiltersModal() {
     this.modal
-        .open(ProductFilterModal,  this.modalWindowService.overlayConfigFactoryWithParams({}))
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                // this.filterProducts();
-              },
-              (err)=>{}
-          );
-        });
+    .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          // this.filterProducts();
+        },
+        (err) => {
+        }
+      );
+    });
   }
-
-  requestProduct(){
+  
+  requestProduct() {
     this.modal
-        .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                // this.filterProducts();
-              },
-              (err)=>{}
-          );
-        });
+    .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          // this.filterProducts();
+        },
+        (err) => {
+        }
+      );
+    });
   }
 }

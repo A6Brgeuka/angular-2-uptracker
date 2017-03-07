@@ -7,9 +7,13 @@
           <div class="main-title left">Shopping List</div>
           <div class="sub-title">{{total}} items</div>
         </div>
-        <button type="button" (click)="addProduct()" class="right uptracker-form-btn waves-light waves-effect">Add
-          Product
+        <button type="button" (click)="addProduct()" class="right uptracker-form-btn waves-light waves-effect">
+          Add Product
         </button>
+        <div class="filter-field right" (click)="showFiltersModal()">
+          <i class="fa fa-filter"></i>
+          <span>Filters</span>
+        </div>
       </div>
 
       <div class="heading row">
@@ -37,7 +41,7 @@
         <div class="col s1">Price</div>
       </div>
 
-      <div class="item row" *ngFor="let product of products$ | async; let i=index">
+      <div class="item row" *ngFor="let product of (order$ | async)?.products; let i=index">
         <div class="col s6">
           <div class="row">
             <div class="col s2">
@@ -58,13 +62,11 @@
           </div>
         </div>
         <div class="col s4">
-            <div class="select inbl">
-              <select [(ngModel)]="product.vendor" materialize="material_select" >
-                <option value="">Sort by</option>
-                <option value="A-Z">A-Z</option>
-                <option value="Z-A">Z-A</option>
-              </select>
-            </div>
+          <div class="select inbl">
+            <select [(ngModel)]="product.selectedVendor" (change)="onVendorChange(product)" materialize="material_select">
+              <option *ngFor="let vendor of product.vendors" [value]="vendor.id">{{ vendor.name }}</option>
+            </select>
+          </div>
         </div>
         <div class="col s1">
           <div class="input">
@@ -78,31 +80,43 @@
           </div>
         </div>
         <div class="col s1">
-          {{ product.price_min }}
+          {{ product.selectedPrice || product.vendors[0].price || 0 }}
         </div>
       </div>
     </div>
 
     <div class="orders-preview col m5 s12">
-      <div class="col s11">
-        <div class="main-title less-title">Orders Preview</div>
-        <div class="grey-text">7 products selected</div>
+
+      <div class="row">
+        <div class="col s11">
+          <div class="main-title less-title">Orders Preview</div>
+          <div class="grey-text">7 products selected</div>
+        </div>
+        <div class="col s1">
+          <i class="fa fa-gear right"></i>
+        </div>
       </div>
-      <div class="col s1">
-        <i class="fa fa-gear"></i>
-      </div>
+
       <div class="order-list">
-        <div class="row order-list-item">
+
+        <div *ngFor="let order of (orders$ | async)" class="row order-list-item">
           <div class="col s9">
-            <div class="order-heading">Uptracker Optimized</div>
-            <div class="order-price">$1,100.00</div>
+            <div class="order-heading">{{ order.name }}</div>
+            <div class="order-price">${{order.total}}</div>
             <div class="order-count">2 Orders</div>
           </div>
-          <div class="col s3">
-            <i class="fa fa-shopping-cart"></i>
-            <div>Preview</div>
+          <div class="col s3" (click)="selectOrder(order.id)" >
+            <div class="inbl">
+              <i class="fa fa-shopping-cart"></i>
+              <div>Preview</div>
+            </div>
           </div>
         </div>
+
+
+
+        <div><a>Compare All</a></div>
+
       </div>
     </div>
   </div>

@@ -6,8 +6,85 @@ $dark: #444;
 $grey: #9a9c9e;
 $light-grey: #d6d6d6;
 $black: #000;
+$orange:#f4827a;
 
 :host /deep/ {
+  .filter-field {
+    color:$tealish;
+    font-size: 14px;
+    .fa {font-size:32px;}
+    span {
+      vertical-align: bottom;
+      line-height: 32px;
+      padding-right:10px;
+    }
+    cursor:pointer;
+    transition: opacity .3s;
+    &:hover {
+      opacity:0.8;
+    }
+  }
+  .orders-preview {
+    padding-left: 2%;
+    .fa {
+      font-size:20px;
+      color:$tealish;
+    }
+    .fa-gear {
+      cursor: pointer;
+      transition: opacity .3s;
+      &:hover {
+        opacity:0.8;
+      }
+    }
+
+    .row.order-list-item {
+      border:1px solid $tealish;
+      background-color: #fff;
+      position: relative;
+      border-radius: 4px;
+      .col.s9 {
+        padding:20px;
+        font-size: 120%;
+        .order-price {
+          display: inline-block;
+          color:$orange;
+        }
+        .order-count {
+          padding-left: 20px;
+          font-size: 12px;
+          color: $tealish;
+          display: inline-block;
+        }
+      }
+
+      .col.s3 {
+        position: absolute;
+        top:0;
+        right:0;
+        bottom:0;
+        left:75%;
+        margin: 0;
+        background-color: $tealish;
+        color:#fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        cursor:pointer;
+        transition: opacity .3s;
+        &:hover {
+          opacity:0.8;
+        }
+
+        i.fa {
+          color: #fff;
+        }
+      }
+
+    }
+  }
+
 
   .inbl {
     display: inline-block;
@@ -45,7 +122,7 @@ $black: #000;
     }
 
     .item, .heading.row {
-      padding:10px 0;
+      padding:15px 0;
       .col {
         padding: 0 0.25rem;
         .row {
@@ -61,6 +138,8 @@ $black: #000;
     }
 
     .list {
+      border-right:1px solid $light-grey;
+      padding-right: 2%;
       letter-spacing: 0;
       word-spacing: 0;
       font-size: 0;
@@ -87,7 +166,7 @@ $black: #000;
             border: 1px solid #d6d6d6;
             background: #fff;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 3px;
 
             .hazardous {
               position: absolute;
@@ -208,8 +287,8 @@ $black: #000;
         font-size: 14px;
 
         .col {
-          min-height: 40px;
-          line-height: 40px;
+          min-height: 30px;
+          line-height: 30px;
           color: #444;
           &:nth-of-type(3), &:nth-of-type(4), &:nth-of-type(5) {
             text-align: center;
@@ -242,7 +321,7 @@ $black: #000;
         text-indent: 0;
         text-overflow: ellipsis;
         color: $grey;
-        border: 1px solid #9a9a9a;
+        border: 1px solid #9a9a9a!important;
         border-radius: 5px;
 
         &.empty {
