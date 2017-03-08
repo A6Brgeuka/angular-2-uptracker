@@ -1,7 +1,13 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import {
+  Component, OnInit, ViewContainerRef, ReflectiveInjector, ComponentRef, Injector,
+  Injectable, Renderer
+} from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
-import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import {
+  Overlay, overlayConfigFactory, DialogRef, createComponent, ModalOverlay,
+  OverlayRenderer, DOMOverlayRenderer
+} from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
@@ -13,6 +19,40 @@ import { RequestProductModal } from './request-product-modal/request-product-mod
 import { ProductService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AddProductModal } from "./add-product-modal/add-product-modal.component";
+
+
+@Injectable()
+export class Qqq extends DOMOverlayRenderer{
+  
+  render(dialog: DialogRef<any>, vcRef: ViewContainerRef, injector?: Injector): ComponentRef<ModalOverlay> {
+    
+    let cmpRef = super.render(dialog, vcRef, injector);
+    (<any>cmpRef)._nativeElement.className += 'transparent-bg11';
+    
+    return cmpRef;
+    
+    //var bindings = ReflectiveInjector.resolve([
+    //  { provide: DialogRef, useValue: dialog }
+    //]);
+    //var cmpRef = createComponent({
+    //  component: ModalOverlay,
+    //  vcRef: vcRef,
+    //  injector: injector,
+    //  bindings: bindings
+    //});
+    //(<any>cmpRef)._nativeElement.className += 'transparent-bg';
+    //
+    //if (dialog.inElement) {
+    //  vcRef.element.nativeElement.appendChild(cmpRef.location.nativeElement);
+    //}
+    //else {
+    //  document.body.appendChild(cmpRef.location.nativeElement);
+    //}
+    //
+    //
+    //return cmpRef;
+  }
+}
 
 @Component({
   selector: 'app-shopping-list',
@@ -33,12 +73,20 @@ export class ShoppingListComponent implements OnInit {
   private currentOrder: string;
   private currentOrder$: BehaviorSubject<any> = new BehaviorSubject(null);
   
+  
+  
+  
+  
+  
+  
+  
   constructor(
     vcRef: ViewContainerRef,
     overlay: Overlay,
     public modal: Modal,
     private productService: ProductService,
-    private modalWindowService: ModalWindowService
+    private modalWindowService: ModalWindowService,
+    private _modalRenderer: Qqq
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -65,7 +113,7 @@ export class ShoppingListComponent implements OnInit {
               ]
             },
             {
-              'name': 'Second with long name length for two lines',
+              'name': 'Second',
               'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
               'quantity':3,
               'vendors': [
@@ -91,7 +139,7 @@ export class ShoppingListComponent implements OnInit {
             ]
           },
             {
-              'name': 'Fourth with long name length for two lines',
+              'name': 'Fourth ',
               'quantity':1,
               'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
               'vendors': [
@@ -142,8 +190,42 @@ export class ShoppingListComponent implements OnInit {
   }
   
   viewProductModal(product) {
+    
+    let qqq = this.modalWindowService.overlayConfigFactoryWithParams({product: product}, true);
+    
+    qqq.renderer = this._modalRenderer;
+    
+    //qqq.renderer.render = function (dialog, vcRef, injector) {
+    //
+    //  var bindings = ReflectiveInjector.resolve([
+    //    { provide: DialogRef, useValue: dialog }
+    //  ]);
+    //  var cmpRef = createComponent({
+    //    component: ModalOverlay,
+    //    vcRef: vcRef,
+    //    injector: injector,
+    //    bindings: bindings
+    //  });
+    //
+    //  debugger;
+    //
+    //  if (dialog.inElement) {
+    //    vcRef.element.nativeElement.appendChild(cmpRef.location.nativeElement);
+    //  }
+    //  else {
+    //    document.body.appendChild(cmpRef.location.nativeElement);
+    //  }
+    //  return cmpRef;
+    //};
+  
+  
+  
+  
+    
+    
+    
     this.modal
-    .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}))
+    .open(ViewProductModal, qqq)
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
@@ -181,17 +263,17 @@ export class ShoppingListComponent implements OnInit {
   
   
   showFiltersModal() {
-    this.modal
-    .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
-      );
-    });
+    this.modal.alert().size('lg').dialogClass('dfsdgsd').title('dfdf').body('sfdsfsf').open();
+    //.open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    //.then((resultPromise) => {
+    //  resultPromise.result.then(
+    //    (res) => {
+    //      // this.filterProducts();
+    //    },
+    //    (err) => {
+    //    }
+    //  );
+    //});
   }
   
   requestProduct() {

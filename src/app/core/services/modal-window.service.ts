@@ -65,7 +65,7 @@ export class ModalWindowService {
         });
   }
 
-  overlayConfigFactoryWithParams(object) {
+  overlayConfigFactoryWithParams(object, isTransparentBg = false) {
     if(!object.keyboard) {
       Object.assign(object,{keyboard: []})
     }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { ShoppingListComponent } from './shopping-list.component';
+import { ShoppingListComponent, Qqq } from './shopping-list.component';
 import { AppSharedModule } from '../../shared/shared.module';
 import { EditProductModalModule } from './edit-product-modal/edit-product-modal.module';
 import { ViewProductModalModule } from './view-product-modal/view-product-modal.module';
@@ -20,7 +20,7 @@ import { AddProductModalModule } from "./add-product-modal/add-product-modal.mod
     ProductFilterModalModule,
     RequestProductModalModule
   ],
-  providers: []
+  providers: [Qqq]
 })
 export class ShoppingListModule {
 }
