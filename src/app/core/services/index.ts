@@ -10,7 +10,7 @@ import { SessionService } from './session.service';
 import { FileUploadService } from './file-upload.service';
 import { ExifService } from './exif.service';
 import { VendorService } from './vendor.service';
-import { ModalWindowService } from './modal-window.service';
+import { ModalWindowService, CustomRenderer } from './modal-window.service';
 import { ProductService } from './product.service';
 import { JwtService } from './jwt.service';
 import { LocationService } from './location.service';
@@ -32,7 +32,9 @@ export {
   ModalWindowService,
   ProductService,
   JwtService,
-  LocationService
+  LocationService,
+  CustomRenderer
+
 };
 
 // an array of services to resolve routes with data

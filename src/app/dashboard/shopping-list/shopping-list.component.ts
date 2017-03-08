@@ -21,39 +21,6 @@ import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AddProductModal } from "./add-product-modal/add-product-modal.component";
 
 
-@Injectable()
-export class Qqq extends DOMOverlayRenderer{
-  
-  render(dialog: DialogRef<any>, vcRef: ViewContainerRef, injector?: Injector): ComponentRef<ModalOverlay> {
-    
-    let cmpRef = super.render(dialog, vcRef, injector);
-    (<any>cmpRef)._nativeElement.className += 'transparent-bg11';
-    
-    return cmpRef;
-    
-    //var bindings = ReflectiveInjector.resolve([
-    //  { provide: DialogRef, useValue: dialog }
-    //]);
-    //var cmpRef = createComponent({
-    //  component: ModalOverlay,
-    //  vcRef: vcRef,
-    //  injector: injector,
-    //  bindings: bindings
-    //});
-    //(<any>cmpRef)._nativeElement.className += 'transparent-bg';
-    //
-    //if (dialog.inElement) {
-    //  vcRef.element.nativeElement.appendChild(cmpRef.location.nativeElement);
-    //}
-    //else {
-    //  document.body.appendChild(cmpRef.location.nativeElement);
-    //}
-    //
-    //
-    //return cmpRef;
-  }
-}
-
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
@@ -86,7 +53,6 @@ export class ShoppingListComponent implements OnInit {
     public modal: Modal,
     private productService: ProductService,
     private modalWindowService: ModalWindowService,
-    private _modalRenderer: Qqq
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -190,42 +156,8 @@ export class ShoppingListComponent implements OnInit {
   }
   
   viewProductModal(product) {
-    
-    let qqq = this.modalWindowService.overlayConfigFactoryWithParams({product: product}, true);
-    
-    qqq.renderer = this._modalRenderer;
-    
-    //qqq.renderer.render = function (dialog, vcRef, injector) {
-    //
-    //  var bindings = ReflectiveInjector.resolve([
-    //    { provide: DialogRef, useValue: dialog }
-    //  ]);
-    //  var cmpRef = createComponent({
-    //    component: ModalOverlay,
-    //    vcRef: vcRef,
-    //    injector: injector,
-    //    bindings: bindings
-    //  });
-    //
-    //  debugger;
-    //
-    //  if (dialog.inElement) {
-    //    vcRef.element.nativeElement.appendChild(cmpRef.location.nativeElement);
-    //  }
-    //  else {
-    //    document.body.appendChild(cmpRef.location.nativeElement);
-    //  }
-    //  return cmpRef;
-    //};
-  
-  
-  
-  
-    
-    
-    
     this.modal
-    .open(ViewProductModal, qqq)
+    .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}, true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {

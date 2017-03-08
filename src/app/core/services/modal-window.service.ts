@@ -1,7 +1,18 @@
-import { Injectable, ViewContainerRef } from '@angular/core';
-import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Injectable, ViewContainerRef, ComponentRef, Injector } from '@angular/core';
+import { Overlay, overlayConfigFactory, DOMOverlayRenderer, DialogRef, ModalOverlay } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Subject } from 'rxjs/Rx';
+
+
+@Injectable()
+export class CustomRenderer extends DOMOverlayRenderer{
+  render(dialog: DialogRef<any>, vcRef: ViewContainerRef, injector?: Injector): ComponentRef<ModalOverlay> {
+    let cmpRef = super.render(dialog, vcRef, injector);
+    (<any>cmpRef)._nativeElement.className += 'transparent-bg';
+    return cmpRef;
+  }
+}
+
 
 @Injectable()
 export class ModalWindowService {
@@ -10,7 +21,9 @@ export class ModalWindowService {
 
   constructor(
       public modal: Modal,
-      private overlay: Overlay
+      private overlay: Overlay,
+      private _modalRenderer: CustomRenderer
+
   ) {
   }
   
@@ -69,6 +82,13 @@ export class ModalWindowService {
     if(!object.keyboard) {
       Object.assign(object,{keyboard: []})
     }
-    return overlayConfigFactory(object, BSModalContext)
+    let o = overlayConfigFactory(object, BSModalContext);
+    if (isTransparentBg){
+      o.renderer = this._modalRenderer;
+      debugger;
+    }
+    debugger;
+    
+    return o;
   }
 }

@@ -20,6 +20,7 @@ import {BootstrapModalModule, Modal} from 'angular2-modal/plugins/bootstrap';
 
 // resolver
 import {APP_SERVICE_PROVIDERS} from './services/index';
+import { CustomRenderer } from '../core/services/index';
 
 @NgModule({
     imports: [
@@ -40,6 +41,7 @@ import {APP_SERVICE_PROVIDERS} from './services/index';
     ],
     declarations: [],
     providers: [
+        CustomRenderer,
         // app config
         {provide: APP_CONFIG, useValue: APP_DI_CONFIG},
 
