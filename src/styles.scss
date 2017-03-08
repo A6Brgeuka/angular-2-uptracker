@@ -857,10 +857,31 @@ modal-overlay{
 
 modal-overlay {
   &.transparent-bg {
-    .modal-backdrop {background-color: rgba(0,0,0,.5)}
+    .modal-backdrop {background-color: rgba(0,0,0,.3)}
     .modal {
-      width:500px;
-      min-height: 300px;
+      border-color: #444;
+      top:20vh;
+      margin:auto;
+      width:320px;
+      min-height: 250px;
+      .modal-content{
+        padding:20px;
+        .title {
+          font-size: 16px;
+          color:#000;
+          margin-bottom: 10px;
+        }
+      }
+      .close {
+       display: none;
+      }
+    }
+  }
+}
+@media (max-width: 800px) {
+  &.transparent-bg {
+    .modal {
+      top: 2vh;
     }
   }
 }

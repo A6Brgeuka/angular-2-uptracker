@@ -150,7 +150,7 @@ export class ShoppingListComponent implements OnInit {
   
   viewProductModal(product) {
     this.modal
-    .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}, true))
+    .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
@@ -188,17 +188,17 @@ export class ShoppingListComponent implements OnInit {
   
   
   showFiltersModal() {
-    this.modal.alert().size('lg').dialogClass('dfsdgsd').title('dfdf').body('sfdsfsf').open();
-    //.open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
-    //.then((resultPromise) => {
-    //  resultPromise.result.then(
-    //    (res) => {
-    //      // this.filterProducts();
-    //    },
-    //    (err) => {
-    //    }
-    //  );
-    //});
+    this.modal
+    .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          // this.filterProducts();
+        },
+        (err) => {
+        }
+      );
+    });
   }
   
   requestProduct() {

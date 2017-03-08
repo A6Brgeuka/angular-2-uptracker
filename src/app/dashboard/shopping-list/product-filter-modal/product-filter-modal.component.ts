@@ -6,7 +6,6 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
-import { VendorModel } from '../../../models/index';
 import { UserService, AccountService } from '../../../core/services/index';
 
 export class ProductFilterModalContext extends BSModalContext {
@@ -16,8 +15,6 @@ export class ProductFilterModalContext extends BSModalContext {
 @Component({
   selector: 'app-product-filter-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  // Remove when solved.
-  /* tslint:disable */
   templateUrl: './product-filter-modal.component.html',
   styleUrls: ['./product-filter-modal.component.scss']
 })
@@ -25,6 +22,8 @@ export class ProductFilterModalContext extends BSModalContext {
 export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<ProductFilterModalContext> {
   private subscribers: any = {};
   context: ProductFilterModalContext;
+  private filter:any = {'department':'', 'vendor':'', 'onlymy':false};
+
 
   constructor(
       public dialog: DialogRef<ProductFilterModalContext>,
@@ -36,14 +35,6 @@ export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<Pr
   }
 
   ngOnInit(){
-    // this.vendor = new VendorModel(this.context.product);
-    // this.locations$ = this.accountService.locations$.map((res: any) => {
-    //   this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-    //   let secondaryLocations = _.filter(res, (loc) => {
-    //     return this.primaryLocation != loc;
-    //   });
-    //   return secondaryLocations;
-    // });
   }
 
   dismissModal(){
