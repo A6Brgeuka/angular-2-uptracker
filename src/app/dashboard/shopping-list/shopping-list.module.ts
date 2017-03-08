@@ -7,6 +7,7 @@ import { ViewProductModalModule } from './view-product-modal/view-product-modal.
 import { ProductFilterModalModule } from './product-filter-modal/product-filter-modal.module';
 import { RequestProductModalModule } from './request-product-modal/request-product-modal.module';
 import { AddProductModalModule } from "./add-product-modal/add-product-modal.module";
+import { ShoppingListSettingsModalModule } from './shopping-list-settings-modal/shopping-list-settings.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { AddProductModalModule } from "./add-product-modal/add-product-modal.mod
     AddProductModalModule,
     EditProductModalModule,
     ViewProductModalModule,
+    ShoppingListSettingsModalModule,
     ProductFilterModalModule,
     RequestProductModalModule
   ],

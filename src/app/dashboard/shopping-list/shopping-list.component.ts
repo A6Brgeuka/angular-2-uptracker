@@ -19,6 +19,7 @@ import { RequestProductModal } from './request-product-modal/request-product-mod
 import { ProductService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AddProductModal } from "./add-product-modal/add-product-modal.component";
+import { ShoppingListSettingsModal } from './shopping-list-settings-modal/shopping-list-settings.component';
 
 
 @Component({
@@ -151,6 +152,20 @@ export class ShoppingListComponent implements OnInit {
   viewProductModal(product) {
     this.modal
     .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          this.editProductModal(res);
+        },
+        (err) => {
+        }
+      );
+    });
+  }
+  
+  viewSettingsModal() {
+    this.modal
+    .open(ShoppingListSettingsModal, this.modalWindowService.overlayConfigFactoryWithParams({},true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {

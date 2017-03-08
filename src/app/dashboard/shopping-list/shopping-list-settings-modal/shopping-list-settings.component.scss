@@ -74,4 +74,26 @@ $tealish: #33c6d9;
       }
     }
   }
+
+  .range-field {
+    margin-top: 12px;
+    position: relative;
+    .value-container {
+      margin: 0;
+      position: relative;
+      .value {
+        position: absolute;
+        width: 30px;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        bottom: 7px;
+        z-index: 1;
+        cursor: pointer;
+        pointer-events: none;
+        padding-left: calc(-10px + 10%);
+        margin-left: calc(10px - 10%);
+      }
+    }
+  }
 }
