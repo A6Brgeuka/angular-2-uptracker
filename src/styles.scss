@@ -797,13 +797,13 @@ modal-overlay{
   max-height:inherit;
   margin:80px auto 80px;
   background:#fff;
-  width:960px;
   max-width:100%;
   border-radius: 5px;
   border:1px solid #d6d6d6;
   box-shadow:none;
   outline:0;
   overflow:visible;
+  width:960px;
   min-height: calc(100vh - 160px);
 
   .modal-content{
@@ -852,6 +852,17 @@ modal-overlay{
       }
     }
   }
+
+}
+
+modal-overlay {
+  &.transparent-bg {
+    .modal-backdrop {background-color: rgba(0,0,0,.5)}
+    .modal {
+      width:500px;
+      min-height: 300px;
+    }
+  }
 }
 
 // vendor modal tabs
@@ -859,7 +870,6 @@ modal-overlay{
   margin-bottom:20px;
   overflow:visible;
   height:38px;
-  overflow:visible;
 
   .tab{
     height:38px;

@@ -40,13 +40,6 @@ export class ShoppingListComponent implements OnInit {
   private currentOrder: string;
   private currentOrder$: BehaviorSubject<any> = new BehaviorSubject(null);
   
-  
-  
-  
-  
-  
-  
-  
   constructor(
     vcRef: ViewContainerRef,
     overlay: Overlay,
