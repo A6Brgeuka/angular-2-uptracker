@@ -79,8 +79,8 @@ $tealish: #33c6d9;
     margin-top: 12px;
     position: relative;
     .value-container {
-      margin: 0;
       position: relative;
+      margin: 0 17px;
       .value {
         position: absolute;
         width: 30px;
@@ -91,9 +91,76 @@ $tealish: #33c6d9;
         z-index: 1;
         cursor: pointer;
         pointer-events: none;
-        padding-left: calc(-10px + 10%);
-        margin-left: calc(10px - 10%);
       }
+    }
+  }
+
+
+  @mixin range-track{
+    border: 1px solid #d6d6d6;
+    background: #f5f6f7;
+    height: 11px;
+    border-radius: 5px;
+  }
+
+  @mixin range-thumb{
+    background: $tealish;
+    border:1px solid $tealish;
+    width:30px;
+    height:30px;
+    margin-top:-11px;
+  }
+
+  @mixin range-thumb-disabled{
+    background:#f5f6f7;
+    border:1px solid #d6d6d6;
+  }
+
+  .range-field {
+    clear: both;
+
+    input {
+      margin: 10px 0;
+
+      & + .thumb {
+        display: none;
+      }
+    }
+
+    input::-webkit-slider-runnable-track {
+      @include range-track;
+    }
+
+    input::-moz-range-track {
+      @include range-track;
+    }
+
+    input::-ms-track {
+      @include range-track;
+    }
+
+    input::-webkit-slider-thumb {
+      @include range-thumb;
+    }
+
+    input::-moz-range-thumb {
+      @include range-thumb;
+    }
+
+    input::-ms-thumb {
+      @include range-thumb;
+    }
+
+    input[disabled]::-webkit-slider-thumb {
+      @include range-thumb-disabled;
+    }
+
+    input[disabled]::-moz-range-thumb {
+      @include range-thumb-disabled;
+    }
+
+    input[disabled]::-ms-thumb {
+      @include range-thumb-disabled;
     }
   }
 }

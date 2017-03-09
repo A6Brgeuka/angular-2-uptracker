@@ -20,8 +20,8 @@
       margin-top: 12px;
       position: relative;
       .value-container {
-        margin: 0;
         position: relative;
+        margin: 0 17px;
         .value {
           position: absolute;
           width: 30px;
@@ -32,11 +32,10 @@
           z-index: 1;
           cursor: pointer;
           pointer-events: none;
-          padding-left: calc(-10px + 10%);
-          margin-left: calc(10px - 10%);
         }
       }
     }
+
 
     .img-container {
       width: 160px;

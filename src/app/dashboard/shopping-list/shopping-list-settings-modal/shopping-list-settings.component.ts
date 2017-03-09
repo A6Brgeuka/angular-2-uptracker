@@ -22,7 +22,8 @@ export class ShoppingListSettingsModalContext extends BSModalContext {
 export class ShoppingListSettingsModal implements OnInit, CloseGuard, ModalComponent<ShoppingListSettingsModalContext> {
   private subscribers: any = {};
   context: ShoppingListSettingsModalContext;
-  private filter:any = {'department':'', 'vendor':'', 'onlymy':false};
+  private settings:any = {'priority':1, 'vendor':'', 'only':false};
+  private priorityMargin: string;
 
 
   constructor(
@@ -35,6 +36,17 @@ export class ShoppingListSettingsModal implements OnInit, CloseGuard, ModalCompo
   }
 
   ngOnInit(){
+    this.calcPriorityMargin(1);
+  }
+  
+  changePriority(event){
+    let value = event.target.value;
+    this.calcPriorityMargin(value);
+  }
+  
+  calcPriorityMargin(value){
+    let fixer: number = -16;
+    this.priorityMargin = 'calc(' + (value-1)*100/9 + '% + ' + fixer + 'px)';
   }
 
   dismissModal(){
