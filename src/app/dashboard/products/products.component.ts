@@ -57,6 +57,7 @@ export class ProductsComponent implements OnInit {
     toggleSelectAll(event){
         // 0 = unused, 1 = selectAll, 2 = deselectAll
         this.selectAll$.next(event ? 1 : 2);
+        this.onCheck();
     }
     
     ngOnInit() {
