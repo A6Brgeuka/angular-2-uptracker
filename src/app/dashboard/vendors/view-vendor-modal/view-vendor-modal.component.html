@@ -1,6 +1,6 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
-  <div class="title center-align" [class.notabs]="(all_locations$ | async)?.length < 2" >Vendor Info</div>
+  <div class="title center-align" [class.notabs]="(all_locations$ | async)?.length < 2">Vendor Info</div>
   <div class="row">
     <div class="col s4">
       <div class="img-container">
@@ -14,17 +14,42 @@
     </div>
   </div>
 </div>
-<div  *ngIf="(all_locations$ | async)?.length > 1" class="row">
+<div *ngIf="(all_locations$ | async)?.length > 1" class="row">
   <ul class="tabs location-tabs" materialize="tabs">
-    <li class="tab col" [class.s12]="(all_locations$ | async)?.length < 2" [class.s4]="(all_locations$ | async)?.length > 1"><a href="#general" (click)="chooseTabLocation()">General</a></li>
-    <li class="tab col s4"><a *ngIf="(all_locations$ | async)?.length > 1" href="#specific" (click)="chooseTabLocation(primaryLocation)" [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">{{primaryLocation?.name}}</a></li>
-    <li class="tab col s4 uptracker-dropdown" *ngIf="(all_locations$ | async)?.length > 1">
-      <a href="#specific" materialize="dropdown" data-activates="location_dropdown" [class.active1]="sateliteLocationActive" #secondary>
+    <li class="tab col"
+      [class.s12]="(all_locations$ | async)?.length < 2"
+      [class.s4]="(all_locations$ | async)?.length > 1">
+      <a href="#general" (click)="chooseTabLocation()">General</a>
+    </li>
+    <li class="tab col s4">
+      <a *ngIf="(all_locations$ | async)?.length > 1"
+        href="#specific"
+        (click)="chooseTabLocation(primaryLocation)"
+        [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">
+        {{primaryLocation?.name}}
+      </a>
+    </li>
+    <li *ngIf="(all_locations$ | async)?.length == 2" class="tab col s4">
+      <a href="#specific"
+        [class.active1]="sateliteLocationActive"
+        (click)="chooseTabLocation(secondaryLocation)"
+        #secondary>
+        <span>{{secondaryLocation?.name}}</span>
+      </a>
+    </li>
+    <li class="tab col s4 uptracker-dropdown" *ngIf="(all_locations$ | async)?.length > 2">
+      <a href="#specific"
+        materialize="dropdown"
+        data-activates="location_dropdown"
+        [class.active1]="sateliteLocationActive"
+        #secondary>
         <span>{{secondaryLocation?.name}}</span>
         <i class="caret"></i>
       </a>
       <ul id="location_dropdown" class="dropdown-content">
-        <li *ngFor="let location of locations$ | async" (click)="chooseTabLocation(location)" [class.active]="location.name == currentLocation?.name">
+        <li *ngFor="let location of locations$ | async"
+          (click)="chooseTabLocation(location)"
+          [class.active]="location.name == currentLocation?.name">
           {{location.name}}
         </li>
       </ul>
@@ -34,10 +59,13 @@
 <div id="general" [class.active]="!locVendorChosen" class="tab-content">
   <div class="inner">
     <div class="info">
-      <div class="row" *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2 || vendor?.address?.country || vendor?.address?.city || vendor?.address?.state">
+      <div class="row"
+        *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2 || vendor?.address?.country || vendor?.address?.city || vendor?.address?.state">
         <div class="col s6 label">Address</div>
         <div class="col s6">
-          <div *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2">{{vendor?.address?.street_1}}, {{vendor?.address?.street_2}}</div>
+          <div *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2">{{vendor?.address?.street_1}},
+            {{vendor?.address?.street_2}}
+          </div>
           {{vendor?.address?.city}}, {{vendor?.address?.state}} {{vendor?.address?.postal_code}}
         </div>
       </div>
@@ -118,16 +146,21 @@
         <div class="row" *ngIf="vendor.documents?.length > 0">
           <div class="col s12 label">Documents:</div>
           <div class="col s12">
-            <div class="document" *ngFor="let document of vendor.documents"><a [href]="document.uri" target="_blank"><img src="/assets/img/icon-info.svg" alt="" /> {{document.name}}</a></div>
+            <div class="document" *ngFor="let document of vendor.documents">
+              <a [href]="document.uri" target="_blank">
+                <img src="/assets/img/icon-info.svg" alt=""/>
+                {{document.name}}
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="row buttons center-align">
         <button
-            type="button"
-            class="uptracker-form-btn btn white-text waves-effect waves-light"
-            (click)="editVendor(vendor)">
+          type="button"
+          class="uptracker-form-btn btn white-text waves-effect waves-light"
+          (click)="editVendor(vendor)">
           Edit
         </button>
       </div>
@@ -212,14 +245,19 @@
       <div class="row" *ngIf="vendor.documents?.length > 0">
         <div class="col s12 label">Documents:</div>
         <div class="col s12">
-          <div class="document" *ngFor="let document of vendor.documents"><a [href]="document.uri" target="_blank"><img src="/assets/img/icon-info.svg" alt="" /> {{document.name}}</a></div>
+          <div class="document" *ngFor="let document of vendor.documents">
+            <a [href]="document.uri" target="_blank">
+              <img src="/assets/img/icon-info.svg" alt=""/>
+              {{document.name}}
+            </a>
+          </div>
         </div>
       </div>
       <div class="row buttons center-align">
         <button
-            type="button"
-            class="uptracker-form-btn btn white-text waves-effect waves-light"
-            (click)="editVendor(vendor)">
+          type="button"
+          class="uptracker-form-btn btn white-text waves-effect waves-light"
+          (click)="editVendor(vendor)">
           Edit
         </button>
       </div>

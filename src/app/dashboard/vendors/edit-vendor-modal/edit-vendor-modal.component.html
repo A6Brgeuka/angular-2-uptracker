@@ -15,7 +15,12 @@
       </a>
     </li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(accountService.locations$ | async)?.length > 1">
-      <a href="#general" materialize="dropdown" data-activates="location_dropdown5"
+      <a  (click)="chooseTabLocation(secondaryLocation)" *ngIf="(accountService.locations$ | async)?.length == 2" href="#general"  data-activates="location_dropdown5"
+        [class.active]="sateliteLocationActive" #secondary>
+        <span>{{secondaryLocation?.name}}</span>
+
+      </a>
+      <a *ngIf="(accountService.locations$ | async)?.length > 2" href="#general" materialize="dropdown" data-activates="location_dropdown5"
         [class.active1]="sateliteLocationActive" #secondary>
         <span>{{secondaryLocation?.name}}</span>
         <i class="caret"></i>
