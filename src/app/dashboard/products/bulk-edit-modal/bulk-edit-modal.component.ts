@@ -32,7 +32,9 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   public productCategoriesCollection$: Observable<any> = new Observable<any>();
   public workingStockCollection$: Observable<any> = new Observable<any>();
   public backStockCollection$: Observable<any> = new Observable<any>();
-  public vendorCollection$: Observable<any> = new Observable<any>();
+  public vendorCollection$: any = new BehaviorSubject(false);
+  public additionalInfo$: Observable<any> = new Observable<any>();
+  private dataObj:any ={};
   private data:any = [];
   
   private context: BulkEditModalContext;
@@ -43,13 +45,13 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     category: null, //
     back_stock: null,
     account_category: null, //
-    preferred_vendor: null,
+    vendor: null,
     hazardous: null, //
-    perpetual: null,
+    perpetual_inventory: null,
     trackable: null, //
     status: null, //
     tax_exempt: null, //
-    msds: null, //
+    reset_msds: null, //
   };
   
   
@@ -65,16 +67,35 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   }
   
   ngOnInit() {
+    
+    this.selectedProducts =this.context.products;
+    console.log(this.selectedProducts);
+    
+    this.dataObj.product_ids = [];
+    _.map(this.selectedProducts, (prod:any)=>{
+      this.dataObj.product_ids.push(prod['id']);
+    });
+  
+    this.additionalInfo$ = this.productService.getBulkEditAdditionalInfo(this.dataObj.product_ids)
+    .take(1)
+    .map(resp => {
+      this.vendorCollection$.next(resp.data.vendors);
+      return resp.data;
+    });
+  
+    console.log(this.dataObj);
+    
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
     //TODO
     this.workingStockCollection$  = this.accountService.getDepartments().take(1);
     this.backStockCollection$ = this.accountService.getDepartments().take(1);
-    this.vendorCollection$ = this.accountService.getDepartments().take(1);
     
-    this.selectedProducts =this.context.products;
-    console.log(this.selectedProducts);
+    
+    
+    this.additionalInfo$.subscribe(r=>console.log('additional',r));
+    this.vendorCollection$.subscribe(r=>console.log('vendors',r));
   }
   
   ngAfterViewInit() {
@@ -116,24 +137,14 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   }
   
   saveBulkEdit() {
-    //TODO rewrite
-    let dataObj: any = {};
-    let dataIds: any = [];
-    let result: any = [];
     _.forIn(this.bulk, (value, key) => {
       if (value !== null) {
-        dataObj[key] = value;
+        this.dataObj[key] = value;
       }
     });
-    if (dataObj['status'] !== null) {
-      dataObj['status'] = !dataObj['status']
-    }
-    _.map(this.selectedProducts, (product: any) => dataIds.push(product.id));
-    _.map(dataIds, (id, i) => {
-      result.push({"id": id});
-    });
-    _.map(result, item => _.assign(item, dataObj));
-    this.subscribers.updateBulkProducts$ = this.productService.bulkUpdateProducts({"products": result});
+    
+    console.log(this.dataObj);
+    this.subscribers.updateBulkProducts$ = this.productService.bulkUpdateProducts(this.dataObj);
     this.dismissModal();
   }
 }

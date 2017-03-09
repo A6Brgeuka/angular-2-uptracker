@@ -62,8 +62,8 @@
     <div class="select">
       <select
         [(ngModel)]="bulk.account_category"
-        materialize="material_select"
-        [materializeSelectOptions]="productAccountingCollection$ | async">
+        [materializeSelectOptions]="productAccountingCollection$  | async"
+        materialize="material_select">
         <option value="" disabled selected>Select Accounting</option>
         <option *ngFor="let item of productAccountingCollection$ | async" [value]="item">{{item}}</option>
       </select>
@@ -73,11 +73,12 @@
     <label>Preferred Vendor</label>
     <div class="select">
       <select
-        [(ngModel)]="bulk.preferred_vendor"
-        materialize="material_select"
-        [materializeSelectOptions]="vendorCollection$ | async">
+        *ngIf="(additionalInfo$ | async)?.vendors"
+        [materializeSelectOptions]="(additionalInfo$ | async)?.vendors"
+        [(ngModel)]="bulk.vendor"
+        materialize="material_select">
         <option value="" disabled selected>Select Preferred Vendor</option>
-        <option *ngFor="let item of vendorCollection$ | async" [value]="item">{{item}}</option>
+        <option *ngFor="let item of (additionalInfo$ | async)?.vendors" [value]="item.id">{{item.name}}</option>
       </select>
     </div>
   </div>
@@ -99,9 +100,9 @@
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
-      [indeterminate]="bulk.perpetual === null"
+      [indeterminate]="bulk.perpetual_inventory === null"
       class="checkbox-input"
-      [(ngModel)]="bulk.perpetual"
+      [(ngModel)]="bulk.perpetual_inventory"
       (change)="checkboxChange($event,bulk.perpetual)"
       id="inv-checkbox"
     />
@@ -151,7 +152,7 @@
   <div class="checkbox input-checkbox col s6 ">
     <input
       type="checkbox"
-      [indeterminate]="bulk.msds === null"
+      [indeterminate]="bulk.reset_msds === null"
       class="checkbox-input"
       [(ngModel)]="bulk.reset_msds"
       (change)="checkboxChange($event,bulk.reset_msds)"

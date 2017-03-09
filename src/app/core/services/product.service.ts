@@ -160,6 +160,11 @@ export class ProductService extends ModelService {
     getProduct(id) {
         return this.restangular.one('products', id).get();
     }
+ 
+    getBulkEditAdditionalInfo(ids:string[]) {
+        return this.restangular.all('products').all('bulk')
+        .customPOST(JSON.stringify({"product_ids":ids}), undefined, undefined, {'Content-Type': "application/json"});
+    }
 
     getProductLocation(id, location_id) {
         return this.restangular.one('products', id).get({location_id: location_id});
