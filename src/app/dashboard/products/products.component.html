@@ -35,7 +35,7 @@
     <div class="list" [class.is-grid-view]="isGrid" [class.is-tiles-view]="!isGrid">
       <div *ngIf="!isGrid">
         <div  class="item center-align" *ngFor="let product of products$ | async; let i=index">
-          <div class="inner" (click)="viewProductModal(product)">
+          <div class="inner" [routerLink]="[product.id]" >
             <div class="hazardous" *ngIf="product.hazardous"><i class="material-icons">warning</i></div>
             <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }" >
               <div class="trackable" *ngIf="product.trackable"><fa [name]="'barcode'"></fa></div>
@@ -90,7 +90,7 @@
               <label for="selected{{i}}"></label>
             </div>
           </div>
-          <div class="col product-name s5" (click)="viewProductModal(product)">{{product.name}}</div>
+          <div class="col product-name s5" [routerLink]="[product.id]" >{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1">
             <div  class="input-checkbox checkbox readonly">

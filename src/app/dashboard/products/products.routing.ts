@@ -12,10 +12,7 @@ export const ProductsRoutes = [
   {
     path: 'products',
     component: ProductsComponent,
-    children: [
       //{ path: '', redirectTo: "locations", pathMatch: "full" },
-      ...ProductRoutes,
-    ],
     resolve: {
       CurrencyCollectionResolve,
       ProductAccountingCollectionResolve,
@@ -25,4 +22,6 @@ export const ProductsRoutes = [
     },
     canActivate: []
   },
+  ...ProductRoutes,
+
 ];

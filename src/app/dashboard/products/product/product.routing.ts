@@ -1,7 +1,7 @@
 import { ProductComponent } from './product.component';
 export const ProductRoutes = [
   {
-    path: 'product',
+    path: 'products/:id',
     component: ProductComponent,
     resolve: {
       // productCollection: ProductCollectionResolve,

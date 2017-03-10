@@ -3,7 +3,7 @@ $red: #f00;
 $white: #fff;
 $greeny: #4CAF50;
 $dark: #444;
-$grey:  #9a9c9e;
+$grey: #9a9c9e;
 $light-grey: #d6d6d6;
 $black: #000;
 
@@ -11,21 +11,71 @@ $normal: 14px;
 
 :host /deep/ {
 
-  
+  .product-page {
+    position: relative;
+    //background: #fff;
+    padding: 30px;
+    .close {
+      transition:opacity .3s;
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      background-color: $tealish;
+      cursor: pointer;
+      font-size:20px;
+      text-align:center;
+      border-radius:20px;
+      color:#fff;
+      line-height:40px;
+      padding-right: 3px;
+      &:hover {
+        opacity:.8;
+      }
+    }
+
+    .title {
+      font: 28px/32px Ubuntu;
+      margin-bottom: 5px;
+    }
+
+    .row {
+      margin-left: -0.75rem;
+      margin-right: -0.75rem;
+    }
+
+    .buttons {
+      button {
+        background: $tealish;
+      }
+    }
+
+    .uptracker-form.ng-valid {
+      .input {
+        input {
+          &.ng-valid {
+            border-color: #4CAF50;
+          }
+        }
+      }
+    }
+
+  }
 
   #comments {
-    margin-top:15px;
+    margin-top: 15px;
   }
   .normal-size {
-    font-size:$normal;
+    font-size: $normal;
   }
   .cursor-pointer {
-    cursor:pointer;
+    cursor: pointer;
   }
-  .no-info{
-    font-size:12px;
-    color:$grey;
-    font-weight:normal;
+  .no-info {
+    font-size: 12px;
+    color: $grey;
+    font-weight: normal;
   }
 
   .variant-detail-collapse {
@@ -35,21 +85,23 @@ $normal: 14px;
   }
 
   .reddish {
-    color:$red;
+    color: $red;
   }
   .checks {
-    margin-bottom:5px;
+    margin-bottom: 5px;
   }
-  .invis {opacity: 0;}
+  .invis {
+    opacity: 0;
+  }
 
   .edit-buttons {
     position: absolute;
-    right:36px;
-    top:26px;
+    right: 36px;
+    top: 20px;
   }
 
-  .title{
-    margin-bottom:30px!important;
+  .title {
+    margin-bottom: 30px !important;
   }
 
   .edbtn {
@@ -57,10 +109,10 @@ $normal: 14px;
     line-height: 28px;
     height: 30px;
     min-width: 0;
-    width:80px;
+    width: 80px;
     background: $tealish;
     color: #fff;
-    border-radius:5px;
+    border-radius: 5px;
   }
 
   .edbtn:hover {
@@ -72,8 +124,8 @@ $normal: 14px;
     border: 1px solid $tealish;
   }
   .redbtn {
-    border:1px solid $red;
-    color:$red;
+    border: 1px solid $red;
+    color: $red;
     background: $white;
   }
 
@@ -81,72 +133,72 @@ $normal: 14px;
 
     #inventory {
       .variant-table .table-item {
-        padding:0;
+        padding: 0;
       }
       .head-item {
-        width:20%;
+        width: 20%;
         font-size: 14px;
-        color:$grey;
+        color: $grey;
         text-align: center;
         font-weight: bold;
         &:first-of-type {
           text-align: left;
-          width:30%;
+          width: 30%;
         }
         &:nth-of-type(2) {
-          width:10%;
+          width: 10%;
         }
       }
       .row-item {
-        width:20%;
+        width: 20%;
         text-align: center;
-        color:$grey;
+        color: $grey;
         &:first-of-type {
           text-align: left;
-          width:30%;
+          width: 30%;
           color: $tealish;
         }
         &:nth-of-type(2) {
-          width:10%;
+          width: 10%;
           font-size: 14px;
-          color:$black;
-          cursor:default;
+          color: $black;
+          cursor: default;
         }
       }
     }
 
-    #history{
+    #history {
       .variant-table .table-item {
-        padding:0;
+        padding: 0;
       }
       .head-item {
-        width:15%;
+        width: 15%;
         font-size: 14px;
-        color:$grey;
+        color: $grey;
         text-align: center;
         font-weight: bold;
         &:first-of-type {
           text-align: left;
-          width:30%;
+          width: 30%;
         }
         &:nth-of-type(2) {
-          width:10%;
+          width: 10%;
         }
       }
       .row-item {
-        width:15%;
+        width: 15%;
         line-height: 25px;
         text-align: center;
-        color:$grey;
+        color: $grey;
         &:first-of-type {
           text-align: left;
-          width:30%;
+          width: 30%;
           color: $tealish;
         }
         &:nth-of-type(2) {
-          width:10%;
+          width: 10%;
           font-size: 14px;
-          color:$black;
+          color: $black;
         }
       }
     }
@@ -168,11 +220,10 @@ $normal: 14px;
 
     }
     .row.table-head-filter {
-        margin-bottom:0;
+      margin-bottom: 0;
     }
 
-
-    .uptracker-form .input{
+    .uptracker-form .input {
       margin-bottom: 10px;
     }
 
@@ -186,20 +237,20 @@ $normal: 14px;
     }
 
     #info {
-      margin-top:15px;
+      margin-top: 15px;
 
       .new-file-list {
-        color:$dark;
+        color: $dark;
       }
 
       .img-container-edit {
-        border:2px dashed $light-grey;
-        border-radius:7px;
+        border: 2px dashed $light-grey;
+        border-radius: 7px;
         background-color: #f5f6f7;
         background-image: url(/assets/img/img-placeholder-docs.svg);
         background-size: auto 50%;
         background-position: 50% 50%;
-        height:150px;
+        height: 150px;
         background-repeat: no-repeat;
 
         &.file-is-over {
@@ -208,20 +259,20 @@ $normal: 14px;
         }
       }
       .no-docs {
-        margin-top:30px;
+        margin-top: 30px;
       }
       .col.s2 {
         text-align: right;
       }
       .fa-trash {
-        color:$red;
-        cursor:pointer;
+        color: $red;
+        cursor: pointer;
       }
       textarea {
-        min-height:100px;
+        min-height: 100px;
       }
       .bold {
-        font-weight:bold;
+        font-weight: bold;
       }
       .ttl {
         color: $grey;
@@ -229,11 +280,11 @@ $normal: 14px;
     }
     .info-box {
 
-      min-height:180px;
+      min-height: 180px;
 
-      input[type="text"]{
-        border-color:  $greeny;
-        color:$dark;
+      input[type="text"] {
+        border-color: $greeny;
+        color: $dark;
         height: 36px;
       }
       .name-field {
@@ -261,6 +312,7 @@ $normal: 14px;
 
     .tabs {
       overflow-x: hidden;
+      background-color: transparent;
 
       .tab {
         a {
@@ -275,8 +327,6 @@ $normal: 14px;
     //  height: 372px;
     //  overflow-y: auto;
     //}
-
-
 
     .row-item.selected {
       background-color: #f5f5f5;
@@ -310,10 +360,9 @@ $normal: 14px;
           }
         }
 
-
         .small-heading {
           width: 8%;
-          &.wider{
+          &.wider {
             width: 11%;
           }
         }
@@ -358,8 +407,8 @@ $normal: 14px;
 
         .text-heading {
           width: 10%;
-          &.wider{
-            width:11%
+          &.wider {
+            width: 11%
           }
         }
 
@@ -400,7 +449,7 @@ $normal: 14px;
             cursor: pointer;
           }
           i.fa-eye-slash {
-            color:$red;
+            color: $red;
           }
         }
         .uptracker-form {
@@ -531,7 +580,7 @@ $normal: 14px;
         }
       }
       .flor .row-item {
-        float:right;
+        float: right;
 
       }
     }
@@ -641,57 +690,61 @@ $normal: 14px;
     }
   }
   .edit-mode .filter-heading.head-item {
-    width:18%!important;
+    width: 18% !important;
   }
   .filter-heading.row-item {
-    width:5%!important;
+    width: 5% !important;
   }
-  .mbot0 {margin-bottom: 0;}
-  .mbot10 {margin-bottom: 10px;}
+  .mbot0 {
+    margin-bottom: 0;
+  }
+  .mbot10 {
+    margin-bottom: 10px;
+  }
 
-  .greenborder{
-    border-color: $greeny!important;
-    color: $dark!important;
+  .greenborder {
+    border-color: $greeny !important;
+    color: $dark !important;
   }
   .variant-detail-table-head-item .yourprice {
     width: 40px;
     box-sizing: border-box;
-    margin-left: -5px!important;
-    color: $dark!important;
-    background-color: #fff!important;
-    padding-left:4px!important;
+    margin-left: -5px !important;
+    color: $dark !important;
+    background-color: #fff !important;
+    padding-left: 4px !important;
   }
   .variant-detail-table-body-row {
-    padding: 2px 10px 6px!important;
-    line-height:28px;
+    padding: 2px 10px 6px !important;
+    line-height: 28px;
   }
   i.fa-eye-slash {
-    color:$red;
+    color: $red;
   }
   .table-item .row-item {
-    padding-left:15px!important;
+    padding-left: 15px !important;
   }
   .table-item .row-item:first-of-type {
-    padding-left:0px!important;
+    padding-left: 0px !important;
 
   }
   .table-item .row-item:last-of-type {
-    padding-left:0!important;
-    padding-right: 5px!important;
+    padding-left: 0 !important;
+    padding-right: 5px !important;
   }
 
   .back-to-product-view {
-    color:$tealish;
+    color: $tealish;
     font-size: 1.2em;
     cursor: pointer;
     display: block;
     position: absolute;
-    left:30px;
-    top:30px;
+    left: 30px;
+    top: 30px;
   }
   .inner .info-box .ttl.variant-show-name {
-    font-size:1.5em;
-    color:#666;
+    font-size: 1.5em;
+    color: #666;
   }
 
   .info-box.condensed .row {
@@ -700,14 +753,14 @@ $normal: 14px;
 
   .inner.show-variant {
     .table-item {
-      min-height:40px;
+      min-height: 40px;
     }
 
-    .row-item, .head-item{
-      width:9%;
-      float:left;
+    .row-item, .head-item {
+      width: 9%;
+      float: left;
       font-size: 12px;
-      line-height:30px!important;
+      line-height: 30px !important;
     }
 
     .head-item {
@@ -715,23 +768,23 @@ $normal: 14px;
     }
 
     div.add-order-heading.head-item {
-      line-height:25px!important;
+      line-height: 25px !important;
     }
     .table-item .row-item {
-       padding-left: 5px !important;
+      padding-left: 5px !important;
     }
 
     div.add-order-heading.right.head-item {
-      padding-right:5px;
+      padding-right: 5px;
     }
 
     .inner .uptracker-form .input {
-      height:45px;
+      height: 45px;
     }
 
   }
-  .inner.product .row-item{
-    cursor:pointer;
+  .inner.product .row-item {
+    cursor: pointer;
   }
 }
 
