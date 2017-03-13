@@ -1,15 +1,15 @@
 import {NgModule} from '@angular/core';
-import { VariantDetailComponent } from '../view-product-modal/variant-detail/variant-detail.component';
-import { InventoryDetailComponent } from '../view-product-modal/inventory-detail/inventory-detail.component';
+import { VariantShortDetailComponent } from './variant-short-detail/variant-short-detail.component';
+import { InventoryDetailComponent } from './inventory-detail/inventory-detail.component';
+import { HistoryDetailComponent } from './history-detail/history-detail.component';
 import { AppSharedModule } from '../../../shared/shared.module';
-import { HistoryDetailComponent } from '../view-product-modal/history-detail/history-detail.component';
 import { ProductComponent } from './product.component';
 
 
 @NgModule({
     declarations: [
         ProductComponent,
-        VariantDetailComponent,
+        VariantShortDetailComponent,
         InventoryDetailComponent,
         HistoryDetailComponent
     ],

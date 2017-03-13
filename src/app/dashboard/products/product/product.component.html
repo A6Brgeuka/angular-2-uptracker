@@ -151,19 +151,19 @@
           <li class="tab col s2">
             <a href="#variations">{{showVariant ? 'Vendors' : 'Variations'}}</a>
           </li>
-          <li class="tab col s2">
+          <li class="tab col s2" >
             <a href="#info">Info</a>
           </li>
           <li class="tab col s2">
             <a href="#inventory">Inventory</a>
           </li>
-          <li class="tab col s2" *ngIf="product?.trackable">
+          <li class="tab col s2" *ngIf="product?.trackable && !showVariant">
             <a href="#tracking">Tracking</a>
           </li>
-          <li class="tab col s2">
+          <li class="tab col s2" >
             <a href="#history">Order History</a>
           </li>
-          <li class="tab col s2">
+          <li class="tab col s2" >
             <a href="#comments">Comments</a>
           </li>
         </ul>
@@ -415,7 +415,17 @@
       </div>
     </div>
     <div id="inventory">
-      <div class="inner">
+      <div *ngIf="showVariant" class="inner">
+        <div *ngFor="let inv of currentVariant.trimmed_inventory; let i=index;">
+          <div *ngIf="currentLocation[currentVariant.id] ? inv.location_id==currentLocation[currentVariant.id] : i==0">
+            <app-inventory-detail
+              [(vis)]="currentVariant.detailView"
+              [variant]="inv">
+            </app-inventory-detail>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!showVariant" class="inner">
         <div class="variant-table">
           <div class="uptracker-form variant-head">
             <div class="head-item">
@@ -586,7 +596,8 @@
             <div class="grey-text mbot10">Please upload documents with max size 10MB</div>
             <div>
               <input type="file" (change)="onFileUpload($event)" id="file-upload-dialog" class="hidden">
-              <label for="file-upload-dialog" class="tealish-text normal-size cursor-pointer">Upload a document</label>
+              <label for="file-upload-dialog" class="tealish-text normal-size cursor-pointer">Upload a document
+              </label>
             </div>
           </div>
         </div>
@@ -620,7 +631,7 @@
 
         <div class="table-body">
           <div class="variant-table">
-            <div class="uptracker-form  table-item" *ngFor="let order of orders$ | async">
+            <div class="uptracker-form  table-item" *ngFor="let order of showVariant ? (filteredOrders$ | async) : (orders$ | async)">
               <div class="name-heading variant-name row-item valign-wrapper">
                             <span class="valign"
                               (click)="toggleVariantDetailView(order)">{{order.variant_name }}</span>

@@ -60,6 +60,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   public variants = [];
   public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
   public orders$: BehaviorSubject<any> = new BehaviorSubject([]);
+  public filteredOrders$: BehaviorSubject<any> = new BehaviorSubject([]);
   public showEdit$: BehaviorSubject<any> = new BehaviorSubject([]);
   public filterSelectOption$: BehaviorSubject<any> = new BehaviorSubject({});
   public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -279,8 +280,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
         return item;
       });
       this.variants$.next(this.variants); // update variants
-      this.orders$.next(this.reformatOrderHistory(this.variants)); // update order history
-      this.orders$.subscribe(r => console.log('orders', r));
+      let history = this.reformatOrderHistory(this.variants);
+      this.orders$.next(history); // update order history
       
       this.comments$.next(data.comments); // update comments
       console.log(this.variants[0]);
@@ -524,6 +525,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.showVariant = true;
     this.currentVariant = variant;
     
+    let history = this.reformatOrderHistory(this.variants);
+    this.filteredOrders$.next(_.filter(history, (history:any)=>( history.variant_id == this.currentVariant.id)));
+    this.filteredOrders$.subscribe(a=>console.log(a));
+    
   }
   
   // upload by filedrop
@@ -636,6 +641,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       _.map(vnt['inventory'], inv =>
         _.map(inv['orders'], ord => {
             ord['variant_name'] = vnt['name'];
+            ord['variant_id'] = vnt['id'];
             out.push(ord);
           }
         )
