@@ -3,6 +3,7 @@
 # compiled output
 /dist
 /tmp
+/old_node_modules
 
 # dependencies
 /node_modules

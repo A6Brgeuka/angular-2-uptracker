@@ -425,10 +425,10 @@ $tealish: #33c6d9;
     }
   }
 }
-@media all and (min-width: 1200px){
-  :host /deep/ {
-    .dashboard .left-panel{
-      @include collapsed-left-panel;
-    }
-  }
-}
+//@media all and (min-width: 1200px){
+//  :host /deep/ {
+//    .dashboard .left-panel{
+//      @include collapsed-left-panel;
+//    }
+//  }
+//}
