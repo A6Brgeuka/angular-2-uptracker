@@ -71,20 +71,20 @@ export class UsersComponent implements OnInit {
   }
 
   viewUserModal(user = null){
-    this.modal
-        .open(ViewUserModal, this.modalWindowService.overlayConfigFactoryWithParams({ user: user}))
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                this.editUserModal(res);
-              },
-              (err)=>{}
-          );
-        });
+    //this.modal
+    //    .open(ViewUserModal, this.modalWindowService.overlayConfigFactoryWithParams({ user: user}))
+    //    .then((resultPromise)=>{
+    //      resultPromise.result.then(
+    //          (res) => {
+    //            this.editUserModal(res);
+    //          },
+    //          (err)=>{}
+    //      );
+    //    });
   }
 
   editUserModal(user = null){
-    this.modal.open(EditUserModal, this.modalWindowService.overlayConfigFactoryWithParams({ user: user}));
+    //this.modal.open(EditUserModal, this.modalWindowService.overlayConfigFactoryWithParams({ user: user}));
   }
 
   usersFilter(event){

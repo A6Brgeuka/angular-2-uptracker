@@ -1,0 +1,55 @@
+<div class="close fa fa-chevron-left" (click)="goBack()"></div>
+
+<div class="title center-align">User Details</div>
+
+
+<form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #profileForm="ngForm" autocomplete="off" novalidate>
+
+
+  <div class="col s12">
+    <ul class="tabs" materialize="tabs">
+      <li class="tab col s4">
+        <a href="#profile" #tabProfile>Profile</a>
+      </li>
+      <li class="tab col s4">
+        <a href="#permissions" #tabPermissions>Permissions</a>
+      </li>
+      <li class="tab col s4">
+        <a href="#template" #tabTemplate>Template</a>
+      </li>
+    </ul>
+  </div>
+
+
+  <div id="profile">
+    <div class="row user-image">
+      <div class="col s12 m4">
+        <div class="row">
+          <div class="col s12">
+            <div class="img-container"
+              fileDrop
+              [ngClass]="{'file-is-over': fileIsOver}"
+              [options]="options"
+              (fileOver)="fileOver($event)"
+              (onFileDrop)="onFileDrop($event)">
+              <div class="file-field" [hidden]="uploadedImage">
+                <div class="upload-link">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    (change)="changeListener($event)"/>
+                  <a>Upload a photo</a>
+                </div>
+              </div>
+              <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }">
+                <div class="del-img-btn" (click)="uploadedImage = null">
+                  <i class="material-icons">delete</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

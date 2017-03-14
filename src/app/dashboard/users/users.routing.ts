@@ -3,6 +3,8 @@ import {
   DepartmentCollectionResolve,
   RoleCollectionResolve
 } from '../../shared/resolves/index';
+import { ViewUserRoutes } from './view-user/view-user.routing';
+import { EditUserRoutes } from './edit-user/edit-user.routing';
 
 export const UsersRoutes = [
   {
@@ -12,6 +14,8 @@ export const UsersRoutes = [
       departmentCollection: DepartmentCollectionResolve,
       permissionCollection: RoleCollectionResolve
     },
-    canActivate: []
+    canActivate: [],
   },
+  ...ViewUserRoutes,
+  ...EditUserRoutes,
 ];

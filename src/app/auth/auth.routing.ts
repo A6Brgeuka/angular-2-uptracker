@@ -2,7 +2,6 @@ import { AuthComponent } from './auth.component';
 import { AuthGuard } from '../auth-guard.service';
 
 import { EmailVerificationRoutes } from './email-verification/email-verification.routing';
-import { NoContentComponent } from '../no-content/no-content.component';
 
 export const AuthRoutes = [
   {

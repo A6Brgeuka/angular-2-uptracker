@@ -2,7 +2,7 @@
   "name": "frontend-uptracker",
   "version": "0.0.0",
   "license": "MIT",
-  "@angular/cli": {},
+  "angular-cli": {},
   "scripts": {
     "start": "ng serve",
     "lint": "tslint \"src/**/*.ts\"",
@@ -47,7 +47,7 @@
     "@types/jasmine": "^2.2.30",
     "@types/lodash": "^4.14.37",
     "@types/node": "^6.0.42",
-    "@angular/cli": "1.0.0-rc.1",
+    "angular-cli": "1.0.0-beta.21",
     "codelyzer": "~0.0.26",
     "jasmine-core": "2.4.1",
     "jasmine-spec-reporter": "2.5.0",
