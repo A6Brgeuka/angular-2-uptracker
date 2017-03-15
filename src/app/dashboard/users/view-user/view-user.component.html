@@ -8,8 +8,8 @@
   </ul>
 </div>
 <div *ngIf="user.id!=userService.selfData.id">
-  <form class="uptracker-form" materialize (ngSubmit)="confirmMessage()" #messageForm="ngForm" autocomplete="off" *ngIf="!messageConfirm" novalidate id="user-message">
-    <div class="row">
+  <form class="uptracker-form" materialize (ngSubmit)="confirmMessage()" #messageForm="ngForm" autocomplete="off" novalidate id="user-message">
+    <div class="row" *ngIf="!messageConfirm" >
       <div class="col s12">
         <div class="input row">
           <div class="col s12 title-input">
@@ -50,19 +50,21 @@
         </div>
       </div>
     </div>
-  </form>
-  <div class="row" *ngIf="messageConfirm">
-    <div class="col s12 buttons center-align">
-      <button
-              type="button"
-              class="confirm-btn btn white-text waves-effect waves-light left"
-              (click)="dismissModal()">Send</button>
-      <button
-              type="button"
-              class="confirm-btn btn white-text waves-effect waves-light left"
-              (click)="sendNewMessage()">Send and Start New Message</button>
+
+    <div class="row" *ngIf="messageConfirm">
+      <div class="col s12 buttons center-align">
+        <button
+          type="button"
+          class="confirm-btn btn white-text waves-effect waves-light left"
+          (click)="goBack()">Send</button>
+        <button
+          type="button"
+          class="confirm-btn btn white-text waves-effect waves-light left"
+          (click)="sendNewMessage()">Send and Start New Message</button>
+      </div>
     </div>
-  </div>
+  </form>
+
 </div>
 
 <div class="row uptracker-form" id="user-view">
@@ -93,7 +95,7 @@
       <button
               type="button"
               class="uptracker-form-btn btn white-text waves-effect waves-light left"
-              (click)="editUser(user)">
+              [routerLink]="'/users/edit/'+[user.id]" >
         Edit
       </button>
       <button

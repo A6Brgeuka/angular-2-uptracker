@@ -5,15 +5,11 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
 import { AccountService, UserService, ModalWindowService } from '../../../core/services/index';
-import { UserModel } from '../../../models/index';
 import { Observable } from "rxjs";
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-view-user',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  // Remove when solved.
-  /* tslint:disable */
   templateUrl: './view-user.component.html',
   styleUrls: ['./view-user.component.scss']
 })
@@ -66,7 +62,7 @@ export class ViewUserComponent implements OnInit{
 
   deleteUserFunc() {
     this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
-      //this.dismissModal();
+      this.goBack();
     });
   }
 

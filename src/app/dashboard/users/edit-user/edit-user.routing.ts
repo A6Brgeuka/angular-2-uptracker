@@ -7,4 +7,11 @@ export const EditUserRoutes = [
     },
     canActivate: []
   },
+  {
+    path: 'users/add',
+    component: EditUserComponent,
+    resolve: {
+    },
+    canActivate: []
+  },
 ];

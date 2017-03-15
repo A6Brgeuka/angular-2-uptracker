@@ -16,6 +16,7 @@ import {
 } from '../../../core/services/index';
 import { ChangePasswordUserModal } from '../../../shared/modals/change-password-user-modal/change-password-user-modal.component';
 import { ActivatedRoute } from '@angular/router';
+import { UserModel } from '../../../models/user.model';
 
 @Component({
   selector: 'app-edit-user',
@@ -23,10 +24,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./edit-user.component.scss']
 })
 @DestroySubscribers()
-export class EditUserComponent implements OnInit{
+export class EditUserComponent implements OnInit {
   private subscribers: any = {};
   public user: any = {};
-  public user$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public locationArr: any;
   public locations$: Observable<any>;
   public locationCheckboxes$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
@@ -39,13 +39,13 @@ export class EditUserComponent implements OnInit{
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public selectedCountryPhoneExt: any = this.phoneMaskService.defaultCountry;
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
-
+  
   public uploadedImage: any;
   fileIsOver: boolean = false;
   options = {
     readAs: 'DataURL'
   };
-
+  
   public selectedRole = '';
   public permissionArr: any;
   public rolesArr: any;
@@ -54,86 +54,92 @@ export class EditUserComponent implements OnInit{
   public addPresetForm: boolean = false;
   public preset: any = {};
   
-
+  
   @ViewChild('tabProfile') tabProfile: ElementRef;
   @ViewChild('tabPermissions') tabPermissions: ElementRef;
   @ViewChild('tabTemplate') tabTemplate: ElementRef;
   private userId: string;
-
-  constructor(public zone: NgZone,
-              private userService: UserService,
-              private accountService: AccountService,
-              private phoneMaskService: PhoneMaskService,
-              private route: ActivatedRoute,
-              private toasterService: ToasterService,
-              private location: Location,
-              private fileUploadService: FileUploadService,
-              private modal: Modal,
-              public modalWindowService: ModalWindowService) {
   
-   
+  constructor(
+    public zone: NgZone,
+    private userService: UserService,
+    private accountService: AccountService,
+    private phoneMaskService: PhoneMaskService,
+    private route: ActivatedRoute,
+    private toasterService: ToasterService,
+    private location: Location,
+    private fileUploadService: FileUploadService,
+    private modal: Modal,
+    public modalWindowService: ModalWindowService
+  ) {
+    
+    this.user = new UserModel();
+    
   }
-
-  ngOnInit() {
   
+  ngOnInit() {
+    
     Observable.combineLatest(
       this.route.params,
       this.userService.selfData$
     )
-    .map(([params, selfData])=>{
+    .map(([params, selfData]) => {
       this.userId = params['id'];
       return selfData.account.users;
     })
-    .subscribe(user=>{
-      let userArr = _.filter(user,(us:any) => (us.id == this.userId));
-      this.user = !_.isEmpty(userArr) ? userArr[0] : {};
-      this.uploadedImage = this.user.avatar;
-      this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
-    
-      this.phone_ext =this.user.phone_ext;
-    
-      if (!this.user.template) {
-        this.user.template = this.userService.selfData.account.purchase_order_template;
+    .subscribe(user => {
+      let userArr = _.filter(user, (us: any) => (us.id == this.userId));
+      let userData = !_.isEmpty(userArr) ? userArr[0] : {} || {tutorial_mode: true};
+      this.user = new UserModel(userData);
+      if (!_.isEmpty(userArr)) {
+        this.uploadedImage = this.user.avatar;
+        this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
+        this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
+        this.phone_ext = this.user.phone_ext;
+        if (!this.user.template) {
+          this.user.template = this.userService.selfData.account.purchase_order_template;
+        }
       }
-      debugger;
     });
-  
+    
     this.locations$ = Observable
-      .combineLatest(
-        this.userService.selfData$,
-        this.locationCheckboxes$
-      )
-      .map(([selfData, checkboxes]) => {
-        this.locationArr = selfData.account.locations;
-
-        // set default location for new user or selfData (current user)
-        if (!this.user.default_location || this.user.default_location == '') {
-          let primaryLoc = _.find(this.locationArr, {'location_type': 'Primary'});
-          let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
-          this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
+    .combineLatest(
+      this.userService.selfData$,
+      this.locationCheckboxes$
+    )
+    .map(([selfData, checkboxes]) => {
+      
+      this.locationArr = selfData.account.locations;
+      
+      // set default location for new user or selfData (current user)
+      if (!this.user.default_location || this.user.default_location == '') {
+        let primaryLoc = _.find(this.locationArr, {'location_type': 'Primary'});
+        let onlyLoc = this.locationArr.length == 1 ? this.locationArr[0]['id'] : null;
+        this.user.default_location = primaryLoc ? primaryLoc['id'] : onlyLoc;
+      }
+      
+      for (let i = 0; i < this.locationArr.length; i++) {
+        if (!this.user.locations[i]) {
+          this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : false;
+          this.user.locations[i] = {location_id: this.locationArr[i].id, checked: this.locationArr[i].checkbox};
         }
-
-        for (let i = 0; i < this.locationArr.length; i++) {
-          if (!this.user.locations[i]) {
-            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : false;
-            this.user.locations[i] = {location_id: this.locationArr[i].id, checked: this.locationArr[i].checkbox};
-          }
-          else {
-            this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : this.user.locations[i].checked || false;
-            this.user.locations[i] = {location_id: this.locationArr[i].id, checked: this.locationArr[i].checkbox};
-          }
+        else {
+          this.locationArr[i].checkbox = this.user.default_location == this.locationArr[i].id ? true : this.user.locations[i].checked || false;
+          this.user.locations[i] = {location_id: this.locationArr[i].id, checked: this.locationArr[i].checkbox};
         }
-
-        return this.locationArr;
-      });
-
+      }
+      
+      return this.locationArr;
+    });
+    
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
-
+    
     this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) {
+        
+        this.permissionArr = _.cloneDeep(res.permissions);
         this.rolesArr = res.account.roles;
-        if (!this.user) {
+        if (!this.user || !this.user['id']) {
           this.setDefaultPermissions();
         } else {
           if (this.user.permissions[0]) {
@@ -149,90 +155,77 @@ export class EditUserComponent implements OnInit{
         }
       }
     });
-    
   }
   
   setDefaultPermissions() {
-    
-    this.permissionArr = _.cloneDeep(this.rolesArr[0].permissions);
     this.permissionArr.map((data: any) => {
       data.default = false;
       return data;
     });
   }
-
-
+  
+  
   changeLocation(event) {
     this.locationDirty = true;
-
+    
     for (let i = 0; i < this.locationArr.length; i++) {
       this.user.locations[i].checked = this.locationArr[i].id == event.target.value ? true : this.user.locations[i].checked || false;
     }
-
+    
     this.locationCheckboxes$.next(this.user.locations);
   }
-
+  
   changeLocationCheckbox(event, i) {
     this.user.locations[i].checked = event.target.checked;
     this.locationCheckboxes$.next(this.user.locations);
   }
-
+  
   changeDepartment() {
     this.departmentDirty = true;
   }
-
-  changeRole() {
-    this.roleDirty = true;
-  }
-
+  
+  
   onCountryChange($event) {
     this.selectedCountry = $event;
   }
-
-  onCountryChangePhoneExt($event) {
-    this.selectedCountryPhoneExt = $event;
-  }
-
   
-
-  // upload by input type=file
   changeListener($event): void {
     this.fileToDataURL($event.target);
   }
-
+  
   fileToDataURL(inputValue: any): void {
     let file: File = inputValue.files[0];
     let myReader: FileReader = new FileReader();
-
+    
     myReader.onloadend = (e) => {
       this.onFileDrop(myReader.result);
     };
     myReader.readAsDataURL(file);
   }
-
+  
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
   }
-
+  
   onFileDrop(imgBase64: string): void {
     let img = new Image();
     img.onload = () => {
       let resizedImg: any = this.fileUploadService.resizeImage(img, {resizeMaxHeight: 500, resizeMaxWidth: 500});
       let orientation = this.fileUploadService.getOrientation(imgBase64);
       let orientedImg = this.fileUploadService.getOrientedImageByOrientation(resizedImg, orientation);
-
+      
       this.zone.run(() => {
         this.uploadedImage = orientedImg;
       });
     };
     img.src = imgBase64;
   }
-
+  
   toggleTutorialMode() {
     this.user.tutorial_mode = !this.user.tutorial_mode;
   }
-
+  
   onRoleChange(event: any = false) {
     let newRole;
     if (event) {
@@ -246,7 +239,7 @@ export class EditUserComponent implements OnInit{
       }
     });
   }
-
+  
   togglePreset(i) {
     let z = 0;
     this.permissionArr[i].default = !this.permissionArr[i].default;
@@ -263,18 +256,18 @@ export class EditUserComponent implements OnInit{
       this.selectedRole = 'custom';
     }
   }
-
+  
   showAddPresetForm() {
     if (this.showCustomRole) {
       this.addPresetForm = true;
     }
   }
-
+  
   hideAddPresetForm() {
     this.preset.role = '';
     this.addPresetForm = false;
   }
-
+  
   addRole() {
     if (!this.preset.role || this.preset.role == '') {
       this.toasterService.pop('error', 'Pre-set name is required');
@@ -294,9 +287,9 @@ export class EditUserComponent implements OnInit{
       this.onRoleChange();
     });
   }
-
+  
   onSubmit() {
-
+    
     this.user.account_id = this.userService.selfData.account_id;
     this.user.phone = this.selectedCountry[2] + ' ' + this.profileFormPhone;
     this.user.phone_ext = this.phone_ext;
@@ -306,49 +299,48 @@ export class EditUserComponent implements OnInit{
     console.log(this.user);
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
       (res: any) => {
-        //this.dismissModal();
-        //todo
+        this.goBack();
       }
     );
   }
-
+  
   nextTab() {
     if (this.tabProfile.nativeElement.className == 'active')
       this.tabPermissions.nativeElement.click();
     else this.tabTemplate.nativeElement.click();
   }
-
+  
   prevTab() {
     if (this.tabTemplate.nativeElement.className == 'active')
       this.tabPermissions.nativeElement.click();
     else this.tabProfile.nativeElement.click();
   }
-
+  
   deleteUser(user) {
     this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?', this.deleteUserFunc.bind(this));
   }
-
+  
   deleteUserFunc() {
     this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
-      //this.dismissModal();
+      this.goBack();
     });
   }
-
+  
   changePassword() {
     this.modal
-      .open(ChangePasswordUserModal, this.modalWindowService.overlayConfigFactoryWithParams({user: this.user}))
-      .then((resultPromise)=>{
-        resultPromise.result.then(
-          (res) => {
-          },
-          (err)=>{
-          }
-        );
-      });
+    .open(ChangePasswordUserModal, this.modalWindowService.overlayConfigFactoryWithParams({user: this.user}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+        },
+        (err) => {
+        }
+      );
+    });
   }
-
+  
   goBack(): void {
     this.location.back();
   }
-
+  
 }

@@ -2,13 +2,16 @@ import { NgModule } from '@angular/core';
 
 import { EditUserComponent } from './edit-user.component';
 import { AppSharedModule } from '../../../shared/shared.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     EditUserComponent,
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
 

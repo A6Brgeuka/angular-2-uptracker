@@ -2,11 +2,11 @@ $tealish: #33c6d9;
 
 .tabs{
   margin:-10px 0 29px;
+  background-color: transparent;
 }
 
 #profile{
   .row{
-    margin-bottom: 39px;
     .phone-row {
       margin-bottom: 0;
       i {
@@ -135,7 +135,6 @@ $tealish: #33c6d9;
 
 
 .buttons{
-  margin-top:44px;
 
   .nav-btn{
     display:inline-block;
@@ -168,4 +167,16 @@ $tealish: #33c6d9;
   &:hover {
     opacity:.8;
   }
+}
+
+ .buttons button {
+  background: $tealish;
+}
+.title {
+  font: 28px/32px Ubuntu;
+  margin-bottom: 10px;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
