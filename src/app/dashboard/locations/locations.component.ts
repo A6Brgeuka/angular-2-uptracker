@@ -7,7 +7,6 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
 import { EditLocationModal } from '../../shared/modals/index';
-import { ViewLocationModal } from './view-location-modal/view-location-modal.component';
 import { UserService, AccountService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
 
@@ -62,16 +61,16 @@ export class LocationsComponent implements OnInit {
   }
 
   viewLocationModal(location = null){
-    this.modal
-        .open(ViewLocationModal,   this.modalWindowService.overlayConfigFactoryWithParams({ location: location }))
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                this.editLocationModal(res);
-              },
-              (err)=>{}
-          );
-        });
+    //this.modal
+    //    .open(ViewLocationModal,   this.modalWindowService.overlayConfigFactoryWithParams({ location: location }))
+    //    .then((resultPromise)=>{
+    //      resultPromise.result.then(
+    //          (res) => {
+    //            this.editLocationModal(res);
+    //          },
+    //          (err)=>{}
+    //      );
+    //    });
   }
 
   editLocationModal(location = null){

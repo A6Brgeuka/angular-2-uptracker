@@ -23,9 +23,9 @@
   </div>
   <div class="list left-align">
     <div class="item" *ngFor="let location of locations$ | async">
-      <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }" (click)="viewLocationModal(location)"></div>
+      <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }"  [routerLink]="'view/'+location.id"></div>
       <div class="info">
-        <div class="ttl" (click)="viewLocationModal(location)">{{location.name}}</div>
+        <div class="ttl"  [routerLink]="'view/'+location.id">{{location.name}}</div>
         <div class="edit" (click)="editLocationModal(location)"></div>
       </div>
     </div>

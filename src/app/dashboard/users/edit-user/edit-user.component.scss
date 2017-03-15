@@ -1,129 +1,130 @@
 $tealish: #33c6d9;
 
-.tabs{
-  margin:-10px 0 29px;
+.tabs {
+  margin: -10px 0 29px;
   background-color: transparent;
 }
 
-#profile{
-  .row{
+#profile {
+  .row {
     .phone-row {
       margin-bottom: 0;
       i {
         font-size: 18px;
-        color:$tealish;
+        color: $tealish;
         border: 1px solid $tealish;
         border-radius: 22px;
         height: 22px;
         width: 22px;
         padding-left: 1px;
-        cursor:pointer;
+        cursor: pointer;
       }
     }
   }
 
-  .user-image{
-    .img-container{
-      position:relative;
-      width:285px;
-      height:285px;
+  .user-image {
+    .img-container {
+      position: relative;
+      width: 285px;
+      height: 285px;
       background-image: url(/assets/img/onboard/icon-img-placeholder-users.svg);
 
-      .file-field{
-        position:absolute;
-        text-align:center;
-        left:0;
-        top:120px;
-        width:100%;
+      .file-field {
+        position: absolute;
+        text-align: center;
+        left: 0;
+        top: 120px;
+        width: 100%;
       }
     }
 
-    .second-column{
-      margin-bottom:5px;
+    .second-column {
+      margin-bottom: 5px;
     }
   }
 
-  .tutorial-mode{
-    position:relative;
+  .tutorial-mode {
+    position: relative;
   }
 
-  .switch-box{
-    margin:9px 0 0;
+  .switch-box {
+    margin: 9px 0 0;
   }
 
-  .location-box{
-    margin:8px 0 0;
-    padding:10px 15px;
-    background:#f5f6f7;
+  .location-box {
+    margin: 8px 0 0;
+    padding: 10px 15px;
+    background: #f5f6f7;
     box-shadow: 0 0 0 1px #d6d6d6;
-    border-radius:5px;
-    min-height:255px;
+    border-radius: 5px;
+    min-height: 255px;
 
-    ul{
-      margin:0;
+    ul {
+      margin: 0;
 
-      .input-checkbox{
-        margin:0 0 15px;
+      .input-checkbox {
+        margin: 0 0 15px;
 
-        label{
-          color:inherit;
-          padding-left:20px;
+        label {
+          color: inherit;
+          padding-left: 20px;
 
-          &:before{
-            width:12px;
-            height:12px;
-            margin-top:7px;
+          &:before {
+            width: 12px;
+            height: 12px;
+            margin-top: 7px;
           }
         }
 
-        input:checked{
-          & + label:before{
-            width:7px;
-            height:10px;
+        input:checked {
+          & + label:before {
+            width: 7px;
+            height: 10px;
           }
         }
       }
     }
   }
 }
+
 .tiny-margin {
-  margin-top:10px;
+  margin-top: 10px;
 }
-#permissions{
-  button.not-submit{
-    margin-top:8px;
-    width:100%;
+
+#permissions {
+  button.not-submit {
+    margin-top: 8px;
+    width: 100%;
   }
 
-  .row{
+  .row {
 
-
-    &:first-child{
-      margin-top:0;
+    &:first-child {
+      margin-top: 0;
     }
 
-    &.add-preset-form{
-      margin-top:-10px;
+    &.add-preset-form {
+      margin-top: -10px;
     }
 
-    .preset-ttl{
-      line-height:40px;
+    .preset-ttl {
+      line-height: 40px;
     }
   }
 
-  .permission-row{
-    .item{
-      margin-bottom:10px;
+  .permission-row {
+    .item {
+      margin-bottom: 10px;
 
-      .inner{
-        width:85%;
+      .inner {
+        width: 85%;
       }
     }
   }
 }
 
-#template{
-  padding:15px 0 0;
+#template {
+  padding: 15px 0 0;
 }
 
 .change-pass-btn {
@@ -133,24 +134,22 @@ $tealish: #33c6d9;
   }
 }
 
+.buttons {
 
-.buttons{
-
-  .nav-btn{
-    display:inline-block;
-    width:45px;
-    min-height:20px;
+  .nav-btn {
+    display: inline-block;
+    width: 45px;
+    min-height: 20px;
   }
 
-  button{
-    margin:0 5px;
+  button {
+    margin: 0 5px;
   }
-
 
 }
 
 .close {
-  transition:opacity .3s;
+  transition: opacity .3s;
   width: 40px;
   height: 40px;
   position: absolute;
@@ -158,20 +157,21 @@ $tealish: #33c6d9;
   top: 10px;
   background-color: $tealish;
   cursor: pointer;
-  font-size:20px;
-  text-align:center;
-  border-radius:20px;
-  color:#fff;
-  line-height:40px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  line-height: 40px;
   padding-right: 3px;
   &:hover {
-    opacity:.8;
+    opacity: .8;
   }
 }
 
- .buttons button {
+.buttons button {
   background: $tealish;
 }
+
 .title {
   font: 28px/32px Ubuntu;
   margin-bottom: 10px;
@@ -180,3 +180,5 @@ $tealish: #33c6d9;
 .nowrap {
   white-space: nowrap;
 }
+
+.buttons {margin-top:20px}

@@ -54,8 +54,6 @@ export class ViewUserComponent implements OnInit{
     //this.toSendMessage = userData.sendMessage || false;
   }
 
-
-
   deleteUser(user) {
     this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?', this.deleteUserFunc.bind(this));
   }

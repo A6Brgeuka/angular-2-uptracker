@@ -3,6 +3,7 @@ import {
     StateCollectionResolve,
     LocationTypesCollectionResolve
 } from '../../shared/resolves/index';
+import { ViewLocatinoRoutes } from './view-location/view-location.routing';
 
 export const LocationsRoutes = [
   {
@@ -12,6 +13,9 @@ export const LocationsRoutes = [
     resolve: {
       stateCollection: StateCollectionResolve,
       locationTypesCollection: LocationTypesCollectionResolve
+      
     }
-  }
+  },
+  ...ViewLocatinoRoutes
+  
 ];

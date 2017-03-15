@@ -6,13 +6,15 @@
 <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #profileForm="ngForm" autocomplete="off" novalidate>
 
 
-  <div class="col s12">
+  <div class="row">
         <ul class="tabs" materialize="tabs">
           <li class="tab col s4"><a href="#profile" #tabProfile>Profile</a></li>
           <li class="tab col s4"><a href="#permissions" #tabPermissions>Permissions</a></li>
           <li class="tab col s4"><a href="#template" #tabTemplate>Template</a></li>
         </ul>
   </div>
+
+
 
   <div id="profile">
     <div class="row user-image">
