@@ -24,9 +24,10 @@
   </div>
   <div class="list">
     <div class="item center-align" *ngFor="let vendor of vendors$ | async; let i=index">
-      <div class="inner" (click)="viewVendorModal(vendor)">
+      <div class="inner" [routerLink]="'view/'+[vendor.id]" >
         <div class="img" [ngStyle]="{ 'background-image': 'url(' + vendor.logo + ')' }"></div>
         <div class="info">
+
           <!--<div class="ttl" (click)="viewVendorModal(vendor)">{{vendor.account_vendor?.product_count || 0}} products</div>-->
           <div class="ttl">{{vendor.name}}</div>
           <div class="edit" (click)="editVendorModal(vendor); $event.stopPropagation()"></div>

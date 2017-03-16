@@ -4,8 +4,6 @@ import {Overlay} from "angular2-modal";
 import {Modal} from "angular2-modal/plugins/bootstrap";
 import {DestroySubscribers} from "ng2-destroy-subscribers";
 import * as _ from "lodash";
-import {ViewVendorModal} from "./view-vendor-modal/view-vendor-modal.component";
-import {EditVendorModal} from "./edit-vendor-modal/edit-vendor-modal.component";
 import {VendorService, ModalWindowService} from "../../core/services/index";
 import {HostListener} from "@angular/core/src/metadata/directives";
 
@@ -115,31 +113,6 @@ export class VendorsComponent implements OnInit {
 
     }
 
-    ngAfterViewInit() {
-
-    }
-
-    viewVendorModal(vendor = null) {
-        let data = {vendor: vendor, keyboard: []};
-        this.body.classList.add("noscroll");
-        this.modalWindowService.customModal(this.vcRef, ViewVendorModal, data, this.editVendorModal.bind(this));
-    }
-
-    editVendorModal(vendor) {
-        let accountVendors: any = vendor.account_vendor;
-        accountVendors.vendor_id = vendor.id;
-
-        //check local vendor or global, to make edit from viewVendorModal to editVendorModel work
-        if (vendor.vendor_id) {
-            let globalVendor: any = _.find(this.vendors, {id: vendor.vendor_id});
-            accountVendors = globalVendor.account_vendor;
-            accountVendors.vendor_id = globalVendor.id;
-        }
-
-        this.body.classList.remove("noscroll");
-        let data = {vendor: accountVendors, keyboard: []};
-        this.modalWindowService.customModal(this.vcRef, EditVendorModal, data);
-    }
 
     saveVendor(){
         this.body.classList.add("noscroll");

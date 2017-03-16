@@ -10,22 +10,22 @@ import * as _ from 'lodash';
 import { AccountService, ToasterService, UserService, PhoneMaskService, VendorService } from '../../../core/services/index';
 import { AccountVendorModel } from '../../../models/index';
 
-export class EditVendorModalContext extends BSModalContext {
+export class EditVendorContext extends BSModalContext {
   public vendor: any;
 }
 
 @Component({
-  selector: 'app-edit-vendor-modal',
+  selector: 'app-edit-vendor',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
-  templateUrl: './edit-vendor-modal.component.html',
-  styleUrls: ['./edit-vendor-modal.component.scss']
+  templateUrl: './edit-vendor.component.html',
+  styleUrls: ['./edit-vendor.component.scss']
 })
 @DestroySubscribers()
-export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<EditVendorModalContext> {
+export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, ModalComponent<EditVendorContext> {
   private subscribers: any = {};
-  private context: EditVendorModalContext;
+  private context: EditVendorContext;
   public vendor: AccountVendorModel;
   private formData: FormData = new FormData();
   public currency$: Observable<any>;
@@ -79,7 +79,7 @@ export class EditVendorModal implements OnInit, AfterViewInit, CloseGuard, Modal
   public placeholder: any = {};
 
   constructor(
-      public dialog: DialogRef<EditVendorModalContext>,
+      public dialog: DialogRef<EditVendorContext>,
       private userService: UserService,
       private accountService: AccountService,
       private vendorService: VendorService,
