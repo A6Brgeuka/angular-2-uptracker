@@ -26,9 +26,9 @@
       <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }"  [routerLink]="'view/'+location.id"></div>
       <div class="info">
         <div class="ttl"  [routerLink]="'view/'+location.id">{{location.name}}</div>
-        <div class="edit" (click)="editLocationModal(location)"></div>
+        <div class="edit"  [routerLink]="'edit/'+location.id"></div>
       </div>
     </div>
-    <div class="empty item" (click)="editLocationModal()"></div>
+    <div class="empty item"  [routerLink]="'add'"></div>
   </div>
 </div>

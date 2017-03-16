@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 
 import { AccountService, UserService, ModalWindowService } from '../../../core/services/index';
 import { Observable } from "rxjs";
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view-user',

@@ -3,7 +3,8 @@ import {
     StateCollectionResolve,
     LocationTypesCollectionResolve
 } from '../../shared/resolves/index';
-import { ViewLocatinoRoutes } from './view-location/view-location.routing';
+import { ViewLocationRoutes } from './view-location/view-location.routing';
+import { EditLocationRoutes } from './edit-location/edit-location.routing';
 
 export const LocationsRoutes = [
   {
@@ -13,9 +14,9 @@ export const LocationsRoutes = [
     resolve: {
       stateCollection: StateCollectionResolve,
       locationTypesCollection: LocationTypesCollectionResolve
-      
     }
   },
-  ...ViewLocatinoRoutes
+  ...ViewLocationRoutes,
+  ...EditLocationRoutes
   
 ];

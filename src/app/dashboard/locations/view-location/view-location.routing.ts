@@ -1,5 +1,5 @@
 import { ViewLocationComponent } from './view-location.component';
-export const ViewLocatinoRoutes = [
+export const ViewLocationRoutes = [
   {
     path: 'locations/view/:id',
     component: ViewLocationComponent,

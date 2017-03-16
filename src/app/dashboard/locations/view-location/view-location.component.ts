@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Location }                 from '@angular/common';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
@@ -7,13 +8,11 @@ import { AccountService, ModalWindowService } from '../../../core/services/index
 import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
 import { Observable } from 'rxjs';
+import * as _ from 'lodash';
 
 
 @Component({
   selector: 'app-view-location',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  // Remove when solved.
-  /* tslint:disable */
   templateUrl: './view-location.component.html',
   styleUrls: ['./view-location.component.scss']
 })
@@ -25,6 +24,7 @@ export class ViewLocationComponent implements OnInit {
   
   constructor(
     public accountService: AccountService,
+    private windowLocation: Location,
     private route: ActivatedRoute,
     public locationService: LocationService,
     public modalWindowService: ModalWindowService
@@ -35,36 +35,21 @@ export class ViewLocationComponent implements OnInit {
   ngOnInit() {
     this.route.params
     .switchMap((params: Params) =>
-      this.locationService.getLocations().map((m: any) =>
-        m.filter(l =>
-          (l.id == params['id']))
+      this.locationService.collection$.map((m: any) => {
+          return m.filter(l => l.id == params['id']);
+        }
       )
     )
+    .filter(l => !_.isEmpty(l))
+    .map(l=>l[0])
     .subscribe(location => {
+      this.location = new LocationModel(location);
+      this.location.street_1 = this.location.address.street_1;
+      this.location.street_2 = this.location.address.street_2;
+      this.location.city = this.location.address.city;
+      this.location.zip_code = this.location.address.postal_code;
+      this.location.state = this.location.address.state;
     });
-    //this.user = _.filter(user,(us:any) => (us.id == this.userId))[0];
-    //this.userLocations = _.filter(this.accountService.selfData.locations, (location: any) => {
-    //  let userLocation: any = _.find(this.user.locations, {location_id: location.id});
-    //  if (userLocation) {
-    //    return userLocation.checked;
-    //  }
-    //  return false;
-    //});
-    
-    
-    //let locationData = this.context.location || {};
-    //this.location = new LocationModel(locationData);
-    //if (this.context.location){
-    //  this.location.street_1 = this.location.address.street_1;
-    //  this.location.street_2 = this.location.address.street_2;
-    //  this.location.city = this.location.address.city;
-    //  this.location.zip_code = this.location.address.postal_code;
-    //  this.location.state = this.location.address.state;
-  }
-  
-  
-  editLocation(location = null) {
-    //this.closeModal(location);
   }
   
   deleteLocation(location) {
@@ -73,7 +58,12 @@ export class ViewLocationComponent implements OnInit {
   
   deleteLocationFunc() {
     this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location).subscribe((res: any) => {
-      //this.dismissModal();
+     this.goBack();
     });
   }
+  
+  goBack(): void {
+    this.windowLocation.back();
+  }
+  
 }

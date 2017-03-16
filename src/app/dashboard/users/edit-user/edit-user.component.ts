@@ -79,28 +79,6 @@ export class EditUserComponent implements OnInit {
   
   ngOnInit() {
     
-    Observable.combineLatest(
-      this.route.params,
-      this.userService.selfData$
-    )
-    .map(([params, selfData]) => {
-      this.userId = params['id'];
-      return selfData.account.users;
-    })
-    .subscribe(user => {
-      let userArr = _.filter(user, (us: any) => (us.id == this.userId));
-      let userData = !_.isEmpty(userArr) ? userArr[0] : {} || {tutorial_mode: true};
-      this.user = new UserModel(userData);
-      if (!_.isEmpty(userArr)) {
-        this.uploadedImage = this.user.avatar;
-        this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
-        this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
-        this.phone_ext = this.user.phone_ext;
-        if (!this.user.template) {
-          this.user.template = this.userService.selfData.account.purchase_order_template;
-        }
-      }
-    });
     
     this.locations$ = Observable
     .combineLatest(
@@ -131,7 +109,31 @@ export class EditUserComponent implements OnInit {
       
       return this.locationArr;
     });
-    
+  
+    Observable.combineLatest(
+      this.route.params,
+      this.locations$
+    )
+    .map(([params, selfData]) => {
+      this.userId = params['id'];
+      return selfData;
+    })
+    .subscribe(user => {
+      let userArr = _.filter(user, (us: any) => (us.id == this.userId));
+      let userData = !_.isEmpty(userArr) ? userArr[0] : {} || {tutorial_mode: true};
+      this.user = new UserModel(userData);
+      if (!_.isEmpty(userArr)) {
+        this.uploadedImage = this.user.avatar;
+        this.profileFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.user.phone);
+        this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.user.phone);
+        this.phone_ext = this.user.phone_ext;
+        if (!this.user.template) {
+          this.user.template = this.userService.selfData.account.purchase_order_template;
+        }
+      }
+    });
+  
+  
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     
     this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {

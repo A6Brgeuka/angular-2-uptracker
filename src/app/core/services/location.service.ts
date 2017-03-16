@@ -45,9 +45,8 @@ export class LocationService extends ModelService {
 
   onInit() {
 
-
     // Get Locations first time when service inits
-    this.collection$ = this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
+    this.loadCollection$ = this.restangular.one('accounts', this.userService.selfData.account_id).all('locations').customGET('')
       .map((res: any) => {
         // set local variable with id account of this locations, need for making request when user logout-login
         this.locationAccountId = res.data.account_id;
@@ -55,7 +54,8 @@ export class LocationService extends ModelService {
       })
       .do((res: any) => {
         this.updateCollection(res);
-      });
+      })
+    .subscribe();
 
   }
 

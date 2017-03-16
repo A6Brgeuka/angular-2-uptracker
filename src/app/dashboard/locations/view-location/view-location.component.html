@@ -1,4 +1,4 @@
-<div class="close" (click)="dismissModal()"></div>
+<div class="close fa fa-chevron-left" (click)="goBack()"></div>
 <div class="title center-align">{{location.name}}</div>
 <div class="row uptracker-form">
   <div class="col s12 m7 location-image">
@@ -25,7 +25,7 @@
       <button
           type="button"
           class="uptracker-form-btn btn white-text waves-effect waves-light"
-          (click)="editLocation(location)">
+          [routerLink]="'/locations/edit/'+location.id">
           Edit
       </button>
       <button
