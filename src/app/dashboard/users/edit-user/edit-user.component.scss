@@ -168,8 +168,12 @@ $tealish: #33c6d9;
   }
 }
 
-.buttons button {
+button {
   background: $tealish;
+  &:hover {
+    opacity:.8;
+    background: $tealish;
+  }
 }
 
 .title {

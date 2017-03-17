@@ -15,7 +15,6 @@ import {
   ModalWindowService
 } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
-import { ViewUserModal } from "../../../dashboard/users/view-user-modal/view-user-modal.component";
 import { ChangePasswordUserModal } from "../change-password-user-modal/change-password-user-modal.component";
 
 export class EditUserModalContext extends BSModalContext {

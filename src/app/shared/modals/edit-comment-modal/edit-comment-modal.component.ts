@@ -15,7 +15,6 @@ import {
   ModalWindowService
 } from '../../../core/services/index';
 import { UserModel } from '../../../models/index';
-import { ViewUserModal } from "../../../dashboard/users/view-user-modal/view-user-modal.component";
 
 export class EditCommentModalContext extends BSModalContext {
   public comment: any;

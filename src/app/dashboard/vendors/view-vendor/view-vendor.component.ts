@@ -7,6 +7,8 @@ import * as _ from 'lodash';
 
 import { VendorModel, AccountVendorModel } from '../../../models/index';
 import { UserService, AccountService, ModalWindowService } from '../../../core/services/index';
+import { ActivatedRoute, Params } from '@angular/router';
+import { VendorService } from '../../../core/services/vendor.service';
 
 @Component({
   selector: 'app-view-vendor',
@@ -32,35 +34,38 @@ export class ViewVendorComponent implements OnInit {
   public body = document.getElementsByTagName("body")[0];
   
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
+  private vendorId: string;
   
   constructor(
     public userService: UserService,
+    private route: ActivatedRoute,
     public accountService: AccountService,
+    private vendorService: VendorService,
     private location: Location,
     private modalWindowService: ModalWindowService
   ) {
   }
   
   ngOnInit() {
-    debugger;
-    //this.accountVendors = this.context.vendor.account_vendor;
-    //this.vendor = new VendorModel(this.context.vendor);
-    //this.all_locations$ = this.accountService.locations$;
-    //this.locations$ = this.accountService.locations$
-    //    .map((res: any) => {
-    //  console.log('locations',res);
-    //      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-    //      this.secondaryLocationArr = _.filter(res, (loc) => {
-    //        return this.primaryLocation != loc;
-    //      });
-    //      if (this.secondaryLocationArr.length > 0)
-    //        this.secondaryLocation = this.secondaryLocationArr[0];
-    //      return this.secondaryLocationArr;
-    //    });
-    //
-    //this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies().subscribe((res: any) => {
-    //  this.currencyArr = res;
-    //});
+    this.route.params
+    .switchMap((params: Params) => this.vendorService.getVendor(params['id']))
+    .map((v: any) => v.data.vendor)
+    .subscribe(vendor => {
+      this.vendor = new VendorModel(vendor);
+      this.all_locations$ = this.accountService.locations$;
+      this.locations$ = this.accountService.locations$
+      .map((res: any) => {
+        console.log('locations', res);
+        this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+        this.secondaryLocationArr = _.filter(res, (loc) => {
+          return this.primaryLocation != loc;
+        });
+        if (this.secondaryLocationArr.length > 0)
+          this.secondaryLocation = this.secondaryLocationArr[0];
+        return this.secondaryLocationArr;
+      });
+      
+    });
   }
   
   ngAfterViewInit() {
@@ -71,7 +76,6 @@ export class ViewVendorComponent implements OnInit {
         this.secondaryLocationLink.nativeElement.click();
       }
     });
-    
     // observer to detect class change
     if (this.secondaryLocationLink) {
       // observer to detect class change
@@ -97,6 +101,7 @@ export class ViewVendorComponent implements OnInit {
   }
   
   chooseTabLocation(location = null) {
+  
     this.locVendorChosen = location ? true : false;
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
@@ -105,11 +110,6 @@ export class ViewVendorComponent implements OnInit {
       this.sateliteLocationActive = false;
     }
     this.currentLocation = location;
-    
-    // global vendor info
-    
-    //TODO //TODO //TODO //TODO //TODO //TODO //TODO //TODO
-    //this.vendor = new VendorModel(this.context.vendor);
     
     // account vendor general info
     let generalAccountVendor: any = _.cloneDeep(_.find(this.accountVendors, {'location_id': null}));
@@ -122,9 +122,12 @@ export class ViewVendorComponent implements OnInit {
       if (value)
         this.vendor[key] = value;
     });
-    this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
-    let currentVendorCurrency: any = _.find(this.currencyArr, {'iso_code': this.vendor.currency});
-    this.currencySign = currentVendorCurrency.html_entity;
+    this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies().subscribe((res: any) => {
+      this.currencyArr = res;
+      this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
+      let currentVendorCurrency: any = _.find(res, {'iso_code': this.vendor.currency ? this.vendor.currency : "USD"});
+      this.currencySign = currentVendorCurrency.html_entity;
+    });
   }
   
   

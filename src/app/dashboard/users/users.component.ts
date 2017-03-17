@@ -6,7 +6,6 @@ import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
-import { ViewUserModal } from './view-user-modal/view-user-modal.component';
 import { EditUserModal } from '../../shared/modals/index';
 import { UserService, AccountService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";

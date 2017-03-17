@@ -68,5 +68,8 @@ $tealish: #33c6d9;
 
 button {
   background: $tealish;
+  &:hover {
+    opacity:.8;
+    background: $tealish;
+  }
 }
-
