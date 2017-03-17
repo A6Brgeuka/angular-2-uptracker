@@ -30,7 +30,7 @@
 
           <!--<div class="ttl" (click)="viewVendorModal(vendor)">{{vendor.account_vendor?.product_count || 0}} products</div>-->
           <div class="ttl">{{vendor.name}}</div>
-          <div class="edit" (click)="editVendorModal(vendor); $event.stopPropagation()"></div>
+          <div class="edit" [routerLink]="'edit/'+[vendor.id]"  (click)="$event.stopPropagation()"></div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-<div class="close fa fa-chevron-left" (click)="dismissModal()"></div>
+<div class="close fa fa-chevron-left" (click)="goBack()"></div>
 <div class="inner">
   <div class="title center-align" [class.notabs]="(all_locations$ | async)?.length < 2">Vendor Info</div>
   <div class="row">
@@ -160,7 +160,8 @@
         <button
           type="button"
           class="uptracker-form-btn btn white-text waves-effect waves-light"
-          (click)="editVendor(vendor)">
+          [routerLink]="'/vendors/edit/'+[vendor.id]"
+        >
           Edit
         </button>
       </div>

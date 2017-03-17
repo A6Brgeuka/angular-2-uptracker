@@ -1,4 +1,5 @@
-<div class="close" (click)="dismissModal()"></div>
+<div class="close fa fa-chevron-left" (click)="goBack()"></div>
+
 <div [class.notabs]="(accountService.locations$ | async)?.length < 2" class="title center-align">Vendor Info</div>
 
 <div *ngIf="(accountService.locations$ | async)?.length > 1" class="row">
@@ -35,7 +36,7 @@
   </ul>
 </div>
 <div id="general">
-  <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #vendorForm="ngForm" autocomplete="off" novalidate>
+  <form  class="uptracker-form" materialize (ngSubmit)="onSubmit()" #vendorForm="ngForm" autocomplete="off" novalidate>
     <div class="input row">
       <div class="col s12 m4">
         <div class="label left-align">Currency</div>
@@ -318,7 +319,6 @@
         [disabled]="!vendorForm.form.valid"
         (click)="saveVendor()"
       >
-
         Save
       </button>
     </div>

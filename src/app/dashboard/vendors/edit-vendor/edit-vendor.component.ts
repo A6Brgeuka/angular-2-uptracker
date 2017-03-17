@@ -1,32 +1,27 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Location }                 from '@angular/common';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
 import { AccountService, ToasterService, UserService, PhoneMaskService, VendorService } from '../../../core/services/index';
 import { AccountVendorModel } from '../../../models/index';
+import { ActivatedRoute, Params } from '@angular/router';
 
-export class EditVendorContext extends BSModalContext {
-  public vendor: any;
-}
 
 @Component({
   selector: 'app-edit-vendor',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  // Remove when solved.
-  /* tslint:disable */
   templateUrl: './edit-vendor.component.html',
   styleUrls: ['./edit-vendor.component.scss']
 })
 @DestroySubscribers()
-export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, ModalComponent<EditVendorContext> {
+export class EditVendorComponent implements OnInit, AfterViewInit{
   private subscribers: any = {};
-  private context: EditVendorContext;
   public vendor: AccountVendorModel;
+  public vendorData: any;
   private formData: FormData = new FormData();
   public currency$: Observable<any>;
   public currencyArr: any;
@@ -52,6 +47,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
   public files$: Observable<any>;
   public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public viewInit$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public vendorLoaded$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private fileArr: any = [];
   private oldFileArr: any = [];
 
@@ -59,7 +56,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
-  public secondaryLocation: any; 
+  public secondaryLocation: any;
   public secondaryLocationArr: any = [];
 
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
@@ -79,18 +76,27 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
   public placeholder: any = {};
 
   constructor(
-      public dialog: DialogRef<EditVendorContext>,
       private userService: UserService,
       private accountService: AccountService,
+      private location: Location,
       private vendorService: VendorService,
+      private route: ActivatedRoute,
       private phoneMaskService: PhoneMaskService
   ) {
-    this.context = dialog.context;
-    dialog.setCloseGuard(this);
+    this.vendor = new AccountVendorModel();
   }
 
   ngOnInit(){
-    this.vendor = new AccountVendorModel();
+    
+    this.route.params
+    .switchMap((params: Params) => this.vendorService.getVendor(params['id']))
+    .map((v: any) => v.data.vendor)
+    .subscribe(vendor => {
+      this.vendorData = vendor;
+      this.vendorLoaded$.next(true);
+      this.vendor = new AccountVendorModel(vendor);
+      
+    });
 
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
@@ -115,23 +121,27 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
               this.secondaryLocation = this.secondaryLocationArr[0];
           return this.secondaryLocationArr;
         });
+  
+    Observable
+    .combineLatest(this.viewInit$, this.vendorLoaded$)
+    .filter(([a,b])=>(a && b))
+    .subscribe (()=>this.initTabs());
   }
 
-  ngAfterViewInit(){
-    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => { 
+  initTabs(){
+    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.chooseTabLocation(res);
       if (this.secondaryLocationArr.length == 1) return;
       if (res ? res.id != this.primaryLocation.id : null){
         this.secondaryLocationLink.nativeElement.click();
       }
     });
-
+  
     // observer to detect class change
     if (this.secondaryLocationLink) {
       let observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation: any) => {
-          if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
-            // this.secondaryLocationLink.nativeElement.click();
+          if (this.vendorData && mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
             this.chooseTabLocation(this.secondaryLocation);
           }
         });
@@ -142,11 +152,16 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
       });
     }
   }
+  
+  ngAfterViewInit(){
+    this.viewInit$.next(true);
+  }
 
   chooseTabLocation(location = null){
+    debugger;
     // set placeholders
     if (location) {
-      let allLocationsVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': null}) || {};
+      let allLocationsVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': null}) || {};
       _.each(this.defaultPlaceholder, (value, key) => {
         switch(key){
           case 'rep_office_phone': this.placeholder.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]); break;
@@ -170,18 +185,18 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
     }
 
     this.currentLocation = location;
-    let currentVendor = _.find(_.cloneDeep(this.context.vendor), {'location_id': this.currentLocation ? this.currentLocation.id : null});
+    let currentVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': this.currentLocation ? this.currentLocation.id : null});
     this.fillForm(currentVendor);
   }
 
   fillForm(vendor = {}){
+    
     this.oldFiles$.next(null);
     this.newFiles$.next(null);
     this.vendorFormPhone = null;
     this.vendorFormPhone2 = null;
     this.vendorFormFax = null;
-    let vendorData = vendor;
-    this.vendor = new AccountVendorModel(vendorData);
+    this.vendor = new AccountVendorModel(vendor);
     this.calcPriorityMargin(this.vendor.priority);
 
     if (this.vendor.id){
@@ -196,14 +211,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
       this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
     }
-  }
-
-  dismissModal(){
-    this.dialog.dismiss();
-  }
-
-  closeModal(){
-    this.dialog.dismiss();
   }
 
   changeCurrency(event){
@@ -263,7 +270,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
 
   onSubmit(){
     this.vendor.account_id = this.userService.selfData.account_id;
-    this.vendor.vendor_id = this.vendor.vendor_id || this.context.vendor.vendor_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ?  this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
@@ -292,8 +298,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit, CloseGuard, M
 
     this.vendorService.editAccountVendor(this.vendor, this.formData).subscribe(
         (res: any) => {
-          this.closeModal();
+          this.goBack();
         }
     );
   }
+  
+  goBack(): void {
+    this.location.back();
+  }
+  
 }

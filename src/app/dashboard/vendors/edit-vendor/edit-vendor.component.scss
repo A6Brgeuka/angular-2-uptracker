@@ -1,3 +1,5 @@
+$tealish: #33c6d9;
+
 :host /deep/ {
   //.uptracker-form {
   //  input{
@@ -81,4 +83,44 @@
   .buttons {
     margin: 44px 0 0;
   }
+
+  .close {
+    transition: opacity .3s;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background-color: $tealish;
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 20px;
+    color: #fff;
+    line-height: 40px;
+    padding-right: 3px;
+    &:hover {
+      opacity: .8;
+    }
+  }
+
+  button {
+    background: $tealish;
+    &:hover {
+      opacity:.8;
+      background: $tealish;
+    }
+  }
+
+  .title {
+    font: 28px/32px Ubuntu;
+    margin-bottom: 10px;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .buttons {margin-top:20px}
+
 }

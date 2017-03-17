@@ -2,13 +2,16 @@ import { NgModule } from '@angular/core';
 
 import { EditVendorComponent } from './edit-vendor.component';
 import { AppSharedModule } from '../../../shared/shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     EditVendorComponent
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   // IMPORTANT:
