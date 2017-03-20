@@ -15,6 +15,7 @@ import { ToasterService } from "../../../core/services/toaster.service";
 import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit-comment-modal.component";
 import { FileUploadService } from "../../../core/services/file-upload.service";
 import { ActivatedRoute, Params } from '@angular/router';
+import { AddToOrderModal } from '../../../shared/modals/add-to-order-modal/add-to-order-modal.component';
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -507,6 +508,22 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
   
+  addToOrder() {
+    this.modal
+    .open(AddToOrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: {}},true))
+    .then((resultPromise) => {
+        resultPromise.result.then(
+          (resp) => {
+            //todo smth
+          },
+          (err) => {
+          });
+      },
+      (err) => {
+      });
+  }
+  
+  
   deleteComment(comment) {
     this.modalWindowService.confirmModal('Delete Comment?', 'Are you sure you want to delete this comment?', this.deleteCommentFunc.bind(this, comment.id));
     
@@ -526,8 +543,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.currentVariant = variant;
     
     let history = this.reformatOrderHistory(this.variants);
-    this.filteredOrders$.next(_.filter(history, (history:any)=>( history.variant_id == this.currentVariant.id)));
-    this.filteredOrders$.subscribe(a=>console.log(a));
+    this.filteredOrders$.next(_.filter(history, (history: any) => ( history.variant_id == this.currentVariant.id)));
+    this.filteredOrders$.subscribe(a => console.log(a));
     
   }
   

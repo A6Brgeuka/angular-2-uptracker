@@ -274,6 +274,7 @@
             <div class="flor">
               <div *ngIf="!showEdit" class="add-order-heading head-item">
                 <button
+                  (click)="addToOrder()"
                   class="uptracker-form-btn waves-light waves-effect add-order-btn"
                   [disabled]="!addOrderVariantsButtonShow">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -335,7 +336,9 @@
                     (click)="toggleVariantVisibility(variant)"
                     aria-hidden="true"></i>
                 </div>
-                <div *ngIf="!showEdit" class="add-order-col add-order-heading row-item">
+                <div *ngIf="!showEdit"
+                  (click)="addToOrder()"
+                  class="add-order-col add-order-heading row-item">
                   <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn">
                     <i
                       class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -378,6 +381,8 @@
               <div *ngIf="!showEdit" class="add-order-heading head-item">
                 <button
                   class="uptracker-form-btn waves-light waves-effect add-order-btn"
+                  (click)="addToOrder()"
+
                   [disabled]="!addOrderVariantsButtonShow">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   Add to Order
@@ -404,7 +409,7 @@
               <div class="row-item">{{item.forum_price || ""}}</div>
               <div *ngIf="!showEdit" class="add-order-heading right head-item">
                 <button
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn">
+                  class="uptracker-form-btn waves-light waves-effect add-order-btn" (click)="addToOrder()">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   Add to Order
                 </button>

@@ -36,12 +36,14 @@ import { EditUserModal } from './modals/edit-user-modal/edit-user-modal.componen
 import { EditLocationModal } from './modals/edit-location-modal/edit-location-modal.component';
 import { ChangePasswordUserModal } from "./modals/change-password-user-modal/change-password-user-modal.component";
 import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal.component";
+import { AddToOrderModal } from './modals/add-to-order-modal/add-to-order-modal.component';
 
 let modalsArr = [
   EditUserModal,
   EditLocationModal,
   ChangePasswordUserModal,
-  EditCommentModal
+  EditCommentModal,
+  AddToOrderModal
 ];
 
 
