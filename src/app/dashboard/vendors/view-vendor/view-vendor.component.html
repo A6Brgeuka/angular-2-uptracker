@@ -1,3 +1,4 @@
+{{ vendor | json }}
 <div class="close fa fa-chevron-left" (click)="goBack()"></div>
 <div class="inner">
   <div class="title center-align" [class.notabs]="(all_locations$ | async)?.length < 2">Vendor Info</div>

@@ -48,11 +48,13 @@ export class ViewVendorComponent implements OnInit {
   
   ngOnInit() {
     this.route.params
-    .switchMap((params: Params) => this.vendorService.getVendor(params['id']))
-    .map((v: any) => v.data.vendor)
+    .switchMap((params: Params) => this.vendorService.getAccountVendor(params['id']))
     .subscribe(vendor => {
+      debugger;
       this.vendor = new VendorModel(vendor);
+      debugger;
       this.all_locations$ = this.accountService.locations$;
+      
       this.locations$ = this.accountService.locations$
       .map((res: any) => {
         console.log('locations', res);
@@ -64,7 +66,7 @@ export class ViewVendorComponent implements OnInit {
           this.secondaryLocation = this.secondaryLocationArr[0];
         return this.secondaryLocationArr;
       });
-      
+
     });
   }
   

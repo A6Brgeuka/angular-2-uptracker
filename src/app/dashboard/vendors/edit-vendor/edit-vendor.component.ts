@@ -89,7 +89,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit{
   ngOnInit(){
     
     this.route.params
-    .switchMap((params: Params) => this.vendorService.getVendor(params['id']))
+    .switchMap((params: Params) => this.vendorService.getAccountVendor(params['id']))
     .map((v: any) => v.data.vendor)
     .subscribe(vendor => {
       this.vendorData = vendor;
@@ -129,6 +129,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit{
   }
 
   initTabs(){
+    // this.secondaryLocationLink.nativeElement.click();
+    
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.chooseTabLocation(res);
       if (this.secondaryLocationArr.length == 1) return;
@@ -183,7 +185,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit{
     } else {
       this.sateliteLocationActive = false;
     }
-
+debugger;
     this.currentLocation = location;
     let currentVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': this.currentLocation ? this.currentLocation.id : null});
     this.fillForm(currentVendor);
@@ -269,6 +271,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit{
   }
 
   onSubmit(){
+    debugger;
     this.vendor.account_id = this.userService.selfData.account_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;

@@ -170,6 +170,11 @@ export class VendorService extends ModelService {
     return this.restangular.one('vendors', id).get();
   }
 
+  getAccountVendor(id){
+    return this.getVendor(id);
+    //return this.restangular.one('accounts', this.userService.selfData.account_id).one('vendors', id).get();
+  }
+
   searchVendor(query){
     return this.restangular.all('search').getList('vendors', {query: query});
   }
@@ -217,8 +222,10 @@ export class VendorService extends ModelService {
     let account = this.userService.selfData.account;
     // if no id then add new vendor
     if (!vendorInfo.id) {
+      debugger;
       return this.addAccountVendor(data);
     } else {
+      debugger;
       let entity$ = this.restangular
           .one('accounts', vendorInfo.account_id)
           .one('vendors', vendorInfo.id)

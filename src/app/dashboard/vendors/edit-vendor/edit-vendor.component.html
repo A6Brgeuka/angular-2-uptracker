@@ -2,10 +2,13 @@
 
 <div [class.notabs]="(accountService.locations$ | async)?.length < 2" class="title center-align">Vendor Info</div>
 
-<div *ngIf="(accountService.locations$ | async)?.length > 1" class="row">
+<div *ngIf="((accountService.locations$ | async)?.length > 1) && vendor " class="row">
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col" [class.s12]="(accountService.locations$ | async)?.length < 2"
-      [class.s4]="(accountService.locations$ | async)?.length > 1">
+      (click)="chooseTabLocation()"
+      [class.s4]="(accountService.locations$ | async)?.length > 1"
+      [class.active]="!currentLocation">
+
       <a>All Locations</a>
     </li>
     <li class="tab col s4">
