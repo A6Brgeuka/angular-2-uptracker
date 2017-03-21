@@ -20,7 +20,11 @@ export class AddToOrderModalContext extends BSModalContext {
 @DestroySubscribers()
 export class AddToOrderModal implements OnInit, CloseGuard, ModalComponent<AddToOrderModalContext> {
   context: AddToOrderModalContext;
-
+  private quantity:number=0;
+  private vendor:string=null;
+  private location:string=null;
+  
+  
   constructor(
       public dialog: DialogRef<AddToOrderModalContext>,
   ) {

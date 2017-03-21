@@ -1,4 +1,12 @@
 $tealish: #33c6d9;
+$red: #f00;
+$white: #fff;
+$greeny: #4CAF50;
+$dark: #444;
+$grey: #9a9c9e;
+$light-grey: #d6d6d6;
+$black: #000;
+$orange:#f4827a;
 
 :host /deep/ {
   .inner{
@@ -163,4 +171,26 @@ $tealish: #33c6d9;
       @include range-thumb-disabled;
     }
   }
+  .uptracker-form-btn {
+    min-width:100px;
+  }
+  input {
+    height: 40px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    background: #fff;
+    padding-left: 8px;
+    text-indent: 0;
+    text-overflow: ellipsis;
+    border: 1px solid #9a9a9a!important;
+    border-radius: 5px;
+
+    &.empty {
+      color: $light-grey;
+    }
+  }
+  .mtop {
+    margin-top:20px;
+  }
+
 }
