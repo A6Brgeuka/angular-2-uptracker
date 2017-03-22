@@ -112,8 +112,29 @@ export class VendorsComponent implements OnInit {
             });
 
     }
+    
+    viewVendorModal(vendor = null) {
+        let data = {vendor: vendor, keyboard: []};
+        debugger;
+    }
+    
+    editVendorModal(vendor) {
+        let accountVendors: any = vendor.account_vendor;
+        accountVendors.vendor_id = vendor.id;
+        
+        //check local vendor or global, to make edit from viewVendorModal to editVendorModel work
+        if (vendor.vendor_id) {
+            let globalVendor: any = _.find(this.vendors, {id: vendor.vendor_id});
+            accountVendors = globalVendor.account_vendor;
+            accountVendors.vendor_id = globalVendor.id;
+        }
+        
+        this.body.classList.remove("noscroll");
+        let data = {vendor: accountVendors, keyboard: []};
+        debugger;
+    }
 
-
+    
     saveVendor(){
         this.body.classList.add("noscroll");
     }
