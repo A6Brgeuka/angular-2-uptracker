@@ -1,3 +1,4 @@
+///<reference path="../../../shared/modals/add-to-order-modal/add-to-order-modal.component.ts"/>
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 
 import { Modal } from 'angular2-modal';
@@ -105,6 +106,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   public hasInfoTab: boolean = false;
   private product_id: string;
+  private locationArr: any;
   
   constructor(
     public userService: UserService,
@@ -125,6 +127,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   ngOnInit() {
+    this.accountService.locations$
+    .subscribe(r=>{this.locationArr = r});
+    
+  
     this.loadFile$.next([]);
     Observable.combineLatest(this.accountService.dashboardLocation$, this.route.params)
     .subscribe(([location, params]) => {
@@ -232,6 +238,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   showEditFields() {
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
+    
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
     this.showEdit = true;
     this.productCopy = _.clone(this.product);
@@ -508,9 +515,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
   
-  addToOrder() {
+  addToOrder(variant) {
+    let modalData = {
+      'quantity':0,
+      'vendorArr':variant.vendor_variants,
+      'locationArr':this.locationArr,
+      'productId':this.product_id,
+    };
     this.modal
-    .open(AddToOrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: {}},true))
+    .open(AddToOrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data:modalData}, true))
     .then((resultPromise) => {
         resultPromise.result.then(
           (resp) => {

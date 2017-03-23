@@ -115,7 +115,7 @@ export class VendorsComponent implements OnInit {
     
     viewVendorModal(vendor = null) {
         let data = {vendor: vendor, keyboard: []};
-        debugger;
+        
     }
     
     editVendorModal(vendor) {
@@ -131,7 +131,7 @@ export class VendorsComponent implements OnInit {
         
         this.body.classList.remove("noscroll");
         let data = {vendor: accountVendors, keyboard: []};
-        debugger;
+        
     }
 
     

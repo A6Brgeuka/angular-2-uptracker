@@ -260,4 +260,9 @@ export class ProductService extends ModelService {
         return newFiles; //TODO
     };
     
+    sendOrder (data){
+        
+        return this.restangular.one('cart',data.location_id).customPOST(data);
+    }
+    
 }

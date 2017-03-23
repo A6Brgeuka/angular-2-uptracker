@@ -337,7 +337,7 @@
                     aria-hidden="true"></i>
                 </div>
                 <div *ngIf="!showEdit"
-                  (click)="addToOrder()"
+                  (click)="addToOrder(variant)"
                   class="add-order-col add-order-heading row-item">
                   <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn">
                     <i
@@ -409,7 +409,7 @@
               <div class="row-item">{{item.forum_price || ""}}</div>
               <div *ngIf="!showEdit" class="add-order-heading right head-item">
                 <button
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn" (click)="addToOrder()">
+                  class="uptracker-form-btn waves-light waves-effect add-order-btn" (click)="addToOrder(item)">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   Add to Order
                 </button>

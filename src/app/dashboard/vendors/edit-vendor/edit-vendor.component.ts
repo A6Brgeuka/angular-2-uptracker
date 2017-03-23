@@ -90,23 +90,37 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private phoneMaskService: PhoneMaskService
   ) {
-    this.vendor = new AccountVendorModel({});
+    this.vendor = new AccountVendorModel();
+    
+   
   }
   
   ngOnInit() {
+  
+    Observable
+    .combineLatest(this.viewInit$, this.vendorLoaded$)
+    .filter(([a, b]) => (a && b))
+    .do(([a, b]) => {
+      return this.initTabs();
+    })
+    .subscribe();
+  
+  
+    
     Observable.combineLatest(
       this.route.params,
       this.vendorService.getAccountVendors()
     )
     .map(([r,v]:any) =>_.filter(v, {'vendor_id': r['id']}))
-    .filter(r=>!_.isEmpty(r))
     .subscribe(vendors => {
-      this.vendorData = vendors;
-      this.vendorData['vendor_id'] = vendors[0]['vendor_id'];
-      this.vendorId = vendors[0]['vendor_id'];
+      if (!_.isEmpty(vendors)) {
+        this.vendorData = vendors;
+        this.vendorData['vendor_id'] = vendors[0]['vendor_id'];
+        this.vendorId = vendors[0]['vendor_id'];
+      }
+      
       this.vendorLoaded$.next(true);
       //this.vendor = new AccountVendorModel(vendors);
-      
     });
     
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
@@ -133,10 +147,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       return this.secondaryLocationArr;
     });
     
-    Observable
-    .combineLatest(this.viewInit$, this.vendorLoaded$)
-    .filter(([a, b]) => (a && b))
-    .subscribe(() => this.initTabs());
+    
   }
   
   initTabs() {
@@ -167,7 +178,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
-    this.viewInit$.next(true);
+    this.viewInit$.next(true)
+   
   }
   
   chooseTabLocation(location = null){
@@ -209,7 +221,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendorFormPhone2 = null;
     this.vendorFormFax = null;
     this.vendor = new AccountVendorModel(vendor);
-    this.calcPriorityMargin(this.vendor.priority);
+    
+    this.calcPriorityMargin(this.vendor.priority || 1);
     
     if (this.vendor.id) {
       this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;

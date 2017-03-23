@@ -5,6 +5,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
+import { ProductService } from '../../../core/services/product.service';
 
 export class AddToOrderModalContext extends BSModalContext {
   public data: any;
@@ -20,27 +21,65 @@ export class AddToOrderModalContext extends BSModalContext {
 @DestroySubscribers()
 export class AddToOrderModal implements OnInit, CloseGuard, ModalComponent<AddToOrderModalContext> {
   context: AddToOrderModalContext;
-  private quantity:number=0;
-  private vendor:string=null;
-  private location:string=null;
+  private quantity: number = 1;
+  private vendor: any= {id:"", vendor_id:""};
+  private location: string = null;
+  private valid1: boolean;
+  private valid2: boolean;
+  private valid3: boolean;
   
   
   constructor(
-      public dialog: DialogRef<AddToOrderModalContext>,
+    public dialog: DialogRef<AddToOrderModalContext>,
+    public productService: ProductService,
   ) {
-  
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
-
-  ngOnInit(){
+  
+  ngOnInit() {
+    console.log(this.context.data);
+    this.quantity = this.context.data['quantity'];
   }
-
-  dismissModal(){
+  
+  dismissModal() {
     this.dialog.dismiss();
   }
-
-  closeModal(data){
+  
+  closeModal(data) {
     this.dialog.close(data);
+  }
+  
+  validateFields(){
+    this.valid1 = this.quantity > 0;
+    this.valid2 = this.vendor.id ? true : false;
+    this.valid3 = this.location ? true : false;
+    return (this.valid1 && this.valid2 && this.valid3);
+  }
+  saveOrder() {
+    if (this.validateFields()) {
+      let data = {
+        "location_id": this.location,
+        "product_id": this.context.data.productId,
+        "variants": [
+          {
+            "vendor_id": this.vendor.id,
+            "variant_id": this.vendor.variant_id,
+            "vendor_variant_id": this.vendor.vendor_id,
+            "qty": this.quantity,
+            "vendor_auto_select": true
+          }
+        ]
+      };
+  
+      this.productService.sendOrder(data)
+      .subscribe(() => this.dismissModal(), (e) => console.log(e));
+    }
+  }
+  
+  vendorChange($event){
+    this.vendor = this.context.data
+    .vendorArr
+    .find((v:any)=>(v.id == $event.target.value))
   }
 }

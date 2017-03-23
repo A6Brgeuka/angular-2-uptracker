@@ -60,7 +60,7 @@ export class SpinnerService {
   //       // .filter((res) => {
   //       //   return res == 60;
   //       // })
-  //       .subscribe((res: any) => { //debugger;
+  //       .subscribe((res: any) => { //
   //         // if (res == 60)
   //           this.hideNow();
   //

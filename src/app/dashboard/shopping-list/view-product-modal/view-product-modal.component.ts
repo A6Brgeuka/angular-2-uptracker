@@ -260,7 +260,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
 
   deleteCommentFunc(id) {
     this.subscribers.deleteProductSubscriber = this.productService.deleteProductComment(id).subscribe(res => {
-      debugger;
+    
     })
   }
 
