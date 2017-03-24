@@ -46,7 +46,9 @@
         <div class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
         </div>
         <div class="right sub-edit-block">
-            <div *ngIf="!showEdit"  class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
+            <div *ngIf="!showEdit"
+              (click)="addToOrder(item)"
+              class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
             <div *ngIf="!showEdit"  class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
                 <i class="fa fa-flag" aria-hidden="true"></i></div>

@@ -23,10 +23,11 @@ export class AddToOrderModal implements OnInit, CloseGuard, ModalComponent<AddTo
   context: AddToOrderModalContext;
   private quantity: number = 1;
   private vendor: any= {id:"", vendor_id:""};
-  private location: string = null;
-  private valid1: boolean;
-  private valid2: boolean;
-  private valid3: boolean;
+  private location: string = '';
+  private valid1: boolean = false;
+  private valid2: boolean = false;
+  private valid3: boolean = false;
+  private valid: boolean = false;
   
   
   constructor(
@@ -40,6 +41,13 @@ export class AddToOrderModal implements OnInit, CloseGuard, ModalComponent<AddTo
   ngOnInit() {
     console.log(this.context.data);
     this.quantity = this.context.data['quantity'];
+    this.location = this.context.data.locationArr[0]['id'];
+    if (this.context.data.selectedVariant && this.context.data.selectedVariant.id) {
+    
+    } else {
+      this.vendor = this.context.data.vendorArr[0];
+    }
+    this.validateFields();
   }
   
   dismissModal() {
@@ -52,9 +60,10 @@ export class AddToOrderModal implements OnInit, CloseGuard, ModalComponent<AddTo
   
   validateFields(){
     this.valid1 = this.quantity > 0;
-    this.valid2 = this.vendor.id ? true : false;
+    this.valid2 = (this.vendor && this.vendor.id) ? true : false;
     this.valid3 = this.location ? true : false;
-    return (this.valid1 && this.valid2 && this.valid3);
+    this.valid = (this.valid1 && this.valid2 && this.valid3);
+    return this.valid;
   }
   saveOrder() {
     if (this.validateFields()) {

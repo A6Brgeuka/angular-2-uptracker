@@ -29,7 +29,7 @@
         <div class="col s3">Qty</div>
       </div>
       <div *ngFor="let storage_location of variant.storage_locations" class="row">
-        <div *ngIf="!storage_location.floorstock">
+        <div *ngIf="!storage_location.floorstock && storage_location.qty">
           <div class="col s9">{{storage_location.storage_location_name}}</div>
           <div class="col s3">{{storage_location.qty}}</div>
         </div>
@@ -41,8 +41,8 @@
         <div class="col s9">Floor location</div>
         <div class="col s3">Qty</div>
       </div>
-      <div *ngFor="let storage_location of variant.storage_locations" class="row">
-        <div *ngIf="storage_location.floorstock">
+      <div *ngFor="let storage_location of variant.floor_locations" class="row">
+        <div *ngIf="storage_location.floorstock && storage_location.qty">
           <div class="col s9">{{storage_location.storage_location_name}}</div>
           <div class="col s3">{{storage_location.qty}}</div>
         </div>
@@ -60,8 +60,8 @@
         <div class="col s3">Qty</div>
       </div>
       <div *ngFor="let item of variant.usage" class="row">
-          <div class="col s9">{{item.usage_date}}</div>
-          <div class="col s3">{{item.quantity}}</div>
+        <div class="col s9">{{item.usage_date}}</div>
+        <div class="col s3">{{item.quantity}}</div>
       </div>
     </div>
 
@@ -71,8 +71,8 @@
         <div class="col s3">Qty</div>
       </div>
       <div *ngFor="let item of variant.orders" class="row">
-          <div class="col s9">{{item.order_date}}</div>
-          <div class="col s3">{{item.quantity}}</div>
+        <div class="col s9">{{item.order_date}}</div>
+        <div class="col s3">{{item.quantity}}</div>
       </div>
     </div>
   </div>

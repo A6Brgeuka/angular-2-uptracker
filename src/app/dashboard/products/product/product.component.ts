@@ -112,12 +112,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
     public userService: UserService,
     public accountService: AccountService,
     public productService: ProductService,
-    public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public fileUploadService: FileUploadService,
     private location: Location,
     private route: ActivatedRoute,
     private zone: NgZone,
+    public modalWindowService: ModalWindowService,
     private modal: Modal
   ) {
     this.fileActions();
@@ -517,7 +517,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   addToOrder(variant) {
     let modalData = {
-      'quantity':0,
+      'quantity':1,
       'vendorArr':variant.vendor_variants,
       'locationArr':this.locationArr,
       'productId':this.product_id,

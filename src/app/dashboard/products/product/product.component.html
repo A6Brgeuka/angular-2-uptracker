@@ -348,6 +348,7 @@
               </div>
               <div class="clearfix"></div>
               <app-variant-detail [showEdit]="showEdit"
+                [product_id] = "product_id"
                 [variant]="variant"
                 *ngIf="variant.detailView">
               </app-variant-detail>
@@ -465,7 +466,7 @@
               <div *ngFor="let inv of variant.trimmed_inventory; let i=index;"
                 [class.selected]="currentLocation[variant.id] ? (inv.location_id==currentLocation[variant.id] && variant.detailView) : (i==0 && variant.detailView)"
                 class="small-heading row-item"
-                (click)="changeSelected(inv.location_id,variant.id)">{{inv.current_inventory}}
+                (click)="inv.current_inventory ? changeSelected(inv.location_id,variant.id) : void">{{inv.current_inventory || ''}}
               </div>
               <div class="clearfix"></div>
               <div *ngIf="variant.detailView">

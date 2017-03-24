@@ -4,6 +4,10 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
 import * as _ from 'lodash';
+import { AddToOrderModal } from '../../../../shared/modals/add-to-order-modal/add-to-order-modal.component';
+import { ModalWindowService } from '../../../../core/services/modal-window.service';
+import { Modal } from 'angular2-modal';
+import { AccountService } from '../../../../core/services/account.service';
 
 
 export class ViewProductModalContext extends BSModalContext {
@@ -20,12 +24,21 @@ export class ViewProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class VariantShortDetailComponent implements OnInit, AfterViewInit {
-
+  private locationArr: any;
+  
   @Input("variant") private variant;
+  @Input("product_id") private product_id;
   @Input("showEdit") private showEdit;
 
-  constructor() {
+  constructor(
+    public modalWindowService: ModalWindowService,
+    private modal: Modal,
+    public accountService: AccountService,
 
+) {
+    this.accountService.locations$
+    .subscribe(r=>{this.locationArr = r});
+  
   }
 
   ngOnInit() {
@@ -42,4 +55,27 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
   variantDetailCollapse() {
     this.variant.detailView = false;
   }
+  
+  addToOrder(selected) {
+    let modalData = {
+      'quantity':1,
+      'vendorArr':this.variant.vendor_variants,
+      'locationArr':this.locationArr,
+      'productId':this.product_id,
+      'selectedVariant':selected
+    };
+    this.modal
+    .open(AddToOrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data:modalData}, true))
+    .then((resultPromise) => {
+        resultPromise.result.then(
+          (resp) => {
+            //todo smth
+          },
+          (err) => {
+          });
+      },
+      (err) => {
+      });
+  }
+  
 }
