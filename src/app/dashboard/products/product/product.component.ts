@@ -16,7 +16,8 @@ import { ToasterService } from "../../../core/services/toaster.service";
 import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit-comment-modal.component";
 import { FileUploadService } from "../../../core/services/file-upload.service";
 import { ActivatedRoute, Params } from '@angular/router';
-import { AddToOrderModal } from '../../../shared/modals/add-to-order-modal/add-to-order-modal.component';
+import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
+//import { AddToOrderModal } from '../../../shared/modals/add-to-order-modal/add-to-order-modal.component';
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -515,25 +516,34 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
   
+  
+  
   addToOrder(variant) {
-    let modalData = {
-      'quantity':1,
-      'vendorArr':variant.vendor_variants,
-      'locationArr':this.locationArr,
-      'productId':this.product_id,
-    };
+      let modalData = {
+        'quantity': 1,
+        'vendorArr': variant.vendor_variants,
+        'locationArr': this.locationArr,
+        'productId': this.product_id,
+      };
+    let clonedComment = _.cloneDeep(variant);
+    if (clonedComment.body) {
+      let regKey = new RegExp('<br/>', 'g');
+      clonedComment.body = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
+    }
     this.modal
-    .open(AddToOrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data:modalData}, true))
+    .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: modalData},true))
     .then((resultPromise) => {
-        resultPromise.result.then(
-          (resp) => {
-            //todo smth
-          },
-          (err) => {
-          });
-      },
-      (err) => {
-      });
+      resultPromise.result.then(
+        (comment) => {
+          this.subscribers.editProductComment = this.productService.editProductComment(comment).subscribe(res => {
+            this.editCommentComments$.next(res.data);
+          })
+        },
+        (err) => {
+        }
+      );
+    });
+    
   }
   
   

@@ -55,27 +55,28 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
   variantDetailCollapse() {
     this.variant.detailView = false;
   }
-  
-  addToOrder(selected) {
-    let modalData = {
-      'quantity':1,
-      'vendorArr':this.variant.vendor_variants,
-      'locationArr':this.locationArr,
-      'productId':this.product_id,
-      'selectedVariant':selected
-    };
-    this.modal
-    .open(AddToOrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data:modalData}, true))
-    .then((resultPromise) => {
-        resultPromise.result.then(
-          (resp) => {
-            //todo smth
-          },
-          (err) => {
-          });
-      },
-      (err) => {
-      });
-  }
-  
+  //
+  //addToOrder(selected) {
+  //  debugger;
+  //  let modalData = {
+  //    'quantity':1,
+  //    'vendorArr':this.variant.vendor_variants,
+  //    'locationArr':this.locationArr,
+  //    'productId':this.product_id,
+  //    'selectedVariant':selected
+  //  };
+  //  this.modal
+  //  .open(AddToOrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data:modalData}, true))
+  //  .then((resultPromise) => {
+  //      resultPromise.result.then(
+  //        (resp) => {
+  //          //todo smth
+  //        },
+  //        (err) => {
+  //        });
+  //    },
+  //    (err) => {
+  //    });
+  //}
+  //
 }

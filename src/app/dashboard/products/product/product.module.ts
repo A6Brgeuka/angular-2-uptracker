@@ -4,6 +4,7 @@ import { InventoryDetailComponent } from './inventory-detail/inventory-detail.co
 import { HistoryDetailComponent } from './history-detail/history-detail.component';
 import { AppSharedModule } from '../../../shared/shared.module';
 import { ProductComponent } from './product.component';
+import { Add2OrderModalModule } from './add2order-modal/add2order-modal.module';
 
 
 @NgModule({
@@ -11,10 +12,12 @@ import { ProductComponent } from './product.component';
         ProductComponent,
         VariantShortDetailComponent,
         InventoryDetailComponent,
-        HistoryDetailComponent
+        HistoryDetailComponent,
     ],
     imports: [
-        AppSharedModule
+        AppSharedModule,
+        Add2OrderModalModule
+      
     ],
     providers: [],
     // IMPORTANT:
