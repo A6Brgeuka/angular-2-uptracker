@@ -525,19 +525,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
         'locationArr': this.locationArr,
         'productId': this.product_id,
       };
-    let clonedComment = _.cloneDeep(variant);
-    if (clonedComment.body) {
-      let regKey = new RegExp('<br/>', 'g');
-      clonedComment.body = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
-    }
+    
+    debugger;
+    //this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?');
     this.modal
     .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: modalData},true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (comment) => {
-          this.subscribers.editProductComment = this.productService.editProductComment(comment).subscribe(res => {
-            this.editCommentComments$.next(res.data);
-          })
         },
         (err) => {
         }

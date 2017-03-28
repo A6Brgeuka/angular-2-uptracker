@@ -82,6 +82,7 @@ export class ModalWindowService {
     if(!object.keyboard) {
       Object.assign(object,{keyboard: []})
     }
+    debugger;
     let o = overlayConfigFactory(object, BSModalContext);
     if (isTransparentBg){
       o.renderer = this._modalRenderer;
