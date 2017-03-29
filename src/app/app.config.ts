@@ -1,10 +1,10 @@
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
 import { SessionService, SpinnerService, ToasterService, JwtService } from './core/services/index';
 
-export let APP_CONFIG = new OpaqueToken('app.config');
+export let APP_CONFIG = new InjectionToken<any>('app.config');
 
 export interface AppConfig {
   apiEndpoint: string;

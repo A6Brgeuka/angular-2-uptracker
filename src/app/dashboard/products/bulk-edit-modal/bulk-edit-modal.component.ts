@@ -8,7 +8,6 @@ import * as _ from 'lodash';
 
 import { AccountService, UserService } from '../../../core/services/index';
 import { AccountVendorModel } from '../../../models/index';
-import { fdatasyncSync } from 'fs';
 import { ProductService } from '../../../core/services/product.service';
 
 export class BulkEditModalContext extends BSModalContext {

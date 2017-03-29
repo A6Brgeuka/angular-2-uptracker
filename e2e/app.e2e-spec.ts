@@ -1,10 +1,10 @@
-import { FrontendUptrackerPage } from './app.po';
+import { UptrackerPage } from './app.po';
 
-describe('frontend-uptracker App', function() {
-  let page: FrontendUptrackerPage;
+describe('uptracker App', () => {
+  let page: UptrackerPage;
 
   beforeEach(() => {
-    page = new FrontendUptrackerPage();
+    page = new UptrackerPage();
   });
 
   it('should display message saying app works', () => {

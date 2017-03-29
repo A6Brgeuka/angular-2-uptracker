@@ -613,7 +613,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           prod_diff.id = this.product.id;
           let variants: any = [];
           for (let item in vars_diff) {
-            if (!item, this.productService.emptyValues(vars_diff[item])) {
+            if (!item && this.productService.emptyValues(vars_diff[item])) {
               vars_diff[item].id = this.variants[item].id;
               variants.push(vars_diff[item]);
             }

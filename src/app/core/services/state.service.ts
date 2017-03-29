@@ -14,11 +14,11 @@ export class StateService {
   ) {
     this.navigationEndUrl$ =  router.events
         .filter(event => event instanceof NavigationEnd)
-        .map(event => event.url);
+        .map((event: any) => event.url);
 
     router.events
       .filter(event => event instanceof NavigationEnd)
-      .subscribe((event) => {
+      .subscribe((event: any) => {
         this.navigationEndUrl = event.url;
       });
   }

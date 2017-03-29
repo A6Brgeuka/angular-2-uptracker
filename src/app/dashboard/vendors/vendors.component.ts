@@ -1,11 +1,10 @@
-import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import { Component, OnInit, ViewContainerRef, HostListener } from "@angular/core";
 import {Observable, BehaviorSubject, Subject} from "rxjs/Rx";
 import {Overlay} from "angular2-modal";
 import {Modal} from "angular2-modal/plugins/bootstrap";
 import {DestroySubscribers} from "ng2-destroy-subscribers";
 import * as _ from "lodash";
 import {VendorService, ModalWindowService} from "../../core/services/index";
-import {HostListener} from "@angular/core/src/metadata/directives";
 
 
 @Component({
@@ -129,14 +128,14 @@ export class VendorsComponent implements OnInit {
             accountVendors.vendor_id = globalVendor.id;
         }
         
-        this.body.classList.remove("noscroll");
+        //this.body.classList.remove("noscroll");
         let data = {vendor: accountVendors, keyboard: []};
         
     }
 
     
     saveVendor(){
-        this.body.classList.add("noscroll");
+        //this.body.classList.add("noscroll");
     }
 
     vendorsFilter(event) {

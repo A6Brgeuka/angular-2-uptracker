@@ -317,7 +317,7 @@ export class ExifService {
     http.open("GET", url, true);
     http.responseType = "blob";
     http.onload = function () {
-      if (this.status === 200 || this.status === 0) {
+      if ((<any>this).status === 200 || (<any>this).status === 0) {
         callback(http.response);
       }
     };
@@ -351,7 +351,7 @@ export class ExifService {
         } else {
           let http = new XMLHttpRequest();
           http.onload = function () {
-            if (this.status === 200 || this.status === 0) {
+            if ((<any>this).status === 200 || (<any>this).status === 0) {
               handleBinaryFile(http.response);
             } else {
               throw "Could not load image";
@@ -367,7 +367,7 @@ export class ExifService {
       if (FileReader && (img instanceof Blob || img instanceof File)) {
         let fileReader = new FileReader();
         fileReader.onload = function (e: any) {
-          this.log("Got file of length " + e.target.result.byteLength);
+          (<any>this).log("Got file of length " + e.target.result.byteLength);
           handleBinaryFile(e.target.result);
         };
 
