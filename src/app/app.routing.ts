@@ -9,6 +9,7 @@ import { AuthGuard } from './auth-guard.service';
 import { AuthRoutes } from './auth/index';
 import { AuthComponent } from './auth/auth.component';
 import { EmailVerificationRoutes } from './auth/email-verification/email-verification.routing';
+import { homeRoutes } from './home/home.routing';
 
 
 const appRoutes = [
@@ -19,7 +20,8 @@ const appRoutes = [
       { path: '', redirectTo: "/login", pathMatch: "full" },
       { path: '', canLoad: [AuthGuard], loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'onboard', canLoad: [AuthGuard], loadChildren: './onboard/onboard.module#OnboardModule' },
-      
+      ...homeRoutes,
+
       //...AuthRoutes
       // TODO remove after spread "...AuthRoutes" will work
       {
@@ -32,7 +34,7 @@ const appRoutes = [
           { path: 'forgot-password-congrats', loadChildren: './auth/forgot-password-congrats/forgot-password-congrats.module#ForgotPasswordCongratsModule' },
           { path: 'reset-password/:token', loadChildren: './auth/reset-password/reset-password.module#ResetPasswordModule' },
           ...EmailVerificationRoutes
-    
+
         ]
       }
     ]

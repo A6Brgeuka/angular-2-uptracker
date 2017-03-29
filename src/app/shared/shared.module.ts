@@ -6,6 +6,10 @@ import { MaterializeModule } from "angular2-materialize";
 import { FileDropModule } from 'angular2-file-drop';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 
+
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+
 // import { CoreModule } from "../core/core.module";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
@@ -51,6 +55,9 @@ let modalsArr = [
 
 @NgModule({
   imports: [
+    BootstrapModalModule,
+    ModalModule,
+    
     CommonModule,
     RouterModule,
     FormsModule,
@@ -72,7 +79,11 @@ let modalsArr = [
     ...modalsArr
   ],
   exports: [
+    BootstrapModalModule,
+    ModalModule,
+    
     RouterModule,
+    
     FormsModule,
     CommonModule,
     ReactiveFormsModule,

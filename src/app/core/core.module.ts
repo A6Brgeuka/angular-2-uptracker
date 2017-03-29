@@ -27,8 +27,6 @@ import { CustomRenderer } from '../core/services/index';
         CommonModule,
         BrowserModule,
         HttpModule,
-        ModalModule.forRoot(),
-        BootstrapModalModule,
         RestangularModule.forRoot(
             [
                 Router,
