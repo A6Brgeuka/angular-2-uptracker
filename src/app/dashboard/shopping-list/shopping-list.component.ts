@@ -20,6 +20,8 @@ import { ProductService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AddProductModal } from "./add-product-modal/add-product-modal.component";
 import { ShoppingListSettingsModal } from './shopping-list-settings-modal/shopping-list-settings.component';
+import { UserService } from '../../core/services/user.service';
+import { OrderService } from '../../core/services/order.service';
 
 
 @Component({
@@ -47,6 +49,8 @@ export class ShoppingListComponent implements OnInit {
     public modal: Modal,
     private productService: ProductService,
     private modalWindowService: ModalWindowService,
+    private userService: UserService,
+    private orderService: OrderService,
   ) {
     overlay.defaultViewContainer = vcRef;
   }
@@ -214,6 +218,15 @@ export class ShoppingListComponent implements OnInit {
         }
       );
     });
+  }
+  
+  updateVendor(product, vendor){
+    debugger;
+    product.selectedVendor = vendor.name;
+  }
+  
+  onCheck(){
+  
   }
   
   requestProduct() {

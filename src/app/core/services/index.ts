@@ -14,6 +14,7 @@ import { ModalWindowService, CustomRenderer } from './modal-window.service';
 import { ProductService } from './product.service';
 import { JwtService } from './jwt.service';
 import { LocationService } from './location.service';
+import { OrderService } from './order.service';
 
 
 export {
@@ -33,8 +34,8 @@ export {
   ProductService,
   JwtService,
   LocationService,
-  CustomRenderer
-
+  CustomRenderer,
+  OrderService
 };
 
 // an array of services to resolve routes with data
@@ -54,5 +55,6 @@ export const APP_SERVICE_PROVIDERS = [
   ModalWindowService,
   ProductService,
   JwtService,
-  LocationService
+  LocationService,
+  OrderService
 ];
