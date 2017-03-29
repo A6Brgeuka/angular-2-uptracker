@@ -268,7 +268,7 @@ $orange:#f4827a;
       .heading {
         margin: 10px 0;
         color: #444;
-        border-bottom: 1px solid #888;
+        border-bottom: 2px solid #ddd;
         font-size: 14px;
         font-weight: bold;
         .col {
@@ -283,7 +283,7 @@ $orange:#f4827a;
       }
       .item {
         margin-bottom: 0;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 2px solid #ddd;
         font-size: 14px;
 
         .col {
@@ -329,69 +329,8 @@ $orange:#f4827a;
         }
       }
 
-      div {
 
-        &.input-checkbox, &.input-checkbox:disabled {
-          [type="checkbox"] {
-            & + label {
-              vertical-align: middle;
-              padding-left: 25px;
-              font-size: 14px;
 
-              &:before {
-                width: 17px;
-                height: 17px;
-                background-color: #f5f6f7;
-                border-color: #d6d6d6;
-                border-radius: 3px;
-              }
-            }
-
-            &:checked {
-              & + label:before {
-                border-width: 0 2px 2px 0;
-                background: transparent;
-                width: 10px;
-                height: 15px;
-                border-radius: 1px;
-                top: 1px;
-                left: -2px;
-                border-color: $tealish;
-              }
-            }
-          }
-          &.readonly {
-            [type="checkbox"] {
-              & + label {
-                vertical-align: middle;
-                padding-left: 25px;
-                font-size: 14px;
-
-                &:before {
-                  width: 17px;
-                  height: 17px;
-                  background-color: transparent;
-                  border-color: transparent;
-                  border-radius: 3px;
-                }
-              }
-
-              &:checked {
-                & + label:before {
-                  border-width: 0 2px 2px 0;
-                  background: transparent;
-                  width: 10px;
-                  height: 15px;
-                  border-radius: 1px;
-                  top: 1px;
-                  left: -2px;
-                  border-color: $tealish;
-                }
-              }
-            }
-          }
-        }
-      }
     }
   }
 }

@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Rx';
 @Injectable()
 export class CustomRenderer extends DOMOverlayRenderer{
   render(dialog: DialogRef<any>, vcRef: ViewContainerRef, injector?: Injector): ComponentRef<ModalOverlay> {
-    let cmpRef = super.render(dialog, vcRef, injector);
+    let cmpRef = super.render(dialog, vcRef);
     (<any>cmpRef)._nativeElement.className += 'transparent-bg';
     return cmpRef;
   }
@@ -32,7 +32,7 @@ export class ModalWindowService {
         .isBlocking(false)
         .showClose(false)
         .keyboard(27)
-        .dialogClass('modal-confirm')
+        //.dialogClass('modal-confirm')
         .title(title)
         .body(body)
         .okBtnClass('btn-confirm uptracker-form-btn waves-effect waves-light')
@@ -82,7 +82,7 @@ export class ModalWindowService {
     if(!object.keyboard) {
       Object.assign(object,{keyboard: []})
     }
-    debugger;
+    
     let o = overlayConfigFactory(object, BSModalContext);
     if (isTransparentBg){
       o.renderer = this._modalRenderer;

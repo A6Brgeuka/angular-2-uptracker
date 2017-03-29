@@ -65,23 +65,6 @@ $tealish: #33c6d9;
       .input-checkbox {
         margin: 0 0 15px;
 
-        label {
-          color: inherit;
-          padding-left: 20px;
-
-          &:before {
-            width: 12px;
-            height: 12px;
-            margin-top: 7px;
-          }
-        }
-
-        input:checked {
-          & + label:before {
-            width: 7px;
-            height: 10px;
-          }
-        }
       }
     }
   }
