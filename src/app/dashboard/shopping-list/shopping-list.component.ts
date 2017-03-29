@@ -21,7 +21,7 @@ import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AddProductModal } from "./add-product-modal/add-product-modal.component";
 import { ShoppingListSettingsModal } from './shopping-list-settings-modal/shopping-list-settings.component';
 import { UserService } from '../../core/services/user.service';
-import { OrderService } from '../../core/services/order.service';
+import { CartService } from '../../core/services/cart.service';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class ShoppingListComponent implements OnInit {
   private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
   private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
-  private order$: BehaviorSubject<any> = new BehaviorSubject(null);
+  private cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public orders:any;
   public orders$: BehaviorSubject<any> = new BehaviorSubject({});
@@ -50,15 +50,13 @@ export class ShoppingListComponent implements OnInit {
     private productService: ProductService,
     private modalWindowService: ModalWindowService,
     private userService: UserService,
-    private orderService: OrderService,
+    private cartService: CartService,
   ) {
     overlay.defaultViewContainer = vcRef;
   }
   
   ngOnInit() {
-  
-  
-  
+    this.cartService.collection$.subscribe((r:any)=>{this.cart$.next(r)});
     this.orders =
       [
         {
@@ -125,23 +123,10 @@ export class ShoppingListComponent implements OnInit {
           ]
         }
       ];
-  
     this.orders$.next(this.orders);
-    this.order$.next(this.orders[0]);
-    
-    Observable
-    .combineLatest(this.orders$, this.currentOrder$)
-    .filter(([orders, current]) => current)
-    .map(([orders,current]) => {
-      let ord = _.filter(orders,(o:any)=>{return (current == o.id)});
-      this.order$.next(ord[0]);
-    }).subscribe();
-  
   }
   
   selectOrder(id){
-    console.log(id);
-    this.currentOrder$.next(id);
   }
   
   onVendorChange(p){
@@ -149,7 +134,7 @@ export class ShoppingListComponent implements OnInit {
       let selected_vendor = _.filter(p.vendors, (r:any)=>(r.id == p.selectedVendor));
       p.selectedPrice = selected_vendor['price'];
     console.log(p);
-    this.order$.next(p);
+    this.cart$.next(p);
     
   }
   

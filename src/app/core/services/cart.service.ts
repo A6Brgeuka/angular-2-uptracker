@@ -13,7 +13,7 @@ import { AccountService } from "./account.service";
   initFunc: 'onInit',
   destroyFunc: null,
 })
-export class OrderService extends ModelService {
+export class CartService extends ModelService {
   private appConfig: AppConfig;
   constructor(
     public injector: Injector,
@@ -27,6 +27,15 @@ export class OrderService extends ModelService {
   }
 
   onInit() {
+    this.loadCollection$ = this.restangular.all('cart').customGET('')
+    .map((res: any) => {
+      return res.data.items;
+    })
+    .do((res: any) => {
+      this.updateCollection$.next(res);
+    })
+    .take(1)
+    .subscribe();
     console.log("order service loaded");
   }
 }
