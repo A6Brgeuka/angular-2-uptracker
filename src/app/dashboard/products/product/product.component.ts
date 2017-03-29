@@ -525,8 +525,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         'locationArr': this.locationArr,
         'productId': this.product_id,
       };
-    
-    debugger;
+      
     //this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?');
     this.modal
     .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: modalData},true))
