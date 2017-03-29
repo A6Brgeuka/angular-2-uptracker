@@ -15,6 +15,7 @@ import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
 import { routing } from './index';
+import { HomeModule } from './products/home/home.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { routing } from './index';
     ProductsModule,
     InventoryModule,
     TranseferModule,
-    ShoppingListModule
+    ShoppingListModule,
+    HomeModule
   ],
   providers: []
 })

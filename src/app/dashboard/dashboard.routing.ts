@@ -20,6 +20,8 @@ import { ProductsRoutes } from './products/products.routing';
 import { InventoryRoutes } from "./inventory/inventory.routing";
 import { TransferRoutes } from "./transfer/transfer.routing";
 import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
+import { homeRoutes } from './products/home/home.routing';
+
 
 const dashboardRoutes = [
   {
@@ -35,7 +37,8 @@ const dashboardRoutes = [
       ...ProductsRoutes,
       ...InventoryRoutes,
       ...TransferRoutes,
-      ...ShoppingListRoutes
+      ...ShoppingListRoutes,
+      ...homeRoutes
     ],
     resolve: {
       accountVendorCollection: AccountVendorCollectionResolve,

@@ -35,7 +35,6 @@ export class AddToOrderModal implements OnInit, CloseGuard, ModalComponent<AddTo
     public dialog: DialogRef<AddToOrderModalContext>,
     public productService: ProductService,
   ) {
-    debugger;
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }

@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { ModalModule } from 'angular2-modal';
 import { PageComponent } from './page.component';
 import { EmbededModule } from './embeded/embeded.module';
-import { AppSharedModule } from '../../shared/shared.module';
+import { AppSharedModule } from '../../../../shared/shared.module';
 
 @NgModule({
   declarations: [

@@ -7,6 +7,8 @@ import { ProductFilterModalModule } from './product-filter-modal/product-filter-
 import { RequestProductModalModule } from './request-product-modal/request-product-modal.module';
 import { BulkEditModalModule } from './bulk-edit-modal/bulk-edit-modal.module';
 import { ProductModule } from './product/product.module';
+import { HomeModule } from './home/home.module';
+import { EmbededModule } from './home/page/embeded/embeded.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { ProductModule } from './product/product.module';
     ProductFilterModalModule,
     RequestProductModalModule,
     BulkEditModalModule,
-    ProductModule
+    ProductModule,
+    EmbededModule
   ],
   providers: []
 })

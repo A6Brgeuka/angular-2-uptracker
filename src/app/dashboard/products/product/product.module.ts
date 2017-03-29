@@ -5,6 +5,7 @@ import { HistoryDetailComponent } from './history-detail/history-detail.componen
 import { AppSharedModule } from '../../../shared/shared.module';
 import { ProductComponent } from './product.component';
 import { Add2OrderModalModule } from './add2order-modal/add2order-modal.module';
+import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
 
 
 @NgModule({
@@ -17,13 +18,8 @@ import { Add2OrderModalModule } from './add2order-modal/add2order-modal.module';
     imports: [
         AppSharedModule,
         Add2OrderModalModule
-      
     ],
-    providers: [],
-    // IMPORTANT:
-    // Since 'AdditionCalculateWindow' is never explicitly used (in a template)
-    // we must tell angular about it.
-    entryComponents: [ProductComponent]
+    providers: []
 })
 export class ProductModule {
 }

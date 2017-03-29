@@ -84,9 +84,9 @@ export class ModalWindowService {
     }
     
     let o = overlayConfigFactory(object, BSModalContext);
-    if (isTransparentBg){
-      o.renderer = this._modalRenderer;
-    }
+    //if (isTransparentBg){
+    //  o.renderer = this._modalRenderer;
+    //}
     return o;
   }
 }

@@ -1,7 +1,7 @@
 ///<reference path="../../../shared/modals/add-to-order-modal/add-to-order-modal.component.ts"/>
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef } from '@angular/core';
 
-import { Modal } from 'angular2-modal';
+import { Modal, Overlay } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
@@ -119,11 +119,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private zone: NgZone,
     public modalWindowService: ModalWindowService,
-    private modal: Modal
+    private modal: Modal,
+    vcRef: ViewContainerRef,
+    overlay: Overlay,
   ) {
     this.fileActions();
     this.docActions();
     this.showEdit$.next(false);
+    overlay.defaultViewContainer = vcRef;
   }
   
   

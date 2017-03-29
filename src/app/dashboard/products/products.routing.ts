@@ -7,6 +7,8 @@ import {
   ProductAccountingCollectionResolve, ProductCategoriesCollectionResolve, DepartmentCollectionResolve
 } from "../../shared/resolves/main-resolve.service";
 import { ProductRoutes } from './product/product.routing';
+import { homeRoutes } from './home/home.routing';
+import { embededRoutes } from './home/page/embeded/embeded.routing';
 
 export const ProductsRoutes = [
   {
@@ -20,8 +22,9 @@ export const ProductsRoutes = [
       DepartmentCollectionResolve
       // productCollection: ProductCollectionResolve,
     },
-    canActivate: []
+    canActivate: [],
   },
+  //...embededRoutes,
   ...ProductRoutes,
 
 ];

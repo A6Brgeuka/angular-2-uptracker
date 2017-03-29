@@ -9,7 +9,6 @@ import { CoreModule } from './core/core.module';
 import { NoContentModule } from './no-content/no-content.module';
 import { AuthModule } from './auth/auth.module';
 import { SpinnerModule } from './spinner/spinner.module';
-import { HomeModule } from './home/home.module';
 import { AppSharedModule } from './shared/shared.module';
 import { ModalModule } from 'angular2-modal';
 
@@ -24,7 +23,6 @@ import { ModalModule } from 'angular2-modal';
     CoreModule,
     routing,
 
-    HomeModule,
     AuthModule,
     NoContentModule,
     SpinnerModule
