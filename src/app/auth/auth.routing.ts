@@ -8,7 +8,7 @@ export const AuthRoutes = [
     path: '',
     component: AuthComponent,
     children: [
-      { path: 'login', canLoad: [AuthGuard], loadChildren: './login/login.module.ts#LoginModule' },
+      { path: 'login', canLoad: [AuthGuard], loadChildren: './login/login.module#LoginModule' },
       { path: 'signup', canLoad: [AuthGuard], loadChildren: './signup/signup.module#SignupModule' },
       { path: 'forgot-password', canLoad: [AuthGuard], loadChildren: './forgot-password/forgot-password.module#ForgotPasswordModule' },
       { path: 'forgot-password-congrats', loadChildren: './forgot-password-congrats/forgot-password-congrats.module#ForgotPasswordCongratsModule' },
