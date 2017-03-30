@@ -25,9 +25,9 @@ export class ViewProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewProductModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: ViewProductModalContext;
-  private product: any;
+  public product: any;
   public variation: any = {};
   public variationArrs = {
     package_type: [],

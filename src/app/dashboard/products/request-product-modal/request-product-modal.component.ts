@@ -22,7 +22,7 @@ export class RequestProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class RequestProductModal implements OnInit, CloseGuard, ModalComponent<RequestProductModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: RequestProductModalContext;
 
   constructor(

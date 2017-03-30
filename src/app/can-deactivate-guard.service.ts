@@ -10,8 +10,8 @@ import { OnboardLocationsComponent } from './onboard/locations/locations.compone
 @Injectable()
 export class CanDeactivateGuard implements CanDeactivate<AccountingComponent>{
   constructor(
-    private sessionService: SessionService,
-    private router: Router
+    public sessionService: SessionService,
+    public router: Router
   ) {
   }
   

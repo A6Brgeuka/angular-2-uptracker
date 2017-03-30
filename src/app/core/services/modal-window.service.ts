@@ -17,13 +17,13 @@ export class CustomRenderer extends DOMOverlayRenderer{
 
 @Injectable()
 export class ModalWindowService {
-  private scrollTop$: Subject<any> = new Subject<any>();
-  private scrollTop: number;
+  public scrollTop$: Subject<any> = new Subject<any>();
+  public scrollTop: number;
 
   constructor(
       public modal: Modal,
-      private overlay: Overlay,
-      private _modalRenderer: CustomRenderer
+      public overlay: Overlay,
+      public _modalRenderer: CustomRenderer
 
   ) {
   }

@@ -26,15 +26,15 @@ import { PhoneMaskService } from '../../../core/services/index';
   }
 })
 export class IntlPhoneMaskDirective implements OnInit {
-  private element: ElementRef;
+  public element: ElementRef;
 
   @Input() selectedCountry: any = [ "United States", "us", "1", 0 ];
   @Output('onCountryChange') countryChangeEvent = new EventEmitter();
   @ViewChild('countryParent') countryWrapper: ElementRef;
 
   public input = {};
-  // private selectedCountry: any = [];
-  private viewCountryList: boolean = false;
+  // public selectedCountry: any = [];
+  public viewCountryList: boolean = false;
   public allCountries = [];
 
   // TODO: remove after accepting intl phone number functionality

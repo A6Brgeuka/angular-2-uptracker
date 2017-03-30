@@ -32,10 +32,12 @@ import { PriceModal } from './price-modal/price-modal.component';
 })
 @DestroySubscribers()
 export class ShoppingListComponent implements OnInit {
-  private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public selectAll: string;
+  
+  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
-  private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
-  private cart$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public orders:any;
   public orders$: BehaviorSubject<any> = new BehaviorSubject({});
@@ -44,10 +46,10 @@ export class ShoppingListComponent implements OnInit {
   
   constructor(
     public modal: Modal,
-    private productService: ProductService,
-    private modalWindowService: ModalWindowService,
-    private userService: UserService,
-    private cartService: CartService,
+    public productService: ProductService,
+    public modalWindowService: ModalWindowService,
+    public userService: UserService,
+    public cartService: CartService,
   ) {
   }
   

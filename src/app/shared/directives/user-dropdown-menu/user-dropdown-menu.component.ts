@@ -17,16 +17,16 @@ import { ModalWindowService } from "../../../core/services/modal-window.service"
 export class UserDropdownMenuDirective implements OnInit {
   @Input() onlyLogout;
   
-  private subscribers: any = {};
+  public subscribers: any = {};
   public user: any;
   public userName: string;
   public userShortName: string;
   public showMenu: boolean;
 
   public constructor(
-      private userService: UserService,
+      public userService: UserService,
       public modal: Modal,
-      private modalWindowService: ModalWindowService
+      public modalWindowService: ModalWindowService
   ) {
   }
 

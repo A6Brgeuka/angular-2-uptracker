@@ -14,16 +14,16 @@ import {Observable} from "rxjs";
 })
 @DestroySubscribers()
 export class DashboardComponent implements OnInit{
-  private subscribers: any = {};
+  public subscribers: any = {};
   public selectedLocation: string = '';
   public locations$: any;
-  private locationArr: any;
+  public locationArr: any;
   public isnotProductUrl$: Observable<any>;
 
   constructor(
-      private userService: UserService,
-      private accountService: AccountService,
-      private stateService: StateService,
+      public userService: UserService,
+      public accountService: AccountService,
+      public stateService: StateService,
   ) {
     this.locations$ =  Observable.combineLatest(
         this.accountService.locations$,

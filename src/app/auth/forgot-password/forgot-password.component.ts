@@ -11,10 +11,10 @@ export class ForgotPasswordComponent implements OnInit {
   draftUser;
 
   constructor(
-      private userService: UserService,
-      private toasterService: ToasterService,
-      private router: Router,
-      private spinnerService: SpinnerService
+      public userService: UserService,
+      public toasterService: ToasterService,
+      public router: Router,
+      public spinnerService: SpinnerService
   ) {
   }
 

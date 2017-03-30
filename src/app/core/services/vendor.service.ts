@@ -103,11 +103,11 @@ export class VendorService extends ModelService {
     this.updateSelfData$.next(data);
   }
   
-  private cleanSearch(ins: string) {
+  public cleanSearch(ins: string) {
     return ins.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
   }
   
-  private getVendorsData(query: any = {}, reset: boolean = true) {
+  public getVendorsData(query: any = {}, reset: boolean = true) {
     return this.restangular.all('vendors').customGET('', query)
     .map((res: any) => {
         console.log('vnd', res.data.vendors);

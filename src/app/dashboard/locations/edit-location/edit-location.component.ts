@@ -26,7 +26,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 @DestroySubscribers()
 export class EditLocationComponent implements OnInit {
-  private subscribers: any = {};
+  public searchKey: any;
+  
+  public subscribers: any = {};
   public location: LocationModel;
   public states$: Observable<any> = new Observable<any>();
   public locationTypes$: Observable<any> = new Observable<any>();
@@ -44,7 +46,7 @@ export class EditLocationComponent implements OnInit {
   public selectedFaxCountryExt: any = this.phoneMaskService.defaultCountry;
 
   public inventory_location: any = { name: '', floor_stock: true};
-  private locationToDelete = null;
+  public locationToDelete = null;
 
   // setting default storage locations when creating new one location
   public defaultStorageLocations = [
@@ -69,18 +71,18 @@ export class EditLocationComponent implements OnInit {
   options = {
     readAs: 'DataURL'
   };
-  private locationId: string;
+  public locationId: string;
 
   constructor(public zone: NgZone,
-              private toasterService: ToasterService,
-              private userService: UserService,
-              private accountService: AccountService,
-              private phoneMaskService: PhoneMaskService,
-              private fileUploadService: FileUploadService,
-              private route: ActivatedRoute,
-              private windowLocation: Location,
-              private modalWindowService: ModalWindowService,
-              private locationService: LocationService) {
+              public toasterService: ToasterService,
+              public userService: UserService,
+              public accountService: AccountService,
+              public phoneMaskService: PhoneMaskService,
+              public fileUploadService: FileUploadService,
+              public route: ActivatedRoute,
+              public windowLocation: Location,
+              public modalWindowService: ModalWindowService,
+              public locationService: LocationService) {
     this.location = new LocationModel();
   }
 

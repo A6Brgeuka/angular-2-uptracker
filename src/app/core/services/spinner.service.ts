@@ -4,9 +4,9 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 @Injectable()
 export class SpinnerService {
   public loading$: Observable<any>;
-  private updateSpinner$: Subject<any> = new Subject<any>();
-  private counter: number = 0;
-  private request$: Observable<any> = new Observable<any>();
+  public updateSpinner$: Subject<any> = new Subject<any>();
+  public counter: number = 0;
+  public request$: Observable<any> = new Observable<any>();
   public getRespond$: Subject<any> = new Subject<any>();
   public setRequest$: Subject<any> = new Subject<any>();
 

@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 @DestroySubscribers()
 export class ViewUserComponent implements OnInit{
-  private subscribers: any = {};
+  public subscribers: any = {};
   public user: any;
   public userId: string;
   public message: any = {};
@@ -24,10 +24,10 @@ export class ViewUserComponent implements OnInit{
   public userLocations;
 
   constructor(
-              private location: Location,
+              public location: Location,
               public userService: UserService,
               public accountService: AccountService,
-              private route: ActivatedRoute,
+              public route: ActivatedRoute,
               public modalWindowService: ModalWindowService) {
   }
 

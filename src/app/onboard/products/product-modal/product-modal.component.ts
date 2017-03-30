@@ -21,27 +21,29 @@ export class ProductModalContext extends BSModalContext {
 })
 export class ProductModal implements CloseGuard, ModalComponent<ProductModalContext> {
   context: ProductModalContext;
-  location = {};
+  location: any = {};
+  selectTypes: any;
+  selectStates: any;
   selectedType = '';
   selectedState = '';
   typeDirty: boolean = false;
   stateDirty: boolean = false;
-
+  
   uploadedImage;
   fileIsOver: boolean = false;
   options = {
     readAs: 'DataURL'
   };
-
+  
   constructor(public dialog: DialogRef<ProductModalContext>) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
-
-  closeModal(){
+  
+  closeModal() {
     this.dialog.close();
   }
-
+  
   // beforeDismiss(): boolean {
   //   return true;
   // }
@@ -49,36 +51,40 @@ export class ProductModal implements CloseGuard, ModalComponent<ProductModalCont
   // beforeClose(): boolean {
   //   return true;
   // }
-
-  changeState(){
+  
+  changeState() {
     this.stateDirty = true;
   }
-
-  changeType(){
+  
+  changeType() {
     this.typeDirty = true;
   }
-
+  
   // upload by input type=file
-  changeListener($event) : void {
+  changeListener($event): void {
     this.readThis($event.target);
   }
-
+  
   readThis(inputValue: any): void {
-    var file:File = inputValue.files[0];
-    var myReader:FileReader = new FileReader();
-
+    var file: File = inputValue.files[0];
+    var myReader: FileReader = new FileReader();
+    
     myReader.onloadend = (e) => {
       this.uploadedImage = myReader.result;
     };
     myReader.readAsDataURL(file);
   }
-
+  
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
   }
-
+  
   onFileDrop(file: File): void {
     this.uploadedImage = file;
+  }
+  
+  onSubmit() {
+    console.log('added onSubmit for tslint');
   }
 }

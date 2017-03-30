@@ -112,7 +112,7 @@ export class ProductService extends ModelService {
         return this.getProductsData(query, page ? false : true);
     }
     
-    private getProductsData(query: any = {}, reset: boolean = true) {
+    public getProductsData(query: any = {}, reset: boolean = true) {
         
             this.getProductsData$.next({query,reset});
             return this.getProductsData$;

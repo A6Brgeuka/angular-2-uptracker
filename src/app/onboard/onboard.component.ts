@@ -10,7 +10,7 @@ import { StateService } from '../core/services/state.service';
 export class OnboardComponent {
 
   constructor(
-      private stateService: StateService
+      public stateService: StateService
   ) {
   }
 

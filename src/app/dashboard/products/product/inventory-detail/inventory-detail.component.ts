@@ -22,9 +22,9 @@ export class ViewProductModalContext extends BSModalContext {
 @DestroySubscribers()
 export class InventoryDetailComponent implements OnInit, AfterViewInit {
 
-  @Input("variant") private variant;
+  @Input("variant") public variant;
   @Input("vis") public vis;
-  @Input("currentLocation") private currentLocation;
+  @Input("currentLocation") public currentLocation;
 
   constructor() {
   }

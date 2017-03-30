@@ -11,8 +11,8 @@ import { UserService } from './core/services/index';
 export class AppComponent implements OnInit{
 
   constructor(
-      private activatedRoute: ActivatedRoute,
-      private userService: UserService
+      public activatedRoute: ActivatedRoute,
+      public userService: UserService
   ) {
   }
 

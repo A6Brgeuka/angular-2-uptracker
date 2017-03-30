@@ -17,15 +17,15 @@ import { UserService, AccountService } from '../../core/services/index';
 })
 @DestroySubscribers()
 export class TransferComponent implements OnInit {
-  private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
-  private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public products$: Observable<any>;
 
   constructor(
       public modal: Modal,
-      // private vendorService: VendorService
+      // public vendorService: VendorService
   ) {
   }
 

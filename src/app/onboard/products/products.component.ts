@@ -17,9 +17,9 @@ export class ProductsComponent implements OnInit {
   searchText: string = '';
 
   constructor(
-      private router: Router,
+      public router: Router,
       public modal: Modal,
-      private modalWindowService: ModalWindowService
+      public modalWindowService: ModalWindowService
   ) {
   }
 

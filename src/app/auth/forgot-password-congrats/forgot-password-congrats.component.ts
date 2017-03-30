@@ -11,8 +11,8 @@ import { UserService } from '../../core/services/index';
 export class ForgotPasswordCongratsComponent {
 
   constructor(
-      private userService: UserService,
-      private router: Router
+      public userService: UserService,
+      public router: Router
   ) {
     let data = this.userService.selfData ? this.userService.selfData.tempData || null : null;
     if (!data) {

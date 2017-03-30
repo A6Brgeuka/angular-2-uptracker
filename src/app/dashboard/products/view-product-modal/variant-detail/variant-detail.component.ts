@@ -21,8 +21,8 @@ export class ViewProductModalContext extends BSModalContext {
 @DestroySubscribers()
 export class VariantDetailComponent implements OnInit, AfterViewInit {
 
-  @Input("variant") private variant;
-  @Input("showEdit") private showEdit;
+  @Input("variant") public variant;
+  @Input("showEdit") public showEdit;
 
   constructor() {
 

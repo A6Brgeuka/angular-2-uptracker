@@ -30,7 +30,7 @@ export class ChangePasswordUserModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ChangePasswordUserModal implements OnInit, CloseGuard, ModalComponent<ChangePasswordUserModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: ChangePasswordUserModalContext;
 
   public user;
@@ -42,12 +42,12 @@ export class ChangePasswordUserModal implements OnInit, CloseGuard, ModalCompone
 
   constructor(public zone: NgZone,
               public dialog: DialogRef<ChangePasswordUserModalContext>,
-              private userService: UserService,
-              private accountService: AccountService,
-              private phoneMaskService: PhoneMaskService,
-              private toasterService: ToasterService,
-              private fileUploadService: FileUploadService,
-              private modal: Modal,
+              public userService: UserService,
+              public accountService: AccountService,
+              public phoneMaskService: PhoneMaskService,
+              public toasterService: ToasterService,
+              public fileUploadService: FileUploadService,
+              public modal: Modal,
               public modalWindowService: ModalWindowService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);

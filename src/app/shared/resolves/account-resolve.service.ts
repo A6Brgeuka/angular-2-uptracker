@@ -7,7 +7,7 @@ import { LocationService } from "../../core/services/location.service";
 @Injectable()
 export class UserCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      public accountService: AccountService
   ) {
 
   }
@@ -19,7 +19,7 @@ export class UserCollectionResolve implements Resolve<any> {
 @Injectable()
 export class RoleCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      public accountService: AccountService
   ) {
 
   }
@@ -32,7 +32,7 @@ export class RoleCollectionResolve implements Resolve<any> {
 // @Injectable()
 // export class LocationCollectionResolve implements Resolve<any> {
 //   constructor(
-//       private accountService: AccountService
+//       public accountService: AccountService
 //   ) {
 //
 //   }
@@ -44,7 +44,7 @@ export class RoleCollectionResolve implements Resolve<any> {
 @Injectable()
 export class LocationCollectionResolve implements Resolve<any> {
   constructor(
-    private locationService: LocationService
+    public locationService: LocationService
   ) {
 
   }
@@ -56,7 +56,7 @@ export class LocationCollectionResolve implements Resolve<any> {
 @Injectable()
 export class AccountVendorCollectionResolve implements Resolve<any> {
   constructor(
-      private vendorService: VendorService
+      public vendorService: VendorService
   ) {
 
   }

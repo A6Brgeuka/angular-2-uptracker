@@ -25,10 +25,13 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 @DestroySubscribers()
 export class EditVendorComponent implements OnInit, AfterViewInit {
-  private subscribers: any = {};
+  public saveVendor: any;
+  public options: any;
+  
+  public subscribers: any = {};
   public vendor: AccountVendorModel;
   public vendorData: any;
-  private formData: FormData = new FormData();
+  public formData: FormData = new FormData();
   public currency$: Observable<any>;
   public currencyArr: any;
   public currencyDirty: boolean = false;
@@ -55,8 +58,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   public viewInit$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public vendorLoaded$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private fileArr: any = [];
-  private oldFileArr: any = [];
+  public fileArr: any = [];
+  public oldFileArr: any = [];
   
   public locations$: Observable<any>;
   public currentLocation: any;
@@ -67,7 +70,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
   
-  private defaultPlaceholder: any = {
+  public defaultPlaceholder: any = {
     discount_percentage: "Enter Value",
     shipping_handling: "Enter Value",
     avg_lead_time: "Enter Value",
@@ -80,15 +83,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     notes: ""
   };
   public placeholder: any = {};
-  private vendorId: string;
+  public vendorId: string;
   
   constructor(
-    private userService: UserService,
-    private accountService: AccountService,
-    private location: Location,
-    private vendorService: VendorService,
-    private route: ActivatedRoute,
-    private phoneMaskService: PhoneMaskService
+    public userService: UserService,
+    public accountService: AccountService,
+    public location: Location,
+    public vendorService: VendorService,
+    public route: ActivatedRoute,
+    public phoneMaskService: PhoneMaskService
   ) {
     this.vendor = new AccountVendorModel();
     

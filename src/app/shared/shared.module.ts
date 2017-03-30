@@ -40,6 +40,11 @@ import { EditUserModal } from './modals/edit-user-modal/edit-user-modal.componen
 import { EditLocationModal } from './modals/edit-location-modal/edit-location-modal.component';
 import { ChangePasswordUserModal } from "./modals/change-password-user-modal/change-password-user-modal.component";
 import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal.component";
+import { EditUserModalModule } from './modals/edit-user-modal/edit-user-modal.module';
+import { EditLocationModalModule } from './modals/edit-location-modal/edit-location-modal.module';
+import { ChangePasswordUserModalModule } from './modals/change-password-user-modal/change-password-user-modal.module';
+import { EditCommentModalModule } from './modals/edit-comment-modal/edit-comment-modal.module';
+import { AddToOrderModal } from './modals/add-to-order-modal/add-to-order-modal.component';
 //import { Add2OrderModal } from './modals/add2order-modal/add2order-modal.component';
 //import { AddToOrderModal } from './modals/add-to-order-modal/add-to-order-modal.component';
 
@@ -49,8 +54,17 @@ let modalsArr = [
   ChangePasswordUserModal,
   EditCommentModal,
   //Add2OrderModal
-  //AddToOrderModal
+  AddToOrderModal
 ];
+
+//let modalsModuleArr = [
+//  EditUserModalModule,
+//  EditLocationModalModule,
+//  ChangePasswordUserModalModule,
+//  EditCommentModalModule,
+//  //Add2OrderModal
+//  //AddToOrderModal
+//];
 
 
 @NgModule({
@@ -95,7 +109,8 @@ let modalsArr = [
     GooglePlacesInputModule,
 
     ...directivesArr,
-    ...pipesArr
+    ...pipesArr,
+    ...modalsArr
   ],
   providers: [
     ...MAIN_RESOLVER_PROVIDERS,

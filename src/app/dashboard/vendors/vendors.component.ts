@@ -14,11 +14,11 @@ import {VendorService, ModalWindowService} from "../../core/services/index";
 })
 @DestroySubscribers()
 export class VendorsComponent implements OnInit {
-    private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     public  searchKey: string;
     public  searchKeyLast: string;
     public  sortBy: string = 'A-Z';
-    private sortBy$: any = new BehaviorSubject(null);
+    public sortBy$: any = new BehaviorSubject(null);
     public  total: number;
     public  vendors$: Observable<any>;
     public  vendors: any;
@@ -28,8 +28,8 @@ export class VendorsComponent implements OnInit {
     
     constructor(
       public modal: Modal,
-      private vendorService: VendorService,
-      private modalWindowService: ModalWindowService
+      public vendorService: VendorService,
+      public modalWindowService: ModalWindowService
     ) {
     }
 

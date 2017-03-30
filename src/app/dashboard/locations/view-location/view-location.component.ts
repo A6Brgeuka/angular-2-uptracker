@@ -18,14 +18,14 @@ import * as _ from 'lodash';
 })
 @DestroySubscribers()
 export class ViewLocationComponent implements OnInit {
-  private subscribers: any = {};
+  public subscribers: any = {};
   public location: LocationModel;
-  private locationId: string;
+  public locationId: string;
   
   constructor(
     public accountService: AccountService,
-    private windowLocation: Location,
-    private route: ActivatedRoute,
+    public windowLocation: Location,
+    public route: ActivatedRoute,
     public locationService: LocationService,
     public modalWindowService: ModalWindowService
   ) {

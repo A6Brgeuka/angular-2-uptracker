@@ -5,13 +5,16 @@ import { AppSharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [
-    AddToOrderModal
+    //AddToOrderModal
   ],
   imports: [
     AppSharedModule
   ],
   providers: [],
-  entryComponents: [ AddToOrderModal ]
+  //exports: [
+  //  AddToOrderModal
+  //],
+  //entryComponents: [ AddToOrderModal ]
 })
 export class AddToOrderModalModule {
 }

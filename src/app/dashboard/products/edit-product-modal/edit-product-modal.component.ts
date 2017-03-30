@@ -23,14 +23,14 @@ export class EditProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class EditProductModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<EditProductModalContext> {
-  private subscribers: any = {};
-  private context: EditProductModalContext;
+  public subscribers: any = {};
+  public context: EditProductModalContext;
   public product: AccountVendorModel;
 
   constructor(
       public dialog: DialogRef<EditProductModalContext>,
-      private userService: UserService,
-      private accountService: AccountService
+      public userService: UserService,
+      public accountService: AccountService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);

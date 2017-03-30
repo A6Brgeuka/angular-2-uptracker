@@ -8,8 +8,8 @@ export class SessionService {
   public session: any = {};
   
   constructor(
-      private localStorage: LocalStorage,
-      private cookieService: CookieService
+      public localStorage: LocalStorage,
+      public cookieService: CookieService
   ) {
   }
 

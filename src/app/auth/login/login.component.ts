@@ -15,9 +15,9 @@ export class LoginComponent {
   };
 
   constructor(
-      private userService: UserService,
-      private router: Router,
-      private spinnerService: SpinnerService
+      public userService: UserService,
+      public router: Router,
+      public spinnerService: SpinnerService
   ) {
   }
 

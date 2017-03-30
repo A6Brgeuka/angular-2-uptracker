@@ -20,9 +20,9 @@ export class PriceModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: PriceModalContext;
-  private filter:any = {'department':'', 'vendor':'', 'onlymy':false};
+  public filter:any = {'department':'', 'vendor':'', 'onlymy':false};
 
 
   constructor(

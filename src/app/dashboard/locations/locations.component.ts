@@ -17,19 +17,19 @@ import { ModalWindowService } from "../../core/services/modal-window.service";
 })
 @DestroySubscribers()
 export class LocationsComponent implements OnInit {
-  private subscribers: any = {};
+  public subscribers: any = {};
   public searchKey: string = null;
-  private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
-  private sortBy$: any = new BehaviorSubject(null);
+  public sortBy$: any = new BehaviorSubject(null);
   public total: number;
   public locations$: Observable<any>;
 
   constructor(
       public modal: Modal,
-      private userService: UserService,
-      private accountService: AccountService,
-      private modalWindowService: ModalWindowService
+      public userService: UserService,
+      public accountService: AccountService,
+      public modalWindowService: ModalWindowService
   ) {
   }
 

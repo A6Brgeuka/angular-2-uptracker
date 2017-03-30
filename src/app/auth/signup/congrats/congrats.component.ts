@@ -16,10 +16,10 @@ export class CongratsComponent {
   };
 
   constructor(
-      private userService: UserService,
-      private accountService: AccountService,
-      private cardService: CardService,
-      private router: Router
+      public userService: UserService,
+      public accountService: AccountService,
+      public cardService: CardService,
+      public router: Router
   ) {
     // if payment token doesn't exist then redirect user to login (authorized user will be automatically redirected to dashboard)
     let payment_token = this.userService.selfData.account ? this.userService.selfData.account.payment_token || null : null;

@@ -25,11 +25,11 @@ export class PaymentInfoComponent implements OnInit {
   public monthDirty: boolean = false;
 
   constructor(
-      private router: Router,
-      private userService: UserService,
-      private accountService: AccountService,
-      private spinnerService: SpinnerService,
-      private cardService: CardService
+      public router: Router,
+      public userService: UserService,
+      public accountService: AccountService,
+      public spinnerService: SpinnerService,
+      public cardService: CardService
   ) {
     let signupStep = this.userService.currentSignupStep();
     if (signupStep && signupStep < 3) {
