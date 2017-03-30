@@ -8,7 +8,8 @@ import { Subject } from 'rxjs/Rx';
 export class CustomRenderer extends DOMOverlayRenderer{
   render(dialog: DialogRef<any>, vcRef: ViewContainerRef, injector?: Injector): ComponentRef<ModalOverlay> {
     let cmpRef = super.render(dialog, vcRef, injector);
-    (<any>cmpRef)._nativeElement.className += 'transparent-bg';
+    (<any>cmpRef)._viewRef.rootNodes[0].className += 'transparent-bg';
+    
     return cmpRef;
   }
 }
@@ -83,9 +84,9 @@ export class ModalWindowService {
     }
     
     let o = overlayConfigFactory(object, BSModalContext);
-    //if (isTransparentBg){
-    //  o.renderer = this._modalRenderer;
-    //}
+    if (isTransparentBg){
+      o.renderer = this._modalRenderer;
+    }
     return o;
   }
 }
