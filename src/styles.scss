@@ -13,9 +13,17 @@ body {
   font-family: 'Lato', 'Roboto', Tahoma, Arial, sans-serif;
   font-size: 14px;
 }
+// Input, select fields global styling
+
+.input input, .select .select-wrapper input.select-dropdown {
+  border: 1px solid $grey;
+  border-radius: 5px;
+  height: 40px;
+  padding-left:5px;
+}
+// Checkbox global styling
 
 div {
-
   &.input-checkbox, &.input-checkbox:disabled {
     [type="checkbox"] {
       & + label {
@@ -76,6 +84,23 @@ div {
       }
     }
   }
+}
+
+[type="radio"]:not(:checked) + label:before, [type="radio"]:not(:checked) + label:after, [type="radio"]:checked + label:before {
+  border:1px solid $grey;
+}
+
+[type="radio"]:checked + label:after{
+  background-color: $grey;
+}
+
+[type="radio"]:checked + label:after {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  border-color: $grey;
+  width: 10px;
+  height:10px;
+  top:3px;
 }
 
 .noselect {
@@ -886,7 +911,7 @@ modal-overlay {
       border-color: #444;
       top: 20vh;
       margin: auto;
-      width: 320px;
+      max-width: 400px;
       min-height: 250px;
       .modal-content {
         padding: 20px;

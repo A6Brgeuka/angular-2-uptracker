@@ -1,20 +1,62 @@
 <div class="inner">
-  <div class="row title center-align">Pricing Info</div>
+  <div class="clearfix row title center-align">Pricing Info</div>
   <div class="row checks-row">
     <div class="col s4">
       <input value="book" type="radio" name="price_type" id="price_type_book">
-      <label for="price_type_book" class="grey">$200.00</label>
+      <label for="price_type_book"></label>
+      <label for="price_type_book" class="grey-text smaller">$200.00</label>
       <label for="price_type_book">Book</label>
     </div>
     <div class="col s4">
       <input value="negotiated" type="radio" name="price_type" id="price_type_negotiated">
-      <label for="price_type_negotiated" class="grey">$100.00</label>
+      <label for="price_type_negotiated"></label>
+      <label for="price_type_negotiated" class="grey-text smaller">$100.00</label>
       <label for="price_type_negotiated">Negotiated</label>
     </div>
     <div class="col s4">
       <input value="club" type="radio" name="price_type" id="price_type_club">
-      <label for="price_type_club" class="grey">$90.00</label>
+      <label for="price_type_club"></label>
+      <label for="price_type_club" class="grey-text smaller">$90.00</label>
       <label for="price_type_club">Club</label>
     </div>
   </div>
+
+  <div class="row discounts clearfix" *ngIf="true">
+    <div class="discount_row">
+      <div class="row grey-text titles">
+        <div class="col s4">Type</div>
+        <div class="col s3">Amount</div>
+        <div class="col s3">Rewards Pts.</div>
+        <div class="col s2"></div>
+      </div>
+      <div class="row">
+        <div class="col s4">
+          <div class="left select">
+            <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+              <option value="fixed">Fixed</option>
+              <option value="onemore">One more</option>
+            </select>
+          </div>
+        </div>
+        <div class="col s3">
+          <div class="input"> <input type="text" value="$5.00"></div>
+        </div>
+        <div class="col s3">
+          <div class="input"> <input type="text" value="0"></div>
+        </div>
+        <div class="col s2">
+          <a (click)="removeDiscount()" href="#"> <i class="fa fa-trash red-text"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="add-discount right tealish-text clearfix"><i class="fa fa-plus" (click)="addDiscount()"></i> Add discount</div>
+
+  <div class="center-align col s12 clearfix">
+    <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
+    <button class="uptracker-form-btn ">Save</button>
+  </div>
+
 </div>
+

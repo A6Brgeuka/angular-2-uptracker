@@ -44,4 +44,12 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   closeModal(data){
     this.dialog.close(data);
   }
+  
+  addDiscount(){
+    
+  }
+  
+  removeDiscount(){
+    
+  }
 }

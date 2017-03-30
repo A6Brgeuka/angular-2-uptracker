@@ -1,7 +1,72 @@
 @import "../../../../colors.scss";
 
-.checks-row {
-  border-bottom: 1px solid $grey;
-}
+.inner {
+  padding:5px;
 
-.grey {color:$grey}
+  [type="radio"] + label:before, [type="radio"] + label:after {
+    right: 0;
+    margin: 4px auto;
+  }
+
+  .row {
+    margin-bottom:10px;
+  }
+
+  .add-discount {
+    margin-bottom:10px;
+  }
+
+  .checks-row, .discount_row {
+    border-bottom: 1px solid $grey;
+  }
+
+  .titles {
+    font-size:.8rem;
+  }
+
+  .checks-row {
+    min-width: 350px;
+    padding-bottom: 20px;
+
+    & > div.col > * {
+      text-align: center;
+      display: block;
+      float: left;
+      padding: 0;
+      width: 100%;
+    }
+  }
+
+  .grey-text {
+    color: $grey
+  }
+
+  label {
+    font-size: 1rem;
+    color: $dark;
+  }
+
+  .smaller {
+    font-size:0.9rem;
+  }
+
+  .uptracker-form-btn {
+    height: 36px;
+    font-size: 14px;
+    border: 1px solid #fff;
+    width: 100px;
+    margin: 0 5px;
+    font-weight: normal;
+
+    &:first-of-type {
+      border-color: red;
+      background-color: #fff;
+      color: red;
+    }
+    &:last-of-type {
+      border-color: $tealish;
+      background-color: $tealish;
+      color: #fff;
+    }
+  }
+}
