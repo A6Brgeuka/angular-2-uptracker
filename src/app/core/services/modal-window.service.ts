@@ -33,7 +33,7 @@ export class ModalWindowService {
         .isBlocking(false)
         .showClose(false)
         .keyboard(27)
-        .dialogClass('modal-confirm')
+        //.dialogClass('modal-confirm')
         .title(title)
         .body(body)
         .okBtnClass('btn-confirm uptracker-form-btn waves-effect waves-light')

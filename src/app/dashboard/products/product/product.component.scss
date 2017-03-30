@@ -478,27 +478,6 @@ $normal: 14px;
 
             div {
               text-align: center;
-
-              &.input-checkbox {
-                [type="checkbox"] {
-                  & + label {
-                    padding-left: 20px;
-                    height: 20px;
-
-                    &:before {
-                      width: 17px;
-                      height: 17px;
-                    }
-                  }
-
-                  &:checked {
-                    & + label:before {
-                      width: 10px;
-                      height: 15px;
-                    }
-                  }
-                }
-              }
             }
           }
 

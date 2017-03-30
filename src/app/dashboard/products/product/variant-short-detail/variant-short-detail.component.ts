@@ -57,7 +57,7 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
   }
   //
   //addToOrder(selected) {
-  //  debugger;
+  //
   //  let modalData = {
   //    'quantity':1,
   //    'vendorArr':this.variant.vendor_variants,

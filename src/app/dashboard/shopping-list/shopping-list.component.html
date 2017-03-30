@@ -17,7 +17,7 @@
       </div>
 
       <div class="heading row">
-        <div class="col s6">
+        <div class="col s4">
           <div class="row">
             <div class="col s2">
               <div class="input-checkbox checkbox">
@@ -36,13 +36,14 @@
             </div>
           </div>
         </div>
-        <div class="col s4">Vendor</div>
+        <div class="col s3">Location</div>
+        <div class="col s3">Vendor</div>
         <div class="col s1">Qty.</div>
         <div class="col s1">Price</div>
       </div>
 
-      <div class="item row" *ngFor="let product of (order$ | async)?.products; let i=index">
-        <div class="col s6">
+      <div class="item row" *ngFor="let product of (cart$ | async); let i=index">
+        <div class="col s4">
           <div class="row">
             <div class="col s2">
               <div class="input-checkbox checkbox">
@@ -61,11 +62,26 @@
             </div>
           </div>
         </div>
-        <div class="col s4">
+        <div class="col s3">
           <div class="select inbl">
-            <select [(ngModel)]="product.selectedVendor" (change)="onVendorChange(product)" materialize="material_select">
-              <option *ngFor="let vendor of product.vendors" [value]="vendor.id">{{ vendor.name }}</option>
+            <select materialize="material_select">
+              <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations" [value]="location.id">{{ location.name }}</option>
             </select>
+          </div>
+        </div>
+        <div class="col s3">
+          <div class="select inbl">
+
+            <input [(ngModel)]="product.selectedVendor" materialize="dropdown"   data-activates='dd'>
+            <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
+            <!-- Dropdown Structure -->
+            <ul id='dd' class='dropdown-content'>
+              <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
+                <div  class="col s2">{{ vendor.img }}</div>
+                <div class="col s8">{{ vendor.vendor_name }}</div>
+                <div class="col s2">{{ vendor.price }}</div>
+              </li>
+            </ul>
           </div>
         </div>
         <div class="col s1">

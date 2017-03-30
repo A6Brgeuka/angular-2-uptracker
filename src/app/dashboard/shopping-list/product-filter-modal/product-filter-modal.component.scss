@@ -1,21 +1,21 @@
 $tealish: #33c6d9;
 
 :host /deep/ {
-  .inner{
+  .inner {
     .row {
       margin-bottom: 0;
       &.check {
-        margin:10px 0;
+        margin: 10px 0;
         .s2 {
           padding-left: 0;
         }
       }
     }
     .select {
-      width:100%;
+      width: 100%;
     }
     input.select-dropdown {
-      border-color:#9a9c9e!important;
+      border-color: #9a9c9e !important;
       margin-bottom: 10px;
       background-color: #f5f5f5;
     }
@@ -23,54 +23,22 @@ $tealish: #33c6d9;
       margin-bottom: 5px;
     }
     .uptracker-form-btn {
-      height:36px;
-      font-size:14px;
-      border:1px solid #fff;
-      width:100px;
-      margin:0 10px;
+      height: 36px;
+      font-size: 14px;
+      border: 1px solid #fff;
+      width: 100px;
+      margin: 0 10px;
       font-weight: normal;
 
       &:first-of-type {
         border-color: red;
         background-color: #fff;
-        color:red;
+        color: red;
       }
       &:last-of-type {
-        border-color:$tealish;
+        border-color: $tealish;
         background-color: $tealish;
-        color:#fff;
-      }
-    }
-  }
-
-
-  .input-checkbox {
-    [type="checkbox"] {
-      & + label {
-        vertical-align: middle;
-        padding-left: 25px;
-        font-size: 14px;
-
-        &:before {
-          width: 20px;
-          height: 20px;
-          background-color: #f5f6f7;
-          border-color: #d6d6d6;
-          border-radius: 3px;
-        }
-      }
-
-      &:checked {
-        & + label:before {
-          border-width: 0 2px 2px 0;
-          background: transparent;
-          width: 10px;
-          height: 15px;
-          border-radius: 1px;
-          top: 1px;
-          left: -2px;
-          border-color: $tealish;
-        }
+        color: #fff;
       }
     }
   }
