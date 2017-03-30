@@ -1,5 +1,10 @@
 @import "../../../../colors.scss";
 
+input.select-dropdown, .input input {
+  height: 30px;
+  margin-bottom: 0!important;
+}
+
 .inner {
   padding:5px;
 
@@ -10,6 +15,10 @@
 
   .row {
     margin-bottom:10px;
+  }
+
+  .thinrow {
+    height:35px;
   }
 
   .add-discount {
@@ -69,4 +78,6 @@
       color: #fff;
     }
   }
+
+
 }
