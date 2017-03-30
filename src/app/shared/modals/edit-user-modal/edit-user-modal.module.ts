@@ -5,16 +5,19 @@ import { AppSharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [
-    EditUserModal
+    //EditUserModal
   ],
   imports: [
     AppSharedModule
   ],
   providers: [],
+  exports: [
+    //EditUserModal
+  ],
   // IMPORTANT:
   // Since 'AdditionCalculateWindow' is never explicitly used (in a template)
   // we must tell angular about it.
-  entryComponents: [ EditUserModal ]
+  //entryComponents: [ EditUserModal ]
 })
 export class EditUserModalModule {
 }
