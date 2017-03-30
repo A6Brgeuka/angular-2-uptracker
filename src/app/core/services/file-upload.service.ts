@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class FileUploadService {
   constructor(
-    private exifService: ExifService,
+    public exifService: ExifService,
     public restangular: Restangular
 ) {
   }

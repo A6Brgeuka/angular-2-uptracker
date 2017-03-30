@@ -22,10 +22,10 @@ import {AccountService} from "../../core/services/account.service";
 })
 @DestroySubscribers()
 export class ProductsComponent implements OnInit {
-    private nothingChecked:boolean;
-    private searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    public nothingChecked:boolean;
+    public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
     public sortBy: string;
-    private sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+    public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
     public total: number;
     public products$: Observable<any>;
     public products:any = [];
@@ -34,7 +34,7 @@ export class ProductsComponent implements OnInit {
     public dashboardLocation;
     public infiniteScroll$: any = new BehaviorSubject(false);
     public selectAll$: any = new BehaviorSubject(0);
-    private isRequest:boolean = false;
+    public isRequest:boolean = false;
     public searchKey:string;
     public  searchKeyLast: string;
     public  locationId: string;
@@ -43,9 +43,9 @@ export class ProductsComponent implements OnInit {
     
     constructor(
         public modal: Modal,
-        private productService: ProductService,
-        private modalWindowService: ModalWindowService,
-        private accountService: AccountService
+        public productService: ProductService,
+        public modalWindowService: ModalWindowService,
+        public accountService: AccountService
     ) {
     }
     

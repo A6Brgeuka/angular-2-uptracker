@@ -20,11 +20,11 @@ export class ResetPasswordComponent implements OnInit {
   tokenParam: string;
 
   constructor(
-      private activatedRoute: ActivatedRoute,
-      private userService: UserService,
-      private toasterService: ToasterService,
-      private spinnerService: SpinnerService,
-      private router: Router
+      public activatedRoute: ActivatedRoute,
+      public userService: UserService,
+      public toasterService: ToasterService,
+      public spinnerService: SpinnerService,
+      public router: Router
   ) {
     if (!this.userService.isGuest()){
       this.router.navigate(['/dashboard']);

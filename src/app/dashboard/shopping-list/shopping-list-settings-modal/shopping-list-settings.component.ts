@@ -20,10 +20,10 @@ export class ShoppingListSettingsModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ShoppingListSettingsModal implements OnInit, CloseGuard, ModalComponent<ShoppingListSettingsModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: ShoppingListSettingsModalContext;
-  private settings:any = {'priority':1, 'vendor':'', 'only':false};
-  private priorityMargin: string;
+  public settings:any = {'priority':1, 'vendor':'', 'only':false};
+  public priorityMargin: string;
 
 
   constructor(

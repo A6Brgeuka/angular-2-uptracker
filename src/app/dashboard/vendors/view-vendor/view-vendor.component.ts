@@ -17,10 +17,10 @@ import { VendorService } from '../../../core/services/vendor.service';
 })
 @DestroySubscribers()
 export class ViewVendorComponent implements OnInit {
-  private subscribers: any = {};
+  public subscribers: any = {};
   public vendor: any = {};
   public basicnfo: any = {};
-  private accountVendors: any;
+  public accountVendors: any;
   public locationArr: any = [];
   public locations$: Observable<any>;
   public all_locations$: Observable<any>;
@@ -30,20 +30,20 @@ export class ViewVendorComponent implements OnInit {
   public secondaryLocation: any;
   public secondaryLocationArr: any = [];
   public locVendorChosen: boolean = false;
-  private currencyArr: any = [];
+  public currencyArr: any = [];
   public currencySign: string;
   public body = document.getElementsByTagName("body")[0];
   
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
-  private vendorId: string;
+  public vendorId: string;
   
   constructor(
     public userService: UserService,
-    private route: ActivatedRoute,
+    public route: ActivatedRoute,
     public accountService: AccountService,
-    private vendorService: VendorService,
-    private location: Location,
-    private modalWindowService: ModalWindowService
+    public vendorService: VendorService,
+    public location: Location,
+    public modalWindowService: ModalWindowService
   ) {
   }
   

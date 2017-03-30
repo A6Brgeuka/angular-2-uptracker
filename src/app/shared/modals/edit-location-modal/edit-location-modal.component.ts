@@ -33,7 +33,8 @@ export class EditLocationModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<EditLocationModalContext> {
-  private subscribers: any = {};
+  public searchKey: any;
+  public subscribers: any = {};
   context: EditLocationModalContext;
   public location: LocationModel;
   public states$: Observable<any> = new Observable<any>();
@@ -52,7 +53,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public selectedFaxCountryExt: any = this.phoneMaskService.defaultCountry;
 
   public inventory_location: any = { name: '', floor_stock: true};
-  private locationToDelete = null;
+  public locationToDelete = null;
 
   // setting default storage locations when creating new one location
   public defaultStorageLocations = [
@@ -79,13 +80,13 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
 
   constructor(public zone: NgZone,
               public dialog: DialogRef<EditLocationModalContext>,
-              private toasterService: ToasterService,
-              private userService: UserService,
-              private accountService: AccountService,
-              private phoneMaskService: PhoneMaskService,
-              private fileUploadService: FileUploadService,
-              private modalWindowService: ModalWindowService,
-              private locationService: LocationService) {
+              public toasterService: ToasterService,
+              public userService: UserService,
+              public accountService: AccountService,
+              public phoneMaskService: PhoneMaskService,
+              public fileUploadService: FileUploadService,
+              public modalWindowService: ModalWindowService,
+              public locationService: LocationService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     this.location = new LocationModel();

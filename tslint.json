@@ -2,7 +2,9 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
+  "level": "warn",
   "rules": {
+    "level": "warn",
     "callable-types": true,
     "class-name": true,
     "comment-format": [

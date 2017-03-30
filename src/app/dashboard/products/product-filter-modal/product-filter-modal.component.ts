@@ -23,7 +23,7 @@ export class ProductFilterModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<ProductFilterModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: ProductFilterModalContext;
 
   constructor(

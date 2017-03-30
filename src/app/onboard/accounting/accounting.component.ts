@@ -16,7 +16,7 @@ import { toast } from "angular2-materialize";
 })
 @DestroySubscribers()
 export class AccountingComponent implements OnInit {
-  private subscribers: any = {};
+  public subscribers: any = {};
   public locationArr: any = [];
   public accounting: any = {};
   public monthArr: any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -26,7 +26,7 @@ export class AccountingComponent implements OnInit {
   public currencyDirty: boolean = false;
   public currencySign: string ='$';
 
-  private moreThanOneSlider: boolean = false;
+  public moreThanOneSlider: boolean = false;
   public disabledRange: any = [];
   public viewRangeInput: any = [];
   public textInputRangeTotal: any = []; // array of NaN values for range text inputs
@@ -35,20 +35,20 @@ export class AccountingComponent implements OnInit {
     allowDecimal: false,
     prefix: ''
   });
-  private prevInputValue: any = [];
+  public prevInputValue: any = [];
   public rangeStep: number = 1;
-  private prev_annual_inventory_budget: string; // previous annual budget for 'change' detection on blur
+  public prev_annual_inventory_budget: string; // previous annual budget for 'change' detection on blur
 
-  private localAccounting: any = {};
+  public localAccounting: any = {};
 
-  private address = {};
+  public address = {};
 
   constructor(
-      private router: Router,
-      private userService: UserService,
-      private accountService: AccountService,
-      private toasterService: ToasterService,
-      private sessionService: SessionService
+      public router: Router,
+      public userService: UserService,
+      public accountService: AccountService,
+      public toasterService: ToasterService,
+      public sessionService: SessionService
   ) {
   }
 

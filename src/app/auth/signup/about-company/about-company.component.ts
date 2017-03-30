@@ -12,10 +12,10 @@ export class AboutCompanyComponent implements OnInit {
   signupAccount: any = {};
 
   constructor(
-      private accountService: AccountService,
-      private userService: UserService,
-      private spinnerService: SpinnerService,
-      private router: Router,
+      public accountService: AccountService,
+      public userService: UserService,
+      public spinnerService: SpinnerService,
+      public router: Router,
       public zone: NgZone,
   ) {
     let signupStep = this.userService.currentSignupStep();

@@ -15,14 +15,14 @@ import { UserService, AccountService } from '../../core/services/index';
 })
 @DestroySubscribers()
 export class OnboardUsersComponent implements OnInit {
-  private subscribers: any = {};
+  public subscribers: any = {};
   public userArr: any = [];
 
   constructor(
-      private router: Router,
+      public router: Router,
       public modal: Modal,
-      private userService: UserService,
-      private accountService: AccountService
+      public userService: UserService,
+      public accountService: AccountService
   ) {
   }
 

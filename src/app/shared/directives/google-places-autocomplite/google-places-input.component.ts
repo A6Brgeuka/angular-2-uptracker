@@ -28,13 +28,13 @@ import { DestroySubscribers } from "ng2-destroy-subscribers";
 @DestroySubscribers()
 export class GooglePlacesInputComponent implements OnInit {
 
-  private autocomplete;
-  private googlePlaceAdrress$;
-  private subscribers: any = {};
+  public autocomplete;
+  public googlePlaceAdrress$;
+  public subscribers: any = {};
 
   @Output() googleAdress = new EventEmitter();
 
-  constructor(private mapsAPILoader: MapsAPILoader, private el: ElementRef) {
+  constructor(public mapsAPILoader: MapsAPILoader, public el: ElementRef) {
     el.nativeElement.autocomplete = "off";
     el.nativeElement.autocapitalize = "off";
     el.nativeElement.spellcheck = "off";

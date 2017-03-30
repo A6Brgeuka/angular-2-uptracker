@@ -11,8 +11,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   selfData: any;
 
   constructor(
-    private userService: UserService,
-    private router: Router
+    public userService: UserService,
+    public router: Router
   ) {
   }
   

@@ -18,9 +18,9 @@ export class OnboardLocationsComponent implements OnInit {
   public locations$: Observable<any>;
 
   constructor(
-      private router: Router,
+      public router: Router,
       public modal: Modal,
-      private userService: UserService
+      public userService: UserService
   ) {
   }
 

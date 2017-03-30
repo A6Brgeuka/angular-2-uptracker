@@ -7,7 +7,7 @@ import { LocationService } from "../../core/services/location.service";
 @Injectable()
 export class StateCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      public accountService: AccountService
   ) {
 
   }
@@ -19,7 +19,7 @@ export class StateCollectionResolve implements Resolve<any> {
 @Injectable()
 export class LocationTypesCollectionResolve implements Resolve<any> {
   constructor(
-      private locationService: LocationService
+      public locationService: LocationService
   ) {
 
   }
@@ -31,7 +31,7 @@ export class LocationTypesCollectionResolve implements Resolve<any> {
 @Injectable()
 export class DepartmentCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      public accountService: AccountService
   ) {
 
   }
@@ -43,7 +43,7 @@ export class DepartmentCollectionResolve implements Resolve<any> {
 @Injectable()
 export class ProductAccountingCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      public accountService: AccountService
   ) {
 
   }
@@ -55,7 +55,7 @@ export class ProductAccountingCollectionResolve implements Resolve<any> {
 @Injectable()
 export class ProductCategoriesCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      public accountService: AccountService
   ) {
 
   }
@@ -67,7 +67,7 @@ export class ProductCategoriesCollectionResolve implements Resolve<any> {
 @Injectable()
 export class CurrencyCollectionResolve implements Resolve<any> {
   constructor(
-      private accountService: AccountService
+      public accountService: AccountService
   ) {
 
   }
@@ -79,7 +79,7 @@ export class CurrencyCollectionResolve implements Resolve<any> {
 @Injectable()
 export class VendorCollectionResolve implements Resolve<any> {
   constructor(
-      private vendorService: VendorService
+      public vendorService: VendorService
   ) {
 
   }
@@ -91,8 +91,8 @@ export class VendorCollectionResolve implements Resolve<any> {
 @Injectable()
 export class ProductCollectionResolve implements Resolve<any> {
   constructor(
-      private productService: ProductService,
-      private accountService: AccountService
+      public productService: ProductService,
+      public accountService: AccountService
   ) {
 
   }

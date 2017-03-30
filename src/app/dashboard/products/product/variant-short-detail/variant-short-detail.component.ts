@@ -24,15 +24,15 @@ export class ViewProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class VariantShortDetailComponent implements OnInit, AfterViewInit {
-  private locationArr: any;
+  public locationArr: any;
   
-  @Input("variant") private variant;
-  @Input("product_id") private product_id;
-  @Input("showEdit") private showEdit;
+  @Input("variant") public variant;
+  @Input("product_id") public product_id;
+  @Input("showEdit") public showEdit;
 
   constructor(
     public modalWindowService: ModalWindowService,
-    private modal: Modal,
+    public modal: Modal,
     public accountService: AccountService,
 
 ) {

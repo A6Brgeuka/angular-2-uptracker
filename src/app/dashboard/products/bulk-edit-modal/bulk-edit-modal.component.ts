@@ -24,7 +24,7 @@ export class BulkEditModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<BulkEditModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   
   public departmentCollection$: Observable<any> = new Observable<any>();
   public productAccountingCollection$: Observable<any> = new Observable<any>();
@@ -33,11 +33,11 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   public backStockCollection$: Observable<any> = new Observable<any>();
   public vendorCollection$: any = new BehaviorSubject(false);
   public additionalInfo$: Observable<any> = new Observable<any>();
-  private dataObj:any ={};
-  private data:any = [];
+  public dataObj:any ={};
+  public data:any = [];
   
-  private context: BulkEditModalContext;
-  private selectedProducts:any;
+  public context: BulkEditModalContext;
+  public selectedProducts:any;
   public bulk: any = {
     department: null, //
     working_stock: null,
@@ -56,8 +56,8 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   
   constructor(
     public dialog: DialogRef<BulkEditModalContext>,
-    private userService: UserService,
-    private accountService: AccountService,
+    public userService: UserService,
+    public accountService: AccountService,
     public productService: ProductService,
 
   ) {

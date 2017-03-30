@@ -21,14 +21,14 @@ export class AddToOrderModalContext extends BSModalContext {
 @DestroySubscribers()
 export class AddToOrderModal implements OnInit, CloseGuard, ModalComponent<AddToOrderModalContext> {
   context: AddToOrderModalContext;
-  private quantity: number = 1;
-  private vendor: any= {id:"", vendor_id:""};
-  private location: string = '';
-  private valid1: boolean = false;
-  private valid2: boolean = false;
-  private valid3: boolean = false;
-  private valid: boolean = false;
-  private isAuto: boolean =true;
+  public quantity: number = 1;
+  public vendor: any= {id:"", vendor_id:""};
+  public location: string = '';
+  public valid1: boolean = false;
+  public valid2: boolean = false;
+  public valid3: boolean = false;
+  public valid: boolean = false;
+  public isAuto: boolean =true;
   
   
   constructor(

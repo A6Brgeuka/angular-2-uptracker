@@ -33,13 +33,13 @@ export class ViewProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ProductComponent implements OnInit, AfterViewInit {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: ViewProductModalContext;
   public product$: BehaviorSubject<any> = new BehaviorSubject([]);
   
   
-  private product: any;
-  private productCopy: any;
+  public product: any;
+  public productCopy: any;
   public variation: any = {};
   public variationArrs = {
     package_type: [],
@@ -49,8 +49,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     material: [],
     price_range: []
   };
-  private currentVariant: any = {};
-  private showVariant: boolean = false;
+  public currentVariant: any = {};
+  public showVariant: boolean = false;
   public comment: any = {};
   public showEdit: boolean = false;
   public hasDocs: boolean = false;
@@ -84,8 +84,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   fileIsOver: boolean = false;
   public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
-  private fileArr: any = [];
-  private oldFileArr: any = [];
+  public fileArr: any = [];
+  public oldFileArr: any = [];
   // @ViewChild('secondary') secondaryLocationLink: ElementRef;
   
   public file$: Observable<any>;
@@ -103,11 +103,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
   public deleteFromDoc$: Subject<any> = new Subject<any>();
   public updateDoc$: Subject<any> = new Subject<any>();
   
-  private formData: FormData = new FormData();
+  public formData: FormData = new FormData();
   
   public hasInfoTab: boolean = false;
-  private product_id: string;
-  private locationArr: any;
+  public product_id: string;
+  public locationArr: any;
   
   constructor(
     public userService: UserService,
@@ -115,11 +115,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     public productService: ProductService,
     public toasterService: ToasterService,
     public fileUploadService: FileUploadService,
-    private location: Location,
-    private route: ActivatedRoute,
-    private zone: NgZone,
+    public location: Location,
+    public route: ActivatedRoute,
+    public zone: NgZone,
     public modalWindowService: ModalWindowService,
-    private modal: Modal
+    public modal: Modal
   ) {
     this.fileActions();
     this.docActions();

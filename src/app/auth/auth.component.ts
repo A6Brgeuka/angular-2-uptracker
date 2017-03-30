@@ -13,8 +13,8 @@ export class AuthComponent implements OnInit {
   public showUserMenu$: Observable<boolean>;
 
   constructor(
-      private stateService: StateService,
-      private router: Router
+      public stateService: StateService,
+      public router: Router
   ) {
   }
 

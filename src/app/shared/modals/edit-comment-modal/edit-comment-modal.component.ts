@@ -30,7 +30,7 @@ export class EditCommentModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class EditCommentModal implements OnInit, CloseGuard, ModalComponent<EditCommentModalContext> {
-  private subscribers: any = {};
+  public subscribers: any = {};
   context: EditCommentModalContext;
 
   public comment;
@@ -38,12 +38,12 @@ export class EditCommentModal implements OnInit, CloseGuard, ModalComponent<Edit
 
   constructor(public zone: NgZone,
               public dialog: DialogRef<EditCommentModalContext>,
-              private userService: UserService,
-              private accountService: AccountService,
-              private phoneMaskService: PhoneMaskService,
-              private toasterService: ToasterService,
-              private fileUploadService: FileUploadService,
-              private modal: Modal,
+              public userService: UserService,
+              public accountService: AccountService,
+              public phoneMaskService: PhoneMaskService,
+              public toasterService: ToasterService,
+              public fileUploadService: FileUploadService,
+              public modal: Modal,
               public modalWindowService: ModalWindowService) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);

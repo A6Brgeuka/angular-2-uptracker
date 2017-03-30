@@ -25,7 +25,10 @@ import { UserModel } from '../../../models/user.model';
 })
 @DestroySubscribers()
 export class EditUserComponent implements OnInit {
-  private subscribers: any = {};
+  public searchKey: any;
+  public roleArr: any;
+  
+  public subscribers: any = {};
   public user: any = {};
   public locationArr: any;
   public locations$: Observable<any>;
@@ -58,18 +61,18 @@ export class EditUserComponent implements OnInit {
   @ViewChild('tabProfile') tabProfile: ElementRef;
   @ViewChild('tabPermissions') tabPermissions: ElementRef;
   @ViewChild('tabTemplate') tabTemplate: ElementRef;
-  private userId: string;
+  public userId: string;
   
   constructor(
     public zone: NgZone,
-    private userService: UserService,
-    private accountService: AccountService,
-    private phoneMaskService: PhoneMaskService,
-    private route: ActivatedRoute,
-    private toasterService: ToasterService,
-    private location: Location,
-    private fileUploadService: FileUploadService,
-    private modal: Modal,
+    public userService: UserService,
+    public accountService: AccountService,
+    public phoneMaskService: PhoneMaskService,
+    public route: ActivatedRoute,
+    public toasterService: ToasterService,
+    public location: Location,
+    public fileUploadService: FileUploadService,
+    public modal: Modal,
     public modalWindowService: ModalWindowService
   ) {
     

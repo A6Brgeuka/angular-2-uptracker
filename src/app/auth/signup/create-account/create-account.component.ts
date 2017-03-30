@@ -19,9 +19,9 @@ export class CreateAccountComponent implements OnInit {
   selectedCountry: any = this.phoneMaskService.defaultCountry;
 
   constructor(
-      private userService: UserService,
-      private router: Router,
-      private phoneMaskService: PhoneMaskService
+      public userService: UserService,
+      public router: Router,
+      public phoneMaskService: PhoneMaskService
   ) {
   }
 

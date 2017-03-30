@@ -7,8 +7,8 @@ import { SpinnerService } from '../core/services/spinner.service';
   templateUrl: './spinner.template.html'
 })
 export class SpinnerComponent implements OnInit, OnDestroy {
-  private isLoading: boolean = false;
-  private subscription: any;
+  public isLoading: boolean = false;
+  public subscription: any;
 
   constructor (
       public el: ElementRef,

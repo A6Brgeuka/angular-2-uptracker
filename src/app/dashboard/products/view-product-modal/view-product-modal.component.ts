@@ -28,11 +28,11 @@ export class ViewProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewProductModalContext> {
-    private subscribers: any = {};
+    public subscribers: any = {};
     context: ViewProductModalContext;
     // public product$: BehaviorSubject<any> = new BehaviorSubject([]);
-    private product: any;
-    private productCopy: any;
+    public product: any;
+    public productCopy: any;
     public variation: any = {};
     public variationArrs = {
         package_type: [],
@@ -42,8 +42,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         material: [],
         price_range: []
     };
-    private currentVariant:any = {};
-    private showVariant:boolean = false;
+    public currentVariant:any = {};
+    public showVariant:boolean = false;
     public comment: any = {};
     public showEdit: boolean = false;
     public hasDocs: boolean = false;
@@ -76,8 +76,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     fileIsOver: boolean = false;
     public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
     public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
-    private fileArr: any = [];
-    private oldFileArr: any = [];
+    public fileArr: any = [];
+    public oldFileArr: any = [];
     // @ViewChild('secondary') secondaryLocationLink: ElementRef;
 
     public file$: Observable<any>;
@@ -95,7 +95,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     public deleteFromDoc$: Subject<any> = new Subject<any>();
     public updateDoc$: Subject<any> = new Subject<any>();
     
-    private formData: FormData = new FormData();
+    public formData: FormData = new FormData();
     
     public hasInfoTab:boolean = false;
     
@@ -107,8 +107,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 public modalWindowService: ModalWindowService,
                 public toasterService: ToasterService,
                 public fileUploadService: FileUploadService,
-                private zone: NgZone,
-                private modal: Modal) {
+                public zone: NgZone,
+                public modal: Modal) {
         this.context = dialog.context;
         dialog.setCloseGuard(this);
         this.fileActions();

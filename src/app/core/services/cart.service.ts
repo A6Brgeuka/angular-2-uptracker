@@ -14,7 +14,7 @@ import { AccountService } from "./account.service";
   destroyFunc: null,
 })
 export class CartService extends ModelService {
-  private appConfig: AppConfig;
+  public appConfig: AppConfig;
   constructor(
     public injector: Injector,
     public restangular: Restangular,

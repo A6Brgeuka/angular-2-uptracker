@@ -20,8 +20,9 @@ export class ViewProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class HistoryDetailComponent implements OnInit, AfterViewInit {
-
-  @Input("order") private order;
+  public received_approved_by: any;
+  
+  @Input("order") public order;
 
   constructor() {
 

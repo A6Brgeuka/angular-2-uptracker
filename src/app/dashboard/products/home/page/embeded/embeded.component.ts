@@ -8,7 +8,7 @@ import { CustomModal } from './custom-modal';
   templateUrl: './embeded.component.html'
 })
 export class EmbededComponent {
-  constructor(public modal: Modal, private compiler: Compiler, private injector: Injector){
+  constructor(public modal: Modal, public compiler: Compiler, public injector: Injector){
     
   }
   

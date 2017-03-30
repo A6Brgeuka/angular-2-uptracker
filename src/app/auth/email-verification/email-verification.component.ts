@@ -11,15 +11,15 @@ import { UserService, ToasterService } from '../../core/services/index';
 })
 @DestroySubscribers()
 export class EmailVerificationComponent implements OnInit {
-  private subscribers: any = {};
+  public subscribers: any = {};
   tokenParam: string;
   buttonDisabled: boolean = false;
 
   constructor(
-      private activatedRoute: ActivatedRoute,
-      private userService: UserService,
-      private toasterService: ToasterService,
-      private router: Router
+      public activatedRoute: ActivatedRoute,
+      public userService: UserService,
+      public toasterService: ToasterService,
+      public router: Router
   ) {
     let signupStep = this.userService.currentSignupStep();
     if (signupStep && signupStep < 4) {
