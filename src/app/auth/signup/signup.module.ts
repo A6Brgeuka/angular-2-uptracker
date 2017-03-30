@@ -8,14 +8,14 @@ import { PaymentInfoModule } from './payment-info/payment-info.module';
 import { CongratsModule } from './congrats/congrats.module';
 
 // for lazy loading
-import { routing } from './index';
+//import { routing } from './index';
 
 @NgModule({
   declarations: [
     SignupComponent,
   ],
   imports: [
-    routing,
+    //routing,
     AppSharedModule,
 
     AboutCompanyModule,

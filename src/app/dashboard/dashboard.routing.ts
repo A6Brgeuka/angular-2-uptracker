@@ -21,9 +21,10 @@ import { InventoryRoutes } from "./inventory/inventory.routing";
 import { TransferRoutes } from "./transfer/transfer.routing";
 import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
 import { homeRoutes } from './products/home/home.routing';
+import { AuthGuard } from '../auth-guard.service';
 
 
-const dashboardRoutes = [
+export const DashboardRoutes = [
   {
     path: '',
     component: DashboardComponent,
@@ -40,6 +41,7 @@ const dashboardRoutes = [
       ...ShoppingListRoutes,
       ...homeRoutes
     ],
+    canActivate: [AuthGuard],
     resolve: {
       accountVendorCollection: AccountVendorCollectionResolve,
       vendorCollection: VendorCollectionResolve,
@@ -50,4 +52,4 @@ const dashboardRoutes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);
+//export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);

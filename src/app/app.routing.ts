@@ -10,6 +10,11 @@ import { AuthRoutes } from './auth/index';
 import { AuthComponent } from './auth/auth.component';
 import { EmailVerificationRoutes } from './auth/email-verification/email-verification.routing';
 
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { OnboardComponent } from './onboard/onboard.component';
+import { DashboardRoutes } from './dashboard/dashboard.routing';
+import { OnboardRoutes } from './onboard/onboard.routing';
+
 
 const appRoutes = [
   {
@@ -17,24 +22,12 @@ const appRoutes = [
     component: AppComponent,
     children: [
       { path: '', redirectTo: "/login", pathMatch: "full" },
-      { path: '', canLoad: [AuthGuard], loadChildren: './dashboard/dashboard.module#DashboardModule' },
-      { path: 'onboard', canLoad: [AuthGuard], loadChildren: './onboard/onboard.module#OnboardModule' },
+      //{ path: '', canActivate: [AuthGuard], component: DashboardComponent },
+      //{ path: 'onboard', canActivate: [AuthGuard], component: OnboardComponent },
 
-      //...AuthRoutes
-      // TODO remove after spread "...AuthRoutes" will work
-      {
-        path: '',
-        component: AuthComponent,
-        children: [
-          { path: 'login', canLoad: [AuthGuard], loadChildren: './auth/login/login.module#LoginModule' },
-          { path: 'signup', canLoad: [AuthGuard], loadChildren: './auth/signup/signup.module#SignupModule' },
-          { path: 'forgot-password', canLoad: [AuthGuard], loadChildren: './auth/forgot-password/forgot-password.module#ForgotPasswordModule' },
-          { path: 'forgot-password-congrats', loadChildren: './auth/forgot-password-congrats/forgot-password-congrats.module#ForgotPasswordCongratsModule' },
-          { path: 'reset-password/:token', loadChildren: './auth/reset-password/reset-password.module#ResetPasswordModule' },
-          ...EmailVerificationRoutes
-
-        ]
-      }
+      ...AuthRoutes,
+      ...DashboardRoutes,
+      ...OnboardRoutes
     ]
   },
   { path: '**', component: NoContentComponent }

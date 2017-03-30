@@ -8,14 +8,14 @@ import { OnboardUsersModule } from './users/users.module';
 import { AccountingModule } from './accounting/accounting.module';
 
 // for lazy loading
-import { routing } from './index';
+//import { routing } from './index';
 
 @NgModule({
   declarations: [
     OnboardComponent,
   ],
   imports: [
-    routing,
+    //routing,
     AppSharedModule,
 
     OnboardLocationsModule,

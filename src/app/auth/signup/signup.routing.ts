@@ -10,9 +10,9 @@ import { CreateAccountRoutes } from './create-account/create-account.routing';
 import { PaymentInfoRoutes } from './payment-info/payment-info.routing';
 import { CongratsRoutes } from './congrats/congrats.routing';
 
-const signupRoutes = [
+export const SignupRoutes = [
   {
-    path: '',
+    path: 'signup',
     component: SignupComponent,
     resolve: {},
     children: [
@@ -21,8 +21,9 @@ const signupRoutes = [
       ...PaymentInfoRoutes,
       ...CongratsRoutes
     ],
-    canActivateChild: [ AuthGuard ]
+    canActivateChild: [ AuthGuard ],
+    canActivate: [AuthGuard]
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(signupRoutes);
+//export const routing: ModuleWithProviders = RouterModule.forChild(signupRoutes);

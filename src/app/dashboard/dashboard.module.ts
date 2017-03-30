@@ -14,7 +14,7 @@ import { TranseferModule } from "./transfer/transfer.module";
 import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
-import { routing } from './index';
+//import { routing } from './index';
 import { HomeModule } from './products/home/home.module';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { HomeModule } from './products/home/home.module';
     DashboardComponent,
   ],
   imports: [
-    routing,
+    //routing,
     AppSharedModule,
   
     InnerDashboardModule,

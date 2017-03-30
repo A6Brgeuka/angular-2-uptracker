@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { SpinnerModule } from './spinner/spinner.module';
 import { AppSharedModule } from './shared/shared.module';
 import { ModalModule } from 'angular2-modal';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { OnboardModule } from './onboard/onboard.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { ModalModule } from 'angular2-modal';
     CoreModule,
     routing,
 
+    DashboardModule,
+    OnboardModule,
     AuthModule,
     NoContentModule,
     SpinnerModule

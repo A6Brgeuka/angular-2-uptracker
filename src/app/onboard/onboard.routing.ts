@@ -17,16 +17,18 @@ import {
 import { OnboardLocationsRoutes } from './locations/locations.routing';
 import { OnboardUsersRoutes } from './users/users.routing';
 import { AccountingRoutes } from './accounting/accounting.routing';
+import { AuthGuard } from '../auth-guard.service';
 
-const onboardRoutes = [
+export const OnboardRoutes = [
   {
-    path: '',
+    path: 'onboard',
     component: OnboardComponent,
     children: [
       ...OnboardLocationsRoutes,
       ...OnboardUsersRoutes,
       ...AccountingRoutes
     ],
+    canActivate: [AuthGuard],
     resolve: {
       // for locations
       stateCollection: StateCollectionResolve,
@@ -42,4 +44,4 @@ const onboardRoutes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(onboardRoutes);
+//export const routing: ModuleWithProviders = RouterModule.forChild(onboardRoutes);

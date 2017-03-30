@@ -3,12 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ResetPasswordComponent } from './reset-password.component';
 
-const resetPasswordRoutes = [
+export const ResetPasswordRoutes = [
   {
-    path: '',
+    path: 'reset-password/:token',
     component: ResetPasswordComponent,
     canActivate: []
   },
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(resetPasswordRoutes);
+//export const routing: ModuleWithProviders = RouterModule.forChild(resetPasswordRoutes);

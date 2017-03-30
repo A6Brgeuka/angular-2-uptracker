@@ -2,19 +2,29 @@ import { AuthComponent } from './auth.component';
 import { AuthGuard } from '../auth-guard.service';
 
 import { EmailVerificationRoutes } from './email-verification/email-verification.routing';
-import { LoginComponent } from './login/login.component';
+
+import { ForgotPasswordRoutes } from './forgot-password/forgot-password.routing';
+import { ForgotPasswordCongratsRoutes } from './forgot-password-congrats/forgot-password-congrats.routing';
+import { LoginRoutes } from './login/login.routing';
+import { SignupRoutes } from './signup/signup.routing';
+import { ResetPasswordRoutes } from './reset-password/reset-password.routing';
 
 export const AuthRoutes = [
-  //{
-  //  path: '',
-  //  component: AuthComponent,
-  //  children: [
-  //    { path: 'login', canActivate: [AuthGuard], component: LoginComponent, },
-  //    { path: 'signup', canLoad: [AuthGuard], loadChildren: './auth/signup/signup.module#SignupModule' },
-  //    { path: 'forgot-password', canLoad: [AuthGuard], loadChildren: './auth/forgot-password/forgot-password.module#ForgotPasswordModule' },
-  //    { path: 'forgot-password-congrats', loadChildren: './auth/forgot-password-congrats/forgot-password-congrats.module#ForgotPasswordCongratsModule' },
-  //    { path: 'reset-password/:token', loadChildren: './auth/reset-password/reset-password.module#ResetPasswordModule' },
-  //    //...EmailVerificationRoutes
-  //  ]
-  //}
+  {
+    path: '',
+    component: AuthComponent,
+    children: [
+      //{ path: 'login', canActivate: [AuthGuard], component: LoginComponent, },
+      //{ path: 'signup', canActivate: [AuthGuard], component: SignupComponent },
+      //{ path: 'forgot-password', canActivate: [AuthGuard], component: ForgotPasswordComponent },
+      //{ path: 'forgot-password-congrats', component: ForgotPasswordCongratsComponent },
+      //{ path: 'reset-password/:token', component: ResetPasswordComponent },
+      ...EmailVerificationRoutes,
+      ...ForgotPasswordRoutes,
+      ...ForgotPasswordCongratsRoutes,
+      ...LoginRoutes,
+      ...SignupRoutes,
+      ...ResetPasswordRoutes,
+    ]
+  }
 ];

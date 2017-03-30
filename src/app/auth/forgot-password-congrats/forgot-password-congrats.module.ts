@@ -4,14 +4,14 @@ import { ForgotPasswordCongratsComponent } from './forgot-password-congrats.comp
 import { AppSharedModule } from '../../shared/shared.module';
 
 // for lazy loading
-import { routing } from './forgot-password-congrats.routing';
+//import { routing } from './forgot-password-congrats.routing';
 
 @NgModule({
   declarations: [
     ForgotPasswordCongratsComponent
   ],
   imports: [
-    routing,
+    //routing,
     AppSharedModule
   ],
   providers: []
