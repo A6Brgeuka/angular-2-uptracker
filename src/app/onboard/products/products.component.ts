@@ -18,12 +18,9 @@ export class ProductsComponent implements OnInit {
 
   constructor(
       private router: Router,
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
       public modal: Modal,
       private modalWindowService: ModalWindowService
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {

@@ -42,13 +42,10 @@ export class ShoppingListComponent implements OnInit {
   private currentOrder$: BehaviorSubject<any> = new BehaviorSubject(null);
   
   constructor(
-    vcRef: ViewContainerRef,
-    overlay: Overlay,
     public modal: Modal,
     private productService: ProductService,
     private modalWindowService: ModalWindowService,
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
   
   ngOnInit() {

@@ -41,13 +41,12 @@ export class ProductsComponent implements OnInit {
     public isGrid: boolean = false;
     public selectAll: boolean= false;
     
-    constructor(vcRef: ViewContainerRef,
-                overlay: Overlay,
-                public modal: Modal,
-                private productService: ProductService,
-                private modalWindowService: ModalWindowService,
-                private accountService: AccountService) {
-        overlay.defaultViewContainer = vcRef;
+    constructor(
+        public modal: Modal,
+        private productService: ProductService,
+        private modalWindowService: ModalWindowService,
+        private accountService: AccountService
+    ) {
     }
     
     toggleView (){

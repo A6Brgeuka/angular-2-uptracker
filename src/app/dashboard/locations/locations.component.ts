@@ -26,14 +26,11 @@ export class LocationsComponent implements OnInit {
   public locations$: Observable<any>;
 
   constructor(
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
       public modal: Modal,
       private userService: UserService,
       private accountService: AccountService,
       private modalWindowService: ModalWindowService
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {

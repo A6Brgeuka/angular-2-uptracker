@@ -19,12 +19,9 @@ export class OnboardLocationsComponent implements OnInit {
 
   constructor(
       private router: Router,
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
       public modal: Modal,
       private userService: UserService
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {

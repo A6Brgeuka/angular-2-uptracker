@@ -119,14 +119,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private zone: NgZone,
     public modalWindowService: ModalWindowService,
-    private modal: Modal,
-    vcRef: ViewContainerRef,
-    overlay: Overlay,
+    private modal: Modal
   ) {
     this.fileActions();
     this.docActions();
     this.showEdit$.next(false);
-    overlay.defaultViewContainer = vcRef;
   }
   
   

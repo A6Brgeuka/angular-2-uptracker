@@ -25,12 +25,9 @@ export class UserDropdownMenuDirective implements OnInit {
 
   public constructor(
       private userService: UserService,
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
       public modal: Modal,
       private modalWindowService: ModalWindowService
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit(){

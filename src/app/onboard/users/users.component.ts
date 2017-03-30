@@ -20,13 +20,10 @@ export class OnboardUsersComponent implements OnInit {
 
   constructor(
       private router: Router,
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
       public modal: Modal,
       private userService: UserService,
       private accountService: AccountService
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {

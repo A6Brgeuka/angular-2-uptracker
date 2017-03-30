@@ -60,7 +60,6 @@ export class ModalWindowService {
   
   customModal(vcRef: ViewContainerRef, modal, data, fn = null){
     this.saveScrollPosition();
-    this.overlay.defaultViewContainer = vcRef;
     this.modal
       .open(modal,  overlayConfigFactory(data, BSModalContext))
         .then((resultPromise)=>{

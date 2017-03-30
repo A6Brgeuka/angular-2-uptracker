@@ -26,13 +26,11 @@ export class VendorsComponent implements OnInit {
     public  isRequestVendors = true;
     public body = document.getElementsByTagName("body")[0];
     
-    constructor(private vcRef: ViewContainerRef,
-                overlay: Overlay,
-                public modal: Modal,
-                private vendorService: VendorService,
-                private modalWindowService: ModalWindowService) {
-        overlay.defaultViewContainer = vcRef;
-
+    constructor(
+      public modal: Modal,
+      private vendorService: VendorService,
+      private modalWindowService: ModalWindowService
+    ) {
     }
 
     ngOnInit() {
@@ -156,7 +154,7 @@ export class VendorsComponent implements OnInit {
     }
     
     getInfiniteScroll() {
-        let scrollBottom = (document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285) && !this.body.classList.contains("noscroll");
+        let scrollBottom = (document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285) && !(<any>this.body).classList.contains("noscroll");
         // let widthColumns = document.body.scrollHeight - document.body.scrollTop - window.innerWidth < 300;
         console.log(scrollBottom);
         this.infiniteScroll$.next(scrollBottom);

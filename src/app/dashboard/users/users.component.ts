@@ -26,14 +26,11 @@ export class UsersComponent implements OnInit {
   public users$: Observable<any> = new Observable<any>();
 
   constructor(
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
       public modal: Modal,
       public userService: UserService,
       private accountService: AccountService,
       private modalWindowService: ModalWindowService
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {

@@ -24,12 +24,9 @@ export class TransferComponent implements OnInit {
   public products$: Observable<any>;
 
   constructor(
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
       public modal: Modal,
       // private vendorService: VendorService
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {

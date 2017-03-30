@@ -24,12 +24,8 @@ export class InventoryComponent implements OnInit {
   public products$: Observable<any>;
 
   constructor(
-      vcRef: ViewContainerRef,
-      overlay: Overlay,
-      public modal: Modal,
-      // private vendorService: VendorService
+      public modal: Modal
   ) {
-    overlay.defaultViewContainer = vcRef;
   }
 
   ngOnInit() {
