@@ -1,49 +1,20 @@
 <div class="inner">
-  <div class="row title center-align">Shopping List Filters</div>
-  <div class="row">
-    <div class="col s12 select-title">Department</div>
-    <div class="col s12">
-      <div class="left select">
-        <select [(ngModel)]="filter.department" materialize="material_select">
-          <option value="">All</option>
-          <option value="1">Firsr</option>
-          <option value="2">Second</option>
-        </select>
-      </div>
+  <div class="row title center-align">Pricing Info</div>
+  <div class="row checks-row">
+    <div class="col s4">
+      <input value="book" type="radio" name="price_type" id="price_type_book">
+      <label for="price_type_book" class="grey">$200.00</label>
+      <label for="price_type_book">Book</label>
     </div>
-  </div>
-  <div class="row">
-    <div class="col s12 select-title">Vendor</div>
-    <div class="col s12">
-      <div class="left select">
-        <select [(ngModel)]="filter.vendor" materialize="material_select">
-          <option value="">All</option>
-          <option value="1">Firsr</option>
-          <option value="2">Second</option>
-        </select>
-      </div>
+    <div class="col s4">
+      <input value="negotiated" type="radio" name="price_type" id="price_type_negotiated">
+      <label for="price_type_negotiated" class="grey">$100.00</label>
+      <label for="price_type_negotiated">Negotiated</label>
     </div>
-  </div>
-  <div class="row check">
-    <div class="col s2 select-title">
-      <div class="input-checkbox checkbox">
-        <input
-          type="checkbox"
-          class="checkbox-input"
-          [(ngModel)]="filter.onlymy"
-          id="selectAll"
-        />
-        <label for="selectAll"></label>
-      </div>
+    <div class="col s4">
+      <input value="club" type="radio" name="price_type" id="price_type_club">
+      <label for="price_type_club" class="grey">$90.00</label>
+      <label for="price_type_club">Club</label>
     </div>
-    <div class="col s10 select-title">
-      Show Only My Products
-    </div>
-  </div>
-  <div class="row">
-  <div class="center-align col s12">
-    <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
-    <button class="uptracker-form-btn ">Search</button>
-  </div>
   </div>
 </div>

@@ -8,25 +8,25 @@ import * as _ from 'lodash';
 
 import { UserService, AccountService } from '../../../core/services/index';
 
-export class ProductFilterModalContext extends BSModalContext {
+export class PriceModalContext extends BSModalContext {
   public product: any;
 }
 
 @Component({
-  selector: 'app-product-filter-modal',
+  selector: 'app-price-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  templateUrl: './product-filter-modal.component.html',
-  styleUrls: ['./product-filter-modal.component.scss']
+  templateUrl: './price-modal.component.html',
+  styleUrls: ['./price-modal.component.scss']
 })
 @DestroySubscribers()
-export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<ProductFilterModalContext> {
+export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModalContext> {
   private subscribers: any = {};
-  context: ProductFilterModalContext;
+  context: PriceModalContext;
   private filter:any = {'department':'', 'vendor':'', 'onlymy':false};
 
 
   constructor(
-      public dialog: DialogRef<ProductFilterModalContext>,
+      public dialog: DialogRef<PriceModalContext>,
       public userService: UserService,
       public accountService: AccountService
   ) {

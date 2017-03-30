@@ -22,6 +22,7 @@ import { AddProductModal } from "./add-product-modal/add-product-modal.component
 import { ShoppingListSettingsModal } from './shopping-list-settings-modal/shopping-list-settings.component';
 import { UserService } from '../../core/services/user.service';
 import { CartService } from '../../core/services/cart.service';
+import { PriceModal } from './price-modal/price-modal.component';
 
 
 @Component({
@@ -40,8 +41,6 @@ export class ShoppingListComponent implements OnInit {
   public orders$: BehaviorSubject<any> = new BehaviorSubject({});
   public products: any = [];
   public selectedProducts: any = [];
-  private currentOrder: string;
-  private currentOrder$: BehaviorSubject<any> = new BehaviorSubject(null);
   
   constructor(
     vcRef: ViewContainerRef,
@@ -124,6 +123,7 @@ export class ShoppingListComponent implements OnInit {
         }
       ];
     this.orders$.next(this.orders);
+    this.changePriceModal();
   }
   
   selectOrder(id){
@@ -200,6 +200,21 @@ export class ShoppingListComponent implements OnInit {
           // this.filterProducts();
         },
         (err) => {
+        }
+      );
+    });
+  }
+  
+  changePriceModal(item = {}) {
+    this.modal
+    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          // this.filterProducts();
+        },
+        (err) => {
+          debugger;
         }
       );
     });

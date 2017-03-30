@@ -8,6 +8,7 @@ import { ProductFilterModalModule } from './product-filter-modal/product-filter-
 import { RequestProductModalModule } from './request-product-modal/request-product-modal.module';
 import { AddProductModalModule } from "./add-product-modal/add-product-modal.module";
 import { ShoppingListSettingsModalModule } from './shopping-list-settings-modal/shopping-list-settings.module';
+import { PriceModalModule } from './price-modal/price-modal.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ShoppingListSettingsModalModule } from './shopping-list-settings-modal/
     ViewProductModalModule,
     ShoppingListSettingsModalModule,
     ProductFilterModalModule,
-    RequestProductModalModule
+    RequestProductModalModule,
+    PriceModalModule
   ],
   providers: []
 })
