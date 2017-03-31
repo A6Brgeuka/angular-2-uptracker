@@ -213,14 +213,12 @@ export class ShoppingListComponent implements OnInit {
           // this.filterProducts();
         },
         (err) => {
-          debugger;
         }
       );
     });
   }
   
   updateVendor(product, vendor){
-    debugger;
     product.selectedVendor = vendor.name;
   }
   

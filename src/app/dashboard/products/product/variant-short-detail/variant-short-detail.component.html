@@ -38,7 +38,7 @@
                 {{item.your_price}}
             </span>
             <div *ngIf="showEdit" class="input">
-                <input type="text" class="yourprice"  [(ngModel)]="item.your_price" >
+                <input (click)="$event.stopPropagation();" type="text" class="yourprice"  [(ngModel)]="item.your_price" >
             </div>
         </div>
         <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">{{item.club_price}}</div>
