@@ -5,7 +5,6 @@ import { HistoryDetailComponent } from './history-detail/history-detail.componen
 import { AppSharedModule } from '../../../shared/shared.module';
 import { ProductComponent } from './product.component';
 import { Add2OrderModalModule } from './add2order-modal/add2order-modal.module';
-import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
 
 
 @NgModule({

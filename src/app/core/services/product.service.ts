@@ -9,8 +9,8 @@ import {ModelService} from '../../overrides/model.service';
 import {UserService} from './user.service';
 import {AccountService} from './account.service';
 import {Subscribers} from '../../decorators/subscribers.decorator';
-import {ProductModel} from '../../models/index';
 import {BehaviorSubject} from "rxjs";
+import { CartService } from './cart.service';
 
 @Injectable()
 @Subscribers({
@@ -71,7 +71,6 @@ export class ProductService extends ModelService {
                 return res.data.results;
             }
         );
-
         this.selfData$ = Observable.merge(
             this.updateSelfData$
         );
@@ -79,17 +78,6 @@ export class ProductService extends ModelService {
             this.selfData = res;
             console.log(`${this.constructor.name} Update SELF DATA`, res);
         });
-
-        // TODO: if there are account products then set those to collection$
-        // this.collection$ = this.restangular.all('products').customGET('')
-        //     .map((res: any) => {
-        //       return res.data.results;
-        //     })
-        // .do((res: any) => {
-        //   this.updateCollection$.next(res);
-        // });
-    
-        
     }
     
 
@@ -138,13 +126,6 @@ export class ProductService extends ModelService {
             }
             return this.products$;
         });
-
-        // TODO: if there are account products then set those to collection$
-        // this.collection$ = this.restangular.all('products').customGET('')
-        //     .map((res: any) => {
-        //       return res.data.results;
-        //     });
-        // return this.collection$;
     }
 
     getProductsLocation(id) {
@@ -252,17 +233,6 @@ export class ProductService extends ModelService {
             if (this.emptyValues(obj[i])) {return true};
         }
         return false;
-    }
-    
-    
-    
-    filesDiff(newFiles, oldFiles){
-        return newFiles; //TODO
-    };
-    
-    sendOrder (data){
-        
-        return this.restangular.one('cart',data.location_id).customPOST(data);
     }
     
 }

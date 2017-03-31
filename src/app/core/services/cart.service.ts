@@ -38,4 +38,8 @@ export class CartService extends ModelService {
     .subscribe();
     console.log("order service loaded");
   }
+  
+  addToCart (data){
+    return this.restangular.one('cart',data.location_id).customPOST(data);
+  }
 }

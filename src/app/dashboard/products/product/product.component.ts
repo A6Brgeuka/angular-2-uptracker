@@ -1,4 +1,3 @@
-///<reference path="../../../shared/modals/add-to-order-modal/add-to-order-modal.component.ts"/>
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef } from '@angular/core';
 
 import { Modal, Overlay } from 'angular2-modal';
@@ -499,7 +498,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     let clonedComment = _.cloneDeep(comment);
     if (clonedComment.body) {
       let regKey = new RegExp('<br/>', 'g');
-      clonedComment.body = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
+      clonedComment['body'] = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
     }
     this.modal
     .open(EditCommentModal, this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment}))

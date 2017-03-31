@@ -44,27 +44,13 @@ import { EditUserModalModule } from './modals/edit-user-modal/edit-user-modal.mo
 import { EditLocationModalModule } from './modals/edit-location-modal/edit-location-modal.module';
 import { ChangePasswordUserModalModule } from './modals/change-password-user-modal/change-password-user-modal.module';
 import { EditCommentModalModule } from './modals/edit-comment-modal/edit-comment-modal.module';
-import { AddToOrderModal } from './modals/add-to-order-modal/add-to-order-modal.component';
-//import { Add2OrderModal } from './modals/add2order-modal/add2order-modal.component';
-//import { AddToOrderModal } from './modals/add-to-order-modal/add-to-order-modal.component';
 
 let modalsArr = [
   EditUserModal,
   EditLocationModal,
   ChangePasswordUserModal,
   EditCommentModal,
-  //Add2OrderModal
-  AddToOrderModal
 ];
-
-//let modalsModuleArr = [
-//  EditUserModalModule,
-//  EditLocationModalModule,
-//  ChangePasswordUserModalModule,
-//  EditCommentModalModule,
-//  //Add2OrderModal
-//  //AddToOrderModal
-//];
 
 
 @NgModule({
