@@ -16,7 +16,6 @@ import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit
 import { FileUploadService } from "../../../core/services/file-upload.service";
 import { ActivatedRoute, Params } from '@angular/router';
 import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
-//import { AddToOrderModal } from '../../../shared/modals/add-to-order-modal/add-to-order-modal.component';
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;

@@ -1,12 +1,4 @@
-$tealish: #33c6d9;
-$red: #f00;
-$white: #fff;
-$greeny: #4CAF50;
-$dark: #444;
-$grey: #9a9c9e;
-$light-grey: #d6d6d6;
-$black: #000;
-$orange:#f4827a;
+@import "../../../colors.scss";
 
 :host /deep/ {
   .filter-field {
@@ -29,6 +21,7 @@ $orange:#f4827a;
     .fa {
       font-size:20px;
       color:$tealish;
+      cursor:pointer;
     }
     .fa-gear {
       cursor: pointer;
@@ -441,4 +434,13 @@ div.top {
   }
 }
 
+.prod-name {
+  display:block;
+
+}
+
+.inblock {
+  display:block;
+  margin:10px 0;
+}
 

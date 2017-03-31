@@ -27,19 +27,38 @@ export class CartService extends ModelService {
   }
 
   onInit() {
-    this.loadCollection$ = this.restangular.all('cart').customGET('')
+    this.accountService.dashboardLocation$
+    .map((r:any)=>{
+      return r ? r.id : null;
+    })
+    .switchMap((l:any)=>{
+      if (l) {
+        return this.restangular.one('cart',l).customGET('');
+      } else {
+        return this.restangular.all('cart').customGET('');
+      }
+    })
     .map((res: any) => {
       return res.data.items;
     })
     .do((res: any) => {
       this.updateCollection$.next(res);
     })
-    .take(1)
     .subscribe();
     console.log("order service loaded");
   }
-  
+    
   addToCart (data){
     return this.restangular.one('cart',data.location_id).customPOST(data);
   }
+  
+  updateItem (data) {
+    return this.restangular.one('cart',data.location_id).customPUT(data);
+  }
+  
+  removeItem (data) {
+    return this.restangular.one('cart',data.location_id).customDELETE(data);
+  }
+  
+  
 }

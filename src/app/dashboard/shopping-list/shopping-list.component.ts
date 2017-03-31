@@ -42,6 +42,8 @@ export class ShoppingListComponent implements OnInit {
   public orders:any;
   public orders$: BehaviorSubject<any> = new BehaviorSubject({});
   public products: any = [];
+  public changes$: BehaviorSubject<any>[] = [];
+  public changed:any = [];
   public selectedProducts: any = [];
   
   constructor(
@@ -54,7 +56,10 @@ export class ShoppingListComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.cartService.collection$.subscribe((r:any)=>{this.cart$.next(r)});
+    this.cartService.collection$.subscribe((r:any)=>{
+      this.cart$.next(r);
+      this.changed = [];
+    });
     this.orders =
       [
         {
@@ -122,20 +127,13 @@ export class ShoppingListComponent implements OnInit {
         }
       ];
     this.orders$.next(this.orders);
-    this.changePriceModal();
+    //this.changePriceModal();
   }
   
   selectOrder(id){
   }
   
-  onVendorChange(p){
-    console.log(p);
-      let selected_vendor = _.filter(p.vendors, (r:any)=>(r.id == p.selectedVendor));
-      p.selectedPrice = selected_vendor['price'];
-    console.log(p);
-    this.cart$.next(p);
-    
-  }
+  
   
   viewProductModal(product) {
     this.modal
@@ -219,7 +217,8 @@ export class ShoppingListComponent implements OnInit {
   }
   
   updateVendor(product, vendor){
-    product.selectedVendor = vendor.name;
+    product.selectedVendor = vendor.vendor_name;
+    this.changeRow(product);
   }
   
   onCheck(){
@@ -239,4 +238,27 @@ export class ShoppingListComponent implements OnInit {
       );
     });
   }
+  
+  saveItem(item:any = {}) {
+    let data = {
+      "location_id": item.location_id,
+      "product_id": item.product_id,
+      "variants": [
+        {
+          "variant_id": item.variant_id,
+          "vendor_variant_id": item.variant_id,
+          "vendor_id": item.vendors[0].id,
+          "qty": item.qty,
+          "vendor_auto_select": item.vendor_auto_select,
+          "location_id": item.location_id,
+        }
+      ]
+    };
+    this.cartService.updateItem(data);
+  }
+  
+  changeRow(item){
+    this.changed[item.id]=true;
+  }
+  
 }

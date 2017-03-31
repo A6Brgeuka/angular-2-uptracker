@@ -1,7 +1,7 @@
 <div class="products content">
   <div class="row">
-    <div class="list col m7 s12">
-
+    <div class="list col m8 s12">
+    {{ changed | json }}
       <div class="top">
         <div class="title left">
           <div class="main-title left">Shopping List</div>
@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <div class="col s3">Location</div>
+        <div class="col s2">Location</div>
         <div class="col s3">Vendor</div>
         <div class="col s1">Qty.</div>
         <div class="col s1">Price</div>
@@ -57,14 +57,14 @@
                 <label for="selected{{i}}"></label>
               </div>
             </div>
-            <div class="col s10">
+            <div class="col s10 prod-name">
               <span (click)="viewProductModal(product)">{{product.name}}</span>
             </div>
           </div>
         </div>
-        <div class="col s3">
+        <div class="col s2">
           <div class="select inbl">
-            <select materialize="material_select">
+            <select (change)="changeRow(product)" materialize="material_select">
               <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations" [value]="location.id">{{ location.name }}</option>
             </select>
           </div>
@@ -72,13 +72,13 @@
         <div class="col s3">
           <div class="select inbl">
 
-            <input [(ngModel)]="product.selectedVendor" materialize="dropdown"   data-activates='dd'>
+            <input [(ngModel)]="product.selectedVendor" materialize="dropdown"   data-activates='dd' >
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
             <ul id='dd' class='dropdown-content'>
               <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
-                <div  class="col s2">{{ vendor.img }}</div>
-                <div class="col s8">{{ vendor.vendor_name }}</div>
+                <div  class="col s2">{{ vendor.image_url }}</div>
+                <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
                 <div class="col s2">{{ vendor.price }}</div>
               </li>
             </ul>
@@ -87,6 +87,7 @@
         <div class="col s1">
           <div class="input">
             <input
+              (change)="changeRow(product)"
               type="text"
               class="hazardous-input{{i}}"
               [(ngModel)]="product.quantity"
@@ -98,10 +99,13 @@
         <div class="col s1">
           {{ product.selectedPrice || product.vendors[0].price || 0 }}
         </div>
+        <div *ngIf="changed[product.id]" class="col s1">
+          <i (click)="saveItem(product)" class="fa fa-save tealish-text"></i>
+        </div>
       </div>
     </div>
 
-    <div class="orders-preview col m5 s12">
+    <div class="orders-preview col m4 s12">
 
       <div class="row">
         <div class="col s11">
