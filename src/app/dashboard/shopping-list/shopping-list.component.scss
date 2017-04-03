@@ -1,10 +1,24 @@
 @import "../../../colors.scss";
 
 :host /deep/ {
+
+  .item.row {
+    position:relative;
+  }
+
+  .save-sign {
+    position:absolute;
+    right:5px;
+    top:0;
+  }
+
   .filter-field {
     color:$tealish;
     font-size: 14px;
-    .fa {font-size:24px;}
+    .fa {
+      font-size:24px;
+      line-height:32px;
+    }
     span {
       vertical-align: bottom;
       line-height: 32px;
@@ -121,6 +135,7 @@
 
     .item, .heading.row {
       padding:15px 0;
+      margin-bottom: 0!important;
       .col {
         padding: 0 0.25rem;
         .row {

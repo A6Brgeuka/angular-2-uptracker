@@ -39,11 +39,11 @@ export class ShoppingListComponent implements OnInit {
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
-  public orders:any;
+  public orders: any;
   public orders$: BehaviorSubject<any> = new BehaviorSubject({});
   public products: any = [];
   public changes$: BehaviorSubject<any>[] = [];
-  public changed:any = [];
+  public changed: any = [];
   public selectedProducts: any = [];
   
   constructor(
@@ -56,7 +56,7 @@ export class ShoppingListComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.cartService.collection$.subscribe((r:any)=>{
+    this.cartService.collection$.subscribe((r: any) => {
       this.cart$.next(r);
       this.changed = [];
     });
@@ -70,7 +70,7 @@ export class ShoppingListComponent implements OnInit {
             {
               'name': 'First',
               'selectedVendor': "yegiuyriuyuiyreyuioge",
-              'quantity':1,
+              'quantity': 1,
               'vendors': [
                 {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 99.0},
                 {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 139.0},
@@ -80,7 +80,7 @@ export class ShoppingListComponent implements OnInit {
             {
               'name': 'Second',
               'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
-              'quantity':3,
+              'quantity': 3,
               'vendors': [
                 {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 99.0},
                 {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 139.0},
@@ -96,7 +96,7 @@ export class ShoppingListComponent implements OnInit {
           'products': [{
             'name': 'Third',
             'selectedVendor': "yegiuyriup;gkfdkgkioe",
-            'quantity':1,
+            'quantity': 1,
             'vendors': [
               {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 66.0},
               {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 159.0},
@@ -105,7 +105,7 @@ export class ShoppingListComponent implements OnInit {
           },
             {
               'name': 'Fourth ',
-              'quantity':1,
+              'quantity': 1,
               'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
               'vendors': [
                 {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 21.0},
@@ -115,7 +115,7 @@ export class ShoppingListComponent implements OnInit {
             },
             {
               'name': '5th',
-              'quantity':1,
+              'quantity': 1,
               'selectedVendor': ";yegiuyriuyuiycreyuioge",
               'vendors': [
                 {'id': "yegiuyriuyuiycreyuioge", 'name': 'Best Vendor', 'price': 241.0},
@@ -130,9 +130,8 @@ export class ShoppingListComponent implements OnInit {
     //this.changePriceModal();
   }
   
-  selectOrder(id){
+  selectOrder(id) {
   }
-  
   
   
   viewProductModal(product) {
@@ -151,7 +150,7 @@ export class ShoppingListComponent implements OnInit {
   
   viewSettingsModal() {
     this.modal
-    .open(ShoppingListSettingsModal, this.modalWindowService.overlayConfigFactoryWithParams({},true))
+    .open(ShoppingListSettingsModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
@@ -203,6 +202,7 @@ export class ShoppingListComponent implements OnInit {
   }
   
   changePriceModal(item = {}) {
+    //TODO
     this.modal
     .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
     .then((resultPromise) => {
@@ -216,30 +216,17 @@ export class ShoppingListComponent implements OnInit {
     });
   }
   
-  updateVendor(product, vendor){
+  updateVendor(product, vendor) {
     product.selectedVendor = vendor.vendor_name;
     this.changeRow(product);
   }
   
-  onCheck(){
+  onCheck() {
   
   }
   
-  requestProduct() {
-    this.modal
-    .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
-      );
-    });
-  }
   
-  saveItem(item:any = {}) {
+  saveItem(item: any = {}) {
     let data = {
       "location_id": item.location_id,
       "product_id": item.product_id,
@@ -254,11 +241,17 @@ export class ShoppingListComponent implements OnInit {
         }
       ]
     };
-    this.cartService.updateItem(data);
-  }
+    this.cartService.updateItem(data)
+    .subscribe((r: any) => {
+        this.changed[item.id] = false;
+      },
+      (err: any) => {
+        console.error(err);
+      });
+  };
   
-  changeRow(item){
-    this.changed[item.id]=true;
+  changeRow(item) {
+    this.changed[item['id']] = true;
+    this.saveItem(item);
   }
-  
 }

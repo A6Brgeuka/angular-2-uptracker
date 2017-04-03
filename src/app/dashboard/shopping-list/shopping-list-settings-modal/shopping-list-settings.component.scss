@@ -43,38 +43,6 @@ $tealish: #33c6d9;
     }
   }
 
-
-  .input-checkbox {
-    [type="checkbox"] {
-      & + label {
-        vertical-align: middle;
-        padding-left: 25px;
-        font-size: 14px;
-
-        &:before {
-          width: 20px;
-          height: 20px;
-          background-color: #f5f6f7;
-          border-color: #d6d6d6;
-          border-radius: 3px;
-        }
-      }
-
-      &:checked {
-        & + label:before {
-          border-width: 0 2px 2px 0;
-          background: transparent;
-          width: 10px;
-          height: 15px;
-          border-radius: 1px;
-          top: 1px;
-          left: -2px;
-          border-color: $tealish;
-        }
-      }
-    }
-  }
-
   .range-field {
     margin-top: 12px;
     position: relative;
