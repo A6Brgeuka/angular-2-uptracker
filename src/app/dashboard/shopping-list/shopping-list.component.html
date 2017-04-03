@@ -1,18 +1,27 @@
 <div class="products content">
   <div class="row">
     <div class="list col m8 s12">
-    {{ changed | json }}
-      <div class="top">
-        <div class="title left">
-          <div class="main-title left">Shopping List</div>
-          <div class="sub-title">{{total}} items</div>
+      <div class="top row">
+        <div class=" col m7 s12">
+          <div class="title">
+            <div class="main-title left">Shopping List</div>
+            <div class="sub-title">{{total}} items</div>
+          </div>
         </div>
-        <button type="button" (click)="addProduct()" class="right uptracker-form-btn waves-light waves-effect">
-          Add Product
-        </button>
-        <div class="filter-field right" (click)="showFiltersModal()">
-          <i class="fa fa-filter"></i>
-          <span>Filters</span>
+        <div class=" col m2 s6">
+          <div class="filter-field" (click)="showFiltersModal()">
+            <i class="fa fa-filter"></i>
+            <span>Filters</span>
+          </div>
+        </div>
+        <div class=" col m3 s6">
+          <button type="button" (click)="addProduct()" class=" col hide-on-small m2 s9 uptracker-form-btn waves-light waves-effect">
+            Add Product
+          </button>
+          <button type="button" (click)="addProduct()" class="small show-on-small col m2 s3 uptracker-form-btn waves-light waves-effect">
+            <div class="fa fa-plus"></div>
+          </button>
+
         </div>
       </div>
 
@@ -65,19 +74,21 @@
         <div class="col s2">
           <div class="select inbl">
             <select (change)="changeRow(product)" materialize="material_select">
-              <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations" [value]="location.id">{{ location.name }}</option>
+              <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations"
+                [value]="location.id">{{ location.name }}
+              </option>
             </select>
           </div>
         </div>
         <div class="col s3">
           <div class="select inbl">
 
-            <input [(ngModel)]="product.selectedVendor" materialize="dropdown"   data-activates='dd' >
+            <input [(ngModel)]="product.selectedVendor" materialize="dropdown" data-activates='dd'>
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
             <ul id='dd' class='dropdown-content'>
               <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
-                <div  class="col s2">{{ vendor.image_url }}</div>
+                <div class="col s2">{{ vendor.image_url }}</div>
                 <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
                 <div class="col s2">{{ vendor.price }}</div>
               </li>
@@ -125,7 +136,7 @@
             <div class="order-price">${{order.total}}</div>
             <div class="order-count">2 Orders</div>
           </div>
-          <div class="col s3" (click)="selectOrder(order.id)" >
+          <div class="col s3" (click)="selectOrder(order.id)">
             <div class="inbl">
               <i class="fa fa-shopping-cart"></i>
               <div>Preview</div>
@@ -134,8 +145,9 @@
         </div>
 
 
-
-        <div><a>Compare All</a></div>
+        <div>
+          <a>Compare All</a>
+        </div>
 
       </div>
     </div>

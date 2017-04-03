@@ -4,7 +4,7 @@
   .filter-field {
     color:$tealish;
     font-size: 14px;
-    .fa {font-size:32px;}
+    .fa {font-size:24px;}
     span {
       vertical-align: bottom;
       line-height: 32px;
@@ -16,6 +16,11 @@
       opacity:0.8;
     }
   }
+  .small{
+    min-width:30px;
+  }
+
+
   .orders-preview {
     padding-left: 2%;
     .fa {
@@ -434,9 +439,14 @@ div.top {
   }
 }
 
-.prod-name {
-  display:block;
-
+.prod-name > span {
+  padding-left:5px;
+  line-height: 1rem;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 32px;
 }
 
 .inblock {
@@ -444,3 +454,12 @@ div.top {
   margin:10px 0;
 }
 
+.show-on-small {display:none!important;}
+.hide-on-small {display:block!important;}
+@media screen and (max-width:1000px) {
+  .filter-field > span {
+    display:none;
+  }
+  .show-on-small {display:block!important;}
+  .hide-on-small {display:none!important;}
+}
