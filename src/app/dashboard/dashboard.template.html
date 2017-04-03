@@ -3,7 +3,7 @@
 <!--<a style="color: #000000" [routerLink]="['/', 'home', 'page', 'embeded']" routerLinkActive="active">Embeded</a>-->
 <!--<a style="color: #000000" [routerLink]="['/', 'embeded']" routerLinkActive="active">Embededdddddd</a>-->
 <!--<span defaultOverlayTarget></span>-->
-
+<div *ngFor="let location of accountService.locations$ | async" >{{location.name}} - {{ location.id }}</div>
 <div class="dashboard">
   <aside class="left-panel" [class.collapsed]="stateService.isUrl('/dashboard')">
     <div class="logo">
@@ -25,6 +25,8 @@
     <header class="header">
       <div class="row">
         <div class="col s6 m6">
+
+
           <div class="select input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard') && !stateService.isUrl('/products')">
             <select *ngIf="(accountService.locations$ | async)?.length>1"
                 [(ngModel)]="selectedLocation"

@@ -499,6 +499,13 @@ div.top {
   min-width:300px;
 }
 
+.select > input {
+  padding-right: 20px;
+}
+input {
+  color: $dark!important;
+}
+
 .show-on-small {display:none!important;}
 .hide-on-small {display:block!important;}
 @media screen and (max-width:1000px) {

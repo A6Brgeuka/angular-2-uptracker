@@ -68,13 +68,13 @@
               </div>
             </div>
             <div class="col s10 prod-name">
-              <span (click)="viewProductModal(product)">{{product.name}}</span>
+              <span [routerLink]="['/products',product.id]" >{{product.name}}</span>
             </div>
           </div>
         </div>
         <div class="col s2">
           <div class="select inbl">
-            <select (change)="changeRow(product)" materialize="material_select">
+            <select  [(ngModel)]="product.location_id" (change)="changeRow(product)" materialize="material_select">
               <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations"
                 [value]="location.id">{{ location.name }}
               </option>
@@ -90,11 +90,10 @@
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
             <ul id="dropd{{ i }}" materialize="dropdown" class='dropdown-content vendors-dd'>
-              <li  (click)="updateVendor(product, {vandor_name:'auto'})">
-                <div class="col s2 image-container"
-                  [ngStyle]="{ 'background-image': 'url(' + (vendor.image_url ? vendor.image_url : '/assets/img/icon-nav-vendors.svg') + ')' }"></div>
-                <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
-                <div class="col s2 inblock">{{ vendor.book_price }}</div>
+              <li  (click)="updateVendor(product, {vendor_name:'Auto'})">
+                <div class="col s2 image-container"></div>
+                <div class="col s8 inblock">Auto select</div>
+                <div class="col s2 inblock"></div>
               </li>
               <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
                 <div class="col s2 image-container"
@@ -123,7 +122,7 @@
           </a>
         </div>
         <div (click)="saveItem(product)" *ngIf="changed[product.id]" class="save-sign">
-          <i class="fa fa-save tealish-text"></i>
+          <i class="fa fa-save red-text"></i>
         </div>
       </div>
     </div>

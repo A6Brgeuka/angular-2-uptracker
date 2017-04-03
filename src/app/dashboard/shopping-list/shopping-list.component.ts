@@ -23,6 +23,7 @@ import { ShoppingListSettingsModal } from './shopping-list-settings-modal/shoppi
 import { UserService } from '../../core/services/user.service';
 import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
+import { AccountService } from '../../core/services/account.service';
 
 
 @Component({
@@ -52,6 +53,7 @@ export class ShoppingListComponent implements OnInit {
     public modalWindowService: ModalWindowService,
     public userService: UserService,
     public cartService: CartService,
+    public accountService: AccountService,
   ) {
   }
   
@@ -218,6 +220,8 @@ export class ShoppingListComponent implements OnInit {
   
   updateVendor(product, vendor) {
     product.selected_vendor = vendor;
+    product.selected_vendor.id = vendor.vendor_id;
+    product.selected_vendor.price = vendor.book_price;
     this.changeRow(product);
   }
   
@@ -228,23 +232,22 @@ export class ShoppingListComponent implements OnInit {
   
   saveItem(item: any = {}) {
     let data = {
-      "location_id": item.location_id,
+      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.location_id,
       "product_id": item.product_id,
       "variants": [
         {
           "variant_id": item.variant_id,
           "vendor_variant_id": item.variant_id,
-          
           "qty": item.qty,
-          "vendor_auto_select": item.selected_vendor.vendor_id ? false : true,
+          "vendor_auto_select": item.selected_vendor.id ? false : true,
           "location_id": item.location_id,
         }
       ]
     };
-    if (item.selected_vendor.vendor_id) {
-      data['variants'][0]['vendor_id']= item.selected_vendor.vendor_id;
-    }
     debugger;
+    if (item.selected_vendor.id) {
+      data['variants'][0]['vendor_id']= item.selected_vendor.id;
+    }
     this.cartService.updateItem(data)
     .subscribe((r: any) => {
         this.changed[item.id] = false;
