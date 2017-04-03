@@ -234,13 +234,17 @@ export class ShoppingListComponent implements OnInit {
         {
           "variant_id": item.variant_id,
           "vendor_variant_id": item.variant_id,
-          "vendor_id": item.selected_vendor[0].id,
+          
           "qty": item.qty,
-          "vendor_auto_select": item.vendor_auto_select,
+          "vendor_auto_select": item.selected_vendor.vendor_id ? false : true,
           "location_id": item.location_id,
         }
       ]
     };
+    if (item.selected_vendor.vendor_id) {
+      data['variants'][0]['vendor_id']= item.selected_vendor.vendor_id;
+    }
+    debugger;
     this.cartService.updateItem(data)
     .subscribe((r: any) => {
         this.changed[item.id] = false;

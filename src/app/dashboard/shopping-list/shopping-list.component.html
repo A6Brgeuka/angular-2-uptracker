@@ -82,15 +82,19 @@
           </div>
         </div>
         <div class="col s3">
-          <div class="select inbl">
-            <input materialize="dropdown" [attr.data-activates]="'dropd'+i" [(ngModel)]="product.selected_vendor.vendor_name" >
+          <div class="select inbl relative">
+            <span class="caret-select"></span>
+            <input materialize="dropdown"
+              [attr.data-activates]="'dropd'+i"
+              [(ngModel)]="product.selected_vendor.vendor_name">
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
-            <ul id="dropd{{ i }}" materialize="dropdown"  class='dropdown-content'>
+            <ul id="dropd{{ i }}" materialize="dropdown" class='dropdown-content vendors-dd'>
               <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
-                <div class="col s2" style="background-image: url({{ vendor.image_url }});"></div>
+                <div class="col s2 image-container"
+                  [ngStyle]="{ 'background-image': 'url(' + (vendor.image_url ? vendor.image_url : '/assets/img/icon-nav-vendors.svg') + ')' }"></div>
                 <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
-                <div class="col s2">{{ vendor.book_price }}</div>
+                <div class="col s2 inblock">{{ vendor.book_price }}</div>
               </li>
             </ul>
           </div>

@@ -465,8 +465,38 @@ div.top {
 }
 
 .inblock {
-  display:block;
-  margin:10px 0;
+  display:flex!important;
+  flex-direction: column;
+  justify-content: center;
+  height:50px;
+}
+
+.image-container {
+  background-color: $tealish;
+  width:50px;
+  height:50px;
+  background-size: contain;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.caret-select {
+  position: absolute;
+  background: url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
+  text-indent: -5000px;
+  width: 10px;
+  height: 6px;
+  top: 50%;
+  margin-top: -3px;
+  right: 10px;
+  z-index: 10;
+}
+.relative {
+  position:relative;
+}
+
+.vendors-dd {
+  min-width:300px;
 }
 
 .show-on-small {display:none!important;}
