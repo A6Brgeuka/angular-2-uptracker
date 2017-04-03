@@ -90,6 +90,12 @@
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
             <ul id="dropd{{ i }}" materialize="dropdown" class='dropdown-content vendors-dd'>
+              <li  (click)="updateVendor(product, {vandor_name:'auto'})">
+                <div class="col s2 image-container"
+                  [ngStyle]="{ 'background-image': 'url(' + (vendor.image_url ? vendor.image_url : '/assets/img/icon-nav-vendors.svg') + ')' }"></div>
+                <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
+                <div class="col s2 inblock">{{ vendor.book_price }}</div>
+              </li>
               <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
                 <div class="col s2 image-container"
                   [ngStyle]="{ 'background-image': 'url(' + (vendor.image_url ? vendor.image_url : '/assets/img/icon-nav-vendors.svg') + ')' }"></div>
