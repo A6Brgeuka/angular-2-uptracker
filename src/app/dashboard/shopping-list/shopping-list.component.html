@@ -83,14 +83,14 @@
         </div>
         <div class="col s3">
           <div class="select inbl">
-            <input [(ngModel)]="product.selectedVendor" materialize="dropdown" data-activates='dd'>
+            <input materialize="dropdown" [attr.data-activates]="'dropd'+i" [(ngModel)]="product.selected_vendor.vendor_name" >
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
-            <ul id='dd' class='dropdown-content'>
+            <ul id="dropd{{ i }}" materialize="dropdown"  class='dropdown-content'>
               <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
-                <div class="col s2">{{ vendor.image_url }}</div>
+                <div class="col s2" style="background-image: url({{ vendor.image_url }});"></div>
                 <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
-                <div class="col s2">{{ vendor.price }}</div>
+                <div class="col s2">{{ vendor.book_price }}</div>
               </li>
             </ul>
           </div>

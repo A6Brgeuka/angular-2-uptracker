@@ -217,7 +217,7 @@ export class ShoppingListComponent implements OnInit {
   }
   
   updateVendor(product, vendor) {
-    product.selectedVendor = vendor.vendor_name;
+    product.selected_vendor = vendor;
     this.changeRow(product);
   }
   
@@ -234,7 +234,7 @@ export class ShoppingListComponent implements OnInit {
         {
           "variant_id": item.variant_id,
           "vendor_variant_id": item.variant_id,
-          "vendor_id": item.vendors[0].id,
+          "vendor_id": item.selected_vendor[0].id,
           "qty": item.qty,
           "vendor_auto_select": item.vendor_auto_select,
           "location_id": item.location_id,

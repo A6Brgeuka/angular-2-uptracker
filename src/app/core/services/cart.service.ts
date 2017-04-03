@@ -39,6 +39,11 @@ export class CartService extends ModelService {
       }
     })
     .map((res: any) => {
+        _.map(res.data.items,(r:any)=>{
+          if (!r.selected_vendor) {
+            r.selected_vendor = {};
+          }
+        });
       return res.data.items;
     })
     .do((res: any) => {
