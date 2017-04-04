@@ -237,8 +237,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   showEditFields() {
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
-    
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
+    
     this.showEdit = true;
     this.productCopy = _.clone(this.product);
     this.variants$.take(1).subscribe(r => {

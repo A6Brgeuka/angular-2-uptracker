@@ -1,89 +1,91 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="title center-align">
   Bulk Edit
-  <button class="uptracker-form-btn right" (click)="saveBulkEdit()"><i class="fa fa-check"></i> Save</button>
+  <button class="uptracker-form-btn right" (click)="saveBulkEdit()">
+    <i class="fa fa-check"></i>
+    Save
+  </button>
 </div>
-
-<div class="row">
-  <div class="col s6 input">
-    <label>Department</label>
-    <div class="select">
-      <select
-        [(ngModel)]="bulk.department"
-        materialize="material_select"
-        [materializeSelectOptions]="departmentCollection$ | async">
-        <option value="" disabled selected>Select Department</option>
-        <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
-      </select>
+<div *ngIf="(selectInfoReady$ | async)">
+  <div class="row">
+    <div class="col s6 input">
+      <label>Department</label>
+      <div class="select">
+        <select
+          [(ngModel)]="bulk.department"
+          materialize="material_select"
+          [materializeSelectOptions]="dropdowns[0]">
+          <option value="" disabled selected>Select Department</option>
+          <option *ngFor="let item of dropdowns[0]" [value]="item">{{item}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col s6 input">
+      <label>Working Stock Location</label>
+      <div class="select">
+        <select
+          [(ngModel)]="bulk.working_stock"
+          materialize="material_select"
+          [materializeSelectOptions]="dropdowns[3]">
+          <option value="" disabled selected>Select Working Stock Location</option>
+          <option *ngFor="let item of dropdowns[3]" [value]="item">{{item}}</option>
+        </select>
+      </div>
     </div>
   </div>
-  <div class="col s6 input">
-    <label>Working Stock Location</label>
-    <div class="select">
-      <select
-        [(ngModel)]="bulk.working_stock"
-        materialize="material_select"
-        [materializeSelectOptions]="workingStockCollection$ | async">
-        <option value="" disabled selected>Select Working Stock Location</option>
-        <option *ngFor="let item of workingStockCollection$ | async" [value]="item">{{item}}</option>
-      </select>
+  <div class="row">
+    <div class="col s6 input">
+      <label>Category</label>
+      <div class="select">
+        <select
+          [(ngModel)]="bulk.category"
+          materialize="material_select"
+          [materializeSelectOptions]="dropdowns[2]">
+          <option value="" disabled selected>Select Category</option>
+          <option *ngFor="let item of dropdowns[2]" [value]="item">{{item}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col s6 input">
+      <label>Back Stock Location</label>
+      <div class="select">
+        <select
+          [(ngModel)]="bulk.back_stock"
+          materialize="material_select"
+          [materializeSelectOptions]="dropdowns[4]">
+          <option value="" disabled selected>Select Back Stock Location</option>
+          <option *ngFor="let item of dropdowns[4]" [value]="item">{{item}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row last-row">
+    <div class="col s6 input">
+      <label>Accounting</label>
+      <div class="select">
+        <select
+          [(ngModel)]="bulk.account_category"
+          [materializeSelectOptions]="dropdowns[1]"
+          materialize="material_select">
+          <option value="" disabled selected>Select Accounting</option>
+          <option *ngFor="let item of dropdowns[1]" [value]="item">{{item}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col s6 input">
+      <label>Preferred Vendor</label>
+      <div class="select">
+        <select
+          [materializeSelectOptions]="dropdowns[5]"
+          [(ngModel)]="bulk.vendor"
+          materialize="material_select">
+          <option value="" disabled selected>Select Preferred Vendor</option>
+          <option *ngFor="let item of dropdowns[5]" [value]="item.id">{{item.name}}</option>
+        </select>
+      </div>
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col s6 input">
-    <label>Category</label>
-    <div class="select">
-      <select
-        [(ngModel)]="bulk.category"
-        materialize="material_select"
-        [materializeSelectOptions]="productCategoriesCollection$ | async">
-        <option value="" disabled selected>Select Category</option>
-        <option *ngFor="let item of productCategoriesCollection$ | async" [value]="item">{{item}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="col s6 input">
-    <label>Back Stock Location</label>
-    <div class="select">
-      <select
-        [(ngModel)]="bulk.back_stock"
-        materialize="material_select"
-        [materializeSelectOptions]="backStockCollection$ | async">
-        <option value="" disabled selected>Select Back Stock Location</option>
-        <option *ngFor="let item of backStockCollection$ | async" [value]="item">{{item}}</option>
-      </select>
-    </div>
-  </div>
-</div>
-<div class="row last-row">
-  <div class="col s6 input">
-    <label>Accounting</label>
-    <div class="select">
-      <select
-        [(ngModel)]="bulk.account_category"
-        [materializeSelectOptions]="productAccountingCollection$  | async"
-        materialize="material_select">
-        <option value="" disabled selected>Select Accounting</option>
-        <option *ngFor="let item of productAccountingCollection$ | async" [value]="item">{{item}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="col s6 input">
-    <label>Preferred Vendor</label>
-    <div class="select">
-      <select
-        *ngIf="(additionalInfo$ | async)?.vendors"
-        [materializeSelectOptions]="(additionalInfo$ | async)?.vendors"
-        [(ngModel)]="bulk.vendor"
-        materialize="material_select">
-        <option value="" disabled selected>Select Preferred Vendor</option>
-        <option *ngFor="let item of (additionalInfo$ | async)?.vendors" [value]="item.id">{{item.name}}</option>
-      </select>
-    </div>
-  </div>
-</div>
-
 <div class="row tiny-margin">
   <div class="checkbox input-checkbox col s6">
     <input

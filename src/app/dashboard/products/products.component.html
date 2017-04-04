@@ -7,7 +7,11 @@
     <div class="filter uptracker-form clearfix">
       <div class="left">
         <div class="left input">
-          <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" class="col s12" (input)="searchFilter($event)" />
+          <input type="text"
+            placeholder="Keyword search"
+            [(ngModel)]="searchKey"
+            class="col s12"
+            (input)="searchFilter($event)"/>
         </div>
         <div class="left filter-btn">
           <a (click)="showFiltersModal()">
@@ -25,7 +29,7 @@
           </select>
         </div>
         <div class="left uptracker-toggle-view" (click)="toggleView()">
-            <i class="fa" [class.fa-table]="!isGrid" [class.fa-th-large]="isGrid"></i>
+          <i class="fa" [class.fa-table]="!isGrid" [class.fa-th-large]="isGrid"></i>
         </div>
       </div>
       <div class="clearfix"></div>
@@ -34,14 +38,20 @@
 
     <div class="list" [class.is-grid-view]="isGrid" [class.is-tiles-view]="!isGrid">
       <div *ngIf="!isGrid">
-        <div  class="item center-align" *ngFor="let product of products$ | async; let i=index">
-          <div class="inner" [routerLink]="['/', 'products', product.id]" >
-            <div class="hazardous" *ngIf="product.hazardous"><i class="material-icons">warning</i></div>
-            <div *ngIf="product.images" class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }" >
-              <div class="trackable" *ngIf="product.trackable"><fa [name]="'barcode'"></fa></div>
+        <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
+          <div class="inner" [routerLink]="['/', 'products', product.id]">
+            <div class="hazardous" *ngIf="product.hazardous">
+              <i class="material-icons">warning</i>
             </div>
-            <div *ngIf="!product.images" class="img" >
-              <div class="trackable" *ngIf="product.trackable"><fa [name]="'barcode'"></fa></div>
+            <div *ngIf="product.images" class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }">
+              <div class="trackable" *ngIf="product.trackable">
+                <fa [name]="'barcode'"></fa>
+              </div>
+            </div>
+            <div *ngIf="!product.images" class="img">
+              <div class="trackable" *ngIf="product.trackable">
+                <fa [name]="'barcode'"></fa>
+              </div>
             </div>
             <div class="info">
               <div class="ttl">{{product.name}}</div>
@@ -55,26 +65,28 @@
       </div>
       <div *ngIf="isGrid">
 
-        <div class="heading row" >
+        <div class="heading row">
           <div class="col s1">
-          <div class="input-checkbox checkbox">
-            <input
-              type="checkbox"
-              class="checkbox-input"
-              [(ngModel)]="selectAll"
-              id="selectAll"
-              (click)="toggleSelectAll(!selectAll)"
-            />
-            <label for="selectAll"></label>
+            <div class="input-checkbox checkbox">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                [(ngModel)]="selectAll"
+                id="selectAll"
+                (click)="toggleSelectAll(!selectAll)"
+              />
+              <label for="selectAll"></label>
+            </div>
           </div>
-          </div>
-          <div class="col  s5" >Product name</div>
+          <div class="col  s5">Product name</div>
           <div class="col s1">Variations</div>
           <div class="col s1">Hazardous</div>
           <div class="col s1">Trackable</div>
           <div class="col s2">Price range</div>
           <div class="col s1">
-            <button (click)="bulkEditModal()" [disabled]="selectedProducts.length==0" class="right bulk-edit uptracker-form-btn">
+            <button (click)="bulkEditModal()"
+              [disabled]="selectedProducts.length==0"
+              class="right bulk-edit uptracker-form-btn">
               <i class="fa fa-pencil"></i>
             </button>
           </div>
@@ -82,7 +94,7 @@
 
         <div class="item row" *ngFor="let product of products$ | async; let i=index">
           <div class="col s1">
-            <div  class="input-checkbox checkbox">
+            <div class="input-checkbox checkbox">
               <input
                 type="checkbox"
                 class="selected-input{{i}}"
@@ -93,40 +105,40 @@
               <label for="selected{{i}}"></label>
             </div>
           </div>
-          <div class="col product-name s5" [routerLink]="[product.id]" >{{product.name}}</div>
+          <div class="col product-name s5" [routerLink]="[product.id]">{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1">
-            <div  class="input-checkbox checkbox readonly">
+            <div class="input-checkbox checkbox readonly">
+
               <input
                 type="checkbox"
                 class="hazardous-input{{i}}"
                 [(ngModel)]="product.hazardous"
                 id="hazardous{{i}}"
+                disabled
               />
               <label for="hazardous{{i}}"></label>
             </div>
           </div>
           <div class="col s1">
-            <div class="input-checkbox">
-              <div  class="input-checkbox checkbox readonly">
-                <input
-                  type="checkbox"
-                  class="trackable-input{{i}}"
-                  [(ngModel)]="product.trackable"
-                  id="trackable{{i}}"
-                  disabled
-                />
-                <label for="trackable{{i}}"></label>
-              </div>
+            <div class="input-checkbox checkbox readonly">
+              <input
+                type="checkbox"
+                class="trackable-input{{i}}"
+                [(ngModel)]="product.trackable"
+                id="trackable{{i}}"
+                disabled
+              />
+              <label for="trackable{{i}}"></label>
             </div>
           </div>
           <div class="col s2">{{product.price_range}}</div>
           <div class="col s1">
             <i class="fa right variant-func"
-               [class.fa-eye]="product.status"
-               [class.fa-eye-slash]="!product.status"
-               (click)="toggleProductVisibility(product)"
-               aria-hidden="true"></i>
+              [class.fa-eye]="product.status"
+              [class.fa-eye-slash]="!product.status"
+              (click)="toggleProductVisibility(product)"
+              aria-hidden="true"></i>
           </div>
         </div>
 
@@ -143,14 +155,14 @@
       <div class="clearfix"></div>
     </div>
 
-    <div class="no_results_container"  [class.not_hidden]="!total">
+    <div class="no_results_container" [class.not_hidden]="!total">
       <div class="img">
         <i class="fa fa-question" aria-hidden="true"></i>
       </div>
-      <div class="text">We could not find any products, matching the search criteria. </div>
+      <div class="text">We could not find any products, matching the search criteria.</div>
       <div class="sub-buttons">
         <button class="uptracker-form-btn">Broaden Search</button>
-        <button  (click)="requestProduct()"  class="uptracker-form-btn">Request Product</button>
+        <button (click)="requestProduct()" class="uptracker-form-btn">Request Product</button>
       </div>
     </div>
   </div>

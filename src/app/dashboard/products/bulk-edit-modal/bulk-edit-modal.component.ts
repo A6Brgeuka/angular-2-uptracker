@@ -32,10 +32,12 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   public workingStockCollection$: Observable<any> = new Observable<any>();
   public backStockCollection$: Observable<any> = new Observable<any>();
   public vendorCollection$: any = new BehaviorSubject(false);
+  public selectInfoReady$: Observable<any> = new Observable<any>();
   public additionalInfo$: Observable<any> = new Observable<any>();
   public dataObj:any ={};
   public data:any = [];
   
+  public dropdowns:any = [];
   public context: BulkEditModalContext;
   public selectedProducts:any;
   public bulk: any = {
@@ -63,11 +65,14 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
+  
+  
+    
   }
   
   ngOnInit() {
     
-    this.selectedProducts =this.context.products;
+    this.selectedProducts = this.context.products;
     console.log(this.selectedProducts);
     
     this.dataObj.product_ids = [];
@@ -75,25 +80,35 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
       this.dataObj.product_ids.push(prod['id']);
     });
   
+  
     this.additionalInfo$ = this.productService.getBulkEditAdditionalInfo(this.dataObj.product_ids)
     .take(1)
     .map(resp => {
       this.vendorCollection$.next(resp.data.vendors);
       return resp.data;
     });
-  
-    console.log(this.dataObj);
-    
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
     //TODO
     this.workingStockCollection$  = this.accountService.getDepartments().take(1);
     this.backStockCollection$ = this.accountService.getDepartments().take(1);
+  
     
-    
-    
-    this.additionalInfo$.subscribe(r=>console.log('additional',r));
+    this.selectInfoReady$ = Observable.combineLatest(
+      this.departmentCollection$,
+      this.productAccountingCollection$,
+      this.productCategoriesCollection$,
+      this.workingStockCollection$,
+      this.backStockCollection$,
+      this.additionalInfo$
+    )
+    .filter(([a,b,c,d,e,f])=>(a.length>-1 && b.length>-1 && c.length>-1 && d.length>-1 && e.length>-1&& f.vendors.length>-1 ))
+    .map(([a, b, c, d, e, f]) => {
+      this.dropdowns=[a,b,c,d,e,f.vendors]; // make a snapshot of the streams because of f'kn materialize
+      return true;
+    });
+  
     this.vendorCollection$.subscribe(r=>console.log('vendors',r));
   }
   

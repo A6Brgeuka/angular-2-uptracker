@@ -62,15 +62,11 @@ div {
       [type="checkbox"] {
         & + label {
           vertical-align: middle;
-          padding-left: 25px;
           font-size: 14px;
 
           &:before {
-            width: 10px;
-            height: 10px;
-            background-color: transparent;
+            background: transparent;
             border-color: transparent;
-            border-radius: 3px;
           }
         }
 
