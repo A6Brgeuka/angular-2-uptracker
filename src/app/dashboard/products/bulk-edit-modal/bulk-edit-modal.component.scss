@@ -125,6 +125,44 @@ $normal: 14px;
     }
   }
 
+  input[type=text] {
+    height: 32px;
+    border-radius: 5px;
+    border-color: #4CAF50!important;
+    line-height: normal;
+    font-size: 14px;
+    text-indent: 10px;
+    color: #9a9c9e;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .dropdown-content li:hover, .dropdown-content li.active, .dropdown-content li.selected {
+    background-color: inherit;
+    &:nth-of-type(1) {
+      background-color: $light-light-grey;
+    };
+  }
+  li{
+    min-height:40px;
+  }
+  .inblock {
+    padding-left:10px;
+    min-height: 40px;
+    height:auto!important;
+    color: $dark;
+  }
+  .inner-list {
+    li {
+      transition: background-color, color .3s;
+    }
+
+     li:hover, li.active, li.selected {
+      background-color: $light-light-grey;
+    }
+    .inblock {
+      color:$tealish;
+    }
+  }
   .input-checkbox {
     [type="checkbox"] {
       &:indeterminate {

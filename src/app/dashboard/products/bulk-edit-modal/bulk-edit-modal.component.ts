@@ -34,17 +34,21 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   public vendorCollection$: any = new BehaviorSubject(false);
   public selectInfoReady$: Observable<any> = new Observable<any>();
   public additionalInfo$: Observable<any> = new Observable<any>();
-  public dataObj:any ={};
-  public data:any = [];
+  public dataObj: any = {};
+  public data: any = [];
   
-  public dropdowns:any = [];
+  public dropdowns: any = [];
   public context: BulkEditModalContext;
-  public selectedProducts:any;
+  public selectedProducts: any;
   public bulk: any = {
     department: null, //
-    working_stock: "Please select",
+    working_stock_name: "Select Working Stock Location",
+    working_stock: null,
+    working_stock_location: null,
+    back_stock_name: "Select Back Stock Location",
+    back_stock: null,
+    back_stock_location: null,
     category: null, //
-    back_stock: "Please select",
     account_category: null, //
     vendor: null,
     hazardous: null, //
@@ -61,12 +65,10 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     public userService: UserService,
     public accountService: AccountService,
     public productService: ProductService,
-
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
-  
-  
+    
     
   }
   
@@ -76,11 +78,11 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     console.log(this.selectedProducts);
     
     this.dataObj.product_ids = [];
-    _.map(this.selectedProducts, (prod:any)=>{
+    _.map(this.selectedProducts, (prod: any) => {
       this.dataObj.product_ids.push(prod['id']);
     });
-  
-  
+    
+    
     this.additionalInfo$ = this.productService.getBulkEditAdditionalInfo(this.dataObj.product_ids)
     .take(1)
     .map(resp => {
@@ -91,9 +93,9 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
     //TODO
-    this.workingStockCollection$  = this.accountService.getDepartments().take(1);
+    this.workingStockCollection$ = this.accountService.getDepartments().take(1);
     this.backStockCollection$ = this.accountService.getDepartments().take(1);
-  
+    
     
     this.selectInfoReady$ = Observable.combineLatest(
       this.departmentCollection$,
@@ -101,13 +103,13 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
       this.productCategoriesCollection$,
       this.additionalInfo$
     )
-    .filter(([a,b,c,d])=>(a.length>-1 && b.length>-1 && c.length>-1 && d.vendors.length>-1 ))
+    .filter(([a, b, c, d]) => (a.length > -1 && b.length > -1 && c.length > -1 && d.vendors.length > -1 ))
     .map(([a, b, c, d]) => {
-      this.dropdowns=[a,b,c, d.locations,d.locations, d.vendors]; // make a snapshot of the streams because of f'kn materialize
+      this.dropdowns = [a, b, c, d.locations, d.locations, d.vendors]; // make a snapshot of the streams because of f'kn materialize
       return true;
     });
-  
-    this.vendorCollection$.subscribe(r=>console.log('vendors',r));
+    
+    this.vendorCollection$.subscribe(r => console.log('vendors', r));
   }
   
   ngAfterViewInit() {
@@ -122,7 +124,7 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   }
   
   onSubmit() {
-      
+    
   }
   
   checkboxChange(event, value) {
@@ -133,30 +135,73 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
       event.target.state++;
     }
     switch (event.target.state) {
-      case 1: event.target.checked = true;
-       event.target.indeterminate = false;
+      case 1:
+        event.target.checked = true;
+        event.target.indeterminate = false;
         value = true;
         break;
-      case 2: event.target.checked = false;
-       event.target.indeterminate = false;
+      case 2:
+        event.target.checked = false;
+        event.target.indeterminate = false;
         value = false;
         break;
-      case 3: event.target.checked = false;
-       event.target.indeterminate = true;
+      case 3:
+        event.target.checked = false;
+        event.target.indeterminate = true;
         value = null;
         break;
     }
   }
   
   saveBulkEdit() {
-    _.forIn(this.bulk, (value, key) => {
+    let data = _.cloneDeep(this.bulk);
+    data['back_stock_name'] = null;
+    data['working_stock_name'] = null;
+    _.forIn(data, (value, key) => {
       if (value !== null) {
         this.dataObj[key] = value;
       }
     });
-    
-    console.log(this.dataObj);
-    this.subscribers.updateBulkProducts$ = this.productService.bulkUpdateProducts(this.dataObj);
-    this.dismissModal();
+    if (this.dataObj.working_stock_location && this.dataObj.working_stock) {
+      this.dataObj['working_stock_locations'] = [{
+        location_id: this.dataObj.working_stock_location,
+        storage_location_id: this.dataObj.working_stock
+      }];
+      delete this.dataObj.working_stock_location;
+      delete this.dataObj.working_stock;
+    }
+    if (this.dataObj.back_stock_location && this.dataObj.back_stock) {
+      this.dataObj['back_stock_locations'] = [{
+        location_id: this.dataObj.back_stock_location,
+        storage_location_id: this.dataObj.back_stock
+      }];
+      delete this.dataObj.back_stock_location;
+      delete this.dataObj.back_stock;
+    }
+  
+  this.subscribers.updateBulkProducts$ = this.productService.bulkUpdateProducts(this.dataObj);
+  this.dismissModal();
+}
+
+updWorkingStock(item, location = null)
+{
+  if (item == '') {
+    this.bulk.working_stock_name = "Select Working Stock Location";
+    this.bulk.working_stock = null;
   }
+  this.bulk.working_stock_name = item.name;
+  this.bulk.working_stock = item.id;
+  this.bulk.working_stock_location = location.id;
+}
+
+updBackStock(item, location = null)
+{
+  if (!item) {
+    this.bulk.back_stock_name = "Select Back Stock Location";
+    this.bulk.back_stock = null;
+  }
+  this.bulk.back_stock_name = item.name;
+  this.bulk.back_stock = item.id;
+  this.bulk.back_stock_location = location.id;
+}
 }
