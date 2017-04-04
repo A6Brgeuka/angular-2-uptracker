@@ -34,7 +34,7 @@ import { AccountService } from '../../core/services/account.service';
 @DestroySubscribers()
 export class ShoppingListComponent implements OnInit {
   public selectAll: string;
-  
+  public last_loc:string = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -58,6 +58,9 @@ export class ShoppingListComponent implements OnInit {
   }
   
   ngOnInit() {
+//TODO remove
+    this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+
     this.cartService.collection$.subscribe((r: any) => {
       this.cart$.next(r);
       this.changed = [];
@@ -232,7 +235,7 @@ export class ShoppingListComponent implements OnInit {
   
   saveItem(item: any = {}) {
     let data = {
-      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.location_id,
+      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : (this.last_loc ? this.last_loc : item.location_id),
       "product_id": item.product_id,
       "variants": [
         {
@@ -244,12 +247,14 @@ export class ShoppingListComponent implements OnInit {
         }
       ]
     };
+    debugger;
     if (item.selected_vendor.id) {
       data['variants'][0]['vendor_id']= item.selected_vendor.id;
     }
     this.cartService.updateItem(data)
     .subscribe((r: any) => {
         this.changed[item.id] = false;
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
       },
       (err: any) => {
         console.error(err);

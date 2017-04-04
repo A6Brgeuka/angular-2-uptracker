@@ -73,9 +73,10 @@
           </div>
         </div>
         <div class="col s2">
-          <div class="select inbl">
-            <select  [(ngModel)]="product.location_id" (change)="changeRow(product)" materialize="material_select">
+          <div  class="select inbl">
+            <select [(ngModel)]="product.location_id" (change)="changeRow(product)" materialize="material_select">
               <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations"
+                (click)="last_loc = product.location_id"
                 [value]="location.id">{{ location.name }}
               </option>
             </select>

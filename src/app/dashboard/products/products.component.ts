@@ -118,11 +118,10 @@ export class ProductsComponent implements OnInit {
         this.infiniteScroll$
             .withLatestFrom(this.products$)
             .filter(([infinite,products]) =>  {
-            
                 return infinite && !this.isRequest && products.length
             })
             .switchMap((infinite) => {
-                
+//debugger;
                 this.isRequest = true;
                 if (this.searchKey == this.searchKeyLast) {
                     ++this.productService.current_page;
