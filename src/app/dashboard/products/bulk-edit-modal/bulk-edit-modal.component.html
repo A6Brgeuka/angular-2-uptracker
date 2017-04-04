@@ -22,14 +22,25 @@
     </div>
     <div class="col s6 input">
       <label>Working Stock Location</label>
-      <div class="select">
-        <select
-          [(ngModel)]="bulk.working_stock"
-          materialize="material_select"
-          [materializeSelectOptions]="dropdowns[3]">
-          <option value="" disabled selected>Select Working Stock Location</option>
-          <option *ngFor="let item of dropdowns[3]" [value]="item">{{item}}</option>
-        </select>
+      <div class="select inbl relative">
+        <span class="caret-select"></span>
+        <input
+          materialize="dropdown"
+          data-activates="dropd1"
+          [(ngModel)]="bulk.working_stock">
+        <ul id="dropd1" materialize="dropdown" class='dropdown-content vendors-dd'>
+          <li  (click)="updateVendor(product, {vendor_name:'Auto'})">
+            <div class="col s12 inblock">Auto select</div>
+          </li>
+          <li *ngFor="let location of dropdowns[3]" >
+            <div class="col s12 inblock">{{ location.name }}</div>
+            <ul class="inner-list">
+              <li *ngFor="let item of location.working_stock_locations">
+                {{ item.name }}
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

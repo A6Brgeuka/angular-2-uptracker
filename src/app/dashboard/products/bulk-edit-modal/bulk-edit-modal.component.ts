@@ -42,9 +42,9 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   public selectedProducts:any;
   public bulk: any = {
     department: null, //
-    working_stock: null,
+    working_stock: "Please select",
     category: null, //
-    back_stock: null,
+    back_stock: "Please select",
     account_category: null, //
     vendor: null,
     hazardous: null, //
@@ -103,13 +103,7 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
     )
     .filter(([a,b,c,d])=>(a.length>-1 && b.length>-1 && c.length>-1 && d.vendors.length>-1 ))
     .map(([a, b, c, d]) => {
-  
-      d.locations;
-      debugger;
-      let working_stocks = [];
-      let back_stocks = [];
-      
-      this.dropdowns=[a,b,c, working_stocks, back_stocks, d.vendors]; // make a snapshot of the streams because of f'kn materialize
+      this.dropdowns=[a,b,c, d.locations,d.locations, d.vendors]; // make a snapshot of the streams because of f'kn materialize
       return true;
     });
   

@@ -149,4 +149,38 @@ $normal: 14px;
     color: #fff;
   }
 
+
+  .inblock {
+    display:flex!important;
+    flex-direction: column;
+    justify-content: center;
+    height:50px;
+  }
+
+  .caret-select {
+    position: absolute;
+    background: url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
+    text-indent: -5000px;
+    width: 10px;
+    height: 6px;
+    top: 50%;
+    margin-top: -3px;
+    right: 10px;
+    z-index: 10;
+  }
+  .relative {
+    position:relative;
+  }
+
+  .vendors-dd {
+    min-width:300px;
+  }
+
+  .select > input {
+    padding-right: 20px;
+  }
+  input {
+    color: $dark!important;
+  }
+
 }
