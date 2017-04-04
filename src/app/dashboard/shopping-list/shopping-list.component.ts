@@ -244,7 +244,6 @@ export class ShoppingListComponent implements OnInit {
         }
       ]
     };
-    debugger;
     if (item.selected_vendor.id) {
       data['variants'][0]['vendor_id']= item.selected_vendor.id;
     }

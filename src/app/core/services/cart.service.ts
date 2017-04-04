@@ -50,7 +50,6 @@ export class CartService extends ModelService {
       return res.data.items;
     })
     .do((res: any) => {
-      debugger;
       this.updateCollection$.next(res);
     })
     .subscribe();
