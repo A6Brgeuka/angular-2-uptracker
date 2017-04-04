@@ -99,13 +99,17 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
       this.departmentCollection$,
       this.productAccountingCollection$,
       this.productCategoriesCollection$,
-      this.workingStockCollection$,
-      this.backStockCollection$,
       this.additionalInfo$
     )
-    .filter(([a,b,c,d,e,f])=>(a.length>-1 && b.length>-1 && c.length>-1 && d.length>-1 && e.length>-1&& f.vendors.length>-1 ))
-    .map(([a, b, c, d, e, f]) => {
-      this.dropdowns=[a,b,c,d,e,f.vendors]; // make a snapshot of the streams because of f'kn materialize
+    .filter(([a,b,c,d])=>(a.length>-1 && b.length>-1 && c.length>-1 && d.vendors.length>-1 ))
+    .map(([a, b, c, d]) => {
+  
+      d.locations;
+      debugger;
+      let working_stocks = [];
+      let back_stocks = [];
+      
+      this.dropdowns=[a,b,c, working_stocks, back_stocks, d.vendors]; // make a snapshot of the streams because of f'kn materialize
       return true;
     });
   
