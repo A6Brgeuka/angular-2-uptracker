@@ -1,4 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import * as _ from 'lodash';
 
 import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -21,7 +22,7 @@ export class Add2OrderModalContext extends BSModalContext {
 @DestroySubscribers()
 export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2OrderModalContext> {
   context: Add2OrderModalContext;
-  public quantity: number = 1;
+  public quantity: string = '1';
   public vendor: any= {id:"", vendor_id:""};
   public location: string = '';
   public valid1: boolean = false;
@@ -40,17 +41,11 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   }
   
   ngOnInit() {
-    this.vendor = this.context.data
-      .vendorArr[0];
-    
+    let e = this.context.data.selectedVendor ? this.context.data.selectedVendor : '';
+    this.vendorChange({target:{value:e}});
     console.log(this.context.data);
     this.quantity = this.context.data['quantity'];
     this.location = this.context.data.locationArr[0]['id'];
-    if (this.context.data.selectedVariant && this.context.data.selectedVariant.id) {
-    
-    } else {
-      this.vendor = this.context.data.vendorArr[0];
-    }
     this.validateFields();
   }
   
@@ -63,12 +58,11 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   }
   
   validateFields(){
-    this.valid1 = this.quantity > 0;
-    this.valid2 = (this.vendor && this.vendor.id) ? true : false;
-    this.valid3 = this.location ? true : false;
-    this.valid = (this.valid1 && this.valid2 && this.valid3);
+// there's nothing to check now
+    this.valid = true;
     return this.valid;
   }
+  
   saveOrder() {
     if (this.validateFields()) {
       let data = {
@@ -79,7 +73,7 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
             "vendor_id": this.vendor.vendor_id,
             "variant_id": this.vendor.variant_id,
             "vendor_variant_id": this.vendor.variant_id,
-            "qty": this.quantity,
+            "qty": parseInt(this.quantity),
             "vendor_auto_select": this.isAuto,
           }
         ]
@@ -91,16 +85,13 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   }
   
   vendorChange($event){
-    if ($event.target.value == 'auto') {
+    if ($event.target.value == '') {
       this.isAuto = true;
-      this.vendor = this.context.data
-        .vendorArr[0];
-      this.vendor.id = '';
+      this.vendor = _.cloneDeep(this.context.data.vendorArr[0]);
+      this.vendor.vendor_id = '';
     } else {
       this.isAuto = false;
-      this.vendor = this.context.data
-      .vendorArr
-      .find((v: any) => (v.id == $event.target.value))
+      this.vendor = _.cloneDeep(this.context.data.vendorArr.find((v: any) => (v.vendor_id == $event.target.value)));
     }
   }
 }

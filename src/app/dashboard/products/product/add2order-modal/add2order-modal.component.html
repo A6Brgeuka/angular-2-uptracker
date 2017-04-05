@@ -18,9 +18,9 @@
     <div class="col s12 select-title">Vendor</div>
     <div class="col s12">
       <div class="left select">
-        <select  (change)="validateFields();vendorChange($event)" materialize="material_select"  [class.invalid]="!vendor?.id">
-          <option  value="auto">Auto</option>
-          <option *ngFor="let vendor of context.data.vendorArr" [value]="vendor.id">{{vendor.name}}</option>
+        <select  [(ngModel)]="vendor.vendor_id"  (change)="validateFields();vendorChange($event)" materialize="material_select"  >
+          <option  value="">Auto</option>
+          <option *ngFor="let v of context.data.vendorArr" [value]="v.vendor_id">{{v.vendor_name}}</option>
         </select>
       </div>
     </div>

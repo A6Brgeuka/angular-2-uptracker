@@ -31,7 +31,7 @@
             product?.name}}
           </div>
           <div class="col s12">
-            <input class="ttl col s12 name-field" *ngIf="showEdit" [(ngModel)]="productCopy.name" type="text">
+            <input  (click)="$event.stopPropagation();" class="ttl col s12 name-field" *ngIf="showEdit" [(ngModel)]="productCopy.name" type="text">
           </div>
         </div>
         <div class="row" [ngClass]="{'checks':showEdit}">
@@ -410,7 +410,7 @@
               <div class="row-item">{{item.forum_price || ""}}</div>
               <div *ngIf="!showEdit" class="add-order-heading right head-item">
                 <button
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn" (click)="addToOrder(item)">
+                  class="uptracker-form-btn waves-light waves-effect add-order-btn" (click)="addToOrder(currentVariant, item)">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   Add to Order
                 </button>

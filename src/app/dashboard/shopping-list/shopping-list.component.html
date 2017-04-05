@@ -96,7 +96,7 @@
                 <div class="col s8 inblock">Auto select</div>
                 <div class="col s2 inblock"></div>
               </li>
-              <li *ngFor="let vendor of product.vendors" (click)="updateVendor(product, vendor)">
+              <li *ngFor="let vendor of product.vendors " (click)="updateVendor(product, vendor)">
                 <div class="col s2 image-container"
                   [ngStyle]="{ 'background-image': 'url(' + (vendor.image_url ? vendor.image_url : '/assets/img/icon-nav-vendors.svg') + ')' }"></div>
                 <div class="col s8 inblock">{{ vendor.vendor_name }}</div>

@@ -46,6 +46,7 @@ export class CartService extends ModelService {
             };
           }
           r.selected = true;
+          r.prev_location = r.location_id;
         });
       return res.data.items;
     })

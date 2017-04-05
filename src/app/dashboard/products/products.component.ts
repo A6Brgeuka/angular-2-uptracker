@@ -140,7 +140,7 @@ export class ProductsComponent implements OnInit {
             //.delay(100)
             .subscribe(res => {
             }, err => {
-                debugger;
+            
             });
     }
 

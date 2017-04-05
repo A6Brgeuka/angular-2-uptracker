@@ -39,6 +39,7 @@ export class ShoppingListComponent implements OnInit {
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public cart:any = [];
   public total: number;
   public orders: any;
   public orders$: BehaviorSubject<any> = new BehaviorSubject({});
@@ -235,7 +236,7 @@ export class ShoppingListComponent implements OnInit {
   
   saveItem(item: any = {}) {
     let data = {
-      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : (this.last_loc ? this.last_loc : item.location_id),
+      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id :  item.prev_location,
       "product_id": item.product_id,
       "variants": [
         {
@@ -247,7 +248,7 @@ export class ShoppingListComponent implements OnInit {
         }
       ]
     };
-    debugger;
+    item.prev_location = item.location_id;
     if (item.selected_vendor.id) {
       data['variants'][0]['vendor_id']= item.selected_vendor.id;
     }

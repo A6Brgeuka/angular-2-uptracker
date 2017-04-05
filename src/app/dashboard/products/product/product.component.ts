@@ -516,13 +516,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   
-  addToOrder(variant) {
+  addToOrder(variant, vid = null) {
+    
       let modalData = {
         'quantity': 1,
         'vendorArr': variant.vendor_variants,
         'locationArr': this.locationArr,
         'productId': this.product_id,
       };
+      if (vid!==null) {
+        modalData['selectedVendor'] = vid.vendor_id;
+      }
       
     //this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?');
     this.modal
