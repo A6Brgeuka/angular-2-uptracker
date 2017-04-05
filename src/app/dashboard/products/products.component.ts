@@ -60,6 +60,8 @@ export class ProductsComponent implements OnInit {
     }
     
     ngOnInit() {
+        this.productService.current_page =1;
+        
         this.productService.totalCount$.subscribe(total => this.total=total);
         
         this.productService.isDataLoaded$
@@ -94,7 +96,9 @@ export class ProductsComponent implements OnInit {
             this.productService.location$.next(location);
             this.productService.location=location;
             return this.productService.getProductsLocation(location.id)
-        }).subscribe(()=>this.getInfiniteScroll());
+        }).subscribe(() => {
+            return this.getInfiniteScroll();
+        });
         
     ///////////////////////?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
@@ -119,15 +123,17 @@ export class ProductsComponent implements OnInit {
                 return (infinite && !this.isRequest && products.length);
             })
             .switchMap(([infinite,products]) => {
+                this.isRequest = true;
                 if (this.searchKey == this.searchKeyLast) {
                     ++this.productService.current_page;
                 }
                 this.searchKeyLast = this.searchKey;
                 //TODO remove
                 if (this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
+                    this.isRequest = false;
                     return Observable.of(false);
                 } else {
-                    this.isRequest = true;
+                    
                     return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
                 }
             })

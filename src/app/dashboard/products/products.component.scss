@@ -1,11 +1,5 @@
-$tealish: #33c6d9;
-$red: #f00;
-$white: #fff;
-$greeny: #4CAF50;
-$dark: #444;
-$grey:  #9a9c9e;
-$light-grey: #d6d6d6;
-$black: #000;
+@import "../../../colors.scss";
+@import "../../../spinner.scss";
 
 :host /deep/ {
   .products {
@@ -326,5 +320,6 @@ div.top {
     opacity: .8;
   }
 }
+
 
 
