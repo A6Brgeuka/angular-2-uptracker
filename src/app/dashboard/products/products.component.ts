@@ -121,14 +121,13 @@ export class ProductsComponent implements OnInit {
                 return infinite && !this.isRequest && products.length
             })
             .switchMap((infinite) => {
-//debugger;
                 this.isRequest = true;
                 if (this.searchKey == this.searchKeyLast) {
                     ++this.productService.current_page;
                 }
                 this.searchKeyLast = this.searchKey;
                 //TODO remove
-                if (6 <= (this.productService.current_page-1) * this.productService.pagination_limit) {
+                if (this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
                     return Observable.of(false);
                 } else {
                     
