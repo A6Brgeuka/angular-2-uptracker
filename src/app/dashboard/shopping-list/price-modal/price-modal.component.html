@@ -1,5 +1,5 @@
-<div class="inner" [class.grey-blocks]="discounts">
-  <div  class="clearfix row title center-align">Pricing Info</div>
+<div class="inner" [class.grey-blocks]="discounts.length>0">
+  <div class="clearfix row title center-align">Pricing Info</div>
   <div class="row checks-row">
     <div class="col s4">
       <input value="book" type="radio" name="price_type" id="price_type_book">
@@ -25,16 +25,24 @@
     </div>
   </div>
 
-  <div class="row discounts clearfix" *ngIf="discounts">
-    <div class="discount_row">
+  <div class="row">
+    <div class="discount_row discount-titles">
       <div class="row grey-text titles">
         <div class="col s4">Type</div>
         <div class="col s3">Amount</div>
         <div class="col s4">Rewards Pts.</div>
         <div class="col s1"></div>
       </div>
+    </div>
+    <div class="right-grey">
+      <div class="right-ttl">Discounts</div>
+    </div>
+  </div>
+
+  <div class="row discounts clearfix" *ngFor="let d of discounts">
+    <div class="discount_row">
       <div class="row thinrow">
-        <div class="col s4">
+        <div class="col s4 padnoright">
           <div class="left select">
             <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
               <option value="fixed">Fixed</option>
@@ -42,7 +50,7 @@
             </select>
           </div>
         </div>
-        <div class="col s3">
+        <div class="col s3 pad7px">
           <div class="input">
             <input type="text" value="$5.00">
           </div>
@@ -58,11 +66,11 @@
       </div>
     </div>
     <div class="right-grey">
-      <div class="right-ttl">Discounts</div>
       <div class="right-price">-$5.00</div>
     </div>
   </div>
-  <div class="row">
+
+  <div class="row discount-adder">
     <div class="col s12">
       <div class="add-discount right tealish-text clearfix" (click)="addDiscount()">
         <i class="fa fa-plus"></i>

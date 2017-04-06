@@ -23,7 +23,7 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   public subscribers: any = {};
   context: PriceModalContext;
   public filter:any = {'department':'', 'vendor':'', 'onlymy':false};
-  public discounts = 1;
+  public discounts = [];
   public selectedVendor = {};
   
   constructor(
@@ -54,10 +54,10 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   }
   
   addDiscount(){
-    this.discounts++;
+    this.discounts.push({});
   }
   
   removeDiscount(){
-    this.discounts--;
+    let a = this.discounts.splice(this.discounts.length-1);
   }
 }

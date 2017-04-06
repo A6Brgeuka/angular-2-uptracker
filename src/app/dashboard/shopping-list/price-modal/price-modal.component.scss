@@ -26,9 +26,12 @@ input.select-dropdown, .input input {
     margin-bottom: 10px;
   }
 
-  .checks-row, .discount_row {
+  .row.discounts, .checks-row {
     border-bottom: 1px solid $grey;
-    min-height:75px;
+  }
+
+  .row.discounts{
+    height:50px;
   }
 
   .titles {
@@ -88,15 +91,22 @@ input.select-dropdown, .input input {
   .right-grey {
     display:none;
   }
-
+  .discount-titles {
+    display:none;
+  }
   &.grey-blocks {
+    .discount-titles {
+      display:block;
+    }
     >.row {
       position:relative;
       margin-right: 80px;
-      min-height:60px;
       &:first-of-type {
         margin-right:0;
         min-height:0;
+      }
+      &.discount-adder {
+        min-height:60px;
       }
       .right-grey {
         background-color: $light-light-grey;
@@ -114,7 +124,7 @@ input.select-dropdown, .input input {
         .right-ttl {
           text-align: center;
           color:$mid-grey;
-          font-size: 1rem;
+          font-size: .8rem;
         }
         .right-price {
           text-align: center;
@@ -123,6 +133,14 @@ input.select-dropdown, .input input {
         }
       }
     }
+  }
+
+  .padnoright {
+    padding-right:0;
+  }
+
+  .pad7px{
+    padding-right:7px;
   }
 
   .bottom-buttons {

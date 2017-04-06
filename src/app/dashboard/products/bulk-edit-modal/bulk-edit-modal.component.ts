@@ -42,10 +42,10 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
   public selectedProducts: any;
   public bulk: any = {
     department: null, //
-    working_stock_name: "Select Working Stock Location",
+    working_stock_name: "No Change",
     working_stock: null,
     working_stock_location: null,
-    back_stock_name: "Select Back Stock Location",
+    back_stock_name: "No Change",
     back_stock: null,
     back_stock_location: null,
     category: null, //
@@ -186,7 +186,7 @@ export class BulkEditModal implements OnInit, AfterViewInit, CloseGuard, ModalCo
 updWorkingStock(item, location = null)
 {
   if (item == '') {
-    this.bulk.working_stock_name = "Select Working Stock Location";
+    this.bulk.working_stock_name = "No Change";
     this.bulk.working_stock = null;
   }
   this.bulk.working_stock_name = item.name;
@@ -197,7 +197,7 @@ updWorkingStock(item, location = null)
 updBackStock(item, location = null)
 {
   if (!item) {
-    this.bulk.back_stock_name = "Select Back Stock Location";
+    this.bulk.back_stock_name = "No Change";
     this.bulk.back_stock = null;
   }
   this.bulk.back_stock_name = item.name;

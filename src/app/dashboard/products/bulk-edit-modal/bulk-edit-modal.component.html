@@ -15,7 +15,7 @@
           [(ngModel)]="bulk.department"
           materialize="material_select"
           [materializeSelectOptions]="dropdowns[0]">
-          <option value="" disabled selected>Select Department</option>
+          <option value="" disabled selected>No Change</option>
           <option *ngFor="let item of dropdowns[0]" [value]="item">{{item}}</option>
         </select>
       </div>
@@ -30,7 +30,7 @@
           [(ngModel)]="bulk.working_stock_name">
         <ul id="dropd1" materialize="dropdown" class='dropdown-content vendors-dd'>
           <li  (click)="updateVendor(product, {vendor_name:'Auto'})">
-            <div class="col s12 inblock" (click)="updWorkingStock('')">Don't change</div>
+            <div class="col s12 inblock" (click)="updWorkingStock('')">No change</div>
           </li>
           <li *ngFor="let location of dropdowns[3]" >
             <div class="col s12 inblock">{{ location.name }}</div>
@@ -52,7 +52,7 @@
           [(ngModel)]="bulk.category"
           materialize="material_select"
           [materializeSelectOptions]="dropdowns[2]">
-          <option value="" disabled selected>Select Category</option>
+          <option value="" disabled selected>No Change</option>
           <option *ngFor="let item of dropdowns[2]" [value]="item">{{item}}</option>
         </select>
       </div>
@@ -67,7 +67,7 @@
           [(ngModel)]="bulk.back_stock_name">
         <ul id="dropd2" materialize="dropdown" class='dropdown-content vendors-dd'>
           <li  (click)="updateVendor(product, {vendor_name:'Auto'})">
-            <div class="col s12 inblock" (click)="updBackStock('')">Don't change</div>
+            <div class="col s12 inblock" (click)="updBackStock('')">No change</div>
           </li>
           <li *ngFor="let location of dropdowns[3]" >
             <div class="col s12 inblock">{{ location.name }}</div>
@@ -89,7 +89,7 @@
           [(ngModel)]="bulk.account_category"
           [materializeSelectOptions]="dropdowns[1]"
           materialize="material_select">
-          <option value="" disabled selected>Select Accounting</option>
+          <option value="" disabled selected>No Change</option>
           <option *ngFor="let item of dropdowns[1]" [value]="item">{{item}}</option>
         </select>
       </div>
@@ -101,7 +101,7 @@
           [materializeSelectOptions]="dropdowns[5]"
           [(ngModel)]="bulk.vendor"
           materialize="material_select">
-          <option value="" disabled selected>Select Preferred Vendor</option>
+          <option value="" disabled selected>No Change</option>
           <option *ngFor="let item of dropdowns[5]" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
