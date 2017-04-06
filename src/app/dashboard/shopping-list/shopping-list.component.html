@@ -118,9 +118,13 @@
           </div>
         </div>
         <div class="col s2">
-          <a (click)="changePriceModal(product)">
+          <a *ngIf="product.selected_vendor.vendor_name != 'Auto'" (click)="changePriceModal(product)">
             ${{ product.price_lower }}-{{ product.price_upper }}
           </a>
+          <span *ngIf="product.selected_vendor.vendor_name == 'Auto'">
+            ${{ product.price_lower }}-{{ product.price_upper }}
+          </span>
+
         </div>
         <div (click)="saveItem(product)" *ngIf="changed[product.id]" class="save-sign">
           <i class="fa fa-save red-text"></i>

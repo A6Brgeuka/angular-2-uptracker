@@ -210,7 +210,7 @@ export class ShoppingListComponent implements OnInit {
   changePriceModal(item = {}) {
     //TODO
     this.modal
-    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({"product":item}, true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {

@@ -23,8 +23,9 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   public subscribers: any = {};
   context: PriceModalContext;
   public filter:any = {'department':'', 'vendor':'', 'onlymy':false};
-
-
+  public discounts = 0;
+  public selectedVendor = {};
+  
   constructor(
       public dialog: DialogRef<PriceModalContext>,
       public userService: UserService,
@@ -32,9 +33,16 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
+  
   }
 
   ngOnInit(){
+    console.log(this.context);
+    this.selectedVendor = this.context.product.vendors.find(
+      (v) => {
+        return (v.vendor_variant_id == this.context.product.selected_vendor.id);
+      });
+  
   }
 
   dismissModal(){
@@ -46,10 +54,10 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   }
   
   addDiscount(){
-    
+    this.discounts++;
   }
   
   removeDiscount(){
-    
+    this.discounts--;
   }
 }
