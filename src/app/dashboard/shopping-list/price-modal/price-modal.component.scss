@@ -2,11 +2,11 @@
 
 input.select-dropdown, .input input {
   height: 30px;
-  margin-bottom: 0!important;
+  margin-bottom: 0 !important;
 }
 
 .inner {
-  padding:5px;
+  padding: 5px;
 
   [type="radio"] + label:before, [type="radio"] + label:after {
     right: 0;
@@ -14,27 +14,28 @@ input.select-dropdown, .input input {
   }
 
   .row {
-    margin-bottom:10px;
+    margin-bottom: 0;
+    padding-top:3px;
   }
 
   .thinrow {
-    height:35px;
+    height: 35px;
   }
 
   .add-discount {
-    margin-bottom:10px;
+    margin-bottom: 10px;
   }
 
   .checks-row, .discount_row {
     border-bottom: 1px solid $grey;
+    min-height:75px;
   }
 
   .titles {
-    font-size:.8rem;
+    font-size: .8rem;
   }
 
   .checks-row {
-    min-width: 350px;
     padding-bottom: 20px;
 
     & > div.col > * {
@@ -56,7 +57,7 @@ input.select-dropdown, .input input {
   }
 
   .smaller {
-    font-size:0.9rem;
+    font-size: 0.9rem;
   }
 
   .uptracker-form-btn {
@@ -79,5 +80,52 @@ input.select-dropdown, .input input {
     }
   }
 
+  .trash {
+    text-align: center;
+    line-height: 30px;
+  }
 
+  .right-grey {
+    display:none;
+  }
+
+  &.grey-blocks {
+    >.row {
+      position:relative;
+      margin-right: 80px;
+      min-height:60px;
+      &:first-of-type {
+        margin-right:0;
+        min-height:0;
+      }
+      .right-grey {
+        background-color: $light-light-grey;
+        position: absolute;
+        display:block;
+        right: -90px;
+        top: 0;
+        bottom: 0;
+        left: 100%;
+        padding-top:5px;
+        border-bottom:1px solid $white;
+        &:first-of-type {
+          bottom:-1px;
+        }
+        .right-ttl {
+          text-align: center;
+          color:$mid-grey;
+          font-size: 1rem;
+        }
+        .right-price {
+          text-align: center;
+          color:$dark;
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
+
+  .bottom-buttons {
+    margin-top:10px;
+  }
 }

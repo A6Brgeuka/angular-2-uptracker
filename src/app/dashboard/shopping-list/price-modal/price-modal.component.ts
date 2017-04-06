@@ -23,7 +23,7 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   public subscribers: any = {};
   context: PriceModalContext;
   public filter:any = {'department':'', 'vendor':'', 'onlymy':false};
-  public discounts = 0;
+  public discounts = 1;
   public selectedVendor = {};
   
   constructor(

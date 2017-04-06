@@ -1,5 +1,5 @@
-<div class="inner">
-  <div class="clearfix row title center-align">Pricing Info</div>
+<div class="inner" [class.grey-blocks]="discounts">
+  <div  class="clearfix row title center-align">Pricing Info</div>
   <div class="row checks-row">
     <div class="col s4">
       <input value="book" type="radio" name="price_type" id="price_type_book">
@@ -19,6 +19,10 @@
       <label for="price_type_club" class="grey-text smaller">${{ selectedVendor.club_price }}</label>
       <label for="price_type_club">Club</label>
     </div>
+    <div class="right-grey">
+      <div class="right-ttl">Org. Price</div>
+      <div class="right-price">$90.00</div>
+    </div>
   </div>
 
   <div class="row discounts clearfix" *ngIf="discounts">
@@ -26,8 +30,8 @@
       <div class="row grey-text titles">
         <div class="col s4">Type</div>
         <div class="col s3">Amount</div>
-        <div class="col s3">Rewards Pts.</div>
-        <div class="col s2"></div>
+        <div class="col s4">Rewards Pts.</div>
+        <div class="col s1"></div>
       </div>
       <div class="row thinrow">
         <div class="col s4">
@@ -39,24 +43,40 @@
           </div>
         </div>
         <div class="col s3">
-          <div class="input"> <input type="text" value="$5.00"></div>
+          <div class="input">
+            <input type="text" value="$5.00">
+          </div>
         </div>
         <div class="col s3">
-          <div class="input"> <input type="text" value="0"></div>
+          <div class="input">
+            <input type="text" value="0">
+          </div>
         </div>
-        <div class="col s2">
-          <a (click)="removeDiscount()" href="#"> <i class="fa fa-trash red-text"></i></a>
+        <div class="col s1 trash">
+          <i (click)="removeDiscount()" class="fa fa-trash red-text"></i>
         </div>
       </div>
     </div>
+    <div class="right-grey">
+      <div class="right-ttl">Discounts</div>
+      <div class="right-price">-$5.00</div>
+    </div>
   </div>
-
-  <div class="add-discount right tealish-text clearfix" (click)="addDiscount()"><i class="fa fa-plus" ></i> Add discount</div>
-
-  <div class="center-align col s12 clearfix">
+  <div class="row">
+    <div class="col s12">
+      <div class="add-discount right tealish-text clearfix" (click)="addDiscount()">
+        <i class="fa fa-plus"></i>
+        Add discount
+      </div>
+    </div>
+    <div class="right-grey">
+      <div class="right-ttl">Total</div>
+      <div class="right-price">$85.00</div>
+    </div>
+  </div>
+  <div class="center-align col s12 clearfix bottom-buttons">
     <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
     <button class="uptracker-form-btn ">Save</button>
   </div>
-
 </div>
 
