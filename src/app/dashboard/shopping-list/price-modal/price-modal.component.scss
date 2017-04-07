@@ -101,6 +101,7 @@ input.select-dropdown, .input input {
     >.row {
       position:relative;
       margin-right: 80px;
+      padding-top:6px;
       &:first-of-type {
         margin-right:0;
         min-height:0;
@@ -109,14 +110,14 @@ input.select-dropdown, .input input {
         min-height:60px;
       }
       .right-grey {
-        background-color: $dark;
+        background-color: $light-light-grey;
         position: absolute;
         display:block;
         right: -90px;
         top: 0;
         bottom: 0;
         left: 100%;
-        padding-top:5px;
+        padding-top:9px;
         &:first-of-type {
           bottom:-1px;
         }
@@ -145,8 +146,4 @@ input.select-dropdown, .input input {
   .bottom-buttons {
     margin-top:10px;
   }
-}
-
-.select .select-wrapper.ng-valid input.select-dropdown {
-  margin-bottom:0!important;
 }

@@ -12,6 +12,19 @@ export class PriceModalContext extends BSModalContext {
   public product: any;
 }
 
+export class Discounts {
+  type:string;
+  amount:number;
+  reward:0;
+  total:number;
+  constructor(){
+    this.type = 'fixed';
+    this.amount = 5;
+    this.reward = 0;
+    this.total = 5;
+  }
+}
+
 @Component({
   selector: 'app-price-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
@@ -25,6 +38,8 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   public filter:any = {'department':'', 'vendor':'', 'onlymy':false};
   public discounts = [];
   public selectedVendor = {};
+  public selectedPrice:number = 0;
+  public totalPrice:number = 0;
   
   constructor(
       public dialog: DialogRef<PriceModalContext>,
@@ -44,6 +59,24 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
       });
   
   }
+  
+  setPrice(price){
+    this.selectedPrice = price;
+    this.calcDiscount();
+  }
+  
+  calcDiscount(){
+    this.totalPrice = this.selectedPrice;
+    _.each(this.discounts, (dis:Discounts)=>{
+      if (dis.type == 'fixed') {
+        dis.total = dis.amount;
+      } else if (dis.type == 'percent')  {
+        dis.total = dis.amount*this.selectedPrice/100;
+      }
+      this.totalPrice = this.totalPrice - dis.total;
+    });
+    
+  }
 
   dismissModal(){
     this.dialog.dismiss();
@@ -54,7 +87,8 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   }
   
   addDiscount(){
-    this.discounts.push({});
+    this.discounts.push(new Discounts());
+    this.calcDiscount();
   }
   
   removeDiscount(){

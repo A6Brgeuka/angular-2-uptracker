@@ -309,6 +309,15 @@ a {
       }
     }
   }
+
+  &.ng-dark {
+    input.select-dropdown {
+      border-color: $grey!important;
+      color: rgba(0, 0, 0, 0.87);
+      margin-bottom:0!important;
+    }
+  }
+
 }
 
 button {
