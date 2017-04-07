@@ -609,21 +609,20 @@ export class ProductComponent implements OnInit, AfterViewInit {
           if (!result.continue) {
             this.addDocToDoc$.next(result);
           }
+          console.log(this.variants, this.variantsCopy)
           let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
-          let vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
+          let vars_diff;
+          vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
+          debugger;
+          
+          
           prod_diff.id = this.product.id;
-          let variants: any = [];
-          for (let item in vars_diff) {
-            if (!item && this.productService.emptyValues(vars_diff[item])) {
-              vars_diff[item].id = this.variants[item].id;
-              variants.push(vars_diff[item]);
-            }
-          }
+        
           prod_diff['documents'] = this.doc;
           let updateData: any = {
             location_id: this.location_id,
             product: prod_diff,
-            variants: variants,
+            variants: vars_diff,
           };
           this.subscribers.updateProduct = this.productService.updateProduct(updateData);
           this.subscribers.updateProduct

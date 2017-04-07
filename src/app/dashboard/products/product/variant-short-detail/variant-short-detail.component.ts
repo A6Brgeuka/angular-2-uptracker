@@ -54,5 +54,9 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
   variantDetailCollapse() {
     this.variant.detailView = false;
   }
+  
+  log(p){
+    console.log(p);
+  }
  
 }
