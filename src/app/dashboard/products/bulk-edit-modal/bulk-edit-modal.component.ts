@@ -188,10 +188,11 @@ updWorkingStock(item, location = null)
   if (item == '') {
     this.bulk.working_stock_name = "No Change";
     this.bulk.working_stock = null;
+  } else {
+    this.bulk.working_stock_name = item.name;
+    this.bulk.working_stock = item.id;
+    this.bulk.working_stock_location = location.id;
   }
-  this.bulk.working_stock_name = item.name;
-  this.bulk.working_stock = item.id;
-  this.bulk.working_stock_location = location.id;
 }
 
 updBackStock(item, location = null)
@@ -199,9 +200,10 @@ updBackStock(item, location = null)
   if (!item) {
     this.bulk.back_stock_name = "No Change";
     this.bulk.back_stock = null;
+  } else {
+    this.bulk.back_stock_name = item.name;
+    this.bulk.back_stock = item.id;
+    this.bulk.back_stock_location = location.id;
   }
-  this.bulk.back_stock_name = item.name;
-  this.bulk.back_stock = item.id;
-  this.bulk.back_stock_location = location.id;
 }
 }
