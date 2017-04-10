@@ -59,7 +59,6 @@ export class VendorsComponent implements OnInit {
                   this.vendorService.current_page = 1;
               }
             );
-
         this.infiniteScroll$
             .filter((infinite) => {
                 return infinite && !this.isRequestVendors/* && vendors.length*/
@@ -71,9 +70,10 @@ export class VendorsComponent implements OnInit {
                     ++this.vendorService.current_page;
                 }
                 this.searchKeyLast = this.searchKey;
-                if (this.total <= (this.vendorService.current_page-1) * this.vendorService.pagination_limit) {
+                if (this.vendorService.total <= (this.vendorService.current_page-1) * this.vendorService.pagination_limit) {
                     return Observable.of({});
                 } else {
+                    
                     return this.vendorService.getNextVendors(this.vendorService.current_page, this.searchKey, this.sortBy);
                 }
             })
@@ -126,14 +126,12 @@ export class VendorsComponent implements OnInit {
             accountVendors.vendor_id = globalVendor.id;
         }
         
-        //this.body.classList.remove("noscroll");
         let data = {vendor: accountVendors, keyboard: []};
         
     }
 
     
     saveVendor(){
-        //this.body.classList.add("noscroll");
     }
 
     vendorsFilter(event) {
@@ -150,13 +148,10 @@ export class VendorsComponent implements OnInit {
     }
 
     requestVendor() {
-
     }
     
     getInfiniteScroll() {
         let scrollBottom = (document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285) && !(<any>this.body).classList.contains("noscroll");
-        // let widthColumns = document.body.scrollHeight - document.body.scrollTop - window.innerWidth < 300;
-        console.log(scrollBottom);
         this.infiniteScroll$.next(scrollBottom);
     }
     
