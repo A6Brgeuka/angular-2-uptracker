@@ -67,7 +67,6 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   
   saveOrder() {
     if (this.validateFields()) {
-      debugger;
       let data = {
         "location_id": this.location,
         "product_id": this.context.data.productId,

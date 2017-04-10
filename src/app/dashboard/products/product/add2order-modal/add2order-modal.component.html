@@ -1,8 +1,13 @@
 <div class="inner">
   <div class="row title center-align">Add to Order</div>
   <div class="row">
-    <div class="col s12 select-title">Quantity</div>
-    <div class="col s12 ">
+    <div class="col s12 red-text center-align mbot">
+      1 Package = 10 Sleeves = 100 Item/Each
+    </div>
+
+    <div class="col s3 select-title">Quantity</div>
+    <div class="col s9 select-title">Unit Type</div>
+    <div class="col s3 ">
       <div class="input" (change)="validateFields()" [class.invalid]="quantity<1">
         <input
           type="text"
@@ -11,6 +16,15 @@
           id="quantity"
         />
         <label for="quantity"></label>
+      </div>
+    </div>
+    <div class="col s9 ">
+      <div class="left select">
+        <select  materialize="material_select">
+          <option  value="package">Package</option>
+          <option  value="sleeves">Sleeves</option>
+          <option  value="item">Item</option>
+        </select>
       </div>
     </div>
   </div>
