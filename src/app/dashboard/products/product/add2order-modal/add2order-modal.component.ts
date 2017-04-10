@@ -6,6 +6,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { ProductService } from '../../../../core/services/product.service';
 import { CartService } from '../../../../core/services/cart.service';
+import { ToasterService } from '../../../../core/services/toaster.service';
 
 export class Add2OrderModalContext extends BSModalContext {
   public data: any;
@@ -35,6 +36,7 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   constructor(
     public dialog: DialogRef<Add2OrderModalContext>,
     public cartService: CartService,
+    public toasterService: ToasterService,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -80,7 +82,10 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
       };
       
       this.cartService.addToCart(data)
-      .subscribe(() => this.dismissModal(), (e) => console.log(e));
+      .subscribe(() => {
+        this.toasterService.pop("", this.vendor.name + " successfully added to the shopping list");
+        this.dismissModal();
+      }, (e) => console.log(e));
     }
   }
   

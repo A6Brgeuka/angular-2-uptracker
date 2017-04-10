@@ -29,15 +29,15 @@
           </select>
         </div>
         <div class="left uptracker-toggle-view" (click)="toggleView()">
-          <i class="fa" [class.fa-table]="!isGrid" [class.fa-th-large]="isGrid"></i>
+          <i class="fa" [class.fa-table]="!productService.isGrid" [class.fa-th-large]="productService.isGrid"></i>
         </div>
       </div>
       <div class="clearfix"></div>
     </div>
 
 
-    <div class="list" [class.is-grid-view]="isGrid" [class.is-tiles-view]="!isGrid">
-      <div *ngIf="!isGrid">
+    <div class="list" [class.is-grid-view]="productService.isGrid" [class.is-tiles-view]="!productService.isGrid">
+      <div *ngIf="!productService.isGrid">
         <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
           <div class="inner" [routerLink]="['/', 'products', product.id]">
             <div class="hazardous" *ngIf="product.hazardous">
@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="isGrid">
+      <div *ngIf="productService.isGrid">
 
         <div class="heading row">
           <div class="col s1">
@@ -144,7 +144,7 @@
 
       </div>
 
-      <div *ngIf="isRequest" class="any-bottom-spinner">
+      <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="productService.isGrid">
         <div class="cssload-loader">
           <div class="cssload-inner cssload-one"></div>
           <div class="cssload-inner cssload-two"></div>

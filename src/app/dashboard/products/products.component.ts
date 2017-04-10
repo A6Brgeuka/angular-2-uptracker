@@ -38,7 +38,6 @@ export class ProductsComponent implements OnInit {
     public searchKey:string;
     public  searchKeyLast: string;
     public  locationId: string;
-    public isGrid: boolean = false;
     public selectAll: boolean= false;
     
     constructor(
@@ -50,7 +49,8 @@ export class ProductsComponent implements OnInit {
     }
     
     toggleView (){
-        this.isGrid = !this.isGrid;
+        this.productService.isGrid = !this.productService.isGrid;
+        
     }
     
     toggleSelectAll(event){
