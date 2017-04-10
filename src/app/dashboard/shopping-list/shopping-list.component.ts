@@ -63,6 +63,7 @@ export class ShoppingListComponent implements OnInit {
     this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
 
     this.cartService.collection$.subscribe((r: any) => {
+      this.total = r.length;
       this.cart$.next(r);
       this.changed = [];
     });
@@ -245,6 +246,7 @@ export class ShoppingListComponent implements OnInit {
           "qty": item.qty,
           "vendor_auto_select": item.selected_vendor.id ? false : true,
           "location_id": item.location_id,
+          "status": item.status ? 1 : 0,
         }
       ]
     };

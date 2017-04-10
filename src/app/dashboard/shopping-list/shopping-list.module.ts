@@ -22,7 +22,7 @@ import { PriceModalModule } from './price-modal/price-modal.module';
     ShoppingListSettingsModalModule,
     ProductFilterModalModule,
     RequestProductModalModule,
-    PriceModalModule
+    PriceModalModule,
   ],
   providers: []
 })

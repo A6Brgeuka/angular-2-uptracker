@@ -22,6 +22,7 @@ import { TransferRoutes } from "./transfer/transfer.routing";
 import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
 import { homeRoutes } from './products/home/home.routing';
 import { AuthGuard } from '../auth-guard.service';
+import { OrdersPreviewRoutes } from './shopping-list/orders-preview/orders-preview.routing';
 
 
 export const DashboardRoutes = [
@@ -39,7 +40,8 @@ export const DashboardRoutes = [
       ...InventoryRoutes,
       ...TransferRoutes,
       ...ShoppingListRoutes,
-      ...homeRoutes
+      ...homeRoutes,
+      ...OrdersPreviewRoutes
     ],
     canActivate: [AuthGuard],
     resolve: {

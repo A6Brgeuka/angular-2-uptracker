@@ -60,9 +60,9 @@
                 <input
                   type="checkbox"
                   class="selected-input{{i}}"
-                  [(ngModel)]="product.selected"
+                  [(ngModel)]="product.status"
                   id="selected{{i}}"
-                  (change)="onCheck()"
+                  (change)="changeRow(product)"
                 />
                 <label for="selected{{i}}"></label>
               </div>

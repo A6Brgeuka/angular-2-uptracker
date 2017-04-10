@@ -16,6 +16,7 @@ import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 // for lazy loading
 //import { routing } from './index';
 import { HomeModule } from './products/home/home.module';
+import { OrdersPreviewModule } from './shopping-list/orders-preview/orders-preview.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { HomeModule } from './products/home/home.module';
   imports: [
     //routing,
     AppSharedModule,
-  
+    OrdersPreviewModule,
     InnerDashboardModule,
     OrdersModule,
     LocationsModule,
