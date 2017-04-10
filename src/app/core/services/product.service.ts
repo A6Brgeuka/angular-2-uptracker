@@ -19,6 +19,7 @@ import { CartService } from './cart.service';
 })
 export class ProductService extends ModelService {
     
+    public isGrid:boolean = false;
     selfData: any;
     selfData$: Observable<any>;
     updateSelfData$: Subject<any> = new Subject<any>();
