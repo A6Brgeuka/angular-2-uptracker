@@ -3,7 +3,7 @@ import { OrdersPreviewComponent } from './orders-preview.component';
 
 export const OrdersPreviewRoutes = [
   {
-    path: 'orders',
+    path: 'shoppinglist/orders-preview',
     component: OrdersPreviewComponent,
     canActivate: []
   },

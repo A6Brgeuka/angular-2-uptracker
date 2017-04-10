@@ -29,7 +29,7 @@
       width: 100px;
       margin: 0 10px;
       font-weight: normal;
-      min-width:80px!important;
+      min-width: 80px !important;
       &:first-of-type {
         border-color: red;
         background-color: #fff;
@@ -186,12 +186,14 @@
   .mtop {
     margin-top: 20px;
   }
-  .inner  input.select-dropdown {
-    color:$dark;
+  .inner input.select-dropdown {
+    color: $dark;
   }
   .inner .invalid input.select-dropdown,
   .invalid input {
     border-color: red !important;
   }
-.mbot{margin-bottom:20px;}
+  .mbot {
+    margin-bottom: 20px;
+  }
 }

@@ -1,0 +1,14 @@
+@import "../../../../colors";
+
+.inner {
+  .item-card {
+    min-height: 200px;
+    background-color: $light-light-grey;
+  }
+  .close {
+    font-size: 1.1rem;
+  }
+  .fa-chevron-left {
+    margin-right: 10px;
+  }
+}
