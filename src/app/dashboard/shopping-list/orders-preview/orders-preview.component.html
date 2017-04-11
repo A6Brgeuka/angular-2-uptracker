@@ -63,6 +63,22 @@
               </div>
             </div>
           </div>
+
+          <div class="card-content">
+            <div class="row heading-row">
+              <div class="col s6">Product Name</div>
+              <div class="col s3">Location</div>
+              <div class="col s1">Qty.</div>
+              <div class="col s2 right-align">Price</div>
+            </div>
+            <div class="row" *ngFor="let item of mockrows">
+              <div class="col tealish-text s6">{{ item.name }}</div>
+              <div class="col s3">{{ item.location }}</div>
+              <div class="col s1 center-align">{{ item.qty }}</div>
+              <div class="col s2 right-align">${{ item.price }}</div>
+            </div>
+          </div>
+
         </div>
 
         <div class="col s12 item-card">
