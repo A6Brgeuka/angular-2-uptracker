@@ -25,7 +25,11 @@ import { AccountService } from '../../../core/services/account.service';
 })
 @DestroySubscribers()
 export class OrdersPreviewComponent implements OnInit {
-  
+  public mockrows = [
+    {name:'Some Product Name', location:'Location A', qty:'1', price:100},
+    {name:'Some Product', location:'Location A', qty:'3', price:10},
+    {name:'Some Product Name', location:'Location A', qty:'1', price:100},
+  ];
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,

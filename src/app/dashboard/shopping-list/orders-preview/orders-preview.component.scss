@@ -3,12 +3,106 @@
 .inner {
   .item-card {
     min-height: 200px;
-    background-color: $light-light-grey;
+    background-color: $white;
+    border-radius: 10px;
+    border:1px solid $grey;
+    margin: 10px 0;
+    padding: 20px 10px;
   }
   .close {
     font-size: 1.1rem;
   }
   .fa-chevron-left {
     margin-right: 10px;
+  }
+  .title .main-title {
+    font-size: 2rem;
+    font-family: Ubuntu, sans-serif;
+    line-height: 1;
+    font-weight: bold;
+  }
+  .uptracker-form-btn.tealish {
+    background-color: $tealish;
+    height: 30px;
+  }
+
+  .dd-bt {
+    width:141px;
+    display:inline-block;
+    .uptracker-form-btn.tealish {
+      display: block;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      width: 110px;
+      line-height:28px;
+      min-width: 110px;
+      font-size: 14px;
+      float: left;
+      &.square {
+        float: left;
+        display: block;
+        margin-left:1px;
+        font-size: 14px;
+        width: 30px;
+        line-height:28px;
+        min-width: 30px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+    .dropdown-content {
+      margin-top:30px;
+    }
+    input {
+      opacity: 0;
+      color: $tealish;
+    }
+  }
+
+  h2 {
+    font-size:1.7rem;
+  }
+
+  .thinlato {
+    font-family: 'Lato', 'Roboto', Tahoma, Arial, sans-serif;
+    font-weight: 300;
+    font-size:1.7rem;
+  }
+
+  .name-container {
+   line-height:30px;
+    .o-img {
+      height: 30px;
+      width: 30px;
+      background-color: $light-light-grey;
+      display: inline-block;
+      background-size: contain;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      vertical-align: top;
+    }
+    .o-name {
+      padding-left:10px;
+      font-size:1.7rem;
+    }
+  }
+
+  .heading {
+    font-size: 1.7rem;
+    font-weight: bold;
+  }
+
+  .o-price {
+    color: $dark;
+    font-size:1.7rem;
+    font-weight: bold;
+  }
+  .allorders > .row:last-of-type {
+    padding-top:20px;
+    border-top:1px solid $grey;
   }
 }
