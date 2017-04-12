@@ -1,5 +1,13 @@
 @import "../../../../colors";
 
+.select .select-wrapper input.select-dropdown {
+  margin-bottom: 0;
+  height: 30px;
+  color: $dark;
+  border-color: $dark;
+  background-color: $light-light-grey;
+}
+
 .inner {
   .item-card {
     min-height: 200px;
@@ -126,21 +134,43 @@
   .fieldset {
     margin-top: 25px;
     input {
-      margin-bottom:0;
-      height:30px;
+      margin-bottom: 0;
+      height: 30px;
+      color: $dark;
+      border-color: $dark;
+      background-color: $light-light-grey;
     }
     .row {
       margin-bottom: 5px;
+
+      .col {
+        padding: 0;
+      }
     }
     .lcol {
+      font-size: 12px;
       .row {
         //min-height: 50px;
       }
     }
-    .rcol {
-      .row {
-        //min-height: 40px;
+    .rcol > .row {
+      & > .col {
+        text-align: right;
+        padding-right: 10px;
+        line-height:30px;
       }
+      input {
+        padding-right: 10px;
+        text-align: right;
+      }
+      //min-height: 40px;
     }
   }
+  .bold {
+    font-weight: bold;
+  }
+  .nopad {
+    padding-right:0!important;
+  }
 }
+
