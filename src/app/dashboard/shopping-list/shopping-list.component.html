@@ -142,11 +142,11 @@
         </div>
       </div>
       <div class="order-list">
-        <div *ngFor="let order of (orders$ | async)" class="row order-list-item">
+        <div *ngFor="let order of (cartService.ordersPreview$ | async)" class="row order-list-item">
           <div class="col s9">
-            <div class="order-heading">{{ order.name }}</div>
-            <div class="order-price">${{order.total}}</div>
-            <div class="order-count">2 Orders</div>
+            <div class="order-heading">{{ order.type }}</div>
+            <div class="order-price">${{ order.total }}</div>
+            <div class="order-count">{{ order.order_count }} Orders</div>
           </div>
           <div class="col s3" [routerLink]="['orders-preview']">
             <div class="inbl">

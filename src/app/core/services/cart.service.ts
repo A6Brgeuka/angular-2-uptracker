@@ -15,6 +15,7 @@ import { AccountService } from "./account.service";
 })
 export class CartService extends ModelService {
   public appConfig: AppConfig;
+  public ordersPreview$: any = new BehaviorSubject([]);
   constructor(
     public injector: Injector,
     public restangular: Restangular,
@@ -48,6 +49,7 @@ export class CartService extends ModelService {
           r.selected = true;
           r.prev_location = r.location_id;
         });
+      this.ordersPreview$.next(res.data.order_previews);
       return res.data.items;
     })
     .do((res: any) => {

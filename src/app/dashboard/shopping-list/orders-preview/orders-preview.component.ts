@@ -3,6 +3,7 @@ import {
   Injectable, Renderer
 } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { Location }                 from '@angular/common';
 
 import {
   Overlay, overlayConfigFactory, DialogRef, createComponent, ModalOverlay,
@@ -34,6 +35,7 @@ export class OrdersPreviewComponent implements OnInit {
     public modal: Modal,
     public modalWindowService: ModalWindowService,
     public userService: UserService,
+    public windowLocation: Location,
     public accountService: AccountService,
     public cartService: CartService,
   ) {
@@ -41,5 +43,11 @@ export class OrdersPreviewComponent implements OnInit {
   
   ngOnInit() {
   }
-
+  
+  
+  goBack(): void {
+    this.windowLocation.back();
+  }
+  
+  
 }
