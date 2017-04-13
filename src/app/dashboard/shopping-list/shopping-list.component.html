@@ -148,7 +148,7 @@
             <div class="order-price">{{ order.total }}</div>
             <div class="order-count">{{ order.order_count }} Orders</div>
           </div>
-          <div class="col s3" [routerLink]="['orders-preview']">
+          <div class="col s3" [routerLink]="['orders-preview',order.order_id ]">
             <div class="inbl">
               <i class="fa fa-shopping-cart"></i>
               <div>Preview</div>

@@ -15,6 +15,7 @@ import { ProductService } from './product.service';
 import { JwtService } from './jwt.service';
 import { LocationService } from './location.service';
 import { CartService } from './cart.service';
+import { OrderService } from './order.service';
 
 
 export {
@@ -35,7 +36,9 @@ export {
   JwtService,
   LocationService,
   CustomRenderer,
-  CartService
+  CartService,
+  OrderService
+  
 };
 
 // an array of services to resolve routes with data
@@ -56,5 +59,6 @@ export const APP_SERVICE_PROVIDERS = [
   ProductService,
   JwtService,
   LocationService,
-  CartService
+  CartService,
+  OrderService
 ];

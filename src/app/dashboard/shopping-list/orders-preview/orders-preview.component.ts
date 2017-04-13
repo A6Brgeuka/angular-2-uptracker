@@ -15,8 +15,9 @@ import * as _ from 'lodash';
 
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { UserService } from '../../../core/services/user.service';
-import { CartService } from '../../../core/services/cart.service';
 import { AccountService } from '../../../core/services/account.service';
+import { ActivatedRoute, Params } from '@angular/router';
+import { OrderService } from '../../../core/services/order.service';
 
 
 @Component({
@@ -31,23 +32,32 @@ export class OrdersPreviewComponent implements OnInit {
     {name:'Some Product', location:'Location A', qty:'3', price:10},
     {name:'Some Name', location:'Location A', qty:'1', price:100},
   ];
+  public  orders$:BehaviorSubject<any> = new BehaviorSubject<any>([]);
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
     public userService: UserService,
     public windowLocation: Location,
     public accountService: AccountService,
-    public cartService: CartService,
+    public route: ActivatedRoute,
+    public orderService: OrderService,
   ) {
   }
   
   ngOnInit() {
-  }
+    this.route.params
+    .switchMap((p:Params)=>{
+      return this.orderService.getOrder(p['id']);
+    })
+    .subscribe((items: any) => {
+      return this.orders$.next(items);
+    });
   
+    this.orders$.subscribe(r=>{debugger;})
+  }
   
   goBack(): void {
     this.windowLocation.back();
   }
-  
   
 }
