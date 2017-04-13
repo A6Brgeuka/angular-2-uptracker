@@ -507,11 +507,16 @@ input {
 }
 
 .show-on-small {display:none!important;}
-.hide-on-small {display:block!important;}
+.hide-on-small {display:inline-block!important;}
+
+.filter-field {
+  display:inline-block;
+}
+
 @media screen and (max-width:1000px) {
   .filter-field > span {
     display:none;
   }
-  .show-on-small {display:block!important;}
+  .show-on-small {display:inline-block!important;}
   .hide-on-small {display:none!important;}
 }
