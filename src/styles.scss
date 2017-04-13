@@ -310,6 +310,19 @@ a {
     }
   }
 
+  &.mysel {
+    .select-wrapper {
+      input.select-dropdown {
+        margin-bottom:10px;
+        color:$dark;
+        font-size:12px;
+        background-color: $light-light-grey;
+        border-color: $light-grey;
+        font-weight: bold;
+      }
+    }
+  }
+
   &.ng-dark {
     input.select-dropdown {
       border-color: $grey!important;

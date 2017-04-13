@@ -42,9 +42,11 @@ export class OrdersPreviewComponent implements OnInit {
     public route: ActivatedRoute,
     public orderService: OrderService,
   ) {
+  
   }
   
   ngOnInit() {
+  
     this.route.params
     .switchMap((p:Params)=>{
       return this.orderService.getOrder(p['id']);
@@ -53,7 +55,6 @@ export class OrdersPreviewComponent implements OnInit {
       return this.orders$.next(items);
     });
   
-    this.orders$.subscribe(r=>{debugger;})
   }
   
   goBack(): void {

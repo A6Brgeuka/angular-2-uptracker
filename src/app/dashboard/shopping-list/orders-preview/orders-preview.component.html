@@ -1,3 +1,4 @@
+
 <div class="inner">
   <div class="row">
     <div class="col s3 close tealish-text" (click)="goBack()">
@@ -33,14 +34,14 @@
 
     <div class="col s12 m8">
 
-      <div class="row" >
+      <div class="row">
 
-        <div  *ngFor="let order of (orders$ | async)" class="col s12 item-card">
+        <div *ngFor="let order of (orders$ | async)" class="col s12 item-card">
           <div class="row">
             <div class="col s6">
               <div class="left name-container">
                 <div class="o-img"
-                  [ngStyle]="{'background-image' : 'url('+ order.image_url ? order.image_url : '/assets/no_results.gif'  +')'}"></div>
+                  [ngStyle]="{'background-image' : 'url('+ (order.image_url ? order.image_url : '/assets/img/no_results.gif')  +')'}"></div>
                 <span class="o-name  thinlato">{{ order.vendor_name }}</span>
               </div>
             </div>
@@ -79,15 +80,15 @@
             </div>
           </div>
           <div class="row fieldset">
-            <div class="col lcol s6">
+            <div class="col lcol s4">
               <div class="row">
                 <div class="col s12 grey-text">Account #</div>
-                <div class="col s12 bold">1312121313</div>
+                <div class="col s12 bold">4357438758748397589437</div>
               </div>
               <div class="row">
                 <div class="col s12 grey-text">Ship to</div>
                 <div class="col s12 grey-text">
-                  <div class="select">
+                  <div class="select mysel">
                     <select
                       name="sel1"
                       id="sel1"
@@ -101,7 +102,7 @@
               <div class="row">
                 <div class="col s12 grey-text">Order Method</div>
                 <div class="col s12 grey-text">
-                  <div class="select">
+                  <div class="select  mysel">
                     <select
                       name="sel2"
                       id="sel2"
@@ -114,7 +115,7 @@
               </div>
 
             </div>
-            <div class="col rcol s6">
+            <div class="col rcol s6 offset-s2">
               <div class="row">
                 <div class="col s6 grey-text">Subtotal</div>
                 <div class="col s6 bold grey-text nopad">$300</div>
@@ -146,50 +147,17 @@
               <div class="row">
                 <div class="col s6 grey-text">Total</div>
                 <div class="col s6 bold o-price reddish-text ">
-                    $1112.00
+                  $1112.00
                 </div>
               </div>
 
             </div>
           </div>
-
-        </div>
-
-        <div class="col s12 item-card">
-          <div class="row">
-            <div class="col s6">
-              <div class="left name-container">
-                <div class="o-img"
-                  style="background-image: url(https://s3.amazonaws.com/uptracker-dev/vendors/582f4fdf06e55c3aab56402d/1484108702_dental-corp-of-america-png)"></div>
-                <span class="o-name thinlato">3M</span>
-              </div>
-            </div>
-            <div class="col s6">
-              <div class="right dd-bt">
-                <button class="uptracker-form-btn tealish white-text waves-effect waves-light">Convert</button>
-                <button materialize="dropdown"
-                  class='dropdown-button  uptracker-form-btn square tealish white-text waves-effect waves-light'
-                  data-activates='convertall2'>
-                  <i class="fa fa-chevron-down"></i>
-                </button>
-                <ul id='convertall2' class='dropdown-content'>
-                  <li>
-                    <a href="#">one</a>
-                  </li>
-                  <li>
-                    <a href="#">two</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-
     </div>
 
     <div class=" col s12 m4">
-
       <div class="row allorders">
         <div class="col s12">
           <h2 class="thinlato">All Orders</h2>

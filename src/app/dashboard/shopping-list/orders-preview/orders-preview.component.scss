@@ -1,12 +1,5 @@
 @import "../../../../colors";
 
-.select .select-wrapper input.select-dropdown {
-  margin-bottom: 0;
-  height: 30px;
-  color: $dark;
-  border-color: $dark;
-  background-color: $light-light-grey;
-}
 
 .inner {
   .item-card {
@@ -138,7 +131,7 @@
       margin-bottom: 0;
       height: 30px;
       color: $dark;
-      border-color: $dark;
+      border-color: $light-grey;
       background-color: $light-light-grey;
     }
     .row {
@@ -151,18 +144,32 @@
     .lcol {
       font-size: 12px;
       .row {
-        //min-height: 50px;
+        min-height: 70px;
+        &:first-of-type {
+          min-height:50px;
+        }
       }
+
     }
     .rcol > .row {
       & > .col {
         text-align: right;
         padding-right: 10px;
         line-height:30px;
+
+      }
+      &:first-of-type {
+        height:20px;
+        & > .col {
+          line-height: 20px;
+        }
       }
       input {
         padding-right: 10px;
         text-align: right;
+      }
+      &:last-of-type {
+        margin-top:20px;
       }
       //min-height: 40px;
     }
