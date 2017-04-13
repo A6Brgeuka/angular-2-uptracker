@@ -180,5 +180,13 @@
   .nopad {
     padding-right:0!important;
   }
+
+  .o-img.whitebg {
+    background-color: $white!important;
+  }
+
+  .close {
+    cursor:pointer;
+  }
 }
 

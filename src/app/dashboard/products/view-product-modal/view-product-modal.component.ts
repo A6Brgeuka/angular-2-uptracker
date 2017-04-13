@@ -483,7 +483,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     editComment(comment) {
-        let clonedComment = _.cloneDeep(comment);
+        let clonedComment:any = _.cloneDeep(comment);
         if (clonedComment.body) {
             let regKey = new RegExp('<br/>', 'g');
             clonedComment.body = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
