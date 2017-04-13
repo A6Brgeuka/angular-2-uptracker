@@ -16,12 +16,12 @@
         </div>
         <div class=" col m3 s6">
           <button type="button"
-            (click)="addProduct()"
+            routerLink="/products"
             class=" col hide-on-small m2 s9 uptracker-form-btn waves-light waves-effect">
             Add Product
           </button>
           <button type="button"
-            (click)="addProduct()"
+            routerLink="['/products']"
             class="small show-on-small col m2 s3 uptracker-form-btn waves-light waves-effect">
             <div class="fa fa-plus"></div>
           </button>
@@ -37,7 +37,6 @@
                   class="checkbox-input"
                   [(ngModel)]="selectAll"
                   id="selectAll"
-
                 />
                 <label for="selectAll"></label>
               </div>
@@ -68,12 +67,12 @@
               </div>
             </div>
             <div class="col s10 prod-name">
-              <span [routerLink]="['/products',product.id]" >{{product.name}}</span>
+              <span [routerLink]="['/products',product.id]">{{product.name}}</span>
             </div>
           </div>
         </div>
         <div class="col s2">
-          <div  class="select inbl">
+          <div class="select inbl">
             <select [(ngModel)]="product.location_id" (change)="changeRow(product)" materialize="material_select">
               <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations"
                 (click)="last_loc = product.location_id"
@@ -91,7 +90,7 @@
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
             <ul id="dropd{{ i }}" materialize="dropdown" class='dropdown-content vendors-dd'>
-              <li  (click)="updateVendor(product, {vendor_name:'Auto'})">
+              <li (click)="updateVendor(product, {vendor_name:'Auto'})">
                 <div class="col s2 image-container"></div>
                 <div class="col s8 inblock">Auto select</div>
                 <div class="col s2 inblock"></div>
