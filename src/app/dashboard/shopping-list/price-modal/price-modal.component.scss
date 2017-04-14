@@ -31,11 +31,18 @@ input.select-dropdown, .input input {
   }
 
   .row.discounts{
-    height:50px;
+    padding-bottom:10px;
+  }
+
+  .flex-center {
+    display: flex!important;
+    align-items: center;
+    justify-content: center;
   }
 
   .titles {
     font-size: .8rem;
+    white-space: nowrap;
   }
 
   .checks-row {

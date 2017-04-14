@@ -25,48 +25,71 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="discount_row discount-titles">
-      <div class="row grey-text titles">
-        <div class="col s4">Type</div>
-        <div class="col s3">Amount</div>
-        <div class="col s4">Rewards Pts.</div>
-        <div class="col s1"></div>
-      </div>
-    </div>
-    <div class="right-grey">
-      <div class="right-ttl">Discounts</div>
-    </div>
-  </div>
-
   <div class="row discounts clearfix" *ngFor="let d of discounts">
     <div class="discount_row">
+      <div class="row titles">
+        <div class="grey-text ">
+          <div class="col s4">Type</div>
+          <div  *ngIf="d.type=='bogo'" class="col s3">#Full Price</div>
+          <div  *ngIf="d.type!='bogo'" class="col s3">Amount</div>
+          <div class="col s4">Rewards Pts.</div>
+          <div class="col s1"></div>
+        </div>
+
+      </div>
       <div class="row thinrow">
         <div class="col s4 padnoright">
           <div class="left select ng-dark">
-            <select [(ngModel)]="d.type" (change)="calcDiscount()" materialize="material_select" >
+            <select [(ngModel)]="d.type" (change)="calcDiscount()" materialize="material_select">
               <option value="fixed">Fixed</option>
-              <option value="percent">Percent</option>
+              <option value="percentage">Percentage</option>
+              <option value="bogo">BoGo</option>
+
             </select>
           </div>
         </div>
         <div class="col s3 pad7px">
           <div class="input">
-            <input type="text" [(ngModel)] = "d.amount" (change)="calcDiscount()">
+            <input type="text" [(ngModel)]="d.amount" (change)="calcDiscount()">
           </div>
         </div>
         <div class="col s3">
           <div class="input">
-            <input type="text" [(ngModel)] = "d.reward" (change)="calcDiscount()">
+            <input type="text" [(ngModel)]="d.reward" (change)="calcDiscount()">
           </div>
         </div>
         <div class="col s1 trash">
           <i (click)="removeDiscount()" class="fa fa-trash red-text"></i>
         </div>
       </div>
+
+      <div class="row titles" *ngIf="d.type=='bogo'">
+        <div class="grey-text ">
+          <div class="col s4">BoGo Type</div>
+          <div class="col s8">#Discounted</div>
+        </div>
+      </div>
+      <div class="row thinrow" *ngIf="d.type=='bogo'">
+
+        <div class="col s4 padnoright">
+          <div class="left select ng-dark">
+            <select [(ngModel)]="d.typeBogo" (change)="calcDiscount()" materialize="material_select">
+              <option value="free">Free</option>
+              <option value="fixed">Fixed</option>
+              <option value="percentage">Percentage</option>
+            </select>
+          </div>
+        </div>
+        <div class="col s3 pad7px">
+          <div class="input">
+            <input type="text" [(ngModel)]="d.discounted" (change)="calcDiscount()">
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="right-grey">
-      <div class="right-price">-${{ d.total | number : '1.2-2' }}</div>
+    <div class="right-grey flex-center">
+      <div class="right-price ">-${{ d.total | number : '1.2-2' }}</div>
     </div>
   </div>
 

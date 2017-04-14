@@ -15,13 +15,17 @@ export class PriceModalContext extends BSModalContext {
 export class Discounts {
   type:string;
   amount:number;
+  discounted:number;
   reward:0;
   total:number;
+  typeBogo:string;
   constructor(){
     this.type = 'fixed';
+    this.discounted = 0;
     this.amount = 5;
     this.reward = 0;
     this.total = 5;
+    this.typeBogo = 'free';
   }
 }
 
@@ -70,7 +74,7 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
     _.each(this.discounts, (dis:Discounts)=>{
       if (dis.type == 'fixed') {
         dis.total = dis.amount;
-      } else if (dis.type == 'percent')  {
+      } else if (dis.type == 'percentage')  {
         dis.total = dis.amount*this.selectedPrice/100;
       }
       this.totalPrice = this.totalPrice - dis.total;

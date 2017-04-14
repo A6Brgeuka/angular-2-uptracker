@@ -15,7 +15,7 @@
           [(ngModel)]="bulk.department"
           materialize="material_select"
           [materializeSelectOptions]="dropdowns[0]">
-          <option value="" disabled selected>No Change</option>
+          <option value=""  selected>No Change</option>
           <option *ngFor="let item of dropdowns[0]" [value]="item">{{item}}</option>
         </select>
       </div>
@@ -52,7 +52,7 @@
           [(ngModel)]="bulk.category"
           materialize="material_select"
           [materializeSelectOptions]="dropdowns[2]">
-          <option value="" disabled selected>No Change</option>
+          <option value=""  selected>No Change</option>
           <option *ngFor="let item of dropdowns[2]" [value]="item">{{item}}</option>
         </select>
       </div>
@@ -89,7 +89,7 @@
           [(ngModel)]="bulk.account_category"
           [materializeSelectOptions]="dropdowns[1]"
           materialize="material_select">
-          <option value="" disabled selected>No Change</option>
+          <option value=""  selected>No Change</option>
           <option *ngFor="let item of dropdowns[1]" [value]="item">{{item}}</option>
         </select>
       </div>
@@ -101,7 +101,7 @@
           [materializeSelectOptions]="dropdowns[5]"
           [(ngModel)]="bulk.vendor"
           materialize="material_select">
-          <option value="" disabled selected>No Change</option>
+          <option value=""  selected>No Change</option>
           <option *ngFor="let item of dropdowns[5]" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
