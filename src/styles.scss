@@ -1039,3 +1039,10 @@ body.noscroll {
 }
 
 a {cursor:pointer}
+.round {
+  border-radius: 50%;
+  padding:0;
+}
+.no-decoration, .no-decoration:hover {
+  text-decoration: none;
+}

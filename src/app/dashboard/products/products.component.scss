@@ -9,6 +9,7 @@
       }
 
       .filter{
+
         .filter-btn{
           a{
             margin: 0 0 0 10px;
@@ -26,6 +27,37 @@
           }
         }
       }
+    }
+
+    .ptop5 {
+      padding-top:5px;
+    }
+    .dashboard .main-column .content-wrapper .top .filter.filter2 input {
+      width:60px;
+    }
+
+    .csv-btn {
+      display: inline-block;
+      height:40px;
+      width: 40px;
+      margin:0 5px 5px;
+      line-height:38px;
+      text-align: center;
+      background-color: $white;
+      border:1px solid $tealish;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: auto 20px;
+      box-shadow: none;
+    }
+
+
+    .upload-icon {
+      background-image: url(/assets/img/upload-icon.png);
+    }
+
+    .download-icon {
+      background-image: url(/assets/img/download-icon.png);
     }
 
     .list{
@@ -325,4 +357,6 @@ div.top {
 .any-bottom-spinner.table-view {
   height: 50px;
 }
+
+
 

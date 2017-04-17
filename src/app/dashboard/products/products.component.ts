@@ -233,4 +233,8 @@ export class ProductsComponent implements OnInit {
         this.selectedProducts = _.cloneDeep(this.products)
         .filter(r=>r['selected']);
     }
+    
+    showUploadDialog(){
+      alert();
+    }
 }
