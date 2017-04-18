@@ -1,37 +1,36 @@
+
 <div class="close fa fa-chevron-left" (click)="goBack()"></div>
 
 <div [class.notabs]="(accountService.locations$ | async)?.length < 2" class="title center-align">Vendor Info</div>
 
-<div *ngIf="((accountService.locations$ | async)?.length > 1) && vendor " class="row">
+<div class="row" >
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col" [class.s12]="(accountService.locations$ | async)?.length < 2"
       (click)="chooseTabLocation()"
-      [class.s4]="(accountService.locations$ | async)?.length > 1"
-      [class.active]="!currentLocation">
-
-      <a>All Locations</a>
+      [class.s4]="(accountService.locations$ | async)?.length > 1">
+      <a #all [class.active] = "!currentLocation?.id && inited">All Locations</a>
     </li>
     <li class="tab col s4">
-      <a href="#general" *ngIf="(accountService.locations$ | async)?.length > 1"
+      <a href="#general" #primary *ngIf="(accountService.locations$ | async)?.length > 1"
         (click)="chooseTabLocation(primaryLocation)"
-        [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">
+        [class.active]="(primaryLocation?.id == currentLocation?.id) && inited">
         {{primaryLocation?.name}}
       </a>
     </li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(accountService.locations$ | async)?.length > 1">
       <a  (click)="chooseTabLocation(secondaryLocation)" *ngIf="(accountService.locations$ | async)?.length == 2" href="#general"  data-activates="location_dropdown5"
-        [class.active]="sateliteLocationActive" #secondary>
+        [class.active]="sateliteLocationActive && inited" #secondary>
         <span>{{secondaryLocation?.name}}</span>
 
       </a>
       <a *ngIf="(accountService.locations$ | async)?.length > 2" href="#general" materialize="dropdown" data-activates="location_dropdown5"
-        [class.active1]="sateliteLocationActive" #secondary>
+        [class.active]="sateliteLocationActive" #secondary>
         <span>{{secondaryLocation?.name}}</span>
         <i class="caret"></i>
       </a>
       <ul id="location_dropdown5" class="dropdown-content">
         <li *ngFor="let location of locations$ | async" (click)="chooseTabLocation(location)"
-          [class.active]="location.name == currentLocation?.name">
+          [class.active]="location.id == currentLocation?.id">
           {{location.name}}
         </li>
       </ul>

@@ -117,7 +117,7 @@ export class ViewVendorComponent implements OnInit {
   }
   
   chooseTabLocation(location = null) {
-    
+    this.vendorService.selectedTab = location;
     this.locVendorChosen = location ? true : false;
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;

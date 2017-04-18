@@ -29,6 +29,7 @@ export class VendorService extends ModelService {
   accountVendors$: Observable<any> = Observable.empty();
   vendors$: Observable<any> = Observable.empty();
   public isDataLoaded$: any = new BehaviorSubject(false);
+  public selectedTab:any = null;
   
   constructor(
     public injector: Injector,

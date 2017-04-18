@@ -92,7 +92,7 @@ export class ProductService extends ModelService {
       this.dashboardLocation = location;
       this.location$.next(location);
       this.location = location;
-      debugger;
+      
       return this.getProductsLocation(location.id)
     });
     this.start_products$.subscribe();
@@ -145,7 +145,7 @@ export class ProductService extends ModelService {
   }
   
   getProductsLocation(id) {
-    debugger;
+    
     return this.products$ = this.restangular.all('products').customGET('', {
       location_id: id,
       limit: this.pagination_limit

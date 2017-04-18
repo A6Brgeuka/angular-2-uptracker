@@ -27,7 +27,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class EditVendorComponent implements OnInit, AfterViewInit {
   public saveVendor: any;
   public options: any;
-  
+  public activate: boolean;
   public subscribers: any = {};
   public vendor: AccountVendorModel;
   public vendorData: any;
@@ -69,7 +69,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public secondaryLocationArr: any = [];
   
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
-  
+  @ViewChild('all') allLocationLink: ElementRef;
+  @ViewChild('primary') primaryLocationLink: ElementRef;
   public defaultPlaceholder: any = {
     discount_percentage: "Enter Value",
     shipping_handling: "Enter Value",
@@ -84,6 +85,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   };
   public placeholder: any = {};
   public vendorId: string;
+  private inited: boolean=false;
   
   constructor(
     public userService: UserService,
@@ -95,26 +97,25 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   ) {
     this.vendor = new AccountVendorModel();
     
-   
+    
   }
   
   ngOnInit() {
-  
     Observable
     .combineLatest(this.viewInit$, this.vendorLoaded$)
     .filter(([a, b]) => (a && b))
     .do(([a, b]) => {
       return this.initTabs();
     })
-    .subscribe();
-  
-  
+    .subscribe(()=>{
+    });
+    
     
     Observable.combineLatest(
       this.route.params,
       this.vendorService.getAccountVendors()
     )
-    .map(([r,v]:any) =>_.filter(v, {'vendor_id': r['id']}))
+    .map(([r, v]: any) => _.filter(v, {'vendor_id': r['id']}))
     .subscribe(vendors => {
       if (!_.isEmpty(vendors)) {
         this.vendorData = vendors;
@@ -154,7 +155,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   initTabs() {
-    // this.secondaryLocationLink.nativeElement.click();
+     //this.secondaryLocationLink.nativeElement.click();
     
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.chooseTabLocation(res);
@@ -163,7 +164,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         this.secondaryLocationLink.nativeElement.click();
       }
     });
-    
+
     // observer to detect class change
     if (this.secondaryLocationLink) {
       let observer = new MutationObserver((mutations) => {
@@ -178,23 +179,46 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         attributeOldValue: true
       });
     }
+
+    this.currentLocation = this.vendorService.selectedTab;
+    if (!this.currentLocation){
+      this.allLocationLink.nativeElement.click();
+    } else {
+      if (this.primaryLocation == this.currentLocation) {
+        this.primaryLocationLink.nativeElement.click();
+      } else {
+        this.secondaryLocationLink.nativeElement.click();
+      }
+    }
+  
+    this.inited = true;
+  
+  
   }
   
   ngAfterViewInit() {
     this.viewInit$.next(true)
-   
   }
   
-  chooseTabLocation(location = null){
+  chooseTabLocation(location = null) {
+  
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': null}) || {};
       _.each(this.defaultPlaceholder, (value, key) => {
-        switch(key){
-          case 'rep_office_phone': this.placeholder.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]); break;
-          case 'rep_mobile_phone': this.placeholder.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]); break;
-          case 'rep_fax': this.placeholder.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]); break;
-          case 'discount_percentage': allLocationsVendor[key] = allLocationsVendor[key]*100; break;
+        switch (key) {
+          case 'rep_office_phone':
+            this.placeholder.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]);
+            break;
+          case 'rep_mobile_phone':
+            this.placeholder.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]);
+            break;
+          case 'rep_fax':
+            this.placeholder.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]);
+            break;
+          case 'discount_percentage':
+            allLocationsVendor[key] = allLocationsVendor[key] * 100;
+            break;
         }
         this.placeholder[key] = allLocationsVendor[key] || this.defaultPlaceholder[key];
       });
@@ -203,12 +227,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     }
     
     // check if secondary location was chosen
+
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
-      
+
+  
       this.secondaryLocation = location;
     } else {
       this.sateliteLocationActive = false;
+  
     }
     
     this.currentLocation = location;
