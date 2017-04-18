@@ -61,7 +61,7 @@ export class ProductsComponent implements OnInit {
     }
     
     ngOnInit() {
-        this.productService.current_page =1;
+        //this.productService.current_page =1;
         
         this.productService.totalCount$.subscribe(total => this.total=total);
         
@@ -76,7 +76,10 @@ export class ProductsComponent implements OnInit {
             .filter(r => (r || r === ''))
             .subscribe(
                 (r) => {
-                    this.productService.getNextProducts(0, r, this.sortBy);
+                    this.productService.current_page = 0;
+                    this.productService.getNextProducts(0, r, this.sortBy).
+                    subscribe((r)=>{this.getInfiniteScroll();}
+                    );
                     this.productService.current_page = 2;
                 }
             );
@@ -88,18 +91,11 @@ export class ProductsComponent implements OnInit {
                     this.productService.current_page = 2;
                 }
             );
-
-        let start_products$ = this.accountService.dashboardLocation$.switchMap(location => {
-            if (!location) {
-                location = {};
-            }
-            this.dashboardLocation = location;
-            this.productService.location$.next(location);
-            this.productService.location=location;
-            return this.productService.getProductsLocation(location.id)
-        }).subscribe(() => {
-            return this.getInfiniteScroll();
-        });
+        //
+        //this.productService.start_products$.subscribe(() => {
+        //    this.productService.dashboardLocation = this.productService.dashboardLocation;
+        //    return this.getInfiniteScroll();
+        //});
         
     ///////////////////////?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
@@ -117,7 +113,7 @@ export class ProductsComponent implements OnInit {
             return products;
         });
     
-        this.products$.subscribe(r => this.products = r);
+        this.productService.collection$.subscribe(r => this.products = r);
     
         Observable.combineLatest(this.infiniteScroll$,this.products$)
             .filter(([infinite,products]) =>  {
@@ -146,7 +142,7 @@ export class ProductsComponent implements OnInit {
     }
 
     viewProductModal(product) {
-        product = Object.assign(product, {location_id: this.dashboardLocation.id});
+        product = Object.assign(product, {location_id: this.productService.dashboardLocation.id});
         this.modal
             .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}))
             .then((resultPromise) => {
