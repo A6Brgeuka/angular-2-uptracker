@@ -130,7 +130,7 @@ export class ProductsComponent implements OnInit {
                     this.isRequest = false;
                     return Observable.of(false);
                 } else {
-                    
+                    debugger;
                     return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
                 }
             })
