@@ -14,6 +14,7 @@ import {RequestProductModal} from './request-product-modal/request-product-modal
 import {ProductService} from '../../core/services/index';
 import {ModalWindowService} from "../../core/services/modal-window.service";
 import {AccountService} from "../../core/services/account.service";
+import { UploadCsvModal } from './upload-csv-modal/upload-csv-modal.component';
 
 @Component({
     selector: 'app-products',
@@ -203,6 +204,7 @@ export class ProductsComponent implements OnInit {
             });
     }
 
+
     requestProduct() {
         this.modal
             .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
@@ -235,6 +237,17 @@ export class ProductsComponent implements OnInit {
     }
     
     showUploadDialog(){
-      alert();
+        this.modal
+        .open(UploadCsvModal, this.modalWindowService.overlayConfigFactoryWithParams({},true))
+        .then((resultPromise) => {
+            resultPromise.result.then(
+              (res) => {
+                  // this.filterProducts();
+              },
+              (err) => {
+              }
+            );
+        });
+    
     }
 }

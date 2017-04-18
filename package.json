@@ -21,7 +21,6 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ngtools/webpack": "^1.2.4",
-    "@types/lodash": "^4.14.58",
     "angular2-cookie": "^1.2.6",
     "angular2-file-drop": "^0.2.0",
     "angular2-fontawesome": "^0.8.0",
@@ -43,7 +42,7 @@
   },
   "devDependencies": {
     "@types/googlemaps": "^3.25.38",
-    "@types/lodash": "^4.14.37",
+    "@types/lodash": "^4.14.58",
     "@angular/cli": "1.0.0",
     "@angular/compiler-cli": "^4.0.0",
     "@types/jasmine": "2.5.38",

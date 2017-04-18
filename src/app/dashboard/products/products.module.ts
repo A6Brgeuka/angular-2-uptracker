@@ -9,6 +9,7 @@ import { BulkEditModalModule } from './bulk-edit-modal/bulk-edit-modal.module';
 import { ProductModule } from './product/product.module';
 import { HomeModule } from './home/home.module';
 import { EmbededModule } from './home/page/embeded/embeded.module';
+import { UploadCsvModalModule } from './upload-csv-modal/upload-csv-modal.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { EmbededModule } from './home/page/embeded/embeded.module';
     RequestProductModalModule,
     BulkEditModalModule,
     ProductModule,
-    EmbededModule
+    EmbededModule,
+    UploadCsvModalModule
   ],
   providers: []
 })
