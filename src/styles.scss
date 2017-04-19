@@ -7,6 +7,24 @@ html {
   height: 100%;
 }
 
+.debug-monitor {
+  //display: none;
+  position:fixed;
+  right:0;
+  bottom:0;
+  background-color: red;
+  color:#fff;
+  padding:20px;
+  z-index: 9999;
+  margin:0;
+  li {
+    padding-left:20px;
+  }
+  &.isrequest {
+    background-color: teal;
+  }
+}
+
 body {
   background: $tealish;
   //background: #f5f6f7;

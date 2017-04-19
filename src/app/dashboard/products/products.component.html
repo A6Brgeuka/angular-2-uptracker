@@ -1,3 +1,8 @@
+<ul class="debug-monitor" [class.isrequest]="isRequest">
+  <li>page: {{ productService.current_page }}</li>
+  <li>count: {{ (products$ | async).length }}</li>
+  <li>total: {{ total }}</li>
+</ul>
 <div class="products content">
   <div class="top">
     <div class="row">

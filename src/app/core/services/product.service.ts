@@ -110,16 +110,18 @@ export class ProductService extends ModelService {
     };
     if (search_string) {
       query.query = search_string;
+    } else {
     }
     if (sortBy && sortBy == 'Z-A') {
       query.sort = 'desc';
     }
+    
     return this.getProductsData(query, page ? false : true);
   }
   
   public getProductsData(query: any = {}, reset: boolean = true) {
     this.getProductsData$.next({query, reset});
-    return this.getProductsData$;
+    return this.getProductsData$.delay(500);
   }
   
   addSubscribers() {

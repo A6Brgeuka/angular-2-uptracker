@@ -76,11 +76,11 @@ export class ProductsComponent implements OnInit {
             .filter(r => (r || r === ''))
             .subscribe(
                 (r) => {
+                    this.searchKey = r;
                     this.productService.current_page = 0;
                     this.productService.getNextProducts(0, r, this.sortBy).
                     subscribe((r)=>{this.getInfiniteScroll();}
                     );
-                    this.productService.current_page = 2;
                 }
             );
         this.sortBy$
@@ -116,25 +116,25 @@ export class ProductsComponent implements OnInit {
         this.productService.collection$.subscribe(r => this.products = r);
     
         Observable.combineLatest(this.infiniteScroll$,this.products$)
+            //.debounceTime(100)
             .filter(([infinite,products]) =>  {
                 return (infinite && !this.isRequest && products.length);
             })
             .switchMap(([infinite,products]) => {
                 this.isRequest = true;
-                if (this.searchKey == this.searchKeyLast) {
-                    ++this.productService.current_page;
-                }
+                
                 this.searchKeyLast = this.searchKey;
                 //TODO remove
                 if (this.total <= (this.productService.current_page-1) * this.productService.pagination_limit) {
                     this.isRequest = false;
                     return Observable.of(false);
                 } else {
-                    debugger;
+                    if (this.searchKey == this.searchKeyLast) {
+                        ++this.productService.current_page;
+                    }
                     return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
                 }
             })
-            //.delay(100)
             .subscribe(res => {
             }, err => {
             
