@@ -25,7 +25,7 @@
       <a *ngIf="(all_locations$ | async)?.length > 1"
         href="#specific"
         (click)="chooseTabLocation(primaryLocation)"
-        [class.active]="primaryLocation?.id == (accountService.dashboardLocation$ | async)?.id">
+        [class.active]="primaryLocation?.id == vendorService.selectedTab?.id ">
         {{primaryLocation?.name}}
       </a>
     </li>
@@ -33,6 +33,7 @@
       <a href="#specific"
         [class.active1]="sateliteLocationActive"
         (click)="chooseTabLocation(secondaryLocation)"
+        [class.active]="secondaryLocation?.id == vendorService.selectedTab?.id ">
         #secondary>
         <span>{{secondaryLocation?.name}}</span>
       </a>
@@ -41,6 +42,7 @@
       <a href="#specific"
         materialize="dropdown"
         data-activates="location_dropdown"
+
         [class.active1]="sateliteLocationActive"
         #secondary>
         <span>{{secondaryLocation?.name}}</span>

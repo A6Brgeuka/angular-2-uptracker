@@ -108,6 +108,16 @@ export class ViewVendorComponent implements OnInit {
         attributeOldValue: true
       });
     }
+  
+    this.currentLocation = this.vendorService.selectedTab;
+    if (!this.currentLocation){
+    
+    } else {
+      if (this.primaryLocation == this.currentLocation) {
+      } else {
+        this.secondaryLocationLink.nativeElement.click();
+      }
+    }
   }
   
   
