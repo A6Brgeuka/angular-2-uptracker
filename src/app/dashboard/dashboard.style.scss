@@ -27,12 +27,18 @@
     align-content: stretch;
     //justify-content: flex-end;
     //flex-shrink: 0;
+    .main-column {
+      margin-left:70px;
+      margin-top:70px;
+    }
 
     .left-panel{
       //float:left;
       width:70px;
       transition: width .3s ease-out 0.05s;
       overflow: hidden;
+      position:fixed;
+      z-index:999;
 
       .logo{
         background: #404852;
@@ -56,6 +62,8 @@
 
       .nav{
          a{
+           z-index:999;
+           background-color: $tealish;
            display:block;
            color:#fff;
            font-family: 'Ubuntu';
@@ -197,16 +205,21 @@
     }
 
     .main-column{
+      margin-top:70px;
       flex: 1;
       //margin-left:70px;
-      min-height: 100vh;
+      min-height: calc(100vh - 70px);
       background:#f5f6f7;
       overflow:hidden;
 
       .header{
+        z-index:998;
         height:69px;
+        left:70px;
+        top:0;
+        right:0;
+        position:fixed;
         background:#fff;
-        position:relative;
         box-shadow: 0 1px 0 0 #d6d6d6;
 
         .locations-single {
