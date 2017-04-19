@@ -72,6 +72,24 @@
         </phone-input>
       </div>
 
+      <div class="input row">
+        <div class="label left-align">Registration Code</div>
+        <input
+          id="reg_code"
+          placeholder="Reg code"
+          class="validate col s12"
+          type="text"
+          [(ngModel)]="signupAccount.reg_code"
+          name="reg_code"
+          minlength="4"
+          required
+          #reg_code="ngModel">
+        <div [hidden]="reg_code.valid || reg_code.pristine" class="error red-text left-align">
+          *Please enter the registration code.
+        </div>
+      </div>
+
+
       <div class="buttons">
         <button
             type="submit"

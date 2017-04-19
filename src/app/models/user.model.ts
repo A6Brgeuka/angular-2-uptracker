@@ -18,7 +18,8 @@ export class UserModel {
   template: any = null;
   department: any = null;
   default_location: any = null;
-
+  reg_code:string = '';
+  
   // cards: CreditCardModel[] = [];
   // defaultCard: CreditCardModel = null;
   account: AccountModel = new AccountModel();
