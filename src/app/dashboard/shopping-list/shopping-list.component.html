@@ -119,10 +119,10 @@
         </div>
         <div class="col s2">
           <a *ngIf="product.selected_vendor.vendor_name != 'Auto'" (click)="changePriceModal(product)">
-            ${{ product.price_lower }}-{{ product.price_upper }}
+            {{ product.price_lower }}-{{ product.price_upper }}
           </a>
           <span *ngIf="product.selected_vendor.vendor_name == 'Auto'">
-            ${{ product.price_lower }}-{{ product.price_upper }}
+            {{ product.price_lower }}-{{ product.price_upper }}
           </span>
 
         </div>
