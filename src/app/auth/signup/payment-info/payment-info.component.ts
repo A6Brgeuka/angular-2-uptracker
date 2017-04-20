@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { SpinnerComponent} from '../../../spinner/spinner.component'
 import { UserModel, CreditCardModel } from '../../../models/index';
 import { UserService, CardService, AccountService, SpinnerService } from '../../../core/services/index';
 
@@ -23,7 +23,8 @@ export class PaymentInfoComponent implements OnInit {
   public selectYear = [];
   public yearDirty: boolean = false;
   public monthDirty: boolean = false;
-
+  public isHidden:boolean = true; //TODO remove
+@ViewChild("buttonsubmit") button_submit;
   constructor(
       public router: Router,
       public userService: UserService,
@@ -61,6 +62,15 @@ export class PaymentInfoComponent implements OnInit {
     for (let i = 0; i < 21; i++){
       this.selectYear.push(currentYear+i);
     }
+    
+    //// fake data
+    
+    this.creditCard.expMonth=12;
+    this.creditCard.expYear=2018;
+    this.creditCard.cvc=123;
+    this.creditCard.cardNumber=4111111111111111;
+    this.button_submit.nativeElement.click();
+    
   }
 
   changeYear(){

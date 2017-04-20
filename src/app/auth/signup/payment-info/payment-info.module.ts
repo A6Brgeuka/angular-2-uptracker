@@ -6,9 +6,10 @@ import { AppSharedModule } from '../../../shared/shared.module';
 @NgModule({
   declarations: [
     PaymentInfoComponent,
+    
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
   ],
   providers: []
 })
