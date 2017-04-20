@@ -7,10 +7,10 @@
       <label for="price_type_book" class="grey-text smaller">${{ selectedVendor.book_price }}</label>
       <label for="price_type_book">Book</label>
     </div>
-    <div class="col s4" (click)="setPrice(100500)">
+    <div class="col s4" (click)="setPrice(selectedVendor.your_price)">
       <input value="negotiated" type="radio" name="price_type" id="price_type_negotiated">
       <label for="price_type_negotiated"></label>
-      <label for="price_type_negotiated" class="grey-text smaller">$0</label>
+      <label for="price_type_negotiated" class="grey-text smaller">${{ selectedVendor.your_price }}</label>
       <label for="price_type_negotiated">Negotiated</label>
     </div>
     <div class="col s4" (click)="setPrice(selectedVendor.club_price)">
