@@ -59,10 +59,10 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
     console.log(this.context);
     this.selectedVendor = this.context.product.vendors.find(
       (v) => {
-        debugger;
+        
         return (v.vendor_variant_id == this.context.product.selected_vendor.vendor_variant_id);
       });
-    debugger;
+    
   
   }
   

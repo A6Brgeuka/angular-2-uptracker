@@ -613,7 +613,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
           let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
           let vars_diff;
           vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
-          debugger;
+          
           
           
           prod_diff.id = this.product.id;
