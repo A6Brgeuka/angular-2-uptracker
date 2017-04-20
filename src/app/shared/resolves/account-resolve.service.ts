@@ -12,7 +12,7 @@ export class UserCollectionResolve implements Resolve<any> {
 
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.accountService.getUsers().take(1);
+    return this.accountService.getUsers().take(1).subscribe();
   }
 }
 

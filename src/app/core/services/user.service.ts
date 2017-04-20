@@ -92,6 +92,7 @@ export class UserService extends ModelService {
     .publishReplay(1).refCount();
 
     this.selfData$.subscribe((res: any) => {
+      
       //Set token
       if (res['token'] && !res['signup']) {
         this.setSessionId(res['id']);

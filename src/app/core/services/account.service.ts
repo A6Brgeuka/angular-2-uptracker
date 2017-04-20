@@ -69,6 +69,7 @@ export class AccountService extends ModelService{
       console.log(`${this.constructor.name} Update SELF DATA`, res);
 
       //update user after update account
+      debugger;
       this.userService.updateSelfDataField('account', this.selfData);
     });
 

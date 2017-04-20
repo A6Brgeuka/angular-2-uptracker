@@ -55,6 +55,10 @@
             <div class="hazardous" *ngIf="product.hazardous">
               <i class="material-icons">warning</i>
             </div>
+            <div class="star-right" [class.favorite]="product.favorite" *ngIf="true">
+              <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
+              <i (click)="removeFromFavorites($event,product)"  class="fa fa-star"></i>
+            </div>
             <div *ngIf="product.images" class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>

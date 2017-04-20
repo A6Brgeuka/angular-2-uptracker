@@ -34,7 +34,8 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.subscribers.getUsersSubscription 
+    
+    // this.subscribers.getUsersSubscription
     this.users$ = Observable
         .combineLatest(
             this.userService.selfData$,
@@ -47,6 +48,7 @@ export class UsersComponent implements OnInit {
         })
         .map(([user, searchKey, location]) => {
           this.total = user.account.users.length;
+          debugger;
           let filteredUsers = _.filter(user.account.users, (user: any) => {
             let key = new RegExp(searchKey, 'i');
 

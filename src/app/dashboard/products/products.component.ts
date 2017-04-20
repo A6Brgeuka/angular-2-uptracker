@@ -15,6 +15,7 @@ import {ProductService} from '../../core/services/index';
 import {ModalWindowService} from "../../core/services/modal-window.service";
 import {AccountService} from "../../core/services/account.service";
 import { UploadCsvModal } from './upload-csv-modal/upload-csv-modal.component';
+import { ToasterService } from '../../core/services/toaster.service';
 
 @Component({
     selector: 'app-products',
@@ -45,7 +46,8 @@ export class ProductsComponent implements OnInit {
         public modal: Modal,
         public productService: ProductService,
         public modalWindowService: ModalWindowService,
-        public accountService: AccountService
+        public accountService: AccountService,
+        public toasterService: ToasterService
     ) {
     }
     
@@ -245,5 +247,17 @@ export class ProductsComponent implements OnInit {
             );
         });
     
+    }
+    
+    addToFavorites(e,product){
+        product.favorite = true;
+        this.toasterService.pop('','Added to favorites');
+        e.stopPropagation();
+        
+    }
+    removeFromFavorites(e,product){
+        product.favorite = false;
+        this.toasterService.pop('error','Removed from favorites');
+        e.stopPropagation();
     }
 }
