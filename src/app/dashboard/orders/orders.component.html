@@ -1,9 +1,90 @@
 <div class="products content">
   <div class="top">
-    <div class="title left">
-      <div class="main-title left">Orders</div>
-      <br>
-      <div class="sub-title">Coming Summer 2017</div>
+    <div class="row">
+      <div class="col s12 filter uptracker-form clearfix">
+        <div class="left">
+        <span class="title">
+          <span class="main-title ">Orders</span>
+          <span class="sub-title">{{total}} items</span>
+        </span>
+
+        </div>
+        <div class="right ptop5 filter-right">
+          <div class="left input">
+            <input type="text"
+              placeholder="Keyword search"
+              [(ngModel)]="searchKey"
+              class="col s12"
+              (input)="searchFilter($event)"/>
+          </div>
+          <div class="left filter-btn">
+            <a (click)="showFiltersModal()">
+              <fa [name]="'filter'"></fa>
+              <span>Filters</span>
+            </a>
+          </div>
+          <div class="left select sortby">
+            <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+              <option value="">Sort by</option>
+              <option value="A-Z">A-Z</option>
+              <option value="Z-A">Z-A</option>
+            </select>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
     </div>
+
+    <div class="list is-grid-view" >
+      <div >
+        <div class="heading row">
+          <div class="col s1 center-align">
+            <div class="input-checkbox checkbox">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                [(ngModel)]="selectAll"
+                id="selectAll"
+                (click)="toggleSelectAll(!selectAll)"
+              />
+              <label for="selectAll"></label>
+            </div>
+          </div>
+          <div class="col  s1">Order #</div>
+          <div class="col s4">Vendor</div>
+          <div class="col s1">Type</div>
+          <div class="col s1">Placed</div>
+          <div class="col s1">Received</div>
+          <div class="col s1">Reconcieled</div>
+          <div class="col s1">#Products</div>
+          <div class="col s1">Total</div>
+        </div>
+
+        <div class="item row"  *ngFor="let item of items">
+          <div class="col s1 center-align">
+            <div class="input-checkbox checkbox">
+              <input
+                type="checkbox"
+                class="selected-input{{i}}"
+                id="selected{{i}}"
+                (change)="onCheck()"
+              />
+              <label for="selected{{i}}"></label>
+            </div>
+          </div>
+          <div class="col s1 ">1</div>
+          <div class="col s4" >Vendor name</div>
+          <div class="col s1">email</div>
+          <div class="col s1">12/03/17</div>
+          <div class="col s1">12/03/17</div>
+          <div class="col s1">12/03/17</div>
+          <div class="col s1">434</div>
+          <div class="col s1">$434</div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+    </div>
+
   </div>
 </div>
