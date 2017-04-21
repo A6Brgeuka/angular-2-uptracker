@@ -122,7 +122,6 @@ export class EditUserComponent implements OnInit {
       return selfData.account.users;
     })
     .subscribe(user => {
-      debugger;
       let userArr = _.filter(user, (us: any) => (us.id == this.userId));
       let userData = !_.isEmpty(userArr) ? userArr[0] : {} || {tutorial_mode: true};
       this.user = new UserModel(userData);

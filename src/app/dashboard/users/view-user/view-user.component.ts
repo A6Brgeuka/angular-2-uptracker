@@ -42,7 +42,6 @@ export class ViewUserComponent implements OnInit{
     })
     .subscribe(user=>{
       this.user = _.find(user,(us:any) => (us.id == this.userId));
-      debugger;
       this.userLocations = _.filter(this.accountService.selfData.locations, (location: any) => {
         let userLocation: any = _.find(this.user.locations, {location_id: location.id});
         if (userLocation) {
