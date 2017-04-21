@@ -52,6 +52,11 @@ export class OrdersPreviewComponent implements OnInit {
       return this.orderService.getOrder(p['id']);
     })
     .subscribe((items: any) => {
+      let tt = 0;
+      _.each(items,(i:any)=>{
+        tt+=i.total_nf;
+      });
+      items.total_total = tt;
       return this.orders$.next(items);
     });
   

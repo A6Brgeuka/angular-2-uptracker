@@ -83,7 +83,7 @@
             <div class="col lcol s4">
               <div class="row">
                 <div class="col s12 grey-text">Account #</div>
-                <div class="col s12 bold">4357438758748397589437</div>
+                <div class="col s12 bold">{{ order.account_number }}</div>
               </div>
               <div class="row">
                 <div class="col s12 grey-text">Ship to</div>
@@ -92,9 +92,9 @@
                     <select
                       name="sel1"
                       id="sel1"
-                      materialize="material_select">
-                      <option value="a">Location A</option>
-                      <option value="b">Location b</option>
+                      materialize="material_select"
+                      [(ngModel)]="order.ship_to.location_id">
+                      <option *ngFor="let st of order.ship_to_options" [value]="st.location_id">{{ st.location_name }}</option>
                     </select>
                   </div>
                 </div>
@@ -107,8 +107,7 @@
                       name="sel2"
                       id="sel2"
                       materialize="material_select">
-                      <option value="a">email</option>
-                      <option value="b">phone</option>
+                      <option *ngFor="let method of order.order_methods" [value]="method">{{method}}</option>
                     </select>
                   </div>
                 </div>
@@ -118,13 +117,13 @@
             <div class="col rcol s6 offset-s2">
               <div class="row">
                 <div class="col s6 grey-text">Subtotal</div>
-                <div class="col s6 bold grey-text nopad">$300</div>
+                <div class="col s6 bold grey-text nopad">{{ order.sub_total }}</div>
               </div>
               <div class="row">
                 <div class="col s6 grey-text">Primary Tax</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input value="$2.00">
+                    <input [value]="order.primary_tax">
                   </div>
                 </div>
               </div>
@@ -132,7 +131,7 @@
                 <div class="col s6 grey-text">Secondary Tax</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input value="$2.00">
+                    <input [value]="order.secondary_tax">
                   </div>
                 </div>
               </div>
@@ -140,14 +139,14 @@
                 <div class="col s6 grey-text">Shipping + Handling</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input value="$2.00">
+                    <input [value]="order.shipping_handling">
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col s6 grey-text">Total</div>
                 <div class="col s6 bold o-price reddish-text ">
-                  $1112.00
+                  {{ order.total }}
                 </div>
               </div>
 
@@ -170,7 +169,7 @@
             <span class="o-name  thinlato">{{ order.vendor_name }}</span>
           </div>
           <div class="col s6 right-align">
-            <div class="o-price">$1,110.00</div>
+            <div class="o-price">{{order.total}}</div>
           </div>
         </div>
 
@@ -179,7 +178,7 @@
             Total
           </div>
           <div class="col s6 o-price reddish-text right-align">
-            $2,240.00
+            ${{ (orders$ | async).total_total }}
           </div>
         </div>
       </div>
