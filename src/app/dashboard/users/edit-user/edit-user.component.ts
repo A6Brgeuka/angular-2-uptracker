@@ -115,13 +115,14 @@ export class EditUserComponent implements OnInit {
   
     Observable.combineLatest(
       this.route.params,
-      this.locations$
+      this.userService.selfData$
     )
     .map(([params, selfData]) => {
       this.userId = params['id'];
-      return selfData;
+      return selfData.account.users;
     })
     .subscribe(user => {
+      debugger;
       let userArr = _.filter(user, (us: any) => (us.id == this.userId));
       let userData = !_.isEmpty(userArr) ? userArr[0] : {} || {tutorial_mode: true};
       this.user = new UserModel(userData);
