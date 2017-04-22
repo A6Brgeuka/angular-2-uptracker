@@ -16,7 +16,7 @@ $normal: 14px;
     //background: #fff;
     padding: 30px;
     .close {
-      transition:opacity .3s;
+      transition: opacity .3s;
       width: 40px;
       height: 40px;
       position: absolute;
@@ -24,14 +24,14 @@ $normal: 14px;
       top: 10px;
       background-color: $tealish;
       cursor: pointer;
-      font-size:20px;
-      text-align:center;
-      border-radius:20px;
-      color:#fff;
-      line-height:40px;
+      font-size: 20px;
+      text-align: center;
+      border-radius: 20px;
+      color: #fff;
+      line-height: 40px;
       padding-right: 3px;
       &:hover {
-        opacity:.8;
+        opacity: .8;
       }
     }
 
@@ -612,6 +612,13 @@ $normal: 14px;
         }
       }
     }
+
+    .show-variant {
+      .variant-table .name-heading {
+        width: 23%;
+      }
+    }
+
     .comments {
 
       .collection {
