@@ -348,8 +348,15 @@ $normal: 14px;
         .head-item, .row-item {
           float: left;
           padding: 5px;
-          height: 35px;
+          min-height: 35px;
           line-height: 22px;
+
+          &.flex-middle {
+            display:flex;
+            align-items: center;
+            height:100%;
+            line-height:1.25!important;
+          }
 
           &:first-child {
             padding-left: 0;
@@ -423,6 +430,7 @@ $normal: 14px;
           height: 24px;
           color: #fff;
           background-color: $tealish;
+
 
           &:disabled {
             background-color: $light-grey;
@@ -617,7 +625,16 @@ $normal: 14px;
       .variant-table .name-heading {
         width: 23%;
       }
+      .add-order-btn {
+        margin-top:3px;
+      }
     }
+
+    .nowrap {
+      white-space: nowrap;
+    }
+
+
 
     .comments {
 

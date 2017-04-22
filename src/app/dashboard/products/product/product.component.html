@@ -31,7 +31,11 @@
             product?.name}}
           </div>
           <div class="col s12">
-            <input  (click)="$event.stopPropagation();" class="ttl col s12 name-field" *ngIf="showEdit" [(ngModel)]="productCopy.name" type="text">
+            <input (click)="$event.stopPropagation();"
+              class="ttl col s12 name-field"
+              *ngIf="showEdit"
+              [(ngModel)]="productCopy.name"
+              type="text">
           </div>
         </div>
         <div class="row" [ngClass]="{'checks':showEdit}">
@@ -151,7 +155,7 @@
           <li class="tab col s2">
             <a href="#variations">{{showVariant ? 'Vendors' : 'Variations'}}</a>
           </li>
-          <li class="tab col s2" >
+          <li class="tab col s2">
             <a href="#info">Info</a>
           </li>
           <li class="tab col s2">
@@ -160,10 +164,10 @@
           <li class="tab col s2" *ngIf="product?.trackable && !showVariant">
             <a href="#tracking">Tracking</a>
           </li>
-          <li class="tab col s2" >
+          <li class="tab col s2">
             <a href="#history">Order History</a>
           </li>
-          <li class="tab col s2" >
+          <li class="tab col s2">
             <a href="#comments">Comments</a>
           </li>
         </ul>
@@ -298,7 +302,7 @@
               <div class="small-heading row-item">{{variant.package_type || ""}}</div>
               <div class="small-heading row-item">{{variant.unit_type || ""}}</div>
               <div class="small-heading row-item">{{variant.units_per_package || ""}}</div>
-              <div class="text-heading row-item">{{variant.price_range || ""}}</div>
+              <div class="text-heading row-item nowrap">{{variant.price_range || ""}}</div>
               <div class="flor">
                 <div *ngIf="showEdit" class="edit-variant visibility-heading row-item">
                   <i class="fa fa-eye  variant-func"
@@ -319,7 +323,7 @@
               </div>
               <div class="clearfix"></div>
               <app-variant-detail [showEdit]="showEdit"
-                [product_id] = "product_id"
+                [product_id]="product_id"
                 [variant]="variant"
                 *ngIf="variant.detailView">
               </app-variant-detail>
@@ -372,8 +376,8 @@
         <div class="table-body">
           <div class="variant-table">
             <div *ngFor="let item of currentVariant.vendor_variants" class="uptracker-form  table-item">
-              <div class="name-heading row-item">{{item.vendor_name || ""}}</div>
-              <div class="row-item">{{item.catalog_number || ""}}</div>
+              <div class="flex-middle name-heading row-item">{{item.vendor_name || ""}}</div>
+              <div class="row-item nowrap">{{item.catalog_number || ""}}</div>
               <div class="row-item">{{item.avg_lead_time || ""}}</div>
               <div class="row-item">{{item.price || ""}}</div>
               <div class="row-item">{{item.your_price || ""}}</div>
@@ -381,11 +385,13 @@
               <div class="row-item">{{item.forum_price || ""}}</div>
               <div *ngIf="!showEdit" class="add-order-heading right head-item">
                 <button
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn" (click)="addToOrder(currentVariant, item)">
+                  class="uptracker-form-btn waves-light waves-effect add-order-btn"
+                  (click)="addToOrder(currentVariant, item)">
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   Add to Order
                 </button>
               </div>
+              <div class="clearfix"></div>
             </div>
           </div>
         </div>
@@ -437,7 +443,8 @@
               <div *ngFor="let inv of variant.trimmed_inventory; let i=index;"
                 [class.selected]="currentLocation[variant.id] ? (inv.location_id==currentLocation[variant.id] && variant.detailView) : (i==0 && variant.detailView)"
                 class="small-heading row-item"
-                (click)="inv.current_inventory ? changeSelected(inv.location_id,variant.id) : void">{{inv.current_inventory || ''}}
+                (click)="inv.current_inventory ? changeSelected(inv.location_id,variant.id) : void">
+                {{inv.current_inventory || ''}}
               </div>
               <div class="clearfix"></div>
               <div *ngIf="variant.detailView">
@@ -608,7 +615,8 @@
 
         <div class="table-body">
           <div class="variant-table">
-            <div class="uptracker-form  table-item" *ngFor="let order of showVariant ? (filteredOrders$ | async) : (orders$ | async)">
+            <div class="uptracker-form  table-item"
+              *ngFor="let order of showVariant ? (filteredOrders$ | async) : (orders$ | async)">
               <div class="name-heading variant-name row-item valign-wrapper">
                             <span class="valign"
                               (click)="toggleVariantDetailView(order)">{{order.variant_name }}</span>
