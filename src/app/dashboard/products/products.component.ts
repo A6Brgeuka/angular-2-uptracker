@@ -41,6 +41,7 @@ export class ProductsComponent implements OnInit {
     public  searchKeyLast: string;
     public  locationId: string;
     public selectAll: boolean= false;
+    private subscribers: any;
     
     constructor(
         public modal: Modal,
@@ -64,6 +65,10 @@ export class ProductsComponent implements OnInit {
     
     ngOnInit() {
         //this.productService.current_page =1;
+    
+        this.accountService.dashboardLocation$.subscribe((loc:any)=>{
+            this.locationId = loc ? loc['id'] : '';
+        });
         
         this.productService.totalCount$.subscribe(total => this.total=total);
         
@@ -246,18 +251,32 @@ export class ProductsComponent implements OnInit {
               }
             );
         });
-    
     }
     
     addToFavorites(e,product){
-        product.favorite = true;
-        this.toasterService.pop('','Added to favorites');
         e.stopPropagation();
-        
+        this.setFavorite(product, true);
     }
+
     removeFromFavorites(e,product){
-        product.favorite = false;
-        this.toasterService.pop('error','Removed from favorites');
         e.stopPropagation();
+        this.setFavorite(product, false);
+    }
+
+    setFavorite(product,val:boolean){
+        product.favorite = val;
+        let updateData: any = {
+            location_id: this.locationId,
+            product: {
+                id: product.id,
+                favorite:val
+            },
+            variants: [],
+        };
+        let updateProduct$ = this.productService.updateProduct(updateData);
+        updateProduct$.subscribe((r)=>{
+            console.log(r);
+            this.toasterService.pop('',val ? 'Added to favorites' : "Removed from favorites");
+        })
     }
 }
