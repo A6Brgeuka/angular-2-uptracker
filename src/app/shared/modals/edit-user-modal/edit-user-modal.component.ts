@@ -130,11 +130,13 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
       });
 
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
-
+  
     this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) {
+      
+        this.permissionArr = _.cloneDeep(res.permissions);
         this.rolesArr = res.account.roles;
-        if (!this.context.user) {
+        if (!this.user || !this.user['id']) {
           this.setDefaultPermissions();
         } else {
           if (this.user.permissions[0]) {
@@ -150,18 +152,16 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         }
       }
     });
-    
   }
   
   setDefaultPermissions() {
-    
-    this.permissionArr = _.cloneDeep(this.rolesArr[0].permissions);
     this.permissionArr.map((data: any) => {
       data.default = false;
       return data;
     });
   }
-
+  
+  
   dismissModal() {
     this.dialog.dismiss();
   }
