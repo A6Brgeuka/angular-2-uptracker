@@ -93,7 +93,7 @@
               />
               <label for="selectAll"></label>
             </div>
-          </div>f
+          </div>
           <div class="col  s4">Product name</div>
           <div class="col s1">#Variations</div>
           <div class="col s1">Favorite</div>
@@ -122,7 +122,7 @@
               <label for="selected{{i}}"></label>
             </div>
           </div>
-          <div class="col product-name s4" [routerLink]="[product.id]">{{product.name}}</div>
+          <div class="col product-name s4 flex-middle" [routerLink]="[product.id]">{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1 star-container">
             <div class="star-right" [class.favorite]="product.favorite" >

@@ -67,73 +67,7 @@ export class ShoppingListComponent implements OnInit {
       this.cart$.next(r);
       this.changed = [];
     });
-    this.orders =
-      [
-        {
-          'name': "Uptracker Optimized",
-          'id': ";fjdlgefjhjfodjofho",
-          'total': 500,
-          'products': [
-            {
-              'name': 'First',
-              'selectedVendor': "yegiuyriuyuiyreyuioge",
-              'quantity': 1,
-              'vendors': [
-                {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 99.0},
-                {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 139.0},
-                {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 199.0},
-              ]
-            },
-            {
-              'name': 'Second',
-              'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
-              'quantity': 3,
-              'vendors': [
-                {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 99.0},
-                {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 139.0},
-                {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 199.0},
-              ]
-            }
-          ]
-        },
-        {
-          'name': "Best Price",
-          'id': ";fjdlgefjhjfodjofh3",
-          'total': 100500,
-          'products': [{
-            'name': 'Third',
-            'selectedVendor': "yegiuyriup;gkfdkgkioe",
-            'quantity': 1,
-            'vendors': [
-              {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 66.0},
-              {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 159.0},
-              {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 499.0},
-            ]
-          },
-            {
-              'name': 'Fourth ',
-              'quantity': 1,
-              'selectedVendor': ";kfkgfkhkpfkfhpfhfdhg",
-              'vendors': [
-                {'id': "yegiuyriuyuiyreyuioge", 'name': 'Best Vendor', 'price': 21.0},
-                {'id': "yegiuyriup;gkfdkgkioe", 'name': 'Mid Vendor', 'price': 356.0},
-                {'id': ";kfkgfkhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 546.0},
-              ]
-            },
-            {
-              'name': '5th',
-              'quantity': 1,
-              'selectedVendor': ";yegiuyriuyuiycreyuioge",
-              'vendors': [
-                {'id': "yegiuyriuyuiycreyuioge", 'name': 'Best Vendor', 'price': 241.0},
-                {'id': "yegiuyriup;gkfdckgkioe", 'name': 'Mid Vendor', 'price': 3562.15},
-                {'id': ";kfkgfckhkpfkfhpfhfdhg", 'name': 'Worst Vendor', 'price': 5464.0},
-              ]
-            }
-          ]
-        }
-      ];
-    this.orders$.next(this.orders);
+
     //this.changePriceModal();
   }
   
