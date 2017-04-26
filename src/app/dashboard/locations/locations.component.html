@@ -21,6 +21,13 @@
     </div>
     <div class="clearfix"></div>
   </div>
+
+  <div [class.opacity]="(searchKey || sortBy)" class="row transparent reset-filters">
+    <div class="col s12 center-align">
+      <a (click)="resetFilters()" class="">Reset Filters</a>
+    </div>
+  </div>
+
   <div class="list left-align">
     <div class="item" *ngFor="let location of locations$ | async">
       <div class="img" [ngStyle]="{ 'background-image': 'url('+location.image+')' }"  [routerLink]="'view/'+location.id"></div>

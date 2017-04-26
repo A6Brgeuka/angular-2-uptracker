@@ -24,40 +24,41 @@ export class LocationsComponent implements OnInit {
   public sortBy$: any = new BehaviorSubject(null);
   public total: number;
   public locations$: Observable<any>;
-
+  
   constructor(
-      public modal: Modal,
-      public userService: UserService,
-      public accountService: AccountService,
-      public modalWindowService: ModalWindowService
+    public modal: Modal,
+    public userService: UserService,
+    public accountService: AccountService,
+    public modalWindowService: ModalWindowService
   ) {
   }
-
+  
   ngOnInit() {
     this.locations$ = Observable
-        .combineLatest(
-          this.userService.selfData$,
-          this.sortBy$,
-          this.searchKey$
-        )
-        // filter for emitting only if user account exists (for logout user updateSelfData)
-        .filter(([user, sortBy, searchKey]) => {
-          return user.account;
-        })
-        .map(([user, sortBy, searchKey]) => {
-          this.total = user.account.locations.length;
-          let filteredLocations = user.account.locations;
-          if (searchKey && searchKey!='') {
-            filteredLocations = _.reject(filteredLocations, (loc: any) =>{
-              let key = new RegExp(searchKey, 'i');
-              return !key.test(loc.name);
-            });
-          }
-          return _.sortBy(filteredLocations, [sortBy]);
+    .combineLatest(
+      this.userService.selfData$,
+      this.sortBy$,
+      this.searchKey$
+    )
+    // filter for emitting only if user account exists (for logout user updateSelfData)
+    .filter(([user, sortBy, searchKey]) => {
+      return user.account;
+    })
+    .map(([user, sortBy, searchKey]) => {
+      
+      this.total = user.account.locations.length;
+      let filteredLocations = user.account.locations;
+      if (searchKey && searchKey != '') {
+        filteredLocations = _.reject(filteredLocations, (loc: any) => {
+          let key = new RegExp(searchKey, 'i');
+          return !key.test(loc.name);
         });
+      }
+      return _.sortBy(filteredLocations, [sortBy]);
+    });
   }
-
-  viewLocationModal(location = null){
+  
+  viewLocationModal(location = null) {
     //this.modal
     //    .open(ViewLocationModal,   this.modalWindowService.overlayConfigFactoryWithParams({ location: location }))
     //    .then((resultPromise)=>{
@@ -69,20 +70,27 @@ export class LocationsComponent implements OnInit {
     //      );
     //    });
   }
-
-  editLocationModal(location = null){
-    this.modal.open(EditLocationModal,  this.modalWindowService.overlayConfigFactoryWithParams({ location: location }));
+  
+  editLocationModal(location = null) {
+    this.modal.open(EditLocationModal, this.modalWindowService.overlayConfigFactoryWithParams({location: location}));
   }
-
-  locationsSort(event){
+  
+  locationsSort(event) {
     let value = event.target.value;
     this.sortBy$.next(value);
   }
-
-  locationsFilter(event){
+  
+  locationsFilter(event) {
     // replace forbidden characters
     let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
-
+  
+  
+  resetFilters() {
+    this.sortBy = '';
+    this.searchKey = '';
+    this.sortBy$.next('');
+    this.searchKey$.next('');
+  }
 }

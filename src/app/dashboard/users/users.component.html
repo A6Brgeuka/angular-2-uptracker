@@ -21,6 +21,13 @@
     </div>
     <div class="clearfix"></div>
   </div>
+
+  <div [class.opacity]="(searchKey)" class="row transparent reset-filters">
+    <div class="col s12 center-align">
+      <a (click)="resetFilters()" class="">Reset Filters</a>
+    </div>
+  </div>
+
   <div class="users-row">
     <div class="list">
       <div class="item center-align" *ngFor="let user of users$ | async">

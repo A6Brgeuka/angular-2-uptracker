@@ -91,4 +91,8 @@ export class UsersComponent implements OnInit {
     this.searchKey$.next(value);
   }
 
+  resetFilters(){
+    this.searchKey$.next('');
+    this.searchKey='';
+  }
 }

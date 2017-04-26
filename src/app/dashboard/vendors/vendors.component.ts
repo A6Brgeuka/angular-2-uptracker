@@ -159,5 +159,14 @@ export class VendorsComponent implements OnInit {
     onScroll(event) {
         this.getInfiniteScroll();
     }
-
+    
+    resetFilters() {
+        this.searchKey = '';
+        this.sortBy= 'A-Z';
+        this.vendorService.getNextVendors(0, '', '')
+        .subscribe(
+          (r) => {
+              this.vendorService.current_page = 1;
+          })
+    }
 }

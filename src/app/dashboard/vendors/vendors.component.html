@@ -22,6 +22,12 @@
     </div>
     <div class="clearfix"></div>
   </div>
+  <div [class.opacity]="(searchKey || sortBy!='A-Z')" class="row transparent reset-filters">
+    <div class="col s12 center-align">
+      <a (click)="resetFilters()" class="">Reset Filters</a>
+    </div>
+  </div>
+
   <div class="list">
     <div class="item center-align" *ngFor="let vendor of vendors$ | async; let i=index">
       <div class="inner" [routerLink]="'view/'+[vendor.id]" >

@@ -7,6 +7,22 @@ html {
   height: 100%;
 }
 
+
+.reset-filters {
+  margin:-10px 0 10px;
+}
+
+.transparent {
+  transition: opacity .5s;
+  opacity:0;
+  cursor:default;
+}
+
+.opacity {
+  opacity:1;
+  cursor: pointer;
+}
+
 .debug-monitor {
   display: none;
   position:fixed;
