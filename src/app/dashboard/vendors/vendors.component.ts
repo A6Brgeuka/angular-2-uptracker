@@ -126,6 +126,7 @@ export class VendorsComponent implements OnInit {
             accountVendors.vendor_id = globalVendor.id;
         }
         
+        
         let data = {vendor: accountVendors, keyboard: []};
         
     }
