@@ -41,7 +41,7 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   context: PriceModalContext;
   public filter:any = {'department':'', 'vendor':'', 'onlymy':false};
   public discounts = [];
-  public selectedVendor = {};
+  public selectedVendor:any = {};
   public selectedPrice:number = 0;
   public totalPrice:number = 0;
   
@@ -59,7 +59,6 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
     console.log(this.context);
     this.selectedVendor = this.context.product.vendors.find(
       (v) => {
-        
         return (v.vendor_variant_id == this.context.product.selected_vendor.vendor_variant_id);
       });
     

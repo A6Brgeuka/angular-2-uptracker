@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Restangular } from 'ng2-restangular';
+import { Restangular } from 'ngx-restangular';
 
 import { ExifService } from './exif.service';
 import { Observable } from 'rxjs';

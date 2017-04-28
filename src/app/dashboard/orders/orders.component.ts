@@ -14,11 +14,14 @@ import * as _ from 'lodash';
 @DestroySubscribers()
 export class OrdersComponent implements OnInit {
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public selectAll: boolean;
+  public searchKey: string;
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number = 6;
   public products$: Observable<any>;
-  items = [0,0,0,0,0,0,0,0,0,0];
+  items = [0,0,0,0,0,0,0,0,0,0]; //mock data
+  private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   
   constructor(
       public modal: Modal
@@ -40,4 +43,20 @@ export class OrdersComponent implements OnInit {
     let value = event.target.value;
     this.sortBy$.next(value);
   }
+  
+  showFiltersModal(){
+  
+  }
+  
+  toggleSelectAll(event) {
+    // 0 = unused, 1 = selectAll, 2 = deselectAll
+    this.selectAll$.next(event ? 1 : 2);
+    this.onCheck();
+  }
+  
+  onCheck() {
+    //this.selectedProducts = _.cloneDeep(this.products)
+    //.filter(r => r['selected']);
+  }
+  
 }

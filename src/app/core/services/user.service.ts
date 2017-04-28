@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Restangular } from 'ng2-restangular';
+import { Restangular } from 'ngx-restangular';
 
 import { ModelService } from '../../overrides/model.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';

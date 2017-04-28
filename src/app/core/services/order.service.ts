@@ -1,7 +1,7 @@
 import { ModelService } from "../../overrides/model.service";
 import { Injectable, Injector } from "@angular/core";
 import { Subscribers } from "../../decorators/subscribers.decorator";
-import { Restangular } from "ng2-restangular";
+import { Restangular } from "ngx-restangular";
 import { APP_CONFIG, AppConfig } from "../../app.config";
 import { Observable, BehaviorSubject } from "rxjs";
 import * as _ from 'lodash';

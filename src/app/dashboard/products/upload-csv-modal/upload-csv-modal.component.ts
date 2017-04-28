@@ -30,6 +30,9 @@ export class UploadCsvModal implements OnInit, CloseGuard, ModalComponent<Upload
   public totalPrice:number = 0;
   public fileIsOver: boolean;
   public file:File;
+  public options = {
+    readAs: 'DataURL'
+  };
   
   constructor(
       public dialog: DialogRef<UploadCsvModalContext>,

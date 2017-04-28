@@ -3,7 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
-import { Restangular } from 'ng2-restangular';
+import { Restangular } from 'ngx-restangular';
 
 import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';

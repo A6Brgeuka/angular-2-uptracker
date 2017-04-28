@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import {APP_CONFIG, APP_DI_CONFIG, RESTANGULAR_CONFIG} from '../app.config';
 import {LOCAL_STORAGE_PROVIDERS} from 'angular2-local-storage/local_storage';
 import {CookieService} from 'angular2-cookie/services/cookies.service';
-import {RestangularModule} from 'ng2-restangular';
+import {RestangularModule} from 'ngx-restangular';
 
 // auth guard
 import {AuthGuard} from '../auth-guard.service';

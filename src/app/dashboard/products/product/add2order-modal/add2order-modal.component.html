@@ -8,7 +8,7 @@
     <div class="col s3 select-title">Quantity</div>
     <div class="col s9 select-title">Unit Type</div>
     <div class="col s3 ">
-      <div class="input" (change)="validateFields()" [class.invalid]="quantity<1">
+      <div class="input" (change)="validateFields()" [class.invalid]="parseInt(quantity)<1">
         <input
           type="text"
           class="quantity"

@@ -85,7 +85,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   };
   public placeholder: any = {};
   public vendorId: string;
-  private inited: boolean=false;
+  public inited: boolean = false;
   
   constructor(
     public userService: UserService,

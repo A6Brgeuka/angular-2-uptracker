@@ -16,7 +16,7 @@ export class SessionService {
   set(title, value){
     try{
       this.localStorage.set(title, value);
-    } catch(err){ 
+    } catch(err){
       if (!this.cookieService.put(title, value)) {
         this.session[title] = value;
       }
@@ -25,10 +25,10 @@ export class SessionService {
 
   get(title){
     let value;
-    try{ 
+    try{
       value =  this.localStorage.get(title);
       this.localStorage.set('uptracker_temp', 'temp');
-    } catch(err){ 
+    } catch(err){
       value = this.cookieService.get(title) || this.session[title];
     }
     return value;

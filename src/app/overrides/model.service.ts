@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Restangular } from 'ng2-restangular';
+import { Restangular } from 'ngx-restangular';
 
 @Injectable()
 export class ModelService {
