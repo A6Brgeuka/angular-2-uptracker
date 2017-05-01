@@ -69,9 +69,8 @@
 
 <div class="row uptracker-form" id="user-view">
   <div class="col s12 m6 user-image">
-    <div class="img-container">
-      <div class="img" *ngIf="user.avatar" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
-    </div>
+      <img class="img" *ngIf="user.avatar" [src]="user.avatar" alt="Profile image">
+      <img class="img" *ngIf="!user.avatar" src="/assets/img/onboard/icon-img-placeholder-users.svg" alt="Profile image">
   </div>
   <div class="col s12 m6 info">
     <div class="contacts">
