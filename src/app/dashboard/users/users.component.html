@@ -32,7 +32,8 @@
     <div class="list">
       <div class="item center-align" *ngFor="let user of users$ | async">
         <div class="inner" [routerLink]="'view/'+[user.id]">
-          <div class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
+          <div *ngIf="user.avatar" class="img" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
+          <div *ngIf="!user.avatar" class="img no-avatar" [ngStyle]="{ 'background-image': 'url(/assets/img/onboard/icon-onboarding-users.svg)' }"></div>
           <div class="info">
             <div class="ttl">{{user.name}}</div>
             <div class="send-msg"

@@ -36,10 +36,13 @@
                   <a>Upload a photo</a>
                 </div>
               </div>
-              <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }">
-                <div class="del-img-btn" (click)="uploadedImage = null"><i class="material-icons">delete</i></div>
-              </div>
-            </div>
+
+              <img class="img" *ngIf="uploadedImage" [src]="uploadedImage">
+              <img class="img" *ngIf="!uploadedImage"  src="/assets/img/onboard/icon-onboarding-users.svg" >
+              <div *ngIf="uploadedImage"  class="del-img-btn" (click)="uploadedImage = null"><i class="material-icons">delete</i></div>
+
+
+          </div>
           </div>
         </div>
         <div class="row">
