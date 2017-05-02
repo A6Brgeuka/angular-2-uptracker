@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 
 import {APP_CONFIG, APP_DI_CONFIG, RESTANGULAR_CONFIG} from '../app.config';
 import {LOCAL_STORAGE_PROVIDERS} from 'angular2-local-storage/local_storage';
-import {CookieService} from 'angular2-cookie/services/cookies.service';
+import {CookieModule} from 'ngx-cookie';
 import {RestangularModule} from 'ngx-restangular';
 
 // auth guard
@@ -27,6 +27,7 @@ import { CustomRenderer } from '../core/services/index';
         CommonModule,
         BrowserModule,
         HttpModule,
+        CookieModule.forRoot(),
         RestangularModule.forRoot(
             [
                 Router,
@@ -45,7 +46,7 @@ import { CustomRenderer } from '../core/services/index';
 
         ...APP_SERVICE_PROVIDERS,
         LOCAL_STORAGE_PROVIDERS,
-        CookieService,
+        
         Modal,
         AuthGuard,
         // CanDeactivateGuard

@@ -1,6 +1,3 @@
-import { ModuleWithProviders } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
 import { DashboardComponent } from './dashboard.component';
 
 import {
@@ -30,7 +27,6 @@ export const DashboardRoutes = [
     path: '',
     component: DashboardComponent,
     children: [
-      //{ path: '', redirectTo: "locations", pathMatch: "full" },
       ...InnerDashboardRoutes,
       ...OrdersRoutes,
       ...LocationsRoutes,
@@ -54,4 +50,3 @@ export const DashboardRoutes = [
   }
 ];
 
-//export const routing: ModuleWithProviders = RouterModule.forChild(dashboardRoutes);
