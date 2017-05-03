@@ -893,6 +893,7 @@ modal-overlay {
   }
 }
 
+
 .modal {
   z-index: 1050;
   max-height: inherit;
@@ -967,6 +968,7 @@ modal-overlay {
       margin: auto;
       max-width: 400px;
       min-height: 160px;
+
       .modal-content {
         padding: 20px;
         .title {
@@ -980,6 +982,14 @@ modal-overlay {
       }
     }
   }
+}
+
+.fade{
+  opacity:0;
+  transition: opacity .5s;
+}
+.in{
+  opacity: 1;
 }
 
 @media (max-width: 800px) {
