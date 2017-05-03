@@ -43,7 +43,7 @@ export class ShoppingListComponent implements OnInit {
   public changes$: BehaviorSubject<any>[] = [];
   public changed: any = [];
   public selectedProducts: any = [];
-  public filters$: BehaviorSubject<SlFilters> = new BehaviorSubject(new SlFilters);
+  
   
   constructor(
     public modal: Modal,
@@ -58,10 +58,19 @@ export class ShoppingListComponent implements OnInit {
   ngOnInit() {
     //TODO remove
     this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-    
-    this.cartService.collection$.subscribe((r: any) => {
-      this.total = r.length;
-      this.cart$.next(r);
+     
+    Observable.combineLatest(
+      this.cartService.collection$,
+      this.cartService.filters$
+    )
+    .subscribe(([r, f]) => {
+      let cart = _.filter(r, (item: any) => (
+        (f.location == '' || f.location == item.location_name)
+        && (f.vendor == '' || f.vendor == item.selected_vendor.vendor_name))
+        && (!f.onlymy || this.userService.selfData.id == item.created_by)
+      );
+      this.total = cart.length;
+      this.cart$.next(cart);
       this.changed = [];
     });
     
@@ -126,18 +135,23 @@ export class ShoppingListComponent implements OnInit {
   
   
   showFiltersModal() {
-    this.cart$.take(1).subscribe((cart) => {
+    Observable.combineLatest(
+      this.cartService.collection$,
+      this.cartService.filters$
+    )
+    .take(1)
+    .subscribe(([cart,filters]) => {
       let vendors = [];
-      _.map(cart, (product: any) => {
-        _.map(product.vendors, (v: any) => {
-          if (_.indexOf(vendors, v.vendor_name)==-1) {
-            vendors.push(v.vendor_name)
-          }
-        });
+      _.map(cart, (v: any) => {
+          vendors.push(v.selected_vendor.vendor_name)
       });
-      debugger;
+      vendors = _.sortedUniq(vendors.sort());
       this.modal
-      .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+      .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({
+        vendors: vendors,
+        currentFilters: filters,
+        callback: this.applyFilters.bind(this)
+      }, true))
       .then((resultPromise) => {
         resultPromise.result.then(
           (res) => {
@@ -211,7 +225,8 @@ export class ShoppingListComponent implements OnInit {
     this.saveItem(item);
   }
   
-  applyFilters() {
-  
+  applyFilters(data: SlFilters) {
+    this.cartService.filters$.next(data);
+    console.log(data);
   }
 }

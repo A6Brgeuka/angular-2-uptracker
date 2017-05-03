@@ -7,6 +7,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import * as _ from 'lodash';
 import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
+import { SlFilters } from '../../models/slfilters.model';
 
 @Injectable()
 @Subscribers({
@@ -16,6 +17,8 @@ import { AccountService } from "./account.service";
 export class CartService extends ModelService {
   public appConfig: AppConfig;
   public ordersPreview$: any = new BehaviorSubject([]);
+  public filters$: BehaviorSubject<SlFilters> = new BehaviorSubject(new SlFilters);
+  
   constructor(
     public injector: Injector,
     public restangular: Restangular,

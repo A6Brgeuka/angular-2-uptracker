@@ -10,13 +10,13 @@ import { UserService, AccountService } from '../../../core/services/index';
 import { SlFilters } from '../../../models/slfilters.model';
 
 export class ProductFilterModalContext extends BSModalContext {
-  public product: any;
+  public vendors: any;
+  public currentFilters: SlFilters;
   public callback = function(a:any){};
 }
 
 @Component({
   selector: 'app-product-filter-modal',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   templateUrl: './product-filter-modal.component.html',
   styleUrls: ['./product-filter-modal.component.scss']
 })
@@ -34,6 +34,7 @@ export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<Pr
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
+    this.filter = this.context.currentFilters;
   }
 
   ngOnInit(){
@@ -48,7 +49,7 @@ export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<Pr
   }
   
   triggerFilterChange(){
-    console.log(this.filter);
-    //this.context.callback(this.filter);
+    this.context.callback(this.filter);
+    this.dismissModal();
   }
 }

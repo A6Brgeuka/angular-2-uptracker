@@ -10,7 +10,7 @@
         </div>
 
         <div class="right-align">
-          <div class="filter-field" (click)="showFiltersModal()">
+          <div class="filter-field" [class.red-text]="(filters$ | async)" (click)="showFiltersModal()">
             <i class="fa fa-filter"></i>
             <span>Filters</span>
           </div>
@@ -68,7 +68,7 @@
               </div>
             </div>
             <div class="col s10 prod-name">
-              <span [routerLink]="['/products/view',product.id]">{{product.name}}</span>
+              <span [routerLink]="['/products/',product.product_id]">{{product.name}}</span>
             </div>
           </div>
         </div>

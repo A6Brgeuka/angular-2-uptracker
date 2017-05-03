@@ -6,8 +6,7 @@
       <div class="left select">
         <select [(ngModel)]="filter.location" materialize="material_select">
           <option value="">All</option>
-          <option value="1">Firsr</option>
-          <option value="2">Second</option>
+          <option *ngFor="let loc of (accountService.locations$ | async)" [value]="loc.name">{{ loc.name }}</option>
         </select>
       </div>
     </div>
@@ -18,14 +17,13 @@
       <div class="left select">
         <select [(ngModel)]="filter.vendor" materialize="material_select">
           <option value="">All</option>
-          <option value="1">Firsr</option>
-          <option value="2">Second</option>
+          <option *ngFor="let vendor of context.vendors" [value]="vendor">{{ vendor }}</option>
         </select>
       </div>
     </div>
   </div>
   <div class="row check">
-    <div class="col s2 select-title">
+    <div class="col s1 select-title">
       <div class="input-checkbox checkbox">
         <input
           type="checkbox"
@@ -36,7 +34,7 @@
         <label for="filtercheck"></label>
       </div>
     </div>
-    <div class="col s10 select-title">
+    <div class="col s11 select-title">
       Show Only My Products
     </div>
   </div>
