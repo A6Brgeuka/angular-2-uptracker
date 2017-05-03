@@ -4,7 +4,7 @@
     <div class="col s12 select-title">Department</div>
     <div class="col s12">
       <div class="left select">
-        <select [(ngModel)]="filter.department" materialize="material_select">
+        <select [(ngModel)]="filter.location" materialize="material_select">
           <option value="">All</option>
           <option value="1">Firsr</option>
           <option value="2">Second</option>
@@ -43,7 +43,7 @@
   <div class="row">
   <div class="center-align col s12">
     <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
-    <button class="uptracker-form-btn ">Search</button>
+    <button class="uptracker-form-btn" (click)="triggerFilterChange()">Search</button>
   </div>
   </div>
 </div>

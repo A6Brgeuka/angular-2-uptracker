@@ -7,9 +7,11 @@ import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { UserService, AccountService } from '../../../core/services/index';
+import { SlFilters } from '../../../models/slfilters.model';
 
 export class ProductFilterModalContext extends BSModalContext {
   public product: any;
+  public callback = function(a:any){};
 }
 
 @Component({
@@ -22,7 +24,7 @@ export class ProductFilterModalContext extends BSModalContext {
 export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<ProductFilterModalContext> {
   public subscribers: any = {};
   context: ProductFilterModalContext;
-  public filter:any = {'department':'', 'vendor':'', 'onlymy':false};
+  public filter:SlFilters = new SlFilters;
 
 
   constructor(
@@ -43,5 +45,10 @@ export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<Pr
 
   closeModal(data){
     this.dialog.close(data);
+  }
+  
+  triggerFilterChange(){
+    console.log(this.filter);
+    //this.context.callback(this.filter);
   }
 }

@@ -24,7 +24,7 @@ import { UserService } from '../../core/services/user.service';
 import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
-
+import { SlFilters } from '../../models/slfilters.model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -34,19 +34,16 @@ import { AccountService } from '../../core/services/account.service';
 @DestroySubscribers()
 export class ShoppingListComponent implements OnInit {
   public selectAll: string;
-  public last_loc:string = '';
+  public last_loc: string = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public sortBy: string;
-  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public cart:any = [];
+  public cart: any = [];
   public total: number;
-  public orders: any;
-  public orders$: BehaviorSubject<any> = new BehaviorSubject({});
   public products: any = [];
   public changes$: BehaviorSubject<any>[] = [];
   public changed: any = [];
   public selectedProducts: any = [];
+  public filters$: BehaviorSubject<SlFilters> = new BehaviorSubject(new SlFilters);
   
   constructor(
     public modal: Modal,
@@ -59,15 +56,15 @@ export class ShoppingListComponent implements OnInit {
   }
   
   ngOnInit() {
-//TODO remove
+    //TODO remove
     this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-
+    
     this.cartService.collection$.subscribe((r: any) => {
       this.total = r.length;
       this.cart$.next(r);
       this.changed = [];
     });
-
+    
     //this.changePriceModal();
   }
   
@@ -129,23 +126,34 @@ export class ShoppingListComponent implements OnInit {
   
   
   showFiltersModal() {
-    this.modal
-    .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
-      );
+    this.cart$.take(1).subscribe((cart) => {
+      let vendors = [];
+      _.map(cart, (product: any) => {
+        _.map(product.vendors, (v: any) => {
+          if (_.indexOf(vendors, v.vendor_name)==-1) {
+            vendors.push(v.vendor_name)
+          }
+        });
+      });
+      debugger;
+      this.modal
+      .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (res) => {
+            // this.filterProducts();
+          },
+          (err) => {
+          }
+        );
+      });
     });
   }
   
   changePriceModal(item = {}) {
     //TODO
     this.modal
-    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({"product":item}, true))
+    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({"product": item}, true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
@@ -171,7 +179,7 @@ export class ShoppingListComponent implements OnInit {
   
   saveItem(item: any = {}) {
     let data = {
-      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id :  item.prev_location,
+      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
       "product_id": item.product_id,
       "variants": [
         {
@@ -186,7 +194,7 @@ export class ShoppingListComponent implements OnInit {
     };
     item.prev_location = item.location_id;
     if (item.selected_vendor.id) {
-      data['variants'][0]['vendor_id']= item.selected_vendor.id;
+      data['variants'][0]['vendor_id'] = item.selected_vendor.id;
     }
     this.cartService.updateItem(data)
     .subscribe((r: any) => {
@@ -201,5 +209,9 @@ export class ShoppingListComponent implements OnInit {
   changeRow(item) {
     this.changed[item['id']] = true;
     this.saveItem(item);
+  }
+  
+  applyFilters() {
+  
   }
 }
