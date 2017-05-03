@@ -17,12 +17,15 @@ html {
   opacity:0;
   cursor:default;
   padding-bottom: 10px;
-  display: inline-block;
 }
 
 .opacity {
   opacity:1;
   cursor: pointer;
+}
+
+.inline-block{
+ display: inline-block;
 }
 
 .debug-monitor {
@@ -986,7 +989,7 @@ modal-overlay {
 
 .fade{
   opacity:0;
-  transition: opacity .5s;
+  transition:  opacity  .5s;
 }
 .in{
   opacity: 1;
