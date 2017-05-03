@@ -39,9 +39,15 @@
     </div>
   </div>
   <div class="row">
-  <div class="center-align col s12">
-    <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
-    <button class="uptracker-form-btn" (click)="triggerFilterChange()">Search</button>
+    <div class="center-align col s12">
+      <a class="transparent" (click)="resetFilters()" [class.opacity]="(filter.location || filter.vendor || filter.onlymy)">Reset filters</a>
+    </div>
   </div>
+  <div class="clearfix"></div>
+  <div class="row">
+    <div class="center-align col s12">
+      <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
+      <button class="uptracker-form-btn" (click)="triggerFilterChange()">Search</button>
+    </div>
   </div>
 </div>

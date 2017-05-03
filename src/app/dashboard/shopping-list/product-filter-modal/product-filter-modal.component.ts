@@ -52,4 +52,9 @@ export class ProductFilterModal implements OnInit, CloseGuard, ModalComponent<Pr
     this.context.callback(this.filter);
     this.dismissModal();
   }
+  
+  resetFilters(){
+    this.filter = new SlFilters;
+    this.triggerFilterChange();
+  }
 }
