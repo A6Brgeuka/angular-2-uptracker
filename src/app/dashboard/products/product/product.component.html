@@ -19,131 +19,129 @@
     <div class="title center-align">{{showVariant ? 'Product Variation' : 'Product Details' }}
     </div>
     <div class="row uptracker-form">
-      <div class="col s12 m3 l2">
-        <div class="img-container">
+      <div class="info-box col s12" [class.condensed]="showVariant">
+        <div class="img-container left">
           <div class="img" *ngIf="product?.image"
-            [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }"></div>
-        </div>
-      </div>
-      <div class="info-box col s12 m9 l10" [class.condensed]="showVariant">
-        <div class="ttl-box row input">
-          <div *ngIf="!showEdit" class="ttl col s12 variant-show-name">{{ showVariant ? currentVariant.name :
-            product?.name}}
-          </div>
-          <div class="col s12">
-            <input (click)="$event.stopPropagation();"
-              class="ttl col s12 name-field"
-              *ngIf="showEdit"
-              [(ngModel)]="productCopy.name"
-              type="text">
+            [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }">
           </div>
         </div>
-        <div class="row" [ngClass]="{'checks':showEdit}">
-
-          <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
-            <div *ngIf="!showEdit" class="">
-              <label>Hazardous</label>
-              <span class="value">{{product?.hazardous_string}}</span>
+        <div class="left product-params">
+          <div class="ttl-box row input">
+            <div *ngIf="!showEdit" class="ttl col s12 variant-show-name">
+              {{ showVariant ? currentVariant.name : product?.name}}
             </div>
-            <div *ngIf="showEdit" class="input-checkbox checkbox">
-              <label>Hazardous</label>
-              <input
-                type="checkbox"
-                class="checkbox-input"
-                [(ngModel)]="productCopy.hazardous"
-                id="checkbox1"
-              />
-              <label for="checkbox1"></label>
+            <div class="col s12">
+              <input (click)="$event.stopPropagation();"
+                class="ttl col s12 name-field"
+                *ngIf="showEdit"
+                [(ngModel)]="productCopy.name"
+                type="text">
             </div>
           </div>
+          <div class="row" [ngClass]="{'checks':showEdit}">
 
-          <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
-            <div *ngIf="!showEdit" class="">
-              <label>Trackable</label>
-              <span class="value">{{product?.trackable_string}}</span>
+            <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
+              <div *ngIf="!showEdit" class="">
+                <label>Hazardous</label>
+                <span class="value">{{product?.hazardous_string}}</span>
+              </div>
+              <div *ngIf="showEdit" class="input-checkbox checkbox">
+                <label>Hazardous</label>
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  [(ngModel)]="productCopy.hazardous"
+                  id="checkbox1"
+                />
+                <label for="checkbox1"></label>
+              </div>
             </div>
-            <div *ngIf="showEdit" class="input-checkbox checkbox">
-              <label>Trackable</label>
-              <input
-                type="checkbox"
-                class="checkbox-input"
-                [(ngModel)]="productCopy.trackable"
-                id="checkbox2"
-              />
-              <label for="checkbox2"></label>
+
+            <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
+              <div *ngIf="!showEdit" class="">
+                <label>Trackable</label>
+                <span class="value">{{product?.trackable_string}}</span>
+              </div>
+              <div *ngIf="showEdit" class="input-checkbox checkbox">
+                <label>Trackable</label>
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  [(ngModel)]="productCopy.trackable"
+                  id="checkbox2"
+                />
+                <label for="checkbox2"></label>
+              </div>
+            </div>
+
+            <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
+              <div *ngIf="!showEdit" class="">
+                <label>Tax Exempt</label>
+                <span class="value">{{product?.tax_exempt_string}}</span>
+              </div>
+              <div *ngIf="showEdit" class="input-checkbox checkbox">
+                <label>Tax Exempt</label>
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  [(ngModel)]="productCopy.tax_exempt"
+                  id="checkbox3"
+                />
+                <label for="checkbox3"></label>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+
+            <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
+              <label>Department</label>
+              <div *ngIf="!showEdit" class="value">{{product?.department}}</div>
+              <div *ngIf="showEdit" class="select">
+                <select
+                  [(ngModel)]="productCopy.department"
+                  materialize="material_select"
+                  [materializeSelectOptions]="departmentCollection$ | async">
+                  <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
+              <label>Category</label>
+              <div *ngIf="!showEdit" class="value">{{product?.category}}</div>
+              <div *ngIf="showEdit" class="select">
+                <select
+                  [(ngModel)]="productCopy.category"
+                  materialize="material_select"
+                  [materializeSelectOptions]="productCategoriesCollection$ | async">
+                  <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
+              <label>Accounting</label>
+              <div *ngIf="!showEdit" class="value">{{product?.account_category}}</div>
+              <div *ngIf="showEdit" class="select">
+                <select
+                  [(ngModel)]="productCopy.account_category"
+                  materialize="material_select"
+                  [materializeSelectOptions]="productAccountingCollection$ | async">
+                  <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-
-          <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
-            <div *ngIf="!showEdit" class="">
-              <label>Tax Exempt</label>
-              <span class="value">{{product?.tax_exempt_string}}</span>
-            </div>
-            <div *ngIf="showEdit" class="input-checkbox checkbox">
-              <label>Tax Exempt</label>
-              <input
-                type="checkbox"
-                class="checkbox-input"
-                [(ngModel)]="productCopy.tax_exempt"
-                id="checkbox3"
-              />
-              <label for="checkbox3"></label>
+          <div class="row">
+            <div *ngFor="let attr of currentVariant.custom_attr" class="col s2">
+              <label class="top">{{attr.name}}</label>
+              <div class="value">{{attr.value}}</div>
             </div>
           </div>
-
         </div>
-        <div class="row">
-
-          <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
-            <label>Department</label>
-            <div *ngIf="!showEdit" class="value">{{product?.department}}</div>
-            <div *ngIf="showEdit" class="select">
-              <select
-                [(ngModel)]="productCopy.department"
-                materialize="material_select"
-                [materializeSelectOptions]="departmentCollection$ | async">
-                <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
-            <label>Category</label>
-            <div *ngIf="!showEdit" class="value">{{product?.category}}</div>
-            <div *ngIf="showEdit" class="select">
-              <select
-                [(ngModel)]="productCopy.category"
-                materialize="material_select"
-                [materializeSelectOptions]="productCategoriesCollection$ | async">
-                <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
-            <label>Accounting</label>
-            <div *ngIf="!showEdit" class="value">{{product?.account_category}}</div>
-            <div *ngIf="showEdit" class="select">
-              <select
-                [(ngModel)]="productCopy.account_category"
-                materialize="material_select"
-                [materializeSelectOptions]="productAccountingCollection$ | async">
-                <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div *ngFor="let attr of currentVariant.custom_attr" class="col s2">
-            <label class="top">{{attr.name}}</label>
-            <div class="value">{{attr.value}}</div>
-          </div>
-        </div>
-
-
       </div>
     </div>
     <div class="clearfix"></div>

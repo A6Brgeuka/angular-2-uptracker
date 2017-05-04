@@ -204,8 +204,8 @@ $normal: 14px;
     }
 
     .img-container {
-      width: 140px;
-      height: 140px;
+      width: 200px;
+      height: 200px;
       border: 1px solid $light-grey;
 
       .img {
@@ -213,6 +213,10 @@ $normal: 14px;
         background-position: center center;
         background-size: cover;
       }
+    }
+    .product-params {
+      padding:20px;
+      width: calc(100% - 200px);
     }
 
     .row.uptracker-form {
