@@ -23,14 +23,14 @@
             Add Product
           </button>
           <button type="button"
-            routerLink="['/products']"
+            [routerLink]="['/products']"
             class="small show-on-small uptracker-form-btn waves-light waves-effect">
             <div class="fa fa-plus"></div>
           </button>
         </div>
       </div>
 
-      <div class="heading row">
+      <div *ngIf="total" class="heading row">
         <div class="col s4">
           <div class="row">
             <div class="col s2">
@@ -133,17 +133,18 @@
         </div>
       </div>
     </div>
+
     <div class="orders-preview col m4 s12">
       <div class="row">
         <div class="col s11">
           <div class="main-title less-title">Orders Preview</div>
-          <div class="grey-text">7 products selected</div>
+          <div class="grey-text">{{ total }} products selected</div>
         </div>
         <div class="col s1" (click)="viewSettingsModal()">
           <i class="fa fa-gear right"></i>
         </div>
       </div>
-      <div class="order-list">
+      <div *ngIf="total" class="order-list">
         <div *ngFor="let order of (cartService.ordersPreview$ | async)" class="row order-list-item">
           <div class="col s9">
             <div class="order-heading">{{ order.type }}</div>
