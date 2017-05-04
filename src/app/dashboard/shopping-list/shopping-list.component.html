@@ -100,7 +100,7 @@
               </li>
               <li *ngFor="let vendor of product.vendors " (click)="updateVendor(product, vendor)">
                 <div class="col s2 image-container"
-                  [ngStyle]="{ 'background-image': 'url(' + (vendor.image_url ? vendor.image_url : '/assets/img/icon-nav-vendors.svg') + ')' }"></div>
+                  [ngStyle]="vendor.image_url ? { 'background-image': 'url(' + vendor.image_url + ')' } : {}"></div>
                 <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
                 <div class="col s2 inblock">{{ vendor.book_price }}</div>
               </li>
@@ -138,13 +138,13 @@
       <div class="row">
         <div class="col s11">
           <div class="main-title less-title">Orders Preview</div>
-          <div class="grey-text">{{ total }} products selected</div>
+          <div class="grey-text">{{ totalOrders }} products selected</div>
         </div>
         <div class="col s1" (click)="viewSettingsModal()">
           <i class="fa fa-gear right"></i>
         </div>
       </div>
-      <div *ngIf="total" class="order-list">
+      <div *ngIf="totalOrders" class="order-list">
         <div *ngFor="let order of (cartService.ordersPreview$ | async)" class="row order-list-item">
           <div class="col s9">
             <div class="order-heading">{{ order.type }}</div>

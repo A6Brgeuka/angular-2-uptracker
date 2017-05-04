@@ -43,6 +43,7 @@ export class ShoppingListComponent implements OnInit {
   public changes$: BehaviorSubject<any>[] = [];
   public changed: any = [];
   public selectedProducts: any = [];
+  private totalOrders: number;
   
   
   constructor(
@@ -69,6 +70,7 @@ export class ShoppingListComponent implements OnInit {
         && (f.vendor == '' || f.vendor == item.selected_vendor.vendor_name))
         && (!f.onlymy || this.userService.selfData.id == item.created_by)
       );
+      this.totalOrders = cart.filter((item:any)=>item.status).length;
       this.total = cart.length;
       this.cart$.next(cart);
       this.changed = [];
