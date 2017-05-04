@@ -2,6 +2,10 @@ import { Injectable, ViewContainerRef, ComponentRef, Injector } from '@angular/c
 import { Overlay, overlayConfigFactory, DOMOverlayRenderer, DialogRef, ModalOverlay } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Subject } from 'rxjs/Rx';
+import {
+  UniConfirmModal,
+  UniConfirmModalContext
+} from '../../shared/modals/uni-confirm-modal/uni-confirm-modal.component';
 
 
 @Injectable()
@@ -28,26 +32,18 @@ export class ModalWindowService {
   ) {
   }
   
-  confirmModal(title, body = '', fn = () => {}){
-    this.modal.confirm()
-        .isBlocking(false)
-        .showClose(false)
-        .keyboard(27)
-        //.dialogClass('modal-confirm')
-        .title(title)
-        .body(body)
-        .okBtnClass('btn-confirm uptracker-form-btn waves-effect waves-light')
-        .cancelBtnClass('cancel-btn')
-        .open()
-        .then((resultPromise)=>{
-          resultPromise.result.then(
-              (res) => {
-                fn();
-              },
-              (err) => {
-              }
-          );
-        });
+  confirmModal(title, content = '', fn = () => {}){
+    let data:UniConfirmModalContext = new UniConfirmModalContext (title, content, fn);
+    this.modal
+    .open(UniConfirmModal, this.overlayConfigFactoryWithParams(data,true))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (comment) => {
+        },
+        (err) => {
+        }
+      );
+    });
   }
 
   saveScrollPosition(){

@@ -5,7 +5,6 @@ import { HistoryDetailComponent } from './history-detail/history-detail.componen
 import { AppSharedModule } from '../../../shared/shared.module';
 import { ProductComponent } from './product.component';
 import { Add2OrderModalModule } from './add2order-modal/add2order-modal.module';
-import { ConfirmModalModule } from './confirm-modal/confirm-modal.module';
 
 
 @NgModule({
@@ -18,7 +17,6 @@ import { ConfirmModalModule } from './confirm-modal/confirm-modal.module';
   imports: [
     AppSharedModule,
     Add2OrderModalModule,
-    ConfirmModalModule
   ],
   providers: []
 })

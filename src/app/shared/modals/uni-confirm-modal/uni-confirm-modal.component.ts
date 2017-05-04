@@ -4,26 +4,30 @@ import * as _ from 'lodash';
 import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { ProductService } from '../../../../core/services/product.service';
-import { CartService } from '../../../../core/services/cart.service';
-import { ToasterService } from '../../../../core/services/toaster.service';
 
-export class ConfirmModalContext extends BSModalContext {
-  public commentId: any;
+export class UniConfirmModalContext extends BSModalContext {
+  public title:string;
+  public content:string;
   public fn:any;
+  constructor(t,c,f){
+   super();
+    this.title = t ? t :'Please confirm:';
+    this.content = c ? c : 'Are You sure?';
+    this.fn = f ? f : function(){};
+  }
 }
 
 @Component({
   selector: 'app-change-password-user-modal',
-  templateUrl: './confirm-modal.component.html',
-  styleUrls: ['./confirm-modal.component.scss']
+  templateUrl: './uni-confirm-modal.component.html',
+  styleUrls: ['./uni-confirm-modal.component.scss']
 })
 @DestroySubscribers()
-export class ConfirmModal implements OnInit, CloseGuard, ModalComponent<ConfirmModalContext> {
-  context: ConfirmModalContext;
+export class UniConfirmModal implements OnInit, CloseGuard, ModalComponent<UniConfirmModalContext> {
+  context: UniConfirmModalContext;
   
   constructor(
-    public dialog: DialogRef<ConfirmModalContext>,
+    public dialog: DialogRef<UniConfirmModalContext>,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -41,7 +45,7 @@ export class ConfirmModal implements OnInit, CloseGuard, ModalComponent<ConfirmM
   }
 
   confirm(){
-    this.dialog.context.fn(this.dialog.context.commentId);
+    this.dialog.context.fn();
     this.dismissModal();
   }
 }

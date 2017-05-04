@@ -43,7 +43,7 @@ export class ShoppingListComponent implements OnInit {
   public changes$: BehaviorSubject<any>[] = [];
   public changed: any = [];
   public selectedProducts: any = [];
-  private totalOrders: number;
+  public totalOrders: number;
   
   
   constructor(

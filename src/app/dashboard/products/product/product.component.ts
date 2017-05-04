@@ -16,7 +16,6 @@ import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit
 import { FileUploadService } from "../../../core/services/file-upload.service";
 import { ActivatedRoute, Params } from '@angular/router';
 import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
-import { ConfirmModal } from './confirm-modal/confirm-modal.component';
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -127,6 +126,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   ngOnInit() {
+
     this.accountService.locations$
     .subscribe(r=>{this.locationArr = r});
     
@@ -545,18 +545,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   deleteComment(comment) {
-  
-    this.modal
-    .open(ConfirmModal, this.modalWindowService.overlayConfigFactoryWithParams({commentId : comment.id, fn : this.deleteCommentFunc.bind(this,comment.id)},true))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (comment) => {
-        },
-        (err) => {
-        }
-      );
-    });
-  
+    this.modalWindowService.confirmModal('Delete Comment?', 'Are you sure you want to delete this comment?', this.deleteCommentFunc.bind(this, comment.id));
+    
   }
   
   deleteCommentFunc(id) {

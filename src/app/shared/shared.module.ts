@@ -40,16 +40,14 @@ import { EditUserModal } from './modals/edit-user-modal/edit-user-modal.componen
 import { EditLocationModal } from './modals/edit-location-modal/edit-location-modal.component';
 import { ChangePasswordUserModal } from "./modals/change-password-user-modal/change-password-user-modal.component";
 import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal.component";
-import { EditUserModalModule } from './modals/edit-user-modal/edit-user-modal.module';
-import { EditLocationModalModule } from './modals/edit-location-modal/edit-location-modal.module';
-import { ChangePasswordUserModalModule } from './modals/change-password-user-modal/change-password-user-modal.module';
-import { EditCommentModalModule } from './modals/edit-comment-modal/edit-comment-modal.module';
+import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.component';
 
 let modalsArr = [
   EditUserModal,
   EditLocationModal,
   ChangePasswordUserModal,
   EditCommentModal,
+  UniConfirmModal
 ];
 
 
