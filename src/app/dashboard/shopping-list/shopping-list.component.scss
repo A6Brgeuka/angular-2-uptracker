@@ -2,6 +2,11 @@
 
 :host /deep/ {
 
+
+  .light-grey {
+    color:$light-grey;
+  }
+
   .item.row {
     position:relative;
   }
@@ -470,7 +475,7 @@ div.top {
   justify-content: center;
   height:50px;
 }
- 
+
 .image-container {
   width:50px;
   height:50px;
@@ -519,3 +524,4 @@ input {
   .show-on-small {display:inline-block!important;}
   .hide-on-small {display:none!important;}
 }
+

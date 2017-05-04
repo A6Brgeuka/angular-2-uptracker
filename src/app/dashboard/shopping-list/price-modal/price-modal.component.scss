@@ -8,6 +8,11 @@ input.select-dropdown, .input input {
 .inner {
   padding: 5px;
 
+
+  label.light-grey {
+    color: $grey;
+  }
+
   [type="radio"] + label:before, [type="radio"] + label:after {
     right: 0;
     margin: 4px auto;

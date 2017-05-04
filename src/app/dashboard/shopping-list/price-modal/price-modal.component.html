@@ -2,22 +2,22 @@
   <div class="clearfix row title center-align">Pricing Info</div>
   <div class="row checks-row">
     <div class="col s4" (click)="setPrice(selectedVendor.book_price)">
-      <input value="book" type="radio" name="price_type" id="price_type_book">
+      <input [disabled]="!selectedVendor.book_price" value="book" type="radio" name="price_type" id="price_type_book">
       <label for="price_type_book"></label>
-      <label for="price_type_book" class="grey-text smaller">${{ selectedVendor.book_price }}</label>
-      <label for="price_type_book">Book</label>
+      <label for="price_type_book" class="grey-text smaller">{{ selectedVendor.book_price ? '$'+selectedVendor.book_price : 'N/A'}}</label>
+      <label for="price_type_book" [class.light-grey]="!selectedVendor.book_price">Book</label>
     </div>
     <div class="col s4" (click)="setPrice(selectedVendor.your_price)">
-      <input value="negotiated" type="radio" name="price_type" id="price_type_negotiated">
+      <input [disabled]="!selectedVendor.your_price" value="negotiated" type="radio" name="price_type" id="price_type_negotiated">
       <label for="price_type_negotiated"></label>
-      <label for="price_type_negotiated" class="grey-text smaller">${{ selectedVendor.your_price }}</label>
-      <label for="price_type_negotiated">Negotiated</label>
+      <label for="price_type_negotiated" class="grey-text smaller">{{ selectedVendor.your_price ? '$'+selectedVendor.your_price : 'N/A'}}</label>
+      <label for="price_type_negotiated" [class.light-grey]="!selectedVendor.your_price">Negotiated</label>
     </div>
     <div class="col s4" (click)="setPrice(selectedVendor.club_price)">
-      <input value="club" type="radio" name="price_type" id="price_type_club">
+      <input [disabled]="!selectedVendor.club_price" value="club" type="radio" name="price_type" id="price_type_club">
       <label for="price_type_club"></label>
-      <label for="price_type_club" class="grey-text smaller">${{ selectedVendor.club_price }}</label>
-      <label for="price_type_club">Club</label>
+      <label for="price_type_club" class="grey-text smaller">{{ selectedVendor.club_price ? '$'+selectedVendor.club_price : 'N/A' }}</label>
+      <label for="price_type_club" [class.light-grey]="!selectedVendor.club_price">Club</label>
     </div>
     <div class="right-grey">
       <div class="right-ttl">Org. Price</div>
