@@ -1,5 +1,24 @@
 <div class="close fa fa-chevron-left" (click)="goBack()"></div>
 
+<div class="buttons-topright">
+  <button
+    type="submit"
+    class="uptracker-form-btn white-text waves-effect waves-light"
+    [class.disabled]="!profileForm.form.valid"
+    [disabled]="!profileForm.form.valid">
+    <i class="fa fa-pencil"></i>
+    Save
+  </button>
+  <button
+    type="button"
+    class="uptracker-form-btn white-text waves-effect waves-light uptracker-form-delete-btn"
+    *ngIf="user.id && user.id!=userService.selfData.id"
+    (click)="deleteUser(user)">
+    <i class="fa fa-trash"></i>
+    Delete
+  </button>
+</div>
+
 <div class="title center-align">User Details</div>
 
 
@@ -262,20 +281,6 @@
 
   <div class="buttons center-align">
     <span class="nav-btn"><button type="button" class="btn-flat back-btn" *ngIf="tabProfile.className != 'active'" (click)="prevTab()">Prev</button></span>
-    <button
-        type="submit"
-        class="btn white-text waves-effect waves-light"
-        [class.disabled]="!profileForm.form.valid"
-        [disabled]="!profileForm.form.valid">
-      Save
-    </button>
-    <button
-        type="button"
-        class="btn white-text waves-effect waves-light uptracker-form-delete-btn"
-        *ngIf="user.id && user.id!=userService.selfData.id"
-        (click)="deleteUser(user)">
-      Delete
-    </button>
     <span class="nav-btn"><button type="button" class="btn-flat back-btn" *ngIf="tabTemplate.className != 'active'" (click)="nextTab()">Next</button></span>
   </div>
 </form>

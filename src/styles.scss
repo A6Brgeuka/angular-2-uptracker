@@ -772,10 +772,11 @@ button {
   }
 
   .back-btn {
+    border: 1px solid #33c6d9;
+    text-align: center;
     background: transparent !important;
     width: auto;
     color: #33c6d9;
-    text-align: left;
     padding: 0;
 
     &:hover {

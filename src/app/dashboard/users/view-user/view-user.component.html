@@ -1,5 +1,22 @@
 <div class="close fa fa-chevron-left" (click)="goBack()"></div>
-
+<div class="buttons-topright">
+  <button
+    type="button"
+    class="uptracker-form-btn  white-text waves-effect waves-light left"
+    [routerLink]="'/users/edit/'+[user.id]" >
+    <i class="fa fa-pencil"></i>
+    Edit
+  </button>
+  <button
+    type="button"
+    class="uptracker-form-btn  white-text waves-effect waves-light left uptracker-form-delete-btn"
+    *ngIf="user.id!=userService.selfData.id"
+    (click)="deleteUser(user)">
+    <i class="fa fa-trash"></i>
+    Delete
+  </button>
+  <div class="clearfix"></div>
+</div>
 <div class="title center-align">{{user.name}}</div>
 <div class="row" [hidden]="user.id==userService.selfData.id">
   <ul class="tabs user-tabs" materialize="tabs">
@@ -68,11 +85,11 @@
 </div>
 
 <div class="row uptracker-form" id="user-view">
-  <div class="col s12 m6 user-image">
+  <div class="col s12 m4 user-image">
       <img class="img" *ngIf="user.avatar" [src]="user.avatar" alt="Profile image">
       <img class="img" *ngIf="!user.avatar" src="/assets/img/onboard/icon-onboarding-users.svg" alt="Profile image">
   </div>
-  <div class="col s12 m6 info">
+  <div class="col s12 m8 info">
     <div class="contacts">
       <div class="ttl">Contacts</div>
       <div class="phone">+{{user.phone}}, {{user.phone_ext}}</div>
@@ -90,21 +107,6 @@
       <div class="ttl">Locations</div>
       <div *ngFor="let location of userLocations">{{location.name}}</div>
     </div>
-    <div class="buttons">
-      <button
-              type="button"
-              class="uptracker-form-btn btn white-text waves-effect waves-light left"
-              [routerLink]="'/users/edit/'+[user.id]" >
-        Edit
-      </button>
-      <button
-              type="button"
-              class="uptracker-form-btn btn white-text waves-effect waves-light left uptracker-form-delete-btn"
-              *ngIf="user.id!=userService.selfData.id"
-              (click)="deleteUser(user)">
-        Delete
-      </button>
-      <div class="clearfix"></div>
-    </div>
+
   </div>
 </div>

@@ -132,7 +132,6 @@ $tealish: #33c6d9;
 
   .nav-btn {
     display: inline-block;
-    width: 45px;
     min-height: 20px;
   }
 
@@ -159,14 +158,6 @@ $tealish: #33c6d9;
   padding-right: 3px;
   &:hover {
     opacity: .8;
-  }
-}
-
-button {
-  background: $tealish;
-  &:hover {
-    opacity:.8;
-    background: $tealish;
   }
 }
 
