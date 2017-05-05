@@ -24,8 +24,8 @@
       <div class="left select">
         <select  materialize="material_select">
           <option  value="package">Package</option>
-          <option  value="sleeves">Sleeves</option>
-          <option  value="item">Item</option>
+          <option  *ngIf="context.data.units_per_package " value="sleeves">Sleeves</option>
+          <option *ngIf="context.data.sub_unit_per_package "  value="item">Item</option>
         </select>
       </div>
     </div>
