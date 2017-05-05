@@ -178,7 +178,7 @@
             Total
           </div>
           <div class="col s6 o-price reddish-text right-align">
-            ${{ (orders$ | async).total_total/100 }}
+            ${{ (orders$ | async).total_total | number:'1.2-2' }}
           </div>
         </div>
       </div>

@@ -95,14 +95,14 @@
             <ul id="dropd{{ i }}" materialize="dropdown" class='dropdown-content vendors-dd'>
               <li (click)="updateVendor(product, {vendor_name:'Auto'})">
                 <div class="col s2 image-container"></div>
-                <div class="col s8 inblock">Auto select</div>
-                <div class="col s2 inblock"></div>
+                <div class="col s7 inblock">Auto select</div>
+                <div class="col s3 inblock"></div>
               </li>
               <li *ngFor="let vendor of product.vendors " (click)="updateVendor(product, vendor)">
                 <div class="col s2 image-container"
                   [ngStyle]="vendor.image_url ? { 'background-image': 'url(' + vendor.image_url + ')' } : {}"></div>
-                <div class="col s8 inblock">{{ vendor.vendor_name }}</div>
-                <div class="col s2 inblock">{{ vendor.book_price }}</div>
+                <div class="col s7 inblock">{{ vendor.vendor_name }}</div>
+                <div class="col s3 inblock">${{ vendor.book_price | number:'1.2-2'}}</div>
               </li>
             </ul>
           </div>

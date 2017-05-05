@@ -49,8 +49,18 @@ export class CartService extends ModelService {
               'vendor_name':'Auto'
             };
           }
+          r.price/=100;
+          r.selected_vendor.price/=100;
+          r.selected_vendor.book_price/=100;
+          r.selected_vendor.your_price/=100;
+          r.vendors.map((v:any)=>{
+              v.book_price/=100;
+              v.club_price/=100;
+              v.your_price/=100;
+            });
           r.selected = true;
           r.prev_location = r.location_id;
+          return r;
         });
       this.ordersPreview$.next(res.data.order_previews);
       return res.data.items;
@@ -61,7 +71,7 @@ export class CartService extends ModelService {
     .subscribe();
     console.log("order service loaded");
   }
-    
+  
   addToCart (data){
     return this.restangular.one('cart',data.location_id).customPOST(data);
   }

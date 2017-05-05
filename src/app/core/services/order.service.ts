@@ -29,7 +29,14 @@ export class OrderService extends ModelService {
   getOrder(orderId:string) {
     return this.restangular.one('orders',orderId).all('preview').customGET('')
     .map((res: any) => {
-          return res.data;
+          return res.data.map((item:any)=>{
+            item.primary_tax_nf/=100;
+            item.secondary_tax_nf/=100;
+            item.shipping_handling_nf/=100;
+            item.sub_total_nf/=100;
+            item.total_nf/=100;
+            return item;
+          });
         })
     .do((res: any) => {
       this.updateCollection$.next(res);
