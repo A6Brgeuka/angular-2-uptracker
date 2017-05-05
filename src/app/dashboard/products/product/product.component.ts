@@ -518,12 +518,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   addToOrder(variant, vid = null) {
-    
       let modalData = {
         'quantity': 1,
         'vendorArr': variant.vendor_variants,
         'locationArr': this.locationArr,
         'productId': this.product_id,
+        'units_per_package': variant.units_per_package,
+        'sub_unit_per_package': variant.sub_unit_per_package,
       };
       if (vid!==null) {
         modalData['selectedVendor'] = vid.vendor_id;

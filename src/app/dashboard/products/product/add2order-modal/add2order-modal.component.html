@@ -2,7 +2,9 @@
   <div class="row title center-align">Add to Order</div>
   <div class="row">
     <div class="col s12 red-text center-align mbot">
-      1 Package = 10 Sleeves = 100 Item/Each
+      1 Package
+      <span *ngIf="context.data.units_per_package "> = {{ context.data.units_per_package }} Sleeves</span>
+      <span *ngIf="context.data.sub_unit_per_package "> = {{ context.data.sub_unit_per_package }} Item/Each</span>
     </div>
 
     <div class="col s3 select-title">Quantity</div>
