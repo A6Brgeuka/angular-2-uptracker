@@ -31,7 +31,6 @@ export class Discounts {
 
 @Component({
   selector: 'app-price-modal',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   templateUrl: './price-modal.component.html',
   styleUrls: ['./price-modal.component.scss']
 })
