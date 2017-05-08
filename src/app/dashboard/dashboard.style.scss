@@ -50,6 +50,9 @@
       &:hover {
         background: $tealish;
       }
+      &.disabled{
+        background:$light-grey;
+      }
     }
   }
 

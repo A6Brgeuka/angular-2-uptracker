@@ -15,7 +15,7 @@ import {
   ModalWindowService
 } from '../../../core/services/index';
 import { ChangePasswordUserModal } from '../../../shared/modals/change-password-user-modal/change-password-user-modal.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserModel } from '../../../models/user.model';
 
 @Component({
@@ -64,6 +64,7 @@ export class EditUserComponent implements OnInit {
   public userId: string;
   
   constructor(
+    public router:Router,
     public zone: NgZone,
     public userService: UserService,
     public accountService: AccountService,
@@ -305,6 +306,9 @@ export class EditUserComponent implements OnInit {
     this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
       (res: any) => {
         this.goBack();
+      },
+      (err: any) => {
+        this.goBack();
       }
     );
   }
@@ -345,7 +349,7 @@ export class EditUserComponent implements OnInit {
   }
   
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/users']);
   }
   
 }
