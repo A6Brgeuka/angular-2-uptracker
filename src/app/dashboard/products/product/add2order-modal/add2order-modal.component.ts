@@ -39,8 +39,12 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     dialog.setCloseGuard(this);
   }
   
+  //The calculation should be based on package, units and sub-units data from the api. Also if i enter in
+  // 20 sleeves and there are 10 sleeves per package it should only add 2 items to the shopping list and not 20.
+  // If the user enters in a partial package it should round up to the nearest whole package quantity.
+  
   ngOnInit() {
-console.log(this.context);
+    console.log('CONTEXT',this.context);
     let e = this.context.data.selectedVendor ? this.context.data.selectedVendor : '';
     this.vendorChange({target: {value: e}});
     console.log(this.context.data);
