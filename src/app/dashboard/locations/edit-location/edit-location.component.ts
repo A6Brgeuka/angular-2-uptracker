@@ -17,7 +17,7 @@ import {
 import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
 import { InventoryLocationModel } from "../../../models/inventory-location.model";
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-location',
@@ -82,6 +82,7 @@ export class EditLocationComponent implements OnInit {
               public route: ActivatedRoute,
               public windowLocation: Location,
               public modalWindowService: ModalWindowService,
+              public router: Router,
               public locationService: LocationService) {
     this.location = new LocationModel();
   }
@@ -137,7 +138,7 @@ export class EditLocationComponent implements OnInit {
   
   updateLocs(location){
     let locationArr = _.filter(location, (lc: any) => (lc.id == this.locationId));
-    let locationData = !_.isEmpty(locationArr) ? locationArr[0] : {} ;
+    let locationData:any = !_.isEmpty(locationArr) ? locationArr[0] : {} ;
     locationData.inventory_locations = locationData.inventory_locations ? locationData.inventory_locations : this.defaultStorageLocations;
     this.location = new LocationModel(locationData);
     this.location.street_1 = this.location.address.street_1;
@@ -295,7 +296,7 @@ export class EditLocationComponent implements OnInit {
   addStorageLocation(data) {
     this.location.account_id = this.userService.selfData.account_id;
 
-    let storageLocation = _.cloneDeep(data);
+    let storageLocation:any = _.cloneDeep(data);
 
     // if new storage location push storage location to inventory locations
     if (!storageLocation._id) {
@@ -395,7 +396,11 @@ export class EditLocationComponent implements OnInit {
   }
   
   goBack(): void {
+    this.router.navigate(['/locations'])
+  }
+  
+  goBackOneStep(): void {
     this.windowLocation.back();
   }
-
+  
 }

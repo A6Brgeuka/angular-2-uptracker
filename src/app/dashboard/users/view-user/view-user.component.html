@@ -1,3 +1,4 @@
+<div class="close fa fa-chevron-left" (click)="goBack()"></div>
 <div *ngIf="user && user.id">
   <div class="buttons-topright">
     <button
@@ -15,14 +16,7 @@
       <i class="fa fa-trash"></i>
       Delete
     </button>
-    <button
-      type="button"
-      class="uptracker-form-btn  white-text waves-effect waves-light left"
-      routerLink='/users'
-    >
-      <i class="fa fa-chevron-circle-left"></i>
-      Cancel
-    </button>
+
     <div class="clearfix"></div>
   </div>
   <div class="title center-align">{{user.name}}</div>

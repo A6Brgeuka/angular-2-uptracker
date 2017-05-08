@@ -351,5 +351,8 @@ export class EditUserComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/users']);
   }
+  goBackOneStep(): void {
+    this.location.back();
+  }
   
 }

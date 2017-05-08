@@ -1,3 +1,4 @@
+<div class="close fa fa-chevron-left" (click)="goBack()"></div>
 <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #profileForm="ngForm" autocomplete="off" novalidate>
 
 <div class="buttons-topright">
@@ -21,10 +22,10 @@
   </button>
   <button
     type="button"
-    class="uptracker-form-btn  white-text waves-effect waves-light left"
-    routerLink='/users'
+    class="uptracker-form-btn  white-text waves-effect waves-light left redbtn"
+    (click)="goBackOneStep()"
   >
-    <i class="fa fa-chevron-circle-left"></i>
+    <fa [name]="'close'"></fa>
     Cancel
   </button>
 </div>

@@ -49,9 +49,17 @@
       }
       &:hover {
         background: $tealish;
+        box-shadow: 0 5px 0 0 #e6e6e6;
       }
       &.disabled{
         background:$light-grey;
+      }
+
+      &.redbtn {
+        color:$red!important;
+        border: 1px solid $red;
+        background-color: $white;
+
       }
     }
   }
