@@ -1,4 +1,15 @@
 <div class="close fa fa-chevron-left" (click)="goBack()"></div>
+<div class="buttons-topright">
+  <button
+    type="button"
+    class="uptracker-form-btn white-text waves-effect waves-light"
+    [routerLink]="'/vendors/edit/'+[vendorId]">
+    <i class="fa fa-pencil"></i>
+    Edit
+  </button>
+  <div class="clearfix"></div>
+</div>
+
 <div class="inner">
   <div class="title center-align" [class.notabs]="(all_locations$ | async)?.length < 2">Vendor Info</div>
   <div class="row">
@@ -155,16 +166,6 @@
           </div>
         </div>
       </div>
-
-      <div class="row buttons center-align">
-        <button
-          type="button"
-          class="uptracker-form-btn btn white-text waves-effect waves-light"
-          [routerLink]="'/vendors/edit/'+[vendorId]"
-        >
-          Edit
-        </button>
-      </div>
     </div>
   </div>
 </div>
@@ -254,14 +255,7 @@
           </div>
         </div>
       </div>
-      <div class="row buttons center-align">
-        <button
-          type="button"
-          class="uptracker-form-btn btn white-text waves-effect waves-light"
-          [routerLink]="'/vendors/edit/'+[vendorId]">
-          Edit
-        </button>
-      </div>
+
     </div>
   </div>
 </div>

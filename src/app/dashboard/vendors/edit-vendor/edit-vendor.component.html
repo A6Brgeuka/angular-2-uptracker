@@ -1,4 +1,3 @@
-
 <div class="close fa fa-chevron-left" (click)="goBack()"></div>
 
 <div [class.notabs]="(accountService.locations$ | async)?.length < 2" class="title center-align">Vendor Info</div>
@@ -313,16 +312,25 @@
       </div>
     </div>
 
-    <div class="buttons center-align">
+    <div class="buttons-topright">
       <button
         type="submit"
-        class="btn white-text waves-effect waves-light"
+        class="uptracker-form-btn white-text waves-effect waves-light"
         [class.disabled]="!vendorForm.form.valid"
         [disabled]="!vendorForm.form.valid"
         (click)="saveVendor()"
       >
+        <fa [name]="'check'"></fa>
         Save
       </button>
+      <button
+        type="button"
+        class="uptracker-form-btn  white-text waves-effect waves-light redbtn"
+        (click)="goBackOneStep()">
+        <fa [name]="'close'"></fa>
+        Cancel
+      </button>
+
     </div>
   </form>
 </div>

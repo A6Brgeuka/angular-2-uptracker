@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location }                 from '@angular/common';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -26,6 +26,7 @@ export class ViewLocationComponent implements OnInit {
     public accountService: AccountService,
     public windowLocation: Location,
     public route: ActivatedRoute,
+    public router: Router,
     public locationService: LocationService,
     public modalWindowService: ModalWindowService
   ) {
@@ -63,7 +64,7 @@ export class ViewLocationComponent implements OnInit {
   }
   
   goBack(): void {
-    this.windowLocation.back();
+    this.router.navigate(['/locations']);
   }
   
 }

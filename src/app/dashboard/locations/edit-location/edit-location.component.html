@@ -62,16 +62,12 @@
           </button>
         </div>
         <div class="col m2 s6">
-
         </div>
         <div class="clearfix"></div>
       </div>
       <div class="bottom row">
-
       </div>
     </form>
-
-
   </div>
   <div class="location-storage-list collection row">
     <div class="col m6 s12">
@@ -315,7 +311,7 @@
       class="uptracker-form-btn white-text waves-effect waves-light"
       [class.disabled]="!locationForm.form.valid"
       [disabled]="!locationForm.form.valid">
-      <i class="fa fa-pencil"></i>
+      <fa [name]="'check'"></fa>
       Save
     </button>
     <button

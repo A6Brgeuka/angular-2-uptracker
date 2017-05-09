@@ -15,7 +15,7 @@ import {
   VendorService
 } from '../../../core/services/index';
 import { AccountVendorModel } from '../../../models/index';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 
 @Component({
@@ -92,6 +92,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     public accountService: AccountService,
     public location: Location,
     public vendorService: VendorService,
+    public router:Router,
     public route: ActivatedRoute,
     public phoneMaskService: PhoneMaskService
   ) {
@@ -362,6 +363,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   goBack(): void {
+    this.router.navigate(['/vendors']);
+  }
+  goBackOneStep(): void {
     this.location.back();
   }
   
