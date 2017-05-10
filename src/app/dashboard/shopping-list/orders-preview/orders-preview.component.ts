@@ -17,7 +17,8 @@ import { ModalWindowService } from "../../../core/services/modal-window.service"
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { OrderService } from '../../../core/services/order.service';
+import { OrderOptions, OrderService } from '../../../core/services/order.service';
+import { ToasterService } from '../../../core/services/toaster.service';
 
 
 @Component({
@@ -27,11 +28,8 @@ import { OrderService } from '../../../core/services/order.service';
 })
 @DestroySubscribers()
 export class OrdersPreviewComponent implements OnInit {
-  public mockrows = [
-    {name:'Some Product Name', location:'Location A', qty:'1', price:100},
-    {name:'Some Product', location:'Location A', qty:'3', price:10},
-    {name:'Some Name', location:'Location A', qty:'1', price:100},
-  ];
+  
+  public orderId:string='';
   public  orders$:BehaviorSubject<any> = new BehaviorSubject<any>([]);
   constructor(
     public modal: Modal,
@@ -41,6 +39,7 @@ export class OrdersPreviewComponent implements OnInit {
     public accountService: AccountService,
     public route: ActivatedRoute,
     public orderService: OrderService,
+    public toasterService:ToasterService
   ) {
   
   }
@@ -50,18 +49,39 @@ export class OrdersPreviewComponent implements OnInit {
   //http://localhost:4200/shoppinglist/orders-preview/58b3e12962f77d000bcf6495%3Aorders%3Aall%3Abest_price
     this.route.params
     .switchMap((p:Params)=>{
+      this.orderId = p['id'];
       return this.orderService.getOrder(p['id']);
     })
     .subscribe((items: any) => {
-      let tt = 0;
-      _.each(items,(i:any)=>{
-        tt+=i.total_nf;
-      });
-      items.total_total = tt;
-      return this.orders$.next(items);
+      return this.calcTT(items);
     });
   
   }
+  
+  calcTT(items){
+    let tt = 0;
+    _.each(items,(i:any)=>{
+      tt+=i.total_nf;
+    });
+    items.total_total = tt;
+    return this.orders$.next(items);
+  }
+  
+  saveOrder(orderId:string,key:string,val:string, vendorId:string){
+    let data:any = {};
+    data[key]=val;
+    data['vendor_id'] = vendorId;
+    this.orderService.updateOrder(orderId,data).subscribe((res:any)=>{
+        this.toasterService.pop('',res.statusText);
+        this.calcTT(res);
+        console.log('Data updated');
+      },
+      (res:any)=>{
+        this.toasterService.pop('error',res.statusText);
+        console.error(res);
+      })
+  }
+  
   
   goBack(): void {
     this.windowLocation.back();

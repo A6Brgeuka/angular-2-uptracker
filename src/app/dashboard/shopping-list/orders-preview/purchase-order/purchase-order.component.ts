@@ -27,6 +27,11 @@ import { OrderService } from '../../../../core/services/order.service';
 })
 @DestroySubscribers()
 export class PurchaseOrderComponent implements OnInit {
+  public mockrows = [
+    {name:'Some Product Name', location:'Location A', qty:'1', price:100},
+    {name:'Some Product', location:'Location A', qty:'3', price:10},
+    {name:'Some Name', location:'Location A', qty:'1', price:100},
+  ];
   public  orders$:BehaviorSubject<any> = new BehaviorSubject<any>([]);
   constructor(
     public modal: Modal,
@@ -37,6 +42,7 @@ export class PurchaseOrderComponent implements OnInit {
     public route: ActivatedRoute,
     public orderService: OrderService,
   ) {
+  
   }
   
   ngOnInit() {
@@ -46,6 +52,11 @@ export class PurchaseOrderComponent implements OnInit {
       return this.orderService.getOrder(p['id']);
     })
     .subscribe((items: any) => {
+      let tt = 0;
+      _.each(items,(i:any)=>{
+        tt+=i.total_nf;
+      });
+      items.total_total = tt;
       return this.orders$.next(items);
     });
   

@@ -120,26 +120,26 @@
                 <div class="col s6 bold grey-text nopad">{{ order.sub_total }}</div>
               </div>
               <div class="row">
-                <div class="col s6 grey-text">Primary Tax</div>
+                <div class="col s6 grey-text">Primary Tax, $</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input [value]="order.primary_tax">
+                    <input (change)="saveOrder(orderId,'primary_tax',order.primary_tax_nf,order.vendor_id)" [(ngModel)]="order.primary_tax_nf">
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col s6 grey-text">Secondary Tax</div>
+                <div class="col s6 grey-text">Secondary Tax, $</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input [value]="order.secondary_tax">
+                    <input (change)="saveOrder(orderId,'secondary_tax',order.secondary_tax_nf,order.vendor_id)"  [(ngModel)]="order.secondary_tax_nf">
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col s6 grey-text">Shipping + Handling</div>
+                <div class="col s6 grey-text">Shipping + Handling, $</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input [value]="order.shipping_handling">
+                    <input (change)="saveOrder(orderId,'shipping_handling',order.shipping_handling_nf,order.vendor_id)"  [(ngModel)]="order.shipping_handling_nf">
                   </div>
                 </div>
               </div>
@@ -149,7 +149,6 @@
                   {{ order.total }}
                 </div>
               </div>
-
             </div>
           </div>
         </div>

@@ -8,6 +8,14 @@ import * as _ from 'lodash';
 import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
 
+export class OrderOptions {
+    primary_tax:number;
+    secondary_tax:number;
+    shipping_handling:number;
+    ship_to:string;
+    order_method:string;
+}
+
 @Injectable()
 @Subscribers({
   initFunc: 'onInit',
@@ -41,6 +49,11 @@ export class OrderService extends ModelService {
     .do((res: any) => {
       this.updateCollection$.next(res);
     });
+  }
+  
+  updateOrder(orderId,data:OrderOptions){
+    return this.restangular.one('orders',orderId).all('preview').customPUT(data)
+    //update order data
   }
   
 }
