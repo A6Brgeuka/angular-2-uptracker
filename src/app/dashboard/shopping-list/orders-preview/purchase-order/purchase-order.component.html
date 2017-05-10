@@ -1,6 +1,28 @@
 <div class="inner">
   <div class="title row">
-    <div class="main-title center-align">Purchase Order Preview</div>
+    <div class="col s3 close tealish-text" (click)="goBack()">
+      <i class="fa fa-chevron-left"></i>
+      Order Previews
+    </div>
+    <div class="col s6  main-title center-align">Purchase Order Preview</div>
+    <div class="col s3">
+      <div class="right dd-bt">
+        <button class="uptracker-form-btn tealish white-text waves-effect waves-light">Send</button>
+        <button materialize="dropdown"
+          class='dropdown-button  uptracker-form-btn square tealish white-text waves-effect waves-light'
+          data-activates='convertall'>
+          <i class="fa fa-chevron-down"></i>
+        </button>
+        <ul id='convertall' class='dropdown-content'>
+          <li>
+            <a href="#">one</a>
+          </li>
+          <li>
+            <a href="#">two</a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="item-card">
     <h2>
