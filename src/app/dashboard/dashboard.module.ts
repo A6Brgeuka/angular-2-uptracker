@@ -17,6 +17,7 @@ import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 //import { routing } from './index';
 import { HomeModule } from './products/home/home.module';
 import { OrdersPreviewModule } from './shopping-list/orders-preview/orders-preview.module';
+import { PurchaseOrderModule } from './shopping-list/orders-preview/purchase-order/purchase-order.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { OrdersPreviewModule } from './shopping-list/orders-preview/orders-previ
     //routing,
     AppSharedModule,
     OrdersPreviewModule,
+    PurchaseOrderModule,
     InnerDashboardModule,
     OrdersModule,
     LocationsModule,

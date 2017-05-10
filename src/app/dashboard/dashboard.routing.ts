@@ -20,6 +20,7 @@ import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
 import { homeRoutes } from './products/home/home.routing';
 import { AuthGuard } from '../auth-guard.service';
 import { OrdersPreviewRoutes } from './shopping-list/orders-preview/orders-preview.routing';
+import { PurchaseOrderRoutes } from './shopping-list/orders-preview/purchase-order/purchase-order.routing';
 
 
 export const DashboardRoutes = [
@@ -37,7 +38,8 @@ export const DashboardRoutes = [
       ...TransferRoutes,
       ...ShoppingListRoutes,
       ...homeRoutes,
-      ...OrdersPreviewRoutes
+      ...OrdersPreviewRoutes,
+      ...PurchaseOrderRoutes
     ],
     canActivate: [AuthGuard],
     resolve: {
