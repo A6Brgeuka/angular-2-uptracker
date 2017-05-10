@@ -46,7 +46,8 @@ export class OrdersPreviewComponent implements OnInit {
   }
   
   ngOnInit() {
-  
+  //http://localhost:4200/shoppiinglist/purchase/58b3e12962f77d000bcf6495%3Aorders%3Aall%3Abest_price
+  //http://localhost:4200/shoppinglist/orders-preview/58b3e12962f77d000bcf6495%3Aorders%3Aall%3Abest_price
     this.route.params
     .switchMap((p:Params)=>{
       return this.orderService.getOrder(p['id']);

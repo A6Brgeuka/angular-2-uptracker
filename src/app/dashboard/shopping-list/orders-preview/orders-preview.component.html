@@ -12,7 +12,7 @@
     </div>
     <div class="col s3">
       <div class="right dd-bt">
-        <button class="uptracker-form-btn tealish white-text waves-effect waves-light">Convert All</button>
+        <button  [routerLink]="['/shoppinglist','purchase','all']"  class="uptracker-form-btn tealish white-text waves-effect waves-light">Convert All</button>
         <button materialize="dropdown"
           class='dropdown-button  uptracker-form-btn square tealish white-text waves-effect waves-light'
           data-activates='convertall'>
@@ -47,7 +47,7 @@
             </div>
             <div class="col s6">
               <div class="right dd-bt">
-                <button class="uptracker-form-btn tealish white-text waves-effect waves-light">Convert</button>
+                <button [routerLink]="['/shoppinglist','purchase',(route.params | async)?.id]" class="uptracker-form-btn tealish white-text waves-effect waves-light">Convert</button>
                 <button materialize="dropdown"
                   class='dropdown-button  uptracker-form-btn square tealish white-text waves-effect waves-light'
                   data-activates='convertall23'>
