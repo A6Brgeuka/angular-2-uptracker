@@ -73,36 +73,39 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   }
   
   changeUnitType(){
+    let perPackage = this.context.data.units_per_package ? this.context.data.units_per_package : 1;
+    let perSleeve = this.context.data.sub_unit_per_package ? this.context.data.sub_unit_per_package : 1;
+    
     let a:any;
     switch (this.last_unit_type) {
       case 'item':
         switch (this.unit_type) {
           case 'sleeves':
-            a=Math.round(parseInt(this.quantity)/this.context.data.sub_unit_per_package);
+            a=Math.round(parseInt(this.quantity)/perSleeve);
             this.quantity = a.toString();
             break;
           case 'package':
-            this.quantity=Math.round(parseInt(this.quantity)/this.context.data.units_per_package/this.context.data.sub_unit_per_package).toString();
+            this.quantity=Math.round(parseInt(this.quantity)/perPackage/perSleeve).toString();
             break;
         }
         break;
       case 'sleeves':
         switch (this.unit_type) {
           case 'item':
-            this.quantity=Math.round(parseInt(this.quantity)*this.context.data.sub_unit_per_package).toString();
+            this.quantity=Math.round(parseInt(this.quantity)*perSleeve).toString();
             break;
           case 'package':
-            this.quantity=Math.round(parseInt(this.quantity)/this.context.data.units_per_package).toString();
+            this.quantity=Math.round(parseInt(this.quantity)/perPackage).toString();
             break;
         }
         break;
       case 'package':
         switch (this.unit_type) {
           case 'item':
-            this.quantity=Math.round(parseInt(this.quantity)*this.context.data.units_per_package*this.context.data.sub_unit_per_package).toString();
+            this.quantity=Math.round(parseInt(this.quantity)*perPackage*perSleeve).toString();
             break;
           case 'sleeves':
-            this.quantity=Math.round(parseInt(this.quantity)*this.context.data.units_per_package).toString();
+            this.quantity=Math.round(parseInt(this.quantity)*perPackage).toString();
             break;
         }
         break;
