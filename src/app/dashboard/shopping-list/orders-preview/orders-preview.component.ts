@@ -29,8 +29,9 @@ import { ToasterService } from '../../../core/services/toaster.service';
 @DestroySubscribers()
 export class OrdersPreviewComponent implements OnInit {
   
-  public orderId:string='';
-  public  orders$:BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public orderId: string = '';
+  public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
@@ -39,45 +40,48 @@ export class OrdersPreviewComponent implements OnInit {
     public accountService: AccountService,
     public route: ActivatedRoute,
     public orderService: OrderService,
-    public toasterService:ToasterService
+    public toasterService: ToasterService
   ) {
   
   }
   
   ngOnInit() {
-  //http://localhost:4200/shoppiinglist/purchase/58b3e12962f77d000bcf6495%3Aorders%3Aall%3Abest_price
-  //http://localhost:4200/shoppinglist/orders-preview/58b3e12962f77d000bcf6495%3Aorders%3Aall%3Abest_price
     this.route.params
-    .switchMap((p:Params)=>{
+    .switchMap((p: Params) => {
       this.orderId = p['id'];
       return this.orderService.getOrder(p['id']);
     })
     .subscribe((items: any) => {
       return this.calcTT(items);
     });
-  
+    
   }
   
-  calcTT(items){
+  calcTT(items) {
     let tt = 0;
-    _.each(items,(i:any)=>{
-      tt+=i.total_nf;
+    _.each(items, (i: any) => {
+      tt += i.total_nf;
     });
     items.total_total = tt;
     return this.orders$.next(items);
   }
   
-  saveOrder(orderId:string,key:string,val:string, vendorId:string){
-    let data:any = {};
-    data[key]=val;
+  saveOrder(orderId: string, key: string, val, vendorId: string) {
+    if (key != "ship_to" && key != "order_method") {
+      const regex = /[\d\.]*/g;
+      regex.lastIndex++;
+      let m: any = regex.exec(val);
+      val = m ? parseFloat(m[0]) : 0;
+    }
+    let data: any = {};
+    data[key] = val;
     data['vendor_id'] = vendorId;
-    this.orderService.updateOrder(orderId,data).subscribe((res:any)=>{
-        this.toasterService.pop('',res.statusText);
-        this.calcTT(res);
-        console.log('Data updated');
+    this.orderService.updateOrder(orderId, data).subscribe((res: any) => {
+        this.toasterService.pop('', 'Data updated');
+        this.calcTT(res.data);
       },
-      (res:any)=>{
-        this.toasterService.pop('error',res.statusText);
+      (res: any) => {
+        this.toasterService.pop('error', res.statusText);
         console.error(res);
       })
   }

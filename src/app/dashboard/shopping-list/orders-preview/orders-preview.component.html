@@ -93,6 +93,7 @@
                       name="sel1"
                       id="sel1"
                       materialize="material_select"
+                      (change)="saveOrder(orderId,'ship_to',order.ship_to.location_id,order.vendor_id)"
                       [(ngModel)]="order.ship_to.location_id">
                       <option *ngFor="let st of order.ship_to_options" [value]="st.location_id">{{ st.location_name }}</option>
                     </select>
@@ -123,7 +124,7 @@
                 <div class="col s6 grey-text">Primary Tax, $</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input (change)="saveOrder(orderId,'primary_tax',order.primary_tax_nf,order.vendor_id)" [(ngModel)]="order.primary_tax_nf">
+                    <input (change)="saveOrder(orderId,'primary_tax',order.primary_tax,order.vendor_id)" [(ngModel)]="order.primary_tax">
                   </div>
                 </div>
               </div>
@@ -131,7 +132,7 @@
                 <div class="col s6 grey-text">Secondary Tax, $</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input (change)="saveOrder(orderId,'secondary_tax',order.secondary_tax_nf,order.vendor_id)"  [(ngModel)]="order.secondary_tax_nf">
+                    <input (change)="saveOrder(orderId,'secondary_tax',order.secondary_tax,order.vendor_id)"  [(ngModel)]="order.secondary_tax">
                   </div>
                 </div>
               </div>
@@ -139,7 +140,7 @@
                 <div class="col s6 grey-text">Shipping + Handling, $</div>
                 <div class="col s6 bold ">
                   <div class="input">
-                    <input (change)="saveOrder(orderId,'shipping_handling',order.shipping_handling_nf,order.vendor_id)"  [(ngModel)]="order.shipping_handling_nf">
+                    <input (change)="saveOrder(orderId,'shipping_handling',order.shipping_handling,order.vendor_id)"  [(ngModel)]="order.shipping_handling">
                   </div>
                 </div>
               </div>
