@@ -78,7 +78,7 @@ export class OrdersPreviewComponent implements OnInit {
     data['vendor_id'] = vendorId;
     this.orderService.updateOrder(orderId, data).subscribe((res: any) => {
         this.toasterService.pop('', 'Data updated');
-        this.calcTT(res.data);
+        this.calcTT(res);
       },
       (res: any) => {
         this.toasterService.pop('error', res.statusText);

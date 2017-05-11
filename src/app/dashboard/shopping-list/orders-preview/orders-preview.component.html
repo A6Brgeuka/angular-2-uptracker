@@ -107,7 +107,9 @@
                     <select
                       name="sel2"
                       id="sel2"
-                      materialize="material_select">
+                      materialize="material_select"
+                      (change)="saveOrder(orderId,'order_method',order.order_method,order.vendor_id)"
+                      [(ngModel)]="order.order_method">
                       <option *ngFor="let method of order.order_methods" [value]="method">{{method}}</option>
                     </select>
                   </div>
@@ -121,7 +123,7 @@
                 <div class="col s6 bold grey-text nopad">{{ order.sub_total }}</div>
               </div>
               <div class="row">
-                <div class="col s6 grey-text">Primary Tax, $</div>
+                <div class="col s6 grey-text">Primary Tax</div>
                 <div class="col s6 bold ">
                   <div class="input">
                     <input (change)="saveOrder(orderId,'primary_tax',order.primary_tax,order.vendor_id)" [(ngModel)]="order.primary_tax">
@@ -129,7 +131,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col s6 grey-text">Secondary Tax, $</div>
+                <div class="col s6 grey-text">Secondary Tax</div>
                 <div class="col s6 bold ">
                   <div class="input">
                     <input (change)="saveOrder(orderId,'secondary_tax',order.secondary_tax,order.vendor_id)"  [(ngModel)]="order.secondary_tax">
@@ -137,7 +139,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col s6 grey-text">Shipping + Handling, $</div>
+                <div class="col s6 grey-text">Shipping + Handling</div>
                 <div class="col s6 bold ">
                   <div class="input">
                     <input (change)="saveOrder(orderId,'shipping_handling',order.shipping_handling,order.vendor_id)"  [(ngModel)]="order.shipping_handling">

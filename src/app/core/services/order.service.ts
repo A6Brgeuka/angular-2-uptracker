@@ -53,6 +53,16 @@ export class OrderService extends ModelService {
   
   updateOrder(orderId,data:OrderOptions){
     return this.restangular.one('orders',orderId).all('preview').customPUT(data)
+    .map((res: any) => {
+      return res.data.map((item:any)=>{
+        item.primary_tax_nf/=100;
+        item.secondary_tax_nf/=100;
+        item.shipping_handling_nf/=100;
+        item.sub_total_nf/=100;
+        item.total_nf/=100;
+        return item;
+      });
+    })
     //update order data
   }
   
