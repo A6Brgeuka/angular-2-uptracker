@@ -28,7 +28,8 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   public location: string = '';
   public valid: boolean = false;
   public isAuto: boolean = true;
-  
+  public unit_type: string ='item';
+  public last_unit_type: string ='item';
   
   constructor(
     public dialog: DialogRef<Add2OrderModalContext>,
@@ -71,6 +72,44 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     return parseInt(a)
   }
   
+  changeUnitType(){
+    let a:any;
+    switch (this.last_unit_type) {
+      case 'item':
+        switch (this.unit_type) {
+          case 'sleeves':
+            a=Math.round(parseInt(this.quantity)/this.context.data.sub_unit_per_package);
+            this.quantity = a.toString();
+            break;
+          case 'package':
+            this.quantity=Math.round(parseInt(this.quantity)/this.context.data.units_per_package/this.context.data.sub_unit_per_package).toString();
+            break;
+        }
+        break;
+      case 'sleeves':
+        switch (this.unit_type) {
+          case 'item':
+            this.quantity=Math.round(parseInt(this.quantity)*this.context.data.sub_unit_per_package).toString();
+            break;
+          case 'package':
+            this.quantity=Math.round(parseInt(this.quantity)/this.context.data.units_per_package).toString();
+            break;
+        }
+        break;
+      case 'package':
+        switch (this.unit_type) {
+          case 'item':
+            this.quantity=Math.round(parseInt(this.quantity)*this.context.data.units_per_package*this.context.data.sub_unit_per_package).toString();
+            break;
+          case 'sleeves':
+            this.quantity=Math.round(parseInt(this.quantity)*this.context.data.units_per_package).toString();
+            break;
+        }
+        break;
+    }
+    this.last_unit_type = this.unit_type;
+  }
+  
   saveOrder() {
     if (this.validateFields()) {
       let data = {
@@ -82,6 +121,7 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
             "variant_id": this.vendor.variant_id,
             "vendor_variant_id": this.vendor.variant_id,
             "qty": parseInt(this.quantity),
+            "unit_type":this.unit_type,
             "vendor_auto_select": this.isAuto,
           }
         ]
