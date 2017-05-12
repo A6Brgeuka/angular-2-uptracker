@@ -9,6 +9,35 @@ import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
 import { SlFilters } from '../../models/slfilters.model';
 
+export class PriceInfoDiscounts{
+  type:string;
+  amount:number;
+  reward_points:number; //reward
+  bogo_type:string; //typeBogo
+  discounted:number;
+  constructor(obj?: any) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+      }
+    }
+  }
+}
+
+export class PriceInfoData{
+  public variant_id:string;
+  public price:number;
+  public price_type:string;
+  public discounts:PriceInfoDiscounts[];
+  constructor(obj?: any) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+       }
+    }
+  }
+}
+
 @Injectable()
 @Subscribers({
   initFunc: 'onInit',
@@ -84,5 +113,9 @@ export class CartService extends ModelService {
     return this.restangular.one('cart',data.location_id).customDELETE(data);
   }
   
+  updatePriceInfo(data:any, location_id){
+    debugger;
+    return this.restangular.one('cart',location_id).all('pricing').customPUT(data);
+  }
   
 }
