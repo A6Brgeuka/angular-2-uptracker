@@ -24,8 +24,8 @@
       <div class="left select">
         <select (change)="changeUnitType()"  [(ngModel)]="unit_type" materialize="material_select">
           <option  value="package">Package</option>
-          <option  *ngIf="context.data.units_per_package" value="sleeves">Sleeves</option>
-          <option *ngIf="context.data.sub_unit_per_package"  value="item">Item</option>
+          <option  *ngIf="context.data.units_per_package" value="unit">Sleeves</option>
+          <option *ngIf="context.data.sub_unit_per_package"  value="subunit">Item</option>
         </select>
       </div>
     </div>

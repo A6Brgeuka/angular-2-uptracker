@@ -40,10 +40,6 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     dialog.setCloseGuard(this);
   }
   
-  //The calculation should be based on package, units and sub-units data from the api. Also if i enter in
-  // 20 sleeves and there are 10 sleeves per package it should only add 2 items to the shopping list and not 20.
-  // If the user enters in a partial package it should round up to the nearest whole package quantity.
-  
   ngOnInit() {
     // TODO
     if (_.isArray(this.context.data)){this.context.data = this.context.data[0]}
@@ -81,9 +77,9 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     
     let a:any;
     switch (this.last_unit_type) {
-      case 'item':
+      case 'subunit':
         switch (this.unit_type) {
-          case 'sleeves':
+          case 'unit':
             a=Math.round(parseInt(this.quantity)/perSleeve);
             this.quantity = a.toString();
             break;
@@ -92,9 +88,9 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
             break;
         }
         break;
-      case 'sleeves':
+      case 'unit':
         switch (this.unit_type) {
-          case 'item':
+          case 'subunit':
             this.quantity=Math.round(parseInt(this.quantity)*perSleeve).toString();
             break;
           case 'package':
@@ -104,10 +100,10 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
         break;
       case 'package':
         switch (this.unit_type) {
-          case 'item':
+          case 'subunit':
             this.quantity=Math.round(parseInt(this.quantity)*perPackage*perSleeve).toString();
             break;
-          case 'sleeves':
+          case 'unit':
             this.quantity=Math.round(parseInt(this.quantity)*perPackage).toString();
             break;
         }
