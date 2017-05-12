@@ -108,8 +108,9 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
     let data:PriceInfoData = {
       price_type:this.selectedPriceType,
       price:this.selectedPrice,
-      variant_id:this.context.product.selected_vendor.vendor_variant_id,
+      variant_id:this.context.product.variant_id,
       discounts:[]
+
     };
     data.discounts = this.discounts;
     data.discounts.map((d:any)=>{
