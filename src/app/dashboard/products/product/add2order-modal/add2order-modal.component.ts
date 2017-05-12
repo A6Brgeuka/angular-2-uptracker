@@ -45,6 +45,9 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   // If the user enters in a partial package it should round up to the nearest whole package quantity.
   
   ngOnInit() {
+    // TODO
+    if (_.isArray(this.context.data)){this.context.data = this.context.data[0]}
+    
     console.log('CONTEXT',this.context);
     let e = this.context.data.selectedVendor ? this.context.data.selectedVendor : '';
     this.vendorChange({target: {value: e}});

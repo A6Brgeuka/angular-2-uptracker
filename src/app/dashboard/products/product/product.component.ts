@@ -530,7 +530,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         modalData['selectedVendor'] = vid.vendor_id;
       }
       
-    //this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?');
     this.modal
     .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: modalData},true))
     .then((resultPromise) => {
@@ -543,6 +542,39 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
     
   }
+  
+  bulkAddToOrder() {
+    this.filteredVariants$
+    .map((variant:any)=>{
+      return variant
+      .filter((v:any)=>v.checked)
+      .map((v:any)=>{
+        return {
+          'quantity': 1,
+          'vendorArr': v.vendor_variants,
+          'locationArr': this.locationArr,
+          'productId': this.product_id,
+          'units_per_package': v.units_per_package,
+          'sub_unit_per_package': v.sub_unit_per_package,
+        }
+      });
+    })
+    .take(1)
+    .subscribe((data:any)=>{
+      console.log("filtered data array",data);
+      this.modal
+      .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: data},true))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (comment) => {
+          },
+          (err) => {
+          }
+        );
+      });
+    });
+  }
+  
   
   
   deleteComment(comment) {
@@ -611,15 +643,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
           if (!result.continue) {
             this.addDocToDoc$.next(result);
           }
-          console.log(this.variants, this.variantsCopy)
+          console.log(this.variants, this.variantsCopy);
           let prod_diff = this.productService.deepDiff(this.productCopy, this.product);
           let vars_diff;
           vars_diff = this.productService.deepDiff(this.variants, this.variantsCopy);
-          
-          
-          
           prod_diff.id = this.product.id;
-        
           prod_diff['documents'] = this.doc;
           let updateData: any = {
             location_id: this.location_id,
