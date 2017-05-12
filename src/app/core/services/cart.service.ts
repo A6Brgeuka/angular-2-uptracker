@@ -114,7 +114,6 @@ export class CartService extends ModelService {
   }
   
   updatePriceInfo(data:any, location_id){
-    debugger;
     return this.restangular.one('cart',location_id).all('pricing').customPUT(data);
   }
   
