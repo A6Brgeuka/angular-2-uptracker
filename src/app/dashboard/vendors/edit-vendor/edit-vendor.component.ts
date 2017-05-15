@@ -110,7 +110,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     })
     .subscribe(()=>{
     });
-    
+  
+  
     
     Observable.combineLatest(
       this.route.params,

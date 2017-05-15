@@ -1,13 +1,26 @@
 <div class="close fa fa-chevron-left" (click)="goBack()"></div>
+<div class="inner">
+  <div [class.notabs]="(accountService.locations$ | async)?.length < 2" class="title center-align">Vendor Info</div>
+  <div class="row">
+    <div class="col s4">
+      <div class="img-container">
+        <div class="img" *ngIf="vendor.logo" [ngStyle]="{ 'background-image': 'url(' + vendor.logo + ')' }"></div>
+      </div>
+    </div>
+    <div class="col s8">
+      <div class="ttl-box">
+        <div class="ttl">{{vendor.name}}</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div [class.notabs]="(accountService.locations$ | async)?.length < 2" class="title center-align">Vendor Info</div>
-
-<div class="row" >
+<div class="row">
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col" [class.s12]="(accountService.locations$ | async)?.length < 2"
       (click)="chooseTabLocation()"
       [class.s4]="(accountService.locations$ | async)?.length > 1">
-      <a #all [class.active] = "!currentLocation?.id && inited">All Locations</a>
+      <a #all [class.active]="!currentLocation?.id && inited">All Locations</a>
     </li>
     <li class="tab col s4">
       <a href="#general" #primary *ngIf="(accountService.locations$ | async)?.length > 1"
@@ -17,13 +30,21 @@
       </a>
     </li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(accountService.locations$ | async)?.length > 1">
-      <a  (click)="chooseTabLocation(secondaryLocation)" *ngIf="(accountService.locations$ | async)?.length == 2" href="#general"  data-activates="location_dropdown5"
-        [class.active]="sateliteLocationActive && inited" #secondary>
+      <a (click)="chooseTabLocation(secondaryLocation)"
+        *ngIf="(accountService.locations$ | async)?.length == 2"
+        href="#general"
+        data-activates="location_dropdown5"
+        [class.active]="sateliteLocationActive && inited"
+        #secondary>
         <span>{{secondaryLocation?.name}}</span>
 
       </a>
-      <a *ngIf="(accountService.locations$ | async)?.length > 2" href="#general" materialize="dropdown" data-activates="location_dropdown5"
-        [class.active]="sateliteLocationActive" #secondary>
+      <a *ngIf="(accountService.locations$ | async)?.length > 2"
+        href="#general"
+        materialize="dropdown"
+        data-activates="location_dropdown5"
+        [class.active]="sateliteLocationActive"
+        #secondary>
         <span>{{secondaryLocation?.name}}</span>
         <i class="caret"></i>
       </a>
@@ -37,7 +58,7 @@
   </ul>
 </div>
 <div id="general">
-  <form  class="uptracker-form" materialize (ngSubmit)="onSubmit()" #vendorForm="ngForm" autocomplete="off" novalidate>
+  <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #vendorForm="ngForm" autocomplete="off" novalidate>
     <div class="input row">
       <div class="col s12 m4">
         <div class="label left-align">Currency</div>
