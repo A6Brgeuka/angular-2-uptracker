@@ -110,13 +110,23 @@
   .heading-row > .col {
     font-weight: bold;
   }
-  .card-content > .row, .card-content > .row >.row {
+  .card-content > .row {
     border-bottom: 2px solid $light-grey;
-    height: 40px;
+  }
+  .card-content > .row >.row {
+    border-top: 2px solid $light-grey;
+    margin-bottom:-5px!important;
+  }
+  .card-content > .row, .card-content > .row >.row {
+    min-height: 40px;
+    padding: 5px 0;
     line-height: 1;
 
     margin-bottom: 0;
     & > .col {
+      min-height: 30px;
+      margin-bottom: 5px;
+
       overflow: hidden;
       height: 100%;
       display: flex;
