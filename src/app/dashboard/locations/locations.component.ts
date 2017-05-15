@@ -38,8 +38,9 @@ export class LocationsComponent implements OnInit {
     .combineLatest(
       this.userService.selfData$,
       this.sortBy$,
-      this.searchKey$
+      this.searchKey$.debounceTime(1000)
     )
+    
     // filter for emitting only if user account exists (for logout user updateSelfData)
     .filter(([user, sortBy, searchKey]) => {
       return user.account;
@@ -56,6 +57,24 @@ export class LocationsComponent implements OnInit {
       }
       return _.sortBy(filteredLocations, [sortBy]);
     });
+
+    this.searchKey$
+    .subscribe(
+      (r) => {
+        if (r && !this.sortBy) {
+          this.sortBy$.next("relevance");
+        } else if (!r && this.sortBy === "relevance") {
+          this.sortBy$.next("");
+        }
+      });
+  
+    this.sortBy$
+    .subscribe(
+      (r) => {
+        this.sortBy = r;
+      }
+    );
+  
   }
   
   viewLocationModal(location = null) {

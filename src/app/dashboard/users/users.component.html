@@ -13,6 +13,14 @@
           class="col s12"
           (input)="usersFilter($event)"/>
       </div>
+      <div class="left select">
+        <select [(ngModel)]="sortBy" materialize="material_select" (change)="sortChange($event)">
+          <option disabled value="">Sort by</option>
+          <option value="relevance">Relevance</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+
       <div class="left">
         <button type="button" (click)="editUserModal()" class="uptracker-form-btn waves-light waves-effect">Add New
           User
