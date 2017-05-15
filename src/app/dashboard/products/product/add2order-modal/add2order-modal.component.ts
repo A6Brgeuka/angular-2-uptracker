@@ -28,8 +28,8 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   public location: string = '';
   public valid: boolean = false;
   public isAuto: boolean = true;
-  public unit_type: string ='item';
-  public last_unit_type: string ='item';
+  public unit_type: string ='package';
+  public last_unit_type: string ='package';
   
   constructor(
     public dialog: DialogRef<Add2OrderModalContext>,
@@ -74,14 +74,11 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   changeUnitType(){
     let perPackage = this.context.data.units_per_package ? this.context.data.units_per_package : 1;
     let perSleeve = this.context.data.sub_unit_per_package ? this.context.data.sub_unit_per_package : 1;
-    
-    let a:any;
     switch (this.last_unit_type) {
       case 'subunit':
         switch (this.unit_type) {
           case 'unit':
-            a=Math.round(parseInt(this.quantity)/perSleeve);
-            this.quantity = a.toString();
+            this.quantity = Math.round(parseInt(this.quantity)/perSleeve).toString();
             break;
           case 'package':
             this.quantity=Math.round(parseInt(this.quantity)/perPackage/perSleeve).toString();

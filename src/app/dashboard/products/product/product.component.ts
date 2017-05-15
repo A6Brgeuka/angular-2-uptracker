@@ -525,6 +525,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
         'productId': this.product_id,
         'units_per_package': variant.units_per_package,
         'sub_unit_per_package': variant.sub_unit_per_package,
+        'unit_type': variant.unit_type,
+        'sub_unit_type': variant.sub_unit_type,
+        'package_type': variant.package_type,
       };
       if (vid!==null) {
         modalData['selectedVendor'] = vid.vendor_id;
