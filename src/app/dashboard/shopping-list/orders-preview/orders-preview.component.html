@@ -77,6 +77,12 @@
               <div class="col s3">{{ item.location_name }}</div>
               <div class="col s1 center-align">{{ item.qty }}</div>
               <div class="col s2 right-align">{{ item.price }}</div>
+              <div class="row" *ngFor="let discount of item.discounts">
+                <div class="col tealish-text s6">{{ discount.type }}</div>
+                <div class="col s3">{{ item.location_name }}</div>
+                <div class="col s1 center-align">{{ item.qty }}</div>
+                <div class="col s2 right-align"></div>
+              </div>
             </div>
           </div>
           <div class="row fieldset">

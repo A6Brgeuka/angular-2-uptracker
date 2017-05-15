@@ -112,15 +112,16 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
       discounts:[]
 
     };
-    data.discounts = this.discounts;
-    data.discounts.map((d:any)=>{
-      return new  PriceInfoDiscounts({
+    data.discounts =_.map(this.discounts,(d:any)=>{
+      let b = {
         type:d.type,
         amount:d.amount,
         reward_points:d.reward,
         bogo_type:d.typeBogo,
         discounted:d.discounted
-      })
+      };
+      let c = new PriceInfoDiscounts(b);
+      return b;
     });
    console.log(data);
     this.cartService.updatePriceInfo(data,this.context.product.location_id).subscribe(

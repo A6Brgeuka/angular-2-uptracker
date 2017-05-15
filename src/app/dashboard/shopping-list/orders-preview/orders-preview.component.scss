@@ -110,7 +110,7 @@
   .heading-row > .col {
     font-weight: bold;
   }
-  .card-content > .row {
+  .card-content > .row, .card-content > .row >.row {
     border-bottom: 2px solid $light-grey;
     height: 40px;
     line-height: 1;
