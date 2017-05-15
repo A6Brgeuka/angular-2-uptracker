@@ -91,6 +91,17 @@ export class ProductsComponent implements OnInit {
         );
       }
     );
+    
+    this.searchKey$
+    .subscribe(
+      (r) => {
+        if (r && !this.sortBy) {
+          this.sortBy = "relevance";
+        } else if (!r && this.sortBy === "relevance") {
+          this.sortBy = "";
+        }
+      });
+    
     this.sortBy$
     .filter(r => r)
     .subscribe(
@@ -283,7 +294,7 @@ export class ProductsComponent implements OnInit {
   
   resetFilters() {
     this.searchKey = '';
-    this.sortBy= '';
+    this.sortBy = '';
     this.productService.current_page = 0;
     this.productService.getNextProducts(0, this.searchKey, this.sortBy).subscribe((r) => {
         this.getInfiniteScroll();
