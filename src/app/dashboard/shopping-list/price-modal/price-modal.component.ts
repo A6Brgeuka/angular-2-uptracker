@@ -58,12 +58,30 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   }
   
   ngOnInit() {
-    console.log(this.context);
     this.selectedVendor = this.context.product.vendors.find(
       (v) => {
         return (v.vendor_variant_id == this.context.product.selected_vendor.vendor_variant_id);
       });
-  
+    if (this.context.product.price) {
+      this.selectedPrice = this.context.product.price;
+    } else {
+      let prices:number[] =
+        [this.selectedVendor.book_price,this.selectedVendor.your_price,this.selectedVendor.club_price]
+        .filter((p:number)=>p);
+        this.selectedPrice = Math.min(...prices);
+    }
+      switch (this.selectedPrice) {
+        case this.selectedVendor.book_price:
+          this.selectedPriceType = "book";
+          break;
+        case this.selectedVendor.your_price:
+          this.selectedPriceType = "your";
+          break;
+        case this.selectedVendor.club_price:
+          this.selectedPriceType = "club";
+          break;
+      }
+    this.calcDiscount();
   
   }
   
@@ -124,8 +142,10 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
       return b;
     });
    console.log(data);
-    this.cartService.updatePriceInfo(data,this.context.product.location_id).subscribe(
+    this.cartService.updatePriceInfo(data,this.context.product.location_id)
+    .subscribe(
       (r:any) => {
+        this.cartService.updateCollection(r.data.items);
         this.dismissModal();
       },
       (er:any) => {

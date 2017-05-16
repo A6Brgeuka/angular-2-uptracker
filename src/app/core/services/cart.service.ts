@@ -73,25 +73,7 @@ export class CartService extends ModelService {
       }
     })
     .map((res: any) => {
-        _.map(res.data.items,(r:any)=>{
-          if (!r.selected_vendor || !r.selected_vendor.vendor_name) {
-            r.selected_vendor = {
-              'vendor_name':'Auto'
-            };
-          }
-          r.price/=100;
-          r.selected_vendor.price/=100;
-          r.selected_vendor.book_price/=100;
-          r.selected_vendor.your_price/=100;
-          r.vendors.map((v:any)=>{
-              v.book_price/=100;
-              v.club_price/=100;
-              v.your_price/=100;
-            });
-          r.selected = true;
-          r.prev_location = r.location_id;
-          return r;
-        });
+      res.data.items = this.dividePrices(res.data.items);
       this.ordersPreview$.next(res.data.order_previews);
       return res.data.items;
     })
@@ -100,6 +82,34 @@ export class CartService extends ModelService {
     })
     .subscribe();
     console.log("order service loaded");
+  }
+  
+  updateCollection(res:any):void {
+    res = this.dividePrices(res);
+    this.updateCollection$.next(res);
+  }
+  
+  dividePrices(res:any):any{
+    _.map(res,(r:any)=>{
+      if (!r.selected_vendor || !r.selected_vendor.vendor_name) {
+        r.selected_vendor = {
+          'vendor_name':'Auto'
+        };
+      }
+      r.price/=100;
+      r.selected_vendor.price/=100;
+      r.selected_vendor.book_price/=100;
+      r.selected_vendor.your_price/=100;
+      r.vendors.map((v:any)=>{
+        v.book_price/=100;
+        v.club_price/=100;
+        v.your_price/=100;
+      });
+      r.selected = true;
+      r.prev_location = r.location_id;
+      return r;
+    });
+    return res;
   }
   
   addToCart (data){
