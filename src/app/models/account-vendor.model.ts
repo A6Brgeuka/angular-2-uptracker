@@ -1,5 +1,5 @@
 export class AccountVendorModel {
-  id: string = null;
+  id: string = '';
   account_id: string = null;
   avg_lead_time: string = null;
   created_at: string = null;

@@ -16,6 +16,7 @@ import {
 } from '../../../core/services/index';
 import { AccountVendorModel } from '../../../models/index';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { VendorModel } from '../../../models/vendor.model';
 
 
 @Component({
@@ -86,6 +87,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public placeholder: any = {};
   public vendorId: string;
   public inited: boolean = false;
+  public allVendor$: Observable<any>;
+  private noAV:  boolean = false;
   
   constructor(
     public userService: UserService,
@@ -112,12 +115,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     });
   
   
+    this.allVendor$ = this.route.params.switchMap((route)=>{
+      return this.vendorService.getVendor(route['id']);
+    });
     
     Observable.combineLatest(
       this.route.params,
-      this.vendorService.getAccountVendors()
+      this.vendorService.getAccountVendors(),
     )
-    .map(([r, v]: any) => _.filter(v, {'vendor_id': r['id']}))
+    .map(([r, v, allv]: any) => _.filter(v, {'vendor_id': r['id']}))
     .subscribe(vendors => {
       if (!_.isEmpty(vendors)) {
         this.vendorData = vendors;
@@ -126,7 +132,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       }
       
       this.vendorLoaded$.next(true);
-      //this.vendor = new AccountVendorModel(vendors);
     });
     
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
@@ -243,7 +248,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     this.currentLocation = location;
     let currentVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': this.currentLocation ? this.currentLocation.id : null});
-    this.fillForm(currentVendor);
+    this.allVendor$.map(v=>v.data.vendor).subscribe((v:VendorModel)=>{
+      if (!currentVendor) {
+        this.noAV = true;
+      }
+      this.fillForm(Object.assign(v,currentVendor || {}));
+    });
+    
   }
   
   fillForm(vendor = {}) {
@@ -355,12 +366,20 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.formData.append('documents[' + j + ']', this.oldFileArr[j]);
       j++;
     });
+    if (this.noAV) {
+      this.vendorService.addAccountVendor(this.formData).subscribe(
+        (res: any) => {
+          this.goBack();
+        }
+      );
+    } else {
+      this.vendorService.editAccountVendor(this.vendor, this.formData).subscribe(
+        (res: any) => {
+          this.goBack();
+        }
+      );
+    }
     
-    this.vendorService.editAccountVendor(this.vendor, this.formData).subscribe(
-      (res: any) => {
-        this.goBack();
-      }
-    );
   }
   
   goBack(): void {

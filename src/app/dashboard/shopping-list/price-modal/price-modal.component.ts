@@ -102,8 +102,10 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
       }
       this.totalPrice = this.totalPrice - dis.total;
     });
-    
+        this.calcDiscount();
+
   }
+
   
   dismissModal() {
     this.dialog.dismiss();
