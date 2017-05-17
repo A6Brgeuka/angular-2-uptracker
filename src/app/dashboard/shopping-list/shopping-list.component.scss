@@ -517,7 +517,15 @@ input {
   display:inline-block;
 }
 
+
 @media screen and (max-width:1000px) {
+  .list > * {
+    font-size: 12px;
+  }
+
+  .fa-shopping-cart + div {
+    display: none;
+  }
   .filter-field > span {
     display:none;
   }
