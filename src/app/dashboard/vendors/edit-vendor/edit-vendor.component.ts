@@ -249,7 +249,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.currentLocation = location;
     let currentVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': this.currentLocation ? this.currentLocation.id : null});
     this.allVendor$.map(v=>v.data.vendor).subscribe((v:VendorModel)=>{
-      if (!currentVendor) {
+      if (!currentVendor || _.isEmpty(currentVendor)) {
         this.noAV = true;
       }
       this.fillForm(Object.assign(v,currentVendor || {}));
