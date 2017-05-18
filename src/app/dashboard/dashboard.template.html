@@ -26,7 +26,7 @@
         <div class="col s6 m6">
 
 
-          <div class="select input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard') && !stateService.isUrl('/products')">
+          <div class="select input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard')">
             <select *ngIf="(accountService.locations$ | async)?.length>1"
                 [(ngModel)]="selectedLocation"
                 name="location"

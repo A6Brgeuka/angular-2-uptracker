@@ -26,8 +26,8 @@ import { ToasterService } from '../../core/services/toaster.service';
 export class ProductsComponent implements OnInit {
   public nothingChecked: boolean;
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public sortBy: string;
-  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortBy: string = 'A-Z';
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject('A-Z');
   public total: number;
   public products$: Observable<any>;
   public products: any = [];
@@ -64,8 +64,6 @@ export class ProductsComponent implements OnInit {
   }
   
   ngOnInit() {
-    //this.productService.current_page =1;
-    
     this.accountService.dashboardLocation$.subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
@@ -91,16 +89,19 @@ export class ProductsComponent implements OnInit {
         );
       }
     );
-    
+  
+  
     this.searchKey$
     .subscribe(
       (r) => {
-        if (r && !this.sortBy) {
-          this.sortBy = "relevance";
+        if (r && this.sortBy=="A-Z") {
+          this.sortBy$.next("relevance");
         } else if (!r && this.sortBy === "relevance") {
-          this.sortBy = "";
+          this.sortBy$.next("A-Z");
         }
       });
+  
+    this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
     
     this.sortBy$
     .filter(r => r)
@@ -110,13 +111,6 @@ export class ProductsComponent implements OnInit {
         this.productService.current_page = 2;
       }
     );
-    //
-    //this.productService.start_products$.subscribe(() => {
-    //    this.productService.dashboardLocation = this.productService.dashboardLocation;
-    //    return this.getInfiniteScroll();
-    //});
-    
-    ///////////////////////?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     this.products$ = Observable
     .combineLatest(

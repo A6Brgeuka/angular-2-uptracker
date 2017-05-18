@@ -10,7 +10,6 @@
       </div>
       <div class="left select">
         <select [(ngModel)]="sortBy" materialize="material_select" (change)="locationsSort($event)">
-          <option disabled value="">Sort by</option>
           <option value="relevance">Relevance</option>
           <option value="name">Name</option>
           <option value="location_type">Location type</option>

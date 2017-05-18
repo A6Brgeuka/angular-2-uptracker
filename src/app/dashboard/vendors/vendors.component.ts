@@ -18,7 +18,7 @@ export class VendorsComponent implements OnInit {
   public searchKey: string;
   public searchKeyLast: string;
   public sortBy: string = 'A-Z';
-  public sortBy$: any = new BehaviorSubject(null);
+  public sortBy$: any = new BehaviorSubject('A-Z');
   public total: number;
   public vendors$: Observable<any>;
   public vendors: any;
@@ -47,10 +47,10 @@ export class VendorsComponent implements OnInit {
     this.searchKey$
     .subscribe(
       (r) => {
-        if (r && !this.sortBy) {
+        if (r && this.sortBy=="A-Z") {
           this.sortBy$.next("relevance");
         } else if (!r && this.sortBy === "relevance") {
-          this.sortBy$.next("");
+          this.sortBy$.next("A-Z");
         }
       });
     

@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
   public total: number;
   public users$: Observable<any> = new Observable<any>();
   public sortBy: string;
-  public sortBy$: any = new BehaviorSubject(null);
+  public sortBy$: any = new BehaviorSubject('relevance');
   
   constructor(
     public modal: Modal,
@@ -65,15 +65,6 @@ export class UsersComponent implements OnInit {
       return _.sortBy(filteredUsers, [key]);
     });
     
-    this.searchKey$
-    .subscribe(
-      (r) => {
-        if (r && !this.sortBy) {
-          this.sortBy$.next("relevance");
-        } else if (!r && this.sortBy === "relevance") {
-          this.sortBy$.next("");
-        }
-      });
     
     this.sortBy$
     .subscribe(

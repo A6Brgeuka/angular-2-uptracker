@@ -20,8 +20,8 @@ export class LocationsComponent implements OnInit {
   public subscribers: any = {};
   public searchKey: string = null;
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public sortBy: string;
-  public sortBy$: any = new BehaviorSubject(null);
+  public sortBy: string = 'relevance';
+  public sortBy$: any = new BehaviorSubject('relevance');
   public total: number;
   public locations$: Observable<any>;
   
@@ -58,16 +58,6 @@ export class LocationsComponent implements OnInit {
       return _.sortBy(filteredLocations, [sortBy]);
     });
 
-    this.searchKey$
-    .subscribe(
-      (r) => {
-        if (r && !this.sortBy) {
-          this.sortBy$.next("relevance");
-        } else if (!r && this.sortBy === "relevance") {
-          this.sortBy$.next("");
-        }
-      });
-  
     this.sortBy$
     .subscribe(
       (r) => {
@@ -78,16 +68,6 @@ export class LocationsComponent implements OnInit {
   }
   
   viewLocationModal(location = null) {
-    //this.modal
-    //    .open(ViewLocationModal,   this.modalWindowService.overlayConfigFactoryWithParams({ location: location }))
-    //    .then((resultPromise)=>{
-    //      resultPromise.result.then(
-    //          (res) => {
-    //            this.editLocationModal(res);
-    //          },
-    //          (err)=>{}
-    //      );
-    //    });
   }
   
   editLocationModal(location = null) {
