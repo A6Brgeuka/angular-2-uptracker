@@ -48,7 +48,7 @@
         <div class="clearfix"></div>
       </div>
     </div>
-    <div [class.opacity]="(searchKey || sortBy)" class="row transparent reset-filters">
+    <div [class.opacity]="searchKey" class="row transparent reset-filters">
       <div class="col s12 center-align">
         <a (click)="resetFilters()" class="">Reset Filters</a>
       </div>
