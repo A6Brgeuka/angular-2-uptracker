@@ -123,6 +123,13 @@ export class ProductsComponent implements OnInit {
       for (let p of products) {
         (selectAll === 1) ? p.selected = true : p.selected = false;
       }
+      products.map((item: any) => {
+          if (!item.image && !_.isEmpty(item.images)) {
+            item.image = item.images[0];
+          }
+          return item;
+        }
+      );
       return products;
     });
     

@@ -64,12 +64,12 @@
               <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
               <i (click)="removeFromFavorites($event,product)"  class="fa fa-star"></i>
             </div>
-            <div *ngIf="product.images" class="img" [ngStyle]="{ 'background-image': 'url(' + product.images + ')' }">
+            <div *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>
             </div>
-            <div *ngIf="!product.images" class="img">
+            <div *ngIf="!product.image" class="img">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>

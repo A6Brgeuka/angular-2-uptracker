@@ -70,6 +70,7 @@ export class ProductService extends ModelService {
     .switchMap((queryParams) => {
       return this.restangular.all('products').customGET('', queryParams.query)
     })
+    
     .subscribe((res) => {
         this.addCollectionToCollection$.next(res.data.results);
         this.totalCount$.next(res.data.count);
