@@ -91,4 +91,19 @@ export class OrdersPreviewComponent implements OnInit {
     this.windowLocation.back();
   }
   
+  //  POST /api/v1/orders/{order id}/convert
+  //{
+  //“vendor_id”:[“vendor id”],
+  //“location_id”:“the location id”
+  //}
+  
+  convert(order: any) {
+    debugger;
+    if (order[0].ship_to.location_id) {
+      this.orderService.convertOrders(
+        this.orderId,
+        {vendor_id: [order[0].vendor_id], location_id: order[0].ship_to.location_id}
+      ).subscribe();
+    }
+  }
 }

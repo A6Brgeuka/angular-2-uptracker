@@ -8,6 +8,11 @@ import * as _ from 'lodash';
 import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
 
+export class ConvertData{
+  vendor_id:string[];
+  location_id:string;
+}
+
 export class OrderOptions {
     primary_tax:number;
     secondary_tax:number;
@@ -51,7 +56,7 @@ export class OrderService extends ModelService {
     });
   }
   
-  updateOrder(orderId,data:OrderOptions){
+  updateOrder(orderId:string,data:OrderOptions){
     return this.restangular.one('orders',orderId).all('preview').customPUT(data)
     .map((res: any) => {
       return res.data.map((item:any)=>{
@@ -64,6 +69,10 @@ export class OrderService extends ModelService {
       });
     })
     //update order data
+  }
+  
+  convertOrders(orderId:string,data:ConvertData){
+    return this.restangular.one('orders',orderId).all('convert').customPOST(data)
   }
   
 }
