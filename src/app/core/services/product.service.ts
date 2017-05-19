@@ -9,7 +9,7 @@ import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject } from 'rxjs';
 import { CartService } from './cart.service';
 
 @Injectable()
