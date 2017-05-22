@@ -11,7 +11,7 @@
     </div>
     <div class="col s3">
       <div class="right dd-bt">
-        <button [routerLink]="['/shoppinglist','purchase','all']"
+        <button
           class="uptracker-form-btn tealish white-text waves-effect waves-light">Convert All
         </button>
         <button materialize="dropdown"
@@ -48,8 +48,8 @@
             </div>
             <div class="col s6">
               <div class="right dd-bt">
-                <button [routerLink]="['/shoppinglist','purchase',(route.params | async)?.id]"
-                  class="uptracker-form-btn tealish white-text waves-effect waves-light" (click)="convert([ order ])">Convert
+                <button
+                  class="uptracker-form-btn tealish white-text waves-effect waves-light" (click)="prefillDataForConvertion([ order ])">Convert
                 </button>
                 <button materialize="dropdown"
                   class='dropdown-button  uptracker-form-btn square tealish white-text waves-effect waves-light'

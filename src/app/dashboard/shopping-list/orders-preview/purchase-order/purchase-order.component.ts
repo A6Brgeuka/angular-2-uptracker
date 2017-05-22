@@ -16,8 +16,9 @@ import * as _ from 'lodash';
 import { ModalWindowService } from "../../../../core/services/modal-window.service";
 import { UserService } from '../../../../core/services/user.service';
 import { AccountService } from '../../../../core/services/account.service';
-import { ActivatedRoute, Params } from '@angular/router';
-import { OrderService } from '../../../../core/services/order.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ConvertedOrder, OrderService } from '../../../../core/services/order.service';
+
 
 
 @Component({
@@ -33,6 +34,9 @@ export class PurchaseOrderComponent implements OnInit {
     {name:'Some Name', location:'Location A', qty:'1', price:100},
   ];
   public  orders$:BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public orderId: string;
+  convertedOrder: BehaviorSubject<ConvertedOrder> = new BehaviorSubject(new ConvertedOrder());
+  
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
@@ -41,6 +45,7 @@ export class PurchaseOrderComponent implements OnInit {
     public accountService: AccountService,
     public route: ActivatedRoute,
     public orderService: OrderService,
+    public router: Router,
   ) {
   
   }
@@ -49,6 +54,7 @@ export class PurchaseOrderComponent implements OnInit {
   
     this.route.params
     .switchMap((p:Params)=>{
+      this.orderId = p['id'];
       return this.orderService.getOrder(p['id']);
     })
     .subscribe((items: any) => {
@@ -57,6 +63,26 @@ export class PurchaseOrderComponent implements OnInit {
         tt+=i.total_nf;
       });
       items.total_total = tt;
+      if (this.orderService.convertData) {
+        this.orderService.convertOrders(
+          this.orderId,
+          this.orderService.convertData
+        )
+        .map((data:any)=>{
+          return data.data;
+        })
+        .subscribe((data:ConvertedOrder)=>{
+          console.log(data);
+          this.convertedOrder.next(data);
+        });
+      } else {
+        if (this.orderId){
+          this.router.navigate(['/shoppinglist','orders-preview',this.orderId]);
+       } else {
+          this.router.navigate(['/shoppinglist']);
+       }
+  
+      }
       return this.orders$.next(items);
     });
   
@@ -65,5 +91,6 @@ export class PurchaseOrderComponent implements OnInit {
   goBack(): void {
     this.windowLocation.back();
   }
+  
   
 }

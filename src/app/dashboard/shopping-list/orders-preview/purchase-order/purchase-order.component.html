@@ -26,58 +26,55 @@
   </div>
   <div class="item-card">
     <h2>
-      Purchase Order #123
+      Purchase Order #{{ (convertedOrder | async).order?.id }}
     </h2>
     <div class="row-half">
       <h3>From</h3>
-      <p>Company Name</p>
-      <p>Address Line 1</p>
-      <p>Address Line 2</p>
-      <p>Address Line 3</p>
-      <p>Phone: 111-222-3333</p>
-      <p>Fax: 111-222-3333</p>
-      <p>E-mail: jane.doe@acme.com</p>
+      <p>{{ (convertedOrder | async).order?.from_co_name }}</p>
+      <p>{{ (convertedOrder | async).order?.from_address?.postal_code}}</p>
+      <p>{{ (convertedOrder | async).order?.from_address?.formattedAddress }}</p>
+      <p>Phone: {{ (convertedOrder | async).order?.from_phone_number}}</p>
+      <p>Fax: {{ (convertedOrder | async).order?.from_fax_number}}</p>
+      <p>E-mail: {{ (convertedOrder | async).order?.from_email_address}}</p>
     </div>
     <div class="row-half">
       <h3>Ship To</h3>
-      <p>Company Name</p>
-      <p>Address Line 1</p>
-      <p>Address Line 2</p>
-      <p>Address Line 3</p>
-      <p>Phone: 111-222-3333</p>
-      <p>Fax: 111-222-3333</p>
-      <p>E-mail: jane.doe@acme.com</p>
+      <p>{{ (convertedOrder | async).order?.ship_to_co_name }}</p>
+      <p>{{ (convertedOrder | async).order?.ship_to_address?.postal_code}}</p>
+      <p>{{ (convertedOrder | async).order?.ship_to_address.formattedAddress }}</p>
+      <p>Phone: {{ (convertedOrder | async).order?.ship_to_phone_number}}</p>
+      <p>Fax: {{ (convertedOrder | async).order?.ship_to_fax_number}}</p>
+      <p>E-mail: {{ (convertedOrder | async).order?.ship_to_email_address}}</p>
     </div>
     <div class="row-half">
       <h3>To</h3>
-      <p>Company Name</p>
-      <p>Address Line 1</p>
-      <p>Address Line 2</p>
-      <p>Address Line 3</p>
-      <p>Phone: 111-222-3333</p>
-      <p>Fax: 111-222-3333</p>
-      <p>E-mail: jane.doe@acme.com</p>
+      <p>{{ (convertedOrder | async).order?.vendor_co_name }}</p>
+      <p>{{ (convertedOrder | async).order?.vendor_address?.postal_code}}</p>
+      <p>{{ (convertedOrder | async).order?.vendor_address.formattedAddress }}</p>
+      <p>Phone: {{ (convertedOrder | async).order?.vendor_phone_number}}</p>
+      <p>Fax: {{ (convertedOrder | async).order?.vendor_fax_number}}</p>
+      <p>E-mail: {{ (convertedOrder | async).order?.vendor_email_address}}</p>
     </div>
     <div class="row-quarter">
       <h3>Account #</h3>
-      <p>123456789</p>
+      <p>{{ (convertedOrder | async).order?.account_id }}</p>
       <br>
       <h3>Order Date</h3>
-      <p>01/01/2017</p>
+      <p>{{ (convertedOrder | async).order?.order_date }}</p>
       <br>
       <h3>Order Type</h3>
-      <p>E-Mail</p>
+      <p>{{ (convertedOrder | async).order?.order_type }}</p>
       <br>
     </div>
     <div class="row-quarter">
       <h3>Shipping Method</h3>
-      <p>Not Specified</p>
+      <p>{{ (convertedOrder | async).order?.shipping_method }}</p>
       <br>
       <h3>Payment Method</h3>
-      <p>Credit Card</p>
+      <p>{{ (convertedOrder | async).order?.payment_method }}</p>
       <br>
       <h3>Ordered By</h3>
-      <p>Jane Doe</p>
+      <p>{{ (convertedOrder | async).order?.ordered_by_name }}</p>
       <br>
     </div>
 
@@ -93,16 +90,15 @@
         <div class="price-item">Pkg Price</div>
         <div class="price-item">Subtotal</div>
       </div>
-      <div class="price-row">
-        <div class="price-item">123-456</div>
-        <div class="price-item">Some product descriptionDescription
-          <br>
-          <i>*Discounted see discounts section</i>
+      <div class="price-row" *ngFor="let item of (convertedOrder | async).order_items">
+        <div class="price-item">{{item.catalog_number || '&nbsp;' }}</div>
+        <div class="price-item">
+          {{ item.item_description || '&nbsp;' }}
         </div>
-        <div class="price-item">1</div>
-        <div class="price-item">$10.00</div>
-        <div class="price-item">$100.00</div>
-        <div class="price-item">$200.00</div>
+        <div class="price-item">{{ item.quantity || '&nbsp;'  }}</div>
+        <div class="price-item">{{ item.unit_price || '&nbsp;'  }}</div>
+        <div class="price-item">{{ item.package_price || '&nbsp;'  }}</div>
+        <div class="price-item">{{ item.subtotal || '&nbsp;' }}</div>
       </div>
     </div>
     <div class="header-with-line">
@@ -117,14 +113,14 @@
         <div class="price-item">Reward Pts</div>
         <div class="price-item">Discount</div>
       </div>
-      <div class="price-row">
-        <div class="price-item">BoGo</div>
-        <div class="price-item">BoGo on #123-456
+      <div *ngFor="let item of (convertedOrder | async).discount_items" class="price-row">
+        <div class="price-item">{{ item.discount_type }}&nbsp;</div>
+        <div class="price-item">{{ item.item_description }}&nbsp;
         </div>
         <div class="price-item">&nbsp;</div>
-        <div class="price-item">1</div>
-        <div class="price-item">0</div>
-        <div class="price-item">-$100.00</div>
+        <div class="price-item">{{ item.discount_bogo_discounted }}&nbsp;</div>
+        <div class="price-item">{{ item.discount_reward_points }}&nbsp;</div>
+        <div class="price-item">-{{ item.discount_amount }}&nbsp;</div>
       </div>
     </div>
     <div class="header-with-line">
@@ -133,10 +129,10 @@
     <div class="totals">
       <div>
         <div class="total-name">
-          Lineitems
+          Line Items
         </div>
         <div class="total-value">
-          $200.00
+          {{ (convertedOrder | async).amounts_formatted?.line_items }}
         </div>
       </div>
       <div>
@@ -144,7 +140,7 @@
           Discounts
         </div>
         <div class="total-value">
-          $100.00
+          {{ (convertedOrder | async).amounts_formatted?.discounts }}
         </div>
       </div>
       <div>
@@ -152,7 +148,8 @@
           Primary Tax
         </div>
         <div class="total-value">
-          $20.00
+          {{ (convertedOrder | async).amounts_formatted?.primary_tax }}
+
         </div>
       </div>
       <div>
@@ -160,7 +157,7 @@
           Shipping & handling
         </div>
         <div class="total-value">
-          $5.00
+          {{ (convertedOrder | async).amounts_formatted?.shipping_handling }}
         </div>
       </div>
       <div>
@@ -168,7 +165,7 @@
           Total
         </div>
         <div class="total-value bigger">
-          $125.00
+          {{ (convertedOrder | async).amounts_formatted?.total }}
         </div>
       </div>
     </div>

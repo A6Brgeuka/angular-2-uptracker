@@ -16,7 +16,7 @@ import * as _ from 'lodash';
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { OrderOptions, OrderService } from '../../../core/services/order.service';
 import { ToasterService } from '../../../core/services/toaster.service';
 
@@ -40,7 +40,8 @@ export class OrdersPreviewComponent implements OnInit {
     public accountService: AccountService,
     public route: ActivatedRoute,
     public orderService: OrderService,
-    public toasterService: ToasterService
+    public toasterService: ToasterService,
+    public router:Router,
   ) {
   
   }
@@ -91,19 +92,15 @@ export class OrdersPreviewComponent implements OnInit {
     this.windowLocation.back();
   }
   
-  //  POST /api/v1/orders/{order id}/convert
-  //{
-  //“vendor_id”:[“vendor id”],
-  //“location_id”:“the location id”
-  //}
-  
-  convert(order: any) {
-    debugger;
+  prefillDataForConvertion(order: any) {
     if (order[0].ship_to.location_id) {
-      this.orderService.convertOrders(
-        this.orderId,
-        {vendor_id: [order[0].vendor_id], location_id: order[0].ship_to.location_id}
-      ).subscribe();
+      this.orderService.convertData = {
+        vendor_id: [order[0].vendor_id],
+        location_id: order[0].ship_to.location_id
+      };
+      this.route.params.subscribe((p:Params)=>{
+        this.router.navigate(['/shoppinglist','purchase',p['id']]);
+      });
     }
   }
 }
