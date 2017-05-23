@@ -57,29 +57,29 @@
     </div>
     <div class="row-quarter">
       <h3>Account #</h3>
-      <p>{{ (convertedOrder | async).order?.account_id }}</p>
+      <p>{{ (convertedOrder | async).order?.vendor_account_number || 'N/A' }}</p>
       <br>
       <h3>Order Date</h3>
-      <p>{{ (convertedOrder | async).order?.order_date }}</p>
+      <p>{{ (convertedOrder | async).order?.order_date || 'N/A' }}</p>
       <br>
       <h3>Order Type</h3>
-      <p>{{ (convertedOrder | async).order?.order_type }}</p>
+      <p>{{ (convertedOrder | async).order?.order_method || 'N/A' }}</p>
       <br>
     </div>
     <div class="row-quarter">
       <h3>Shipping Method</h3>
-      <p>{{ (convertedOrder | async).order?.shipping_method }}</p>
+      <p>{{ (convertedOrder | async).order?.shipping_method || 'N/A' }}</p>
       <br>
       <h3>Payment Method</h3>
-      <p>{{ (convertedOrder | async).order?.payment_method }}</p>
+      <p>{{ (convertedOrder | async).order?.payment_method || 'N/A' }}</p>
       <br>
       <h3>Ordered By</h3>
-      <p>{{ (convertedOrder | async).order?.ordered_by_name }}</p>
+      <p>{{ (convertedOrder | async).order?.ordered_by_name || 'N/A' }}</p>
       <br>
     </div>
 
     <div class="header-with-line">
-      <div>Line Items</div>
+      <div>Line Items sdasdsad</div>
     </div>
     <div class="price-table">
       <div class="price-row headings">
@@ -98,7 +98,7 @@
         <div class="price-item">{{ item.quantity || '&nbsp;'  }}</div>
         <div class="price-item">{{ item.unit_price || '&nbsp;'  }}</div>
         <div class="price-item">{{ item.package_price || '&nbsp;'  }}</div>
-        <div class="price-item">{{ item.subtotal || '&nbsp;' }}</div>
+        <div class="price-item">{{ item.sub_total || '&nbsp;' }}</div>
       </div>
     </div>
     <div class="header-with-line">

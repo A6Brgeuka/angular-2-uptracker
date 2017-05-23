@@ -93,14 +93,24 @@ export class OrdersPreviewComponent implements OnInit {
   }
   
   prefillDataForConvertion(order: any) {
-    if (order[0].ship_to.location_id) {
       this.orderService.convertData = {
         vendor_id: [order[0].vendor_id],
         location_id: order[0].ship_to.location_id
       };
-      this.route.params.subscribe((p:Params)=>{
-        this.router.navigate(['/shoppinglist','purchase',p['id']]);
-      });
+      let data = new OrderOptions();
+      data.ship_to = order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id;
+      data.order_method = order[0].order_method;
+      data['vendor_id'] = order[0].vendor_id;
+      debugger;
+      this.orderService.updateOrder(this.orderId, data).subscribe((res: any) => {
+          this.calcTT(res);
+          this.route.params.subscribe((p:Params)=>{
+            this.router.navigate(['/shoppinglist','purchase',p['id']]);
+          });
+        },
+        (res: any) => {
+          this.toasterService.pop('error', res.statusText);
+          console.error(res);
+        });
     }
-  }
 }

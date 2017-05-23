@@ -39,6 +39,7 @@ export class OrderOrder {
   from_email_address: string;
   from_fax_number: string;
   from_phone_number: string;
+  order_date: string;
   order_method: string;
   order_sent_ts: string;
   ordered_by: string;
@@ -58,6 +59,7 @@ export class OrderOrder {
   ship_to_location_name: string;
   ship_to_phone_number: string;
   shipping_handling: number;
+  shipping_method:string;
   status: number;
   sub_total: number;
   sub_total_no_discount: string;
@@ -100,6 +102,8 @@ export class OrderItems {
   requires_approval: string;
   status: number;
   unit_price: string;
+  package_price: string;
+  sub_total: string;
   updated_at: string;
   variant_id: string;
   vendor_id: string;
