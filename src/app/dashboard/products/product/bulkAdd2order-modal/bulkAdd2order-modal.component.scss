@@ -3,7 +3,7 @@
 :host /deep/ {
   .inner {
     .row {
-      margin-bottom: 0;
+      margin-bottom: 10px;
       &.check {
         margin: 10px 0;
         .s2 {
@@ -199,8 +199,23 @@
 
   .heading-row {
     border-bottom:1px solid $dark;
+    line-height: 2;
+    font-weight:bold;
+    color:$grey;
   }
   .content-row {
     border-bottom:1px solid $grey;
+
+    .col:first-of-type > div:nth-of-type(1) {
+      color:$tealish;
+      font-size: .9rem;
+      font-weight: bold;
+      line-height:1;
+    }
+    .col:first-of-type > div:nth-of-type(2) {
+      color:$grey;
+      font-size: .9rem;
+      line-height:1;
+    }
   }
 }
