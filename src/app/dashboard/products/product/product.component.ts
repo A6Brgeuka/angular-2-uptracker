@@ -16,6 +16,20 @@ import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit
 import { FileUploadService } from "../../../core/services/file-upload.service";
 import { ActivatedRoute, Params } from '@angular/router';
 import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
+import { BulkAdd2OrderModal } from './bulkAdd2order-modal/bulkAdd2order-modal.component';
+
+export class AddToOrderData {
+  quantity: number;
+  vendorArr: any[];
+  locationArr: any[];
+  productId: string;
+  units_per_package: number;
+  sub_unit_per_package: number;
+  unit_type: string;
+  sub_unit_type: string;
+  package_type: string;
+  variant_name: string;
+}
 
 export class ViewProductModalContext extends BSModalContext {
   public product: any;
@@ -518,7 +532,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   addToOrder(variant, vid = null) {
-      let modalData = {
+      let modalData:AddToOrderData = {
         'quantity': 1,
         'vendorArr': variant.vendor_variants,
         'locationArr': this.locationArr,
@@ -528,6 +542,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         'unit_type': variant.unit_type,
         'sub_unit_type': variant.sub_unit_type,
         'package_type': variant.package_type,
+        'variant_name':null
       };
       if (vid!==null) {
         modalData['selectedVendor'] = vid.vendor_id;
@@ -559,14 +574,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
           'productId': this.product_id,
           'units_per_package': v.units_per_package,
           'sub_unit_per_package': v.sub_unit_per_package,
+          'unit_type': v.unit_type,
+          'sub_unit_type': v.sub_unit_type,
+          'package_type': v.package_type,
+          'variant_name':v.name
         }
       });
     })
     .take(1)
-    .subscribe((data:any)=>{
+    .subscribe((data:AddToOrderData[])=>{
       console.log("filtered data array",data);
       this.modal
-      .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: data},true))
+      .open(BulkAdd2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: data},true,'big'))
       .then((resultPromise) => {
         resultPromise.result.then(
           (comment) => {
