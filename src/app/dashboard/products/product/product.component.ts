@@ -17,18 +17,45 @@ import { FileUploadService } from "../../../core/services/file-upload.service";
 import { ActivatedRoute, Params } from '@angular/router';
 import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
 import { BulkAdd2OrderModal } from './bulkAdd2order-modal/bulkAdd2order-modal.component';
+import { SampleModel } from '../../../models/sample.model';
+
+export class VendorShortInfo extends SampleModel {
+  vendor_id: string = null;
+  variant_id: string = null;
+  vendor_variant_id: string = null;
+  
+  constructor(a) {
+    super(a);
+  }
+}
 
 export class AddToOrderData {
-  quantity: number;
-  vendorArr: any[];
-  locationArr: any[];
-  productId: string;
-  units_per_package: number;
-  sub_unit_per_package: number;
-  unit_type: string;
-  sub_unit_type: string;
-  package_type: string;
-  variant_name: string;
+  //collections
+  vendorArr: any[] = [];
+  locationArr: any[] = [];
+  //form text fill
+  variant_name: string = '';
+  productId: string = '';
+  units_per_package: number = null;
+  sub_unit_per_package: number = null;
+  unit_type: string = null;
+  sub_unit_type: string = null;
+  package_type: string = null;
+  //variables
+  quantity: number = 1;
+  vendor: VendorShortInfo = null;
+  location_id: string = '';
+  selected_unit_type: string = null;
+  last_unit_type: string = null;
+  isAuto: boolean = true;
+  
+  constructor(obj) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+      }
+    }
+  }
 }
 
 export class ViewProductModalContext extends BSModalContext {
@@ -37,9 +64,6 @@ export class ViewProductModalContext extends BSModalContext {
 
 @Component({
   selector: 'app-view-product-modal',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  // Remove when solved.
-  /* tslint:disable */
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
@@ -140,11 +164,13 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   ngOnInit() {
-
-    this.accountService.locations$
-    .subscribe(r=>{this.locationArr = r});
     
-  
+    this.accountService.locations$
+    .subscribe(r => {
+      this.locationArr = r
+    });
+    
+    
     this.loadFile$.next([]);
     Observable.combineLatest(this.accountService.dashboardLocation$, this.route.params)
     .subscribe(([location, params]) => {
@@ -530,26 +556,31 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   
-  
   addToOrder(variant, vid = null) {
-      let modalData:AddToOrderData = {
-        'quantity': 1,
-        'vendorArr': variant.vendor_variants,
-        'locationArr': this.locationArr,
-        'productId': this.product_id,
-        'units_per_package': variant.units_per_package,
-        'sub_unit_per_package': variant.sub_unit_per_package,
-        'unit_type': variant.unit_type,
-        'sub_unit_type': variant.sub_unit_type,
-        'package_type': variant.package_type,
-        'variant_name':null
-      };
-      if (vid!==null) {
-        modalData['selectedVendor'] = vid.vendor_id;
-      }
+    let modalData: AddToOrderData = {
+      'quantity': 1,
+      'vendorArr': variant.vendor_variants,
+      'locationArr': this.locationArr,
+      'productId': this.product_id,
+      'units_per_package': variant.units_per_package,
+      'sub_unit_per_package': variant.sub_unit_per_package,
+      'unit_type': variant.unit_type,
+      'sub_unit_type': variant.sub_unit_type,
+      'package_type': variant.package_type,
+      'variant_name': null,
+      'vendor': new VendorShortInfo({}),
+      'location_id': null,
+      'selected_unit_type': null,
+      'last_unit_type': null,
+      'isAuto': true,
       
+    };
+    if (vid !== null) {
+      modalData['selectedVendor'] = vid.vendor_id;
+    }
+    
     this.modal
-    .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: modalData},true))
+    .open(Add2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: modalData}, true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (comment) => {
@@ -563,11 +594,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   bulkAddToOrder() {
     this.filteredVariants$
-    .map((variant:any)=>{
+    .map((variant: any) => {
       return variant
-      .filter((v:any)=>v.checked)
-      .map((v:any)=>{
-        return {
+      .filter((v: any) => v.checked)
+      .map((v: any) => {
+        return new AddToOrderData({
           'quantity': 1,
           'vendorArr': v.vendor_variants,
           'locationArr': this.locationArr,
@@ -577,15 +608,17 @@ export class ProductComponent implements OnInit, AfterViewInit {
           'unit_type': v.unit_type,
           'sub_unit_type': v.sub_unit_type,
           'package_type': v.package_type,
-          'variant_name':v.name
-        }
+          'variant_name': v.name,
+          'vendor': new VendorShortInfo({}),
+          'isAuto': true,
+        });
       });
     })
     .take(1)
-    .subscribe((data:AddToOrderData[])=>{
-      console.log("filtered data array",data);
+    .subscribe((data: AddToOrderData[]) => {
+      console.log("filtered data array", data);
       this.modal
-      .open(BulkAdd2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: data},true,'big'))
+      .open(BulkAdd2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: data}, true, 'big'))
       .then((resultPromise) => {
         resultPromise.result.then(
           (comment) => {
@@ -596,7 +629,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       });
     });
   }
-  
   
   
   deleteComment(comment) {

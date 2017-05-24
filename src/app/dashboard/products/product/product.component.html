@@ -352,7 +352,7 @@
             <div class=" head-item ">Club $</div>
             <div class=" head-item ">Forum $</div>
             <div class="flor">
-              <div *ngIf="!showEdit" class="add-order-heading head-item">
+              <div *ngIf="!showEdit  && !showVariant" class="add-order-heading head-item">
                 <button
                   class="uptracker-form-btn waves-light waves-effect add-order-btn"
                   (click)="addToOrder()"
