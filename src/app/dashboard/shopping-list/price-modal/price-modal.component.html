@@ -24,7 +24,7 @@
     </div>
     <div class="right-grey">
       <div class="right-ttl">Org. Price</div>
-      <div class="right-price">{{ selectedPrice }}</div>
+      <div class="right-price">${{ selectedPrice }}</div>
     </div>
   </div>
 
@@ -38,7 +38,6 @@
           <div class="col s4">Rewards Pts.</div>
           <div class="col s1"></div>
         </div>
-
       </div>
       <div class="row thinrow">
         <div class="col s4 padnoright">
@@ -69,7 +68,8 @@
       <div class="row titles" *ngIf="d.type=='bogo'">
         <div class="grey-text ">
           <div class="col s4">BoGo Type</div>
-          <div class="col s8">#Discounted</div>
+          <div class="col s3">#Dis-ted</div>
+          <div class="col s3">BoGo Amt</div>
         </div>
       </div>
       <div class="row thinrow" *ngIf="d.type=='bogo'">
@@ -86,6 +86,11 @@
         <div class="col s3 pad7px">
           <div class="input">
             <input type="text" [(ngModel)]="d.discounted" (change)="calcDiscount()">
+          </div>
+        </div>
+        <div class="col s3 pad7px">
+          <div class="input">
+            <input type="text" [(ngModel)]="d.amount_bogo" (change)="calcDiscount()">
           </div>
         </div>
 
@@ -105,7 +110,7 @@
     </div>
     <div class="right-grey">
       <div class="right-ttl">Total</div>
-      <div class="right-price">{{ totalPrice | number : '1.2-2'}}</div>
+      <div class="right-price">${{ totalPrice | number : '1.2-2'}}</div>
     </div>
   </div>
   <div class="center-align col s12 clearfix bottom-buttons">

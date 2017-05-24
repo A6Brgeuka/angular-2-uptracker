@@ -101,7 +101,6 @@ export class OrdersPreviewComponent implements OnInit {
       data.ship_to = order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id;
       data.order_method = order[0].order_method;
       data['vendor_id'] = order[0].vendor_id;
-      debugger;
       this.orderService.updateOrder(this.orderId, data).subscribe((res: any) => {
           this.calcTT(res);
           this.route.params.subscribe((p:Params)=>{

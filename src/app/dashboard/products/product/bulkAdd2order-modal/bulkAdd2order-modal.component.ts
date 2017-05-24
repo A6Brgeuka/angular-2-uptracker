@@ -111,10 +111,8 @@ export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<Bu
   
   vendorChange($event, item, vendors) {
     item.vendor = vendors.find((item: any) => {
-      debugger;
       return ($event.target.value == item.vendor_id);
     });
-    debugger;
     if ($event.target.value == '') {
       item.isAuto = true;
     } else {

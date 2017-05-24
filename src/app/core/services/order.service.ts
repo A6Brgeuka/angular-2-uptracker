@@ -58,6 +58,7 @@ export class OrderOrder {
   ship_to_location_id: string;
   ship_to_location_name: string;
   ship_to_phone_number: string;
+  po_number: string;
   shipping_handling: number;
   shipping_method:string;
   status: number;

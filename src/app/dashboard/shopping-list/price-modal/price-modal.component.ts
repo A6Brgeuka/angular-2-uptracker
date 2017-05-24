@@ -136,7 +136,8 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
         amount:d.amount,
         reward_points:d.reward,
         bogo_type:d.typeBogo,
-        discounted:d.discounted
+        discounted:d.discounted,
+        amount_bogo:d.amount_bogo
       };
       let c = new PriceInfoDiscounts(b);
       return b;
