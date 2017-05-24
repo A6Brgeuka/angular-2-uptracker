@@ -598,7 +598,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       return variant
       .filter((v: any) => v.checked)
       .map((v: any) => {
-        return new AddToOrderData({
+        let a = new AddToOrderData({
           'quantity': 1,
           'vendorArr': v.vendor_variants,
           'locationArr': this.locationArr,
@@ -609,9 +609,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
           'sub_unit_type': v.sub_unit_type,
           'package_type': v.package_type,
           'variant_name': v.name,
-          'vendor': new VendorShortInfo({}),
+          'vendor': new VendorShortInfo({variant_id:v.variant_id}),
           'isAuto': true,
         });
+        debugger;
+        return a;
       });
     })
     .take(1)
