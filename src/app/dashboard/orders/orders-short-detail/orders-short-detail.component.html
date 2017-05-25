@@ -1,0 +1,65 @@
+<div class="list is-grid-view orders-short-detail">
+  <div>
+    <div class="heading row">
+      <div class="col s2 left-align">
+        <div class="input-checkbox left checkbox">
+          <input
+            type="checkbox"
+            class="checkbox-input"
+            [(ngModel)]="selectAll"
+            id="selectAll"
+            (click)="toggleSelectAll(!selectAll)"
+          />
+          <label for="selectAll"></label>
+        </div>
+        <div class="left">
+          Order #
+        </div>
+      </div>
+
+      <div class="col s3">Vendor</div>
+      <div class="col s1">Location</div>
+      <div class="col s1">Status</div>
+      <div class="col s1">Placed</div>
+      <div class="col s1">Received</div>
+      <div class="col s1">Reconcieled</div>
+      <div class="col s1">#Products</div>
+      <div class="col s1 right-align">
+        <div class="right edititem filled">
+          <fa name="pencil"></fa>
+        </div>
+        <div class="right">Total</div>
+      </div>
+    </div>
+
+    <div class="item row smallrow" *ngFor="let item of items;let i=index;">
+      <div class="col s2 left-align">
+        <div class="input-checkbox left checkbox">
+          <input
+            type="checkbox"
+            class="selected-input{{i}}"
+            id="selected{{i}}"
+          />
+          <label for="selected{{i}}"></label>
+        </div>
+        <div class="left">
+          1234567
+        </div>
+      </div>
+      <div class="col s3">Vendor name</div>
+      <div class="col s1">Primary</div>
+      <div class="col s1">Placed</div>
+      <div class="col s1">12/03/17</div>
+      <div class="col s1">12/03/17</div>
+      <div class="col s1">12/03/17</div>
+      <div class="col s1">434</div>
+      <div class="col s1 right-align">
+        <div class="right edititem">
+          <fa name="ellipsis-h"></fa>
+        </div>
+        <div class="right">$100</div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
