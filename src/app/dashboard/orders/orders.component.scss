@@ -101,7 +101,6 @@
       font-size: 0;
       padding-bottom: 15px;
       text-align: left;
-      margin-left: -20px;
 
       &.is-grid-view {
         .row {
@@ -139,7 +138,7 @@
             min-height: 40px;
             line-height: 40px;
             color: #888;
-            &:nth-of-type(2) {
+            &:nth-of-type(1) {
               color: $tealish;
               cursor: pointer;
             }
@@ -286,5 +285,34 @@ div.top {
   height: 50px;
 }
 
+.tabs {
+  background-color: transparent;
+  border-bottom: 1px solid $dark;
+  .tab {
+    text-transform: none;
+    font-weight:bold;
+    a {
+      font-size: 1.2rem;
+    }
+  }
+}
 
+.input-checkbox {
+  margin-right:10px;
+}
+
+.edititem {
+  margin-left:10px;
+  width:20px;
+  height:20px;
+  text-align: center;
+  cursor:pointer;
+  color:$tealish;
+  &.filled{
+    background-color: $tealish;
+    color:$white;
+    border-radius:3px;
+
+  }
+}
 

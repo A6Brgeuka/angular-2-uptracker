@@ -31,7 +31,6 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
   
   }
-
   
   searchFilter(event){
     // replace forbidden characters
@@ -45,7 +44,6 @@ export class OrdersComponent implements OnInit {
   }
   
   showFiltersModal(){
-  
   }
   
   toggleSelectAll(event) {
@@ -55,8 +53,15 @@ export class OrdersComponent implements OnInit {
   }
   
   onCheck() {
-    //this.selectedProducts = _.cloneDeep(this.products)
-    //.filter(r => r['selected']);
+  }
+  
+  chooseTab(a){
+    this.setFilter(a);
+  }
+  
+  setFilter(filter:any){
+    //TODO
+    console.log(`tab ${filter} enabled`)
   }
   
 }

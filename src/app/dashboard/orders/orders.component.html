@@ -35,11 +35,37 @@
       </div>
     </div>
 
-    <div class="list is-grid-view" >
-      <div >
+
+    <div class="row">
+      <ul class="tabs location-tabs" materialize="tabs">
+        <li class="tab" (click)="chooseTab('all')">
+          <a [class.active]="true">All</a>
+        </li>
+        <li class="tab" (click)="chooseTab('open')">
+          <a [class.active]="false">Open</a>
+        </li>
+        <li class="tab" (click)="chooseTab('received')">
+          <a [class.active]="false">Received</a>
+        </li>
+        <li class="tab" (click)="chooseTab('backorded')">
+          <a [class.active]="false">Backorded</a>
+        </li>
+        <li class="tab" (click)="chooseTab('flagged')">
+          <a [class.active]="false">Flagged</a>
+        </li>
+        <li class="tab" (click)="chooseTab('closed')">
+          <a [class.active]="false">Closed</a>
+        </li>
+
+      </ul>
+    </div>
+
+
+    <div class="list is-grid-view">
+      <div>
         <div class="heading row">
-          <div class="col s1 center-align">
-            <div class="input-checkbox checkbox">
+          <div class="col s2 left-align">
+            <div class="input-checkbox left checkbox">
               <input
                 type="checkbox"
                 class="checkbox-input"
@@ -49,42 +75,56 @@
               />
               <label for="selectAll"></label>
             </div>
+            <div class="left">
+              Order #
+            </div>
           </div>
-          <div class="col  s1">Order #</div>
-          <div class="col s4">Vendor</div>
-          <div class="col s1">Type</div>
+
+          <div class="col s3">Vendor</div>
+          <div class="col s1">Location</div>
+          <div class="col s1">Status</div>
           <div class="col s1">Placed</div>
           <div class="col s1">Received</div>
           <div class="col s1">Reconcieled</div>
           <div class="col s1">#Products</div>
-          <div class="col s1">Total</div>
+          <div class="col s1 right-align">
+            <div class="right edititem filled">
+              <fa name="pencil"></fa>
+            </div>
+            <div class="right">Total</div>
+          </div>
         </div>
 
-        <div class="item row"  *ngFor="let item of items">
-          <div class="col s1 center-align">
-            <div class="input-checkbox checkbox">
+        <div class="item row" *ngFor="let item of items;let i=index;">
+          <div class="col s2 left-align">
+            <div class="input-checkbox left checkbox">
               <input
                 type="checkbox"
                 class="selected-input{{i}}"
                 id="selected{{i}}"
-                (change)="onCheck()"
               />
               <label for="selected{{i}}"></label>
             </div>
+            <div class="left">
+              1234567
+            </div>
           </div>
-          <div class="col s1 ">1</div>
-          <div class="col s4" >Vendor name</div>
-          <div class="col s1">email</div>
+          <div class="col s3">Vendor name</div>
+          <div class="col s1">Primary</div>
+          <div class="col s1">Placed</div>
           <div class="col s1">12/03/17</div>
           <div class="col s1">12/03/17</div>
           <div class="col s1">12/03/17</div>
           <div class="col s1">434</div>
-          <div class="col s1">$434</div>
+          <div class="col s1 right-align">
+            <div class="right edititem">
+              <fa name="ellipsis-h"></fa>
+            </div>
+            <div class="right">$100</div>
+          </div>
+          <div class="clearfix"></div>
         </div>
       </div>
-
-      <div class="clearfix"></div>
     </div>
-
   </div>
 </div>
