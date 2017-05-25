@@ -13,23 +13,6 @@ export class PriceModalContext extends BSModalContext {
   public product: any;
 }
 
-export class Discounts {
-  type: string;
-  amount: number;
-  discounted: number;
-  reward: 0;
-  total: number;
-  typeBogo: string;
-  
-  constructor() {
-    this.type = 'fixed';
-    this.discounted = 0;
-    this.amount = 5;
-    this.reward = 0;
-    this.total = 5;
-    this.typeBogo = 'free';
-  }
-}
 
 @Component({
   selector: 'app-price-modal',
@@ -81,6 +64,9 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
           this.selectedPriceType = "club";
           break;
       }
+    if (!_.isEmpty(this.context.product.discounts)){
+      this.discounts = this.context.product.discounts.map((d:any)=>new PriceInfoDiscounts(d) );
+    }
     this.calcDiscount();
   
   }
@@ -94,7 +80,7 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   
   calcDiscount() {
     this.totalPrice = this.selectedPrice;
-    _.each(this.discounts, (dis: Discounts) => {
+    _.each(this.discounts, (dis: PriceInfoDiscounts) => {
       if (dis.type == 'fixed') {
         dis.total = dis.amount;
       } else if (dis.type == 'percentage') {
@@ -114,7 +100,7 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   }
   
   addDiscount() {
-    this.discounts.push(new Discounts());
+    this.discounts.push(new PriceInfoDiscounts());
     this.calcDiscount();
   }
   
@@ -130,19 +116,7 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
       discounts:[]
 
     };
-    data.discounts =_.map(this.discounts,(d:any)=>{
-      let b = {
-        type:d.type,
-        amount:d.amount,
-        reward_points:d.reward,
-        bogo_type:d.typeBogo,
-        discounted:d.discounted,
-        amount_bogo:d.amount_bogo
-      };
-      let c = new PriceInfoDiscounts(b);
-      return b;
-    });
-   console.log(data);
+    data.discounts =_.map(this.discounts,(d:any)=>new PriceInfoDiscounts(d));
     this.cartService.updatePriceInfo(data,this.context.product.location_id)
     .subscribe(
       (r:any) => {

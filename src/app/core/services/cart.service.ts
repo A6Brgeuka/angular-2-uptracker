@@ -10,11 +10,13 @@ import { AccountService } from "./account.service";
 import { SlFilters } from '../../models/slfilters.model';
 
 export class PriceInfoDiscounts{
-  type:string = "";
-  amount:number = 0;
+  type:string = "fixed";
+  amount:number = 5;
   reward_points:number =0; //reward
-  bogo_type:string =""; //typeBogo
-  discounted:number = 0;
+  bogo_type:string ="free"; //typeBogo
+  discounted:number = 1;
+  total: number = 1;
+  full_price: number = 4;
   
   constructor(obj?: any) {
     for (let field in obj) {
