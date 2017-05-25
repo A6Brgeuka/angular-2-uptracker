@@ -609,10 +609,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
           'sub_unit_type': v.sub_unit_type,
           'package_type': v.package_type,
           'variant_name': v.name,
-          'vendor': new VendorShortInfo({variant_id:v.variant_id}),
+          'vendor': {variant_id:v.vendor_variants[0].variant_id},
           'isAuto': true,
         });
-        debugger;
+        console.log(v);
         return a;
       });
     })

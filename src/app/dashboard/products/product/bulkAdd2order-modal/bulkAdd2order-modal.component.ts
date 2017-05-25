@@ -121,14 +121,15 @@ export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<Bu
   }
   
   saveOrder() {
+    debugger;
     let data = {
-      "location_id": this.items[0].location_id,
+      "location_id": this.items[0].location_id ? this.items[0].location_id : this.items[0].locationArr[0].id,
       "product_id": this.items[0].productId,
       "variants": this.items.map((item: AddToOrderData) => {
         return {
-          "vendor_id": item.vendor.vendor_id,
+          "vendor_id": item.isAuto ? null : item.vendor.vendor_id,
           "variant_id": item.vendor.variant_id,
-          "vendor_variant_id": item.vendor.variant_id,
+          "vendor_variant_id": item.isAuto ? null :  item.vendor.variant_id,
           "qty": item.quantity,
           "unit_type": item.selected_unit_type,
           "vendor_auto_select": item.isAuto,
