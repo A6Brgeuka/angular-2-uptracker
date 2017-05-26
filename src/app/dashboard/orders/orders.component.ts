@@ -21,7 +21,7 @@ export class OrdersComponent implements OnInit {
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number = 6;
   public products$: Observable<any>;
-  items = [0,0,0,0,0,0,0,0,0,0]; //mock data
+  public items = [false,false,false,false,false,]; //mock data
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   
   constructor(
@@ -64,5 +64,7 @@ export class OrdersComponent implements OnInit {
     //TODO
     console.log(`tab ${filter} enabled`)
   }
-  
+  changeVisibility(i){
+    this.items[i] = !this.items[i];
+  }
 }

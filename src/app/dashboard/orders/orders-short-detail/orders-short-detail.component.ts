@@ -27,7 +27,7 @@ export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
   public locationArr: any;
   
   @Input("items") public items: any = [];
-  
+  @Input("visible") public visible;
 
   constructor(
     public modalWindowService: ModalWindowService,

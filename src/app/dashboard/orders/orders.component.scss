@@ -131,7 +131,6 @@
         }
         .item {
           margin-bottom: 0;
-          border-bottom: 1px solid #ddd;
           font-size: 14px;
 
           .col {
@@ -192,18 +191,46 @@
   }
 
   .edititem {
+    transition: all .3s;
     margin-left:10px;
+    margin-top:10px;
     width:20px;
     height:20px;
     text-align: center;
     cursor:pointer;
     color:$tealish;
+    line-height: 20px;
+    border-radius:3px;
+
+    &:hover {
+      background-color:$tealish;
+      color:$white;
+    }
     &.filled{
       background-color: $tealish;
       color:$white;
-      border-radius:3px;
-
+      &:hover {
+        opacity:.8;
+      }
     }
+
+  }
+  .dropdown-content {
+    margin-top:28px;
+    margin-left:10px;
+
+    li {
+      min-height:30px;
+      a {
+        padding: 0 10px;
+        line-height:30px;
+        font-weight:normal;
+      }
+    }
+  }
+
+  .heading .edititem {
+    margin-top:0;
   }
 
 }
@@ -316,4 +343,12 @@ div.top {
 .any-bottom-spinner.table-view {
   height: 50px;
 }
+
+.list .item {
+  border-bottom: 1px solid #ddd;
+  &.no-border-bottom {
+    border-bottom:none;
+  }
+}
+
 
