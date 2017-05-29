@@ -1133,3 +1133,14 @@ modal-overlay.big-custom-class .modal {
 modal-overlay.small-custom-class .modal {
   max-width:300px;
 }
+
+.flex-center {
+  display: flex!important;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top:10px;
+  padding-bottom:10px;
+  div, span {
+    line-height: 1.2 !important;
+  }
+}

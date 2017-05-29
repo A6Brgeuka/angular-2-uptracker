@@ -88,7 +88,10 @@
           <div class="col s1">Reconcieled</div>
           <div class="col s1">#Products</div>
           <div class="col s1 right-align">
-            <div class="right edititem filled" materialize="dropdown" (click)="$event.stopPropagation()" data-activates='order_ddm'>
+            <div class="right edititem filled"
+              materialize="dropdown"
+              (click)="$event.stopPropagation()"
+              data-activates='order_ddm'>
               <fa name="pencil"></fa>
             </div>
             <ul id='order_ddm' class='dropdown-content'>
@@ -124,7 +127,9 @@
                 1234567
               </div>
             </div>
-            <div class="col s2">Vendor name</div>
+            <div class="col s2 flex-center">
+              <div>Very very long vendor name</div>
+            </div>
             <div class="col s2">Primary</div>
             <div class="col s1">Placed</div>
             <div class="col s1">12/03/17</div>
@@ -132,7 +137,10 @@
             <div class="col s1">12/03/17</div>
             <div class="col s1">434</div>
             <div class="col s1 right-align">
-              <div class="right edititem" materialize="dropdown" (click)="$event.stopPropagation()" [attr.data-activates]='"order_dd_"+i'>
+              <div class="right edititem"
+                materialize="dropdown"
+                (click)="$event.stopPropagation()"
+                [attr.data-activates]='"order_dd_"+i'>
                 <fa name="ellipsis-h"></fa>
               </div>
               <ul [id]='"order_dd_"+i' class='dropdown-content'>
