@@ -18,6 +18,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
 import { BulkAdd2OrderModal } from './bulkAdd2order-modal/bulkAdd2order-modal.component';
 import { SampleModel } from '../../../models/sample.model';
+import { ConfigService } from '../../../core/services/config.service';
 
 export class VendorShortInfo extends SampleModel {
   vendor_id: string = null;
@@ -148,6 +149,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   constructor(
     public userService: UserService,
     public accountService: AccountService,
+    public configService: ConfigService,
     public productService: ProductService,
     public toasterService: ToasterService,
     public fileUploadService: FileUploadService,

@@ -16,6 +16,7 @@ import { JwtService } from './jwt.service';
 import { LocationService } from './location.service';
 import { CartService } from './cart.service';
 import { OrderService } from './order.service';
+import { ConfigService } from './config.service';
 
 
 export {
@@ -37,7 +38,8 @@ export {
   LocationService,
   CustomRenderer,
   CartService,
-  OrderService
+  OrderService,
+  ConfigService
   
 };
 
@@ -60,5 +62,6 @@ export const APP_SERVICE_PROVIDERS = [
   JwtService,
   LocationService,
   CartService,
-  OrderService
+  OrderService,
+  ConfigService
 ];
