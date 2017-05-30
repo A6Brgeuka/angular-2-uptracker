@@ -47,7 +47,7 @@ export const DashboardRoutes = [
       vendorCollection: VendorCollectionResolve,
       userCollection: UserCollectionResolve,
       locationCollection: LocationCollectionResolve,
-      productCollection: ProductCollectionResolve,
+      //productCollection: ProductCollectionResolve,
     }
   }
 ];

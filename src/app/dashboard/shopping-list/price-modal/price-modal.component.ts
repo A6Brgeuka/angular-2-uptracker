@@ -75,7 +75,6 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
     if (price) {
       this.selectedPrice = price;
       this.selectedPriceType = type;
-  
       this.calcDiscount();
     }
   }

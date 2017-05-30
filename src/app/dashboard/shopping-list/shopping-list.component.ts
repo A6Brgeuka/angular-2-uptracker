@@ -1,22 +1,15 @@
 import {
-  Component, OnInit, ViewContainerRef, ReflectiveInjector, ComponentRef, Injector,
-  Injectable, Renderer
+  Component, OnInit
 } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
-import {
-  Overlay, overlayConfigFactory, DialogRef, createComponent, ModalOverlay,
-  OverlayRenderer, DOMOverlayRenderer
-} from 'angular2-modal';
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
 import { ViewProductModal } from './view-product-modal/view-product-modal.component';
 import { EditProductModal } from './edit-product-modal/edit-product-modal.component';
 import { ProductFilterModal } from './product-filter-modal/product-filter-modal.component';
-import { RequestProductModal } from './request-product-modal/request-product-modal.component';
-import { ProductService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AddProductModal } from "./add-product-modal/add-product-modal.component";
 import { ShoppingListSettingsModal } from './shopping-list-settings-modal/shopping-list-settings.component';
@@ -48,7 +41,6 @@ export class ShoppingListComponent implements OnInit {
   
   constructor(
     public modal: Modal,
-    public productService: ProductService,
     public modalWindowService: ModalWindowService,
     public userService: UserService,
     public cartService: CartService,
