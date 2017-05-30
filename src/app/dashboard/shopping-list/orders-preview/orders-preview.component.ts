@@ -1,18 +1,11 @@
 import {
-  Component, OnInit, ViewContainerRef, ReflectiveInjector, ComponentRef, Injector,
-  Injectable, Renderer
+  Component, OnInit
 } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/Rx';
 import { Location }                 from '@angular/common';
-
-import {
-  Overlay, overlayConfigFactory, DialogRef, createComponent, ModalOverlay,
-  OverlayRenderer, DOMOverlayRenderer
-} from 'angular2-modal';
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
-
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
@@ -31,6 +24,8 @@ export class OrdersPreviewComponent implements OnInit {
   
   public orderId: string = '';
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public location_id: string;
+  private first_order: any;
   
   constructor(
     public modal: Modal,
@@ -47,6 +42,7 @@ export class OrdersPreviewComponent implements OnInit {
   }
   
   ngOnInit() {
+    
     this.route.params
     .switchMap((p: Params) => {
       this.orderId = p['id'];
@@ -112,4 +108,21 @@ export class OrdersPreviewComponent implements OnInit {
           console.error(res);
         });
     }
+
+  prefillAll(){
+    this.orders$
+    .map((orders:any)=>{
+      this.first_order = orders[0];
+      return orders.map((order:any)=>order.vendor_id)
+    })
+    .subscribe((order_ids:string[])=>{
+      this.orderService.convertData = {
+        vendor_id: order_ids,
+        location_id: this.location_id
+      };
+      this.route.params.subscribe((p:Params)=>{
+        this.router.navigate(['/shoppinglist','purchase',p['id']]);
+      });
+    });
+  }
 }

@@ -2,24 +2,24 @@
   <div class="clearfix row title center-align">Pricing Info</div>
   <div class="row checks-row">
     <div class="col s4" (click)="setPrice(selectedVendor.book_price,'book')">
-      <input [attr.checked]="selectedPriceType=='book' ?  'checked' : null" [disabled]="!selectedVendor.book_price" value="book" type="radio" name="price_type" id="price_type_book">
+      <input [attr.checked]="selectedPriceType=='book' ?  'checked' : null" [attr.disabled]="!selectedVendor.book_price?'true':null" value="book" type="radio" name="price_type" id="price_type_book">
       <label for="price_type_book"></label>
       <label *ngIf="selectedVendor.book_price" for="price_type_book" class="grey-text smaller">${{ selectedVendor.book_price | number:'1.2-2'}}</label>
       <label *ngIf="!selectedVendor.book_price" for="price_type_book" class="grey-text smaller">N/A</label>
       <label for="price_type_book" [class.light-grey]="!selectedVendor.book_price">Book</label>
     </div>
     <div class="col s4" (click)="setPrice(selectedVendor.your_price,'your')">
-      <input  [attr.checked]="selectedPriceType=='your' ?  'checked' : null" [disabled]="!selectedVendor.your_price" value="negotiated" type="radio" name="price_type" id="price_type_negotiated">
-      <label for="price_type_negotiated"></label>
-      <label *ngIf="selectedVendor.your_price" for="price_type_book" class="grey-text smaller">${{ selectedVendor.your_price | number:'1.2-2'}}</label>
-      <label *ngIf="!selectedVendor.your_price" for="price_type_book" class="grey-text smaller">N/A</label>
+      <input  [attr.checked]="selectedPriceType=='your' ?  'checked' : null" [attr.disabled]="!selectedVendor.your_price?'true':null" value="negotiated" type="radio" name="price_type" id="price_type_negotiated">
+      <label for="price_type_negotiated" ></label>
+      <label *ngIf="selectedVendor.your_price" for="price_type_negotiated"  class="grey-text smaller">${{ selectedVendor.your_price | number:'1.2-2'}}</label>
+      <label *ngIf="!selectedVendor.your_price" for="price_type_negotiated" class="grey-text smaller">N/A</label>
       <label for="price_type_negotiated" [class.light-grey]="!selectedVendor.your_price">Negotiated</label>
     </div>
     <div class="col s4" (click)="setPrice(selectedVendor.club_price,'club')">
-      <input  [attr.checked]="selectedPriceType=='club' ?  'checked' : null" [disabled]="!selectedVendor.club_price" value="club" type="radio" name="price_type" id="price_type_club">
+      <input  [attr.checked]="selectedPriceType=='club' ?  'checked' : null" [attr.disabled]="!selectedVendor.club_price?'true':null" value="club" type="radio" name="price_type" id="price_type_club">
       <label for="price_type_club"></label>
-      <label *ngIf="selectedVendor.club_price" for="price_type_book" class="grey-text smaller">${{ selectedVendor.club_price | number:'1.2-2'}}</label>
-      <label *ngIf="!selectedVendor.club_price" for="price_type_book" class="grey-text smaller">N/A</label>
+      <label *ngIf="selectedVendor.club_price" for="price_type_club" class="grey-text smaller">${{ selectedVendor.club_price | number:'1.2-2'}}</label>
+      <label *ngIf="!selectedVendor.club_price" for="price_type_club" class="grey-text smaller">N/A</label>
       <label for="price_type_club" [class.light-grey]="!selectedVendor.club_price">Club</label>
     </div>
     <div class="right-grey">
@@ -45,7 +45,6 @@
               <option value="fixed">Fixed</option>
               <option value="percentage">Percentage</option>
               <option value="bogo">BoGo</option>
-
             </select>
           </div>
         </div>

@@ -72,10 +72,12 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   }
   
   setPrice(price, type) {
-    this.selectedPrice = price;
-    this.selectedPriceType = type;
-    
-    this.calcDiscount();
+    if (price) {
+      this.selectedPrice = price;
+      this.selectedPriceType = type;
+  
+      this.calcDiscount();
+    }
   }
   
   calcDiscount() {
