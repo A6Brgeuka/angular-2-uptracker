@@ -1,14 +1,14 @@
 <div class="vendors content">
-  <div class="top">
-    <div class="title left">
+  <div class="top row">
+    <div class="col l6 m12 title">
       <div class="main-title left">Vendors</div>
       <div class="sub-title">{{vendorService.total}} total</div>
     </div>
-    <div class="filter uptracker-form right">
-      <div class="left input">
-        <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" class="col s12" (input)="vendorsFilter($event)" />
+    <div class="filter uptracker-form">
+      <div class="left input col l2 m4 wide-input">
+        <input type="text" placeholder="Keyword search" [(ngModel)]="searchKey" class="" (input)="vendorsFilter($event)" />
       </div>
-      <div class="left select">
+      <div class=" select  col l2 m4 wide-input">
         <select [(ngModel)]="sortBy" materialize="material_select" (change)="vendorsSort($event)">
           <option disabled value="">Sort by</option>
           <option value="relevance">Relevance</option>
@@ -17,8 +17,8 @@
           <option value="priority">Priority</option>
         </select>
       </div>
-      <div class="left">
-        <button type="button" (click)="requestVendor()" class="uptracker-form-btn waves-light waves-effect">Add Vendor</button>
+      <div class=" col l2 m4 ">
+        <button type="button" (click)="requestVendor()" class="wide uptracker-form-btn waves-light waves-effect">Add Vendor</button>
       </div>
     </div>
     <div class="clearfix"></div>
