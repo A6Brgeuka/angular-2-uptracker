@@ -12,10 +12,10 @@
 
         .filter-btn {
           a {
-            margin: 0 0 0 10px;
             line-height: 30px;
             cursor: pointer;
-
+            min-width: 65px;
+            display: block;
             i {
               margin-right: 3px;
               font-size: 22px;
@@ -402,6 +402,9 @@ div.top {
 
 .uptracker-toggle-view {
   cursor: pointer;
+  i {
+    margin-right:13px;
+  }
 
   transition: opacity .3s;
   &:hover {
@@ -413,5 +416,8 @@ div.top {
   height: 50px;
 }
 
+.wide {width:100%!important;}
 
-
+.sortby input {
+  width:100%!important;
+}

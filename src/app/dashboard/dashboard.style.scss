@@ -278,12 +278,11 @@
 
             .sortby {
               input {
-                width: 80px;
+                width:100%;
               }
             }
 
             .input {
-              margin: 0 0 0 10px;
 
               input {
                 padding: 0 10px;
@@ -292,7 +291,6 @@
 
             .select {
               height: 32px;
-              margin-left: 10px;
               margin-bottom: 10px;
 
               .select-wrapper.ng-valid input.select-dropdown {
@@ -310,12 +308,10 @@
             }
 
             .uptracker-toggle-view {
-              width: 30px;
               font-size: 24px;
               height: 30px;
               line-height: 32px;
-              margin: 0 2px 0 15px;
-              text-align: center;
+              text-align: right;
             }
             .uptracker-toggle-view {
               i {
@@ -381,9 +377,6 @@
           clear: both;
           margin-right: 0;
 
-          .input {
-            margin-bottom: 10px;
-          }
         }
       }
     }

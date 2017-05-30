@@ -5,48 +5,43 @@
 </ul>
 <div class="products content">
   <div class="top">
-    <div class="row">
-      <div class="col s12 filter uptracker-form clearfix">
-        <div class="left">
-        <span class="title">
-          <span class="main-title left">Products</span>
-          <span class="sub-title">{{total}} items</span>
-        </span>
-          <div (click)="showUploadDialog()" class="csv-btn btn round  upload-icon">
-          </div>
-          <a href="some-pdf.pdf" class="no-decoration" title="Download CSV template">
-            <div class="csv-btn btn round  download-icon">
-            </div>
-          </a>
-        </div>
-        <div class="right ptop5 filter-right">
-          <div class="left input">
-            <input type="text"
-              placeholder="Keyword search"
-              [(ngModel)]="searchKey"
-              class="col s12"
-              (input)="searchFilter($event)"/>
-          </div>
-          <div class="left filter-btn">
-            <a (click)="showFiltersModal()">
-              <fa [name]="'filter'"></fa>
-              <span>Filters</span>
-            </a>
-          </div>
-          <div class="left select sortby">
-            <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
-              <option disabled value="">Sort by</option>
-              <option value="relevance">Relevance</option>
-              <option value="A-Z">A-Z</option>
-              <option value="Z-A">Z-A</option>
-            </select>
-          </div>
-          <div class="left uptracker-toggle-view" (click)="toggleView()">
-            <i class="fa" [class.fa-table]="!productService.isGrid" [class.fa-th-large]="productService.isGrid"></i>
-          </div>
-        </div>
-        <div class="clearfix"></div>
+    <div class="row filter uptracker-form">
+      <div class="title col l4 m8">
+        <span class="main-title left">Products</span>
+        <span class="sub-title">{{total}} items</span>
       </div>
+      <div class="col l2 m4">
+        <div (click)="showUploadDialog()" class="csv-btn btn round right upload-icon"></div>
+        <a href="some-pdf.pdf" class="no-decoration right" title="Download CSV template">
+          <div class="csv-btn btn round  download-icon"></div>
+        </a>
+      </div>
+
+      <div class="col l3 m6 input">
+        <input type="text"
+          class="wide"
+          placeholder="Keyword search"
+          [(ngModel)]="searchKey"
+          (input)="searchFilter($event)"/>
+      </div>
+      <div class="col l1 m2 filter-btn nowrap">
+        <a (click)="showFiltersModal()">
+          <fa [name]="'filter'"></fa>
+          <span>Filters</span>
+        </a>
+      </div>
+      <div class="col l1 m2 select sortby">
+        <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+          <option disabled value="">Sort by</option>
+          <option value="relevance">Relevance</option>
+          <option value="A-Z">A-Z</option>
+          <option value="Z-A">Z-A</option>
+        </select>
+      </div>
+      <div class="col l1 m2 uptracker-toggle-view right" (click)="toggleView()">
+        <i class="fa" [class.fa-table]="!productService.isGrid" [class.fa-th-large]="productService.isGrid"></i>
+      </div>
+      <div class="clearfix"></div>
     </div>
     <div [class.opacity]="searchKey" class="row transparent reset-filters">
       <div class="col s12 center-align">
@@ -62,7 +57,7 @@
             </div>
             <div class="star-right" [class.favorite]="product.favorite" *ngIf="true">
               <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-              <i (click)="removeFromFavorites($event,product)"  class="fa fa-star"></i>
+              <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
             </div>
             <div *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
               <div class="trackable" *ngIf="product.trackable">
@@ -130,9 +125,9 @@
           <div class="col product-name s4 flex-middle" [routerLink]="[product.id]">{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1 star-container">
-            <div class="star-right" [class.favorite]="product.favorite" >
+            <div class="star-right" [class.favorite]="product.favorite">
               <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-              <i (click)="removeFromFavorites($event,product)"  class="fa fa-star"></i>
+              <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
             </div>
           </div>
           <div class="col s1">
