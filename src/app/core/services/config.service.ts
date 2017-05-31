@@ -26,7 +26,6 @@ export class ConfigService {
     .map((res: any) => {
       return res.data.environment;
     })
-    .take(1);
   }
   
 }

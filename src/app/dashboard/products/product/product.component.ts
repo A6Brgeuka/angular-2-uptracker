@@ -93,9 +93,14 @@ export class ProductComponent implements OnInit, AfterViewInit {
   public hasDocs: boolean = false;
   public hasFiles: boolean = false;
   public addOrderVariantsButtonShow: boolean = false;
+  
   public departmentCollection$: Observable<any> = new Observable<any>();
   public productAccountingCollection$: Observable<any> = new Observable<any>();
   public productCategoriesCollection$: Observable<any> = new Observable<any>();
+  
+  public departmentCollection: string[];
+  public productAccountingCollection: string[];
+  public productCategoriesCollection: string[];
   
   public variants = [];
   public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -131,7 +136,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   public addFileToFile$: Subject<any> = new Subject<any>();
   public deleteFromFile$: Subject<any> = new Subject<any>();
   public updateFile$: Subject<any> = new Subject<any>();
-  
+  public canEdit:boolean = false;
   
   public doc$: Observable<any>;
   public doc;
@@ -166,7 +171,23 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   
   ngOnInit() {
+    this.accountService.getDepartments()
+    .subscribe((arr:string[])=>this.departmentCollection = arr);
     
+    this.accountService.getProductAccounting()
+    .subscribe((arr:string[])=>this.productAccountingCollection = arr);
+  
+    this.accountService.getProductCategories()
+    .subscribe((arr:string[])=>this.productCategoriesCollection = arr);
+  
+  
+    this.configService.environment$
+    .filter((a:string)=>a=='development')
+    .subscribe((a)=> {
+      this.canEdit = true;
+    });
+  
+  
     this.accountService.locations$
     .subscribe(r => {
       this.locationArr = r
@@ -278,20 +299,19 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   showEditFields() {
-    this.departmentCollection$ = this.accountService.getDepartments().take(1);
-    this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
-    this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
-    
-    this.showEdit = true;
-    this.productCopy = _.clone(this.product);
-    this.variants$.take(1).subscribe(r => {
-      this.variantsCopy = _.cloneDeep(r);
-    });
-    this.showEdit$.next(true);
+    if (this.canEdit) {
+      
+      this.showEdit = true;
+      this.productCopy = _.clone(this.product);
+      this.variants$.take(1).subscribe(r => {
+        this.variantsCopy = _.cloneDeep(r);
+      });
+      this.showEdit$.next(true);
+    }
   }
   
   closeEditFields() {
-    this.showEdit = !this.showEdit;
+    this.showEdit = false;
     this.showEdit$.next(false);
     
     this.productCopy = [];
