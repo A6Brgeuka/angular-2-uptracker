@@ -40,7 +40,7 @@
           </div>
           <div class="row" [ngClass]="{'checks':showEdit}">
 
-            <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
+            <div class="col m4" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="">
                 <label>Hazardous</label>
                 <span class="value">{{product?.hazardous_string}}</span>
@@ -57,7 +57,7 @@
               </div>
             </div>
 
-            <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
+            <div class="col m4" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="">
                 <label>Trackable</label>
                 <span class="value">{{product?.trackable_string}}</span>
@@ -74,7 +74,7 @@
               </div>
             </div>
 
-            <div class="col" [class.s2]="!showEdit" [class.s4]="showEdit">
+            <div class="col m4" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="">
                 <label>Tax Exempt</label>
                 <span class="value">{{product?.tax_exempt_string}}</span>
@@ -94,7 +94,7 @@
           </div>
           <div class="row">
 
-            <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
+            <div class="col m4 input" [class.l2]="!showEdit" >
               <label>Department</label>
               <div *ngIf="!showEdit" class="value">{{product?.department}}</div>
               <div *ngIf="showEdit" class="select">
@@ -107,7 +107,7 @@
               </div>
             </div>
 
-            <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
+            <div class="col m4 input" [class.l2]="!showEdit" >
               <label>Category</label>
               <div *ngIf="!showEdit" class="value">{{product?.category}}</div>
               <div *ngIf="showEdit" class="select">
@@ -121,7 +121,7 @@
               </div>
             </div>
 
-            <div class="col input" [class.s2]="!showEdit" [class.s4]="showEdit">
+            <div class="col m4 input" [class.l2]="!showEdit" >
               <label>Accounting</label>
               <div *ngIf="!showEdit" class="value">{{product?.account_category}}</div>
               <div *ngIf="showEdit" class="select">
