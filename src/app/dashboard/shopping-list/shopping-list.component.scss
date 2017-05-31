@@ -531,5 +531,9 @@ input {
   }
   .show-on-small {display:inline-block!important;}
   .hide-on-small {display:none!important;}
+  .products .list {
+    border-right:none;
+  }
 }
+
 
