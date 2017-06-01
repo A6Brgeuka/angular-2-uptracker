@@ -108,7 +108,8 @@ export class ProductsComponent implements OnInit {
     .subscribe(
       (r) => {
         this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
-        this.productService.current_page = 2;
+        this.productService.current_page = 1;
+        // here it was =2 (testing)
       }
     );
     
