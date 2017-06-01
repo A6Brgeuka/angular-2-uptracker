@@ -1146,6 +1146,11 @@ modal-overlay.small-custom-class .modal {
   align-items: center;
   padding-top:10px;
   padding-bottom:10px;
+
+  &.justify-center {
+    justify-content: center;
+  }
+
   div, span {
     line-height: 1.2 !important;
   }

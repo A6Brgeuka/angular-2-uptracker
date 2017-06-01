@@ -134,8 +134,8 @@
           font-size: 14px;
 
           .col {
-            min-height: 40px;
-            line-height: 40px;
+            min-height: 50px;
+            line-height: 30px;
             color: #888;
             &:nth-of-type(1) {
               color: $tealish;
@@ -166,7 +166,6 @@
           text-indent: 0;
           text-overflow: ellipsis;
           color: $dark;
-          border: 1px solid #9a9a9a!important;
           border-radius: 5px;
 
           &.empty {
@@ -359,3 +358,5 @@ div.top {
   border-color:$light-grey;
   background-color: $white!important;
 }
+
+.mtop{margin-top:20px;}
