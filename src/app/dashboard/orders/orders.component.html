@@ -88,7 +88,6 @@
           <div class="col s1 right-align">
             <div class="right edititem filled"
               materialize="dropdown"
-              (click)="$event.stopPropagation()"
               data-activates='order_ddm'>
               <fa name="pencil"></fa>
             </div>
@@ -111,7 +110,7 @@
         </div>
 
         <div class="item row" *ngFor="let item of items;let i=index;" [class.no-border-bottom]="item">
-          <div (click)="changeVisibility(i)">
+          <div>
             <div class="col s2 left-align">
               <div class="input-checkbox left checkbox">
                 <input
@@ -125,22 +124,23 @@
                 1234567
               </div>
             </div>
-            <div class="col s2 flex-center">
+            <div (click)="changeVisibility(i)" class="col s2 flex-center">
               <div>Very very long vendor name</div>
             </div>
-            <div class="col s2">Primary</div>
-            <div class="col s1">Placed</div>
-            <div class="col s1">12/03/17</div>
-            <div class="col s1">12/03/17</div>
-            <div class="col s1">12/03/17</div>
-            <div class="col s1">434</div>
+            <div (click)="changeVisibility(i)" class="col s2">Primary</div>
+            <div (click)="changeVisibility(i)" class="col s1">Placed</div>
+            <div (click)="changeVisibility(i)" class="col s1">12/03/17</div>
+            <div (click)="changeVisibility(i)" class="col s1">12/03/17</div>
+            <div (click)="changeVisibility(i)" class="col s1">12/03/17</div>
+            <div (click)="changeVisibility(i)" class="col s1">434</div>
             <div class="col s1 right-align">
+
               <div class="right edititem"
                 materialize="dropdown"
-                (click)="$event.stopPropagation()"
                 [attr.data-activates]='"order_dd_"+i'>
                 <fa name="ellipsis-h"></fa>
               </div>
+
               <ul [id]='"order_dd_"+i' class='dropdown-content'>
                 <li>
                   <a class="tealish-text" href="#">Edit</a>
@@ -152,10 +152,15 @@
                   <a class="tealish-text" href="#">Reorder</a>
                 </li>
               </ul>
+
               <div class="right">$100</div>
             </div>
             <div class="clearfix"></div>
+
+
             <app-order-detail [visible]="item" [items]="items"></app-order-detail>
+
+
             <div class="clearfix"></div>
           </div>
         </div>

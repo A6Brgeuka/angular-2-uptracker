@@ -1,4 +1,4 @@
-<div *ngIf="visible" (click)="$event.stopPropagation();" class="list is-grid-view orders-short-detail">
+<div *ngIf="visible" class="list is-grid-view orders-short-detail">
   <div>
     <div class="heading row">
       <div class="col s4">Product Name</div>
@@ -11,7 +11,6 @@
       <div class="col s1 right-align">
         <div class="right edititem filled"
           materialize="dropdown"
-          (click)="$event.stopPropagation();"
           [attr.data-activates]='"order_dd_"+i'>
           <fa name="pencil"></fa>
         </div>
