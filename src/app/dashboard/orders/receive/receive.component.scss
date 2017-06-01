@@ -1,5 +1,4 @@
-@import "../../../colors.scss";
-@import "../../../spinner.scss";
+@import "../../../../colors.scss";
 
 :host /deep/ {
   .products {
@@ -105,6 +104,7 @@
       &.is-grid-view {
         .row {
           .col {
+            padding: 0 0.25rem;
             display: block;
             label {
               vertical-align: middle;
@@ -156,16 +156,18 @@
           }
         }
 
+
         input {
           margin: 0;
-          height: 25px;
+          height: 30px;
           font-size: 11px;
+          background: #fff;
           padding-left: 8px;
           text-indent: 0;
           text-overflow: ellipsis;
-          color: $grey;
-          background-color: $white;
-
+          color: $dark;
+          border: 1px solid #9a9a9a!important;
+          border-radius: 5px;
 
           &.empty {
             color: $light-grey;
@@ -352,4 +354,8 @@ div.top {
   }
 }
 
-
+.products .list.is-grid-view input {
+  box-sizing: border-box;
+  border-color:$light-grey;
+  background-color: $white!important;
+}

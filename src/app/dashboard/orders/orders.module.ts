@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { OrdersComponent } from './orders.component';
 import { AppSharedModule } from '../../shared/shared.module';
 import { OrdersShortDetailComponent } from './orders-short-detail/orders-short-detail.component';
+import { ReceiveModule } from './receive/receive.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { OrdersShortDetailComponent } from './orders-short-detail/orders-short-d
     OrdersShortDetailComponent
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    ReceiveModule
   ],
   providers: []
 })
