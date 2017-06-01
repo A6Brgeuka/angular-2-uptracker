@@ -18,6 +18,7 @@
         </div>
         <div class="col m3 right-align">
           <button
+            (click)="save()"
             type="submit"
             class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
           >
@@ -55,13 +56,11 @@
             </div>
           </div>
           <div class="col s2">
-            <div class="select flex-center" >
+            <div class="select flex-center">
               <select
                 materialize="material_select"
                 [materializeSelectOptions]="monthArr">
-                <option value="">Location A</option>
-                <option value="">Location B</option>
-                <option value="">Location C</option>
+                <option *ngFor="let location of locationArr" [value]="location.id">{{ location.name }}</option>
               </select>
             </div>
           </div>
@@ -71,23 +70,27 @@
             </div>
           </div>
           <div class="col s2 ">
-            <div class="select flex-center" >
-            <select
-              materialize="material_select"
-              [materializeSelectOptions]="monthArr">
-              <option value="">Receive</option>
-              <option value="">Other Option 1</option>
-              <option value="">Other Option 2</option>
-            </select>
-          </div></div>
+            <div class="select flex-center">
+              <select
+                materialize="material_select"
+                [materializeSelectOptions]="monthArr">
+                <option value="">Receive</option>
+                <option value="">Other Option 1</option>
+                <option value="">Other Option 2</option>
+              </select>
+            </div>
+          </div>
           <div class="col s1 center-align flex-center justify-center">
-            <fa name="trash" class="tealish-text"></fa>
+            <a href (click)="remove(item)">
+              <fa name="trash" class="tealish-text"></fa>
+            </a>
           </div>
         </div>
       </div>
     </div>
 
     <button
+      (click)="addProduct()"
       type="submit"
       class="right mtop uptracker-form-btn white-text waves-effect waves-light"
     >
