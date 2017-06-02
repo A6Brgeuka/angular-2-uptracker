@@ -12,32 +12,32 @@ describe('Component: Inventory', () => {
   let fixture: ComponentFixture<InventoryComponent>;
   let de: DebugElement;
   let el: HTMLElement;
-  
-  
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         InventoryComponent
       ],
     });
-    
   });
   
-  fixture = TestBed.createComponent(InventoryComponent);
-  component = fixture.componentInstance;
-  de = fixture.debugElement.query(By.css('div.main-title'));
-  el = de.nativeElement;
-  
-  
   it('should display the page header', () => {
-    
+    fixture = TestBed.createComponent(InventoryComponent);
+    component = fixture.componentInstance;
+    de = fixture.debugElement.query(By.css('div.main-title'));
+    el = de.nativeElement;
+  
     fixture.detectChanges();
     expect(el.textContent).toContain(component.title);
   });
   
   it('should display the page header changes', () => {
     
-    component.title = "TestTitle";el = de.nativeElement;
+    fixture = TestBed.createComponent(InventoryComponent);
+    component = fixture.componentInstance;
+    de = fixture.debugElement.query(By.css('div.main-title'));
+    el = de.nativeElement;
+    component.title = "TestTitle";
+    el = de.nativeElement;
     fixture.detectChanges();
     expect(el.textContent).toContain('TestTitle');
   });
