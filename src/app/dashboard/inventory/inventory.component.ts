@@ -22,10 +22,9 @@ export class InventoryComponent implements OnInit {
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public products$: Observable<any>;
-
-  constructor(
-      public modal: Modal
-  ) {
+  public title = "Inventory";
+  
+  constructor() {
   }
 
   ngOnInit() {
