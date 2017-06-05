@@ -96,16 +96,14 @@ export class PurchaseOrderComponent implements OnInit {
       return o.order;
     }).filter(o=>o)
     .map((o:any)=>{
-      if (!o.po_number) {this.toasterService.pop('error','No order id provided');}
-      return o.po_number
+      if (!o.id) {this.toasterService.pop('error','No order id provided');}
+      return o.id
     }).filter(o=>o)
     .switchMap((orderId:string)=>this.orderService.sendOrderRequest(orderId))
     .subscribe((status:any)=>{
-      //TODO on success
-      debugger;
+      this.toasterService.pop('',status.email_text)
     },
     (err:any)=>{
-      debugger;
     })
   }
 }
