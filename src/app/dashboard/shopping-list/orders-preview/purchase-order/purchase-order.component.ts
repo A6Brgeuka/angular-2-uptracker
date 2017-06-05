@@ -1,15 +1,10 @@
 import {
-  Component, OnInit, ViewContainerRef, ReflectiveInjector, ComponentRef, Injector,
-  Injectable, Renderer
+  Component, OnInit
 } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/Rx';
 import { Location }                 from '@angular/common';
 
-import {
-  Overlay, overlayConfigFactory, DialogRef, createComponent, ModalOverlay,
-  OverlayRenderer, DOMOverlayRenderer
-} from 'angular2-modal';
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal} from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
@@ -18,6 +13,7 @@ import { UserService } from '../../../../core/services/user.service';
 import { AccountService } from '../../../../core/services/account.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ConvertedOrder, OrderService } from '../../../../core/services/order.service';
+import { ToasterService } from '../../../../core/services/toaster.service';
 
 
 
@@ -46,6 +42,7 @@ export class PurchaseOrderComponent implements OnInit {
     public route: ActivatedRoute,
     public orderService: OrderService,
     public router: Router,
+    public toasterService: ToasterService,
   ) {
   
   }
@@ -92,5 +89,23 @@ export class PurchaseOrderComponent implements OnInit {
     this.windowLocation.back();
   }
   
-  
+  sendOrder(){
+    this.convertedOrder
+    .map((o: any) => {
+      if (!o.order) {this.toasterService.pop('error','No order data provided');}
+      return o.order;
+    }).filter(o=>o)
+    .map((o:any)=>{
+      if (!o.po_number) {this.toasterService.pop('error','No order id provided');}
+      return o.po_number
+    }).filter(o=>o)
+    .switchMap((orderId:string)=>this.orderService.sendOrderRequest(orderId))
+    .subscribe((status:any)=>{
+      //TODO on success
+      debugger;
+    },
+    (err:any)=>{
+      debugger;
+    })
+  }
 }

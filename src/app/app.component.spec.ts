@@ -6,12 +6,7 @@ import "angular2-materialize";
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AppSharedModule } from './shared/shared.module';
-import { CoreModule } from './core/core.module';
 import { routing } from './app.routing';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { OnboardModule } from './onboard/onboard.module';
-import { AuthModule } from './auth/auth.module';
-import { NoContentModule } from './no-content/no-content.module';
 import { SpinnerModule } from './spinner/spinner.module';
 
 
@@ -22,14 +17,9 @@ describe('App: FrontendUptracker', () => {
         AppComponent,
       ],
       imports: [
+        SpinnerModule,
         AppSharedModule,
-        CoreModule,
-        routing,
-        DashboardModule,
-        OnboardModule,
-        AuthModule,
-        NoContentModule,
-        SpinnerModule
+        routing
       ],
       providers: [],
     });

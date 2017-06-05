@@ -163,7 +163,6 @@ export class OrderOptions {
 })
 export class OrderService extends ModelService {
   public appConfig: AppConfig;
-  public ordersPreview$: any = new BehaviorSubject([]);
   public convertData: ConvertData | null;
   
   constructor(
@@ -211,5 +210,9 @@ export class OrderService extends ModelService {
   convertOrders(orderId: string, data: ConvertData) {
     return this.restangular.one('orders', orderId).all('convert').customPOST(data)
   }
-  
+
+  sendOrderRequest(orderId){
+    return this.restangular.one('po', orderId).all('send').customGET()
+      .map((res:any)=>res.data);
+  }
 }
