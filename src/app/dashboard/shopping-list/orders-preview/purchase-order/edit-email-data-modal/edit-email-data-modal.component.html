@@ -2,6 +2,63 @@
 <div class="title center-align">Edit Order Data</div>
 
 <div class="inner">
+  <div class="row">
+    <div class="col s4 m2"></div>
+    <div class="col s8 m6">Email Purchase Order: {{ context.po_number }}</div>
+    <div class="col s12 m4 right-align">
+      <button class="uptracker-form-btn waves-light waves-effect tealish">Download PO</button>
+    </div>
+  </div>
 
-HELLO
+  <div class="row">
+    <div class="col s4 m2 right-align">To</div>
+    <div class="col s8 m6 input">
+      <input type="text"
+        placeholder="Enter Email"
+        [(ngModel)]="emailTo"
+        class="col s12"
+      />
+    </div>
+    <div class="col s12 m4"></div>
+  </div>
+
+  <div class="row">
+    <div class="col s4 m2 right-align">From</div>
+    <div class="col s8 m6 input">
+      <input type="text"
+        placeholder="Enter Email"
+        [(ngModel)]="emailFrom"
+        class="col s12"
+      />
+    </div>
+    <div class="col s12 m4"></div>
+  </div>
+
+  <div class="row">
+    <div class="col s4 m2 right-align">Subject</div>
+    <div class="col s8 m6 input">
+      <input type="text"
+        placeholder="Enter Subject"
+        [(ngModel)]="emailSubject"
+        class="col s12"
+      />
+    </div>
+    <div class="col s12 m4"></div>
+  </div>
+
+  <div class="row">
+    <div class="col s2  right-align">Message</div>
+    <div class="col s10  materialize-textarea">
+      <textarea
+        [(ngModel)]="emailMessage"
+        class="col s12"
+      >
+      </textarea>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 right-align">
+      <button (click)="dismissModal()" class="uptracker-form-btn waves-light waves-effect">Cancel</button>
+    </div>
+  </div>
 </div>

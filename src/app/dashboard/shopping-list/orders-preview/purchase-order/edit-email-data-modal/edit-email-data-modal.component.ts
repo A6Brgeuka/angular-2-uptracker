@@ -4,7 +4,8 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 export class EditEmailDataModalContext extends BSModalContext {
-  public product: any;
+  public email_text: string;
+  public po_number: string;
 }
 
 @Component({
@@ -17,11 +18,18 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   public subscribers: any = {};
   context: EditEmailDataModalContext;
 
+  public emailTo:string;
+  public emailFrom:string;
+  public emailSubject:string;
+  public emailMessage:string;
+  
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
+    this.emailMessage = this.context.email_text;
+    this.emailSubject = "Purchase order #"+this.context.po_number;
   }
 
   ngOnInit(){
@@ -37,8 +45,8 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   closeModal(data){
     this.dialog.close(data);
   }
-
-  changeName(event) {
+  
+  downloadPDF(){
+  
   }
-
 }

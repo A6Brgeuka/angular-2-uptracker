@@ -87,6 +87,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
   
   sendOrder() {
+    let po_number = "";
     this.convertedOrder
     .map((o: any) => {
       if (!o.order) {
@@ -98,18 +99,21 @@ export class PurchaseOrderComponent implements OnInit {
       if (!o.id) {
         this.toasterService.pop('error', 'No order id provided');
       }
+      po_number = o.po_number;
       return o.id
     }).filter(o => o)
     .switchMap((orderId: string) => this.orderService.sendOrderRequest(orderId))
     .subscribe((status: any) => {
         this.toasterService.pop('', status.email_text);
-        this.showEmailDataEditModal(status);
+        this.showEmailDataEditModal({email_text: status.email_text, po_number: po_number});
       },
       (err: any) => {
       })
   }
   
   showEmailDataEditModal(data){
+    if (!data.email_text){data.email_text = "Email text"}
+    if (!data.po_number){data.po_number = "1234567890"}
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data,true,"big"));
   }
 }
