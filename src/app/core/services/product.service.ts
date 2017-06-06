@@ -23,7 +23,7 @@ export class ProductService extends ModelService {
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
-  current_page: number = 1;
+  current_page: number = 2;
   pagination_limit: number = 10;
   combinedProducts$: Observable<any>;
   start_products$: Observable<any>;

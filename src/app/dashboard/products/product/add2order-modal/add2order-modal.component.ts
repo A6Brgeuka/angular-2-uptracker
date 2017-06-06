@@ -28,8 +28,8 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   public location: string = '';
   public valid: boolean = false;
   public isAuto: boolean = true;
-  public unit_type: string ='package';
-  public last_unit_type: string ='package';
+  public unit_type: string = 'package';
+  public last_unit_type: string = 'package';
   
   constructor(
     public dialog: DialogRef<Add2OrderModalContext>,
@@ -42,9 +42,10 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   
   ngOnInit() {
     // TODO
-    if (_.isArray(this.context.data)){this.context.data = this.context.data[0]}
-    
-    console.log('CONTEXT',this.context);
+    if (_.isArray(this.context.data)) {
+      this.context.data = this.context.data[0]
+    }
+    console.log('CONTEXT', this.context);
     let e = this.context.data.selectedVendor ? this.context.data.selectedVendor : '';
     this.vendorChange({target: {value: e}});
     console.log(this.context.data);
@@ -71,37 +72,37 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     return parseInt(a)
   }
   
-  changeUnitType(){
+  changeUnitType() {
     let perPackage = this.context.data.units_per_package ? this.context.data.units_per_package : 1;
     let perSleeve = this.context.data.sub_unit_per_package ? this.context.data.sub_unit_per_package : 1;
     switch (this.last_unit_type) {
       case 'subunit':
         switch (this.unit_type) {
           case 'unit':
-            this.quantity = Math.round(parseInt(this.quantity)/perSleeve).toString();
+            this.quantity = Math.round(parseInt(this.quantity) / perSleeve).toString();
             break;
           case 'package':
-            this.quantity=Math.round(parseInt(this.quantity)/perPackage/perSleeve).toString();
+            this.quantity = Math.round(parseInt(this.quantity) / perPackage / perSleeve).toString();
             break;
         }
         break;
       case 'unit':
         switch (this.unit_type) {
           case 'subunit':
-            this.quantity=Math.round(parseInt(this.quantity)*perSleeve).toString();
+            this.quantity = Math.round(parseInt(this.quantity) * perSleeve).toString();
             break;
           case 'package':
-            this.quantity=Math.round(parseInt(this.quantity)/perPackage).toString();
+            this.quantity = Math.round(parseInt(this.quantity) / perPackage).toString();
             break;
         }
         break;
       case 'package':
         switch (this.unit_type) {
           case 'subunit':
-            this.quantity=Math.round(parseInt(this.quantity)*perPackage*perSleeve).toString();
+            this.quantity = Math.round(parseInt(this.quantity) * perPackage * perSleeve).toString();
             break;
           case 'unit':
-            this.quantity=Math.round(parseInt(this.quantity)*perPackage).toString();
+            this.quantity = Math.round(parseInt(this.quantity) * perPackage).toString();
             break;
         }
         break;
@@ -116,11 +117,12 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
         "product_id": this.context.data.productId,
         "variants": [
           {
+            "location_id": this.location,
             "vendor_id": this.vendor.vendor_id,
             "variant_id": this.vendor.variant_id,
             "vendor_variant_id": this.vendor.variant_id,
             "qty": parseInt(this.quantity),
-            "unit_type":this.unit_type,
+            "unit_type": this.unit_type,
             "vendor_auto_select": this.isAuto,
           }
         ]
@@ -135,13 +137,15 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   }
   
   vendorChange($event) {
-    if ($event.target.value == '') {
-      this.isAuto = true;
-      this.vendor = _.cloneDeep(this.context.data.vendorArr[0]);
-      this.vendor.vendor_id = '';
-    } else {
-      this.isAuto = false;
-      this.vendor = _.cloneDeep(this.context.data.vendorArr.find((v: any) => (v.vendor_id == $event.target.value)));
+    if (this.context.data && this.context.data.vendorArr && this.context.data.vendorArr.length > 0) {
+      if ($event.target.value == '') {
+        this.isAuto = true;
+        this.vendor = _.cloneDeep(this.context.data.vendorArr[0]);
+        this.vendor.vendor_id = '';
+      } else {
+        this.isAuto = false;
+        this.vendor = _.cloneDeep(this.context.data.vendorArr.find((v: any) => (v.vendor_id == $event.target.value)));
+      }
     }
   }
 }

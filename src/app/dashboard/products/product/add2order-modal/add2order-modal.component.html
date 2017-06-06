@@ -23,9 +23,9 @@
     <div class="col s9 ">
       <div class="left select">
         <select (change)="changeUnitType()"  [(ngModel)]="unit_type" materialize="material_select">
-          <option  value="package">{{ context.data.package_type }}</option>
-          <option  *ngIf="context.data.units_per_package" value="unit">{{ context.data.unit_type }}</option>
-          <option *ngIf="context.data.sub_unit_per_package"  value="subunit">{{ context.data.sub_unit_type }}</option>
+          <option *ngIf="context.data.package_type" value="package">{{ context.data.package_type }}</option>
+          <option *ngIf="context.data.unit_type" value="unit">{{ context.data.unit_type }}</option>
+          <option *ngIf="context.data.sub_unit_type"  value="subunit">{{ context.data.sub_unit_type }}</option>
         </select>
       </div>
     </div>

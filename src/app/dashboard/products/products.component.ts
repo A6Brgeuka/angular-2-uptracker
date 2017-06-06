@@ -67,7 +67,7 @@ export class ProductsComponent implements OnInit {
     this.accountService.dashboardLocation$.subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
-    
+
     this.productService.totalCount$.subscribe(total => this.total = total);
     
     this.productService.isDataLoaded$
@@ -109,7 +109,6 @@ export class ProductsComponent implements OnInit {
       (r) => {
         this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
         this.productService.current_page = 1;
-        // here it was =2 (testing)
       }
     );
     
