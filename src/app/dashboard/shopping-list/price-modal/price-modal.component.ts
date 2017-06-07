@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
 import { UserService, AccountService } from '../../../core/services/index';
@@ -82,11 +81,13 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
   calcDiscount() {
     this.totalPrice = this.selectedPrice;
     _.each(this.discounts, (dis: PriceInfoDiscounts) => {
-      if (dis.type == 'fixed') {
-        dis.total = dis.amount;
-      } else if (dis.type == 'percentage') {
-        dis.total = dis.amount * this.selectedPrice / 100;
+
+      switch (dis.type){
+        case "bogo"       : break;
+        case "percentage" : dis.total = dis.amount * this.selectedPrice / 100; break;
+        default /*fixed*/ : dis.total = dis.amount;
       }
+
       this.totalPrice = this.totalPrice - dis.total;
     });
   }

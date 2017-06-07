@@ -80,10 +80,10 @@
               <div class="col s2 right-align">{{ item.price }}</div>
               <div class="clearfix"></div>
               <div class="row" *ngFor="let discount of item.discounts">
-                <div class="col tealish-text s6">{{ discount.type }}</div>
+                <div class="col  s6">Discount - {{ discount.type }}</div>
                 <div class="col s3">{{ item.location_name }}</div>
-                <div class="col s1 center-align">{{ item.qty }}</div>
-                <div class="col s2 right-align"></div>
+                <div class="col s1 center-align">{{ discount.type!='bogo' ? (discount.discounted) : '' }}</div>
+                <div class="col s2 right-align">{{ discount.type!='bogo' ? ('-$'+(discount.amount | number:'1.2-2')) : '' }}</div>
               </div>
             </div>
           </div>
