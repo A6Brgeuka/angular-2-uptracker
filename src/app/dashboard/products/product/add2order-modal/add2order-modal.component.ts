@@ -1,10 +1,9 @@
-import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 
-import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
+import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { ProductService } from '../../../../core/services/product.service';
 import { CartService } from '../../../../core/services/cart.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
 
@@ -14,9 +13,6 @@ export class Add2OrderModalContext extends BSModalContext {
 
 @Component({
   selector: 'app-change-password-user-modal',
-  // TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  // Remove when solved.
-  /* tslint:disable */
   templateUrl: './add2order-modal.component.html',
   styleUrls: ['./add2order-modal.component.scss']
 })

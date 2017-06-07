@@ -6,8 +6,6 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 import { UserService, AccountService, ToasterService, SessionService } from '../../core/services/index';
-import {forEach} from "@angular/router/src/utils/collection";
-import { toast } from "angular2-materialize";
 
 @Component({
   selector: 'app-accounting',
@@ -53,10 +51,13 @@ export class AccountingComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
     this.accounting = this.accountService.onboardAccounting;
-
+  
+    this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
+  debugger;
+      this.currencyArr = res;
+    });
+  
     this.localAccounting = JSON.parse(this.sessionService.getLocal("onboardAccounting"));
     
     this.localAccounting.annual_income = 0;
@@ -85,9 +86,7 @@ export class AccountingComponent implements OnInit {
         }
         this.setLocationBudget();
       });
-    this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
-      this.currencyArr = res;
-    });
+
 
     //Tax Rate autocalc throw API
     this.subscribers.taxRateSubscription = this.accountService.getTaxRate(this.accountService.selfData.address).subscribe( (res:any) => {
