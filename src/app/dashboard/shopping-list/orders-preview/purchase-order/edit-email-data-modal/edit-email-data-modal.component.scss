@@ -84,6 +84,8 @@ input.select-dropdown, .input input {
     font-size:1rem;
     color:$dark;
     overflow-y: auto;
+    resize:none;
+
     &:focus {
       outline: none;
     }

@@ -86,24 +86,23 @@ export class PurchaseOrderComponent implements OnInit {
   }
   
   sendOrder() {
-    let po_number = "";
+    let order = {};
     this.convertedOrder
     .map((o: any) => {
-      if (!o.order) {
+      if (!o.order || !o.order.id) {
         this.toasterService.pop('error', 'No order data provided');
       }
       return o.order;
-    }).filter(o => o)
-    .map((o: any) => {
-      if (!o.id) {
-        this.toasterService.pop('error', 'No order id provided');
-      }
-      po_number = o.po_number;
-      return o.id
-    }).filter(o => o)
-    .switchMap((orderId: string) => this.orderService.sendOrderRequest(orderId))
+    }).filter(o => o && o.id)
+    .do((o: any) =>{order = Object.assign({},o);})
+    .switchMap((order: any) => this.orderService.sendOrderRequest(order.id))
     .subscribe((status: any) => {
-        this.showEmailDataEditModal({email_text: status.email_text, po_number: po_number});
+      this.showEmailDataEditModal({
+          email_text: status.email_text,
+          po_number: order['po_number'],
+          vendor_email: order['vendor_email_address'],
+          user_email: this.userService.selfData.email_address
+        });
       },
       (err: any) => {
       })
@@ -112,6 +111,7 @@ export class PurchaseOrderComponent implements OnInit {
   showEmailDataEditModal(data){
     if (!data.email_text){data.email_text = "Email text"}
     if (!data.po_number){data.po_number = "1234567890"}
+    
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data,true,"big"));
   }
 }

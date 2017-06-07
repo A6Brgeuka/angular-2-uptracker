@@ -8,7 +8,7 @@ html {
 }
 
 button {
-  padding:0;
+  padding: 0;
 }
 
 .reset-filters {
@@ -235,20 +235,19 @@ a {
       padding-left: 5px;
       padding-right: 5px;
 
-
     }
   }
 }
 
 .select-wrapper .dropdown-content {
-  min-width:150px;
+  min-width: 150px;
 
   li {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-top:10px;
-    padding-bottom:10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     span {
       line-height: 1.2 !important;
     }
@@ -803,8 +802,8 @@ button {
   box-shadow: none;
 
   &.no-min-width {
-    padding:0 20px;
-    min-width:0;
+    padding: 0 20px;
+    min-width: 0;
   }
 
   &.not-submit {
@@ -1133,23 +1132,23 @@ a {
 
 // modal custom classes
 modal-overlay.big-custom-class .modal {
-  max-width:80%;
+  max-width: 80%;
 }
 
 modal-overlay.mid-custom-class .modal {
-  max-width:500px;
+  max-width: 500px;
 }
 
 modal-overlay.small-custom-class .modal {
-  max-width:300px;
+  max-width: 300px;
 }
 
 .flex-center {
-  display: flex!important;
+  display: flex !important;
   justify-content: flex-start;
   align-items: center;
-  padding-top:10px;
-  padding-bottom:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   &.justify-center {
     justify-content: center;
@@ -1160,18 +1159,21 @@ modal-overlay.small-custom-class .modal {
   }
 
   .select-wrapper {
-    width:100%;
+    width: 100%;
   }
 }
 
-
-
-.wide-input input, .wide{
-  width:100%!important;
+.wide-input input, .wide {
+  width: 100% !important;
 }
 
-.filter .col {padding:0 0.25rem;}
+.filter .col {
+  padding: 0 0.25rem;
+}
 
-
+// kill materialize understroke on focus
+input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+  box-shadow: inherit!important;
+}
 
 @import "./media.scss";

@@ -6,6 +6,8 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 export class EditEmailDataModalContext extends BSModalContext {
   public email_text: string;
   public po_number: string;
+  public user_email: string;
+  public vendor_email: string;
 }
 
 @Component({
@@ -29,6 +31,8 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     this.emailMessage = this.context.email_text;
+    this.emailFrom = this.context.user_email;
+    this.emailTo = this.context.vendor_email;
     this.emailSubject = "Purchase order #"+this.context.po_number;
   }
 
