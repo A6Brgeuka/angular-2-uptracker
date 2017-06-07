@@ -1,4 +1,3 @@
-{{ currencyArr | json }}
 <div class="accounting content">
   <div class="title">Enter your accounting details</div>
   <div class="subtitle">Please provide details regarding your company’s accounting.</div>
@@ -29,7 +28,7 @@
           </div>
           <div class="col s12 m6">
             <div class="label">Currency</div>
-            <div class="select" [class.dirty]="currencyDirty">
+            <div  *ngIf="currencyArr"  class="select" [class.dirty]="currencyDirty">
               <select
                       [(ngModel)]="accounting.currency"
                       name="currency"

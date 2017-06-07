@@ -54,14 +54,19 @@ export class AccountingComponent implements OnInit {
     this.accounting = this.accountService.onboardAccounting;
   
     this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
-  debugger;
       this.currencyArr = res;
     });
   
-    this.localAccounting = JSON.parse(this.sessionService.getLocal("onboardAccounting"));
-    
-    this.localAccounting.annual_income = 0;
-    this.localAccounting.annual_inventory_budget = 0;
+    this.localAccounting = JSON.parse(this.sessionService.getLocal("onboardAccounting")) || {
+        total: [],
+        budget_distribution: [],
+        currency: 'USD',
+        fiscal_year: null,
+        annual_income: 0,
+        annual_inventory_budget: 0,
+        disabledRange: [],
+        taxRate: null
+      };
     _.each(this.accountService.onboardAccounting, (value, key) => {
       if(_.isArray(value) && !value.length) {
         if(this.localAccounting[key]) {
