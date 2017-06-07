@@ -16,7 +16,6 @@ import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
-import { APP_DI_CONFIG } from "../app.config";
 import { GooglePlacesInputModule } from "./directives";
 
 let directivesArr = [
@@ -41,6 +40,7 @@ import { EditLocationModal } from './modals/edit-location-modal/edit-location-mo
 import { ChangePasswordUserModal } from "./modals/change-password-user-modal/change-password-user-modal.component";
 import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal.component";
 import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.component';
+import { APP_DI_CONFIG } from '../../../env';
 
 let modalsArr = [
   EditUserModal,

@@ -5,7 +5,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from '@angular/http';
 import {Router} from '@angular/router';
 
-import {APP_CONFIG, APP_DI_CONFIG, RESTANGULAR_CONFIG} from '../app.config';
+import {APP_CONFIG, RESTANGULAR_CONFIG} from '../app.config';
 import {LOCAL_STORAGE_PROVIDERS} from 'angular2-local-storage/local_storage';
 import {CookieModule} from 'ngx-cookie';
 import {RestangularModule} from 'ngx-restangular';
@@ -21,6 +21,7 @@ import {BootstrapModalModule, Modal} from 'angular2-modal/plugins/bootstrap';
 // resolver
 import {APP_SERVICE_PROVIDERS} from './services/index';
 import { CustomRenderer } from '../core/services/index';
+import { APP_DI_CONFIG } from '../../../env';
 
 @NgModule({
     imports: [
