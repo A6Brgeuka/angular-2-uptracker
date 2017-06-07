@@ -43,7 +43,6 @@ export class PurchaseOrderComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.showEmailDataEditModal({});
   
     this.route.params
     .switchMap((p: Params) => {
@@ -104,7 +103,6 @@ export class PurchaseOrderComponent implements OnInit {
     }).filter(o => o)
     .switchMap((orderId: string) => this.orderService.sendOrderRequest(orderId))
     .subscribe((status: any) => {
-        this.toasterService.pop('', status.email_text);
         this.showEmailDataEditModal({email_text: status.email_text, po_number: po_number});
       },
       (err: any) => {

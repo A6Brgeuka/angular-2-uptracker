@@ -3,11 +3,7 @@
 
 <div class="inner">
   <div class="row">
-    <div class="col s4 m2"></div>
-    <div class="col s8 m6">Email Purchase Order: {{ context.po_number }}</div>
-    <div class="col s12 m4 right-align">
-      <button class="uptracker-form-btn waves-light waves-effect tealish">Download PO</button>
-    </div>
+    <div class="col s12 center-align subtitle">Email Purchase Order: {{ context.po_number }}</div>
   </div>
 
   <div class="row">
@@ -19,7 +15,9 @@
         class="col s12"
       />
     </div>
-    <div class="col s12 m4"></div>
+    <div class="col s12 m4 right-align">
+      <button class="uptracker-form-btn waves-light waves-effect tealish">Download PO</button>
+    </div>
   </div>
 
   <div class="row">
@@ -31,7 +29,9 @@
         class="col s12"
       />
     </div>
-    <div class="col s12 m4"></div>
+    <div class="col m4 s12 right-align">
+      <button (click)="dismissModal()" class="uptracker-form-btn waves-light waves-effect redbtn">Cancel</button>
+    </div>
   </div>
 
   <div class="row">
@@ -54,11 +54,6 @@
         class="col s12"
       >
       </textarea>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col s12 right-align">
-      <button (click)="dismissModal()" class="uptracker-form-btn waves-light waves-effect">Cancel</button>
     </div>
   </div>
 </div>

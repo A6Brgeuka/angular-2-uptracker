@@ -1,198 +1,108 @@
-:host /deep/ {
-  .inner{
-    .img-container{
-      width:140px;
-      height:140px;
-      border:1px solid #d6d6d6;
+@import "../../../../../../colors.scss";
 
-      .img{
-        height:100%;
-        background-position: center center;
-        background-size:cover;
-      }
+input.select-dropdown, .input input {
+  height: 30px;
+  margin-bottom: 0 !important;
+}
+
+.inner {
+  padding: 5px;
+
+
+  label.light-grey {
+    color: $grey;
+  }
+
+  .row {
+    margin-bottom: 7px;
+    min-height:40px;
+    padding-top:3px;
+  }
+
+  .flex-center {
+    display: flex!important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .titles {
+    font-size: .8rem;
+    white-space: nowrap;
+  }
+
+  .checks-row {
+    padding-bottom: 20px;
+
+    & > div.col > * {
+      text-align: center;
+      display: block;
+      float: left;
+      padding: 0;
+      width: 100%;
     }
+  }
 
-    .info-box{
-      .ttl{
-        color:#9a9c9e;
-      }
+  .grey-text {
+    color: $grey
+  }
 
-      label{
-        color:#9a9c9e;
-      }
+  label {
+    font-size: 1rem;
+    color: $dark;
+  }
 
-      .value{
-        font-size:12px;
-        color:#000;
-      }
+  .smaller {
+    font-size: 0.9rem;
+  }
 
-      span.value{
-        margin-left:5px;
-      }
+  .uptracker-form-btn {
+    height: 36px;
+    font-size: 14px;
+    width: 100px;
+    margin: 0 5px;
+    font-weight: normal;
+    border-width: 1px;
+    border-style: solid;
+    border-color: $tealish;
+    background-color: $tealish;
+    color: #fff;
+
+    &.redbtn {
+      border-color: red;
+      background-color: #fff;
+      color: red;
     }
-
-    .tabs{
-      overflow-x: hidden;
-
-      .tab{
-        a{
-          text-transform: capitalize;
-          padding:0 10px;
-        }
-      }
+    &:last-of-type {
     }
+  }
 
-    .table{
-      table {
-        font-size:11px;
-
-        .table-head {
-          color: #9a9c9e;
-        }
-
-        .uptracker-form{
-          input{
-            margin:0;
-            height:25px;
-            font-size:11px;
-            background: transparent;
-            padding-left:8px;
-            text-indent: 0;
-            text-overflow: ellipsis;
-            color:#9a9c9e;
-
-            &.empty{
-              color:#d6d6d6;
-            }
-          }
-
-          .select {
-            .select-wrapper {
-              &.ng-valid{
-                input.select-dropdown{
-                  border-color:#d6d6d6;
-                }
-              }
-
-              &.empty{
-                input.select-dropdown{
-                  color:#d6d6d6;
-                }
-              }
-
-              input.select-dropdown{
-                padding-right: 15px;
-              }
-
-              .dropdown-content {
-                margin: 0;
-
-                li {
-                  span {
-                    font-size: 11px;
-                    line-height: 25px;
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        tr{
-          & > *:first-child{
-            padding-left:0;
-            max-width:inherit;
-          }
-
-          & > *:last-child{
-            padding-right:0;
-          }
-        }
-
-        th{
-          border:1px solid #d6d6d6;
-          border-width:1px 0;
-          padding:10px 5px;
-          max-width:85px;
-        }
-
-        .not-submit{
-          height:25px;
-          width:auto;
-          padding:0 15px;
-        }
-      }
+  textarea{
+    min-height: 200px;
+    border-radius: 5px;
+    border: 1px solid $grey;
+    padding:5px 10px;
+    font-size:1rem;
+    color:$dark;
+    overflow-y: auto;
+    &:focus {
+      outline: none;
     }
-    @media (max-width: 768px) {
+  }
 
+  input {
+    color:$dark;
+    border: 1px solid $grey;
+  }
 
+  .subtitle {
+    font-size: 1.2rem;
+  }
 
-      .img-container{
-        width:110px;
-        height:110px;
-      }
+  .right-grey {
+    display:none;
+  }
 
-      .table-wrapper {
-        overflow-x: scroll;
-
-        .table {
-          width: 631px;
-        }
-      }
-    }
-
-    @media (max-width: 600px) {
-      .img-container{
-        width:140px;
-        height:140px;
-        margin: 0 auto;
-      }
-    }
-    .uptracker-form {
-      position: relative;
-
-      .textarea {
-        .materialize-textarea {
-          width: calc(100% - 20px - 2px);
-          min-height: 20px;
-          height: calc(40px - 20px - 2px);
-          box-sizing: content-box;
-        }
-      }
-
-      .buttons {
-        margin-top: 8px;
-      }
-    }
-
-    .comments {
-      .collection {
-        border: none;
-
-        .collection-item {
-          padding-right: 5%;
-
-          .author-avatar {
-            background-color: #F5F6F7;
-            border-colot: #F5F6F7;
-            outline: none;
-          }
-
-          .delete-comment {
-            position: absolute;
-            right: 0;
-            top: 0;
-            font-size: 20px;
-            color: #F1594E;
-            cursor: pointer;
-          }
-
-          .secondary-content {
-            top: 16px;
-            right: 26px;
-          }
-        }
-      }
-    }
+  .bottom-buttons {
+    margin-top:10px;
   }
 }
