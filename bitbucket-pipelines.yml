@@ -14,4 +14,4 @@ pipelines:
           - npm i
           - ng build --prod
           - zip -r dist.zip dist
-          - python3 /root/s3_upload.py app.up-tracker.com dist.zip versions/dist.zip
+          - python3 /root/s3_upload.py app.up-tracker.com dist.zip versions/`git rev-list --count HEAD`.zip
