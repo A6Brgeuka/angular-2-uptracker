@@ -91,7 +91,7 @@ export class OrdersPreviewComponent implements OnInit {
   prefillDataForConvertion(order: any) {
       this.orderService.convertData = {
         vendor_id: [order[0].vendor_id],
-        location_id: order[0].ship_to.location_id
+        location_id: order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id
       };
       let data = new OrderOptions();
       data.ship_to = order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id;
