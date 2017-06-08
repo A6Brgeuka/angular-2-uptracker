@@ -17,6 +17,7 @@ export class CreateAccountComponent implements OnInit {
 
   signupFormPhone: string = '';
   selectedCountry: any = this.phoneMaskService.defaultCountry;
+  public showPwd: boolean = false;
 
   constructor(
       public userService: UserService,
@@ -61,5 +62,7 @@ export class CreateAccountComponent implements OnInit {
     this.terms = false;
     this.privacy = false;
   }
-
+  toggleShowPassword(){
+    this.showPwd = !this.showPwd;
+  }
 }
