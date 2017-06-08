@@ -3,13 +3,15 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: uptracker/app
+image: uptracker/app:latest
 
 pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
-          - cp _env.ts env.ts
           - ng -v
+          - cp _env.ts env.ts
           - npm i
           - ng build --prod
+          - zip -r dist.zip dist
+          - python3 /root/s3_upload.py app.up-tracker.com dist.zip versions/dist.zip
