@@ -369,13 +369,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     if (this.noAV) {
       this.vendorService.addAccountVendor(this.formData).subscribe(
         (res: any) => {
-          this.goBack();
+          this.goBackOneStep();
         }
       );
     } else {
       this.vendorService.editAccountVendor(this.vendor, this.formData).subscribe(
         (res: any) => {
-          this.goBack();
+          this.goBackOneStep();
         }
       );
     }
