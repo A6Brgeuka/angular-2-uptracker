@@ -9,5 +9,7 @@ pipelines:
   default:
     - step:
         script: # Modify the commands below to build your repository.
+          - cp _env.ts env.ts
+          - ng -v
           - npm i
           - ng build --prod
