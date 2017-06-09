@@ -106,6 +106,7 @@ export class CartService extends ModelService {
         v.book_price/=100;
         v.club_price/=100;
         v.your_price/=100;
+        v.lowest_price/=100;
       });
       r.vendors.sort((a,b)=>{
         if (a.book_price > b.book_price) {return 1;}

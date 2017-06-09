@@ -102,7 +102,7 @@
                 <div class="col s2 image-container"
                   [ngStyle]="vendor.image_url ? { 'background-image': 'url(' + vendor.image_url + ')' } : {}"></div>
                 <div class="col s7 inblock">{{ vendor.vendor_name }}</div>
-                <div class="col s3 inblock">${{ vendor.book_price | number:'1.2-2'}}</div>
+                <div class="col s3 inblock">${{ (vendor.lowest_price ? vendor.lowest_price : vendor.book_price) | number:'1.2-2'}}</div>
               </li>
             </ul>
           </div>
