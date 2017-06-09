@@ -13,6 +13,7 @@ export class LoginComponent {
     email: '',
     password: ''
   };
+  public showPwd: boolean;
 
   constructor(
       public userService: UserService,
@@ -48,5 +49,9 @@ export class LoginComponent {
               }
             }
         );
+  }
+  
+  toggleShowPassword(){
+    this.showPwd = !this.showPwd;
   }
 }
