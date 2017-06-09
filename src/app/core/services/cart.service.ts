@@ -107,8 +107,16 @@ export class CartService extends ModelService {
         v.club_price/=100;
         v.your_price/=100;
       });
+      r.vendors.sort((a,b)=>{
+        if (a.book_price > b.book_price) {return 1;}
+        else if (a.book_price < b.book_price) {return -1;}
+        else {return 0;}
+      });
+  
       r.selected = true;
       r.prev_location = r.location_id;
+      
+      
       return r;
     });
     return res;
