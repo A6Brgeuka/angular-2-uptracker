@@ -20,14 +20,27 @@ def upload_file_to_s3(bucket, artefact, bucket_key):
         return False
 
     try:
+        kwargs = {
+            "Body": open(artefact, 'rb'),
+            "Bucket": bucket,
+            "Key": bucket_key
+        }
+
         mime_type, encoding = mimetypes.guess_type(artefact)
 
-        client.put_object(
-            Body=open(artefact, 'rb'),
-            Bucket=bucket,
-            Key=bucket_key,
-            ContentType=mime_type
-        )
+        if mime_type is None:
+            file_name, file_ext = os.path.splitext(artefact)
+
+            if file_ext == ".icon" :
+                kwargs["ContentType"] = "image/vnd.microsoft.icon"
+
+            elif file_ext == ".woff2" :
+                kwargs["ContentType"] = "application/font-woff"
+            
+        else:
+            kwargs["ContentType"] = mime_type
+
+        client.put_object(**kwargs)
 
     except ClientError as err:
         print("Failed to upload artefact to S3.\n" + str(err))
