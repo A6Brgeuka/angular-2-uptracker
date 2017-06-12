@@ -2,9 +2,10 @@
 
 div.ue-tab-container {
   .ue-button {
-    background-color: $tealish;
+    background-color: $button-red;
     transition: all .3s;
     border: none;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 1px 3px;
   }
   .ue-button:hover {
     opacity: .8;

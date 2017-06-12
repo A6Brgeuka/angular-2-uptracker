@@ -40,6 +40,5 @@ export class AppComponent implements OnInit{
     node.async = true;
     node.charset = 'utf-8';
     document.getElementsByTagName('head')[0].appendChild(node);
-  
   }
 }
