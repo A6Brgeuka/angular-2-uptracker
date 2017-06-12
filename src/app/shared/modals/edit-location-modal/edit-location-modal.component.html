@@ -20,15 +20,6 @@
               (input)="changeSearchName($event)"/>
           </div>
         </div>
-        <!--<div class="col l2 offset-l3 m4 s12 filter-item">-->
-        <!--<div class="select input">-->
-        <!--<select [(ngModel)]="sortBy" (change)="sortStorageLocations()" materialize="material_select">-->
-        <!--<option value="">All</option>-->
-        <!--<option value="back_stock">Back Stock</option>-->
-        <!--<option value="floor_stock">Floor Stock</option>-->
-        <!--</select>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="col l3 offset-l5 offset-m4 m4 s12 filter-item">
           <button type="button" (click)="showAddStorageLocationForm()"
             class="uptracker-form-btn waves-light waves-effect">Add Storage Location
@@ -142,9 +133,9 @@
           materialize="material_select"
           required
           (change)="changeType()"
-          [materializeSelectOptions]="locationTypes$ | async">
+          [materializeSelectOptions]="locationTypes">
           <option value="">Please select one</option>
-          <option *ngFor="let type of locationTypes$ | async" [value]="type">{{type}}</option>
+          <option *ngFor="let type of locationTypes" [value]="type">{{type}}</option>
         </select>
       </div>
     </div>

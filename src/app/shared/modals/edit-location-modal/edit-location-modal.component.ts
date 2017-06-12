@@ -25,9 +25,6 @@ export class EditLocationModalContext extends BSModalContext {
 
 @Component({
   selector: 'app-edit-location-modal',
-  //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
-  // Remove when solved.
-  /* tslint:disable */
   templateUrl: './edit-location-modal.component.html',
   styleUrls: ['./edit-location-modal.component.scss']
 })
@@ -37,7 +34,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public subscribers: any = {};
   context: EditLocationModalContext;
   public location: LocationModel;
-  public states$: Observable<any> = new Observable<any>();
   public locationTypes$: Observable<any> = new Observable<any>();
   public typeDirty: boolean = false;
   public stateDirty: boolean = false;
@@ -53,7 +49,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public selectedFaxCountryExt: any = this.phoneMaskService.defaultCountry;
 
   public inventory_location: any = { name: '', floor_stock: true};
-  public locationToDelete = null;
 
   // setting default storage locations when creating new one location
   public defaultStorageLocations = [
@@ -68,8 +63,6 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   public backStockStorageLocations$;
 
   public isStorageLocationFormShow = true;
-  public storageLocation: string;
-  public forStockLocation: boolean;
   public sortBy;
 
   uploadedImage;
@@ -77,6 +70,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
   options = {
     readAs: 'DataURL'
   };
+  locationTypes: string[];
 
   constructor(public zone: NgZone,
               public dialog: DialogRef<EditLocationModalContext>,
@@ -150,7 +144,7 @@ export class EditLocationModal implements OnInit, CloseGuard, ModalComponent<Edi
     this.backStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: false}));
 
     // this.states$ = this.accountService.getStates().take(1);
-    this.locationTypes$ = this.locationService.getLocationTypes().take(1);
+     this.locationService.getLocationTypes().subscribe((types:string[])=>{this.locationTypes = types;});
 
   }
 
