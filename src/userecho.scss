@@ -1,0 +1,12 @@
+@import "colors.scss";
+
+div.ue-tab-container {
+  .ue-button {
+    background-color: $tealish;
+    transition: all .3s;
+    border: none;
+  }
+  .ue-button:hover {
+    opacity: .8;
+  }
+}
