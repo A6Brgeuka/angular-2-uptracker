@@ -19,7 +19,9 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.userService.selfData$.subscribe((selfData:any)=>{
+    this.userService.selfData$
+    .filter((sD)=>(sD && sD.user_echo_token))
+    .subscribe((selfData:any)=>{
       // userecho service config
       window['_ues'] = {
         host: 'kirawoods.userecho.com',
@@ -34,7 +36,7 @@ export class AppComponent implements OnInit{
         tab_text_shadow_color: '#00000055',
         tab_bg_color: '#57a957',
         tab_hover_color: '#f45c5c',
-        params: {sso_token:selfData.user_echo_ts}
+        params: {sso_token:selfData.user_echo_token}
       };
       console.log("USERECHO init data", window['_ues']);
       // userecho service
