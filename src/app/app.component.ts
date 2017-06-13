@@ -34,9 +34,9 @@ export class AppComponent implements OnInit{
         tab_text_shadow_color: '#00000055',
         tab_bg_color: '#57a957',
         tab_hover_color: '#f45c5c',
-        params: {sso_token:selfData.name}
+        params: {sso_token:selfData.user_echo_ts}
       };
-      console.log(window['_ues']);
+      console.log("USERECHO init data", window['_ues']);
       // userecho service
       let node = document.createElement('script');
       node.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.userecho.com/js/widget-1.4.gz.js';
