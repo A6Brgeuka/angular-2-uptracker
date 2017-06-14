@@ -43,7 +43,10 @@
             <div class="col m4" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="">
                 <label>Hazardous</label>
-                <span class="value">{{product?.hazardous_string}}</span>
+                <span class="value">
+                  <a *ngIf="product?.hazardous && product?.msds" target="_blank" [href]="product?.msds">{{product?.hazardous_string}}</a>
+                  <span  *ngIf="!product?.hazardous  && !product?.msds">{{product?.hazardous_string}}</span>
+                </span>
               </div>
               <div *ngIf="showEdit" class="input-checkbox checkbox">
                 <label>Hazardous</label>
