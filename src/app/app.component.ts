@@ -20,9 +20,11 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     this.userService.selfData$
-    .filter((sD)=>(sD && sD.user_echo_token))
+    .filter((sD)=>(sD && sD.user_echo_token && !window['_ues']))
+    .take(1)
     .subscribe((selfData:any)=>{
       // userecho service config
+      
       window['_ues'] = {
         host: 'kirawoods.userecho.com',
         forum: '1',
@@ -31,7 +33,7 @@ export class AppComponent implements OnInit{
         tab_font_size: 20,
         tab_image_hash: 'ZmVlZGJhY2s%3D',
         tab_chat_hash: 'Y2hhdA%3D%3D',
-        tab_alignment: 'right',
+        tab_alignment: 'top',
         tab_text_color: '#ffffff',
         tab_text_shadow_color: '#00000055',
         tab_bg_color: '#57a957',

@@ -1,6 +1,13 @@
 @import "colors.scss";
 
+#ue-dlg-content > iframe {
+  z-index: 9999;
+}
+
 div.ue-tab-container {
+
+  right:130px!important;
+
   .ue-button {
     //background-color: $button-red;
     transition: all .3s;
