@@ -1,0 +1,46 @@
+<div class="inner">
+  <div class="row title center-align">Invite a new user</div>
+  <div class="row">
+    <div class="col s12 text">
+      New user will receive email that  he is invited to join your team.
+    </div>
+  </div>
+
+  <div class="row no-margin-bottom">
+    <div class="col s6  bold">
+      Name
+    </div>
+    <div class="col s6 bold">
+      Email
+    </div>
+  </div>
+  <div class="row small-margin">
+    <div class="col s6">
+      <div class="left input">
+        <input [(ngModel)]="name"
+          required minlength="2" maxlength="254"
+          type="text" placeholder="Jane Doe"
+          #name_field="ngModel"
+        >
+      </div>
+    </div>
+    <div class="col s6">
+      <div class="left input">
+        <input
+          class="validate col s12"
+          placeholder="jane.doe@example.com"
+          [(ngModel)]="email"
+          #email_field="ngModel"
+          required minlength="6" maxlength="254" pattern=".+@.+\..+"
+          type="text">
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="row">
+    <div class="center-align col s12">
+      <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
+      <button [disabled]=" !email_field.valid || !name_field.valid" class="uptracker-form-btn" (click)="invite()">Invite</button>
+    </div>
+  </div>
+</div>

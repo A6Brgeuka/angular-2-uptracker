@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { EditUserModal } from '../../shared/modals/index';
 import { UserService, AccountService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
+import { InviteUserModal } from './invite-user-modal/invite-user-modal.component';
 
 
 @Component({
@@ -111,5 +112,9 @@ export class UsersComponent implements OnInit {
   resetFilters() {
     this.searchKey$.next('');
     this.searchKey = '';
+  }
+  
+  inviteUser(){
+    this.modal.open(InviteUserModal, this.modalWindowService.overlayConfigFactoryWithParams({},true));
   }
 }

@@ -266,4 +266,8 @@ export class UserService extends ModelService {
       this.updateSelfDataField('account', account);
     }
   }
+  
+  inviteUser(name,email){
+    return this.restangular.all('users').all('invite').customPOST({name:name, email_address:email})
+  }
 }

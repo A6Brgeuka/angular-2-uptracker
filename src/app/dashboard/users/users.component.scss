@@ -13,11 +13,14 @@
           background:#f5f6f7 url(/assets/img/onboard/button-add-location.svg) no-repeat center center;
           border:1px dashed #a7a7a7;
           border-radius:5px;
-        &.invite-user {
-          background:#f5f6f7 url(/assets/img/onboard/button-invite-user.svg) no-repeat center center;
-        }
+          transition: all .3s;
+          background-size: 70px;
+          &.invite-user {
+            background-image: url(/assets/img/onboard/button-invite-user.svg);
+          }
           &:hover{
             cursor:pointer;
+            background-size: 100px;
           }
         }
       }
