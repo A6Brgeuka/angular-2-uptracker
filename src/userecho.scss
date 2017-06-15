@@ -6,7 +6,10 @@
 
 div.ue-tab-container {
 
-  right:130px!important;
+  right:0!important;
+  width:100px;
+  left:0;
+  margin: auto;
 
   .ue-button {
     //background-color: $button-red;
