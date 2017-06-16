@@ -26,6 +26,8 @@
           required minlength="2" maxlength="254"
           type="text" placeholder="Jane Doe"
           #name_field="ngModel"
+          (focus)="nfoc=true"
+          (blur)="nfoc=false"
         >
       </div>
     </div>
