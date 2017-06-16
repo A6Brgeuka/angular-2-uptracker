@@ -19,6 +19,8 @@ export class InviteUserModal implements OnInit, CloseGuard, ModalComponent<Invit
   context: InviteUserModalContext;
   email:string;
   name:string;
+  efoc:boolean = true;
+  nfoc:boolean = true;
   
   constructor(
       public dialog: DialogRef<InviteUserModalContext>,

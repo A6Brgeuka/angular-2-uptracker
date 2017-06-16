@@ -1,8 +1,13 @@
 <div class="inner">
   <div class="row title center-align">Invite a new user</div>
   <div class="row">
-    <div class="col s12 text">
-      New user will receive email that  he is invited to join your team.
+    <div class="col s4 text center-align">
+      <img src="/assets/img/onboard/button-invite-user.svg" alt="Invite user">
+    </div>
+    <div class="col flex-center s8 grey-text center-align bigger">
+      <div>
+        New user will receive email that he is invited to join your team.
+      </div>
     </div>
   </div>
 
@@ -30,17 +35,24 @@
           class="validate col s12"
           placeholder="jane.doe@example.com"
           [(ngModel)]="email"
+          (focus)="efoc=true"
+          (blur)="efoc=false"
           #email_field="ngModel"
           required minlength="6" maxlength="254" pattern=".+@.+\..+"
           type="text">
       </div>
     </div>
+    <div *ngIf="!email_field.valid && !efoc" class="col s12 red-text">Email has to be valid.</div>
+    <div *ngIf="!name_field.valid && !nfoc" class="col s12 red-text">Does your friend has a name?</div>
+
   </div>
   <div class="clearfix"></div>
-  <div class="row">
+  <div class="row buttons">
     <div class="center-align col s12">
       <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
-      <button [disabled]=" !email_field.valid || !name_field.valid" class="uptracker-form-btn" (click)="invite()">Invite</button>
+      <button [disabled]=" !email_field.valid || !name_field.valid" class="uptracker-form-btn" (click)="invite()">
+        Invite
+      </button>
     </div>
   </div>
 </div>
