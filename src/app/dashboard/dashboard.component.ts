@@ -4,6 +4,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { UserService, StateService, AccountService } from '../core/services/index';
 import { Observable } from "rxjs";
+import { DashboardService } from '../core/services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,7 @@ export class DashboardComponent implements OnInit {
     public userService: UserService,
     public accountService: AccountService,
     public stateService: StateService,
+    public dashboardService: DashboardService
   ) {
     this.locations$ = Observable.combineLatest(
       this.accountService.locations$,

@@ -22,6 +22,7 @@ export class InnerDashboardComponent {
   }
   
   showInfo() {
+      this.dashboardService.hasInfo = false;
       this.modal.open(NewsModal, this.modalWindowService.overlayConfigFactoryWithParams({text: this.dashboardService.dashboardText}, false, 'big'));
     
   }

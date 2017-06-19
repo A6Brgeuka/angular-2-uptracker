@@ -3,6 +3,7 @@
 @mixin collapsed-left-panel {
   width: 200px;
 
+
   .logo {
     a {
       width: 153px;
@@ -21,6 +22,20 @@
 
 :host /deep/ {
 
+
+  .ds-info-flag{
+    position: absolute;
+    left:3px;
+    top:3px;
+    background-color: $white;
+    border-radius: 50%;
+    height:19px;
+    width:19px;
+    text-align: center;
+    line-height: 18px;
+    font-size: 18px;
+    text-indent: initial;
+  }
 
   .buttons-topright{
 

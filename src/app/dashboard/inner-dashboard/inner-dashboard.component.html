@@ -21,7 +21,9 @@
     <div class="col m4 s6">
       <div class="row highrow">
         <div class="col s12 dash-category">Messages</div>
-        <a (click)="showInfo()" class="col s12 dash-item tealish-text"><fa name="info-circle"></fa>Alfa testing info</a>
+        <a (click)="showInfo()" class="col s12 dash-item tealish-text">
+          <fa name="info-circle" [class.red-text]="dashboardService.hasInfo"></fa>
+          Beta testing info</a>
       </div>
     </div>
     <div class="col m4 s12">
