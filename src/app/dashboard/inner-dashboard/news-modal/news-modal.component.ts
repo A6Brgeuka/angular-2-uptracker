@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService } from '../../../core/services/user.service';
-import { DashboardService } from '../../../core/services/dashboard.service';
 
-export class InviteUserModalContext extends BSModalContext {
+export class NewsModalContext extends BSModalContext {
+  text:string;
 }
 
 @Component({
@@ -14,15 +13,14 @@ export class InviteUserModalContext extends BSModalContext {
   templateUrl: './news-modal.component.html',
   styleUrls: ['./news-modal.component.scss']
 })
-@DestroySubscribers()
-export class NewsModal implements OnInit, CloseGuard, ModalComponent<InviteUserModalContext> {
-  context: InviteUserModalContext;
+export class NewsModal implements OnInit, CloseGuard, ModalComponent<NewsModalContext> {
+  context: NewsModalContext;
   
   constructor(
-      public dialog: DialogRef<InviteUserModalContext>,
+      public dialog: DialogRef<NewsModalContext>,
       public userService: UserService,
-      public dashboardService: DashboardService
   ) {
+    this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
 

@@ -2,8 +2,7 @@
   <div class="row title center-align">Dear {{ userService.selfData.name }}!</div>
   <div class="row">
     <div class="col flex-center s12 grey-text ">
-      <div [innerHtml]="(dashboardService.selfData$ | async)">
-
+      <div [innerHtml]="context?.text">
       </div>
     </div>
   </div>

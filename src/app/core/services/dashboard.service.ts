@@ -13,6 +13,7 @@ import { Observable} from "rxjs";
 export class DashboardService extends ModelService {
   public appConfig: AppConfig;
   public selfData$: Observable<any>;
+  public dashboardText: string;
   
   constructor(
     public injector: Injector,
@@ -26,7 +27,10 @@ export class DashboardService extends ModelService {
   onInit() {
     this.selfData$ =  this.restangular.all('dashboard').customGET()
     .filter((data:any)=>data.data && data.data.html)
-    .map((data:any)=>data.data.html);
-  }
+    .map((data:any)=>data.data.html)
+    .subscribe((text:string)=>{
+      this.dashboardText = text;
+    })
+    }
   
 }
