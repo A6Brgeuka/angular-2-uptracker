@@ -33,14 +33,18 @@ describe('Dashboard', () => {
     });
   });
   
-  it('Should contain the left nav menu', () => {
-    return true;
-    //fixture = TestBed.createComponent(DashboardComponent);
-    //de = fixture.debugElement.query( By.css('aside > div.nav > a.dash.relative.active') );
-    //el = de.nativeElement;
-    //fixture.detectChanges();
-    //
-    //expect(el.textContent).toContain('Dashboard');
+  it('Should contain the left nav menu button dashboard', () => {
+    fixture = TestBed.createComponent(DashboardComponent);
+    de = fixture.debugElement.query( By.css('aside > div.nav') );
+    el = de.children[0].nativeElement;
+    expect(el.textContent).toContain('Dashboard');
+  });
+  
+  it('Should contain the left nav menu button shopping list', () => {
+    fixture = TestBed.createComponent(DashboardComponent);
+    de = fixture.debugElement.query( By.css('aside > div.nav') );
+    el = de.children[1].nativeElement;
+    expect(el.textContent).toContain('Shopping List');
   });
   
   

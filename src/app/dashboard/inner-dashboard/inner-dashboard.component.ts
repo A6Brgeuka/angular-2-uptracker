@@ -18,12 +18,9 @@ export class InnerDashboardComponent implements AfterViewInit {
     public modal: Modal,
     public dashboardService: DashboardService
   ) {
-  
   }
   
-  
   ngAfterViewInit() {
-    
     this.dashboardService.selfData$
     .subscribe(() => {
         if (this.dashboardService.hasInfo) {
@@ -31,8 +28,6 @@ export class InnerDashboardComponent implements AfterViewInit {
         }
       }
     );
-    
-    
   }
   
   showInfo() {
