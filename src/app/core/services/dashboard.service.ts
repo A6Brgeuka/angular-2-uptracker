@@ -31,16 +31,17 @@ export class DashboardService extends ModelService {
   onInit() {
     this.selfData$ = this.restangular.all('dashboard').customGET()
     .filter((data: any) => data.data && data.data.html)
-    .map((data: any) => data.data.html)
-    .subscribe((text: string) => {
+    .map((data: any) => data.data.html);
+    
+   let a =  this.selfData$.subscribe((text: string) => {
       this.dashboardText = text;
+      if (this.localStorage.get('read_info')) {
+        this.setRead();
+      } else {
+        this.setRead(false);
+      }
     });
     
-    if (this.localStorage.get('read_info')) {
-      this.setRead();
-    } else {
-      this.setRead(false);
-    }
     
   }
   

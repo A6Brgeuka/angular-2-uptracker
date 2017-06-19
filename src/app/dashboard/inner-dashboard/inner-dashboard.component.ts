@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
@@ -11,7 +11,7 @@ import { DashboardService } from '../../core/services/dashboard.service';
   styleUrls: ['./inner-dashboard.component.scss']
 })
 @DestroySubscribers()
-export class InnerDashboardComponent {
+export class InnerDashboardComponent implements AfterViewInit {
   
   constructor(
     public modalWindowService: ModalWindowService,
@@ -21,9 +21,22 @@ export class InnerDashboardComponent {
   
   }
   
-  showInfo() {
-      this.dashboardService.hasInfo = false;
-      this.modal.open(NewsModal, this.modalWindowService.overlayConfigFactoryWithParams({text: this.dashboardService.dashboardText}, false, 'big'));
+  
+  ngAfterViewInit() {
     
+    this.dashboardService.selfData$
+    .subscribe(() => {
+        if (this.dashboardService.hasInfo) {
+          this.showInfo();
+        }
+      }
+    );
+    
+    
+  }
+  
+  showInfo() {
+    this.dashboardService.hasInfo = false;
+    this.modal.open(NewsModal, this.modalWindowService.overlayConfigFactoryWithParams({text: this.dashboardService.dashboardText}, false, 'big'));
   }
 }
