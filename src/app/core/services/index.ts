@@ -17,6 +17,7 @@ import { LocationService } from './location.service';
 import { CartService } from './cart.service';
 import { OrderService } from './order.service';
 import { ConfigService } from './config.service';
+import { DashboardService } from './dashboard.service';
 
 
 export {
@@ -39,8 +40,8 @@ export {
   CustomRenderer,
   CartService,
   OrderService,
-  ConfigService
-  
+  ConfigService,
+  DashboardService
 };
 
 // an array of services to resolve routes with data
@@ -63,5 +64,6 @@ export const APP_SERVICE_PROVIDERS = [
   LocationService,
   CartService,
   OrderService,
-  ConfigService
+  ConfigService,
+  DashboardService
 ];
