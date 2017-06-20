@@ -66,9 +66,18 @@ export class OrdersPreviewComponent implements OnInit {
   saveOrder(orderId: string, key: string, val, vendorId: string) {
     if (key != "ship_to" && key != "order_method") {
       const regex = /[\d\.]*/g;
-      regex.lastIndex++;
       let m: any = regex.exec(val);
-      val = m ? parseFloat(m[0]) : 0;
+      regex.lastIndex++;
+      let m1: any = regex.exec(val);
+      if (m && m[0]) {
+        val = parseFloat(m[0] ? m[0] : '0');
+      } else if (m1 && m1[0]) {
+        val = parseFloat(m1[0] ? m1[0] : '0');
+      }
+      if (!val) {
+        val = 0;
+      }
+      
     }
     let data: any = {};
     data[key] = val;
