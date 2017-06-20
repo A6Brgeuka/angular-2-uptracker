@@ -112,6 +112,6 @@ export class PurchaseOrderComponent implements OnInit {
     if (!data.email_text){data.email_text = "Email text"}
     if (!data.po_number){data.po_number = "1234567890"}
     
-    this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data,true,"big"));
+    this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data,true,"oldschool"));
   }
 }

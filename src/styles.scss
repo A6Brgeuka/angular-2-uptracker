@@ -1144,6 +1144,24 @@ modal-overlay.small-custom-class .modal {
   max-width: 300px;
 }
 
+modal-overlay.oldschool-custom-class {
+  .modal-backdrop {
+    background-color: rgba(0, 0, 0, .1)
+  }
+  .modal {
+    max-width: 600px;
+    position: relative;
+
+    .title {
+      font-size: 28px !important;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .close {
+      display: block;
+    }
+  }
+}
 .flex-center {
   display: flex !important;
   justify-content: flex-start;

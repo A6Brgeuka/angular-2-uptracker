@@ -50,7 +50,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     this.dialog.close(data);
   }
   
-  downloadPDF(){
-  
+  addAttachment(){
+    //TODO
   }
 }

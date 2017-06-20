@@ -5,9 +5,33 @@ input.select-dropdown, .input input {
   margin-bottom: 0 !important;
 }
 
+.uptracker-form-btn {
+  height: 36px;
+  font-size: 14px;
+  width: 100px;
+  margin: 0 5px;
+  font-weight: normal;
+  border-width: 1px;
+  border-style: solid;
+  border-color: $tealish;
+  background-color: $tealish;
+  color: #fff;
+  &.send-btn {
+    position: absolute;
+    right: 20px;
+    top: 30px;
+  }
+  &.redbtn {
+    border-color: red;
+    background-color: #fff;
+    color: red;
+  }
+  &:last-of-type {
+  }
+}
+
 .inner {
   padding: 5px;
-
 
   label.light-grey {
     color: $grey;
@@ -15,12 +39,12 @@ input.select-dropdown, .input input {
 
   .row {
     margin-bottom: 7px;
-    min-height:40px;
-    padding-top:3px;
+    min-height: 40px;
+    padding-top: 3px;
   }
 
   .flex-center {
-    display: flex!important;
+    display: flex !important;
     align-items: center;
     justify-content: center;
   }
@@ -55,57 +79,62 @@ input.select-dropdown, .input input {
     font-size: 0.9rem;
   }
 
-  .uptracker-form-btn {
-    height: 36px;
-    font-size: 14px;
-    width: 100px;
-    margin: 0 5px;
-    font-weight: normal;
-    border-width: 1px;
-    border-style: solid;
-    border-color: $tealish;
-    background-color: $tealish;
-    color: #fff;
-
-    &.redbtn {
-      border-color: red;
-      background-color: #fff;
-      color: red;
-    }
-    &:last-of-type {
-    }
-  }
-
-  textarea{
+  textarea {
     min-height: 200px;
     border-radius: 5px;
-    border: 1px solid $grey;
-    padding:5px 10px;
-    font-size:1rem;
-    color:$dark;
+    padding: 5px 10px;
+    font-size: 1rem;
     overflow-y: auto;
-    resize:none;
+    resize: none;
 
     &:focus {
       outline: none;
     }
   }
 
-  input {
-    color:$dark;
-    border: 1px solid $grey;
+  input, textarea {
+    background-color: $light-light-grey;
+    border: 1px solid $light-grey;
+    color: $dark;
+    &::placeholder {
+      color: $grey;
+      font-size: 14px;
+    }
+
   }
 
   .subtitle {
     font-size: 1.2rem;
   }
 
+  .subttl {
+    color: $grey;
+  }
+
+  .col {
+    margin-bottom: 3px;
+  }
   .right-grey {
-    display:none;
+    display: none;
   }
 
   button.uptracker-form-btn {
-    height:30px!important;
+    height: 30px !important;
   }
+
+  .invis {
+    opacity: 0;
+    transition: opacity .3s;
+    margin-left: 15px;
+  }
+  .attachments {
+    a:first-of-type {
+      color: $dark;
+      &:hover .invis {
+        opacity: 1;
+      }
+    }
+  }
+
 
 }
