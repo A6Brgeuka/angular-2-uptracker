@@ -1,6 +1,19 @@
 import { CreditCardModel } from './credit-card.model';
 import { AccountModel } from './account.model';
 
+
+export class InviteUserModel {
+  email_address:string = '';
+  name:string = '';
+  phone:string = '';
+  user_id:string = null;
+}
+
+export class InviteUserPwdModel extends InviteUserModel {
+  password:string = null;
+}
+
+
 export class UserModel {
   id: string = null;
   name: string = null;

@@ -8,23 +8,20 @@ import { ForgotPasswordCongratsRoutes } from './forgot-password-congrats/forgot-
 import { LoginRoutes } from './login/login.routing';
 import { SignupRoutes } from './signup/signup.routing';
 import { ResetPasswordRoutes } from './reset-password/reset-password.routing';
+import { InviteRoutes } from './invite/invite.routing';
 
 export const AuthRoutes = [
   {
     path: '',
     component: AuthComponent,
     children: [
-      //{ path: 'login', canActivate: [AuthGuard], component: LoginComponent, },
-      //{ path: 'signup', canActivate: [AuthGuard], component: SignupComponent },
-      //{ path: 'forgot-password', canActivate: [AuthGuard], component: ForgotPasswordComponent },
-      //{ path: 'forgot-password-congrats', component: ForgotPasswordCongratsComponent },
-      //{ path: 'reset-password/:token', component: ResetPasswordComponent },
       ...EmailVerificationRoutes,
       ...ForgotPasswordRoutes,
       ...ForgotPasswordCongratsRoutes,
       ...LoginRoutes,
       ...SignupRoutes,
       ...ResetPasswordRoutes,
+      ...InviteRoutes
     ]
   }
 ];

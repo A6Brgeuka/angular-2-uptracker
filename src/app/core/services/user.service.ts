@@ -270,4 +270,12 @@ export class UserService extends ModelService {
   inviteUser(name,email){
     return this.restangular.all('users').all('invite').customPOST({name:name, email_address:email})
   }
+  
+  validateInvitation(code){
+    return this.restangular.all('users').one('invite', code).customGET();
+  }
+ 
+  sendInvitationData(code, data){
+    return this.restangular.all('users').one('invite', code).customPOST(data);
+  }
 }
