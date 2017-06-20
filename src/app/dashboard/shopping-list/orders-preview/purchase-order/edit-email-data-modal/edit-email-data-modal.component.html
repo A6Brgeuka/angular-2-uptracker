@@ -62,14 +62,15 @@
   <div class="row">
     <div class="col s12  subttl">Attachments</div>
     <div class="col s12 attachments">
-      <a href="somepdf.pdf">
+      <a href="somepdf.pdf" target="_blank">
         <fa name="file-pdf-o"></fa>
         Purchase Order #123
         <fa class="tealish-text invis" name="external-link"></fa>
       </a>
     </div>
     <div *ngFor="let a of attachments" class="col s12 attachments">
-      <a href="#">
+      <input type="file" >
+      <a href="some.pdf"  target="_blank">
         <fa name="file-pdf-o"></fa>
         Additional attachment
         <fa class="tealish-text invis" name="external-link"></fa>

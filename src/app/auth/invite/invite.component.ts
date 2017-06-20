@@ -74,11 +74,11 @@ export class InviteComponent implements OnInit {
   
   onSubmit() {
     this.invitationInfo.phone = this.selectedCountry[2] + ' ' + this.signupFormPhone;
-    debugger;
     this.userService.sendInvitationData(this.invitaionCode, this.invitationInfo)
     .subscribe(
       (res: any) => {
         if (res.data.token)
+          debugger;
           this.userService.setSessionToken(res.data.token);
         this.router.navigate(['/dashboard']);
       },

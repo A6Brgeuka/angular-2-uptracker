@@ -38,7 +38,9 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
   
   guard(url, lazy = false){
+    
     let user$ = this.userService.loadSelfData().map((res) => {
+      debugger;
       // if logged out guest remove self data
       if (this.userService.isGuest()){
         this.userService.updateSelfData(new UserModel());
