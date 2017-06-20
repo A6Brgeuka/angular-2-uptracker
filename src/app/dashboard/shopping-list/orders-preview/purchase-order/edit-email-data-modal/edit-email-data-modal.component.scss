@@ -130,11 +130,16 @@ input.select-dropdown, .input input {
   .attachments {
     a:first-of-type {
       color: $dark;
-      &:hover .invis {
-        opacity: 1;
-      }
+    }
+    .invis {
+      cursor:pointer;
+    }
+    &:hover .invis {
+      opacity: 1;
     }
   }
-
+  .additional-space {
+    margin-top:5px;
+  }
 
 }

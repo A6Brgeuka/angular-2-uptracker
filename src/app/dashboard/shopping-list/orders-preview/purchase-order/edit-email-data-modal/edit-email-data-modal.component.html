@@ -68,7 +68,16 @@
         <fa class="tealish-text invis" name="external-link"></fa>
       </a>
     </div>
-    <div class="col s12  tealish-text">
+    <div *ngFor="let a of attachments" class="col s12 attachments">
+      <a href="#">
+        <fa name="file-pdf-o"></fa>
+        Additional attachment
+        <fa class="tealish-text invis" name="external-link"></fa>
+      </a>
+      <fa class="red-text invis" name="trash" (click)="rmAttachment()"></fa>
+    </div>
+
+    <div class="col s12 additional-space tealish-text">
       <a (click)="addAttachment()">
         <fa name="plus"></fa>
         Add Attachment

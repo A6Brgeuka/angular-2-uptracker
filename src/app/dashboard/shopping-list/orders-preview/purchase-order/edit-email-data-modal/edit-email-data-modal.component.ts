@@ -24,6 +24,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   public emailFrom:string;
   public emailSubject:string;
   public emailMessage:string;
+  public attachments: string[] = [];
   
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
@@ -52,5 +53,10 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   
   addAttachment(){
     //TODO
+    this.attachments.push('Additional attachment');
+  }
+  rmAttachment(){
+    //TODO
+    this.attachments.pop();
   }
 }
