@@ -1,3 +1,8 @@
+<ul class="debug-monitor" [class.isrequest]="isRequest">
+  <li>page: {{ vendorService.current_page }}</li>
+  <li>count: {{ (vendors$ | async).length }}</li>
+  <li>total: {{ vendorService.total }}</li>
+</ul>
 <div class="vendors content">
   <div class="top row">
     <div class="col l6 s12 title">

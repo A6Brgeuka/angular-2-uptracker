@@ -1,17 +1,16 @@
 import { Component, OnInit, ViewContainerRef, HostListener } from "@angular/core";
 import { Observable, BehaviorSubject, Subject } from "rxjs/Rx";
-import { Overlay } from "angular2-modal";
 import { Modal } from "angular2-modal/plugins/bootstrap";
 import { DestroySubscribers } from "ng2-destroy-subscribers";
 import * as _ from "lodash";
 import { VendorService, ModalWindowService } from "../../core/services/index";
-
 
 @Component({
   selector: 'app-vendors',
   templateUrl: './vendors.component.html',
   styleUrls: ['./vendors.component.scss']
 })
+
 @DestroySubscribers()
 export class VendorsComponent implements OnInit {
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -36,7 +35,6 @@ export class VendorsComponent implements OnInit {
   ngOnInit() {
     
     this.vendorService.isDataLoaded$
-    .delay(500)
     .filter(r => r)
     .subscribe((r) => {
       this.isRequestVendors = false;
@@ -82,6 +80,7 @@ export class VendorsComponent implements OnInit {
     
     this.infiniteScroll$
     .filter((infinite) => {
+     
       return infinite && !this.isRequestVendors
       /* && vendors.length*/
     })
@@ -95,7 +94,7 @@ export class VendorsComponent implements OnInit {
       if (this.vendorService.total <= (this.vendorService.current_page - 1) * this.vendorService.pagination_limit) {
         return Observable.of({});
       } else {
-        
+debugger;
         return this.vendorService.getNextVendors(this.vendorService.current_page, this.searchKey, this.sortBy);
       }
     })
