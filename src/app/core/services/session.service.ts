@@ -31,7 +31,8 @@ export class SessionService {
     } catch(err){
       value = this.cookieService.get(title) || this.session[title];
     }
-    return value;
+    // weird bug in LocalStorage component
+    return (value != "undefined") ? value : undefined;
   }
 
   remove(title){

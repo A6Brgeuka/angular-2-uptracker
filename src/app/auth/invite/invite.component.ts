@@ -75,11 +75,19 @@ export class InviteComponent implements OnInit {
   onSubmit() {
     this.invitationInfo.phone = this.selectedCountry[2] + ' ' + this.signupFormPhone;
     this.userService.sendInvitationData(this.invitaionCode, this.invitationInfo)
+    .map((res:any)=>{
+      res.data.user.new_token = res.data.token;
+      res.data.user.token = res.data.token;
+      res.data.user.account = res.data.account;
+      return res.data.user;
+    })
     .subscribe(
-      (res: any) => {
-        if (res.data.token)
-          debugger;
-          this.userService.setSessionToken(res.data.token);
+      (user: any) => {
+        if (user.token) {
+          this.userService.updateSelfData(user);
+          this.userService.setSessionToken(user.token);
+          this.userService.setSessionId(user.id);
+        }
         this.router.navigate(['/dashboard']);
       },
       (err) => {

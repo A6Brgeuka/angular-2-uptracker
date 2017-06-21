@@ -126,7 +126,6 @@ export class PriceModal implements OnInit, CloseGuard, ModalComponent<PriceModal
         this.dismissModal();
       },
       (er:any) => {
-       debugger;
       }
     );
   }
