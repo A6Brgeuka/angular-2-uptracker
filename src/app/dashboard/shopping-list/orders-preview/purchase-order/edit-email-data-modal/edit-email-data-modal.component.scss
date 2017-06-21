@@ -131,6 +131,7 @@ input.select-dropdown, .input input {
     a:first-of-type {
       color: $dark;
     }
+
     .invis {
       cursor:pointer;
     }
@@ -142,4 +143,12 @@ input.select-dropdown, .input input {
     margin-top:5px;
   }
 
+  input[type=file] {
+    display: none;
+  }
+
+  label {
+    color:$tealish;
+    cursor:pointer;
+  }
 }

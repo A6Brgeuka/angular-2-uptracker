@@ -59,4 +59,8 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     //TODO
     this.attachments.pop();
   }
+  
+  onFileUpload(){
+  
+  }
 }

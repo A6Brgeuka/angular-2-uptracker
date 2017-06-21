@@ -69,7 +69,6 @@
       </a>
     </div>
     <div *ngFor="let a of attachments" class="col s12 attachments">
-      <input type="file" >
       <a href="some.pdf"  target="_blank">
         <fa name="file-pdf-o"></fa>
         Additional attachment
@@ -79,10 +78,11 @@
     </div>
 
     <div class="col s12 additional-space tealish-text">
-      <a (click)="addAttachment()">
+      <input type="file" id="add-attachment" (change)="onFileUpload($event)">
+      <label for="add-attachment" (click)="addAttachment()">
         <fa name="plus"></fa>
         Add Attachment
-      </a>
+      </label>
     </div>
   </div>
 </div>
