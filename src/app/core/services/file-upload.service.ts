@@ -11,28 +11,28 @@ export class FileUploadService {
   constructor(
     public exifService: ExifService,
     public restangular: Restangular
-) {
+  ) {
   }
-
+  
   getOrientedImage(file) {
     let orientationNumber = this.getOrientation(file);
     
     return this.getOrientedImageByOrientation(file, orientationNumber);
   }
-
-  getOrientedImageByOrientation(file, orientationNumber){
+  
+  getOrientedImageByOrientation(file, orientationNumber) {
     let img: any;
     let image = this.getImageFromBase64(file);
-
+    
     if ([3, 6, 8].indexOf(orientationNumber) > -1) {
       let canvas: HTMLCanvasElement = document.createElement("canvas"),
-          ctx: CanvasRenderingContext2D = canvas.getContext("2d"),
-          cw: number = image.width,
-          ch: number = image.height,
-          cx: number = 0,
-          cy: number = 0,
-          deg: number = 0;
-
+        ctx: CanvasRenderingContext2D = canvas.getContext("2d"),
+        cw: number = image.width,
+        ch: number = image.height,
+        cx: number = 0,
+        cy: number = 0,
+        deg: number = 0;
+      
       switch (orientationNumber) {
         case 3:
           cx = -image.width;
@@ -54,53 +54,40 @@ export class FileUploadService {
         default:
           break;
       }
-
+      
       canvas.width = cw;
       canvas.height = ch;
       ctx.rotate(deg * Math.PI / 180);
       ctx.drawImage(image, cx, cy);
-
-      // img = document.createElement("img");
-      // img.width = cw;
-      // img.height = ch;
-      // img.src = canvas.toDataURL("image/jpeg");
       return canvas.toDataURL("image/png");
     } else {
       return image.src;
     }
   }
-
-  getOrientation(file){
+  
+  getOrientation(file) {
     let buffer = this.exifService.base64ToArrayBuffer(file);
     let orientationNum = this.getOrientationFromBase64(buffer);
     return orientationNum;
   }
   
-  getOrientationFromBase64(file){
+  getOrientationFromBase64(file) {
     return this.exifService.findEXIFinJPEG(file) ? this.exifService.findEXIFinJPEG(file)['Orientation'] : null;
   }
-
-  getImageFromBase64(file){
+  
+  getImageFromBase64(file) {
     let exif = this.exifService.findEXIFinJPEG(this.exifService.base64ToArrayBuffer(file));
     let image = new Image();
     image.src = file;
-    if (exif){
+    if (exif) {
       image.width = exif.PixelXDimension;
       image.height = exif.PixelYDimension;
     }
-
+    
     return image;
   }
-
-  // TODO: remove if not necessary
-  // getHTMLImageElementFromBase64(file){
-  //   if (file){
-  //     let image = new Image();
-  //     image.src = file;
-  //     return image;
-  //   }
-  // }
-
+  
+  
   getResizeArea() {
     let resizeArea = document.getElementById('imageupload-resize-area');
     if (!resizeArea) {
@@ -111,63 +98,63 @@ export class FileUploadService {
       resizeArea.style.transform = 'translate(-2000px, 0)';
       document.body.appendChild(resizeArea);
     }
-
+    
     return <HTMLCanvasElement>resizeArea;
   }
-
+  
   resizeImage(
-      origImage,
-      {
-        resizeMaxHeight = 500,
-        resizeMaxWidth = 500,
-        resizeQuality = 1.0,
-        resizeType = 'image/jpeg'
-      } = {}
+    origImage,
+    {
+      resizeMaxHeight = 500,
+      resizeMaxWidth = 500,
+      resizeQuality = 1.0,
+      resizeType = 'image/jpeg'
+    } = {}
   ) {
     let canvas = this.getResizeArea();
-
+    
     let height = origImage.height;
     let width = origImage.width;
-
+    
     resizeMaxHeight = resizeMaxHeight || resizeMaxWidth;
     resizeMaxWidth = resizeMaxWidth || resizeMaxHeight;
-
+    
     canvas.width = width;
     canvas.height = height;
-
-
+    
+    
     let ctx = canvas.getContext("2d");
     ctx.drawImage(origImage, 0, 0);
     this.resample_single(canvas, resizeMaxWidth, resizeMaxHeight);
-
+    
     // get the data from canvas as 70% jpg (or specified type).
     return canvas.toDataURL(resizeType, resizeQuality);
   }
-
+  
   resample_single(canvas, width, height, resize_canvas = true) {
     var width_source = canvas.width;
     var height_source = canvas.height;
     width = Math.round(width);
     height = Math.round(height);
-
+    
     // calculate the width and height, constraining the proportions
     if (width_source > height_source) {
       height = Math.round(height_source * width / width_source);
     } else {
       width = Math.round(width_source * height / height_source);
     }
-
+    
     var ratio_w = width_source / width;
     var ratio_h = height_source / height;
     var ratio_w_half = Math.ceil(ratio_w / 2);
     var ratio_h_half = Math.ceil(ratio_h / 2);
-
+    
     var ctx = canvas.getContext("2d");
     var img = ctx.getImageData(0, 0, width_source, height_source);
     var img2 = ctx.createImageData(width, height);
     var data = img.data;
     var data2 = img2.data;
-
+    
     for (var j = 0; j < height; j++) {
       for (var i = 0; i < width; i++) {
         var x2 = (i + j * width) * 4;
@@ -227,81 +214,14 @@ export class FileUploadService {
     ctx.putImageData(img2, 0, 0);
   }
   
-  
-
-  smoothResample() {
-    // let smoothCanvas = document.getElementById('smoothCanvas');
-    // let smoothCtx = smoothCanvas.getContext('2d');
-    // let crunchyCanvas = document.getElementById('crunchyCanvas');
-    // let crunchyCtx = crunchyCanvas.getContext('2d');
-    // let stepScale = 0.5;
-    //
-    // let scaleDown = (image, targetScale) => {
-    //   let currentScale = 1;
-    //
-    //   while (currentScale * stepScale > targetScale) {
-    //     currentScale *= stepScale;
-    //     image = stepDown(image);
-    //   }
-    //
-    //   return {image: image, remainingScale: targetScale / currentScale};
-    // };
-    //
-    // let stepDown = (image) => {
-    //   let temp: any = {};
-    //   temp.canvas = document.createElement('canvas');
-    //   temp.ctx = temp.canvas.getContext('2d');
-    //
-    //   // Size canvas and image to stepScale
-    //   temp.canvas.width = (image.width * stepScale) + 1;
-    //   temp.canvas.height = (image.height * stepScale) + 1;
-    //   temp.ctx.scale(stepScale, stepScale);
-    //   temp.ctx.drawImage(image, 0, 0);
-    //
-    //   // 0.5 size'd canvas!
-    //   temp.canvas;
-    // };
-    //
-    // let applyScale = (scale) => {
-    //   if (typeof scale != 'number')
-    //     scale = scale.currentTarget.value;
-    //
-    //   // Match the canvas size (with some padding)
-    //   smoothCanvas.width = crunchyCanvas.width = Math.floor(testImage.width * scale) + 4;
-    //   smoothCanvas.height = crunchyCanvas.height = Math.floor(testImage.height * scale) + 4;
-    //
-    //   // Draw smooth scaled version to canvas
-    //   let scaledData = scaleDown(testImage, scale);
-    //   smoothCtx.scale(scaledData.remainingScale, scaledData.remainingScale);
-    //   smoothCtx.drawImage(scaledData.image, 2, 2);
-    //
-    //
-    //   // Draw original scaled version
-    //   crunchyCtx.scale(scale, scale);
-    //   crunchyCtx.drawImage(testImage, 2, 2);
-    // };
-    //
-    // let demoSetup = () => {
-    //   let input = document.getElementById('input');
-    //   input.addEventListener('change', applyScale);
-    //   applyScale(Number(input.value));
-    // };
-    //
-    // // Create Image and wait for it to load before working with it
-    // let testImage = document.getElementById('test-image');
-    // let testSrc = testImage.getAttribute('data-src');
-    // testImage.onload = demoSetup;
-    // testImage.src = testSrc;
-  }
-  
   // file upload universal  endpoint
   uploadDocuments(account_id: string, type: string, id: string, documents: any) {
     if (_.isEmpty(documents)) {
-      return Observable.of({'continue':'no docs to upload'});
+      return Observable.of({'continue': 'no docs to upload'});
     }
-  
+    
     if (!account_id || !type || !id) {
-      return Observable.of({'error':'not enough input data'});
+      return Observable.of({'error': 'not enough input data'});
     }
     
     let formData: FormData = new FormData();
@@ -320,6 +240,22 @@ export class FileUploadService {
     .one('upload')
     .customPOST(formData, undefined, undefined, {'Content-Type': undefined});
     
+    return entity$
+    .map((res: any) => {
+      return res;
+    })
+  }
+  
+  uploadAttachment(order_id: string, document: File) {
+    if (!document) {
+      return Observable.of({'continue': 'no docs to upload'});
+    }
+    let formData: FormData = new FormData();
+    formData.append('attachment', document);
+    let entity$ = this.restangular
+    .one('po', order_id)
+    .one('attachment')
+    .customPOST(formData, undefined, undefined, {'Content-Type': undefined});
     return entity$
     .map((res: any) => {
       return res;

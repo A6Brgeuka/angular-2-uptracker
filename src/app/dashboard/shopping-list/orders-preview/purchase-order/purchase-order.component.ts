@@ -100,6 +100,7 @@ export class PurchaseOrderComponent implements OnInit {
       this.showEmailDataEditModal({
           email_text: status.email_text,
           po_number: order['po_number'],
+          order_id: order['id'],
           vendor_email: order['vendor_email_address'],
           user_email: this.userService.selfData.email_address
         });
