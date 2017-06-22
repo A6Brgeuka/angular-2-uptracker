@@ -36,8 +36,9 @@ export class VendorsComponent implements OnInit {
     
     this.vendorService.isDataLoaded$
     .filter(r => r)
+    .do(()=>this.isRequestVendors = false)
+    .delay(1000)
     .subscribe((r) => {
-      this.isRequestVendors = false;
       this.getInfiniteScroll()
     });
     
@@ -85,6 +86,7 @@ export class VendorsComponent implements OnInit {
       /* && vendors.length*/
     })
     .switchMap((infinite) => {
+      debugger;
       console.log('scroll');
       this.isRequestVendors = true;
       if (this.searchKey == this.searchKeyLast) {
@@ -94,13 +96,13 @@ export class VendorsComponent implements OnInit {
       if (this.vendorService.total <= (this.vendorService.current_page - 1) * this.vendorService.pagination_limit) {
         return Observable.of({});
       } else {
-debugger;
         return this.vendorService.getNextVendors(this.vendorService.current_page, this.searchKey, this.sortBy);
       }
     })
     .subscribe(res => {
       this.isRequestVendors = false;
     }, err => {
+      alert();
       console.error('error on infinite scroll ', err);
       this.isRequestVendors = false;
     });

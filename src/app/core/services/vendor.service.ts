@@ -82,16 +82,6 @@ export class VendorService extends ModelService {
       //update user after update account
       this.userService.updateSelfDataField('account', this.selfData);
     });
-    
-    // TODO: set collection$ to account vendors
-    // TODO: and if collection updates then set the func to update account (as userSelfdata updates after account selfData updates)
-    // this.collection$ = this.restangular.all('vendors').customGET('')
-    //     .map((res: any) => {
-    //       return res.data.vendors;
-    //     })
-    //     .do((res: any) => {
-    //       this.updateCollection$.next(res);
-    //     });
   }
   
   addSubscribers() {
@@ -127,26 +117,17 @@ export class VendorService extends ModelService {
   }
   
   getVendors() {
-    let query: any = {
-      page: 1,
-      limit: this.pagination_limit,
-    };
-    return this.vendors$.isEmpty().switchMap((isEmpty) => {
-      if (isEmpty) {
-        this.vendors$ = this.getVendorsData(query, true);
-      }
-      return this.vendors$;
-    });
-    
-    // TODO: set collection$ to account vendors
-    // let collection$ = this.restangular.all('vendors').customGET('')
-    //     .map((res: any) => {
-    //       return res.data.vendors;
-    //     })
-    //     .do((res: any) => {
-    //       this.updateCollection$.next(res);
-    //     });
-    // return collection$;
+    //debugger;
+    //let query: any = {
+    //  page: 1,
+    //  limit: this.pagination_limit,
+    //};
+    //return this.vendors$.isEmpty().switchMap((isEmpty) => {
+    //  if (isEmpty) {
+    //    this.vendors$ = this.getVendorsData(query, true);
+    //  }
+    //});
+    return this.vendors$;
   }
   
   getNextVendors(page?, search_string?, sortBy?) {
@@ -181,20 +162,22 @@ export class VendorService extends ModelService {
   }
   
   getAccountVendors() {
-    let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
-    if (!vendorsLoaded) {
-      return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
-      .map((res: any) => {
-        return res.data.vendors;
-      })
-      .do((res: any) => {
-        let account = this.userService.selfData.account;
-        account.vendors = res;
-        this.accountService.updateSelfData(account);
-      });
-    } else {
-      return this.userService.selfData$.map(res => res.account.vendors);
-    }
+    return this.vendors$;
+    //
+    //let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
+    //if (!vendorsLoaded) {
+    //  return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
+    //  .map((res: any) => {
+    //    return res.data.vendors;
+    //  })
+    //  .do((res: any) => {
+    //    let account = this.userService.selfData.account;
+    //    account.vendors = res;
+    //    this.accountService.updateSelfData(account);
+    //  });
+    //} else {
+    //  return this.userService.selfData$.map(res => res.account.vendors);
+    //}
   }
   
   addAccountVendor(data) {

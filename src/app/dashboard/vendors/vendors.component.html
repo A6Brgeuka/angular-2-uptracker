@@ -1,6 +1,6 @@
-<ul class="debug-monitor" [class.isrequest]="isRequest">
+<ul class="debug-monitor" [class.isrequest]="isRequestVendors">
   <li>page: {{ vendorService.current_page }}</li>
-  <li>count: {{ (vendors$ | async).length }}</li>
+  <li>count: {{ (vendors$ | async)?.length }}</li>
   <li>total: {{ vendorService.total }}</li>
 </ul>
 <div class="vendors content">
