@@ -86,7 +86,6 @@ export class VendorsComponent implements OnInit {
       /* && vendors.length*/
     })
     .switchMap((infinite) => {
-      debugger;
       console.log('scroll');
       this.isRequestVendors = true;
       if (this.searchKey == this.searchKeyLast) {
@@ -124,7 +123,7 @@ export class VendorsComponent implements OnInit {
       if (sortBy == 'Z-A') {
         sortBy = 'name';
       }
-      // this.getInfiniteScroll();
+       //this.getInfiniteScroll();
       let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
       this.vendors = sortedVendors;
       this.searchKeyLast = this.searchKey;
@@ -175,7 +174,9 @@ export class VendorsComponent implements OnInit {
   }
   
   getInfiniteScroll() {
-    let scrollBottom = (document.body.scrollHeight - document.body.scrollTop - window.innerHeight < 285) && !(<any>this.body).classList.contains("noscroll");
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    let scrollBottom = (document.body.scrollHeight - scrollTop - window.innerHeight < 285) ;
+    //debugger;
     this.infiniteScroll$.next(scrollBottom);
   }
   

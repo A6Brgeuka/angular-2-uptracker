@@ -236,7 +236,8 @@ export class ProductsComponent implements OnInit {
   }
   
   getInfiniteScroll() {
-    let toBottom = document.body.scrollHeight - document.body.scrollTop - window.innerHeight;
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
     // console.log('toBottom',toBottom);
     let scrollBottom = toBottom < 285;
     this.infiniteScroll$.next(scrollBottom);
