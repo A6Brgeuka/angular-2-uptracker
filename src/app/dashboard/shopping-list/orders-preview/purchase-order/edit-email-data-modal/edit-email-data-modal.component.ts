@@ -112,7 +112,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     });
     
     this.addFileToFile$
-    .switchMap((file:File)=>this.fileUploadService.uploadAttachment(this.context.order_id,file))
+    .switchMap((file:File)=>this.fileUploadService.uploadAttachment(this.context.order_id,file[0]))
     .subscribe((info:AttachmentUploadModel)=>{
       this.uploaded.push(info);
       console.log('uploaded files',this.uploaded);
