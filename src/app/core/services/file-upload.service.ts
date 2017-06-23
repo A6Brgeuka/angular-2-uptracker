@@ -234,7 +234,6 @@ export class FileUploadService {
       formData.append('documents[' + i + ']', documents[i]);
       i++;
     });
-    debugger;
     let entity$ = this.restangular
     .one('accounts', account_id)
     .one('upload')
@@ -252,7 +251,6 @@ export class FileUploadService {
     }
     let formData: FormData = new FormData();
     formData.append('attachment', document);
-    debugger;
     let entity$ = this.restangular
     .one('po', order_id)
     .one('attachment')
@@ -261,5 +259,8 @@ export class FileUploadService {
     .map((res: any) => {
       return res;
     })
+  }
+  deleteAttachment(){
+  
   }
 }

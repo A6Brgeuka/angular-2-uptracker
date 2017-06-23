@@ -5,6 +5,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { FileUploadService } from '../../../../../core/services/file-upload.service';
+import { APP_DI_CONFIG } from '../../../../../../../env';
 
 export class AttachmentUploadModel {
   file_name: string;
@@ -21,6 +22,7 @@ export class EditEmailDataModalContext extends BSModalContext {
   public user_email: string;
   public vendor_email: string;
   public order_id: string;
+  public attachments: any[] = [];
 }
 
 @Component({
@@ -51,6 +53,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   public hasDocs: boolean;
   public hasFiles: boolean;
   public uploaded: any[] = [];
+  public apiUrl:string;
   
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
@@ -64,30 +67,30 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     this.emailTo = this.context.vendor_email;
     this.emailSubject = "Purchase order #"+this.context.po_number;
     this.fileActions();
-  
+    this.apiUrl = APP_DI_CONFIG.apiEndpoint;
   }
 
   ngOnInit(){
-    this.loadFile$.next([]);
+    this.loadFile$.next(this.context.attachments || []);
   }
 
   ngAfterViewInit(){
   }
   
-  
-  // File load, add, delete actions
+  // File add, delete actions
   fileActions(): any {
     let addFileToFile$ = this.addFileToFile$
-    .switchMap((res) => {
-      
+    .switchMap((file:File)=>this.fileUploadService.uploadAttachment(this.context.order_id,file[0]))
+    .map((res:any)=>res.data)
+    .switchMap((res:AttachmentUploadModel) => {
       return this.file$.first()
       .map((file: any) => {
-        
         file = file.concat(res);
         return file;
       });
     });
     
+    //TODO add remove from server call
     let deleteFromFile$ = this.deleteFromFile$
     .switchMap((deleteFile) => {
       this.file$.subscribe((res) => {
@@ -100,6 +103,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
         });
       });
     });
+    
     this.file$ = Observable.merge(
       this.loadFile$,
       this.updateFile$,
@@ -107,19 +111,11 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
       deleteFromFile$
     ).publishReplay(1).refCount();
     this.file$.subscribe(res => {
+      console.log('files',res);
       this.file = res;
       this.hasFiles = res.length > 0;
     });
-    
-    this.addFileToFile$
-    .switchMap((file:File)=>this.fileUploadService.uploadAttachment(this.context.order_id,file[0]))
-    .subscribe((info:AttachmentUploadModel)=>{
-      this.uploaded.push(info);
-      console.log('uploaded files',this.uploaded);
-    })
   }
-  
-  
   
   dismissModal(){
     this.dialog.dismiss();
@@ -154,6 +150,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     this.deleteFromFile$.next(file);
   }
   
-  
-  
+  getType(mime){
+    return mime.split('/')[0];
+  }
 }

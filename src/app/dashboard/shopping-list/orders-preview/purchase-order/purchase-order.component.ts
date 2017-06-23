@@ -98,6 +98,7 @@ export class PurchaseOrderComponent implements OnInit {
     .switchMap((order: any) => this.orderService.sendOrderRequest(order.id))
     .subscribe((status: any) => {
       this.showEmailDataEditModal({
+          attachments:order['attachments'],
           email_text: status.email_text,
           po_number: order['po_number'],
           order_id: order['id'],
