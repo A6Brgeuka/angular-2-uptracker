@@ -90,16 +90,21 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
       });
     });
     
-    //TODO add remove from server call
+    let tmpFile;
     let deleteFromFile$ = this.deleteFromFile$
-    .switchMap((deleteFile) => {
+    .switchMap((attach: AttachmentUploadModel) => {
+      tmpFile = attach;
+      return this.fileUploadService.deleteAttachment(this.context.order_id, attach);
+    })
+    .filter((status:any)=>status)
+    .switchMap(() => {
       this.file$.subscribe((res) => {
         console.log('Model Service delete from file ' + res);
       });
       return this.file$.first()
       .map((file: any) => {
         return file.filter((el: any) => {
-          return el.name != deleteFile.name;
+          return el.id != tmpFile.id;
         });
       });
     });
@@ -146,7 +151,8 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   }
   
   removeFile(file) {
-    console.log(`remove ${file.name}`);
+    debugger;
+    console.log(`remove ${file.file_name}`);
     this.deleteFromFile$.next(file);
   }
   

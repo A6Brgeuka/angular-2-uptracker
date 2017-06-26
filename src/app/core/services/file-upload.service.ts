@@ -4,6 +4,7 @@ import { Restangular } from 'ngx-restangular';
 import { ExifService } from './exif.service';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
+import { AttachmentUploadModel } from '../../dashboard/shopping-list/orders-preview/purchase-order/edit-email-data-modal/edit-email-data-modal.component';
 
 
 @Injectable()
@@ -219,30 +220,23 @@ export class FileUploadService {
     if (_.isEmpty(documents)) {
       return Observable.of({'continue': 'no docs to upload'});
     }
-    
     if (!account_id || !type || !id) {
       return Observable.of({'error': 'not enough input data'});
     }
     
     let formData: FormData = new FormData();
-    
     formData.append('id', id);
     formData.append('type', type);
-    
     let i = 0;
     _.each(documents, (value, key) => {
       formData.append('documents[' + i + ']', documents[i]);
       i++;
     });
-    let entity$ = this.restangular
+    return this.restangular
     .one('accounts', account_id)
     .one('upload')
     .customPOST(formData, undefined, undefined, {'Content-Type': undefined});
     
-    return entity$
-    .map((res: any) => {
-      return res;
-    })
   }
   
   uploadAttachment(order_id: string, document: File) {
@@ -251,16 +245,19 @@ export class FileUploadService {
     }
     let formData: FormData = new FormData();
     formData.append('attachment', document);
-    let entity$ = this.restangular
+    return this.restangular
     .one('po', order_id)
     .one('attachment')
     .customPOST(formData, undefined, undefined, {'Content-Type': undefined});
-    return entity$
-    .map((res: any) => {
-      return res;
-    })
+    
   }
-  deleteAttachment(){
-  
+  deleteAttachment(order_id: string, attach: AttachmentUploadModel){
+    // DELETE /po/{order_id}/attachment/{attachment_id}
+    let e$ = this.restangular
+    .one('po', order_id)
+    .one('attachment', attach.id)
+    .customDELETE();
+    debugger;
+    return e$.filter(e=>(e && e.data)).map(e=>e.data);
   }
 }
