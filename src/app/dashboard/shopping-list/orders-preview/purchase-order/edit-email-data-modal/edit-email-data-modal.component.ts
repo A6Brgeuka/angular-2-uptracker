@@ -165,11 +165,10 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   
   sendPO(){
     this.orderService.sendOrderRequestFinal(this.context.order_id,{
-      email_text:this.emailMessage,
-      email_to:this.emailTo,
-      email_from:this.emailFrom,
-      email_subject:this.emailSubject,
-      attachments:this.file
+      body:this.emailMessage,
+      subject:this.emailSubject,
+      vendor_email_address:this.emailTo,
+      from_email_address:this.emailFrom,
     })
     .subscribe((res: any) => {
       this.dismissModal();
