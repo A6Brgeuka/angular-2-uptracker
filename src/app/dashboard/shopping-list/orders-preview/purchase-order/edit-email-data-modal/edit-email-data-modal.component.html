@@ -1,8 +1,9 @@
 <div class="close" (click)="dismissModal()"></div>
 
 <div class="title center-align">Send PO</div>
-
 <button
+  (click)="sendPO()"
+  [disabled]="!emailto.valid || !emailfrom.valid || !emailMessage || !emailsubject.valid"
   class="send-btn right uptracker-form-btn white-text waves-effect waves-light">
   <fa name="send-o"></fa>
   Send
@@ -18,7 +19,9 @@
         class="col s12"
         name="emailto"
         #emailto="ngModel"
-        minlength="6" maxlength="254"
+        required
+
+        minlength="6" maxlength="254"  pattern=".+@.+\..+"
         type="text">
       <div [hidden]="emailto.valid || emailto.pristine" class="error red-text left-align">
         Email must be from 6 to 254 characters long and look like an e-mail address.
@@ -31,10 +34,17 @@
     <div class="subttl col s12">From</div>
     <div class="col s12 input">
       <input type="text"
+        required
         placeholder="Enter Email"
         [(ngModel)]="emailFrom"
         class="col s12"
+        name="emailfrom"
+        #emailfrom="ngModel"
+        minlength="6" maxlength="254" pattern=".+@.+\..+"
       />
+      <div [hidden]="emailfrom.valid || emailfrom.pristine" class="error red-text left-align">
+        Email must be from 6 to 254 characters long and look like an e-mail address.
+      </div>
     </div>
   </div>
 
@@ -42,10 +52,17 @@
     <div class="subttl col s12">Subject</div>
     <div class="col s12 input">
       <input type="text"
+        required
         placeholder="Enter Subject"
         [(ngModel)]="emailSubject"
         class="col s12"
+        name="emailsubject"
+        #emailsubject="ngModel"
+        minlength="2" maxlength="254"
       />
+      <div [hidden]="emailsubject.valid || emailsubject.pristine" class="error red-text left-align">
+        Please enter subject.
+      </div>
     </div>
   </div>
 

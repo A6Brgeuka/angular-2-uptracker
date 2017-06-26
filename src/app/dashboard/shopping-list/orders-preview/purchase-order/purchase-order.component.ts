@@ -101,6 +101,7 @@ export class PurchaseOrderComponent implements OnInit {
           attachments:order['attachments'],
           email_text: status.email_text,
           po_number: order['po_number'],
+          preview_id: order['preview_id'],
           order_id: order['id'],
           vendor_email: order['vendor_email_address'],
           user_email: this.userService.selfData.email_address

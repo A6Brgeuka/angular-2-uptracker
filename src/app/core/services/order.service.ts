@@ -215,4 +215,12 @@ export class OrderService extends ModelService {
     return this.restangular.one('po', orderId).all('send').customGET()
       .map((res:any)=>res.data);
   }
+  
+  sendOrderRequestFinal(orderId, data:any){
+    //POST /po/{order_id}/send
+    return this.restangular.one('po', orderId).all('send').customPOST(data)
+      .map((res:any)=>res.data);
+  }
+  
+  
 }

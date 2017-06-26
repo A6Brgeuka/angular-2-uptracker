@@ -257,7 +257,6 @@ export class FileUploadService {
     .one('po', order_id)
     .one('attachment', attach.id)
     .customDELETE();
-    debugger;
     return e$.filter(e=>(e && e.data)).map(e=>e.data);
   }
 }

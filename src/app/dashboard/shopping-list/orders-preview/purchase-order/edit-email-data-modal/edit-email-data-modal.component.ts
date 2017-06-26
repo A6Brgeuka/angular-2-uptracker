@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { FileUploadService } from '../../../../../core/services/file-upload.service';
 import { APP_DI_CONFIG } from '../../../../../../../env';
+import { OrderService } from '../../../../../core/services/order.service';
+import { Router } from '@angular/router';
 
 export class AttachmentUploadModel {
   file_name: string;
@@ -23,6 +25,7 @@ export class EditEmailDataModalContext extends BSModalContext {
   public vendor_email: string;
   public order_id: string;
   public attachments: any[] = [];
+  public preview_id: string;
 }
 
 @Component({
@@ -58,7 +61,8 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
       public fileUploadService: FileUploadService,
-
+      public orderService: OrderService,
+      public router: Router,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -151,12 +155,25 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   }
   
   removeFile(file) {
-    debugger;
     console.log(`remove ${file.file_name}`);
     this.deleteFromFile$.next(file);
   }
   
   getType(mime){
     return mime.split('/')[0];
+  }
+  
+  sendPO(){
+    this.orderService.sendOrderRequestFinal(this.context.order_id,{
+      email_text:this.emailMessage,
+      email_to:this.emailTo,
+      email_from:this.emailFrom,
+      email_subject:this.emailSubject,
+      attachments:this.file
+    })
+    .subscribe((res: any) => {
+      this.dismissModal();
+      this.router.navigate(['/shoppinglist','orders-preview',this.context.preview_id]);
+    });
   }
 }

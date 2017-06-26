@@ -20,6 +20,10 @@ input.select-dropdown, .input input {
     position: absolute;
     right: 20px;
     top: 30px;
+    &[disabled] {
+      background-color: $light-grey;
+      border-color: $light-grey;
+    }
   }
   &.redbtn {
     border-color: red;
@@ -120,6 +124,7 @@ input.select-dropdown, .input input {
 
   button.uptracker-form-btn {
     height: 30px !important;
+
   }
 
   .invis {
@@ -151,4 +156,6 @@ input.select-dropdown, .input input {
     color:$tealish;
     cursor:pointer;
   }
+
+
 }
