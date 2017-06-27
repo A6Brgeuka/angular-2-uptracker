@@ -2,20 +2,18 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { Location }                 from '@angular/common';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
 import {
   AccountService,
-  ToasterService,
   UserService,
   PhoneMaskService,
   VendorService
 } from '../../../core/services/index';
 import { AccountVendorModel } from '../../../models/index';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { VendorModel } from '../../../models/vendor.model';
 
 
@@ -26,9 +24,7 @@ import { VendorModel } from '../../../models/vendor.model';
 })
 @DestroySubscribers()
 export class EditVendorComponent implements OnInit, AfterViewInit {
-  public saveVendor: any;
   public options: any;
-  public activate: boolean;
   public subscribers: any = {};
   public vendor: AccountVendorModel;
   public vendorData: any;
@@ -105,13 +101,16 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
+    this.viewInit$.subscribe((aaaa)=>{});
+    this.vendorLoaded$.subscribe((qqqq)=>{});
     Observable
     .combineLatest(this.viewInit$, this.vendorLoaded$)
     .filter(([a, b]) => (a && b))
-    .do(([a, b]) => {
-      return this.initTabs();
-    })
+    //.do(([a, b]) => {
+    //  return this.initTabs();
+    //})
     .subscribe(()=>{
+      this.initTabs()
     });
   
   
@@ -123,10 +122,11 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.route.params,
       this.vendorService.getAccountVendors(),
     )
-    .map(([r, v, allv]: any) => _.filter(v, {'vendor_id': r['id']}))
+    .map(([r, v]: any) => _.filter(v, {'vendor_id': r['id']}))
     .subscribe(vendors => {
+      
       if (!_.isEmpty(vendors)) {
-        this.vendorData = vendors;
+        this.vendorData = vendors[0];
         this.vendorData['vendor_id'] = vendors[0]['vendor_id'];
         this.vendorId = vendors[0]['vendor_id'];
       }
@@ -162,6 +162,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   initTabs() {
+    
      //this.secondaryLocationLink.nativeElement.click();
     
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
@@ -190,8 +191,10 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.currentLocation = this.vendorService.selectedTab;
     
     if (!this.currentLocation){
+      
       this.allLocationLink.nativeElement.click();
     } else {
+      
       if (this.primaryLocation == this.currentLocation) {
         this.primaryLocationLink.nativeElement.click();
       } else {

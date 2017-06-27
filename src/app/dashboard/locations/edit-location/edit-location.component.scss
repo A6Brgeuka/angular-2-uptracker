@@ -236,3 +236,7 @@ button {
 .buttons {margin-top:20px}
 
 .tabs {background-color:transparent;}
+
+.buttons-topright>button:last-of-type{
+  margin-right:20px;
+}

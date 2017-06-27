@@ -117,7 +117,7 @@ export class VendorService extends ModelService {
   }
   
   getVendors() {
-    //debugger;
+    //
     //let query: any = {
     //  page: 1,
     //  limit: this.pagination_limit,
@@ -162,22 +162,22 @@ export class VendorService extends ModelService {
   }
   
   getAccountVendors() {
-    return this.vendors$;
-    //
-    //let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
-    //if (!vendorsLoaded) {
-    //  return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
-    //  .map((res: any) => {
-    //    return res.data.vendors;
-    //  })
-    //  .do((res: any) => {
-    //    let account = this.userService.selfData.account;
-    //    account.vendors = res;
-    //    this.accountService.updateSelfData(account);
-    //  });
-    //} else {
-    //  return this.userService.selfData$.map(res => res.account.vendors);
-    //}
+    //return this.vendors$;
+
+    let vendorsLoaded = this.userService.selfData.account.vendors ? this.userService.selfData.account.vendors.length > -1 : false;
+    if (!vendorsLoaded) {
+      return this.restangular.one('accounts', this.userService.selfData.account_id).customGET('vendors')
+      .map((res: any) => {
+        return res.data.vendors;
+      })
+      .do((res: any) => {
+        let account = this.userService.selfData.account;
+        account.vendors = res;
+        this.accountService.updateSelfData(account);
+      });
+    } else {
+      return this.userService.selfData$.map(res => res.account.vendors);
+    }
   }
   
   addAccountVendor(data) {
