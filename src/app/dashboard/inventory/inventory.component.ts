@@ -32,6 +32,9 @@ export class InventoryComponent implements OnInit {
   public searchKeyLast: string;
   public locationId: string;
   public selectAll: boolean = false;
+  public quantityMargin: string = '0';
+  
+  public quantity: number = 3;
   
   constructor(
     public modal: Modal,
@@ -54,6 +57,8 @@ export class InventoryComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.calcQuantityMargin(3);
+    
     this.accountService.dashboardLocation$.subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
@@ -223,4 +228,15 @@ export class InventoryComponent implements OnInit {
       }
     );
   }
+  
+  
+  calcQuantityMargin(value:number) {
+    this.quantityMargin = 'calc(' + ((value - 1) * 100 / 9).toString() + '% - 16px)';
+  }
+  
+  changeValue(event, product){
+    let value = event.target.value || 0;
+    this.calcQuantityMargin(value);
+  }
+
 }

@@ -1197,4 +1197,14 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 
 .relative {position: relative;}
 
+
+.range-field input + .thumb {
+  display: none;
+}
+
+.bold {
+  font-weight:bold;
+}
+
 @import "./media.scss";
+

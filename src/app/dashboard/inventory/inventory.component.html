@@ -44,7 +44,7 @@
     <div class="list" [class.is-grid-view]="productService.isGrid" [class.is-tiles-view]="!productService.isGrid">
       <div *ngIf="!productService.isGrid">
         <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
-          <div class="inner" [routerLink]="['/', 'products', product.id]">
+          <div class="inner" >
             <div class="hazardous" *ngIf="product.hazardous">
               <i class="material-icons">warning</i>
             </div>
@@ -52,12 +52,12 @@
               <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
               <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
             </div>
-            <div *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+            <div [routerLink]="['/', 'products', product.id]" *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>
             </div>
-            <div *ngIf="!product.image" class="img">
+            <div [routerLink]="['/', 'products', product.id]" *ngIf="!product.image" class="img">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>
@@ -65,8 +65,20 @@
             <div class="info">
               <div class="ttl">{{product.name}}</div>
               <div class="bottom">
-                <div class="variations left">{{product.variant_count}} Variations</div>
-                <div class="price right">{{product.price_range}}</div>
+                <div class="range-value right-align red-text bold">3</div>
+                <div class="range-field">
+                  <input
+                    type="range"
+                    min="1" max="10" step="1"
+                    name="priority"
+                    [(ngModel)]="quantity"
+                    (input)="changeValue($event, product)"
+                    >
+                  <div class="value-container">
+                    <div class="value" [ngStyle]="{ 'left': quantityMargin }">{{quantity}}</div>
+                  </div>
+                </div>
+                <div class="range-value left-align orange-text bold">20</div>
               </div>
             </div>
           </div>
@@ -154,6 +166,9 @@
               [class.fa-eye-slash]="!product.status"
               (click)="toggleProductVisibility(product)"
               aria-hidden="true"></i>
+            <div class="value-container">
+              <div class="value" [ngStyle]="{ 'left': priorityMargin }">{{vendor.priority}}</div>
+            </div>
           </div>
         </div>
 
@@ -177,7 +192,7 @@
       <div class="text">We could not find any products, matching the search criteria.</div>
       <div class="sub-buttons">
         <button class="uptracker-form-btn">Broaden Search</button>
-        <button (click)="requestProduct()" class="uptracker-form-btn">Request Product</button>
+        <button  class="uptracker-form-btn">Request Product</button>
       </div>
     </div>
   </div>

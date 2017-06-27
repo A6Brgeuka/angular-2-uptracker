@@ -440,3 +440,111 @@ div.top {
 .filter>.col {
   padding-left: 0;
 }
+
+
+.range-field {
+  margin-top: 0;
+  position: relative;
+  .value-container {
+    position: relative;
+    margin: 3px 12px;
+    .value {
+      position: absolute;
+      width: 30px;
+      text-align: center;
+      color: #fff;
+      font-weight: bold;
+      bottom: 7px;
+      z-index: 1;
+      cursor: pointer;
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin range-track {
+  border: 1px solid #d6d6d6;
+  background: #f5f6f7;
+  height: 1px;
+  border-radius: 5px;
+}
+
+@mixin range-thumb {
+  background: $limegreen;
+  border: 1px solid $limegreen;
+  width: 20px;
+  height: 20px;
+  margin-top: -11px;
+}
+
+@mixin range-thumb-disabled {
+  background: #f5f6f7;
+  border: 1px solid #d6d6d6;
+}
+
+.range-field {
+  clear: both;
+
+  input {
+    margin: 10px 0;
+
+    & + .thumb {
+      display: none;
+    }
+  }
+
+  input::-webkit-slider-runnable-track {
+    @include range-track;
+  }
+
+  input::-moz-range-track {
+    @include range-track;
+  }
+
+  input::-ms-track {
+    @include range-track;
+  }
+
+  input::-webkit-slider-thumb {
+    @include range-thumb;
+  }
+
+  input::-moz-range-thumb {
+    @include range-thumb;
+  }
+
+  input::-ms-thumb {
+    @include range-thumb;
+  }
+
+  input[disabled]::-webkit-slider-thumb {
+    @include range-thumb-disabled;
+  }
+
+  input[disabled]::-moz-range-thumb {
+    @include range-thumb-disabled;
+  }
+
+  input[disabled]::-ms-thumb {
+    @include range-thumb-disabled;
+  }
+
+
+}
+
+.bottom {
+  display: flex;
+  margin: 5px -12px 0;
+
+  .range-value {
+    width:25px;
+    height: 26px;
+    line-height:23px;
+    font-size:1rem;
+  }
+  .range-field {
+    width:calc(100% - 50px);
+    height: 26px;
+  }
+}
+
