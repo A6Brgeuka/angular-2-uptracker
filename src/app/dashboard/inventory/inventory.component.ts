@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, HostListener } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
-import { Overlay, overlayConfigFactory } from 'angular2-modal';
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
-// import { ViewProductModal } from './view-product-modal/view-product-modal.component';
-// import { EditProductModal } from './edit-product-modal/edit-product-modal.component';
-import { UserService, AccountService } from '../../core/services/index';
+import { ProductService } from '../../core/services/index';
+import { ModalWindowService } from "../../core/services/modal-window.service";
+import { AccountService } from "../../core/services/account.service";
+import { ToasterService } from '../../core/services/toaster.service';
 
 @Component({
   selector: 'app-inventory',
@@ -18,74 +18,209 @@ import { UserService, AccountService } from '../../core/services/index';
 @DestroySubscribers()
 export class InventoryComponent implements OnInit {
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public sortBy: string;
-  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortBy: string = 'A-Z';
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject('A-Z');
   public total: number;
   public products$: Observable<any>;
-  public title = "Inventory";
+  public products: any = [];
+  public selectedProducts: any = [];
   
-  constructor() {
+  public infiniteScroll$: any = new BehaviorSubject(false);
+  public selectAll$: any = new BehaviorSubject(0);
+  public isRequest: boolean = false;
+  public searchKey: string;
+  public searchKeyLast: string;
+  public locationId: string;
+  public selectAll: boolean = false;
+  
+  constructor(
+    public modal: Modal,
+    public productService: ProductService,
+    public modalWindowService: ModalWindowService,
+    public accountService: AccountService,
+    public toasterService: ToasterService
+  ) {
   }
-
+  
+  toggleView() {
+    this.productService.isGrid = !this.productService.isGrid;
+    
+  }
+  
+  toggleSelectAll(event) {
+    // 0 = unused, 1 = selectAll, 2 = deselectAll
+    this.selectAll$.next(event ? 1 : 2);
+    this.onCheck();
+  }
+  
   ngOnInit() {
-    this.products$ = Observable.of([
-      { name: 'First', vendor_name: 'vendor1'},
-      { name: 'Second', vendor_name: 'vendor2'},
-    ])
-    // this.vendors$ = Observable
-    //     .combineLatest(
-    //         // this.vendorService.combinedVendors$,
-    //         this.sortBy$,
-    //         this.searchKey$
-    //     )
-    //     .map(([vendors, sortBy, searchKey]) => {  
-    //       this.total = vendors.length;
-    //       let filteredVendors = vendors;
-    //       if (searchKey && searchKey!='') {
-    //         filteredVendors = _.reject(filteredVendors, (vendor: any) =>{
-    //           let key = new RegExp(searchKey, 'i');
-    //           return !key.test(vendor.name);
-    //         });
-    //       }
-    //       let order = 'desc';
-    //       if (sortBy == 'A-Z') {
-    //         sortBy = 'name';
-    //         order = 'asc';
-    //       }
-    //       if (sortBy == 'Z-A') {
-    //         sortBy = 'name';
-    //       }
-    //      
-    //       let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
-    //       return sortedVendors;
-    //     });
-  }
+    this.accountService.dashboardLocation$.subscribe((loc: any) => {
+      this.locationId = loc ? loc['id'] : '';
+    });
 
-  viewProductModal(product){
-    // this.modal
-    //     .open(ViewProductModal,  overlayConfigFactory({ product: product }, BSModalContext))
-    //     .then((resultPromise)=>{
-    //       resultPromise.result.then(
-    //           (res) => {
-    //             this.editProductModal(res);
-    //           },
-    //           (err)=>{}
-    //       );
-    //     });
+    this.productService.totalCount$.subscribe(total => this.total = total);
+    
+    this.productService.isDataLoaded$
+    .filter(r => r)
+    .subscribe((r) => {
+      this.isRequest = false;
+      this.getInfiniteScroll();
+    });
+    
+    this.searchKey$.debounceTime(1000)
+    .filter(r => (r || r === ''))
+    .subscribe(
+      (r) => {
+        this.searchKey = r;
+        this.productService.current_page = 0;
+        this.productService.getNextProducts(0, r, this.sortBy).subscribe((r) => {
+            this.getInfiniteScroll();
+          }
+        );
+      }
+    );
+  
+  
+    this.searchKey$
+    .subscribe(
+      (r) => {
+        if (r && this.sortBy=="A-Z") {
+          this.sortBy$.next("relevance");
+        } else if (!r && this.sortBy === "relevance") {
+          this.sortBy$.next("A-Z");
+        }
+      });
+  
+    this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
+    
+    this.sortBy$
+    .filter(r => r)
+    .subscribe(
+      (r) => {
+        this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
+        this.productService.current_page = 1;
+      }
+    );
+    
+    this.products$ = Observable
+    .combineLatest(
+      this.productService.collection$,
+      this.sortBy$,
+      this.searchKey$,
+      this.selectAll$
+    )
+    .map(([products, sortBy, searchKey, selectAll]: [any, any, any, any]) => {
+      for (let p of products) {
+        (selectAll === 1) ? p.selected = true : p.selected = false;
+      }
+      products.map((item: any) => {
+          if (!item.image && !_.isEmpty(item.images)) {
+            item.image = item.images[0];
+          }
+          return item;
+        }
+      );
+      return products;
+    });
+    
+    this.productService.collection$.subscribe(r => this.products = r);
+    
+    Observable.combineLatest(this.infiniteScroll$, this.products$)
+    //.debounceTime(100)
+    .filter(([infinite, products]) => {
+      return (infinite && !this.isRequest && products.length);
+    })
+    .switchMap(([infinite, products]) => {
+      this.isRequest = true;
+      
+      this.searchKeyLast = this.searchKey;
+      //TODO remove
+      if (this.total <= (this.productService.current_page - 1) * this.productService.pagination_limit) {
+        this.isRequest = false;
+        return Observable.of(false);
+      } else {
+        if (this.searchKey == this.searchKeyLast) {
+          ++this.productService.current_page;
+        }
+        return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
+      }
+    })
+    .subscribe(res => {
+    }, err => {
+    
+    });
   }
-
-  editProductModal(product = null){
-    // this.modal.open(EditProductModal,  overlayConfigFactory({ product: product }, BSModalContext));
+  
+  toggleProductVisibility(product) {
+    product.status = !product.status;
+    //TODO add save to server
   }
-
-  searchFilter(event){
+  
+  
+  searchFilter(event) {
     // replace forbidden characters
     let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
-
+  
   itemsSort(event) {
     let value = event.target.value;
     this.sortBy$.next(value);
+  }
+  
+  getInfiniteScroll() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
+    // console.log('toBottom',toBottom);
+    let scrollBottom = toBottom < 285;
+    this.infiniteScroll$.next(scrollBottom);
+  }
+  
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event) {
+    this.getInfiniteScroll();
+  }
+  
+  onCheck() {
+    this.selectedProducts = _.cloneDeep(this.products)
+    .filter(r => r['selected']);
+  }
+  
+  
+  addToFavorites(e, product) {
+    e.stopPropagation();
+    this.setFavorite(product, true);
+  }
+  
+  removeFromFavorites(e, product) {
+    e.stopPropagation();
+    this.setFavorite(product, false);
+  }
+  
+  setFavorite(product, val: boolean) {
+    product.favorite = val;
+    let updateData: any = {
+      location_id: this.locationId,
+      product: {
+        id: product.id,
+        favorite: val
+      },
+      variants: [],
+    };
+    let updateProduct$ = this.productService.updateProduct(updateData);
+    updateProduct$.subscribe((r) => {
+      console.log(r);
+      this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
+    })
+  }
+  
+  resetFilters() {
+    this.searchKey = '';
+    this.sortBy = '';
+    this.productService.current_page = 0;
+    this.productService.getNextProducts(0, this.searchKey, this.sortBy).subscribe((r) => {
+        this.getInfiniteScroll();
+      }
+    );
   }
 }

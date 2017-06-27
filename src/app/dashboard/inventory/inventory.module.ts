@@ -5,10 +5,10 @@ import { AppSharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
-    InventoryComponent
+    InventoryComponent,
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
   ],
   providers: []
 })
