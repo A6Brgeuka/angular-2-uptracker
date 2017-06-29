@@ -250,8 +250,25 @@ export class InventoryComponent implements OnInit {
     let blue = 0;
     let green = Math.round(128 * number)+127;
     let red = Math.round(77 * (1-number)) +  178;
+  
+  
+    // value must be between [0, 510]
+    let value = Math.min(Math.max(0,number), 1) * 510;
+  
+    let redValue;
+    let greenValue;
+    if (value < 255) {
+      redValue = 255;
+      greenValue = Math.sqrt(value) * 16;
+      greenValue = Math.round(greenValue);
+    } else {
+      greenValue = 255;
+      value = value - 255;
+      redValue = 255 - (value * value / 255);
+      redValue = Math.round(redValue);
+    }
     
-    return this.rgb2hex(red,green,blue);
+    return this.rgb2hex(redValue*.9,greenValue*.9,blue);
   }
   
   private rgb2hex(red, green, blue) {
