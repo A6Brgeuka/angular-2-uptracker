@@ -1206,5 +1206,9 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   font-weight:bold;
 }
 
+.italic {
+  font-style: italic;
+}
+
 @import "./media.scss";
 
