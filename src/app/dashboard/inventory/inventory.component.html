@@ -65,20 +65,21 @@
             <div class="info">
               <div class="ttl">{{product.name}}</div>
               <div class="bottom">
-                <div class="range-value right-align red-text bold">3</div>
                 <div class="range-field">
+                  <div class="range-value left-align red-text bold">1</div>
                   <input
+                    #inputRange
                     type="range"
-                    min="1" max="10" step="1"
+                    min="1" [max]="maxVal" step="1"
                     name="priority"
                     [(ngModel)]="quantity"
                     (input)="changeValue($event, product)"
                     >
                   <div class="value-container">
-                    <div class="value" [ngStyle]="{ 'left': quantityMargin }">{{quantity}}</div>
+                    <div class="value" [ngStyle]="{ 'left': quantityMargin, 'background-color':thumbColor }">{{quantity}}</div>
                   </div>
+                  <div class="range-value right-align orange-text bold">{{maxVal}}</div>
                 </div>
-                <div class="range-value left-align orange-text bold">20</div>
               </div>
             </div>
           </div>

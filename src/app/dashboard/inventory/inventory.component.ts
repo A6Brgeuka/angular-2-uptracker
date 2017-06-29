@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, HostListener, Input } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -17,6 +17,8 @@ import { ToasterService } from '../../core/services/toaster.service';
 })
 @DestroySubscribers()
 export class InventoryComponent implements OnInit {
+  @Input('inputRange') inputRange;
+  
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string = 'A-Z';
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject('A-Z');
@@ -35,6 +37,8 @@ export class InventoryComponent implements OnInit {
   public quantityMargin: string = '0';
   
   public quantity: number = 3;
+  public maxVal: number = 100;
+  public thumbColor: string = "#000000";
   
   constructor(
     public modal: Modal,
@@ -62,7 +66,7 @@ export class InventoryComponent implements OnInit {
     this.accountService.dashboardLocation$.subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
-
+    
     this.productService.totalCount$.subscribe(total => this.total = total);
     
     this.productService.isDataLoaded$
@@ -84,19 +88,21 @@ export class InventoryComponent implements OnInit {
         );
       }
     );
-  
-  
+    
+    
     this.searchKey$
     .subscribe(
       (r) => {
-        if (r && this.sortBy=="A-Z") {
+        if (r && this.sortBy == "A-Z") {
           this.sortBy$.next("relevance");
         } else if (!r && this.sortBy === "relevance") {
           this.sortBy$.next("A-Z");
         }
       });
-  
-    this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
+    
+    this.sortBy$.subscribe((sb: string) => {
+      this.sortBy = sb;
+    });
     
     this.sortBy$
     .filter(r => r)
@@ -230,13 +236,28 @@ export class InventoryComponent implements OnInit {
   }
   
   
-  calcQuantityMargin(value:number) {
-    this.quantityMargin = 'calc(' + ((value - 1) * 100 / 9).toString() + '% - 16px)';
+  calcQuantityMargin(value: number) {
+    this.quantityMargin = 'calc(' + ((value - 1) * 100 / (this.maxVal - 1)).toString() + '% - 16px)';
+    this.thumbColor = this.calcThumbColor(value / this.maxVal);
   }
   
-  changeValue(event, product){
+  changeValue(event, product) {
     let value = event.target.value || 0;
     this.calcQuantityMargin(value);
   }
-
+  
+  private calcThumbColor(number: number) {
+    let blue = 0;
+    let green = Math.round(128 * number)+127;
+    let red = Math.round(77 * (1-number)) +  178;
+    
+    return this.rgb2hex(red,green,blue);
+  }
+  
+  private rgb2hex(red, green, blue) {
+    let rgb = blue | (green << 8) | (red << 16);
+    return '#' + (0x1000000 + rgb).toString(16).slice(1)
+  }
+  
+  
 }
