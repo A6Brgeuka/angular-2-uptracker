@@ -168,8 +168,8 @@
             .trackable {
               color: #33c6d9;
               position: absolute;
-              right: -10px;
-              bottom: -25px;
+              right: -40px;
+              bottom: -10px;
               font-size: 24px;
             }
           }
@@ -528,8 +528,6 @@ div.top {
   input[disabled]::-ms-thumb {
     @include range-thumb-disabled;
   }
-
-
 }
 
 .bottom {
