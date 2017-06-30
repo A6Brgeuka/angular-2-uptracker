@@ -216,10 +216,12 @@ $normal: 14px;
         background-size: cover;
       }
     }
+    .min-height {
+      min-height: 189px;
+    }
     .product-params {
       padding: 0 20px;
       width: calc(100% - 200px);
-      min-height: 180px;
       .row {
         margin-bottom: 10px;
       }
@@ -841,9 +843,10 @@ $normal: 14px;
       border-radius: 0;
     }
   }
+
   .ttl-box {
-    font-size: 2.5rem;
-    line-height: 2.2rem;
+    font-size: 1.5em;
+    color: #666;
   }
 
   .col.white {

@@ -30,59 +30,63 @@
           </div>
         </div>
         <div class="left product-params">
-          <div class="ttl-box row input">
-            {{ showVariant ? currentVariant.name : product?.name}}
-          </div>
-          <div class="row">
+          <div class="min-height">
+            <div class="ttl-box row input">
+              <div class="col s12">
+                {{ showVariant ? currentVariant.name : product?.name}}
+              </div>
+            </div>
+            <div class="row">
 
-            <div class="col m4 l2">
-              <div class="">
-                <label>Hazardous</label>
-                <span class="value">
+              <div class="col m4 l2">
+                <div class="">
+                  <label>Hazardous</label>
+                  <span class="value">
                   <a *ngIf="product?.hazardous && product?.msds" target="_blank" [href]="product?.msds">{{product?.hazardous_string}}</a>
                   <span *ngIf="!product?.hazardous  && !product?.msds">{{product?.hazardous_string}}</span>
                 </span>
+                </div>
+              </div>
+              <div class="col m4 l2">
+                <div class="">
+                  <label>Trackable</label>
+                  <span class="value">{{product?.trackable_string}}</span>
+                </div>
+              </div>
+              <div class="col m4 l2">
+                <div class="">
+                  <label>Tax Exempt</label>
+                  <span class="value">{{product?.tax_exempt_string}}</span>
+                </div>
               </div>
             </div>
-            <div class="col m4 l2">
-              <div class="">
-                <label>Trackable</label>
-                <span class="value">{{product?.trackable_string}}</span>
+            <div class="row">
+              <div class="col m4 l2">
+                <label>Department</label>
+                <div class="value">{{product?.department}}</div>
+              </div>
+              <div class="col m4 l2">
+                <label>Category</label>
+                <div class="value">{{product?.category}}</div>
+              </div>
+              <div class="col m4  l2">
+                <label>Accounting</label>
+                <div class="value">{{product?.account_category}}</div>
               </div>
             </div>
-            <div class="col m4 l2">
-              <div class="">
-                <label>Tax Exempt</label>
-                <span class="value">{{product?.tax_exempt_string}}</span>
+            <div class="row">
+              <div class="col m4 l2">
+                <label>Package</label>
+                <div class="value">1 {{variants[0]?.package_type}}</div>
               </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col m4 l2">
-              <label>Department</label>
-              <div class="value">{{product?.department}}</div>
-            </div>
-            <div class="col m4 l2">
-              <label>Category</label>
-              <div class="value">{{product?.category}}</div>
-            </div>
-            <div class="col m4  l2">
-              <label>Accounting</label>
-              <div class="value">{{product?.account_category}}</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col m4 l2">
-              <label>Package</label>
-              <div class="value">1 {{variants[0]?.package_type}}</div>
-            </div>
-            <div class="col m4 l2">
-              <label>Sub-package</label>
-              <div class="value">{{ variants[0]?.units_per_package }} {{variants[0]?.sub_unit_type}}</div>
-            </div>
-            <div class="col m4  l2">
-              <label>Consumable Unit</label>
-              <div class="value">{{ variants[0]?.sub_unit_per_package }} {{variants[0]?.unit_type}}</div>
+              <div class="col m4 l2">
+                <label>Sub-package</label>
+                <div class="value">{{ variants[0]?.units_per_package }} {{variants[0]?.sub_unit_type}}</div>
+              </div>
+              <div class="col m4  l2">
+                <label>Consumable Unit</label>
+                <div class="value">{{ variants[0]?.sub_unit_per_package }} {{variants[0]?.unit_type}}</div>
+              </div>
             </div>
           </div>
           <div class="sub-image-btns">
@@ -120,7 +124,7 @@
             <a href="#info">Info</a>
           </li>
           <li class="tab col s2">
-            <a href="#history">Order History</a>
+            <a href="#history">History</a>
           </li>
           <li class="tab col s2">
             <a href="#tracking">Tracking</a>
@@ -354,7 +358,7 @@
             <div class="uptracker-form  table-item tealish-text"
               *ngFor="let order of [1,1,1,1,1,1]">
               <div class="name-heading variant-name row-item valign-wrapper">
-                <div class="valign tealish-text" >
+                <div class="valign tealish-text">
                   Petterson Non-sterile Cotton Rolls
                 </div>
                 <div>
