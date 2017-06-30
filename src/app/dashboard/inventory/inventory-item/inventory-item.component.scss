@@ -30,7 +30,7 @@ $normal: 14px;
     .title {
       font: 28px/32px Ubuntu;
       margin-bottom: 5px;
-      font-weight:bold;
+      font-weight: bold;
     }
 
     .row {
@@ -90,7 +90,7 @@ $normal: 14px;
   .edit-buttons {
     position: absolute;
     right: 36px;
-    top:0;
+    top: 0;
   }
 
   .title {
@@ -107,7 +107,7 @@ $normal: 14px;
     color: #fff;
     border-radius: 5px;
     .fa {
-      margin-right:5px;
+      margin-right: 5px;
     }
   }
 
@@ -127,18 +127,18 @@ $normal: 14px;
 
   .inner {
 
-    #history  {
+    #history {
       .variant-table .table-item {
         padding: 0;
       }
 
       // widths
       .row-item, .head-item {
-        color:$dark;
+        color: $dark;
         display: flex;
         align-items: center;
         line-height: 1;
-        min-height:35px;
+        min-height: 35px;
         text-align: center;
         width: 10%;
         &:first-of-type {
@@ -146,12 +146,61 @@ $normal: 14px;
           width: 20%;
         }
         &:nth-of-type(6) {
-          width:calc(40% - 30px);
-          text-align:left;
+          width: calc(40% - 30px);
+          text-align: left;
         }
         &:nth-of-type(7) {
-          width:30px;
+          width: 30px;
           justify-content: flex-end;
+        }
+      }
+    }
+
+    #products {
+      .variant-table .table-item {
+        padding: 0;
+      }
+
+      .head-item {
+        font-weight:bold;
+        padding-top:10px;
+      }
+
+      .no-pad > .col {
+        padding:0;
+      }
+      // widths
+      .row-item, .head-item {
+        color: $dark;
+        border-bottom:1px solid $light-grey;
+        float:left;
+        display: flex;
+        align-items: center;
+        line-height: 1;
+        min-height: 40px;
+        text-align: center;
+        width: 20%;
+        &:first-of-type {
+          text-align: left;
+          width: 40%;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+        }
+        &:nth-of-type(4) {
+          width: calc(20% - 30px);
+          text-align: left;
+        }
+        &:nth-of-type(5) {
+          width: 30px;
+          justify-content: flex-end;
+        }
+        .fa-ellipsis-h {
+          width:18px;
+          height:18px;
+          line-height:18px;
+          font-size:12px;
+          text-align:center;
         }
       }
     }
@@ -170,9 +219,9 @@ $normal: 14px;
     .product-params {
       padding: 0 20px;
       width: calc(100% - 200px);
-      min-height:180px;
+      min-height: 180px;
       .row {
-        margin-bottom:10px;
+        margin-bottom: 10px;
       }
     }
 
@@ -202,7 +251,7 @@ $normal: 14px;
 
       margin-top: 15px;
 
-        color: $dark;
+      color: $dark;
 
       .img-container-edit {
         border: 2px dashed $light-grey;
@@ -752,35 +801,35 @@ $normal: 14px;
   .sub-image-btns {
     margin: 0 -1px;
     .small {
-      line-height:35px;
-      font-size:.8rem;
-      color:$grey;
+      line-height: 35px;
+      font-size: .8rem;
+      color: $grey;
     }
     .smaller {
-      line-height:35px;
-      font-size:.9rem;
-      color:$grey;
+      line-height: 35px;
+      font-size: .9rem;
+      color: $grey;
     }
 
     .digits {
-      font-size:1.6rem;
+      font-size: 1.6rem;
     }
     .col {
       background-color: $white;
 
-      padding:0 6px;
+      padding: 0 6px;
       border: 1px solid $light-grey;
-      border-left:none;
+      border-left: none;
       &:nth-of-type(1) {
         border: 1px solid $light-grey;
       }
       &.two-lines {
         background-color: transparent;
-        border:none;
-        padding-left:15px;
+        border: none;
+        padding-left: 15px;
         div {
-          line-height:20px;
-          height:20px;
+          line-height: 20px;
+          height: 20px;
         }
       }
     }
@@ -793,9 +842,48 @@ $normal: 14px;
     }
   }
   .ttl-box {
-    font-size:2.5rem;
-    line-height:2.2rem;
+    font-size: 2.5rem;
+    line-height: 2.2rem;
   }
 
+  .col.white {
+    .img {
+      height: 70px;
+      width: 70px;
+      margin-left:10px;
+      background-size: cover;
+    }
+  }
+
+  .img-container {
+    width: 80px;
+    & + div {
+      width: calc(100% - 70px);
+    }
+  }
+  .all-product-info {
+    padding: 10px 0;
+    .default-product-info {
+      margin-bottom:0;
+
+      & > .col:nth-of-type(2), & > .col:nth-of-type(3), & > .col:nth-of-type(4), & > .col:nth-of-type(5) {
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .fa-ellipsis-h {
+    background-color: $tealish;
+    border-radius: 5px;
+    color: $white;
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  #products {
+    padding:15px 10px 10px;
+  }
 }
 

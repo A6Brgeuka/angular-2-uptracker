@@ -35,7 +35,7 @@
           </div>
           <div class="row">
 
-            <div class="col m4 l2" >
+            <div class="col m4 l2">
               <div class="">
                 <label>Hazardous</label>
                 <span class="value">
@@ -44,14 +44,14 @@
                 </span>
               </div>
             </div>
-            <div class="col m4 l2" >
+            <div class="col m4 l2">
               <div class="">
                 <label>Trackable</label>
                 <span class="value">{{product?.trackable_string}}</span>
               </div>
             </div>
             <div class="col m4 l2">
-              <div  class="">
+              <div class="">
                 <label>Tax Exempt</label>
                 <span class="value">{{product?.tax_exempt_string}}</span>
               </div>
@@ -60,29 +60,29 @@
           <div class="row">
             <div class="col m4 l2">
               <label>Department</label>
-              <div  class="value">{{product?.department}}</div>
+              <div class="value">{{product?.department}}</div>
             </div>
             <div class="col m4 l2">
               <label>Category</label>
-              <div  class="value">{{product?.category}}</div>
+              <div class="value">{{product?.category}}</div>
             </div>
             <div class="col m4  l2">
               <label>Accounting</label>
-              <div  class="value">{{product?.account_category}}</div>
+              <div class="value">{{product?.account_category}}</div>
             </div>
           </div>
           <div class="row">
             <div class="col m4 l2">
               <label>Package</label>
-              <div  class="value">1 {{variants[0]?.package_type}}</div>
+              <div class="value">1 {{variants[0]?.package_type}}</div>
             </div>
             <div class="col m4 l2">
               <label>Sub-package</label>
-              <div  class="value">{{ variants[0]?.units_per_package }} {{variants[0]?.sub_unit_type}}</div>
+              <div class="value">{{ variants[0]?.units_per_package }} {{variants[0]?.sub_unit_type}}</div>
             </div>
             <div class="col m4  l2">
               <label>Consumable Unit</label>
-              <div  class="value">{{ variants[0]?.sub_unit_per_package }} {{variants[0]?.unit_type}}</div>
+              <div class="value">{{ variants[0]?.sub_unit_per_package }} {{variants[0]?.unit_type}}</div>
             </div>
           </div>
           <div class="sub-image-btns">
@@ -122,7 +122,7 @@
           <li class="tab col s2">
             <a href="#history">Order History</a>
           </li>
-          <li class="tab col s2" >
+          <li class="tab col s2">
             <a href="#tracking">Tracking</a>
           </li>
           <li class="tab col s2">
@@ -264,8 +264,10 @@
               <div class="small-heading row-item">01/01/2017</div>
               <div class="small-heading row-item">10</div>
               <div class="small-heading row-item">20</div>
-              <div class="small-heading row-item ">Ultra long description text specially for well testing</div>
-              <div class="small-heading row-item tealish-text"><fa name="flag"></fa></div>
+              <div class="small-heading row-item ">Ultra long description text specially for good testing</div>
+              <div class="small-heading row-item tealish-text">
+                <fa name="flag"></fa>
+              </div>
               <div class="clearfix"></div>
             </div>
           </div>
@@ -274,228 +276,102 @@
       </div>
     </div>
 
-    <div id="tracking" *ngIf="product?.trackable">
+    <div id="tracking">
       <div class="inner">
         Tracking tab
       </div>
     </div>
 
     <div id="products">
-      <div *ngIf="!showVariant" class="inner product">
+      <div class="row no-pad">
+        <div class="col s9 ttl bold">Default Product</div>
+        <div class="col s3 tealish-text right-align">
+          <a>
+            <fa name="pencil"></fa>
+            Change
+          </a>
+        </div>
+        <div class="col s12 white all-product-info">
+          <div class="img left img-container" *ngIf="product?.image"
+            [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }">
+          </div>
+          <div class="row right default-product-info">
+            <div class="col s5">
+              <div class="col s12 ttl bigger tealish-text">A really long product name</div>
+              <div class="col s12 small">Henry Schein</div>
+              <div class="col s2 grey-text small">CAT#</div>
+              <div class="col s4 small">123-210</div>
+              <div class="col s2 small grey-text">UPC#</div>
+              <div class="col s4 very-small">762174521422</div>
+            </div>
+            <div class="col s2">
+              <div>
+                <div class="">Pkg Price</div>
+                <div class="grey-text">$50</div>
+              </div>
+            </div>
+            <div class="col s2">
+              <div>
+                <div class="">Sub-Pkg Price</div>
+                <div class="grey-text">40 @ $1.25</div>
+              </div>
+            </div>
+            <div class="col s2">
+              <div>
+                <div class="">Unit Price</div>
+                <div class="grey-text">2000 @ $0.03</div>
+              </div>
+            </div>
+            <div class="col s1 center-align">
+              <fa name="ellipsis-h"></fa>
+            </div>
+          </div>
+        </div>
+
+
         <div class="variant-table">
           <div class="uptracker-form variant-head">
-            <div class="variant-checkbox head-item">
-              <div class="checkbox input-checkbox ">
-                <input
-                  type="checkbox"
-                  class="checkbox-input"
-                  [(ngModel)]="variation.checked"
-                  (change)="headCheckboxChange()"
-                  id="variation-checkbox"
-                />
-                <label for="variation-checkbox"></label>
-              </div>
+            <div class="head-item">
+              Other Products
             </div>
-            <div class="name-heading head-item">
-              <div class="input">
-                <input
-                  type="text"
-                  class="name-input"
-                  ngModel
-                  (input)="changeName($event)"
-                  placeholder="Name"
-                  #name="ngModel"/>
-              </div>
+            <div class="head-item">
+              Package Price
             </div>
-            <div class="small-heading head-item">
-              <div class="select">
-                <select
-                  [(ngModel)]="variation.package_type"
-                  #pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changePkg($event)"
-                  [materializeSelectOptions]="variationArrs.package_type">
-                  <option value="">Pkg</option>
-                  <option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>
-                </select>
-              </div>
+            <div class="head-item">
+              Sub-Package Price
             </div>
-            <div class="small-heading head-item">
-              <div class="select">
-                <select
-                  [(ngModel)]="variation.unit_type"
-                  #unit="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnit($event)"
-                  [materializeSelectOptions]="variationArrs.unit_type">
-                  <option value="">Unit</option>
-                  <option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>
-                </select>
-              </div>
+            <div class="head-item">
+              Unit Price
             </div>
-            <div class="small-heading head-item">
-              <div class="select">
-                <select
-                  [(ngModel)]="variation.units_per_package"
-                  #units_pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnitsPkg($event)"
-                  [materializeSelectOptions]="variationArrs.units_per_package">
-                  <option value="">Qty</option>
-                  <option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}
-                  </option>
-                </select>
-              </div>
+            <div class="head-item">
             </div>
-
-            <div class="text-heading valign-wrapper head-item">
-              <div class="text-head valign">
-                Price Range
-              </div>
-            </div>
-            <div class="flor">
-              <div *ngIf="!showEdit" class="add-order-heading head-item">
-                <button
-                  (click)="bulkAddToOrder()"
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn"
-                  [disabled]="!addOrderVariantsButtonShow">
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  Add to Order
-                </button>
-              </div>
-              <div *ngIf="showEdit" class="visibility-heading head-item">
-                <i class="material-icons noselect" (click)="toggleVariationVisibility()">
-                  {{variation.status != 2 ? "visibility" : "visibility_off"}}
-                </i>
-              </div>
-              <div class="filter-heading noselect head-item">
-                <fa [name]="'filter'"></fa>
-              </div>
-            </div>
-
             <div class="clearfix"></div>
           </div>
         </div>
 
         <div class="table-body">
           <div class="variant-table">
-            <div class="uptracker-form  table-item"
-              *ngFor="let variant of filteredVariants$ | async"
-              (click)="toggleVariantDetailView(variant)">
-              <div class="variant-checkbox row-item">
-                <div class="checkbox input-checkbox">
-                  <input
-                    type="checkbox"
-                    class="checkbox-input"
-                    [(ngModel)]="variant.checked"
-                    (change)="variantCheckedChange()"
-                    id="{{variant.id}}"
-                  />
-                  <label for="{{variant.id}}"></label>
-                </div>
-              </div>
+            <div class="uptracker-form  table-item tealish-text"
+              *ngFor="let order of [1,1,1,1,1,1]">
               <div class="name-heading variant-name row-item valign-wrapper">
-              <span (click)="showVariantDetails($event,variant)"
-                *ngIf="!showEdit"
-                [class.reddish]="variant.status == 2"
-                class="valign"
-              >{{variant.name || "Product Here"}}</span>
-                <div *ngIf="showEdit" class="input">
-                  <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
+                <div class="valign tealish-text" >
+                  Petterson Non-sterile Cotton Rolls
+                </div>
+                <div>
+                  Patterson
                 </div>
               </div>
-              <div class="small-heading row-item">{{variant.package_type || ""}}</div>
-              <div class="small-heading row-item">{{variant.unit_type || ""}}</div>
-              <div class="small-heading row-item">{{variant.units_per_package || ""}}</div>
-              <div class="text-heading row-item nowrap">{{variant.price_range || ""}}</div>
-              <div class="flor">
-                <div *ngIf="showEdit" class="edit-variant visibility-heading row-item">
-                  <i class="fa fa-eye  variant-func"
-                    [class.fa-eye]="variant.status == 1"
-                    [class.fa-eye-slash]="variant.status == 2"
-                    (click)="toggleVariantVisibility(variant)"
-                    aria-hidden="true"></i>
-                </div>
-                <div *ngIf="!showEdit"
-                  (click)="addToOrder(variant)"
-                  class="add-order-col add-order-heading row-item">
-                  <button class=" variant-func uptracker-form-btn waves-light waves-effect add-order-btn">
-                    <i
-                      class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    Add to Order
-                  </button>
-                </div>
-              </div>
-              <div class="clearfix"></div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div *ngIf="showVariant" class="inner show-variant">
-        <div class="variant-table">
-          <div class="uptracker-form variant-head">
-            <div class="name-heading head-item">
-              <div class="input">
-                <input
-                  type="text"
-                  class="name-input"
-                  ngModel
-                  (input)="changeNameVV($event)"
-                  placeholder="Name"
-                  #name="ngModel"/>
-              </div>
-            </div>
-            <div class=" head-item ">Catalog#</div>
-            <div class=" head-item ">Avg Time</div>
-            <div class=" head-item ">Book $</div>
-            <div class=" head-item ">Your $</div>
-            <div class=" head-item ">Club $</div>
-            <div class=" head-item ">Forum $</div>
-            <div class="flor">
-              <div *ngIf="!showEdit  && !showVariant" class="add-order-heading head-item">
-                <button
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn"
-                  (click)="addToOrder()"
-
-                  [disabled]="!addOrderVariantsButtonShow">
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  Add to Order
-                </button>
-              </div>
-
-              <div class="filter-heading noselect head-item">
-                <fa [name]="'filter'"></fa>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-        </div>
-
-        <div class="table-body">
-          <div class="variant-table">
-            <div *ngFor="let item of currentVariant.vendor_variants" class="uptracker-form  table-item">
-              <div class="flex-middle name-heading row-item">{{item.vendor_name || ""}}</div>
-              <div class="row-item nowrap">{{item.catalog_number || ""}}</div>
-              <div class="row-item">{{item.avg_lead_time || ""}}</div>
-              <div class="row-item">{{item.price || ""}}</div>
-              <div class="row-item">{{item.your_price || ""}}</div>
-              <div class="row-item">{{item.club_price || ""}}</div>
-              <div class="row-item">{{item.forum_price || ""}}</div>
-              <div *ngIf="!showEdit" class="add-order-heading right head-item">
-                <button
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn"
-                  (click)="addToOrder(currentVariant, item)">
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  Add to Order
-                </button>
+              <div class="small-heading row-item">$50</div>
+              <div class="small-heading row-item">50 @ $0.4</div>
+              <div class="small-heading row-item">1000 @ $0.02</div>
+              <div class="small-heading row-item tealish-text">
+                <fa name="ellipsis-h"></fa>
               </div>
               <div class="clearfix"></div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
 

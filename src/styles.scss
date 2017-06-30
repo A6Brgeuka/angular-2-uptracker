@@ -1210,5 +1210,14 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   font-style: italic;
 }
 
+.bigger {
+  font-size: 1.1rem;
+}
+
+.very-small{
+  font-size:12px;
+  line-height:21px;
+}
+
 @import "./media.scss";
 
