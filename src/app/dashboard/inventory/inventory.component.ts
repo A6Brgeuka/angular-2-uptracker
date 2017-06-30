@@ -247,12 +247,7 @@ export class InventoryComponent implements OnInit {
   }
   
   private calcThumbColor(number: number) {
-    let blue = 0;
-    let green = Math.round(128 * number)+127;
-    let red = Math.round(77 * (1-number)) +  178;
-  
-  
-    // value must be between [0, 510]
+
     let value = Math.min(Math.max(0,number), 1) * 510;
   
     let redValue;
@@ -268,7 +263,7 @@ export class InventoryComponent implements OnInit {
       redValue = Math.round(redValue);
     }
     
-    return this.rgb2hex(redValue*.9,greenValue*.9,blue);
+    return this.rgb2hex(redValue*.9,greenValue*.9,0);
   }
   
   private rgb2hex(red, green, blue) {
