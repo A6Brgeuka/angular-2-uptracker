@@ -25,6 +25,14 @@ export class VendorShortInfo extends SampleModel {
   }
 }
 
+export class ProductVariation {
+  package_type:string;
+  units_per_package:number;
+  sub_unit_type:string;
+  unit_type:string;
+  sub_unit_per_package:number;
+}
+
 export class AddToOrderData {
   //collections
   vendorArr: any[] = [];
@@ -71,7 +79,9 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
   
   public product: any;
   public productCopy: any;
-  public variation: any = {};
+  public variation: any = {
+  
+  };
   public variationArrs = {
     package_type: [],
     unit_type: [],
@@ -452,35 +462,6 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
     this.filterPrice$.next(event.target.value.trim())
   }
   
-  changePkg(event) {
-    if (this.checkFilterValue(event)) {
-      this.variation.package_type = event.target.value;
-    }
-    else {
-      delete this.variation.package_type
-    }
-    this.filterSelectOption$.next(this.variation)
-  }
-  
-  changeUnit(event) {
-    if (this.checkFilterValue(event)) {
-      this.variation.unit_type = event.target.value;
-    }
-    else {
-      delete this.variation.unit_type
-    }
-    this.filterSelectOption$.next(this.variation)
-  }
-  
-  changeUnitsPkg(event) {
-    if (this.checkFilterValue(event)) {
-      this.variation.units_per_package = parseInt(event.target.value);
-    }
-    else {
-      delete this.variation.units_per_package
-    }
-    this.filterSelectOption$.next(this.variation)
-  }
   
   changeSize(event) {
     if (this.checkFilterValue(event)) {
