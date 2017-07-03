@@ -26,6 +26,7 @@ export class EditEmailDataModalContext extends BSModalContext {
   public order_id: string;
   public attachments: any[] = [];
   public preview_id: string;
+  public rmFn: any;
 }
 
 @Component({
@@ -171,8 +172,8 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
       from_email_address:this.emailFrom,
     })
     .subscribe((res: any) => {
+      this.context.rmFn();
       this.dismissModal();
-      this.router.navigate(['/shoppinglist','orders-preview',this.context.preview_id]);
     });
   }
 }

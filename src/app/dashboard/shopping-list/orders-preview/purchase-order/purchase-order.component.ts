@@ -15,7 +15,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ConvertedOrder, OrderService } from '../../../../core/services/order.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { EditEmailDataModal } from './edit-email-data-modal/edit-email-data-modal.component';
-import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -28,6 +28,7 @@ export class PurchaseOrderComponent implements OnInit {
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orderId: string;
   convertedOrder$: BehaviorSubject<ConvertedOrder> = new BehaviorSubject(new ConvertedOrder());
+  deleteOrder$: Subject<ConvertedOrder> = new Subject();
   convertedOrders$: BehaviorSubject<ConvertedOrder[]> = new BehaviorSubject([new ConvertedOrder()]);
   currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
   
@@ -46,66 +47,77 @@ export class PurchaseOrderComponent implements OnInit {
   }
   
   ngOnInit() {
-  
+    
     this.route.params
     .switchMap((p: Params) => {
       this.orderId = p['id'];
       return this.orderService.getOrder(p['id']);
     })
     .subscribe((items: any) => {
-        let tt = 0;
-        _.each(items, (i: any) => {
-          tt += i.total_nf;
-        });
-        items.total_total = tt;
-        if (this.orderService.convertData) {
-          this.orderService.convertOrders(
-            this.orderId,
-            this.orderService.convertData
-          )
-          .map((data: any) => {
-            return data.data;
-          })
-          .subscribe((data: ConvertedOrder| ConvertedOrder[]) => {
+      let tt = 0;
+      _.each(items, (i: any) => {
+        tt += i.total_nf;
+      });
+      items.total_total = tt;
+      if (this.orderService.convertData) {
+        this.orderService.convertOrders(
+          this.orderId,
+          this.orderService.convertData
+        )
+        .map((data: any) => {
+          return data.data;
+        })
+        .subscribe((data: ConvertedOrder | ConvertedOrder[]) => {
             if (_.isArray(data)) {
               this.convertedOrders$.next(data);
-              this.currentPage$.next(0);
             } else {
-              this.convertedOrder$.next(data);
+              this.convertedOrders$.next([data]);
             }
-          },
-            (err: any) => {
-              //return this.goBack();
-            });
+            this.currentPage$.next(0);
+          })
+      } else {
+        if (this.orderId) {
+          this.router.navigate(['/shoppinglist', 'orders-preview', this.orderId]);
         } else {
-          if (this.orderId) {
-            this.router.navigate(['/shoppinglist', 'orders-preview', this.orderId]);
-          } else {
-            this.router.navigate(['/shoppinglist']);
-          }
+          this.router.navigate(['/shoppinglist']);
         }
-        return this.orders$.next(items);
-      });
-  
-      this.currentPage$
-      .withLatestFrom(this.convertedOrders$)
-      .filter(([page,orders])=> orders.length > 0 )
-      .map(([page, orders]) => _.cloneDeep(orders[page]))
-      .subscribe((order: ConvertedOrder) => this.convertedOrder$.next(order));
+      }
+      return this.orders$.next(items);
+    });
+
+    // because of multi-convert option
+    this.currentPage$
+    .withLatestFrom(this.convertedOrders$)
+    .filter(([page, orders]) => orders.length > 0)
+    .map(([page, orders]) => _.cloneDeep(orders[page]))
+    .subscribe((order: ConvertedOrder) => this.convertedOrder$.next(order));
+
+    this.deleteOrder$
+    .withLatestFrom(this.convertedOrders$)
+    .subscribe(([subject, from]) => {
+      debugger;
+      this.convertedOrders$.next(from.filter((item) => subject['order'].id != item.order.id));
+      this.prevOrder();
+      if (from.length<=1){
+        this.router.navigate(['/shoppinglist','orders-preview','']);
+      }
       
+    });
+  
+    //this.convertedOrders$.subscribe(a=>{debugger;})
+    
   }
   
   goBack(): void {
     this.windowLocation.back();
   }
   
-  nextOrder(){
-//max page exceed check
-    this.currentPage$.take(1).subscribe((p:number)=>this.currentPage$.next(++p));
+  nextOrder() {
+    this.currentPage$.take(1).subscribe((p: number) => this.currentPage$.next(++p));
   }
   
-  prevOrder(){
-    this.currentPage$.take(1).subscribe((p:number)=>this.currentPage$.next(p ? --p : 0));
+  prevOrder() {
+    this.currentPage$.take(1).subscribe((p: number) => this.currentPage$.next(p ? --p : 0));
   }
   
   sendOrder() {
@@ -117,26 +129,44 @@ export class PurchaseOrderComponent implements OnInit {
       }
       return o.order;
     }).filter(o => o && o.id)
-    .do((o: any) =>{order = Object.assign({},o);})
+    .do((o: any) => {
+      order = Object.assign({}, o);
+    })
     .switchMap((order: any) => this.orderService.sendOrderRequest(order.id))
+    .take(1)
     .subscribe((status: any) => {
-      this.showEmailDataEditModal({
-          attachments:order['attachments'],
+        this.showEmailDataEditModal({
+          attachments: order['attachments'],
           email_text: status.email_text,
           po_number: order['po_number'],
           preview_id: order['preview_id'],
           order_id: order['id'],
           vendor_email: order['vendor_email_address'],
-          user_email: this.userService.selfData.email_address
+          user_email: this.userService.selfData.email_address,
+          rmFn: this.deletePreview.bind(this, {order})
         });
       },
       (err: any) => {
       })
   }
   
-  showEmailDataEditModal(data){
-    if (!data.email_text){data.email_text = "Email text"}
-    if (!data.po_number){data.po_number = "1234567890"}
-    this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data,true,"oldschool"));
+  showEmailDataEditModal(data) {
+    if (!data.email_text) {
+      data.email_text = "Email text"
+    }
+    if (!data.po_number) {
+      data.po_number = "1234567890"
+    }
+    this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"));
+  }
+  
+  deletePreview(preview: ConvertedOrder) {
+    debugger;
+    this.deleteOrder$.next(preview);
+  }
+  
+  deletePreviewTmp(preview: ConvertedOrder) {
+    debugger;
+    this.convertedOrder$.take(1).subscribe((item:ConvertedOrder)=>this.deleteOrder$.next(item));
   }
 }

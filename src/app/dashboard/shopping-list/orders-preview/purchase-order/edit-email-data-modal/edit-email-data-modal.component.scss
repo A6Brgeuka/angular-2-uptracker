@@ -6,7 +6,6 @@ input.select-dropdown, .input input {
 }
 
 .uptracker-form-btn {
-  height: 36px;
   font-size: 14px;
   width: 100px;
   margin: 0 5px;
@@ -19,7 +18,7 @@ input.select-dropdown, .input input {
   &.send-btn {
     position: absolute;
     right: 20px;
-    top: 30px;
+    top: 35px;
     &[disabled] {
       background-color: $light-grey;
       border-color: $light-grey;
