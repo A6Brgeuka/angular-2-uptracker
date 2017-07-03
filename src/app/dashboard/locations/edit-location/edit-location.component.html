@@ -291,7 +291,7 @@
         </div>
       </div>
     </div>
-    <div class="col s12 m7">
+    <div class="col s12 m3">
       <div class="text">
         <div class="label">Location Image</div>
         <div class="tip">Please upload a JPG or PNG max size 10 MB</div>
@@ -303,6 +303,29 @@
         </div>
       </div>
     </div>
+    <div class="col s12 m4">
+      <div class="row ">
+        <div class="col s6 m12 nopad">
+          <div class="label left-align thinner-line">Primary Tax Rate</div>
+          <input
+            name="primary_tax_rate"
+            placeholder="Leave empty for default"
+            class="col s12"
+            [(ngModel)]="primaryTaxRate"
+            type="text">
+        </div>
+        <div class="col s6 m12 nopad">
+          <div class="label left-align thinner-line">Secondary Tax Rate</div>
+          <input
+            name="secondary_tax_rate"
+            placeholder="Leave empty for default"
+            class="col s12"
+            [(ngModel)]="secondaryTaxRate"
+            type="text">
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="buttons-topright">

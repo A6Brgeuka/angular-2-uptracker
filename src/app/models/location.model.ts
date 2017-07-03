@@ -24,6 +24,8 @@ export class LocationModel {
 
   formattedAddress: any = null;
   inventory_locations: any = [];
+  primary_tax_rate: number = null;
+  secondary_tax_rate: number = null;
   
   constructor(obj?:any) {
     for (let field in obj) {

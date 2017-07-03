@@ -44,7 +44,9 @@ export class EditLocationComponent implements OnInit {
   public selectedCountryExt: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountryExt: any = this.phoneMaskService.defaultCountry;
-
+  public primaryTaxRate: number;
+  public secondaryTaxRate: number;
+  
   public inventory_location: any = { name: '', floor_stock: true};
   public locationToDelete = null;
 
@@ -89,13 +91,6 @@ export class EditLocationComponent implements OnInit {
 
   ngOnInit() {
   
-    //this.subs = this.locationService.updateCollection$
-    //.subscribe(l => {
-    //  this.subs.unsubscribe();
-    //  return this.updateLocs(l);
-    //});
-    //
-    
     Observable.combineLatest(
       this.route.params,
       this.locationService.collection$,
@@ -225,9 +220,10 @@ export class EditLocationComponent implements OnInit {
     this.location.fax_ext =this.locationFormFaxExt ;
     let address = {location: this.location.formattedAddress};
     this.location.image = this.uploadedImage;
-    if (!this.location.image) {
-      // TODO: move logic to location service;
+    this.location.primary_tax_rate = this.primaryTaxRate || null;
+    this.location.secondary_tax_rate = this.secondaryTaxRate || null;
 
+    if (!this.location.image) {
       this.locationService.getLocationStreetView(address)
         .map((res: any) => JSON.parse(res._body))
         .subscribe(res => {
@@ -389,7 +385,6 @@ export class EditLocationComponent implements OnInit {
       }
     }
 
-
     this.location.formattedAddress = event.inputValue;
 
 
@@ -397,10 +392,6 @@ export class EditLocationComponent implements OnInit {
   
   goBack(): void {
     this.router.navigate(['/locations'])
-  }
-  
-  goBackOneStep(): void {
-    this.windowLocation.back();
   }
   
 }

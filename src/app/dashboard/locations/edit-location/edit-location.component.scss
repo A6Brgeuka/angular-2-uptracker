@@ -75,6 +75,10 @@ $tealish: #33c6d9;
     }
   }
 
+  .uptracker-form .input input {
+    margin: 8px 0 4px;
+  }
+
   .location-storage-list {
     border: none;
 
@@ -239,4 +243,14 @@ button {
 
 .buttons-topright>button:last-of-type{
   margin-right:20px;
+}
+
+.nopad {
+ padding-left: 0;
+ padding-right: 0;
+}
+
+.thinner-line {
+  line-height: 14px;
+
 }

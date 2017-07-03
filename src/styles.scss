@@ -59,11 +59,13 @@ body {
 
 // Input, select fields global styling
 
-.input input, .select .select-wrapper input.select-dropdown {
-  border: 1px solid $grey;
-  border-radius: 5px;
-  height: 40px;
-  padding-left: 5px;
+.input input, .select .select-wrapper, .input input, .select .select-wrapper.ng-valid  {
+  input.select-dropdown {
+    border: 1px solid $grey;
+    border-radius: 5px;
+    height: 40px;
+    padding-left: 5px;
+  }
 }
 
 // Checkbox global styling
@@ -1111,15 +1113,15 @@ body.noscroll {
 }
 
 .uptracker-form-btn {
-  &.tealish{
+  &.tealish {
     background-color: $tealish;
     height: 30px;
   }
-  &.red{
+  &.red {
     background-color: $red;
     height: 30px;
   }
-  &[disabled]{
+  &[disabled] {
     background-color: $light-grey;
   }
 }
@@ -1176,6 +1178,7 @@ modal-overlay.oldschool-custom-class {
     }
   }
 }
+
 .flex-center {
   display: flex !important;
   justify-content: flex-start;
@@ -1206,18 +1209,19 @@ modal-overlay.oldschool-custom-class {
 
 // kill materialize understroke on focus
 input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
-  box-shadow: inherit!important;
+  box-shadow: inherit !important;
 }
 
-.relative {position: relative;}
-
+.relative {
+  position: relative;
+}
 
 .range-field input + .thumb {
   display: none;
 }
 
 .bold {
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .italic {
@@ -1228,9 +1232,9 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   font-size: 1.1rem;
 }
 
-.very-small{
-  font-size:12px;
-  line-height:21px;
+.very-small {
+  font-size: 12px;
+  line-height: 21px;
 }
 
 @import "./media.scss";
