@@ -1110,6 +1110,14 @@ body.noscroll {
   color: $tealish;
 }
 
+.uptracker-form-btn.tealish {
+  background-color: $tealish;
+  height: 30px;
+  &[disabled]{
+    background-color: $light-grey;
+  }
+}
+
 .reddish-text {
   color: $orange !important;
 }

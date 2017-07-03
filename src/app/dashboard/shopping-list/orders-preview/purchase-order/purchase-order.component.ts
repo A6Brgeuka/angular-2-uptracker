@@ -15,6 +15,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ConvertedOrder, OrderService } from '../../../../core/services/order.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { EditEmailDataModal } from './edit-email-data-modal/edit-email-data-modal.component';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -26,7 +27,9 @@ import { EditEmailDataModal } from './edit-email-data-modal/edit-email-data-moda
 export class PurchaseOrderComponent implements OnInit {
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orderId: string;
-  convertedOrder: BehaviorSubject<ConvertedOrder> = new BehaviorSubject(new ConvertedOrder());
+  convertedOrder$: BehaviorSubject<ConvertedOrder> = new BehaviorSubject(new ConvertedOrder());
+  convertedOrders$: BehaviorSubject<ConvertedOrder[]> = new BehaviorSubject([new ConvertedOrder()]);
+  currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
   
   constructor(
     public modal: Modal,
@@ -63,8 +66,13 @@ export class PurchaseOrderComponent implements OnInit {
           .map((data: any) => {
             return data.data;
           })
-          .subscribe((data: ConvertedOrder) => {
-            this.convertedOrder.next(data);
+          .subscribe((data: ConvertedOrder| ConvertedOrder[]) => {
+            if (_.isArray(data)) {
+              this.convertedOrders$.next(data);
+              this.currentPage$.next(0);
+            } else {
+              this.convertedOrder$.next(data);
+            }
           },
             (err: any) => {
               //return this.goBack();
@@ -78,16 +86,31 @@ export class PurchaseOrderComponent implements OnInit {
         }
         return this.orders$.next(items);
       });
-    
+  
+      this.currentPage$
+      .withLatestFrom(this.convertedOrders$)
+      .filter(([page,orders])=> orders.length > 0 )
+      .map(([page, orders]) => _.cloneDeep(orders[page]))
+      .subscribe((order: ConvertedOrder) => this.convertedOrder$.next(order));
+      
   }
   
   goBack(): void {
     this.windowLocation.back();
   }
   
+  nextOrder(){
+//max page exceed check
+    this.currentPage$.take(1).subscribe((p:number)=>this.currentPage$.next(++p));
+  }
+  
+  prevOrder(){
+    this.currentPage$.take(1).subscribe((p:number)=>this.currentPage$.next(p ? --p : 0));
+  }
+  
   sendOrder() {
     let order = {};
-    this.convertedOrder
+    this.convertedOrder$
     .map((o: any) => {
       if (!o.order || !o.order.id) {
         this.toasterService.pop('error', 'No order data provided');
