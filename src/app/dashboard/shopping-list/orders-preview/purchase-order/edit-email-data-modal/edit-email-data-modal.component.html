@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div class="input row modalfax">
+  <div class="input row modalfax" *ngIf="context.order_method=='Fax'">
     <div class="subttl col s12">Fax number</div>
     <phone-input
       class="col s12"

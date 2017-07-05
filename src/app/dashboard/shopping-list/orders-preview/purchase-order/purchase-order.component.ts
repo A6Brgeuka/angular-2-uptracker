@@ -132,6 +132,7 @@ export class PurchaseOrderComponent implements OnInit {
     .take(1)
     .subscribe((status: any) => {
         this.showEmailDataEditModal({
+          order_method:order['order_method'],
           attachments: order['attachments'],
           email_text: status.email_text,
           po_number: order['po_number'],

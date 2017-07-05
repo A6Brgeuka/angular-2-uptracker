@@ -23,6 +23,7 @@ export class AttachmentUploadModel {
 export class EditEmailDataModalContext extends BSModalContext {
   public email_text: string;
   public po_number: string;
+  public order_method: string;
   public user_email: string;
   public vendor_email: string;
   public order_id: string;
