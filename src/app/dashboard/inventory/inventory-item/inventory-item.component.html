@@ -7,22 +7,40 @@
     </button>
     <ul id='drdn' class='dropdown-content'>
       <li>
-        <a href="#" class="tealish-text"><fa name="shopping-cart"></fa>Order</a>
+        <a href="#" class="tealish-text">
+          <fa name="shopping-cart"></fa>
+          Order
+        </a>
       </li>
       <li>
-        <a href="#" class="tealish-text"><fa name="barcode"></fa>Scan Out</a>
+        <a href="#" class="tealish-text">
+          <fa name="barcode"></fa>
+          Scan Out
+        </a>
       </li>
       <li>
-        <a href="#" class="tealish-text"><fa name="exchange"></fa>Transfer</a>
+        <a href="#" class="tealish-text">
+          <fa name="exchange"></fa>
+          Transfer
+        </a>
       </li>
       <li>
-        <a href="#" class="tealish-text"><fa name="list-ol"></fa>Take Inventory</a>
+        <a href="#" class="tealish-text">
+          <fa name="list-ol"></fa>
+          Take Inventory
+        </a>
       </li>
       <li>
-        <a href="#" class="tealish-text"><fa name="pencil"></fa>Edit</a>
+        <a href="#" class="tealish-text">
+          <fa name="pencil"></fa>
+          Edit
+        </a>
       </li>
       <li>
-        <a href="#" class="red-text"><fa name="archive"></fa>Archive</a>
+        <a href="#" class="red-text">
+          <fa name="archive"></fa>
+          Archive
+        </a>
       </li>
 
     </ul>
@@ -307,7 +325,7 @@
     </div>
 
     <div id="products">
-      <div class="row no-pad">
+      <div class="row no-pad slim">
         <div class="col s9 ttl bold">Default Product</div>
         <div class="col s3 tealish-text right-align">
           <a>
@@ -315,6 +333,8 @@
             Change
           </a>
         </div>
+      </div>
+      <div class="row">
         <div class="col s12 white all-product-info">
           <div class="img left img-container" *ngIf="product?.image"
             [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }">
@@ -350,10 +370,11 @@
               <fa name="ellipsis-h"></fa>
             </div>
           </div>
+          <div class="clearfix"></div>
         </div>
-
-
-        <div class="variant-table">
+      </div>
+      <div class="row no-pad">
+        <div class="variant-table col s12">
           <div class="uptracker-form variant-head">
             <div class="head-item">
               Other Products
@@ -411,7 +432,7 @@
                 #inputComment [(ngModel)]="comment.body"></textarea>
               </div>
             </div>
-            <div class="buttons col s2">
+            <div class="buttons col s2 right-align">
               <button class="btn white-text waves-effect waves-light" [disabled]="!commentForm.valid">Send
               </button>
             </div>

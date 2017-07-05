@@ -1248,5 +1248,13 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   line-height: 21px;
 }
 
+.no-margin-bottom {
+  margin-bottom:0;
+}
+
+.slim {
+  margin-bottom: 5px;
+}
+
 @import "./media.scss";
 
