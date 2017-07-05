@@ -99,12 +99,9 @@ export class PurchaseOrderComponent implements OnInit {
       this.convertedOrders$.next(from.filter((item) => subject['order'].id != item.order.id));
       this.prevOrder();
       if (from.length<=1){
-        this.router.navigate(['/shoppinglist','orders-preview','']);
+        this.router.navigate(['/shoppinglist']);
       }
-      
     });
-  
-    //this.convertedOrders$.subscribe(a=>{debugger;})
     
   }
   
@@ -143,6 +140,7 @@ export class PurchaseOrderComponent implements OnInit {
           order_id: order['id'],
           vendor_email: order['vendor_email_address'],
           user_email: this.userService.selfData.email_address,
+          from_fax_number: order['from_fax_number'] || '1 11111111111',
           rmFn: this.deletePreview.bind(this, {order})
         });
       },
@@ -161,7 +159,6 @@ export class PurchaseOrderComponent implements OnInit {
   }
   
   deletePreview(preview: ConvertedOrder) {
-    debugger;
     this.deleteOrder$.next(preview);
   }
   

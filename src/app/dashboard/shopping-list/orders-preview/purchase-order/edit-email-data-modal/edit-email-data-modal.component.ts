@@ -8,6 +8,8 @@ import { FileUploadService } from '../../../../../core/services/file-upload.serv
 import { APP_DI_CONFIG } from '../../../../../../../env';
 import { OrderService } from '../../../../../core/services/order.service';
 import { Router } from '@angular/router';
+import { PhoneMaskService } from '../../../../../core/services/phone-mask.service';
+import { ToasterService } from '../../../../../core/services/toaster.service';
 
 export class AttachmentUploadModel {
   file_name: string;
@@ -26,6 +28,7 @@ export class EditEmailDataModalContext extends BSModalContext {
   public order_id: string;
   public attachments: any[] = [];
   public preview_id: string;
+  public from_fax_number: string;
   public rmFn: any;
 }
 
@@ -48,28 +51,34 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   public deleteFromFile$: Subject<any> = new Subject<any>();
   public updateFile$: Subject<any> = new Subject<any>();
   
-  public formData: FormData = new FormData();
-
   public emailTo:string;
   public emailFrom:string;
   public emailSubject:string;
   public emailMessage:string;
+  public faxNumber:string;
   public hasDocs: boolean;
   public hasFiles: boolean;
-  public uploaded: any[] = [];
   public apiUrl:string;
+  public faxCountry: any;
+  public phoneMask = this.phoneMaskService.defaultTextMask;
   
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
       public fileUploadService: FileUploadService,
       public orderService: OrderService,
       public router: Router,
+      public phoneMaskService: PhoneMaskService,
+      public toasterService: ToasterService,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     this.emailMessage = this.context.email_text;
     this.emailFrom = this.context.user_email;
     this.emailTo = this.context.vendor_email;
+  
+    this.faxNumber = this.phoneMaskService.getPhoneByIntlPhone(this.context.from_fax_number);
+    this.faxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.context.from_fax_number);
+
     this.emailSubject = "Purchase order #"+this.context.po_number;
     this.fileActions();
     this.apiUrl = APP_DI_CONFIG.apiEndpoint;
@@ -170,8 +179,10 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
       subject:this.emailSubject,
       vendor_email_address:this.emailTo,
       from_email_address:this.emailFrom,
+      fax_number:this.faxCountry[2] + ' ' + this.faxNumber,
     })
     .subscribe((res: any) => {
+      this.toasterService.pop('','Successfully sent');
       this.context.rmFn();
       this.dismissModal();
     });

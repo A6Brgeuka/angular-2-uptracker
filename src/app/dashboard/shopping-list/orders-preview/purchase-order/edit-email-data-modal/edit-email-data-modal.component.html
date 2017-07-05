@@ -48,6 +48,24 @@
     </div>
   </div>
 
+  <div class="input row modalfax">
+    <div class="subttl col s12">Fax number</div>
+    <phone-input
+      class="col s12"
+      (onCountryChange)="onCountryChange($event)"
+      [selectedCountry]="faxCountry">
+      <input
+        [textMask]="phoneMask"
+        id="phone"
+        placeholder="Enter phone number"
+        class="validate "
+        [(ngModel)]="faxNumber"
+        name="phone"
+        #phone="ngModel"
+        type="text">
+    </phone-input>
+  </div>
+
   <div class="row">
     <div class="subttl col s12">Subject</div>
     <div class="col s12 input">
