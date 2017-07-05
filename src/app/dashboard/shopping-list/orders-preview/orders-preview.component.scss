@@ -140,8 +140,9 @@
       margin-bottom: 0;
       height: 30px;
       color: $dark;
-      border-color: $light-grey;
+      border:1px solid $light-grey;
       background-color: $light-light-grey;
+      border-radius: 5px;
     }
     .row {
       margin-bottom: 5px;

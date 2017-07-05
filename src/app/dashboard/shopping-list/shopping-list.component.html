@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="col s2">
-          <div class="select inbl">
+          <div class="select inbl low-height">
             <select [(ngModel)]="product.location_id" (change)="changeRow(product)" materialize="material_select">
               <option *ngFor="let location of (userService.selfData$ | async)?.account?.locations"
                 (click)="last_loc = product.location_id"
@@ -161,6 +161,19 @@
         <div>
           <a>Compare All</a>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="no_results_container" [class.not_hidden]="!total">
+      <div class="img">
+        <i class="fa fa-question" aria-hidden="true"></i>
+      </div>
+      <div class="text">You have no items in the shopping list right now, but You can proceed to marketplace to add them or check your past orders</div>
+      <div class="sub-buttons">
+        <button routerLink="/products" class="uptracker-form-btn waves-effect waves-light tealish white-text">Marketplace</button>
+        <button routerLink="/orders" class="uptracker-form-btn waves-effect waves-light tealish white-text">Orders</button>
       </div>
     </div>
   </div>

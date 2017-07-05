@@ -95,7 +95,6 @@ export class PurchaseOrderComponent implements OnInit {
     this.deleteOrder$
     .withLatestFrom(this.convertedOrders$)
     .subscribe(([subject, from]) => {
-      debugger;
       this.convertedOrders$.next(from.filter((item) => subject['order'].id != item.order.id));
       this.prevOrder();
       if (from.length<=1){
@@ -162,8 +161,4 @@ export class PurchaseOrderComponent implements OnInit {
     this.deleteOrder$.next(preview);
   }
   
-  deletePreviewTmp(preview: ConvertedOrder) {
-    debugger;
-    this.convertedOrder$.take(1).subscribe((item:ConvertedOrder)=>this.deleteOrder$.next(item));
-  }
 }

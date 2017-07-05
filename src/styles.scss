@@ -59,12 +59,19 @@ body {
 
 // Input, select fields global styling
 
-.input input, .select .select-wrapper, .input input, .select .select-wrapper.ng-valid  {
+.input input, .select .select-wrapper, .select .select-wrapper.ng-valid  {
   input.select-dropdown {
     border: 1px solid $grey;
     border-radius: 5px;
     height: 40px;
     padding-left: 5px;
+  }
+}
+
+
+.select.low-height .select-wrapper, .select.low-height .select-wrapper.ng-valid  {
+  input.select-dropdown {
+    height: 32px;
   }
 }
 
