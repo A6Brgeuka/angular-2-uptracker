@@ -877,6 +877,7 @@ $normal: 14px;
     }
   }
   .fa-ellipsis-h {
+    cursor:pointer;
     background-color: $tealish;
     border-radius: 5px;
     color: $white;
@@ -887,6 +888,19 @@ $normal: 14px;
 
   #products {
     padding:15px 10px 10px;
+  }
+
+  .dropdown-content {
+    width:140px!important;
+    left:-10px!important;
+    li {
+      min-height:30px;
+      line-height:30px;
+      a {
+        font-size:12px;
+        padding: 5px 10px;
+      }
+    }
   }
 }
 

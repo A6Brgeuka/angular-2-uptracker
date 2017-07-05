@@ -1,11 +1,31 @@
 <div class="product-page">
   <div class="close fa fa-chevron-left" (click)="goBack()"></div>
   <div class="row right edit-buttons">
-    <button class="bt-edit-product edbtn bluebtn">
+    <button materialize="dropdown" data-activates="drdn" class="bt-edit-product edbtn bluebtn">
       <fa name="bars"></fa>
       Actions
     </button>
+    <ul id='drdn' class='dropdown-content'>
+      <li>
+        <a href="#" class="tealish-text"><fa name="shopping-cart"></fa>Order</a>
+      </li>
+      <li>
+        <a href="#" class="tealish-text"><fa name="barcode"></fa>Scan Out</a>
+      </li>
+      <li>
+        <a href="#" class="tealish-text"><fa name="exchange"></fa>Transfer</a>
+      </li>
+      <li>
+        <a href="#" class="tealish-text"><fa name="list-ol"></fa>Take Inventory</a>
+      </li>
+      <li>
+        <a href="#" class="tealish-text"><fa name="pencil"></fa>Edit</a>
+      </li>
+      <li>
+        <a href="#" class="red-text"><fa name="archive"></fa>Archive</a>
+      </li>
 
+    </ul>
   </div>
   <div class="inner" [ngClass]="{'edit-mode':showEdit}">
     <div class="title center-align">
