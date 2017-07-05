@@ -44,8 +44,8 @@ export class EditLocationComponent implements OnInit {
   public selectedCountryExt: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountryExt: any = this.phoneMaskService.defaultCountry;
-  public primaryTaxRate: number;
-  public secondaryTaxRate: number;
+  public primaryTaxRate: string;
+  public secondaryTaxRate: string;
   
   public inventory_location: any = { name: '', floor_stock: true};
   public locationToDelete = null;
@@ -135,6 +135,7 @@ export class EditLocationComponent implements OnInit {
     let locationArr = _.filter(location, (lc: any) => (lc.id == this.locationId));
     let locationData:any = !_.isEmpty(locationArr) ? locationArr[0] : {} ;
     locationData.inventory_locations = locationData.inventory_locations ? locationData.inventory_locations : this.defaultStorageLocations;
+  
     this.location = new LocationModel(locationData);
     this.location.street_1 = this.location.address.street_1;
     this.location.street_2 = this.location.address.street_2;
@@ -159,6 +160,10 @@ export class EditLocationComponent implements OnInit {
   
     this.locationFormPhoneExt = this.location.phone_ext;
     this.locationFormFaxExt = this.location.fax_ext;
+
+    this.primaryTaxRate = this.location.primary_tax_rate*100 + '%';
+    this.secondaryTaxRate = this.location.secondary_tax_rate*100 + '%';
+
   }
 
   changeState() {
@@ -220,8 +225,8 @@ export class EditLocationComponent implements OnInit {
     this.location.fax_ext =this.locationFormFaxExt ;
     let address = {location: this.location.formattedAddress};
     this.location.image = this.uploadedImage;
-    this.location.primary_tax_rate = this.primaryTaxRate || null;
-    this.location.secondary_tax_rate = this.secondaryTaxRate || null;
+    this.location.primary_tax_rate = parseFloat(this.primaryTaxRate)/100 || null;
+    this.location.secondary_tax_rate = parseFloat(this.secondaryTaxRate)/100 || null;
 
     if (!this.location.image) {
       this.locationService.getLocationStreetView(address)
