@@ -63,7 +63,7 @@ body {
   input.select-dropdown {
     border: 1px solid $grey;
     border-radius: 5px;
-    height: 40px;
+    height: 40px!important;
     padding-left: 5px;
   }
 }
@@ -71,7 +71,7 @@ body {
 
 .select.low-height .select-wrapper, .select.low-height .select-wrapper.ng-valid  {
   input.select-dropdown {
-    height: 32px;
+    height: 32px!important;
   }
 }
 
