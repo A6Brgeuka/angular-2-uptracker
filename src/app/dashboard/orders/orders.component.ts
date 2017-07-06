@@ -70,4 +70,8 @@ export class OrdersComponent implements OnInit {
   changeVisibility(i){
     this.orderService.itemsVisibility[i] = !this.orderService.itemsVisibility[i];
   }
+  
+  getOrder(id:string){
+    this.orderService.getPastOrder(id);
+  }
 }

@@ -175,7 +175,7 @@ export class OrderService extends ModelService {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
 
-    this.getOrders().subscribe((orders) => {
+    this.getPastOrders().subscribe((orders) => {
       this.loadCollection$.next(orders);
       this.itemsVisibility = new Array(orders.length).fill(false);
     });
@@ -229,10 +229,14 @@ export class OrderService extends ModelService {
       .map((res:any)=>res.data);
   }
   
-  getOrders(){
+  getPastOrders(){
     //GET /pos
     return this.restangular.all('pos').customGET()
     .map((res:any)=>res.data);
+  }
+  
+  getPastOrder(id:string){
+    // TODO for a single item
   }
   
 }

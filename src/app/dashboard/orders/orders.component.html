@@ -79,13 +79,13 @@
           </div>
 
           <div class="col s2">Vendor</div>
-          <div class="col s2">Location</div>
+          <div class="col s1">Location</div>
           <div class="col s1">Status</div>
           <div class="col s1">Placed</div>
           <div class="col s1">Received</div>
           <div class="col s1">Reconcieled</div>
           <div class="col s1">#Products</div>
-          <div class="col s1 right-align">
+          <div class="col s2 right-align">
             <div class="right edititem filled"
               materialize="dropdown"
               data-activates='order_ddm'>
@@ -120,20 +120,20 @@
                 />
                 <label for="selected{{i}}"></label>
               </div>
-              <div class="left">
+              <div (click)="getOrder()" class="left">
                 {{ item.po_number }}
               </div>
             </div>
-            <div (click)="changeVisibility(i)" class="col s2 flex-center">
+            <div (click)="changeVisibility(i)" class="col s2 pointer flex-center">
               <div>{{ item.vendor_name }}</div>
             </div>
-            <div (click)="changeVisibility(i)" class="col s2">{{ item.location }}</div>
-            <div (click)="changeVisibility(i)" class="col s1">{{ item.status }}</div>
-            <div (click)="changeVisibility(i)" class="col s1">{{ item.placed_date }}</div>
-            <div (click)="changeVisibility(i)" class="col s1">{{ item.received_date }}</div>
-            <div (click)="changeVisibility(i)" class="col s1">{{ item.reconciled_date }}</div>
-            <div (click)="changeVisibility(i)" class="col s1">{{ item.product_count }}</div>
-            <div class="col s1 right-align">
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.location }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.status }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.placed_date }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.received_date }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.reconciled_date }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.product_count }}</div>
+            <div class="col s2 right-align">
 
               <div class="right edititem"
                 materialize="dropdown"
@@ -157,9 +157,7 @@
             </div>
             <div class="clearfix"></div>
 
-
             <app-order-detail [visible]="orderService.itemsVisibility[i]" [items]="item.order_items"></app-order-detail>
-
 
             <div class="clearfix"></div>
           </div>
