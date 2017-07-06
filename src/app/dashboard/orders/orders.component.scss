@@ -137,6 +137,9 @@
             min-height: 40px;
             line-height: 40px;
             color: #888;
+            &:nth-of-type(5) {
+              white-space: nowrap;
+            }
             &:nth-of-type(1) {
               color: $tealish;
               cursor: pointer;

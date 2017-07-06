@@ -164,6 +164,7 @@ export class OrderOptions {
 export class OrderService extends ModelService {
   public appConfig: AppConfig;
   public convertData: ConvertData | null;
+  public itemsVisibility: boolean[];
   
   constructor(
     public injector: Injector,
@@ -173,6 +174,12 @@ export class OrderService extends ModelService {
   ) {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
+
+    this.getOrders().subscribe((orders) => {
+      this.loadCollection$.next(orders);
+      this.itemsVisibility = new Array(orders.length).fill(false);
+    });
+    
   }
   
   getOrder(orderId: string) {
@@ -222,5 +229,10 @@ export class OrderService extends ModelService {
       .map((res:any)=>res.data);
   }
   
+  getOrders(){
+    //GET /pos
+    return this.restangular.all('pos').customGET()
+    .map((res:any)=>res.data);
+  }
   
 }

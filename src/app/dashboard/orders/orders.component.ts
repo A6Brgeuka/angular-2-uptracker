@@ -5,6 +5,7 @@ import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
+import { OrderService } from '../../core/services/order.service';
 
 
 @Component({
@@ -20,13 +21,15 @@ export class OrdersComponent implements OnInit {
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number = 6;
-  public products$: Observable<any>;
-  public items = [false,false,false,false,false,]; //mock data
+  public visible:boolean[] = [];
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   
   constructor(
-      public modal: Modal
+      public modal: Modal,
+      public orderService: OrderService
   ) {
+  
+  
   }
 
   ngOnInit() {
@@ -65,6 +68,6 @@ export class OrdersComponent implements OnInit {
     console.log(`tab ${filter} enabled`)
   }
   changeVisibility(i){
-    this.items[i] = !this.items[i];
+    this.orderService.itemsVisibility[i] = !this.orderService.itemsVisibility[i];
   }
 }

@@ -10,7 +10,7 @@ import { AccountService } from '../../../core/services/account.service';
 
 
 export class ViewProductModalContext extends BSModalContext {
-  public product: any;
+  public items: any;
 }
 
 
@@ -34,10 +34,9 @@ export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
     public modal: Modal,
     public accountService: AccountService,
 
-) {
+  ) {
     this.accountService.locations$
     .subscribe(r=>{this.locationArr = r});
-  
   }
 
   ngOnInit() {
