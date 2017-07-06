@@ -10,7 +10,6 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
-import { CartService } from './cart.service';
 
 @Injectable()
 @Subscribers({
@@ -23,7 +22,7 @@ export class ProductService extends ModelService {
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
-  current_page: number = 2;
+  current_page: number = 1;
   pagination_limit: number = 10;
   combinedProducts$: Observable<any>;
   start_products$: Observable<any>;

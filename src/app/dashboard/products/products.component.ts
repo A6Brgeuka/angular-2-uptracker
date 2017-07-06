@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
   public nothingChecked: boolean;
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string = 'A-Z';
-  public sortBy$: BehaviorSubject<any> = new BehaviorSubject('A-Z');
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public products$: Observable<any>;
   public products: any = [];
@@ -82,6 +82,7 @@ export class ProductsComponent implements OnInit {
     .subscribe(
       (r) => {
         this.searchKey = r;
+        debugger;
         this.productService.current_page = 0;
         this.productService.getNextProducts(0, r, this.sortBy).subscribe((r) => {
             this.getInfiniteScroll();
@@ -102,13 +103,13 @@ export class ProductsComponent implements OnInit {
       });
   
     this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
-    
+
     this.sortBy$
     .filter(r => r)
     .subscribe(
       (r) => {
+        this.productService.current_page = 0;
         this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
-        this.productService.current_page = 1;
       }
     );
     
