@@ -6,7 +6,6 @@
   padding-bottom: 5px !important;
   .smallrow {
     .col {
-      line-height: 30px !important;
       min-height: 30px !important;
     }
     &:last-of-type {
@@ -33,12 +32,21 @@
   margin-top: 5px;
 }
 
-
 .products .list.is-grid-view .item {
   border-bottom:none;
 }
 
 .list .item {
   border-bottom: 1px solid #ddd;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  .col {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
 }
 

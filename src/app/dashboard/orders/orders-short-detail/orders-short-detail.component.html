@@ -1,12 +1,7 @@
 <div *ngIf="visible" class="list is-grid-view orders-short-detail">
   <div>
-    <div class="heading row">
-      <div class="col s4">Product Name</div>
-      <div class="col s1"></div>
-      <div class="col s1"></div>
-      <div class="col s1"></div>
-      <div class="col s1"></div>
-      <div class="col s1"></div>
+    <div class="flex-row heading row">
+      <div class="col s9">Product Name</div>
 
       <div class="col s1">#Products</div>
       <div class="col s2 right-align">
@@ -32,8 +27,8 @@
         <div class="right">Total</div>
       </div>
     </div>
-    <div class="item row smallrow" *ngFor="let item of items;let i=index;">
-      <div class="col s4 flex-center">
+    <div class="flex-row item row smallrow" *ngFor="let item of items;let i=index;">
+      <div class="col s9 flex-center">
         <div class="input-checkbox left checkbox">
           <input
             type="checkbox"
@@ -46,11 +41,6 @@
           <div> {{ item.item_name }}</div>
         </div>
       </div>
-      <div class="col s1 ">{{ item.location }}</div>
-      <div class="col s1"></div>
-      <div class="col s1"></div>
-      <div class="col s1"></div>
-      <div class="col s1"></div>
       <div class="col s1">{{ item.quantity }}</div>
       <div class="col s2 right-align">
         <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
