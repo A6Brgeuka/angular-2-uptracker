@@ -31,7 +31,7 @@ export class ShoppingListComponent implements OnInit {
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public cart: any = [];
-  public total: number;
+  public total: number = 1;
   public products: any = [];
   public changes$: BehaviorSubject<any>[] = [];
   public changed: any = [];
