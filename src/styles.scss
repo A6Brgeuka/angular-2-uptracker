@@ -74,6 +74,11 @@ body {
     height: 32px!important;
   }
 }
+.select.ultra-low-height .select-wrapper, .select.ultra-low-height .select-wrapper.ng-valid  {
+  input.select-dropdown {
+    height: 25px!important;
+  }
+}
 
 .modalfax .intl-tel-input {
   margin-top:0!important;
