@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as _ from 'lodash';
 import { OrderService } from '../../core/services/order.service';
 
 
@@ -71,8 +70,8 @@ export class OrdersComponent implements OnInit {
   }
   
   getOrder(id){
-    //console.log(item);
     this.orderService.getPastOrder(id)
     .subscribe((res)=>console.log(res));
   }
+  
 }
