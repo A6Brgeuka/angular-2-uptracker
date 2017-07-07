@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/Rx';
 
-import { Overlay, overlayConfigFactory } from 'angular2-modal';
-import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 import { OrderService } from '../../core/services/order.service';
@@ -71,7 +70,9 @@ export class OrdersComponent implements OnInit {
     this.orderService.itemsVisibility[i] = !this.orderService.itemsVisibility[i];
   }
   
-  getOrder(id:string){
-    this.orderService.getPastOrder(id);
+  getOrder(id){
+    //console.log(item);
+    this.orderService.getPastOrder(id)
+    .subscribe((res)=>console.log(res));
   }
 }

@@ -120,7 +120,7 @@
                 />
                 <label for="selected{{i}}"></label>
               </div>
-              <div (click)="getOrder()" class="left">
+              <div (click)="getOrder(item.order_items[0].order_id)" class="left">
                 {{ item.po_number }}
               </div>
             </div>

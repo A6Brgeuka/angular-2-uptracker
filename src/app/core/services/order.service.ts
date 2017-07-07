@@ -236,7 +236,9 @@ export class OrderService extends ModelService {
   }
   
   getPastOrder(id:string){
-    // TODO for a single item
+    //GET /po/{order_id} - the order_id, not po_number
+    return this.restangular.one('po',id).customGET()
+    .map((res:any)=>res.data);
   }
   
 }
