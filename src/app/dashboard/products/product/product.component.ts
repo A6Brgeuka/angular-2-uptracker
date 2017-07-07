@@ -1,4 +1,7 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef } from '@angular/core';
+import {
+  Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef,
+  ChangeDetectorRef
+} from '@angular/core';
 
 import { Modal, Overlay } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -162,7 +165,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
     public route: ActivatedRoute,
     public zone: NgZone,
     public modalWindowService: ModalWindowService,
-    public modal: Modal
+    public modal: Modal,
+    public cd: ChangeDetectorRef
   ) {
     this.fileActions();
     this.docActions();
@@ -293,6 +297,10 @@ export class ProductComponent implements OnInit, AfterViewInit {
       return variants;
     });
   }
+  
+  //ngAfterViewInit(){
+  //  this.cd.detectChanges();
+  //}
   
   changeSelected(loc_id, var_id) {
     this.currentLocation[var_id] = loc_id;
@@ -442,6 +450,8 @@ export class ProductComponent implements OnInit, AfterViewInit {
   
   ngAfterViewInit() {
     this.filterSelectOption$.next({status: 1});
+    this.cd.detectChanges();
+  
   }
   
   dismissModal() {
