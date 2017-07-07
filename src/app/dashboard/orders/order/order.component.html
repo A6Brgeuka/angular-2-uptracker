@@ -119,7 +119,7 @@
           Discounts
         </div>
         <div class="total-value">
-          {{ (order$ | async).discount/100  | number : '1.2-2' }}
+          ${{ (order$ | async).discount/100  | number : '1.2-2' }}
         </div>
       </div>
       <div>
@@ -127,7 +127,7 @@
           Primary Tax
         </div>
         <div class="total-value">
-          {{ (order$ | async).primary_tax/100 | number : '1.2-2' }}
+          ${{ (order$ | async).primary_tax/100 | number : '1.2-2' }}
 
         </div>
       </div>
@@ -136,7 +136,7 @@
           Shipping & handling
         </div>
         <div class="total-value">
-          {{ (order$ | async).shipping_handling/100 | number : '1.2-2' }}
+          ${{ (order$ | async).shipping_handling/100 | number : '1.2-2' }}
         </div>
       </div>
       <div>
@@ -144,7 +144,7 @@
           Total
         </div>
         <div class="total-value bigger">
-          {{ (order$ | async).total/100 | number : '1.2-2' }}
+          ${{ (order$ | async).total/100 | number : '1.2-2' }}
         </div>
       </div>
     </div>
