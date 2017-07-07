@@ -1,5 +1,6 @@
 import { OrdersComponent } from './orders.component';
 import { ReceiveRoutes } from './receive/receive.routing';
+import { OrderRoutes } from './order/order.routing';
 
 export const OrdersRoutes = [
   {
@@ -7,5 +8,6 @@ export const OrdersRoutes = [
     component: OrdersComponent,
     canActivate: [],
   },
-  ...ReceiveRoutes
+  ...ReceiveRoutes,
+  ...OrderRoutes
 ];

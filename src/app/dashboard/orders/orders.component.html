@@ -1,36 +1,36 @@
 <div class="products content">
   <div class="top">
     <div class="row filter uptracker-form clearfix">
-        <div class="col s12 m6">
+      <div class="col s12 m6">
         <span class="title">
           <span class="main-title ">Orders</span>
           <span class="sub-title">{{total}} items</span>
         </span>
 
+      </div>
+      <div class="ptop5 filter-right">
+        <div class="col s4 l3 m2 input wide-input">
+          <input type="text"
+            placeholder="Keyword search"
+            [(ngModel)]="searchKey"
+            class="col s12"
+            (input)="searchFilter($event)"/>
         </div>
-        <div class="ptop5 filter-right">
-          <div class="col s4 l3 m2 input wide-input">
-            <input type="text"
-              placeholder="Keyword search"
-              [(ngModel)]="searchKey"
-              class="col s12"
-              (input)="searchFilter($event)"/>
-          </div>
-          <div class="col s4 l1 m2 filter-btn">
-            <a (click)="showFiltersModal()">
-              <fa [name]="'filter'"></fa>
-              <span>Filters</span>
-            </a>
-          </div>
-          <div class="col s4 m2  select sortby wide-input low-height">
-            <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
-              <option value="">Sort by</option>
-              <option value="A-Z">A-Z</option>
-              <option value="Z-A">Z-A</option>
-            </select>
-          </div>
+        <div class="col s4 l1 m2 filter-btn">
+          <a (click)="showFiltersModal()">
+            <fa [name]="'filter'"></fa>
+            <span>Filters</span>
+          </a>
         </div>
-        <div class="clearfix"></div>
+        <div class="col s4 m2  select sortby wide-input low-height">
+          <select [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+            <option value="">Sort by</option>
+            <option value="A-Z">A-Z</option>
+            <option value="Z-A">Z-A</option>
+          </select>
+        </div>
+      </div>
+      <div class="clearfix"></div>
     </div>
 
 
@@ -109,7 +109,9 @@
           </div>
         </div>
 
-        <div class="item row" *ngFor="let item of (orderService.collection$ | async);let i=index;" [class.no-border-bottom]="item">
+        <div class="item row"
+          *ngFor="let item of (orderService.collection$ | async);let i=index;"
+          [class.no-border-bottom]="item">
           <div>
             <div class="col s2 left-align">
               <div class="input-checkbox left checkbox">
@@ -120,7 +122,7 @@
                 />
                 <label for="selected{{i}}"></label>
               </div>
-              <div (click)="getOrder(item.order_items[0].order_id)" class="left">
+              <div [routerLink]="['/','orders',item?.order_items[0].order_id]" class="left">
                 {{ item.po_number }}
               </div>
             </div>
