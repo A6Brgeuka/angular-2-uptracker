@@ -65,6 +65,7 @@ export class InventoryService extends ModelService {
       return this.restangular.all('inventory').customGET('', queryParams.query)
     })
     .subscribe((res) => {
+        res.data.map((item:any)=>Object.assign(item,{status:1}));
         this.loadCollection$.next(res.data);
         this.totalCount$.next(res.data.length); // change to .count when the api is ready
         this.isDataLoaded$.next(true);

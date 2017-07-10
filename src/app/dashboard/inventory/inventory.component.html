@@ -11,7 +11,7 @@
         <span class="sub-title">{{total}} items</span>
       </div>
       <div class="col s2">
-        <button class="right uptracker-form-btn waves-effect waves-light">
+        <button routerLink="/products" class="right uptracker-form-btn waves-effect waves-light">
           <fa name="plus"></fa>
           Add Item
         </button>
@@ -44,7 +44,7 @@
     <div class="list" [class.is-grid-view]="inventoryService.isGrid" [class.is-tiles-view]="!inventoryService.isGrid">
       <div *ngIf="!inventoryService.isGrid">
         <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
-          <div class="inner" >
+          <div class="inner">
             <div class="hazardous" *ngIf="product.hazardous">
               <i class="material-icons">warning</i>
             </div>
@@ -52,7 +52,10 @@
               <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
               <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
             </div>
-            <div [routerLink]="['/', 'inventory','item', product.inventory_id]" *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+            <div [routerLink]="['/', 'inventory','item', product.inventory_id]"
+              *ngIf="product.image"
+              class="img"
+              [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>
@@ -73,7 +76,7 @@
                     min="0" [max]="product.overstock_level" step="1"
                     name="priority"
                     [(ngModel)]="product.on_hand"
-                    >
+                  >
                   <div class="value-container">
                     <div class="value" [ngStyle]="calcQuantityMargin(product)">{{product.on_hand}}</div>
                   </div>
@@ -100,14 +103,13 @@
             </div>
           </div>
           <div class="col  s4">Product name</div>
-          <div class="col s1">#Variations</div>
           <div class="col s1">Favorite</div>
           <div class="col s1">Hazardous</div>
           <div class="col s1">Trackable</div>
-          <div class="col s2">Price range</div>
+          <div class="col s3">Stock</div>
           <div class="col s1">
-            <button (click)="bulkEditModal()"
-              [disabled]="selectedProducts.length==0"
+            <button disabled (click)="bulkEditModal()"
+              [disabled]="selectedInventory?.length==0"
               class="right bulk-edit uptracker-form-btn">
               <i class="fa fa-pencil"></i>
             </button>
@@ -127,7 +129,7 @@
               <label for="selected{{i}}"></label>
             </div>
           </div>
-          <div class="col product-name s4 flex-middle" [routerLink]="[product.id]">{{product.name}}</div>
+          <div class="col product-name s3 flex-middle" [routerLink]="[product.id]">{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1 star-container">
             <div class="star-right" [class.favorite]="product.favorite">
@@ -159,16 +161,29 @@
               <label for="trackable{{i}}"></label>
             </div>
           </div>
-          <div class="col s2">{{product.price_range}}</div>
+          <div class="bottom col s3">
+            <div class="range-field">
+              <div class="range-value grey-bg left-align red-text bold">{{ product.critcal_level }}</div>
+              <input
+                #inputRange
+                type="range"
+                min="0" [max]="product.overstock_level" step="1"
+                name="priority"
+                [(ngModel)]="product.on_hand"
+              >
+              <div class="value-container less-margin">
+                <div class="value" [ngStyle]="calcQuantityMargin(product)">{{product.on_hand}}</div>
+              </div>
+              <div class="range-value grey-bg right-align orange-text bold">{{product.overstock_level}}</div>
+            </div>
+          </div>
           <div class="col s1">
             <i class="fa right variant-func"
               [class.fa-eye]="product.status"
               [class.fa-eye-slash]="!product.status"
-              (click)="toggleProductVisibility(product)"
+              (click)="toggleInventoryItemVisibility(product)"
               aria-hidden="true"></i>
-            <div class="value-container">
-              <div class="value" [ngStyle]="{ 'left': priorityMargin }">{{vendor.priority}}</div>
-            </div>
+
           </div>
         </div>
 
@@ -192,7 +207,7 @@
       <div class="text">We could not find any products, matching the search criteria.</div>
       <div class="sub-buttons">
         <button class="uptracker-form-btn">Broaden Search</button>
-        <button  class="uptracker-form-btn">Request Product</button>
+        <button class="uptracker-form-btn">Request Product</button>
       </div>
     </div>
   </div>
