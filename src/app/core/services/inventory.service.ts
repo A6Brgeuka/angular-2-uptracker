@@ -116,9 +116,15 @@ export class InventoryService extends ModelService {
   }
   
   updateInventoryItem(data: any) {
-    console.log(data);
     return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
   }
   
+  getInventoryItem(id:string) {
+    //GET /api/v1/invntory/{inventory_id}
+    return this.restangular.one('inventory', id || 1).customGET().map((res:any)=>res.data);
+  }
+  
+  addInventoryItemComment(c:any){}
+  editInventoryItemComment(c:any){}
   
 }

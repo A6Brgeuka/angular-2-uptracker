@@ -841,6 +841,9 @@ $normal: 14px;
     border-radius: 0;
     .img {
       border-radius: 0;
+      &.img-contain {
+        background-size:contain;
+      }
     }
   }
 
@@ -855,6 +858,7 @@ $normal: 14px;
       width: 70px;
       margin-left:10px;
       background-size: cover;
+
     }
   }
 

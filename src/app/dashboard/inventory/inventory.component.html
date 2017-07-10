@@ -52,12 +52,12 @@
               <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
               <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
             </div>
-            <div [routerLink]="['/', 'inventory','item', product.id]" *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+            <div [routerLink]="['/', 'inventory','item', product.inventory_id]" *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>
             </div>
-            <div [routerLink]="['/', 'inventory','item', product.id]" *ngIf="!product.image" class="img">
+            <div [routerLink]="['/', 'inventory','item', product.inventory_id]" *ngIf="!product.image" class="img">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>

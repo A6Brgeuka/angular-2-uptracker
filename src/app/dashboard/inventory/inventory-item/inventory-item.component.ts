@@ -1,70 +1,18 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef } from '@angular/core';
 
 import { Modal } from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { Location }                 from '@angular/common';
 import { UserService, AccountService } from '../../../core/services/index';
-import { ProductService } from "../../../core/services/product.service";
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { ToasterService } from "../../../core/services/toaster.service";
 import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit-comment-modal.component";
 import { ActivatedRoute, Params } from '@angular/router';
-import { SampleModel } from '../../../models/sample.model';
 import { ConfigService } from '../../../core/services/config.service';
+import { InventoryService } from '../../../core/services/inventory.service';
 
-export class VendorShortInfo extends SampleModel {
-  vendor_id: string = null;
-  variant_id: string = null;
-  vendor_variant_id: string = null;
-  
-  constructor(a) {
-    super(a);
-  }
-}
-
-export class ProductVariation {
-  package_type:string;
-  units_per_package:number;
-  sub_unit_type:string;
-  unit_type:string;
-  sub_unit_per_package:number;
-}
-
-export class AddToOrderData {
-  //collections
-  vendorArr: any[] = [];
-  locationArr: any[] = [];
-  //form text fill
-  variant_name: string = '';
-  productId: string = '';
-  units_per_package: number = null;
-  sub_unit_per_package: number = null;
-  unit_type: string = null;
-  sub_unit_type: string = null;
-  package_type: string = null;
-  //variables
-  quantity: number = 1;
-  vendor: VendorShortInfo = null;
-  location_id: string = '';
-  selected_unit_type: string = null;
-  last_unit_type: string = null;
-  isAuto: boolean = true;
-  
-  constructor(obj) {
-    for (let field in obj) {
-      if (typeof this[field] !== "undefined") {
-        this[field] = obj && obj[field];
-      }
-    }
-  }
-}
-
-export class ViewProductModalContext extends BSModalContext {
-  public product: any;
-}
 
 @Component({
   selector: 'app-inventory-item-modal',
@@ -74,9 +22,6 @@ export class ViewProductModalContext extends BSModalContext {
 @DestroySubscribers()
 export class InventoryItemComponent implements OnInit, AfterViewInit {
   public subscribers: any = {};
-  context: ViewProductModalContext;
-  
-  
   public product: any;
   public productCopy: any;
   public variation: any = {
@@ -135,12 +80,13 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
   public hasInfoTab: boolean = false;
   public product_id: string;
   public locationArr: any;
+  public product$: Subject<any> = new Subject<any>();
   
   constructor(
     public userService: UserService,
     public accountService: AccountService,
     public configService: ConfigService,
-    public productService: ProductService,
+    public InventoryService: InventoryService,
     public toasterService: ToasterService,
     public location: Location,
     public route: ActivatedRoute,
@@ -155,15 +101,11 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
   
   
   ngOnInit() {
-    this.accountService.getDepartments()
-    .subscribe((arr:string[])=>this.departmentCollection = arr);
-    
-    this.accountService.getProductAccounting()
-    .subscribe((arr:string[])=>this.productAccountingCollection = arr);
-  
-    this.accountService.getProductCategories()
-    .subscribe((arr:string[])=>this.productCategoriesCollection = arr);
-  
+    this.route.params
+    .switchMap((p:Params)=>this.InventoryService.getInventoryItem(p['id']))
+    .subscribe((a)=> {
+      this.product$.next(a);
+    });
   
     this.configService.environment$
     .filter((a:string)=>a=='development')
@@ -171,23 +113,12 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
       this.canEdit = true;
     });
   
-  
     this.accountService.locations$
     .subscribe(r => {
       this.locationArr = r
     });
     
-    
     this.loadFile$.next([]);
-    Observable.combineLatest(this.accountService.dashboardLocation$, this.route.params)
-    .subscribe(([location, params]) => {
-        console.log(location, params);
-        this.product_id = params['id'];
-        this.location_id = location ? location['id'] : null; //TODO
-        
-        this.getProducts();
-      },
-      (err: any) => console.log(err));
     
     let addToComments$ = this.addToComments$.switchMap((item: any) => {
       return this.comments$.first().map(collection => {
@@ -310,46 +241,6 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
     this.product.account_category = this.product.account_category ? this.product.account_category : 'Not Specified';
   }
   
-  getProducts() {
-    this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product_id, this.location_id)
-    .filter(res => res.data)
-    .map(res => res.data)
-    .subscribe(data => {
-      this.product = data.product;
-      this.hasInfoTab = (data.product.description == ''
-      || data.product.hazardous_form == ''
-      || data.product.msds == ''
-      || data.product.notes == ''
-      || !_.isEmpty(data.product.documents));
-      
-      this.loadDoc$.next(data.product.documents);
-      this.loadDoc$.subscribe(r => console.log(r));
-      
-      this.resetText();
-      this.variants = _.map(data.variants, (item: any) => {
-        item.checked = false;
-        item.status = item.status ? item.status : 1;
-        item.trimmed_inventory = !_.isEmpty(item.inventory) ? _.slice(item.inventory, 0, 3) : [];
-        item.total_inventory = _.sumBy(item.inventory, (i: any) => i.current_inventory);
-        return item;
-      });
-      this.variants$.next(this.variants); // update variants
-      let history = this.reformatOrderHistory(this.variants);
-      this.orders$.next(history); // update order history
-      
-      this.comments$.next(data.comments); // update comments
-      console.log(this.variants[0]);
-      _.each(this.variants, (variant: any) => {
-        _.forEach(this.variationArrs, (value, key) => {
-          this.variationArrs[key].push(this.variationArrs[key].indexOf(variant[key]) >= 0 ? null : variant[key]);
-        })
-      });
-      _.forEach(this.variationArrs, (value, key) => {
-        this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
-      });
-      
-    });
-  }
   
   // File load, add, delete actions
   fileActions(): any {
@@ -429,7 +320,7 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
   }
   
   dismissModal() {
-    this.productService.getNextProducts(this.productService.current_page, '', '');
+    this.InventoryService.getNextInventory(this.InventoryService.current_page, '', '');
   }
   
   closeModal(data) {
@@ -505,10 +396,10 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
         "object_id": this.product.id
       }
     );
-    this.subscribers.addProductSubscriber = this.productService.addProductComment(this.comment).subscribe(res => {
-      this.comment = {};
-      this.addToComments$.next(res.data);
-    });
+    //this.subscribers.addInventoryItemSubscriber = this.InventoryService.addInventoryItemComment(this.comment).subscribe(res => {
+    //  this.comment = {};
+    //  this.addToComments$.next(res.data);
+    //});
   }
   
   editComment(comment) {
@@ -517,19 +408,19 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
       let regKey = new RegExp('<br/>', 'g');
       clonedComment['body'] = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
     }
-    this.modal
-    .open(EditCommentModal, this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (comment) => {
-          this.subscribers.editProductComment = this.productService.editProductComment(comment).subscribe(res => {
-            this.editCommentComments$.next(res.data);
-          })
-        },
-        (err) => {
-        }
-      );
-    });
+    //this.modal
+    //.open(EditCommentModal, this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment}))
+    //.then((resultPromise) => {
+    //  resultPromise.result.then(
+    //    (comment) => {
+    //      this.subscribers.editInventoryItemComment = this.InventoryService.editInventoryItemComment(comment).subscribe(res => {
+    //        this.editCommentComments$.next(res.data);
+    //      })
+    //    },
+    //    (err) => {
+    //    }
+    //  );
+    //});
   }
   
   

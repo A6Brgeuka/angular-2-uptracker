@@ -82,7 +82,6 @@ export class ProductsComponent implements OnInit {
     .subscribe(
       (r) => {
         this.searchKey = r;
-        debugger;
         this.productService.current_page = 0;
         this.productService.getNextProducts(0, r, this.sortBy).subscribe((r) => {
             this.getInfiniteScroll();
