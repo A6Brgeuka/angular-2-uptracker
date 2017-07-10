@@ -1,5 +1,5 @@
 <ul class="debug-monitor" [class.isrequest]="isRequest">
-  <li>page: {{ productService.current_page }}</li>
+  <li>page: {{ inventoryService.current_page }}</li>
   <li>count: {{ (products$ | async)?.length }}</li>
   <li>total: {{ total }}</li>
 </ul>
@@ -26,7 +26,7 @@
           (input)="searchFilter($event)"/>
       </div>
       <div class="col l3 s4">
-        <div class="select sortby left">
+        <div class="select low-height sortby left">
           <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
             <option disabled value="">Sort by</option>
             <option value="relevance">Relevance</option>
@@ -35,14 +35,14 @@
           </select>
         </div>
         <div class="uptracker-toggle-view right" (click)="toggleView()">
-          <i class="fa" [class.fa-table]="!productService.isGrid" [class.fa-th-large]="productService.isGrid"></i>
+          <i class="fa" [class.fa-table]="!inventoryService.isGrid" [class.fa-th-large]="inventoryService.isGrid"></i>
         </div>
       </div>
       <div class="clearfix"></div>
     </div>
 
-    <div class="list" [class.is-grid-view]="productService.isGrid" [class.is-tiles-view]="!productService.isGrid">
-      <div *ngIf="!productService.isGrid">
+    <div class="list" [class.is-grid-view]="inventoryService.isGrid" [class.is-tiles-view]="!inventoryService.isGrid">
+      <div *ngIf="!inventoryService.isGrid">
         <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
           <div class="inner" >
             <div class="hazardous" *ngIf="product.hazardous">
@@ -66,26 +66,26 @@
               <div class="ttl">{{product.name}}</div>
               <div class="bottom">
                 <div class="range-field">
-                  <div class="range-value left-align red-text bold">1</div>
+                  <div class="range-value left-align red-text bold">{{ product.critcal_level }}</div>
                   <input
                     #inputRange
                     type="range"
-                    min="1" [max]="maxVal" step="1"
+                    min="0" [max]="product.overstock_level" step="1"
                     name="priority"
-                    [(ngModel)]="quantity"
-                    (input)="changeValue($event, product)"
+                    [(ngModel)]="product.on_hand"
+                    (input)="changeValue($event, product, i)"
                     >
                   <div class="value-container">
-                    <div class="value" [ngStyle]="{ 'left': quantityMargin, 'background-color':thumbColor }">{{quantity}}</div>
+                    <div class="value" [ngStyle]="calcQuantityMargin(product)">{{product.on_hand}}</div>
                   </div>
-                  <div class="range-value right-align orange-text bold">{{maxVal}}</div>
+                  <div class="range-value right-align orange-text bold">{{product.overstock_level}}</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div *ngIf="productService.isGrid">
+      <div *ngIf="inventoryService.isGrid">
 
         <div class="heading row">
           <div class="col s1 right-align">
@@ -175,7 +175,7 @@
 
       </div>
 
-      <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="productService.isGrid">
+      <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="inventoryService.isGrid">
         <div class="cssload-loader">
           <div class="cssload-inner cssload-one"></div>
           <div class="cssload-inner cssload-two"></div>

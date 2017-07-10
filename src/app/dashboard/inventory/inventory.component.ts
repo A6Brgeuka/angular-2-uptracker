@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewContainerRef, HostListener, Input } from '@angular/core';
+import { Component, OnInit, HostListener, Input } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
-import { ProductService } from '../../core/services/index';
 import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AccountService } from "../../core/services/account.service";
 import { ToasterService } from '../../core/services/toaster.service';
+import { InventoryService } from '../../core/services/inventory.service';
 
 @Component({
   selector: 'app-inventory',
@@ -25,7 +25,7 @@ export class InventoryComponent implements OnInit {
   public total: number;
   public products$: Observable<any>;
   public products: any = [];
-  public selectedProducts: any = [];
+  public selectedInventory: any = [];
   
   public infiniteScroll$: any = new BehaviorSubject(false);
   public selectAll$: any = new BehaviorSubject(0);
@@ -34,15 +34,13 @@ export class InventoryComponent implements OnInit {
   public searchKeyLast: string;
   public locationId: string;
   public selectAll: boolean = false;
-  public quantityMargin: string = '0';
-  
+  public rangeFields: any[] = [];
   public quantity: number = 3;
-  public maxVal: number = 100;
   public thumbColor: string = "#000000";
   
   constructor(
     public modal: Modal,
-    public productService: ProductService,
+    public inventoryService: InventoryService,
     public modalWindowService: ModalWindowService,
     public accountService: AccountService,
     public toasterService: ToasterService
@@ -50,7 +48,7 @@ export class InventoryComponent implements OnInit {
   }
   
   toggleView() {
-    this.productService.isGrid = !this.productService.isGrid;
+    this.inventoryService.isGrid = !this.inventoryService.isGrid;
     
   }
   
@@ -61,15 +59,14 @@ export class InventoryComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.calcQuantityMargin(3);
     
     this.accountService.dashboardLocation$.subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
     
-    this.productService.totalCount$.subscribe(total => this.total = total);
+    this.inventoryService.totalCount$.subscribe(total => this.total = total);
     
-    this.productService.isDataLoaded$
+    this.inventoryService.isDataLoaded$
     .filter(r => r)
     .subscribe((r) => {
       this.isRequest = false;
@@ -81,14 +78,13 @@ export class InventoryComponent implements OnInit {
     .subscribe(
       (r) => {
         this.searchKey = r;
-        this.productService.current_page = 0;
-        this.productService.getNextProducts(0, r, this.sortBy).subscribe((r) => {
+        this.inventoryService.current_page = 0;
+        this.inventoryService.getNextInventory(0, r, this.sortBy).subscribe((r) => {
             this.getInfiniteScroll();
           }
         );
       }
     );
-    
     
     this.searchKey$
     .subscribe(
@@ -108,21 +104,22 @@ export class InventoryComponent implements OnInit {
     .filter(r => r)
     .subscribe(
       (r) => {
-        this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
-        this.productService.current_page = 1;
+        this.inventoryService.getNextInventory(this.inventoryService.current_page, this.searchKey, r);
+        this.inventoryService.current_page = 1;
       }
     );
     
     this.products$ = Observable
     .combineLatest(
-      this.productService.collection$,
+      this.inventoryService.collection$,
       this.sortBy$,
       this.searchKey$,
       this.selectAll$
     )
     .map(([products, sortBy, searchKey, selectAll]: [any, any, any, any]) => {
-      for (let p of products) {
-        (selectAll === 1) ? p.selected = true : p.selected = false;
+      for (let p in products) {
+        (selectAll === 1) ? products[p].selected = true : products[p].selected = false;
+        this.rangeFields[p] = this.calcQuantityMargin(products[p]);
       }
       products.map((item: any) => {
           if (!item.image && !_.isEmpty(item.images)) {
@@ -131,13 +128,11 @@ export class InventoryComponent implements OnInit {
           return item;
         }
       );
+      this.products = products;
       return products;
     });
     
-    this.productService.collection$.subscribe(r => this.products = r);
-    
     Observable.combineLatest(this.infiniteScroll$, this.products$)
-    //.debounceTime(100)
     .filter(([infinite, products]) => {
       return (infinite && !this.isRequest && products.length);
     })
@@ -146,14 +141,14 @@ export class InventoryComponent implements OnInit {
       
       this.searchKeyLast = this.searchKey;
       //TODO remove
-      if (this.total <= (this.productService.current_page - 1) * this.productService.pagination_limit) {
+      if (this.total <= (this.inventoryService.current_page - 1) * this.inventoryService.pagination_limit) {
         this.isRequest = false;
         return Observable.of(false);
       } else {
         if (this.searchKey == this.searchKeyLast) {
-          ++this.productService.current_page;
+          ++this.inventoryService.current_page;
         }
-        return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
+        return this.inventoryService.getNextInventory(this.inventoryService.current_page, this.searchKey, this.sortBy);
       }
     })
     .subscribe(res => {
@@ -162,7 +157,7 @@ export class InventoryComponent implements OnInit {
     });
   }
   
-  toggleProductVisibility(product) {
+  toggleInventoryItemVisibility(product) {
     product.status = !product.status;
     //TODO add save to server
   }
@@ -193,7 +188,7 @@ export class InventoryComponent implements OnInit {
   }
   
   onCheck() {
-    this.selectedProducts = _.cloneDeep(this.products)
+    this.selectedInventory = _.cloneDeep(this.products)
     .filter(r => r['selected']);
   }
   
@@ -218,38 +213,32 @@ export class InventoryComponent implements OnInit {
       },
       variants: [],
     };
-    let updateProduct$ = this.productService.updateProduct(updateData);
-    updateProduct$.subscribe((r) => {
-      console.log(r);
-      this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
-    })
+    //let updateInventoryItem$ = this.inventoryService.updateInventoryItem(updateData);
+    //updateInventoryItem$.subscribe((r) => {
+    //  console.log(r);
+    //  this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
+    //})
   }
   
   resetFilters() {
     this.searchKey = '';
     this.sortBy = '';
-    this.productService.current_page = 0;
-    this.productService.getNextProducts(0, this.searchKey, this.sortBy).subscribe((r) => {
+    this.inventoryService.current_page = 0;
+    this.inventoryService.getNextInventory(0, this.searchKey, this.sortBy).subscribe((r) => {
         this.getInfiniteScroll();
       }
     );
   }
   
-  
-  calcQuantityMargin(value: number) {
-    this.quantityMargin = 'calc(' + ((value - 1) * 100 / (this.maxVal - 1)).toString() + '% - 16px)';
-    this.thumbColor = this.calcThumbColor(value / this.maxVal);
-  }
-  
-  changeValue(event, product) {
-    let value = event.target.value || 0;
-    this.calcQuantityMargin(value);
+  // sets the style of the range-field thumb;
+  calcQuantityMargin(product) {
+    let quantityMargin = 'calc(' + ((product.on_hand - 1) * 100 / (product.overstock_level - 1)).toString() + '% - 16px)';
+    let thumbColor = this.calcThumbColor(product.on_hand / product.overstock_level );
+    return { 'left': quantityMargin, 'background-color' : thumbColor };
   }
   
   private calcThumbColor(number: number) {
-
     let value = Math.min(Math.max(0,number), 1) * 510;
-  
     let redValue;
     let greenValue;
     if (value < 255) {
@@ -262,7 +251,6 @@ export class InventoryComponent implements OnInit {
       redValue = 255 - (value * value / 255);
       redValue = Math.round(redValue);
     }
-    
     return this.rgb2hex(redValue*.9,greenValue*.9,0);
   }
   

@@ -18,6 +18,7 @@ import { CartService } from './cart.service';
 import { OrderService } from './order.service';
 import { ConfigService } from './config.service';
 import { DashboardService } from './dashboard.service';
+import { InventoryService } from './inventory.service';
 
 
 export {
@@ -31,7 +32,6 @@ export {
   PhoneMaskService,
   FileUploadService,
   ExifService,
-  // HttpClient,
   VendorService,
   ModalWindowService,
   ProductService,
@@ -41,7 +41,8 @@ export {
   CartService,
   OrderService,
   ConfigService,
-  DashboardService
+  DashboardService,
+  InventoryService
 };
 
 // an array of services to resolve routes with data
@@ -56,7 +57,6 @@ export const APP_SERVICE_PROVIDERS = [
   PhoneMaskService,
   FileUploadService,
   ExifService,
-  // HttpClient,
   VendorService,
   ModalWindowService,
   ProductService,
@@ -65,5 +65,6 @@ export const APP_SERVICE_PROVIDERS = [
   CartService,
   OrderService,
   ConfigService,
-  DashboardService
+  DashboardService,
+  InventoryService
 ];
