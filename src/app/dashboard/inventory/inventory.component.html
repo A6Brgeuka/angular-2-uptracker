@@ -73,7 +73,6 @@
                     min="0" [max]="product.overstock_level" step="1"
                     name="priority"
                     [(ngModel)]="product.on_hand"
-                    (input)="changeValue($event, product, i)"
                     >
                   <div class="value-container">
                     <div class="value" [ngStyle]="calcQuantityMargin(product)">{{product.on_hand}}</div>

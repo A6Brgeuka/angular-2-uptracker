@@ -901,8 +901,9 @@ $normal: 14px;
   }
 
   .dropdown-content {
-    width:140px!important;
-    left:-10px!important;
+    width:130px!important;
+    left:0!important;
+    top:30px!important;
     li {
       min-height:30px;
       line-height:30px;
