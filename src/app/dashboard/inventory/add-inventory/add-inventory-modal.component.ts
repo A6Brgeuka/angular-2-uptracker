@@ -13,10 +13,10 @@ export class AddInventoryModalContext extends BSModalContext {
   styleUrls: ['./add-inventory-modal.component.scss']
 })
 @DestroySubscribers()
-export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<AddInventoryModalContext> {
-  public subscribers: any = {};
+export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<AddInventoryModalContext> {public subscribers: any = {};
   context: AddInventoryModalContext;
-
+  total:number = 0;
+  
   constructor(
       public dialog: DialogRef<AddInventoryModalContext>,
       public userService: UserService,

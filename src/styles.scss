@@ -59,8 +59,8 @@ body {
 
 // Input, select fields global styling
 
-.input input, .select .select-wrapper, .select .select-wrapper.ng-valid  {
-  input.select-dropdown {
+.input, .select .select-wrapper, .select .select-wrapper.ng-valid  {
+  input, input.select-dropdown {
     border: 1px solid $grey;
     border-radius: 5px;
     height: 40px!important;
@@ -815,7 +815,6 @@ button {
   border-radius: 5px;
   border: 0;
   font-size: 16px;
-  font-weight: 900;
   cursor: pointer;
   text-transform: capitalize;
   box-shadow: none;

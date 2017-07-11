@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Input } from '@angular/core';
+import { Component, OnInit, HostListener, Input, AfterViewInit } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -17,7 +17,7 @@ import { AddInventoryModal } from './add-inventory/add-inventory-modal.component
   styleUrls: ['./inventory.component.scss']
 })
 @DestroySubscribers()
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, AfterViewInit {
   @Input('inputRange') inputRange;
   
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -156,6 +156,10 @@ export class InventoryComponent implements OnInit {
     }, err => {
     
     });
+  }
+  
+  ngAfterViewInit(){
+    this.openAddInventoryModal(); // todo remove
   }
   
   toggleInventoryItemVisibility(product) {

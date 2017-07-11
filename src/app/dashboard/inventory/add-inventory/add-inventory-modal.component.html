@@ -1,7 +1,93 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
-  <div class="title center-align">Add Product to Inventory</div>
+  <div class="row title center-align">
+    Add Inventory Item
+    <button class="uptracker-form-btn white-text tealish waves-effect waves-light right">
+      <fa name="check"></fa>
+      Save
+    </button>
+  </div>
   <div class="row">
-    <div class="col s12">request form here</div>
+
+    <div class="col s6">
+      <div class="row ttl">
+        <div class="col s12 ">Search Products</div>
+      </div>
+      <div class="row">
+        <div class="col s12 input search">
+          <input type="text" placeholder="Enter Product Name, UPC, or Catalog #">
+          <a>
+            <fa name="barcode"></fa>
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="no_results_container" [class.not_hidden]="!total">
+            <div class="img">
+              <i class="fa fa-question" aria-hidden="true"></i>
+            </div>
+            <div class="text">No Products Found</div>
+            <div class="sub-buttons">
+              <button routerLink="/products" class="uptracker-form-btn waves-effect waves-light tealish white-text">
+                <fa name="plus"></fa>
+                Add Custom Product
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col s6">
+      <div class="row custom-width ttl">
+        <div class="col s1 ">Package</div>
+        <div class="col s1 ">Sub-Package</div>
+        <div class="col s1 "></div>
+        <div class="col s1 ">Consumable unit</div>
+        <div class="col s1 "></div>
+
+      </div>
+      <div class="row custom-width">
+        <div class="col s1 select">
+          <select
+            materialize="material_select">
+            <option value="item">Item</option>
+          </select>
+        </div>
+        <div class="col s1 input">
+          <input placeholder="Qty" type="text">
+        </div>
+        <div class="col s1 select">
+          <select
+            materialize="material_select">
+            <option value="item">Item</option>
+          </select>
+        </div>
+        <div class="col s1 input">
+          <input placeholder="Qty" type="text">
+        </div>
+        <div class="col s1 select">
+          <select
+            materialize="material_select">
+            <option value="item">Item</option>
+          </select>
+        </div>
+      </div>
+      <div class="row border-bottom">
+        <div class="col s12 low-padding">
+          <div class="input-checkbox checkbox inline-block">
+          <input id="chkAll" type="checkbox">
+            <label for="chkAll"></label>
+          </div>
+          <span class="bold">Selected Products</span>
+          <div class="right tealish-text">
+            <fa name="minus"></fa>
+            Remove Selected
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

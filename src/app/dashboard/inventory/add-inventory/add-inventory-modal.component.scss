@@ -1,53 +1,124 @@
+@import "../../../../colors";
+
 :host /deep/ {
-  .inner{
-    width:280px;
-    margin:0 auto;
+  .inner {
 
-    .img-container{
-      width:80px;
-      height:80px;
-      border:1px solid #d6d6d6;
-
-      .img{
-        height:100%;
-        background-position: center center;
-        background-size:cover;
+    .row {
+      margin-bottom: 10px;
+      &.title {
+        margin-bottom: 20px;
+      }
+      &.border-bottom {
+        border-bottom: 1px solid $light-grey;
+        padding-bottom: 5px;
       }
     }
 
-    .ttl-box{
-      height:80px;
-
-      .ttl{
-        position:relative;
-        top:50%;
-        transform:translateY(-50%);
-        font-size:18px;
-      }
+    .input input, .select input {
+      background-color: $light-light-grey;
+      border-color: $light-grey;
+      margin-bottom: 0;
+      box-sizing: border-box;
+      color: $grey;
+    }
+    .ttl {
+      color: $dark;
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
-    .separator{
-      height:1px;
-      background:#d6d6d6;
-      margin:24px 0 20px;
+    .low-padding {
+      padding: 0 .25rem;
     }
 
-    .info{
-      .row{
-        margin-bottom:12px;
+    .custom-width {
 
-        .label{
-          color:#9a9c9e;
+      & > .col {
+        padding: 0 .25rem;
+
+        &:nth-of-type(2n) {
+          width: 12.5%;
+          white-space: nowrap;
+        }
+
+        &:nth-of-type(2n-1) {
+          width: 25%;
         }
       }
+    }
+    .checkbox.inline-block {
+      padding-right: 5px;
 
-      .buttons{
-        margin-top:30px;
+      label {
+        vertical-align: sub;
       }
     }
-  }
 
-  #general{
-    display:block !important;
+    .no_results_container {
+      opacity: 0;
+      z-index: -999;
+      text-align: center;
+      transition: opacity .3s;
+      width: 100%;
+      margin-top: 20px;
+
+      &.not_hidden {
+        opacity: 1;
+        z-index: 999;
+      }
+      .img, .sub-buttons {
+        display: inline-block;
+        clear: both;
+        margin: 10px auto 0;
+      }
+      .img {
+        width: 40px;
+        background-color: #ccc;
+        border-radius: 50%;
+        height: 40px;
+        text-align: center;
+      }
+      .img i {
+        font-size: 36px;
+        color: #fff;
+        line-height: 40px;
+        margin-left: -2px;
+      }
+      button {
+        margin: 0 15px;
+        padding: 0 15px;
+
+      }
+      .text {
+        clear: both;
+        margin: 20px 10%;
+        font-size: 18px;
+        color: #bbb;
+        font-family: Ubuntu, sans-serif;
+        line-height: 1;
+        width: 80%;
+        display: inline-block;
+      }
+
+    }
+    .input {
+      position: relative;
+      .fa-barcode {
+        color: $tealish;
+        font-size: 24px;
+        position: absolute;
+        right: 23px;
+        top: 9px;
+      }
+      &.search {
+        input {
+          padding-left:10px;
+        }
+      }
+    }
+    .uptracker-form-btn.tealish {
+      height: 32px;
+    }
+
   }
 }
