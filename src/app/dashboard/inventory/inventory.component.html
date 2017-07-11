@@ -11,7 +11,7 @@
         <span class="sub-title">{{total}} items</span>
       </div>
       <div class="col s2">
-        <button routerLink="/products" class="right uptracker-form-btn waves-effect waves-light">
+        <button (click)="openAddInventoryModal()" class="right uptracker-form-btn waves-effect waves-light">
           <fa name="plus"></fa>
           Add Item
         </button>

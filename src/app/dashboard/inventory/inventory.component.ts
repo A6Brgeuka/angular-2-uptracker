@@ -9,6 +9,7 @@ import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AccountService } from "../../core/services/account.service";
 import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
+import { AddInventoryModal } from './add-inventory/add-inventory-modal.component';
 
 @Component({
   selector: 'app-inventory',
@@ -258,6 +259,19 @@ export class InventoryComponent implements OnInit {
     let rgb = blue | (green << 8) | (red << 16);
     return '#' + (0x1000000 + rgb).toString(16).slice(1)
   }
+ 
+  public openAddInventoryModal(){
+    this.modal
+    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+        },
+        (err) => {
+        }
+      );
+    });
   
+  }
   
 }
