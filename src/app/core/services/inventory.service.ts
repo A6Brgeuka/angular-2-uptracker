@@ -125,6 +125,11 @@ export class InventoryService extends ModelService {
     return this.restangular.one('inventory', id || 1).customGET().map((res:any)=>res.data);
   }
   
+  search(keyword:string){
+    //GET /api/v1/inventory/search?q={keyword,upc,catalog number}
+    return this.restangular.one('inventory', 'search').customGET('',{'q':keyword}).map((res:any)=>res.data);
+  }
+  
   addInventoryItemComment(c:any){}
   editInventoryItemComment(c:any){}
   

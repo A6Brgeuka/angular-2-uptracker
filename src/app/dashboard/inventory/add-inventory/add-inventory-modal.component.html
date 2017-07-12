@@ -15,11 +15,51 @@
       </div>
       <div class="row">
         <div class="col s12 input search">
-          <input type="text" placeholder="Enter Product Name, UPC, or Catalog #">
+          <input (input)="onSearchTypeIn($event)" type="text" placeholder="Enter Product Name, UPC, or Catalog #">
           <a>
             <fa name="barcode"></fa>
           </a>
         </div>
+      </div>
+      <div *ngIf="total" class="row border-bottom">
+        <div class="col s12 ">
+          <div class="input-checkbox checkbox inline-block">
+            <input id="variantsAll" type="checkbox">
+            <label for="variantsAll"></label>
+          </div>
+          <span class="bold">Matching Products</span>
+          <div class="right tealish-text">
+            <fa name="plus"></fa>
+            Add Selected
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let item of (searchResults$ | async); let i=index;" class="row search-results">
+        <div class="col s9 product-row-fields">
+          <div class="input-checkbox  checkbox">
+            <input id="variant{{ i }}" type="checkbox">
+            <label for="variant{{ i }}"></label>
+          </div>
+          <div class="image" *ngIf="(item.images && item.images[0])"
+            [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
+          </div>
+          <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
+            [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
+          </div>
+          <div>
+            <div class="product-name tealish-text">
+              {{ item.name }}
+            </div>
+            <div class="vendor-name">
+              {{ item.vendor.properties.name }}
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="col s3 right-align item-price">
+          ${{ item.price/100 | number : '1.2-2' }}
+        </div>
+        <div class="clearfix"></div>
       </div>
       <div class="row">
         <div class="col s12">
@@ -78,7 +118,7 @@
       <div class="row border-bottom">
         <div class="col s12 low-padding">
           <div class="input-checkbox checkbox inline-block">
-          <input id="chkAll" type="checkbox">
+            <input id="chkAll" type="checkbox">
             <label for="chkAll"></label>
           </div>
           <span class="bold">Selected Products</span>
