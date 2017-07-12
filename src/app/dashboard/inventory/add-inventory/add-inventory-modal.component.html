@@ -8,166 +8,224 @@
     </button>
   </div>
   <div class="row">
-
-    <div class="col s6">
-      <div class="row ttl">
-        <div class="col s12 ">Search Products</div>
-      </div>
-      <div class="row">
-        <div class="col s12 input search">
-          <input (input)="onSearchTypeIn($event)" type="text" placeholder="Enter Product Name, UPC, or Catalog #">
-          <a>
-            <fa name="barcode"></fa>
-          </a>
-        </div>
-      </div>
-      <div *ngIf="total" class="row border-bottom">
-        <div class="col s12 ">
-          <div class="input-checkbox checkbox inline-block">
-            <input id="variantsAll" type="checkbox">
-            <label for="variantsAll"></label>
+    <div *ngIf="addCustomProduct" class="col s6">
+      <div class="custom-product-add">
+        <div class="row">
+          <div class="col s6 title">
+            Add Custom Product
           </div>
-          <span class="bold">Matching Products</span>
-          <div (click)="bulkAdd()"  class="right tealish-text bulk-actions">
-            <fa name="plus"></fa>
-            Add Selected
+          <div class="col s6 buttons right-align">
+            <button class="uptracker-form-btn  redbtn waves-effect waves-light" (click)="toggleCustomAdd()">
+              Cancel
+            </button>
+            <button class="uptracker-form-btn   white-text waves-effect waves-light" (click)="addNewProduct()">
+              <fa name="plus"></fa>
+              Add
+            </button>
           </div>
         </div>
-      </div>
-      <div
-        *ngFor="let item of (searchResults$ | async); let i=index;"
-        class="row search-results">
-        <div class="col s9 product-row-fields">
-          <div class="input-checkbox  checkbox">
-            <input  [(ngModel)]="item.checked"  id="variant{{ i }}" type="checkbox">
-            <label for="variant{{ i }}"></label>
-          </div>
-          <div class="image" *ngIf="(item.images && item.images[0])"
-            [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
-          </div>
-          <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
-            [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
-          </div>
-          <div>
-            <div class="product-name tealish-text">
-              {{ item.name }}
+        <div class="row">
+          <div class="col s12">
+            <div class="ttl">Name</div>
+            <div class="input">
+              <input [(ngModel)]="newProductData.name" type="text" placeholder="Product Name">
             </div>
-            <div class="vendor-name">
-              {{ item.vendor.properties.name }}
-            </div>
-            <div class="clearfix"></div>
           </div>
         </div>
-        <div class="col s3 right-align item-price">
-          ${{ item.price/100 | number : '1.2-2' }}
-        </div>
-        <div (click)="addToInventory([item])" class="action-button waves-light waves-effect">
-          <fa name="plus"></fa>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="row">
-        <div class="col s12">
-          <div class="no_results_container" [class.not_hidden]="!total">
-            <div class="img">
-              <i class="fa fa-question" aria-hidden="true"></i>
+        <div class="row">
+          <div class="col s12">
+            <div class="ttl">Vendor</div>
+            <div class="input">
+              <input [(ngModel)]="newProductData.vendor.properties.name"  type="text" placeholder="Vendor Name">
             </div>
-            <div class="text">No Products Found</div>
-            <div class="sub-buttons">
-              <button routerLink="/products" class="uptracker-form-btn waves-effect waves-light tealish white-text">
-                <fa name="plus"></fa>
-                Add Custom Product
-              </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="ttl">Outer Package</div>
+            <div class="input">
+              <input [(ngModel)]="newProductData.package.properties.unit_type"   type="text" placeholder="Package">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="ttl">Inner Package</div>
+            <div class="input">
+              <input [(ngModel)]="newProductData.sub_package.properties.unit_type"  type="text" placeholder="Package">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="ttl">Consumable Unit</div>
+            <div class="input">
+              <input [(ngModel)]="newProductData.consumable_unit.properties.unit_type"  type="text" placeholder="Package">
             </div>
           </div>
         </div>
       </div>
     </div>
 
-
-    <div class="col s6">
-      <div class="row custom-width ttl">
-        <div class="col s1 ">Package</div>
-        <div class="col s1 ">Sub-Package</div>
-        <div class="col s1 "></div>
-        <div class="col s1 ">Consumable unit</div>
-        <div class="col s1 "></div>
-
+  <div *ngIf="!addCustomProduct" class="col s6">
+    <div class="row ttl">
+      <div class="col s12 ">Search Products</div>
+    </div>
+    <div class="row">
+      <div class="col s12 input search">
+        <input (input)="onSearchTypeIn($event)" type="text" placeholder="Enter Product Name, UPC, or Catalog #">
+        <a>
+          <fa name="barcode"></fa>
+        </a>
       </div>
-      <div class="row custom-width">
-        <div class="col s1 select">
-          <select
-            materialize="material_select">
-            <option value="item">Item</option>
-          </select>
+    </div>
+    <div *ngIf="total" class="row border-bottom">
+      <div class="col s12 ">
+        <div class="input-checkbox checkbox inline-block">
+          <input id="variantsAll" type="checkbox">
+          <label for="variantsAll"></label>
         </div>
-        <div class="col s1 input">
-          <input placeholder="Qty" type="text">
-        </div>
-        <div class="col s1 select">
-          <select
-            materialize="material_select">
-            <option value="item">Item</option>
-          </select>
-        </div>
-        <div class="col s1 input">
-          <input placeholder="Qty" type="text">
-        </div>
-        <div class="col s1 select">
-          <select
-            materialize="material_select">
-            <option value="item">Item</option>
-          </select>
+        <span class="bold">Matching Products</span>
+        <div (click)="bulkAdd()" class="right tealish-text bulk-actions">
+          <fa name="plus"></fa>
+          Add Selected
         </div>
       </div>
-      <div class="row border-bottom">
-        <div class="col s12 low-padding">
-          <div class="input-checkbox checkbox inline-block">
-            <input id="chkAll" type="checkbox">
-            <label for="chkAll"></label>
+    </div>
+    <div
+      *ngFor="let item of (searchResults$ | async); let i=index;"
+      class="row search-results">
+      <div class="col s9 product-row-fields">
+        <div class="input-checkbox  checkbox">
+          <input [(ngModel)]="item.checked" id="variant{{ i }}" type="checkbox">
+          <label for="variant{{ i }}"></label>
+        </div>
+        <div class="image" *ngIf="(item.images && item.images[0])"
+          [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
+        </div>
+        <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
+          [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
+        </div>
+        <div>
+          <div class="product-name tealish-text">
+            {{ item.name }}
           </div>
-          <span class="bold">Selected Products</span>
-          <div (click)="bulkDelete()" class="right tealish-text bulk-actions">
-            <fa name="minus"></fa>
-            Remove Selected
+          <div class="vendor-name">
+            {{ item.vendor.properties.name }}
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="col s3 right-align item-price">
+        ${{ item.price/100 | number : '1.2-2' }}
+      </div>
+      <div (click)="addToInventory([item])" class="action-button waves-light waves-effect">
+        <fa name="plus"></fa>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <div class="no_results_container" [class.not_hidden]="!total">
+          <div class="img">
+            <i class="fa fa-question" aria-hidden="true"></i>
+          </div>
+          <div class="text">No Products Found</div>
+          <div class="sub-buttons">
+            <button (click)="toggleCustomAdd()"
+              class="uptracker-form-btn waves-effect waves-light tealish white-text">
+              <fa name="plus"></fa>
+              Add Custom Product
+            </button>
           </div>
         </div>
       </div>
-
-      <div
-        *ngFor="let item of (items$ | async); let i=index;"
-        class="row added-items"
-        (click)="deleteFromInventory(item)">
-        <div class="col s9 product-row-fields low-padding">
-          <div class="input-checkbox  checkbox">
-            <input [(ngModel)]="item.checked" id="addeditem{{ i }}" type="checkbox">
-            <label for="addeditem{{ i }}"></label>
-          </div>
-          <div class="image" *ngIf="(item.images && item.images[0])"
-            [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
-          </div>
-          <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
-            [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
-          </div>
-          <div>
-            <div class="product-name tealish-text">
-              {{ item.name }}
-            </div>
-            <div class="vendor-name">
-              {{ item.vendor.properties.name }}
-            </div>
-            <div class="clearfix"></div>
-          </div>
-        </div>
-        <div class="col s3 right-align low-padding item-price">
-          ${{ item.price/100 | number : '1.2-2' }}
-        </div>
-        <div (click)="deleteFromInventory([item])" class="action-button">
-          <fa name="minus"></fa>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-
     </div>
   </div>
+
+
+  <div class="col s6">
+    <div class="row custom-width ttl">
+      <div class="col s1 ">Package</div>
+      <div class="col s1 ">Sub-Package</div>
+      <div class="col s1 "></div>
+      <div class="col s1 ">Consumable unit</div>
+      <div class="col s1 "></div>
+
+    </div>
+    <div class="row custom-width">
+      <div class="col s1 select">
+        <select
+          materialize="material_select">
+          <option value="item">Item</option>
+        </select>
+      </div>
+      <div class="col s1 input">
+        <input placeholder="Qty" type="text">
+      </div>
+      <div class="col s1 select">
+        <select
+          materialize="material_select">
+          <option value="item">Item</option>
+        </select>
+      </div>
+      <div class="col s1 input">
+        <input placeholder="Qty" type="text">
+      </div>
+      <div class="col s1 select">
+        <select
+          materialize="material_select">
+          <option value="item">Item</option>
+        </select>
+      </div>
+    </div>
+    <div class="row border-bottom">
+      <div class="col s12 low-padding">
+        <div class="input-checkbox checkbox inline-block">
+          <input id="chkAll" type="checkbox">
+          <label for="chkAll"></label>
+        </div>
+        <span class="bold">Selected Products</span>
+        <div (click)="bulkDelete()" class="right tealish-text bulk-actions">
+          <fa name="minus"></fa>
+          Remove Selected
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngFor="let item of (items$ | async); let i=index;"
+      class="row added-items"
+      (click)="deleteFromInventory(item)">
+      <div class="col s9 product-row-fields low-padding">
+        <div class="input-checkbox  checkbox">
+          <input [(ngModel)]="item.checked" id="addeditem{{ i }}" type="checkbox">
+          <label for="addeditem{{ i }}"></label>
+        </div>
+        <div class="image" *ngIf="(item.images && item.images[0])"
+          [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
+        </div>
+        <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
+          [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
+        </div>
+        <div>
+          <div class="product-name tealish-text">
+            {{ item.name }}
+          </div>
+          <div class="vendor-name">
+            {{ item.vendor.properties.name }}
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="col s3 right-align low-padding item-price">
+        ${{ item.price/100 | number : '1.2-2' }}
+      </div>
+      <div (click)="deleteFromInventory([item])" class="action-button">
+        <fa name="minus"></fa>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
 </div>

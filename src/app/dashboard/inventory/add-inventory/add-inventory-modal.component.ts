@@ -25,14 +25,14 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   public typeIn$: any = new Subject();
   searchResults$: any = new BehaviorSubject([]);
   
+  public newProductData:any = new InventorySearchResults();
   public items$: Observable<any>;
   public items;
   public loadItems$: Subject<any> = new Subject<any>();
   public addItemsToItems$: Subject<any> = new Subject<any>();
   public deleteFromItems$: Subject<any> = new Subject<any>();
-  public updateItems$: Subject<any> = new Subject<any>();
   
-  
+  public addCustomProduct:boolean = false;
   
   constructor(
       public dialog: DialogRef<AddInventoryModalContext>,
@@ -118,5 +118,14 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     // get checked
     let checkedItems = this.items.filter((item:InventorySearchResults)=>item.checked);
     this.deleteFromInventory(checkedItems);
+  }
+  
+  toggleCustomAdd(){
+    this.addCustomProduct = !this.addCustomProduct;
+  }
+  
+  addNewProduct(){
+    this.addToInventory([new InventorySearchResults(Object.assign(this.newProductData,{variant_id:'tmp'+Math.floor(Math.random()* 1000000)}))]);
+    this.toggleCustomAdd();
   }
 }
