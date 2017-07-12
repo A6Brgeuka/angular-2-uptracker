@@ -28,16 +28,18 @@
             <label for="variantsAll"></label>
           </div>
           <span class="bold">Matching Products</span>
-          <div class="right tealish-text">
+          <div (click)="bulkAdd()"  class="right tealish-text bulk-actions">
             <fa name="plus"></fa>
             Add Selected
           </div>
         </div>
       </div>
-      <div *ngFor="let item of (searchResults$ | async); let i=index;" class="row search-results">
+      <div
+        *ngFor="let item of (searchResults$ | async); let i=index;"
+        class="row search-results">
         <div class="col s9 product-row-fields">
           <div class="input-checkbox  checkbox">
-            <input id="variant{{ i }}" type="checkbox">
+            <input  [(ngModel)]="item.checked"  id="variant{{ i }}" type="checkbox">
             <label for="variant{{ i }}"></label>
           </div>
           <div class="image" *ngIf="(item.images && item.images[0])"
@@ -58,6 +60,9 @@
         </div>
         <div class="col s3 right-align item-price">
           ${{ item.price/100 | number : '1.2-2' }}
+        </div>
+        <div (click)="addToInventory([item])" class="action-button waves-light waves-effect">
+          <fa name="plus"></fa>
         </div>
         <div class="clearfix"></div>
       </div>
@@ -122,12 +127,47 @@
             <label for="chkAll"></label>
           </div>
           <span class="bold">Selected Products</span>
-          <div class="right tealish-text">
+          <div (click)="bulkDelete()" class="right tealish-text bulk-actions">
             <fa name="minus"></fa>
             Remove Selected
           </div>
         </div>
       </div>
+
+      <div
+        *ngFor="let item of (items$ | async); let i=index;"
+        class="row added-items"
+        (click)="deleteFromInventory(item)">
+        <div class="col s9 product-row-fields low-padding">
+          <div class="input-checkbox  checkbox">
+            <input [(ngModel)]="item.checked" id="addeditem{{ i }}" type="checkbox">
+            <label for="addeditem{{ i }}"></label>
+          </div>
+          <div class="image" *ngIf="(item.images && item.images[0])"
+            [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
+          </div>
+          <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
+            [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
+          </div>
+          <div>
+            <div class="product-name tealish-text">
+              {{ item.name }}
+            </div>
+            <div class="vendor-name">
+              {{ item.vendor.properties.name }}
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="col s3 right-align low-padding item-price">
+          ${{ item.price/100 | number : '1.2-2' }}
+        </div>
+        <div (click)="deleteFromInventory([item])" class="action-button">
+          <fa name="minus"></fa>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
     </div>
   </div>
 </div>

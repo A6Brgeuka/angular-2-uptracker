@@ -61,12 +61,12 @@
       transition: opacity .5s, height .3s;
       width: 100%;
       margin-top: 20px;
-      height:0;
+      height: 0;
 
       &.not_hidden {
         opacity: 1;
         z-index: 999;
-        height:auto;
+        height: auto;
       }
       .img, .sub-buttons {
         display: inline-block;
@@ -122,7 +122,13 @@
       height: 32px;
     }
 
-    .search-results {
+    .bulk-actions {
+      cursor:pointer;
+    }
+
+    .search-results, .added-items {
+      position: relative;
+
       .image {
         width: 40px;
         height: 40px;
@@ -134,15 +140,46 @@
           background-size: contain;
         }
       }
+      .item-price, .action-button {
+        transition: opacity .3s;
+      }
+      .action-button {
+        opacity: 0;
+        width:20px;
+        height:20px;
+        text-align:center;
+        top:10px;
+        right:20px;
+        cursor:pointer;
+        z-index:-1;
+        position: absolute;
+        border-radius:4px;
+        line-height:20px;
+        background-color: $tealish;
+        color:$white;
+      }
+      .item-price {
+        line-height: 40px;
+        font-size: 1.1rem;
+        color: $dark;
+      }
 
+      &:hover {
+        .item-price {
+          opacity: 0;
+        }
+        .action-button {
+          opacity: 1;
+          z-index: 100;
+        }
+      }
     }
     .product-name, .vendor-name {
       line-height: 1;
-      float:left;
     }
 
     .product-name {
-      min-height:28px;
+      min-height: 28px;
     }
     .product-row-fields {
 
@@ -152,23 +189,17 @@
         max-width: calc(100% - 80px);
 
         &.image {
-          margin:0 10px;
+          margin: 0 10px;
         }
-        &.checkbox{
-          padding:8px 0;
+        &.checkbox {
+          padding: 8px 0;
         }
 
         .vendor-name {
-          color:$grey;
-          font-size:.9rem;
+          color: $grey;
+          font-size: .9rem;
         }
-
       }
-    }
-    .item-price {
-      line-height:40px;
-      font-size: 1.1rem;
-      color:$dark;
     }
   }
 }
