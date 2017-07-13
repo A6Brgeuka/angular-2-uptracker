@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 
 export class AddInventoryModalContext extends BSModalContext {
+  inventoryItems: any[] = [];
 }
 
 @Component({
@@ -19,49 +20,54 @@ export class AddInventoryModalContext extends BSModalContext {
   styleUrls: ['./add-inventory-modal.component.scss']
 })
 @DestroySubscribers()
-export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<AddInventoryModalContext> {public subscribers: any = {};
+export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<AddInventoryModalContext> {
+  public subscribers: any = {};
   context: AddInventoryModalContext;
-  total:number = 0;
+  total: number = 0;
   public typeIn$: any = new Subject();
   searchResults$: any = new BehaviorSubject([]);
+  searchResults: any[] = [];
   
-  public newProductData:any = new InventorySearchResults();
+  checkBoxCandidates:boolean=false;
+  checkBoxItems:boolean=false;
+  
+  public newProductData: any = new InventorySearchResults();
   public items$: Observable<any>;
   public items;
   public loadItems$: Subject<any> = new Subject<any>();
   public addItemsToItems$: Subject<any> = new Subject<any>();
   public deleteFromItems$: Subject<any> = new Subject<any>();
   
-  public addCustomProduct:boolean = false;
+  public addCustomProduct: boolean = false;
   
   constructor(
-      public dialog: DialogRef<AddInventoryModalContext>,
-      public userService: UserService,
-      public accountService: AccountService,
-      public inventoryService: InventoryService
+    public dialog: DialogRef<AddInventoryModalContext>,
+    public userService: UserService,
+    public accountService: AccountService,
+    public inventoryService: InventoryService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     
     this.typeIn$
     .debounceTime(1000)
-    .switchMap((key:string)=>this.inventoryService.search(key))
-    .subscribe((data:searchData)=>{
+    .switchMap((key: string) => this.inventoryService.search(key))
+    .subscribe((data: searchData) => {
       this.total = data.count;
       this.searchResults$.next(data.results);
+      this.searchResults = data.results;
     });
   }
   
-  onSearchTypeIn(event){
+  onSearchTypeIn(event) {
     this.typeIn$.next(event.target.value);
   }
   
-  ngOnInit(){
+  ngOnInit() {
     
     let addItemsToItems$ = this.addItemsToItems$
-    .switchMap(res=>this.inventoryService.addInventoryItem(res))
+    //.switchMap(res=>this.inventoryService.addInventoryItem(res))
     .switchMap((res) => {
-      debugger;
       return this.items$.first()
       .map((items: any) => {
         items = items.concat(res);
@@ -85,49 +91,79 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     this.items$.subscribe(res => {
       this.items = res;
     });
-    this.loadItems$.next([]);
+    debugger;
+    this.loadItems$.next(this.context.inventoryItems);
   }
-
-  dismissModal(){
+  
+  dismissModal() {
     this.dialog.dismiss();
   }
-
-  closeModal(data){
+  
+  closeModal(data) {
     this.dialog.close(data);
   }
   
-  addToInventory(items:InventorySearchResults[]){
+  addToInventory(items: InventorySearchResults[]) {
     // reset selection
     items.map((item: InventorySearchResults) => {
-      item.checked=false;
+      item.checked = false;
       return item;
     });
+    this.checkBoxCandidates = false;
     this.addItemsToItems$.next(_.cloneDeep(items));
   }
-  deleteFromInventory(items:InventorySearchResults[]){
-    items.map((i)=>this.deleteFromItems$.next(i));
+  
+  deleteFromInventory(items: InventorySearchResults[]) {
+    items.map((i) => this.deleteFromItems$.next(i));
+    this.checkBoxItems = false;
   }
-  bulkAdd(){
+  
+  bulkAdd() {
     this.searchResults$
     .take(1)
-    .subscribe((items:InventorySearchResults[])=>{
+    .subscribe((items: InventorySearchResults[]) => {
       // get checked
-      let checkedItems = items.filter((item:InventorySearchResults)=>item.checked);
+      let checkedItems = items.filter((item: InventorySearchResults) => item.checked);
       this.addToInventory(checkedItems);
     });
   }
-  bulkDelete(){
+  
+  bulkDelete() {
     // get checked
-    let checkedItems = this.items.filter((item:InventorySearchResults)=>item.checked);
+    let checkedItems = this.items.filter((item: InventorySearchResults) => item.checked);
     this.deleteFromInventory(checkedItems);
   }
   
-  toggleCustomAdd(){
+  toggleCustomAdd() {
     this.addCustomProduct = !this.addCustomProduct;
   }
   
-  addNewProduct(){
-    this.addToInventory([new InventorySearchResults(Object.assign(this.newProductData,{variant_id:'tmp'+Math.floor(Math.random()* 1000000)}))]);
+  addNewProduct() {
+    this.addToInventory([
+      new InventorySearchResults(
+        Object.assign(this.newProductData, {variant_id: 'tmp' + Math.floor(Math.random() * 1000000)})
+      )
+    ]);
     this.toggleCustomAdd();
+  }
+  
+  selectAllCandidates() {
+    console.log(this.checkBoxCandidates);
+    this.searchResults$.next(
+      this.searchResults.map((item: InventorySearchResults) => {
+        item.checked = this.checkBoxCandidates;
+        return item;
+      })
+    );
+  }
+  
+  selectAllItems() {
+    console.log(this.checkBoxItems);
+    this.loadItems$.next(
+      this.items.map((item: InventorySearchResults) => {
+        item.checked = this.checkBoxItems;
+        return item;
+      })
+    );
   }
 }

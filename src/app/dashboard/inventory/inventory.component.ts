@@ -9,7 +9,7 @@ import { ModalWindowService } from "../../core/services/modal-window.service";
 import { AccountService } from "../../core/services/account.service";
 import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
-import { AddInventoryModal } from './add-inventory/add-inventory-modal.component';
+import { AddInventoryModal, AddInventoryModalContext } from './add-inventory/add-inventory-modal.component';
 
 @Component({
   selector: 'app-inventory',
@@ -265,8 +265,10 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   }
  
   public openAddInventoryModal(){
+    //this.inventoryService
+   let data = { inventoryItems:[] };
     this.modal
-    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams(data))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {

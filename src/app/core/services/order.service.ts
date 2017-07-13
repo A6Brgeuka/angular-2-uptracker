@@ -181,7 +181,6 @@ export class OrderService extends ModelService {
   getOrder(orderId: string) {
     return this.restangular.one('orders', orderId).all('preview').customGET('')
     .map((res: any) => {
-      debugger;
 
       return res.data.map((item: any) => {
         item.primary_tax_nf /= 100;

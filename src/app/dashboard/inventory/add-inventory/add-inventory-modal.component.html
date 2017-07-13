@@ -82,7 +82,7 @@
     <div *ngIf="total" class="row border-bottom">
       <div class="col s12 ">
         <div class="input-checkbox checkbox inline-block">
-          <input id="variantsAll" type="checkbox">
+          <input [(ngModel)]="checkBoxCandidates" (change)="selectAllCandidates()" id="variantsAll" type="checkbox">
           <label for="variantsAll"></label>
         </div>
         <span class="bold">Matching Products</span>
@@ -182,7 +182,7 @@
     <div class="row border-bottom">
       <div class="col s12 low-padding">
         <div class="input-checkbox checkbox inline-block">
-          <input id="chkAll" type="checkbox">
+          <input (change)="selectAllItems()" [(ngModel)]="checkBoxItems" id="chkAll" type="checkbox">
           <label for="chkAll"></label>
         </div>
         <span class="bold">Selected Products</span>

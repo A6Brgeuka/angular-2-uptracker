@@ -132,7 +132,7 @@ export class InventoryService extends ModelService {
         return {
           product_id: item.product_id,
           variant_id: item.variant_id,
-          vendor_variant_id: item.vendor.properties.id
+          vendor_variant_id: item.vendor_variant_id
         }
       })
     };
