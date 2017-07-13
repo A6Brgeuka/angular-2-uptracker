@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { OrderService } from '../../core/services/order.service';
+import { PastOrderService } from '../../core/services/pastOrder.service';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class OrdersComponent implements OnInit {
   
   constructor(
       public modal: Modal,
-      public orderService: OrderService
+      public pastOrderService: PastOrderService
   ) {
   
   
@@ -66,11 +66,11 @@ export class OrdersComponent implements OnInit {
     console.log(`tab ${filter} enabled`)
   }
   changeVisibility(i){
-    this.orderService.itemsVisibility[i] = !this.orderService.itemsVisibility[i];
+    this.pastOrderService.itemsVisibility[i] = !this.pastOrderService.itemsVisibility[i];
   }
   
   getOrder(id){
-    this.orderService.getPastOrder(id)
+    this.pastOrderService.getPastOrder(id)
     .subscribe((res)=>console.log(res));
   }
   

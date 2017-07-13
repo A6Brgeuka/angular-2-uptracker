@@ -165,6 +165,7 @@ export class OrderService extends ModelService {
   public appConfig: AppConfig;
   public convertData: ConvertData | null;
   public itemsVisibility: boolean[];
+  public pastOrders$: BehaviorSubject<any> = new BehaviorSubject([]);
   
   constructor(
     public injector: Injector,
@@ -174,17 +175,14 @@ export class OrderService extends ModelService {
   ) {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
-
-    this.getPastOrders().subscribe((orders) => {
-      this.loadCollection$.next(orders);
-      this.itemsVisibility = new Array(orders.length).fill(false);
-    });
-    
+   
   }
   
   getOrder(orderId: string) {
     return this.restangular.one('orders', orderId).all('preview').customGET('')
     .map((res: any) => {
+      debugger;
+
       return res.data.map((item: any) => {
         item.primary_tax_nf /= 100;
         item.secondary_tax_nf /= 100;
@@ -227,18 +225,6 @@ export class OrderService extends ModelService {
     //POST /po/{order_id}/send
     return this.restangular.one('po', orderId).all('send').customPOST(data)
       .map((res:any)=>res.data);
-  }
-  
-  getPastOrders(){
-    //GET /pos
-    return this.restangular.all('pos').customGET()
-    .map((res:any)=>res.data);
-  }
-  
-  getPastOrder(id:string){
-    //GET /po/{order_id} - the order_id, not po_number
-    return this.restangular.one('po',id).customGET()
-    .map((res:any)=>res.data);
   }
   
 }

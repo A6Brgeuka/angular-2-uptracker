@@ -110,7 +110,7 @@
         </div>
 
         <div class="item row"
-          *ngFor="let item of (orderService.collection$ | async);let i=index;"
+          *ngFor="let item of (pastOrderService.collection$ | async);let i=index;"
           [class.no-border-bottom]="item">
           <div>
             <div class="col s2 left-align">
@@ -159,7 +159,7 @@
             </div>
             <div class="clearfix"></div>
 
-            <app-order-detail [visible]="orderService.itemsVisibility[i]" [items]="item.order_items"></app-order-detail>
+            <app-order-detail [visible]="pastOrderService.itemsVisibility[i]" [items]="item.order_items"></app-order-detail>
 
             <div class="clearfix"></div>
           </div>

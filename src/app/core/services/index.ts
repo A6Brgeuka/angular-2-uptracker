@@ -19,6 +19,7 @@ import { OrderService } from './order.service';
 import { ConfigService } from './config.service';
 import { DashboardService } from './dashboard.service';
 import { InventoryService } from './inventory.service';
+import { PastOrderService } from './pastOrder.service';
 
 
 export {
@@ -40,6 +41,7 @@ export {
   CustomRenderer,
   CartService,
   OrderService,
+  PastOrderService,
   ConfigService,
   DashboardService,
   InventoryService
@@ -64,6 +66,7 @@ export const APP_SERVICE_PROVIDERS = [
   LocationService,
   CartService,
   OrderService,
+  PastOrderService,
   ConfigService,
   DashboardService,
   InventoryService

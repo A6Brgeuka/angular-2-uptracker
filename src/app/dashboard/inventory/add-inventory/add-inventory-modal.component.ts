@@ -59,7 +59,9 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   ngOnInit(){
     
     let addItemsToItems$ = this.addItemsToItems$
+    .switchMap(res=>this.inventoryService.addInventoryItem(res))
     .switchMap((res) => {
+      debugger;
       return this.items$.first()
       .map((items: any) => {
         items = items.concat(res);

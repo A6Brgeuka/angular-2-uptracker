@@ -12,9 +12,10 @@ import { ModalWindowService } from "../../../core/services/modal-window.service"
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ConvertedOrder, OrderService } from '../../../core/services/order.service';
+import { ConvertedOrder } from '../../../core/services/order.service';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { Subject } from 'rxjs/Subject';
+import { PastOrderService } from '../../../core/services/pastOrder.service';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class OrderComponent implements OnInit {
     public windowLocation: Location,
     public accountService: AccountService,
     public route: ActivatedRoute,
-    public orderService: OrderService,
+    public pastOrderService: PastOrderService,
     public router: Router,
     public toasterService: ToasterService,
   ) {
@@ -49,7 +50,7 @@ export class OrderComponent implements OnInit {
     this.route.params
     .switchMap((p: Params) => {
       this.orderId = p['id'];
-      return this.orderService.getPastOrder(p['id']);
+      return this.pastOrderService.getPastOrder(p['id']);
     })
     .subscribe((item: any) => {
       console.log(item);

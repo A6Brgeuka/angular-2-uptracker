@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
+import { InventorySearchResults } from '../../models/inventory.model';
 
 @Injectable()
 @Subscribers({
@@ -65,7 +66,7 @@ export class InventoryService extends ModelService {
       return this.restangular.all('inventory').customGET('', queryParams.query)
     })
     .subscribe((res) => {
-        res.data.map((item:any)=>Object.assign(item,{status:1}));
+        res.data.map((item: any) => Object.assign(item, {status: 1}));
         this.loadCollection$.next(res.data);
         this.totalCount$.next(res.data.length); // change to .count when the api is ready
         this.isDataLoaded$.next(true);
@@ -120,17 +121,33 @@ export class InventoryService extends ModelService {
     return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
   }
   
-  getInventoryItem(id:string) {
+  getInventoryItem(id: string) {
     //GET /api/v1/invntory/{inventory_id}
-    return this.restangular.one('inventory', id || 1).customGET().map((res:any)=>res.data);
+    return this.restangular.one('inventory', id || 1).customGET().map((res: any) => res.data);
   }
   
-  search(keyword:string){
+  addInventoryItem(data: InventorySearchResults[]) {
+    let payload = {
+      products: data.map((item) => {
+        return {
+          product_id: item.product_id,
+          variant_id: item.variant_id,
+          vendor_variant_id: item.vendor.properties.id
+        }
+      })
+    };
+    return this.restangular.all('inventory').customPOST(payload).map((res: any) => res.data);
+  }
+  
+  search(keyword: string) {
     //GET /api/v1/inventory/search?q={keyword,upc,catalog number}
-    return this.restangular.one('inventory', 'search').customGET('',{'q':keyword}).map((res:any)=>res.data);
+    return this.restangular.one('inventory', 'search').customGET('', {'q': keyword}).map((res: any) => res.data);
   }
   
-  addInventoryItemComment(c:any){}
-  editInventoryItemComment(c:any){}
+  addInventoryItemComment(c: any) {
+  }
+  
+  editInventoryItemComment(c: any) {
+  }
   
 }
