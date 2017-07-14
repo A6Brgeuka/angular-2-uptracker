@@ -79,7 +79,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
       return this.items$.first()
       .map((items: any) => {
         return items.filter((el: any) => {
-          return el.variant_id != deleteItems.variant_id;
+          return el.name != deleteItems.name;
         });
       });
     });

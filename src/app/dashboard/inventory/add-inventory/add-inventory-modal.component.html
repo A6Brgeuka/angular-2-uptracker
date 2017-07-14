@@ -195,8 +195,7 @@
 
     <div
       *ngFor="let item of (items$ | async); let i=index;"
-      class="row added-items"
-      (click)="deleteFromInventory(item)">
+      class="row added-items">
       <div class="col s9 product-row-fields low-padding">
         <div class="input-checkbox  checkbox">
           <input [(ngModel)]="item.checked" id="addeditem{{ i }}" type="checkbox">
