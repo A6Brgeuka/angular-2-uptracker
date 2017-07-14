@@ -177,6 +177,8 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   saveAdded(){
+    
+    // TODO move subscription to constructor
     // TODO add remove functionality
     let onlyFreshlyAdded = this.items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems);
     this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
