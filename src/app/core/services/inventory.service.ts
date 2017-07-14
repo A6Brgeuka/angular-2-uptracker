@@ -150,4 +150,13 @@ export class InventoryService extends ModelService {
   editInventoryItemComment(c: any) {
   }
   
+  checkIfNotExist(item:InventorySearchResults){
+    // GET /api/v1/inventory/check?product_id={product_id}&vendor_variant_id={vendor_variant_id}
+    return this.restangular.one('inventory', 'check').customGET('', {
+      product_id: item.product_id,
+      vendor_variant_id:item.vendor_variant_id
+    }).map((res: any) => {
+      return true;
+    });
+  }
 }

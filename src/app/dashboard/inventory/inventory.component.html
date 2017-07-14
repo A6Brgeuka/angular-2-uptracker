@@ -52,7 +52,7 @@
               <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
               <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
             </div>
-            <div [routerLink]="['/', 'inventory','item', product.inventory_id]"
+            <div [routerLink]="['/', 'inventory','item', product.id]"
               *ngIf="product.image"
               class="img"
               [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
@@ -60,7 +60,7 @@
                 <fa [name]="'barcode'"></fa>
               </div>
             </div>
-            <div [routerLink]="['/', 'inventory','item', product.inventory_id]" *ngIf="!product.image" class="img">
+            <div [routerLink]="['/', 'inventory','item', product.id]" *ngIf="!product.image" class="img">
               <div class="trackable" *ngIf="product.trackable">
                 <fa [name]="'barcode'"></fa>
               </div>
@@ -73,7 +73,7 @@
                   <input
                     #inputRange
                     type="range"
-                    min="0" [max]="product.overstock_level" step="1"
+                    min="0" [max]="product.overstock_level || 1" step="1"
                     name="priority"
                     [(ngModel)]="product.on_hand"
                   >

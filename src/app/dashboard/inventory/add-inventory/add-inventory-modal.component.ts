@@ -106,6 +106,15 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   
   addToInventory(items: InventorySearchResults[]) {
     // reset selection
+    //this.inventoryService.checkIfNotExist(items[0]).subscribe();
+
+    let checkItemsExist$ = items.map((item: InventorySearchResults) => {
+      return this.inventoryService.checkIfNotExist(item);
+    });
+
+    Observable.zip(...checkItemsExist$)
+    .subscribe(a=>{debugger});
+  
     items.map((item: InventorySearchResults) => {
       item.checked = false;
       return item;
