@@ -10,6 +10,7 @@ import { AccountService } from "../../core/services/account.service";
 import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
 import { AddInventoryModal, AddInventoryModalContext } from './add-inventory/add-inventory-modal.component';
+import { InventorySearchResults } from '../../models/inventory.model';
 
 @Component({
   selector: 'app-inventory',
@@ -159,7 +160,6 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit(){
-    this.openAddInventoryModal(); // todo remove
   }
   
   toggleInventoryItemVisibility(product) {
@@ -265,19 +265,24 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   }
  
   public openAddInventoryModal(){
-    //this.inventoryService
-   let data = { inventoryItems:[] };
-    this.modal
-    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams(data))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-        },
-        (err) => {
-        }
-      );
+    this.inventoryService.collection$
+    .take(1)
+    .subscribe((items:InventorySearchResults[])=>{
+      let data = {
+        inventoryItems:items.map((item:any)=>{
+          return new InventorySearchResults(item);
+        })};
+      this.modal
+      .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams(data))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (res) => {
+          },
+          (err) => {
+          }
+        );
+      });
     });
-  
   }
   
 }

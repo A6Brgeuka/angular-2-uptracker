@@ -91,7 +91,8 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     this.items$.subscribe(res => {
       this.items = res;
     });
-    debugger;
+
+    // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
   }
   
@@ -158,12 +159,21 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   selectAllItems() {
-    console.log(this.checkBoxItems);
     this.loadItems$.next(
       this.items.map((item: InventorySearchResults) => {
         item.checked = this.checkBoxItems;
         return item;
       })
     );
+  }
+  
+  saveAdded(){
+    // TODO add remove functionality
+    let onlyFreshlyAdded = this.items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems);
+    this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
+    .subscribe((newItems:any[])=>{
+      this.inventoryService.addCollectionToCollection$.next(newItems);
+      this.dismissModal();
+    });
   }
 }

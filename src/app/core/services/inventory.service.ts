@@ -126,7 +126,7 @@ export class InventoryService extends ModelService {
     return this.restangular.one('inventory', id || 1).customGET().map((res: any) => res.data);
   }
   
-  addInventoryItem(data: InventorySearchResults[]) {
+  addItemsToInventory(data: InventorySearchResults[]) {
     let payload = {
       products: data.map((item) => {
         return {
