@@ -134,7 +134,7 @@ export class PurchaseOrderComponent implements OnInit {
         this.showEmailDataEditModal({
           order_method:order['order_method'],
           attachments: order['attachments'],
-          email_text: status.email_text,
+          email_text: status.email_text.replace('(vendor name)', order['vendor_name']),
           po_number: order['po_number'],
           preview_id: order['preview_id'],
           order_id: order['id'],
