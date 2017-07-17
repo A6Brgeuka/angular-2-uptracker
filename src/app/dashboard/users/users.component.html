@@ -1,19 +1,19 @@
 
 <div class="users content">
   <div class="top row" >
-    <div class="title col l6 m12">
+    <div class="title col l4 m12">
       <div class="main-title left">Users</div>
       <div class="sub-title">{{total}} total</div>
     </div>
     <div class="filter uptracker-form ">
-      <div class="col l2 s4 input wide-input">
+      <div class="col l2 m3 s6 input wide-input">
         <input type="text"
           placeholder="Keyword search"
           [(ngModel)]="searchKey"
           class="col s12"
           (input)="usersFilter($event)"/>
       </div>
-      <div class="col l2 s4  select wide-input">
+      <div class="col l2 m3 s6 select wide-input">
         <select [(ngModel)]="sortBy" materialize="material_select" (change)="sortChange($event)">
           <option disabled value="">Sort by</option>
           <option value="relevance">Relevance</option>
@@ -21,8 +21,13 @@
         </select>
       </div>
 
-      <div class="col l2 s4 ">
-        <button type="button" (click)="editUserModal()" class="uptracker-form-btn waves-light waves-effect wide">Add New
+      <div class="col l2 m3 s6">
+        <button type="button" [routerLink]="'add'" class="uptracker-form-btn waves-light waves-effect wide">Add New
+          User
+        </button>
+      </div>
+      <div class="col l2 m3 s6">
+        <button type="button" (click)="inviteUser()" class="uptracker-form-btn waves-light waves-effect wide">Invite
           User
         </button>
       </div>
