@@ -329,6 +329,11 @@
           }
         }
       }
+      .input {
+        input[class^="qua-input"] {
+          height: 30px !important;
+        }
+      }
 
 
       input {
