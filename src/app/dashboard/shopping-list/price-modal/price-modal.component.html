@@ -50,12 +50,12 @@
         </div>
         <div class="col s3 pad7px">
           <div class="input">
-            <input type="text" class="input-h-30" [(ngModel)]="d.amount" (change)="calcDiscount()">
+            <input type="text" [(ngModel)]="d.amount" (change)="calcDiscount()">
           </div>
         </div>
         <div class="col s3">
           <div class="input">
-            <input type="text" class="input-h-30" [(ngModel)]="d.reward_points" (change)="calcDiscount()">
+            <input type="text" [(ngModel)]="d.reward_points" (change)="calcDiscount()">
           </div>
         </div>
         <div class="col s1 trash">

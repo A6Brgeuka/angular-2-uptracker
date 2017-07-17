@@ -76,6 +76,12 @@ body {
   }
 }
 
+.select.ultra-big-height .select-wrapper, .select.ultra-big-height .select-wrapper.ng-valid  {
+  input.select-dropdown {
+    height: 40px!important;
+  }
+}
+
 .modalfax .intl-tel-input {
   margin-top:0!important;
 }
@@ -565,7 +571,7 @@ button {
 
 .uptracker-form {
   .input {
-    margin-bottom: 25px;
+    //margin-bottom: 25px;
 
     input {
       @include form-field;

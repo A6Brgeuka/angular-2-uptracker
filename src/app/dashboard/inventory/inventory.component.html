@@ -40,7 +40,7 @@
       </div>
       <div class="clearfix"></div>
     </div>
-
+  </div>
     <div class="list" [class.is-grid-view]="inventoryService.isGrid" [class.is-tiles-view]="!inventoryService.isGrid">
       <div *ngIf="!inventoryService.isGrid">
         <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
@@ -210,5 +210,5 @@
         <button class="uptracker-form-btn">Request Product</button>
       </div>
     </div>
-  </div>
+
 </div>

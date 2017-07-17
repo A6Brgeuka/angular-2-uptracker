@@ -50,7 +50,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     dialog.setCloseGuard(this);
     
     this.typeIn$
-    .debounceTime(1000)
+    .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
       this.total = data.count;
