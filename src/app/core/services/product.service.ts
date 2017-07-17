@@ -19,22 +19,19 @@ import { BehaviorSubject } from 'rxjs';
 export class ProductService extends ModelService {
   
   public isGrid: boolean = false;
-  selfData: any;
-  selfData$: Observable<any>;
-  updateSelfData$: Subject<any> = new Subject<any>();
-  current_page: number = 1;
-  pagination_limit: number = 10;
-  combinedProducts$: Observable<any>;
-  start_products$: Observable<any>;
-  products$: Observable<any> = Observable.empty();
+  public selfData: any;
+  public selfData$: Observable<any>;
+  public updateSelfData$: Subject<any> = new Subject<any>();
+  public current_page: number = 1;
+  public pagination_limit: number = 10;
+  public combinedProducts$: Observable<any>;
   public isDataLoaded$: any = new BehaviorSubject(false);
-  totalCount$: any = new BehaviorSubject(1);
-  location$: any = new BehaviorSubject(false);
-  getProductsData$: any = new Subject();
-  location: string;
-  total: number = 1;
-  dashboardLocation: any;
-  oldLocation: any;
+  public totalCount$: any = new BehaviorSubject(1);
+  public location$: any = new BehaviorSubject(false);
+  public getProductsData$: any = new Subject();
+  public location: string;
+  public total: number = 1;
+  public dashboardLocation: any;
   
   constructor(
     public injector: Injector,
@@ -71,7 +68,9 @@ export class ProductService extends ModelService {
     })
     
     .subscribe((res) => {
-        this.addCollectionToCollection$.next(res.data.results);
+        if (res.data.results.length > 0) {
+          this.addCollectionToCollection$.next(res.data.results);
+        }
         this.totalCount$.next(res.data.count);
         this.isDataLoaded$.next(true);
         return res.data.results;
@@ -85,7 +84,8 @@ export class ProductService extends ModelService {
       console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
     
-    this.start_products$ = this.accountService.dashboardLocation$.switchMap(location => {
+    this.accountService.dashboardLocation$
+    .switchMap(location => {
       if (!location) {
         location = {};
       }
@@ -94,8 +94,8 @@ export class ProductService extends ModelService {
       this.location = location;
       
       return this.getProductsLocation(location.id)
-    });
-    this.start_products$.subscribe();
+    })
+    .subscribe();
   }
   
   
@@ -134,21 +134,13 @@ export class ProductService extends ModelService {
     this.updateSelfData$.next(data);
   }
   
+  //only for resolver. it works anyway through constructor
   getProducts() {
-    return this.products$.isEmpty().switchMap((isEmpty) => {
-      if (isEmpty) {
-        this.products$ = this.restangular.all('products').customGET('')
-        .map((res: any) => {
-          return res.data.results;
-        });
-      }
-      return this.products$;
-    });
+    return Observable.of([]);
   }
   
   getProductsLocation(id) {
-    
-    return this.products$ = this.restangular.all('products').customGET('', {
+    return this.restangular.all('products').customGET('', {
       location_id: id,
       limit: this.pagination_limit
     })
@@ -171,14 +163,6 @@ export class ProductService extends ModelService {
   
   getProductLocation(id, location_id) {
     return this.restangular.one('products', id).get({location_id: location_id});
-  }
-  
-  searchProduct(query) {
-    return this.restangular.all('search').getList('products', {query: query});
-  }
-  
-  getProductComments(id) {
-    return this.restangular.one('products', id).all('comments').customGET()
   }
   
   addProductComment(comment) {
