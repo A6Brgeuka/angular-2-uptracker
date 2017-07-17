@@ -135,7 +135,9 @@ input.select-dropdown, .input input {
     a:first-of-type {
       color: $dark;
     }
-
+    .link-icon:hover {
+      text-decoration: none;
+    }
     .invis {
       cursor:pointer;
     }

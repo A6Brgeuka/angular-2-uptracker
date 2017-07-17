@@ -116,6 +116,8 @@
         <fa *ngIf="getType(file.type) == 'audio'" name="file-audio-o"></fa>
         <fa *ngIf="getType(file.type) == 'video'" name="file-video-o"></fa>
         Attachment - {{ file.file_name }}
+      </a>
+      <a href="{{ apiUrl }}/po/{{ context.order_id }}/attachment/{{ file.id }}"  target="_blank" class="link-icon">
         <fa class="tealish-text invis" name="external-link"></fa>
       </a>
       <fa class="red-text invis" name="trash" (click)="removeFile(file)"></fa>
