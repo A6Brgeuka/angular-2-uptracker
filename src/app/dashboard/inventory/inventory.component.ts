@@ -268,12 +268,12 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     this.inventoryService.collection$
     .take(1)
     .subscribe((items:InventorySearchResults[])=>{
-      let data = {
-        inventoryItems:items.map((item:any)=>{
-          return new InventorySearchResults(item);
-        })};
+      //let data = {
+      //  inventoryItems:items.map((item:any)=>{
+      //    return new InventorySearchResults(item);
+      //  })};
       this.modal
-      .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams(data))
+      .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryItems': []}))
       .then((resultPromise) => {
         resultPromise.result.then(
           (res) => {

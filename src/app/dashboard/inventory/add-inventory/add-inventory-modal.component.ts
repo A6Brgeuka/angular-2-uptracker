@@ -70,8 +70,13 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     .switchMap((res) => {
       return this.items$.first()
       .map((items: any) => {
+        
         items = items.concat(res);
-        return items;
+        
+        //return items;
+        return items.filter((el: any) => {
+          return el.variant_id != res.variant_id;
+        });
       });
     });
     let deleteFromItems$ = this.deleteFromItems$
@@ -79,7 +84,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
       return this.items$.first()
       .map((items: any) => {
         return items.filter((el: any) => {
-          return el.name != deleteItems.name;
+          return el.variant_id != deleteItems.variant_id;
         });
       });
     });
@@ -105,15 +110,20 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   addToInventory(items: InventorySearchResults[]) {
+    //debugger;
     // reset selection
     //this.inventoryService.checkIfNotExist(items[0]).subscribe();
 
-    let checkItemsExist$ = items.map((item: InventorySearchResults) => {
-      return this.inventoryService.checkIfNotExist(item);
-    });
-
-    Observable.zip(...checkItemsExist$)
-    .subscribe(a=>{debugger});
+    //let checkItemsExist$ = items.map((item: InventorySearchResults) => {
+    //  debugger;
+    //  return this.inventoryService.checkIfNotExist(item);
+    //});
+    items.map((i) => this.addItemsToItems$.next(i));
+    
+    this.inventoryService.checkIfNotExist(items);
+    
+    //Observable.zip(...checkItemsExist$)
+    //.subscribe(a=>{debugger});
   
     items.map((item: InventorySearchResults) => {
       item.checked = false;
@@ -180,9 +190,17 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     
     // TODO move subscription to constructor
     // TODO add remove functionality
-    let onlyFreshlyAdded = this.items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems);
-    this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
-    .subscribe((newItems:any[])=>{
+    //let onlyFreshlyAdded = this.items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems);
+    //this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
+    //.subscribe((newItems:any[])=>{
+    //  this.inventoryService.addCollectionToCollection$.next(newItems);
+    //  this.dismissModal();
+    //});
+    let qqq = this.items$
+    .map(items => items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems))
+    .switchMap(onlyFreshlyAdded =>
+      this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
+    ).subscribe((newItems:any[])=>{
       this.inventoryService.addCollectionToCollection$.next(newItems);
       this.dismissModal();
     });

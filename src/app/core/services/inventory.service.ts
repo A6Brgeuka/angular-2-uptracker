@@ -134,7 +134,12 @@ export class InventoryService extends ModelService {
           variant_id: item.variant_id,
           vendor_variant_id: item.vendor_variant_id
         }
-      })
+      }),
+      package_type:"",
+      sub_package_type:"",
+      sub_package_qty:"",
+      consumable_unit_type:"",
+      consumable_unit_qty:""
     };
     return this.restangular.all('inventory').customPOST(payload).map((res: any) => res.data);
   }
@@ -150,12 +155,17 @@ export class InventoryService extends ModelService {
   editInventoryItemComment(c: any) {
   }
   
-  checkIfNotExist(item:InventorySearchResults){
+  checkIfNotExist(items:InventorySearchResults[]){
+    let payload =
+    items.map(item => {
+      return {
+        product_id: item.product_id,
+        vendor_variant_id:item.vendor_variant_id
+      }
+    })
     // GET /api/v1/inventory/check?product_id={product_id}&vendor_variant_id={vendor_variant_id}
-    return this.restangular.one('inventory', 'check').customGET('', {
-      product_id: item.product_id,
-      vendor_variant_id:item.vendor_variant_id
-    }).map((res: any) => {
+    return this.restangular.one('inventory', 'check').customPOST(payload).map((res: any) => {
+      debugger;
       return true;
     });
   }
