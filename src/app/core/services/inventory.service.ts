@@ -138,7 +138,8 @@ export class InventoryService extends ModelService {
     return this.restangular.one('inventory', id || 1).customGET().map((res: any) => res.data);
   }
   
-  addItemsToInventory(data: InventorySearchResults[]) {
+  addItemsToInventory(data: any) {
+    debugger;
     let payload = {
       products: data.map((item) => {
         return {
@@ -147,11 +148,11 @@ export class InventoryService extends ModelService {
           vendor_variant_id: item.vendor_variant_id
         }
       }),
-      package_type:"",
-      sub_package_type:"",
-      sub_package_qty:"",
-      consumable_unit_type:"",
-      consumable_unit_qty:""
+      package_type: data[0].package_type,
+      sub_package_type: data[0].sub_package.properties.unit_type,
+      sub_package_qty: data[0].sub_package.properties.qty,
+      consumable_unit_type: data[0].consumable_unit.properties.unit_type,
+      consumable_unit_qty: data[0].consumable_unit.properties.qty
     };
     return this.restangular.all('inventory').customPOST(payload).map((res: any) => res.data);
   }

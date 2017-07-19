@@ -485,7 +485,8 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
   
   defaultInfoModal() {
     this.modal
-    .open(InfoModal, this.modalWindowService.overlayConfigFactoryWithParams({"text": 'Lorem ipsum text'}, true, 'mid'))
+    .open(InfoModal, this.modalWindowService
+    .overlayConfigFactoryWithParams({"text": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea c'}, true, 'mid'))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {

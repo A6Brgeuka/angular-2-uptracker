@@ -45,7 +45,7 @@
             <div class="ttl">Outer Package</div>
             <div class="select select-light">
               <!--<input [(ngModel)]="newProductData.package.properties.unit_type"   type="text" placeholder="Package">-->
-              <select title="Package" [(ngModel)]="newProductData.package.properties.unit_type" materialize="material_select">
+              <select title="Package" [(ngModel)]="newProductData.package_type" materialize="material_select">
                 <option *ngFor="let outerPackage of inventoryService.outerPackageList" value="{{ outerPackage }}">{{outerPackage}}</option>
               </select>
             </div>
@@ -164,27 +164,28 @@
     </div>
     <div class="row custom-width">
       <div class="col s1 select">
-        <select
-          materialize="material_select">
-          <option value="item">Item</option>
+        <select materialize="material_select">
+          <option value="" *ngIf="items[0] == undefined" disabled>N/A</option>
+          <!--<option *ngIf="items[0] !== undefined" selected>{{ items[0].package_type }}</option>-->
+          <option *ngFor="let item of (items$ | async)" value="{{ item.package_type }}">{{item.package_type}}</option>
         </select>
       </div>
       <div class="col s1 input">
-        <input placeholder="Qty" type="text">
+        <input placeholder="Qty" type="text" value="{{ items[0]?.sub_package.properties.qty }}">
       </div>
       <div class="col s1 select">
-        <select
-          materialize="material_select">
-          <option value="item">Item</option>
+        <select materialize="material_select">
+          <option value="" *ngIf="items[0] == undefined" disabled>N/A</option>
+          <option *ngFor="let item of (items$ | async)" value="{{ item.sub_package.properties.unit_type }}">{{item.sub_package.properties.unit_type}}</option>
         </select>
       </div>
       <div class="col s1 input">
-        <input placeholder="Qty" type="text">
+        <input placeholder="Qty" type="text" value="{{ items[0]?.consumable_unit.properties.qty }}">
       </div>
       <div class="col s1 select">
-        <select
-          materialize="material_select">
-          <option value="item">Item</option>
+        <select materialize="material_select">
+          <option value="" *ngIf="items[0] == undefined" disabled>N/A</option>
+          <option *ngFor="let item of (items$ | async)" value="{{ item.consumable_unit.properties.unit_type }}">{{item.consumable_unit.properties.unit_type}}</option>
         </select>
       </div>
     </div>

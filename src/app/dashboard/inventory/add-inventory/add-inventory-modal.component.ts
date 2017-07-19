@@ -53,6 +53,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
+      debugger;
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
@@ -68,6 +69,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     let addItemsToItems$ = this.addItemsToItems$
     //.switchMap(res=>this.inventoryService.addInventoryItem(res))
     .switchMap((res) => {
+      debugger;
       return this.items$.first()
       .map((items: any) => {
         
@@ -99,6 +101,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
 
     // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
+    console.log(this.items[0]);
   }
   
   dismissModal() {
@@ -188,6 +191,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   saveAdded(){
+    debugger;
     
     // TODO move subscription to constructor
     // TODO add remove functionality
