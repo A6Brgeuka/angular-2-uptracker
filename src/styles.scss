@@ -68,7 +68,14 @@ body {
     padding-left: 5px;
   }
 }
-
+.select.select-light {
+  .select-wrapper.ng-valid {
+    input.select-dropdown {
+      border-color: #d6d6d6;
+      color: #9a9c9e;
+    }
+  }
+}
 
 .select.ultra-low-height .select-wrapper, .select.ultra-low-height .select-wrapper.ng-valid  {
   input.select-dropdown {

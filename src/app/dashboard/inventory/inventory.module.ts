@@ -12,7 +12,7 @@ import { AddInventoryModalModule } from './add-inventory/add-inventory-modal.mod
   imports: [
     AppSharedModule,
     InventoryItemModule,
-    AddInventoryModalModule
+    AddInventoryModalModule,
   ],
   providers: []
 })

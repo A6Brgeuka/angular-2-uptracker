@@ -159,6 +159,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   addNewProduct() {
+    debugger;
     this.addToInventory([
       new InventorySearchResults(
         Object.assign(this.newProductData, {variant_id: 'tmp' + Math.floor(Math.random() * 1000000)})
@@ -196,11 +197,12 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     //  this.inventoryService.addCollectionToCollection$.next(newItems);
     //  this.dismissModal();
     //});
-    let qqq = this.items$
+    let onlyFreshlyAdded = this.items$
     .map(items => items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems))
     .switchMap(onlyFreshlyAdded =>
       this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
     ).subscribe((newItems:any[])=>{
+      debugger;
       this.inventoryService.addCollectionToCollection$.next(newItems);
       this.dismissModal();
     });

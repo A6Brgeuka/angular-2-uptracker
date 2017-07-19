@@ -43,24 +43,33 @@
         <div class="row">
           <div class="col s12">
             <div class="ttl">Outer Package</div>
-            <div class="input">
-              <input [(ngModel)]="newProductData.package.properties.unit_type"   type="text" placeholder="Package">
+            <div class="select select-light">
+              <!--<input [(ngModel)]="newProductData.package.properties.unit_type"   type="text" placeholder="Package">-->
+              <select title="Package" [(ngModel)]="newProductData.package.properties.unit_type" materialize="material_select">
+                <option *ngFor="let outerPackage of inventoryService.outerPackageList" value="{{ outerPackage }}">{{outerPackage}}</option>
+              </select>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col s12">
             <div class="ttl">Inner Package</div>
-            <div class="input">
-              <input [(ngModel)]="newProductData.sub_package.properties.unit_type"  type="text" placeholder="Package">
+            <div class="select select-light">
+              <!--<input [(ngModel)]="newProductData.sub_package.properties.unit_type"  type="text" placeholder="Package">-->
+              <select title="Package" [(ngModel)]="newProductData.sub_package.properties.unit_type" materialize="material_select">
+                <option *ngFor="let innerPackage of inventoryService.innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
+              </select>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col s12">
             <div class="ttl">Consumable Unit</div>
-            <div class="input">
-              <input [(ngModel)]="newProductData.consumable_unit.properties.unit_type"  type="text" placeholder="Package">
+            <div class="select select-light">
+              <!--<input [(ngModel)]="newProductData.consumable_unit.properties.unit_type"  type="text" placeholder="Package">-->
+              <select title="Package" [(ngModel)]="newProductData.consumable_unit.properties.unit_type" materialize="material_select">
+                <option *ngFor="let consumablePackage of inventoryService.consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
+              </select>
             </div>
           </div>
         </div>

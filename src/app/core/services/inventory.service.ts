@@ -29,6 +29,18 @@ export class InventoryService extends ModelService {
   getInventoryData$: any = new Subject();
   location: string;
   total: number = 1;
+  outerPackageList = [
+    'Container', 'Kit', 'Package', 'Pack', 'Pair', 'Set', 'Sheet', 'Spool', 'Stick', 'Tray', 'Cube', 'Bag', 'Box',
+    'Role', 'Syringe', 'Jar', 'Carton', 'Case', 'Bottle'
+  ];
+  innerPackageList = [
+    'Inch', 'Item/Each', 'Kit', 'Pound', 'Liter', 'ML', 'Ounce', 'Pair', 'Quart', 'Reem', 'Sheet', 'Stick', 'Tube',
+    'Bundle', 'Roll', 'Envelope', 'Jar', 'Bottle', 'Bag', 'Sleeve', 'Spool', 'Can', 'Syringe'
+  ];
+  consumablePackageList = [
+    'Inch', 'Item/Each', 'Kit', 'Pound', 'Liter', 'ML', 'Ounce', 'Pair', 'Quart', 'Reem', 'Sheet', 'Stick', 'Tube',
+    'Bundle', 'Roll', 'Envelope', 'Jar', 'Bottle', 'Bag', 'Sleeve', 'Spool', 'Can', 'Syringe'
+  ];
   
   constructor(
     public injector: Injector,

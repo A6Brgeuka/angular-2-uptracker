@@ -12,6 +12,7 @@ import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit
 import { ActivatedRoute, Params } from '@angular/router';
 import { ConfigService } from '../../../core/services/config.service';
 import { InventoryService } from '../../../core/services/inventory.service';
+import { InfoModal } from './default-info-modal/info-modal-component';
 
 
 @Component({
@@ -480,6 +481,20 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
   
   hideVariantDetails() {
     
+  }
+  
+  defaultInfoModal() {
+    this.modal
+    .open(InfoModal, this.modalWindowService.overlayConfigFactoryWithParams({"text": 'Lorem ipsum text'}, true, 'mid'))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          // this.filterProducts();
+        },
+        (err) => {
+        }
+      );
+    });
   }
   
 }

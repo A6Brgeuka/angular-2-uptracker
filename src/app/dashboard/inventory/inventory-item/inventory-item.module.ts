@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AppSharedModule } from '../../../shared/shared.module';
 import { InventoryItemComponent } from './inventory-item.component';
+import { InfoModalModule } from './default-info-modal/info-modal.module';
 
 
 @NgModule({
@@ -9,6 +10,7 @@ import { InventoryItemComponent } from './inventory-item.component';
   ],
   imports: [
     AppSharedModule,
+    InfoModalModule
   ],
   providers: []
 })
