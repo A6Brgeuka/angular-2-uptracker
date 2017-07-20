@@ -9,6 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+import { ToasterService } from '../../../core/services/toaster.service';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -44,7 +45,8 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     public dialog: DialogRef<AddInventoryModalContext>,
     public userService: UserService,
     public accountService: AccountService,
-    public inventoryService: InventoryService
+    public inventoryService: InventoryService,
+    public toasterService: ToasterService
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -53,7 +55,6 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
-      debugger;
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
@@ -67,41 +68,60 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   ngOnInit() {
     
     let addItemsToItems$ = this.addItemsToItems$
-    //.switchMap(res=>this.inventoryService.addInventoryItem(res))
-    .switchMap((res) => {
-      debugger;
-      return this.items$.first()
-      .map((items: any) => {
-        
-        items = items.concat(res);
-        
-        //return items;
-        return items.filter((el: any) => {
-          return el.variant_id != res.variant_id;
-        });
-      });
-    });
+    .switchMap((itemsToCheck: any[]) =>
+      this.inventoryService.checkIfNotExist(itemsToCheck)
+      //add to let rxjs
+      .map(resItems => {
+    
+        const existedItems: any[] = _.filter(resItems, 'exists');
+    
+        const notExistedItems: any[] = _.reject(resItems, 'exists');
+    
+        const newNotExistedItems: any[] = notExistedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
+          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
+          return item ? [...acc,item] : acc
+        },[]);
+    
+        const newExistedItems: any[] = existedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
+          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
+          return item ? [...acc,item] : acc
+        },[]);
+    
+        if(newExistedItems.length) {
+          newExistedItems.forEach((item: any) => {
+            this.toasterService.pop('', item.name + ' already exists');
+          })
+        }
+    
+        return newNotExistedItems;
+      })
+      //add to let rxjs
+    )
+    .switchMap((newItems: any[]) =>
+      this.items$.first()
+      .map((items: any) => [...items,...newItems])
+    );
+    
     let deleteFromItems$ = this.deleteFromItems$
-    .switchMap((deleteItems) => {
-      return this.items$.first()
-      .map((items: any) => {
-        return items.filter((el: any) => {
-          return el.variant_id != deleteItems.variant_id;
-        });
-      });
-    });
+    .switchMap((deleteItems) =>
+      this.items$.first()
+      .map((items: any) =>
+        items.filter((el: any) => el.variant_id !== deleteItems.variant_id)
+      )
+    );
+    
     this.items$ = Observable.merge(
       this.loadItems$,
       addItemsToItems$,
       deleteFromItems$
     ).publishReplay(1).refCount();
+    
     this.items$.subscribe(res => {
       this.items = res;
     });
 
     // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
-    console.log(this.items[0]);
   }
   
   dismissModal() {
@@ -113,27 +133,20 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   addToInventory(items: InventorySearchResults[]) {
-    //debugger;
-    // reset selection
-    //this.inventoryService.checkIfNotExist(items[0]).subscribe();
-
-    //let checkItemsExist$ = items.map((item: InventorySearchResults) => {
-    //  debugger;
-    //  return this.inventoryService.checkIfNotExist(item);
-    //});
-    items.map((i) => this.addItemsToItems$.next(i));
+    this.addItemsToItems$.next(items);
     
-    this.inventoryService.checkIfNotExist(items);
+    
+    //items.map((i) => this.addItemsToItems$.next(i));
     
     //Observable.zip(...checkItemsExist$)
     //.subscribe(a=>{debugger});
   
-    items.map((item: InventorySearchResults) => {
-      item.checked = false;
-      return item;
-    });
-    this.checkBoxCandidates = false;
-    this.addItemsToItems$.next(_.cloneDeep(items));
+    //items.map((item: InventorySearchResults) => {
+    //  item.checked = false;
+    //  return item;
+    //});
+    //this.checkBoxCandidates = false;
+    
   }
   
   deleteFromInventory(items: InventorySearchResults[]) {
@@ -202,7 +215,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     //  this.dismissModal();
     //});
     let onlyFreshlyAdded = this.items$
-    .map(items => items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems))
+    //.map(items => items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems))
     .switchMap(onlyFreshlyAdded =>
       this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
     ).subscribe((newItems:any[])=>{

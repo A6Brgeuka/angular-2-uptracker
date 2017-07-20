@@ -38,6 +38,7 @@ export class InventorySearchResults {
   vendor_variant_id:string = "";
   
   checked:boolean = false; // my prop
+  existed:boolean = false; // my prop
   
   constructor(obj?:any) {
     for (let field in obj) {
