@@ -129,8 +129,15 @@ export class InventoryService extends ModelService {
     this.updateSelfData$.next(data);
   }
   
-  updateInventoryItem(data: any) {
-    return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
+  //updateInventoryItem(data: any) {
+  //  return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
+  //}
+  setFavorite(inventory) {
+    let postData = {
+      inventory_id: inventory.id,
+      favorite: inventory.favorite
+    }
+    return this.restangular.one('inventory', 'favorite').customPOST(postData);
   }
   
   getInventoryItem(id: string) {
@@ -148,7 +155,7 @@ export class InventoryService extends ModelService {
           vendor_variant_id: item.vendor_variant_id
         }
       }),
-      package_type: data[0].package_type || '',
+      package_type: data[0].package_type,
       sub_package_type: data[0].sub_package.properties.unit_type,
       sub_package_qty: data[0].sub_package.properties.qty,
       consumable_unit_type: data[0].consumable_unit.properties.unit_type,

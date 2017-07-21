@@ -198,31 +198,20 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   }
   
   
-  addToFavorites(e, product) {
+  addToFavorites(e, inventory) {
     e.stopPropagation();
-    this.setFavorite(product, true);
+    this.setFavorite(inventory, true);
   }
   
-  removeFromFavorites(e, product) {
+  removeFromFavorites(e, inventory) {
     e.stopPropagation();
-    this.setFavorite(product, false);
+    this.setFavorite(inventory, false);
   }
   
-  setFavorite(product, val: boolean) {
-    product.favorite = val;
-    let updateData: any = {
-      location_id: this.locationId,
-      product: {
-        id: product.id,
-        favorite: val
-      },
-      variants: [],
-    };
-    //let updateInventoryItem$ = this.inventoryService.updateInventoryItem(updateData);
-    //updateInventoryItem$.subscribe((r) => {
-    //  console.log(r);
-    //  this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
-    //})
+  setFavorite(inventory, val: boolean) {
+    inventory.favorite = val;
+    this.inventoryService.setFavorite(inventory);
+    this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
   }
   
   resetFilters() {

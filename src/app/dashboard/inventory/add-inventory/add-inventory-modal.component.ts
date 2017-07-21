@@ -55,6 +55,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
+      debugger;
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
@@ -70,32 +71,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
       this.inventoryService.checkIfNotExist(itemsToCheck)
-      //add to let rxjs
-      .map(resItems => {
-    
-        const existedItems: any[] = _.filter(resItems, 'exists');
-    
-        const notExistedItems: any[] = _.reject(resItems, 'exists');
-    
-        const newNotExistedItems: any[] = notExistedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
-          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
-          return item ? [...acc,item] : acc
-        },[]);
-    
-        const newExistedItems: any[] = existedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
-          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
-          return item ? [...acc,item] : acc
-        },[]);
-    
-        if(newExistedItems.length) {
-          newExistedItems.forEach((item: any) => {
-            this.toasterService.pop('', item.name + ' already exists');
-          })
-        }
-    
-        return newNotExistedItems;
-      })
-      //add to let rxjs
+      .let(this.checkExistedProduct(itemsToCheck))
     )
     .switchMap((newItems: any[]) =>
       this.items$.first()
@@ -124,6 +100,34 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     this.loadItems$.next(this.context.inventoryItems);
   }
   
+  checkExistedProduct(itemsToCheck) {
+    return (source) =>
+      source.map(resItems => {
+        
+        const existedItems: any[] = _.filter(resItems, 'exists');
+        
+        const notExistedItems: any[] = _.reject(resItems, 'exists');
+        
+        const newNotExistedItems: any[] = notExistedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
+          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
+          return item ? [...acc,item] : acc
+        },[]);
+        
+        const newExistedItems: any[] = existedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
+          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
+          return item ? [...acc,item] : acc
+        },[]);
+        
+        if(newExistedItems.length) {
+          newExistedItems.forEach((item: any) => {
+            this.toasterService.pop('', item.name + ' already exists');
+          })
+        }
+        
+        return newNotExistedItems;
+      })
+  }
+  
   dismissModal() {
     this.dialog.dismiss();
   }
@@ -134,19 +138,6 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   
   addToInventory(items: InventorySearchResults[]) {
     this.addItemsToItems$.next(items);
-    
-    
-    //items.map((i) => this.addItemsToItems$.next(i));
-    
-    //Observable.zip(...checkItemsExist$)
-    //.subscribe(a=>{debugger});
-  
-    //items.map((item: InventorySearchResults) => {
-    //  item.checked = false;
-    //  return item;
-    //});
-    //this.checkBoxCandidates = false;
-    
   }
   
   deleteFromInventory(items: InventorySearchResults[]) {
