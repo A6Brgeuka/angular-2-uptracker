@@ -8,6 +8,7 @@ import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
 import { InventorySearchResults } from '../../models/inventory.model';
+import { ToasterService } from './toaster.service';
 
 @Injectable()
 @Subscribers({
@@ -46,7 +47,8 @@ export class InventoryService extends ModelService {
     public injector: Injector,
     public userService: UserService,
     public accountService: AccountService,
-    public restangular: Restangular
+    public restangular: Restangular,
+    public toasterService: ToasterService
   ) {
     super(restangular);
     
@@ -146,7 +148,6 @@ export class InventoryService extends ModelService {
   }
   
   addItemsToInventory(data: any) {
-    debugger;
     let payload = {
       products: data.map((item) => {
         return {
@@ -161,7 +162,12 @@ export class InventoryService extends ModelService {
       consumable_unit_type: data[0].consumable_unit.properties.unit_type,
       consumable_unit_qty: data[0].consumable_unit.properties.qty
     };
-    return this.restangular.all('inventory').customPOST(payload).map((res: any) => res.data);
+    return this.restangular.all('inventory').customPOST(payload)
+    .map((newInventory: any) =>
+      {
+      this.addCollectionToCollection$.next(newInventory.data);
+      }
+    );
   }
   
   search(keyword: string) {

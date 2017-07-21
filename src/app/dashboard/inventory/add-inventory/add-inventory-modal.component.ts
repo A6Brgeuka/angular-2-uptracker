@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
+import { debug } from 'util';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -41,6 +42,14 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   
   public addCustomProduct: boolean = false;
   
+  public saveAdded$: any = new Subject<any>();
+  
+  public packageList$:Subject<any> = new Subject<any>();
+  public subPackageQtyList$:Subject<any> = new Subject<any>();
+  public subPackageTypeList$:Subject<any> = new Subject<any>();
+  public ConsumableUnitQtyList$:Subject<any> = new Subject<any>();
+  public ConsumableUnitTypeList$:Subject<any> = new Subject<any>();
+  
   constructor(
     public dialog: DialogRef<AddInventoryModalContext>,
     public userService: UserService,
@@ -55,11 +64,20 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
-      debugger;
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
     });
+  
+    this.saveAdded$
+    .switchMap(() => {
+      return this.items$
+      .switchMap(items => this.inventoryService.addItemsToInventory(items))
+    })
+    .subscribe(newInventory => {
+        this.dismissModal()
+      }
+    )
   }
   
   onSearchTypeIn(event) {
@@ -98,6 +116,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
 
     // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
+  
   }
   
   checkExistedProduct(itemsToCheck) {
@@ -195,24 +214,9 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   saveAdded(){
-    debugger;
-    
-    // TODO move subscription to constructor
     // TODO add remove functionality
-    //let onlyFreshlyAdded = this.items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems);
-    //this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
-    //.subscribe((newItems:any[])=>{
-    //  this.inventoryService.addCollectionToCollection$.next(newItems);
-    //  this.dismissModal();
-    //});
-    let onlyFreshlyAdded = this.items$
-    //.map(items => items.filter(function(e){return this.indexOf(e)<0;},this.context.inventoryItems))
-    .switchMap(onlyFreshlyAdded =>
-      this.inventoryService.addItemsToInventory(onlyFreshlyAdded)
-    ).subscribe((newItems:any[])=>{
-      debugger;
-      this.inventoryService.addCollectionToCollection$.next(newItems);
-      this.dismissModal();
-    });
+    // TODO change items count after create new inventory
+    this.saveAdded$.next();
   }
+  
 }
