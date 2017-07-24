@@ -2,7 +2,7 @@
 <div class="inner">
   <div class="row title center-align">
     Add Inventory Item
-    <button (click)="saveAdded()" class="uptracker-form-btn white-text tealish waves-effect waves-light right">
+    <button (click)="saveAdded()" class="uptracker-form-btn white-text tealish waves-effect waves-light right" [disabled] = '!items.length'>
       <fa name="check"></fa>
       Save
     </button>
@@ -166,7 +166,6 @@
       <div class="col s1 select">
         <select materialize="material_select">
           <option value="" *ngIf="items[0] == undefined" disabled>N/A</option>
-          <!--<option *ngIf="items[0] !== undefined" selected>{{ items[0].package_type }}</option>-->
           <option *ngFor="let item of (items$ | async)" value="{{ item.package_type }}">{{item.package_type}}</option>
         </select>
       </div>

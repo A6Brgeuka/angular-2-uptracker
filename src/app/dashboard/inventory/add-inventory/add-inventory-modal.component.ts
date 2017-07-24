@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -22,7 +22,7 @@ export class AddInventoryModalContext extends BSModalContext {
   styleUrls: ['./add-inventory-modal.component.scss']
 })
 @DestroySubscribers()
-export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<AddInventoryModalContext> {
+export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalComponent<AddInventoryModalContext> {
   public subscribers: any = {};
   context: AddInventoryModalContext;
   total: number = 0;
@@ -117,6 +117,13 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
     // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
   
+   this.getOuterPackageList();
+    
+  }
+  
+  ngOnDestroy() {
+    this.saveAdded$.unsubscribe();
+    //this.items$.unsubscribe();
   }
   
   checkExistedProduct(itemsToCheck) {
@@ -139,7 +146,7 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
         
         if(newExistedItems.length) {
           newExistedItems.forEach((item: any) => {
-            this.toasterService.pop('', item.name + ' already exists');
+            this.toasterService.pop('error', item.name + ' already exists');
           })
         }
         
@@ -214,9 +221,11 @@ export class AddInventoryModal implements OnInit, CloseGuard, ModalComponent<Add
   }
   
   saveAdded(){
-    // TODO add remove functionality
-    // TODO change items count after create new inventory
     this.saveAdded$.next();
   }
+  
+  getOuterPackageList() {
+    this.inventoryService.getOuterPackageList();
+  };
   
 }

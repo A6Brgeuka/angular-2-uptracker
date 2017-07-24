@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, Input, AfterViewInit, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -11,6 +11,8 @@ import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
 import { AddInventoryModal, AddInventoryModalContext } from './add-inventory/add-inventory-modal.component';
 import { InventorySearchResults } from '../../models/inventory.model';
+import { Subject } from 'rxjs/Subject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-inventory',
@@ -18,7 +20,7 @@ import { InventorySearchResults } from '../../models/inventory.model';
   styleUrls: ['./inventory.component.scss']
 })
 @DestroySubscribers()
-export class InventoryComponent implements OnInit, AfterViewInit {
+export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input('inputRange') inputRange;
   
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -39,6 +41,7 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   public rangeFields: any[] = [];
   public quantity: number = 3;
   public thumbColor: string = "#000000";
+  public updateFavorite$: any = new Subject();
   
   constructor(
     public modal: Modal,
@@ -157,6 +160,18 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     }, err => {
     
     });
+    
+    this.updateFavorite$
+    .switchMap(inventory => this.inventoryService.setFavorite(inventory))
+    .subscribe(res => {
+      this.inventoryService.updateInventoryItem(res.data);
+      this.toasterService.pop('', res.data.favorite ? 'Added to favorites' : "Removed from favorites");
+    },
+    err => console.log('error'));
+  }
+  
+  ngOnDestroy() {
+    this.updateFavorite$.unsubscribe();
   }
   
   ngAfterViewInit(){
@@ -197,21 +212,9 @@ export class InventoryComponent implements OnInit, AfterViewInit {
     .filter(r => r['selected']);
   }
   
-  
-  addToFavorites(e, inventory) {
+  setFavorite(e, inventory) {
     e.stopPropagation();
-    this.setFavorite(inventory, true);
-  }
-  
-  removeFromFavorites(e, inventory) {
-    e.stopPropagation();
-    this.setFavorite(inventory, false);
-  }
-  
-  setFavorite(inventory, val: boolean) {
-    inventory.favorite = val;
-    this.inventoryService.setFavorite(inventory);
-    this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
+    this.updateFavorite$.next(inventory);
   }
   
   resetFilters() {
@@ -254,9 +257,9 @@ export class InventoryComponent implements OnInit, AfterViewInit {
   }
  
   public openAddInventoryModal(){
-    this.inventoryService.collection$
-    .take(1)
-    .subscribe((items:InventorySearchResults[])=>{
+    //this.inventoryService.collection$
+    //.take(1)
+    //.subscribe((items:InventorySearchResults[])=>{
       //let data = {
       //  inventoryItems:items.map((item:any)=>{
       //    return new InventorySearchResults(item);
@@ -271,7 +274,7 @@ export class InventoryComponent implements OnInit, AfterViewInit {
           }
         );
       });
-    });
+    //});
   }
   
 }

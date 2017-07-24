@@ -49,8 +49,9 @@
               <i class="material-icons">warning</i>
             </div>
             <div class="star-right" [class.favorite]="product.favorite" *ngIf="true">
-              <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-              <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
+              <i (click)="setFavorite($event,product)" class="fa" [class.fa-star-o]="!product.favorite" [class.fa-star]="product.favorite"></i>
+              <!--<i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>-->
+              <!--<i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>-->
             </div>
             <div [routerLink]="['/', 'inventory','item', product.id]"
               *ngIf="product.image"
@@ -133,8 +134,9 @@
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1 star-container">
             <div class="star-right" [class.favorite]="product.favorite">
-              <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-              <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
+              <i (click)="setFavorite($event,product)" class="fa" [class.fa-star-o]="!product.favorite" [class.fa-star]="product.favorite"></i>
+              <!--<i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>-->
+              <!--<i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>-->
             </div>
           </div>
           <div class="col s1">

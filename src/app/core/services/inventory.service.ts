@@ -30,18 +30,10 @@ export class InventoryService extends ModelService {
   getInventoryData$: any = new Subject();
   location: string;
   total: number = 1;
-  outerPackageList = [
-    'Container', 'Kit', 'Package', 'Pack', 'Pair', 'Set', 'Sheet', 'Spool', 'Stick', 'Tray', 'Cube', 'Bag', 'Box',
-    'Role', 'Syringe', 'Jar', 'Carton', 'Case', 'Bottle'
-  ];
-  innerPackageList = [
-    'Inch', 'Item/Each', 'Kit', 'Pound', 'Liter', 'ML', 'Ounce', 'Pair', 'Quart', 'Reem', 'Sheet', 'Stick', 'Tube',
-    'Bundle', 'Roll', 'Envelope', 'Jar', 'Bottle', 'Bag', 'Sleeve', 'Spool', 'Can', 'Syringe'
-  ];
-  consumablePackageList = [
-    'Inch', 'Item/Each', 'Kit', 'Pound', 'Liter', 'ML', 'Ounce', 'Pair', 'Quart', 'Reem', 'Sheet', 'Stick', 'Tube',
-    'Bundle', 'Roll', 'Envelope', 'Jar', 'Bottle', 'Bag', 'Sleeve', 'Spool', 'Can', 'Syringe'
-  ];
+  outerPackageList = [];
+  innerPackageList = [];
+  consumablePackageList = [];
+  outerPackageList$: Observable<any>;
   
   constructor(
     public injector: Injector,
@@ -66,8 +58,6 @@ export class InventoryService extends ModelService {
   }
   
   onInit() {
-    
-    
     this.getInventoryData$
     .withLatestFrom(this.location$)
     .map(([queryParams, location]) => {
@@ -94,6 +84,7 @@ export class InventoryService extends ModelService {
       this.selfData = res;
       console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
+    
   }
   
   getNextInventory(page?, search_string?, sortBy?) {
@@ -131,13 +122,14 @@ export class InventoryService extends ModelService {
     this.updateSelfData$.next(data);
   }
   
-  //updateInventoryItem(data: any) {
-  //  return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
-  //}
+  updateInventoryItem(data: any) {
+    this.updateElementCollection$.next(data);
+  }
+  
   setFavorite(inventory) {
     let postData = {
       inventory_id: inventory.id,
-      favorite: inventory.favorite
+      favorite: !inventory.favorite
     }
     return this.restangular.one('inventory', 'favorite').customPOST(postData);
   }
@@ -165,7 +157,8 @@ export class InventoryService extends ModelService {
     return this.restangular.all('inventory').customPOST(payload)
     .map((newInventory: any) =>
       {
-      this.addCollectionToCollection$.next(newInventory.data);
+        this.totalCount$.next(this.totalCount$['_value']+1);
+        this.addCollectionToCollection$.next(newInventory.data);
       }
     );
   }
@@ -192,5 +185,18 @@ export class InventoryService extends ModelService {
     }
     // GET /api/v1/inventory/check?product_id={product_id}&vendor_variant_id={vendor_variant_id}
     return this.restangular.one('inventory', 'check').customPOST(payload).map((res: any) => res.data);
+  }
+  
+  getOuterPackageList() {
+   return this.restangular.one('config', 'product_units').customGET('')
+      .map(res => {
+        //res.data.outer_package
+       this.outerPackageList = res.data.outer_package;
+       this.innerPackageList = res.data.inner_package;
+       this.consumablePackageList = res.data.consumable_unit;
+      })
+    //.publishReplay(1).refCount()
+    .subscribe()
+      ;
   }
 }
