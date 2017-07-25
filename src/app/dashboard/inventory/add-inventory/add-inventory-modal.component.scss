@@ -234,3 +234,11 @@
     }
   }
 }
+.warning {
+  background: #fcc2c2;
+}
+.warning.search-results:hover {
+  .item-price {
+    opacity: 1;
+  }
+}

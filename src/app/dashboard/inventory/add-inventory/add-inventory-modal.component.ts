@@ -4,7 +4,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
-import { InventorySearchResults, searchData } from '../../../models/inventory.model';
+import { InventorySearchResults, NewInventoryPackage, searchData } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -44,11 +44,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public saveAdded$: any = new Subject<any>();
   
-  public packageList$:Subject<any> = new Subject<any>();
-  public subPackageQtyList$:Subject<any> = new Subject<any>();
-  public subPackageTypeList$:Subject<any> = new Subject<any>();
-  public ConsumableUnitQtyList$:Subject<any> = new Subject<any>();
-  public ConsumableUnitTypeList$:Subject<any> = new Subject<any>();
+  public newInventoryPackage: any = new NewInventoryPackage;
+  
+  public outerPackageList: any[] = this.inventoryService.outerPackageList;
+  public innerPackageList: any[] = this.inventoryService.innerPackageList;
+  public consumablePackageList: any[] = this.inventoryService.consumablePackageList;
+  
+  public packageType$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public resultItems$: Observable<any>;
   
   constructor(
     public dialog: DialogRef<AddInventoryModalContext>,
@@ -71,8 +74,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
     this.saveAdded$
     .switchMap(() => {
+      debugger;
       return this.items$
-      .switchMap(items => this.inventoryService.addItemsToInventory(items))
+      .switchMap(items => this.inventoryService.addItemsToInventory(items, this.newInventoryPackage))
     })
     .subscribe(newInventory => {
         this.dismissModal()
@@ -85,6 +89,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   ngOnInit() {
+    
+    if (!this.inventoryService.outerPackageList.length) {
+      this.getPackagesLists();
+    }
     
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
@@ -111,13 +119,51 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ).publishReplay(1).refCount();
     
     this.items$.subscribe(res => {
+     
+      if(res.length) {
+        
+        this.outerPackageList = [res[0].package_type];
+        this.innerPackageList = [res[0].sub_package.properties.unit_type];
+        this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
+        
+        this.checkPackage(res[0].package_type);
+        this.checkSubPackage(res[0].sub_package.properties.unit_type);
+        this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
+      }
+      if(!res.length) {
+        
+        this.outerPackageList = this.inventoryService.outerPackageList;
+        this.innerPackageList = this.inventoryService.innerPackageList;
+        this.consumablePackageList = this.inventoryService.consumablePackageList;
+
+        this.checkPackage(null);
+        this.checkSubPackage(null);
+        this.checkConsPackage(null);
+      }
       this.items = res;
     });
 
     // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
-  
-   this.getOuterPackageList();
+    
+    this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$)
+    .map(([packageType,searchResults]: any) => {
+      
+      let filteredResults = _.filter(searchResults,packageType);
+      
+      let checkedResults = searchResults.reduce((acc: any[], item) => {
+        let foundedItem = _.find(
+          filteredResults,
+          { vendor_variant_id: item.vendor_variant_id, product_id: item.product_id}
+        );
+        return [...acc,{
+          ...item,
+          notActive: !foundedItem
+        }]
+      },[]);
+      
+      return checkedResults;
+    })
     
   }
   
@@ -224,8 +270,46 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.saveAdded$.next();
   }
   
-  getOuterPackageList() {
-    this.inventoryService.getOuterPackageList();
+  getPackagesLists() {
+    this.inventoryService.getPackagesLists().subscribe(res => {
+      debugger;
+    });
   };
+  
+  nextPackage(value) {
+    let formValue = {};
+    
+    formValue = value.package_type ? {
+      ...formValue,
+      package_type: value.package_type,
+    }: formValue;
+  
+    formValue = value.sub_package_type ? {
+      ...formValue,
+      sub_package: {properties: {unit_type: value.sub_package_type}},
+    }: formValue;
+  
+    formValue = value.consumable_unit_type ? {
+      ...formValue,
+      consumable_unit: {properties: {unit_type: value.consumable_unit_type}}
+    }: formValue;
+    
+    this.packageType$.next(formValue);
+  }
+  
+  checkPackage(e) {
+    this.newInventoryPackage.package_type = e;
+    this.nextPackage(this.newInventoryPackage);
+  }
+
+  checkSubPackage(e) {
+    this.newInventoryPackage.sub_package_type = e;
+    this.nextPackage(this.newInventoryPackage);
+  }
+
+  checkConsPackage(e) {
+    this.newInventoryPackage.consumable_unit_type = e;
+    this.nextPackage(this.newInventoryPackage);
+  }
   
 }

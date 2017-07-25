@@ -33,7 +33,6 @@ export class InventoryService extends ModelService {
   outerPackageList = [];
   innerPackageList = [];
   consumablePackageList = [];
-  outerPackageList$: Observable<any>;
   
   constructor(
     public injector: Injector,
@@ -139,20 +138,18 @@ export class InventoryService extends ModelService {
     return this.restangular.one('inventory', id || 1).customGET().map((res: any) => res.data);
   }
   
-  addItemsToInventory(data: any) {
+  addItemsToInventory(data: any, newInventoryPackage) {
     let payload = {
-      products: data.map((item) => {
-        return {
-          product_id: item.product_id,
-          variant_id: item.variant_id,
-          vendor_variant_id: item.vendor_variant_id
-        }
-      }),
-      package_type: data[0].package_type,
-      sub_package_type: data[0].sub_package.properties.unit_type,
-      sub_package_qty: data[0].sub_package.properties.qty,
-      consumable_unit_type: data[0].consumable_unit.properties.unit_type,
-      consumable_unit_qty: data[0].consumable_unit.properties.qty
+      products: data.map(({product_id,variant_id,vendor_variant_id}: any) => ({
+        product_id,
+        variant_id,
+        vendor_variant_id
+      })),
+      package_type: newInventoryPackage.package_type,
+      sub_package_type: newInventoryPackage.sub_package.properties.unit_type,
+      sub_package_qty: newInventoryPackage.sub_package.properties.qty,
+      consumable_unit_type: newInventoryPackage.consumable_unit.properties.unit_type,
+      consumable_unit_qty: newInventoryPackage.consumable_unit.properties.qty
     };
     return this.restangular.all('inventory').customPOST(payload)
     .map((newInventory: any) =>
@@ -183,20 +180,15 @@ export class InventoryService extends ModelService {
         }
       })
     }
-    // GET /api/v1/inventory/check?product_id={product_id}&vendor_variant_id={vendor_variant_id}
     return this.restangular.one('inventory', 'check').customPOST(payload).map((res: any) => res.data);
   }
   
-  getOuterPackageList() {
+  getPackagesLists() {
    return this.restangular.one('config', 'product_units').customGET('')
       .map(res => {
-        //res.data.outer_package
        this.outerPackageList = res.data.outer_package;
        this.innerPackageList = res.data.inner_package;
        this.consumablePackageList = res.data.consumable_unit;
       })
-    //.publishReplay(1).refCount()
-    .subscribe()
-      ;
   }
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { AccountService, VendorService, ProductService } from '../../core/services/index';
 import { LocationService } from "../../core/services/location.service";
+import { InventoryService } from '../../core/services/inventory.service';
 
 @Injectable()
 export class StateCollectionResolve implements Resolve<any> {
@@ -102,6 +103,18 @@ export class ProductCollectionResolve implements Resolve<any> {
   }
 }
 
+@Injectable()
+export class InventoryPackageListResolve implements Resolve<any> {
+  constructor(
+    public inventoryService: InventoryService,
+  ) {
+  
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.inventoryService.getPackagesLists().take(1);
+  }
+}
+
 // an array of services to resolve routes with data
 export const MAIN_RESOLVER_PROVIDERS = [
   StateCollectionResolve,
@@ -111,5 +124,6 @@ export const MAIN_RESOLVER_PROVIDERS = [
   VendorCollectionResolve,
   ProductCollectionResolve,
   ProductAccountingCollectionResolve,
-  ProductCategoriesCollectionResolve
+  ProductCategoriesCollectionResolve,
+  InventoryPackageListResolve
 ];

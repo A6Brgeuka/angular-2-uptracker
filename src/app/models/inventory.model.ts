@@ -38,7 +38,24 @@ export class InventorySearchResults {
   vendor_variant_id:string = "";
   
   checked:boolean = false; // my prop
-  existed:boolean = false; // my prop
+  
+  notActive:boolean = false; // my prop
+  
+  constructor(obj?:any) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+      }
+    }
+  }
+}
+
+export class NewInventoryPackage {
+  package_type:string = null;
+  sub_package_type:string = null;
+  sub_package_qty:string = null;
+  consumable_unit_type:string = null;
+  consumable_unit_qty:string = null;
   
   constructor(obj?:any) {
     for (let field in obj) {
