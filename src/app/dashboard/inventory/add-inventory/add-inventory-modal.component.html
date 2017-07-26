@@ -103,7 +103,7 @@
       class="row search-results" [class.warning]="item.notActive">
       <div class="col s9 product-row-fields">
         <div class="input-checkbox  checkbox" *ngIf="!item.notActive">
-          <input [(ngModel)]="item.checked" id="variant{{ i }}" type="checkbox">
+          <input [(ngModel)]="item.checked" id="variant{{ i }}" type="checkbox" (click)="putCheckbox(item)">
           <label for="variant{{ i }}"></label>
         </div>
         <div class="image" *ngIf="(item.images && item.images[0])"

@@ -223,4 +223,11 @@ export class ShoppingListComponent implements OnInit {
     this.cartService.filters$.next(data);
     console.log(data);
   }
+  
+  deleteCheckedProducts() {
+    this.cart$.map(items => {
+      let checkedResult = _.filter(items, 'status');
+      this.cartService.removeItems(checkedResult);
+    }).subscribe()
+  }
 }

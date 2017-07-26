@@ -35,7 +35,6 @@ export class InventorySearchResults {
   product_id:string  = "";
   upc:string = "";
   variant_id:string = "";
-  vendor_variant_id:string = "";
   
   checked:boolean = false; // my prop
   

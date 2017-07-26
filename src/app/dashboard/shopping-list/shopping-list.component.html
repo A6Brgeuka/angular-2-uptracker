@@ -52,7 +52,10 @@
         <div class="col s2">Location</div>
         <div class="col s3">Vendor</div>
         <div class="col s1">Qty.</div>
-        <div class="col s2">Price</div>
+        <div class="col s1">Price</div>
+        <div class="col s1 red-text">
+          <i (click)="deleteCheckedProducts()" class="fa fa-trash"></i>
+        </div>
       </div>
       <div class="item row" *ngFor="let product of (cart$ | async); let i=index">
         <div class="col s4">

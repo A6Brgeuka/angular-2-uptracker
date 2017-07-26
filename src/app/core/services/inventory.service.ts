@@ -140,16 +140,15 @@ export class InventoryService extends ModelService {
   
   addItemsToInventory(data: any, newInventoryPackage) {
     let payload = {
-      products: data.map(({product_id,variant_id,vendor_variant_id}: any) => ({
+      products: data.map(({product_id,variant_id}: any) => ({
         product_id,
         variant_id,
-        vendor_variant_id
       })),
       package_type: newInventoryPackage.package_type,
-      sub_package_type: newInventoryPackage.sub_package.properties.unit_type,
-      sub_package_qty: newInventoryPackage.sub_package.properties.qty,
-      consumable_unit_type: newInventoryPackage.consumable_unit.properties.unit_type,
-      consumable_unit_qty: newInventoryPackage.consumable_unit.properties.qty
+      sub_package_type: newInventoryPackage.sub_package_type,
+      sub_package_qty: newInventoryPackage.sub_package_qty,
+      consumable_unit_type: newInventoryPackage.consumable_unit_type,
+      consumable_unit_qty: newInventoryPackage.consumable_unit_qty
     };
     return this.restangular.all('inventory').customPOST(payload)
     .map((newInventory: any) =>
@@ -176,7 +175,7 @@ export class InventoryService extends ModelService {
       products: items.map(item => {
         return {
           product_id: item.product_id,
-          vendor_variant_id:item.vendor_variant_id
+          variant_id:item.variant_id
         }
       })
     }

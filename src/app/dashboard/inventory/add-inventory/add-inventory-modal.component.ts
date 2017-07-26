@@ -70,11 +70,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
+      console.log(this.searchResults);
     });
   
     this.saveAdded$
     .switchMap(() => {
-      debugger;
       return this.items$
       .switchMap(items => this.inventoryService.addItemsToInventory(items, this.newInventoryPackage))
     })
@@ -90,10 +90,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   ngOnInit() {
     
-    if (!this.inventoryService.outerPackageList.length) {
-      this.getPackagesLists();
-    }
-    
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
       this.inventoryService.checkIfNotExist(itemsToCheck)
@@ -101,7 +97,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     )
     .switchMap((newItems: any[]) =>
       this.items$.first()
-      .map((items: any) => [...items,...newItems])
+      .map((items: any) => {
+        const newChosenItems: any[] = newItems.reduce((acc: any[], item) => {
+          const {variant_id, product_id} = item;
+          let currentItem = _.find(items, {variant_id, product_id});
+          return !currentItem ? [...acc, item] : [...acc]
+        }, []);
+  
+        return [...items, ...newChosenItems];
+      })
     );
     
     let deleteFromItems$ = this.deleteFromItems$
@@ -154,7 +158,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       let checkedResults = searchResults.reduce((acc: any[], item) => {
         let foundedItem = _.find(
           filteredResults,
-          { vendor_variant_id: item.vendor_variant_id, product_id: item.product_id}
+          { variant_id: item.variant_id, product_id: item.product_id}
         );
         return [...acc,{
           ...item,
@@ -180,13 +184,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         
         const notExistedItems: any[] = _.reject(resItems, 'exists');
         
-        const newNotExistedItems: any[] = notExistedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
-          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
+        const newNotExistedItems: any[] = notExistedItems.reduce((acc: any[], {product_id,variant_id}) => {
+          let item = _.find(itemsToCheck,{variant_id,product_id});
           return item ? [...acc,item] : acc
         },[]);
         
-        const newExistedItems: any[] = existedItems.reduce((acc: any[], {product_id,vendor_variant_id}) => {
-          let item = _.find(itemsToCheck,{vendor_variant_id,product_id});
+        const newExistedItems: any[] = existedItems.reduce((acc: any[], {product_id,variant_id}) => {
+          let item = _.find(itemsToCheck,{variant_id,product_id});
           return item ? [...acc,item] : acc
         },[]);
         
@@ -217,8 +221,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.checkBoxItems = false;
   }
   
+  putCheckbox(item) {
+    //debugger;
+    //item.checked = !item.checked;
+    //console.log(item);
+    //let checkedResult = _.find(this.searchResults$['_value'], {variant_id: item.variant_id});
+    //debugger;
+    //console.log(checkedResult);
+  }
+  
   bulkAdd() {
-    this.searchResults$
+    this.resultItems$
     .take(1)
     .subscribe((items: InventorySearchResults[]) => {
       // get checked
@@ -269,12 +282,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   saveAdded(){
     this.saveAdded$.next();
   }
-  
-  getPackagesLists() {
-    this.inventoryService.getPackagesLists().subscribe(res => {
-      debugger;
-    });
-  };
   
   nextPackage(value) {
     let formValue = {};
