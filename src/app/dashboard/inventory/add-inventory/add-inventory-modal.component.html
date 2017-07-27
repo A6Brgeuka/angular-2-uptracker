@@ -122,9 +122,9 @@
           <div class="clearfix"></div>
         </div>
       </div>
-      <div class="col s3 right-align item-price">
-        ${{ item.price/100 | number : '1.2-2' }}
-      </div>
+      <!--<div class="col s3 right-align item-price">-->
+        <!--${{ item.price/100 | number : '1.2-2' }}-->
+      <!--</div>-->
       <div (click)="addToInventory([item])" class="action-button waves-light waves-effect" *ngIf="!item.notActive">
         <fa name="plus"></fa>
       </div>
@@ -223,9 +223,9 @@
           <div class="clearfix"></div>
         </div>
       </div>
-      <div class="col s3 right-align low-padding item-price">
-        ${{ item.price/100 | number : '1.2-2' }}
-      </div>
+      <!--<div class="col s3 right-align low-padding item-price">-->
+        <!--${{ item.price/100 | number : '1.2-2' }}-->
+      <!--</div>-->
       <div (click)="deleteFromInventory([item])" class="action-button">
         <fa name="minus"></fa>
       </div>

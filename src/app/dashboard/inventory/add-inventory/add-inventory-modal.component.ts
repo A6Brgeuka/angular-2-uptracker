@@ -52,6 +52,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public packageType$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public resultItems$: Observable<any>;
+  public checkedProduct$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public checkedProduct: any[] = [];
   
   constructor(
     public dialog: DialogRef<AddInventoryModalContext>,
@@ -70,7 +72,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
-      console.log(this.searchResults);
+      this.checkedProduct =[];
+      //this.packageType$.next({});
     });
   
     this.saveAdded$
@@ -98,14 +101,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .switchMap((newItems: any[]) =>
       this.items$.first()
       .map((items: any) => {
-        const newChosenItems: any[] = newItems.reduce((acc: any[], item) => {
+        const newNotChosenItems: any[] = newItems.reduce((acc: any[], item) => {
           const {variant_id, product_id} = item;
           let currentItem = _.find(items, {variant_id, product_id});
+          if (currentItem) {
+            this.toasterService.pop('error', item.name +  `${item.name} is already added`);
+          }
           return !currentItem ? [...acc, item] : [...acc]
         }, []);
-  
-        return [...items, ...newChosenItems];
+        
+        return [...items, ...newNotChosenItems];
       })
+      
     );
     
     let deleteFromItems$ = this.deleteFromItems$
@@ -150,8 +157,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
     
-    this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$)
-    .map(([packageType,searchResults]: any) => {
+    this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$)
+    .map(([packageType,searchResults,checkedProduct]: any) => {
       
       let filteredResults = _.filter(searchResults,packageType);
       
@@ -165,10 +172,24 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           notActive: !foundedItem
         }]
       },[]);
+  
+      let checkboxResult = checkedResults.reduce((acc: any[], item) => {
+        const { variant_id, product_id} = item;
+        let foundedItem = _.find(
+          checkedProduct,
+          { variant_id, product_id}
+        );
+        return [
+          ...acc,
+          {
+          ...item,
+          checked: !!foundedItem
+          }
+        ];
+      },[]);
       
-      return checkedResults;
-    })
-    
+      return checkboxResult;
+    });
   }
   
   ngOnDestroy() {
@@ -196,7 +217,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         
         if(newExistedItems.length) {
           newExistedItems.forEach((item: any) => {
-            this.toasterService.pop('error', item.name + ' already exists');
+            this.toasterService.pop('error',  `${item.name} exists`);
           })
         }
         
@@ -222,22 +243,41 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   putCheckbox(item) {
-    //debugger;
-    //item.checked = !item.checked;
-    //console.log(item);
-    //let checkedResult = _.find(this.searchResults$['_value'], {variant_id: item.variant_id});
-    //debugger;
-    //console.log(checkedResult);
+    
+    item.checked = !item.checked;
+    
+    if(!this.checkedProduct.length && !this.items.length) {
+      
+      let packageType = {
+        package_type: item.package_type,
+        sub_package: {properties: {unit_type: item.consumable_unit.properties.unit_type}},
+        consumable_unit: {properties: {unit_type: item.consumable_unit.properties.unit_type}}
+      };
+      this.packageType$.next(packageType);
+    }
+    
+    let result = _.find(this.checkedProduct,  { variant_id: item.variant_id, product_id: item.product_id});
+    
+    if(!result && item.checked) {
+      this.checkedProduct.push(item);
+    }
+    if (result && !item.checked) {
+      _.remove(this.checkedProduct, result)
+    }
+    this.checkedProduct$.next(this.checkedProduct);
+    console.log(this.checkedProduct);
   }
   
   bulkAdd() {
-    this.resultItems$
-    .take(1)
-    .subscribe((items: InventorySearchResults[]) => {
-      // get checked
-      let checkedItems = items.filter((item: InventorySearchResults) => item.checked);
-      this.addToInventory(checkedItems);
-    });
+    //this.resultItems$
+    //.take(1)
+    //.subscribe((items: InventorySearchResults[]) => {
+    //  // get checked
+    //  let checkedItems = items.filter((item: InventorySearchResults) => item.checked);
+    //  this.addToInventory(checkedItems);
+    //});
+    this.addToInventory(this.checkedProduct);
+    //this.checkedProduct = [];
   }
   
   bulkDelete() {
