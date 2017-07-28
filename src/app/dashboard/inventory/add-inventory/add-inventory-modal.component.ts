@@ -73,7 +73,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
       this.checkedProduct =[];
-      //this.packageType$.next({});
+      if (!this.items.length) {
+        this.packageType$.next({});
+        this.outerPackageList = this.inventoryService.outerPackageList;
+        this.innerPackageList = this.inventoryService.innerPackageList;
+        this.consumablePackageList = this.inventoryService.consumablePackageList;
+  
+        this.checkPackage(null);
+        this.checkSubPackage(null);
+        this.checkConsPackage(null);
+      }
+      this.checkedProduct$.next({})
     });
   
     this.saveAdded$
@@ -107,6 +117,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           if (currentItem) {
             this.toasterService.pop('error', item.name +  `${item.name} is already added`);
           }
+          if(!currentItem) {
+            item.checked = false;
+          }
           return !currentItem ? [...acc, item] : [...acc]
         }, []);
         
@@ -114,7 +127,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       })
       
     );
-    
+  
     let deleteFromItems$ = this.deleteFromItems$
     .switchMap((deleteItems) =>
       this.items$.first()
@@ -141,7 +154,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.checkSubPackage(res[0].sub_package.properties.unit_type);
         this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
       }
-      if(!res.length) {
+      if(!res.length && !this.checkedProduct.length) {
         
         this.outerPackageList = this.inventoryService.outerPackageList;
         this.innerPackageList = this.inventoryService.innerPackageList;
@@ -253,6 +266,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         sub_package: {properties: {unit_type: item.consumable_unit.properties.unit_type}},
         consumable_unit: {properties: {unit_type: item.consumable_unit.properties.unit_type}}
       };
+  
+      this.outerPackageList = [item.package_type];
+      this.innerPackageList = [item.consumable_unit.properties.unit_type];
+      this.consumablePackageList = [item.consumable_unit.properties.unit_type];
+  
+      this.checkPackage(item.package_type);
+      this.checkSubPackage(item.consumable_unit.properties.unit_type);
+      this.checkConsPackage(item.consumable_unit.properties.unit_type);
+      
       this.packageType$.next(packageType);
     }
     
@@ -265,19 +287,29 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       _.remove(this.checkedProduct, result)
     }
     this.checkedProduct$.next(this.checkedProduct);
-    console.log(this.checkedProduct);
+    
+    if(!this.checkedProduct.length && !this.items.length) {
+      
+      this.outerPackageList = this.inventoryService.outerPackageList;
+      this.innerPackageList = this.inventoryService.innerPackageList;
+      this.consumablePackageList = this.inventoryService.consumablePackageList;
+  
+      this.checkPackage(null);
+      this.checkSubPackage(null);
+      this.checkConsPackage(null);
+      this.packageType$.next({});
+    }
+    
   }
   
   bulkAdd() {
-    //this.resultItems$
-    //.take(1)
-    //.subscribe((items: InventorySearchResults[]) => {
-    //  // get checked
-    //  let checkedItems = items.filter((item: InventorySearchResults) => item.checked);
-    //  this.addToInventory(checkedItems);
-    //});
-    this.addToInventory(this.checkedProduct);
-    //this.checkedProduct = [];
+    this.resultItems$
+    .take(1)
+    .subscribe((items: InventorySearchResults[]) => {
+      // get checked
+      let checkedItems = items.filter((item: InventorySearchResults) => item.checked);
+      this.addToInventory(checkedItems);
+    });
   }
   
   bulkDelete() {

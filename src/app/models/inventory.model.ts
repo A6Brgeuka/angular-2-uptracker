@@ -31,7 +31,7 @@ export class InventorySearchResults {
   mfg_number:string|number = "";
   name:string = "";
   package_type:string = "";
-  price:number = 0;
+  //price:number = 0;
   product_id:string  = "";
   upc:string = "";
   variant_id:string = "";

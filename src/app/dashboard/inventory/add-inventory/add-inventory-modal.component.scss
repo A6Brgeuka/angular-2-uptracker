@@ -144,7 +144,6 @@
         transition: opacity .3s;
       }
       .action-button {
-        //opacity: 0;
         width:20px;
         height:20px;
         text-align:center;
@@ -165,11 +164,7 @@
       }
 
       &:hover {
-        //.item-price {
-        //  opacity: 0;
-        //}
         .action-button {
-          //opacity: 1;
           z-index: 100;
         }
       }
@@ -200,6 +195,9 @@
           font-size: .9rem;
         }
       }
+    }
+    .row.border-bottom.custom-pdg-btm {
+      padding-bottom: 6px;
     }
   }
   .uptracker-form-btn {

@@ -130,7 +130,7 @@
               <label for="selected{{i}}"></label>
             </div>
           </div>
-          <div class="col product-name s3 flex-middle" [routerLink]="[product.id]">{{product.name}}</div>
+          <div class="col product-name s3 flex-middle" [routerLink]="['/', 'inventory','item', product.id]">{{product.name}}</div>
           <div class="col s1">{{product.variant_count}}</div>
           <div class="col s1 star-container">
             <div class="star-right" [class.favorite]="product.favorite">
