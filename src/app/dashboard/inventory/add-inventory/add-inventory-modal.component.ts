@@ -149,10 +149,16 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.outerPackageList = [res[0].package_type];
         this.innerPackageList = [res[0].sub_package.properties.unit_type];
         this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
+        this.newInventoryPackage.sub_package_qty = [res[0].sub_package.properties.qty];
+        this.newInventoryPackage.consumable_unit_qty = [res[0].consumable_unit.properties.qty];
         
         this.checkPackage(res[0].package_type);
         this.checkSubPackage(res[0].sub_package.properties.unit_type);
         this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
+      }
+      if(!res.length) {
+        this.newInventoryPackage.sub_package_qty = null;
+        this.newInventoryPackage.consumable_unit_qty = null;
       }
       if(!res.length && !this.checkedProduct.length) {
         
@@ -164,6 +170,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.checkSubPackage(null);
         this.checkConsPackage(null);
       }
+
       this.items = res;
     });
 
