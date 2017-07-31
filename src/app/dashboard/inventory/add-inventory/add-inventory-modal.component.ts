@@ -324,11 +324,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   addNewProduct() {
     debugger;
-    this.addToInventory([
-      new InventorySearchResults(
-        Object.assign(this.newProductData, {variant_id: 'tmp' + Math.floor(Math.random() * 1000000)})
-      )
-    ]);
+    //this.addToInventory([
+    //  new InventorySearchResults(
+    //    Object.assign(this.newProductData, {variant_id: 'tmp' + Math.floor(Math.random() * 1000000)})
+    //  )
+    //]);
+    console.log(this.newProductData);
     this.toggleCustomAdd();
   }
   
