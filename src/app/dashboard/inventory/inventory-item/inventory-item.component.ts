@@ -1,4 +1,7 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef } from '@angular/core';
+import {
+  Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef,
+  OnDestroy
+} from '@angular/core';
 
 import { Modal } from 'angular2-modal';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -21,7 +24,7 @@ import { InfoModal } from './default-info-modal/info-modal-component';
   styleUrls: ['./inventory-item.component.scss']
 })
 @DestroySubscribers()
-export class InventoryItemComponent implements OnInit, AfterViewInit {
+export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit {
   public subscribers: any = {};
   public product: any;
   public productCopy: any;
@@ -81,7 +84,10 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
   public hasInfoTab: boolean = false;
   public product_id: string;
   public locationArr: any;
-  public product$: Subject<any> = new Subject<any>();
+  //public product$: Subject<any> = new Subject<any>();
+  public product$: any = new BehaviorSubject<any>(null);
+  public updateFavorite$: any = new Subject();
+  public deleteInventory$: any = new Subject();
   
   constructor(
     public userService: UserService,
@@ -208,6 +214,31 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
       //
       return variants;
     });
+  
+    this.updateFavorite$
+    .switchMap(() => {return this.product$ })
+    .switchMap(inventory => this.InventoryService.setFavorite(inventory))
+    .subscribe(res => {
+        this.InventoryService.updateInventoryItem(res);
+        this.toasterService.pop('', res.favorite ? 'Added to favorites' : "Removed from favorites");
+      },
+      err => console.log('error')
+    );
+    
+    this.deleteInventory$
+    .switchMap(() => {return this.product$ })
+    .switchMap(inventory => this.InventoryService.deleteInventory(inventory))
+    .subscribe(res =>
+      this.goBack()
+    ,
+      err => console.log('error')
+    );
+    
+  }
+  
+  ngOnDestroy() {
+    this.updateFavorite$.unsubscribe();
+    this.deleteInventory$.unsubscribe();
   }
   
   changeSelected(loc_id, var_id) {
@@ -496,6 +527,19 @@ export class InventoryItemComponent implements OnInit, AfterViewInit {
         }
       );
     });
+  }
+  
+  setFavorite(e) {
+    e.stopPropagation();
+    this.updateFavorite$.next();
+  }
+  
+  deleteInventory() {
+    this.modalWindowService.confirmModal('Delete inventory?', 'Are you sure you want to delete the inventory?', this.deleteInventoryFunc.bind(this));
+  }
+  
+  deleteInventoryFunc() {
+    this.deleteInventory$.next();
   }
   
 }

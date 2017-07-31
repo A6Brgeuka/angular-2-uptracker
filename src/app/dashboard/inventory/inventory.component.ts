@@ -164,8 +164,8 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.updateFavorite$
     .switchMap(inventory => this.inventoryService.setFavorite(inventory))
     .subscribe(res => {
-      this.inventoryService.updateInventoryItem(res.data);
-      this.toasterService.pop('', res.data.favorite ? 'Added to favorites' : "Removed from favorites");
+      this.inventoryService.updateInventoryItem(res);
+      this.toasterService.pop('', res.favorite ? 'Added to favorites' : "Removed from favorites");
     },
     err => console.log('error'));
   }

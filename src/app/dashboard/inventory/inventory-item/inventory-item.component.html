@@ -1,6 +1,6 @@
 <div class="product-page">
   <div class="close fa fa-chevron-left" (click)="goBack()"></div>
-  <div class="row right edit-buttons">
+  <div class="row right edit-buttons buttons-topright">
     <button materialize="dropdown" data-activates="drdn" class="bt-edit-product edbtn bluebtn">
       <fa name="bars"></fa>
       Actions
@@ -31,19 +31,30 @@
         </a>
       </li>
       <li>
+        <a (click)="setFavorite($event)" class="tealish-text">
+          <i class="fa" [class.fa-star-o]="(product$ | async)?.favorite" [class.fa-star]="!(product$ | async)?.favorite"></i>
+          <span *ngIf="!(product$ | async)?.favorite">Favorite</span>
+          <span *ngIf="(product$ | async)?.favorite">Unfavorite</span>
+        </a>
+      </li>
+      <li>
         <a href="#" class="tealish-text">
           <fa name="pencil"></fa>
           Edit
         </a>
       </li>
       <li>
-        <a href="#" class="red-text">
+        <a (click)="deleteInventory()" class="red-text">
           <fa name="archive"></fa>
           Archive
         </a>
       </li>
 
     </ul>
+    <!--<button class="uptracker-form-btn  white-text waves-effect waves-light uptracker-form-delete-btn"-->
+    <!--(click)="deleteInventory()">-->
+      <!--<i class="fa fa-trash"></i> Delete-->
+    <!--</button>-->
   </div>
   <div class="inner">
     <div class="title center-align">

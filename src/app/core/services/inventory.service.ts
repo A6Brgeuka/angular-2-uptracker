@@ -127,10 +127,10 @@ export class InventoryService extends ModelService {
   
   setFavorite(inventory) {
     let postData = {
-      inventory_id: inventory.id,
+      inventory_id: inventory.id || inventory.inventory_id,
       favorite: !inventory.favorite
     }
-    return this.restangular.one('inventory', 'favorite').customPOST(postData);
+    return this.restangular.one('inventory', 'favorite').customPOST(postData).map((res: any) => res.data);
   }
   
   getInventoryItem(id: string) {
@@ -190,4 +190,9 @@ export class InventoryService extends ModelService {
        this.consumablePackageList = res.data.consumable_unit;
       })
   }
+  
+  deleteInventory(inventory) {
+    return this.restangular.one('inventory', inventory.inventory_id).remove();
+  }
+  
 }
