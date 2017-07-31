@@ -67,7 +67,9 @@
               </div>
             </div>
             <div class="info">
-              <div class="ttl">{{product.name}}</div>
+              <div class="ttl" title="{{ product.name }}">
+                {{product.name | slice:0:60}}
+              </div>
               <div class="bottom">
                 <div class="range-field">
                   <div class="range-value left-align red-text bold">{{ product.critcal_level }}</div>
