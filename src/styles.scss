@@ -1274,3 +1274,6 @@ input[type=range] {
 
 @import "./media.scss";
 
+.custom-select .select-wrapper:not(:first-child) {
+  display: none;
+}

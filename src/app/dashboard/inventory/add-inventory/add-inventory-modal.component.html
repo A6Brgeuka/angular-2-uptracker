@@ -135,7 +135,7 @@
             {{ item.name }}
           </div>
           <div class="vendor-name">
-            {{ item.vendor?.properties.name }}
+            <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor }}<span>,</span> </span>
           </div>
           <div class="clearfix"></div>
         </div>
@@ -178,17 +178,25 @@
 
     </div>
     <div class="row custom-width">
-      <div class="col s1 select select-light">
-        <select materialize="material_select" (ngModelChange)="checkPackage($event)" [ngModel]="newInventoryPackage.package_type" [materializeSelectOptions]="inventoryService.outerPackageList">
+      <div class="col s1 select select-light custom-select">
+        <select materialize="material_select" class="customSelect1"
+          (ngModelChange)="checkPackage($event)"
+          [ngModel]="newInventoryPackage.package_type"
+          [materializeSelectOptions]="inventoryService.outerPackageList"
+          *ngIf="showSelect"
+        >
           <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
-          <option *ngFor="let outerPackage of outerPackageList" value="{{ outerPackage }}">{{outerPackage}}</option>
+          <option *ngFor="let outerPackage of outerPackageList" [ngValue]="outerPackage">{{outerPackage}}</option>
         </select>
       </div>
       <div class="col s1 input">
         <input placeholder="Qty" type="text" [(ngModel)]="newInventoryPackage.sub_package_qty">
       </div>
-      <div class="col s1 select select-light">
-        <select materialize="material_select" (ngModelChange)="checkSubPackage($event)" [ngModel]="newInventoryPackage.sub_package_type" [materializeSelectOptions]="inventoryService.outerPackageList">
+      <div class="col s1 select select-light custom-select">
+        <select materialize="material_select"
+          (ngModelChange)="checkSubPackage($event)"
+          [ngModel]="newInventoryPackage.sub_package_type"
+          [materializeSelectOptions]="inventoryService.innerPackageList">
           <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
           <option *ngFor="let innerPackage of innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
         </select>
@@ -196,8 +204,11 @@
       <div class="col s1 input">
         <input placeholder="Qty" type="text" [(ngModel)]="newInventoryPackage.consumable_unit_qty">
       </div>
-      <div class="col s1 select select-light">
-        <select materialize="material_select" (ngModelChange)="checkConsPackage($event)" [ngModel]="newInventoryPackage.consumable_unit_type" [materializeSelectOptions]="inventoryService.outerPackageList">
+      <div class="col s1 select select-light custom-select">
+        <select materialize="material_select"
+          (ngModelChange)="checkConsPackage($event)"
+          [ngModel]="newInventoryPackage.consumable_unit_type"
+          [materializeSelectOptions]="inventoryService.consumablePackageList">
           <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
           <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
         </select>
@@ -233,10 +244,10 @@
         </div>
         <div>
           <div class="product-name tealish-text">
-            {{ item.name }}
+            {{ item?.name }}
           </div>
           <div class="vendor-name">
-            {{ item.vendor.properties.name }}
+            <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor }}<span>,</span> </span>
           </div>
           <div class="clearfix"></div>
         </div>

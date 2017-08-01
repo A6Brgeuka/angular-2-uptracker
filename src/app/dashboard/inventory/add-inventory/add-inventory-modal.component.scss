@@ -240,3 +240,6 @@
     opacity: 1;
   }
 }
+.vendor:last-child>span {
+  display: none;
+}
