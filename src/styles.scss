@@ -266,7 +266,10 @@ a {
     }
   }
 }
-
+.uptracker-form-btn.tealish.back-btn {
+  background: $white;
+  border: 1px solid $tealish;
+}
 .select-wrapper .dropdown-content {
   min-width: 150px;
 
@@ -1276,4 +1279,13 @@ input[type=range] {
 
 .custom-select .select-wrapper:not(:first-child) {
   display: none;
+}
+.mrg-top-20 {
+  margin-top: 20px;
+}
+.mrg-top-15 {
+  margin-top: 15px;
+}
+.mrg-btm-5 {
+  margin-bottom: 5px;
 }

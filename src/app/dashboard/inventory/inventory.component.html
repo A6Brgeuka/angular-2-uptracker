@@ -50,8 +50,6 @@
             </div>
             <div class="star-right" [class.favorite]="product.favorite" *ngIf="true">
               <i (click)="setFavorite($event,product)" class="fa" [class.fa-star-o]="!product.favorite" [class.fa-star]="product.favorite"></i>
-              <!--<i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>-->
-              <!--<i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>-->
             </div>
             <div [routerLink]="['/', 'inventory','item', product.id]"
               *ngIf="product.image"
@@ -66,19 +64,19 @@
                 <fa [name]="'barcode'"></fa>
               </div>
             </div>
-            <div class="info">
+            <div [routerLink]="['/', 'inventory','item', product.id]" class="info">
               <div class="ttl" title="{{ product.name }}">
                 {{product.name | slice:0:60}}
               </div>
               <div class="bottom">
                 <div class="range-field">
-                  <div class="range-value left-align red-text bold">{{ product.critcal_level }}</div>
+                  <div class="range-value left-align red-text bold">{{ product.critical_level }}</div>
                   <input
                     #inputRange
                     type="range"
                     min="0" [max]="product.overstock_level || 1" step="1"
                     name="priority"
-                    [(ngModel)]="product.on_hand"
+                    (ngModel)="product.on_hand"
                   >
                   <div class="value-container">
                     <div class="value" [ngStyle]="calcQuantityMargin(product)">{{product.on_hand}}</div>
@@ -167,13 +165,13 @@
           </div>
           <div class="bottom col s3">
             <div class="range-field">
-              <div class="range-value grey-bg left-align red-text bold">{{ product.critcal_level }}</div>
+              <div class="range-value grey-bg left-align red-text bold">{{ product.critical_level }}</div>
               <input
                 #inputRange
                 type="range"
-                min="0" [max]="product.overstock_level" step="1"
+                min="0" [max]="product.overstock_level || 1" step="1"
                 name="priority"
-                [(ngModel)]="product.on_hand"
+                [ngModel]="product.on_hand"
               >
               <div class="value-container less-margin">
                 <div class="value" [ngStyle]="calcQuantityMargin(product)">{{product.on_hand}}</div>

@@ -56,6 +56,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public checkedProduct: any[] = [];
   
   public showSelect: boolean = true;
+  public autocompleteProducts: any;
+  
+  @ViewChild('step1') step1: ElementRef;
+  @ViewChild('step2') step2: ElementRef;
+  @ViewChild('step3') step3: ElementRef;
   
   constructor(
     public dialog: DialogRef<AddInventoryModalContext>,
@@ -229,6 +234,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       
       return checkboxResult;
     });
+    
+    this.autocompleteProducts = {'gloves':null, 'elastic': null, 'nitrident': null, 'gloves tender': null}
+    
   }
   
   ngOnDestroy() {
@@ -420,6 +428,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   checkConsPackage(e) {
     this.newInventoryPackage.consumable_unit_type = e;
     this.nextPackage(this.newInventoryPackage);
+  }
+  
+  nextTab() {
+    if (this.step1.nativeElement.className == 'active')
+      this.step2.nativeElement.click();
+    else this.step3.nativeElement.click();
+  }
+  
+  prevTab() {
+    if (this.step3.nativeElement.className == 'active')
+      this.step2.nativeElement.click();
+    else this.step1.nativeElement.click();
   }
   
 }

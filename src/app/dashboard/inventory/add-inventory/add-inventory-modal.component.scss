@@ -28,7 +28,7 @@
     }
 
     .low-padding {
-      padding: 0 .25rem;
+      padding: 0 .45rem;
     }
 
     .custom-width {
@@ -196,8 +196,17 @@
         }
       }
     }
-    .row.border-bottom.custom-pdg-btm {
-      padding-bottom: 6px;
+    //.row.border-bottom.custom-pdg-btm {
+    //  padding-bottom: 6px;
+    //}
+    .back-btn, .next-btn {
+      position: absolute;
+    }
+    .back-btn {
+      left: 0.75rem;
+    }
+    .next-btn {
+      right: 0.75rem;
     }
   }
   .uptracker-form-btn {
@@ -243,3 +252,4 @@
 .vendor:last-child>span {
   display: none;
 }
+

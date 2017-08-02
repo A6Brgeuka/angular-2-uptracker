@@ -229,7 +229,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   
   // sets the style of the range-field thumb;
   calcQuantityMargin(product) {
-    let quantityMargin = 'calc(' + ((product.on_hand - 1) * 100 / (product.overstock_level - 1)).toString() + '% - 16px)';
+    let quantityMargin = 'calc(' + ((product.on_hand - 1 - product.critical_level) * 100 / (product.overstock_level - 1 - product.critical_level)).toString() + '% - 16px)';
     let thumbColor = this.calcThumbColor(product.on_hand / product.overstock_level );
     return { 'left': quantityMargin, 'background-color' : thumbColor };
   }
