@@ -3,7 +3,7 @@
   <div class="row title center-align relative">
     <div class="col s12">
       <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-        *ngIf="step2.className == 'active' || step3.className=='active'" (click)="prevTab()">
+        *ngIf="step2.className == 'active' || step3.className=='active' || step4.className=='active'" (click)="prevTab()">
         <fa name="chevron-left"></fa>
         Back
       </button>
@@ -13,17 +13,22 @@
         Next
         <fa name="chevron-right "></fa>
       </button>
+      <button (click)="saveAdded()"
+        class="uptracker-form-btn save-btn white-text tealish waves-effect waves-light right"
+        [disabled] = '!items.length'
+        *ngIf="step3.className == 'active'"
+      >
+      <fa name="check"></fa>
+      Save
+      </button>
     </div>
-    <!--<button (click)="saveAdded()" class="uptracker-form-btn white-text tealish waves-effect waves-light right" [disabled] = '!items.length'>-->
-      <!--<fa name="check"></fa>-->
-      <!--Save-->
-    <!--</button>-->
   </div>
   <div class="row" class="hidden">
     <ul class="tabs" materialize="tabs">
       <li class="tab col s4"><a href="#step1" #step1>step1</a></li>
       <li class="tab col s4"><a href="#step2" #step2>step2</a></li>
       <li class="tab col s4"><a href="#step3" #step3>step3</a></li>
+      <li class="tab col s4"><a href="#step4" #step4>step4</a></li>
     </ul>
   </div>
   <div id="step1">
@@ -118,10 +123,11 @@
           <div class="col s12 input search">
             <input (input)="onSearchTypeIn($event)"
               type="text"
-              placeholder="Enter Product Name, UPC, or Catalog #">
-              <!--materialize="autocomplete"-->
-              <!--[materializeParams]="[{'data': autocompleteProducts}]"-->
-              <!--class="autocomplete"-->
+              placeholder="Enter Product Name, UPC, or Catalog #"
+              materialize="autocomplete"
+              id="autocomplete-input"
+              [materializeParams]="[autocompleteProducts]"
+              class="autocomplete">
             <a>
               <fa name="barcode"></fa>
             </a>
@@ -270,7 +276,7 @@
             </select>
           </div>
           <div class="col s1 input">
-            <input placeholder="Qty" type="text" [(ngModel)]="newInventoryPackage.sub_package_qty">
+            <input placeholder="Qty." type="text" [(ngModel)]="newInventoryPackage.sub_package_qty">
           </div>
           <div class="col s1 select select-light custom-select">
             <select materialize="material_select"
@@ -282,7 +288,7 @@
             </select>
           </div>
           <div class="col s1 input">
-            <input placeholder="Qty" type="text" [(ngModel)]="newInventoryPackage.consumable_unit_qty">
+            <input placeholder="Qty." type="text" [(ngModel)]="newInventoryPackage.consumable_unit_qty">
           </div>
           <div class="col s1 select select-light custom-select">
             <select materialize="material_select"
@@ -310,7 +316,23 @@
         <div class="input">
           <input type="text">
         </div>
-
+        <div class="ttl mrg-top-15">Inventory Levels</div>
+        <div class="row mrg-btm-5">
+          <div class="col s4">Critical</div>
+          <div class="col s4">Fully Stocked</div>
+          <div class="col s4">Overstocked</div>
+        </div>
+        <div class="row">
+          <div class="col s4 input">
+            <input type="text" placeholder="Qty.">
+          </div>
+          <div class="col s4 input">
+            <input type="text" placeholder="Qty.">
+          </div>
+          <div class="col s4 input">
+            <input type="text" placeholder="Qty.">
+          </div>
+        </div>
       </div>
 
       <div class="col s6">
@@ -318,7 +340,7 @@
           <div class="col s12 ttl">
             Selected products
             <div class="right tealish-text bulk-actions">
-              Change Products
+              <a (click)="prevTab()">Change Products</a>
             </div>
           </div>
         </div>
@@ -364,7 +386,72 @@
   </div>
 
   <div id="step3">
-    Step3
+    <div class="row uptracker-form">
+      <div class="col s6">
+        <div class="ttl">Name</div>
+        <div class="select">
+          <select materialize="material_select">
+            <option>Department</option>
+          </select>
+        </div>
+        <div class="ttl mrg-top-15">Category</div>
+        <div class="select">
+          <select materialize="material_select">
+            <option>Category</option>
+          </select>
+        </div>
+        <div class="ttl mrg-top-15">Accounting</div>
+        <div class="select">
+          <select materialize="material_select">
+            <option>Accounting</option>
+          </select>
+        </div>
+        <div class="row mrg-top-15">
+          <div class="col s6">
+            <div class="input-checkbox  checkbox">
+              <input id="taxExempt" type="checkbox">
+              <label for="taxExempt"></label>
+              <span>Tax Exempt</span>
+            </div>
+          </div>
+          <div class="col s6">
+            <div class="input-checkbox  checkbox">
+              <input id="trackable" type="checkbox">
+              <label for="trackable"></label>
+              <span>Trackable</span>
+            </div>
+          </div>
+        </div>
+        <div class="ttl">Description</div>
+        <div class="textarea">
+          <textarea class="materialize-textarea"></textarea>
+        </div>
+      </div>
+      <div class="col s6">
+        <div class="ttl">Notes</div>
+        <div class="textarea">
+          <textarea class="materialize-textarea"></textarea>
+        </div>
+        <div class="ttl">MSDS/Hazardous Form</div>
+        <div class="input">
+          <input type="file">
+        </div>
+        <div class="ttl">Attachments</div>
+        <div class="attachments">
+
+        </div>
+        <div class="col s12 additional-space tealish-text">
+          <input id="add-attachment" type="file">
+          <label for="add-attachment">
+            <fa name="plus">
+              <i class="fa fa-plus"></i>
+            </fa>
+            Add Attachment
+          </label>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>

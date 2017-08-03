@@ -21,6 +21,12 @@
       box-sizing: border-box;
       color: $grey;
     }
+    textarea {
+      margin: 0;
+      &:focus {
+        border-color:$light-grey;
+      }
+    }
     .ttl {
       color: $dark;
       font-weight: bold;
@@ -199,13 +205,13 @@
     //.row.border-bottom.custom-pdg-btm {
     //  padding-bottom: 6px;
     //}
-    .back-btn, .next-btn {
+    .back-btn, .next-btn, .save-btn {
       position: absolute;
     }
     .back-btn {
       left: 0.75rem;
     }
-    .next-btn {
+    .next-btn, .save-btn {
       right: 0.75rem;
     }
   }
