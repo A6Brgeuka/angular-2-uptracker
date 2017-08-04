@@ -70,3 +70,12 @@ export class searchData {
   results:InventorySearchResults[];
 }
 
+export class AttachmentFiles {
+  file_name: string;
+  s3_object: string;
+  id: string;
+  ts: string;
+  uri: string;
+  type: string;
+}
+

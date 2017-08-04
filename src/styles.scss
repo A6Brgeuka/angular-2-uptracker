@@ -68,6 +68,40 @@ body {
     padding-left: 5px;
   }
 }
+.input-file {
+  border: 1px solid $light-grey;
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 32px;
+  background: $light-light-grey;
+  input {
+    position: absolute;
+    width: 100%;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2;
+  }
+  .input-placeholder {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    z-index: 1;
+  }
+}
+.add-attachment {
+  input {
+    position: absolute;
+    width: 150px;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2;
+  }
+  .input-placeholder {
+    position: absolute;
+    top: 5px;
+    z-index: 1;
+  }
+}
 .select.select-light {
   .select-wrapper.ng-valid {
     input.select-dropdown {

@@ -197,4 +197,8 @@ export class InventoryService extends ModelService {
     return this.restangular.one('inventory', inventory.inventory_id).remove();
   }
   
+  onMSDCFileUpload(files) {
+    return this.restangular.one('inventory', 'attachment').customPOST(files).map((res: any) => res.data);
+  }
+  
 }

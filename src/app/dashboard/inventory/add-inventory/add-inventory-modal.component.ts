@@ -56,9 +56,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public checkedProduct: any[] = [];
   
   public showSelect: boolean = true;
-  public autocompleteProducts: any =  ['aaaa', 'gggg'];
+  public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  options;
+  //options;
+  public files$:Observable<any>;
+  
   @ViewChild('step1') step1: ElementRef;
   @ViewChild('step2') step2: ElementRef;
   @ViewChild('step3') step3: ElementRef;
@@ -133,10 +135,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.autocompleteProducts$.next(event.target.value);
       this.typeIn$.next(event.target.value);
   }
-  selectedAutocompled(event) {
-    this.typeIn$.next(event);
+  selectedAutocompled(keyword) {
+    this.typeIn$.next(keyword);
   }
   observableSource(keyword: any) {
+    console.log(this.autocompleteProducts);
     return Observable.of(this.autocompleteProducts)
   }
   
@@ -463,8 +466,65 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     else this.step1.nativeElement.click();
   }
   
-  //makeAutocomplete() {
-    //this.
+  //fileActions(): any {
+  //  let addFileToFile$ = this.addFileToFile$
+  //  .switchMap((file:File)=>this.fileUploadService.uploadAttachment(this.context.order_id,file[0]))
+  //  .map((res:any)=>res.data)
+  //  .switchMap((res:AttachmentUploadModel) => {
+  //    return this.files$.first()
+  //    .map((file: any) => {
+  //      file = file.concat(res);
+  //      return file;
+  //    });
+  //  });
+  //
+  //  let tmpFile;
+  //  let deleteFromFile$ = this.deleteFromFile$
+  //  .switchMap((attach: AttachmentUploadModel) => {
+  //    tmpFile = attach;
+  //    return this.fileUploadService.deleteAttachment(this.context.order_id, attach);
+  //  })
+  //  .filter((status:any)=>status)
+  //  .switchMap(() => {
+  //    this.files$.subscribe((res) => {
+  //      console.log('Model Service delete from file ' + res);
+  //    });
+  //    return this.files$.first()
+  //    .map((file: any) => {
+  //      return file.filter((el: any) => {
+  //        return el.id != tmpFile.id;
+  //      });
+  //    });
+  //  });
+  //
+  //  this.files$ = Observable.merge(
+  //    this.loadFile$,
+  //    this.updateFile$,
+  //    addFileToFile$,
+  //    deleteFromFile$
+  //  ).publishReplay(1).refCount();
+  //  this.files$.subscribe(res => {
+  //    console.log('files',res);
+  //    this.file = res;
+  //    this.hasFiles = res.length > 0;
+  //  });
   //}
-  
+  //
+  //onFileDrop(file: any): void {
+  //  let myReader: any = new FileReader();
+  //  myReader.fileName = file.name;
+  //  this.addFile(file);
+  //}
+  //
+  onMSDCFileUpload(event) {
+    this.inventoryService.onMSDCFileUpload(event.target.files[0])
+    }
+  //addFile(file) {
+  //  this.addFileToFile$.next([file]);
+  //}
+  //
+  //removeFile(file) {
+  //  console.log(`remove ${file.file_name}`);
+  //  this.deleteFromFile$.next(file);
+  //}
 }
