@@ -9,14 +9,14 @@
       </button>
       Add Inventory Item
       <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light"
-        *ngIf="step3.className != 'active'" (click)="nextTab()">
+        *ngIf="step4.className != 'active'" (click)="nextTab()">
         Next
         <fa name="chevron-right "></fa>
       </button>
       <button (click)="saveAdded()"
         class="uptracker-form-btn save-btn white-text tealish waves-effect waves-light right"
         [disabled] = '!items.length'
-        *ngIf="step3.className == 'active'"
+        *ngIf="step4.className == 'active'"
       >
       <fa name="check"></fa>
       Save
@@ -121,13 +121,12 @@
 
 
           <div class="col s12 input search">
-            <input (input)="onSearchTypeIn($event)"
-              type="text"
-              placeholder="Enter Product Name, UPC, or Catalog #"
-              materialize="autocomplete"
-              id="autocomplete-input"
-              [materializeParams]="[autocompleteProducts]"
-              class="autocomplete">
+            <input auto-complete (input)="onSearchTypeIn($event)"
+            placeholder="Enter Product Name, UPC, or Catalog #"
+              [source]="observableSource.bind(this)"
+              (ngModelChange) = 'selectedAutocompled($event)'
+              [min-chars] = '3'
+            />
             <a>
               <fa name="barcode"></fa>
             </a>
@@ -384,8 +383,10 @@
       </div>
     </div>
   </div>
-
   <div id="step3">
+    Step3
+  </div>
+  <div id="step4">
     <div class="row uptracker-form">
       <div class="col s6">
         <div class="ttl">Name</div>

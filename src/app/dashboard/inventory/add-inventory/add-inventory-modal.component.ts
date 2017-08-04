@@ -56,12 +56,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public checkedProduct: any[] = [];
   
   public showSelect: boolean = true;
-  public autocompleteProducts: any = {};
+  public autocompleteProducts: any =  ['aaaa', 'gggg'];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   options;
   @ViewChild('step1') step1: ElementRef;
   @ViewChild('step2') step2: ElementRef;
   @ViewChild('step3') step3: ElementRef;
+  @ViewChild('step4') step4: ElementRef;
   
   constructor(
     public dialog: DialogRef<AddInventoryModalContext>,
@@ -108,15 +109,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       }
       this.checkedProduct$.next({})
     });
-  
-    //this.autocompleteProducts$
-    //.debounceTime(500)
-    //.switchMap((keywords:string) => this.inventoryService.autocompleteSearch(keywords))
-    //.subscribe(res => {
-    //  debugger;
-    //  //this.autocompleteProducts = res.suggestions;
-    //})
-    
     
     this.saveAdded$
     .switchMap(() => {
@@ -128,37 +120,26 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       }
     )
     
+      this.autocompleteProducts$
+      .debounceTime(100)
+      .switchMap((keywords:string) => this.inventoryService.autocompleteSearch(keywords))
+      .subscribe(res => {
+        this.autocompleteProducts = res['suggestions'];
+      });
+  
   }
   
   onSearchTypeIn(event) {
-    this.typeIn$.next(event.target.value);
-    this.autocompleteProducts$.next(event.target.value);
-    this.autocompleteProducts$
-    .debounceTime(500)
-    .switchMap((keywords:string) => this.inventoryService.autocompleteSearch(keywords))
-    
-    .map(res => {
-      //debugger;
-      return res['suggestions'].reduce((accValue,currnetItem) => {
-        console.log(currnetItem);
-        let item = {
-        [currnetItem]: null
-        };
-       
-        return [
-          ...accValue,
-          item
-        ];
-      },[]);
-    })
-    .subscribe(res => {
-      //debugger;
-    this.autocompleteProducts.data = res;
-    console.log(this.autocompleteProducts.data)
-    });
-    
+      this.autocompleteProducts$.next(event.target.value);
+      this.typeIn$.next(event.target.value);
   }
-
+  selectedAutocompled(event) {
+    this.typeIn$.next(event);
+  }
+  observableSource(keyword: any) {
+    return Observable.of(this.autocompleteProducts)
+  }
+  
   ngOnInit() {
     
     let addItemsToItems$ = this.addItemsToItems$
@@ -232,7 +213,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       },0.6);
       
       this.items = res;
-      //console.log(this.items[0].name);
     });
 
     // load initial items from context
@@ -272,9 +252,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       return checkboxResult;
     });
     
-    
-    
-    //this.autocompleteProducts.data = {'gloves':null, 'elastic': null, 'nitrident': null, 'gloves tender': null}
+    //this.autocompleteProducts = {'gloves':null, 'elastic': null, 'nitrident': null, 'gloves tender': null}
     
   }
   
@@ -472,11 +450,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   nextTab() {
     if (this.step1.nativeElement.className == 'active')
       this.step2.nativeElement.click();
-    else this.step3.nativeElement.click();
+    else if (this.step2.nativeElement.className == 'active')
+      this.step3.nativeElement.click();
+    else this.step4.nativeElement.click();
   }
   
   prevTab() {
-    if (this.step3.nativeElement.className == 'active')
+    if (this.step4.nativeElement.className == 'active')
+      this.step3.nativeElement.click();
+    else if (this.step3.nativeElement.className == 'active')
       this.step2.nativeElement.click();
     else this.step1.nativeElement.click();
   }

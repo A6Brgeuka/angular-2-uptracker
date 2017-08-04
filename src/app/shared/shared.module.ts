@@ -41,6 +41,7 @@ import { ChangePasswordUserModal } from "./modals/change-password-user-modal/cha
 import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal.component";
 import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.component';
 import { APP_DI_CONFIG } from '../../../env';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
 let modalsArr = [
   EditUserModal,
@@ -69,7 +70,8 @@ let modalsArr = [
       apiKey: APP_DI_CONFIG.googlePlaces.apiKey,
       libraries: ["places"]
     }),
-    GooglePlacesInputModule
+    GooglePlacesInputModule,
+    NguiAutoCompleteModule
   ],
   declarations: [
     ...directivesArr,
@@ -91,6 +93,7 @@ let modalsArr = [
     TextMaskModule,
     Angular2FontawesomeModule,
     GooglePlacesInputModule,
+    NguiAutoCompleteModule,
 
     ...directivesArr,
     ...pipesArr,
