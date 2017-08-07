@@ -136,7 +136,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     );
     
     this.autocompleteProducts$
-    .debounceTime(100)
+    .debounceTime(10)
     .switchMap((keywords:string) => this.inventoryService.autocompleteSearch(keywords))
     .subscribe(res => {
       this.autocompleteProducts = res['suggestions'];
