@@ -4,13 +4,18 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
-import { InventorySearchResults, NewInventoryPackage, searchData } from '../../../models/inventory.model';
+import {
+  AttachmentFiles, InventorySearchResults, NewInventoryPackage,
+  searchData
+} from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { debug } from 'util';
+import { APP_DI_CONFIG } from '../../../../../env';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -59,7 +64,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   //options;
-  public files$:Observable<any>;
+  public file$:Observable<any>;
+  public file;
+  public loadFile$: Subject<any> = new Subject<any>();
+  public addFileToFile$: Subject<any> = new Subject<any>();
+  public deleteFromFile$: Subject<any> = new Subject<any>();
+  public updateFile$: Subject<any> = new Subject<any>();
+  public apiUrl: string;
+  public mcds$: ReplaySubject<any> = new ReplaySubject(1);
+  public mcds: any;
   
   @ViewChild('step1') step1: ElementRef;
   @ViewChild('step2') step2: ElementRef;
@@ -120,15 +133,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .subscribe(newInventory => {
         this.dismissModal()
       }
-    )
+    );
     
-      this.autocompleteProducts$
-      .debounceTime(100)
-      .switchMap((keywords:string) => this.inventoryService.autocompleteSearch(keywords))
-      .subscribe(res => {
-        this.autocompleteProducts = res['suggestions'];
-      });
-  
+    this.autocompleteProducts$
+    .debounceTime(100)
+    .switchMap((keywords:string) => this.inventoryService.autocompleteSearch(keywords))
+    .subscribe(res => {
+      this.autocompleteProducts = res['suggestions'];
+    });
+    
+    this.fileActions();
+    this.apiUrl = APP_DI_CONFIG.apiEndpoint;
   }
   
   onSearchTypeIn(event) {
@@ -144,6 +159,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   ngOnInit() {
+  
+    this.loadFile$.next([]);
     
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
@@ -255,12 +272,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       return checkboxResult;
     });
     
-    //this.autocompleteProducts = {'gloves':null, 'elastic': null, 'nitrident': null, 'gloves tender': null}
+    this.mcds$
+    .switchMap((mcds: any) => this.inventoryService.uploadAttachment(mcds))
+    .subscribe(res => {
+      this.mcds = res;
+    });
     
   }
   
   ngOnDestroy() {
     this.saveAdded$.unsubscribe();
+    this.mcds$.unsubscribe();
     //this.items$.unsubscribe();
   }
   
@@ -466,65 +488,79 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     else this.step1.nativeElement.click();
   }
   
-  //fileActions(): any {
-  //  let addFileToFile$ = this.addFileToFile$
-  //  .switchMap((file:File)=>this.fileUploadService.uploadAttachment(this.context.order_id,file[0]))
-  //  .map((res:any)=>res.data)
-  //  .switchMap((res:AttachmentUploadModel) => {
-  //    return this.files$.first()
-  //    .map((file: any) => {
-  //      file = file.concat(res);
-  //      return file;
-  //    });
-  //  });
-  //
-  //  let tmpFile;
-  //  let deleteFromFile$ = this.deleteFromFile$
-  //  .switchMap((attach: AttachmentUploadModel) => {
-  //    tmpFile = attach;
-  //    return this.fileUploadService.deleteAttachment(this.context.order_id, attach);
-  //  })
-  //  .filter((status:any)=>status)
-  //  .switchMap(() => {
-  //    this.files$.subscribe((res) => {
-  //      console.log('Model Service delete from file ' + res);
-  //    });
-  //    return this.files$.first()
-  //    .map((file: any) => {
-  //      return file.filter((el: any) => {
-  //        return el.id != tmpFile.id;
-  //      });
-  //    });
-  //  });
-  //
-  //  this.files$ = Observable.merge(
-  //    this.loadFile$,
-  //    this.updateFile$,
-  //    addFileToFile$,
-  //    deleteFromFile$
-  //  ).publishReplay(1).refCount();
-  //  this.files$.subscribe(res => {
-  //    console.log('files',res);
-  //    this.file = res;
-  //    this.hasFiles = res.length > 0;
-  //  });
-  //}
-  //
-  //onFileDrop(file: any): void {
-  //  let myReader: any = new FileReader();
-  //  myReader.fileName = file.name;
-  //  this.addFile(file);
-  //}
-  //
+  // File load, add, delete actions
+  fileActions(): any {
+    let addFileToFile$ = this.addFileToFile$
+    .switchMap((file:File)=>this.inventoryService.uploadAttachment(file[0]))
+    .switchMap((res:AttachmentFiles) => {
+      return this.file$.first()
+      .map((file: any) => {
+        file = file.concat(res);
+        return file;
+      });
+    });
+    
+    //let tmpFile;
+    //let deleteFromFile$ = this.deleteFromFile$
+    //.switchMap((attach: AttachmentFiles) => {
+    //  tmpFile = attach;
+    //  return this.inventoryService.deleteAttachment(attach);
+    //})
+    //.filter((status:any)=>status)
+    //.switchMap(() => {
+    //  this.file$.subscribe((res) => {
+    //    console.log('Model Service delete from file ' + res);
+    //  });
+    //  return this.file$.first()
+    //  .map((file: any) => {
+    //    return file.filter((el: any) => {
+    //      return el.id != tmpFile.id;
+    //    });
+    //  });
+    //});
+    
+    this.file$ = Observable.merge(
+      this.loadFile$,
+      this.updateFile$,
+      addFileToFile$,
+      //deleteFromFile$
+    ).publishReplay(1).refCount();
+    this.file$.subscribe(res => {
+      console.log('files',res);
+      this.file = res;
+      //this.hasFiles = res.length > 0;
+    });
+  }
+  
   onMSDCFileUpload(event) {
-    this.inventoryService.onMSDCFileUpload(event.target.files[0])
+    this.mcds$.next(event.target.files[0]);
     }
-  //addFile(file) {
-  //  this.addFileToFile$.next([file]);
+  //onAttachmentUpload(event) {
+  //  debugger;
+  //  this.addFileToFile$.next(event.target.files[0]);
+  //  //this.inventoryService.onAttachmentUpload(event.target.files[0])
   //}
-  //
-  //removeFile(file) {
-  //  console.log(`remove ${file.file_name}`);
-  //  this.deleteFromFile$.next(file);
-  //}
+  onFileDrop(file: any): void {
+    let myReader: any = new FileReader();
+    myReader.fileName = file.name;
+    this.addFile(file);
+  }
+  
+  onAttachmentUpload(event) {
+    this.onFileDrop(event.target.files[0]);
+  }
+  
+  addFile(file) {
+    this.addFileToFile$.next([file]);
+  }
+  
+  removeFile(file) {
+    console.log(`remove ${file.file_name}`);
+    this.deleteFromFile$.next(file);
+  }
+  
+  getType(mime){
+    return mime.split('/')[0];
+  }
+  
 }

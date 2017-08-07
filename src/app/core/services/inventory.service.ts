@@ -196,9 +196,24 @@ export class InventoryService extends ModelService {
   deleteInventory(inventory) {
     return this.restangular.one('inventory', inventory.inventory_id).remove();
   }
-  
-  onMSDCFileUpload(files) {
-    return this.restangular.one('inventory', 'attachment').customPOST(files).map((res: any) => res.data);
+
+  uploadAttachment(document: File) {
+    if (!document) {
+      return Observable.of({'continue': 'no docs to upload'});
+    }
+    let formData: FormData = new FormData();
+    formData.append('attachment', document);
+    return this.restangular
+    .one('inventory', 'attachment')
+    .customPOST(formData)
+    .map((res: any) => res.data);
   }
-  
+  //deleteAttachment(attach: any){
+  //  // DELETE /po/{order_id}/attachment/{attachment_id}
+  //  let e$ = this.restangular
+  //  .one('po', order_id)
+  //  .one('attachment', attach.id)
+  //  .customDELETE();
+  //  return e$.filter(e=>(e && e.data)).map(e=>e.data);
+  //}
 }

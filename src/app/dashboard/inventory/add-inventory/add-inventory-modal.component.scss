@@ -124,6 +124,10 @@
           padding-left: 10px;
         }
       }
+      .input-placeholder.file-added {
+        left: 5px;
+        right: auto;
+      }
     }
     .uptracker-form-btn.tealish {
       height: 32px;
@@ -214,6 +218,21 @@
     }
     .next-btn, .save-btn {
       right: 0.75rem;
+    }
+    .attachments {
+      a:first-of-type {
+        color: $dark;
+      }
+      &:hover {
+        .invis {
+          opacity: 1;
+        }
+      }
+    }
+    .invis {
+      opacity: 0;
+      transition: opacity .3s;
+      margin-left: 15px;
     }
   }
   .uptracker-form-btn {
