@@ -13,7 +13,12 @@
         padding-bottom: 5px;
       }
     }
-
+    .border-btm {
+      border-bottom: 1px solid $light-grey;
+    }
+    .border-btm.ttl-stock {
+      border-bottom: 1px solid $grey;
+    }
     .input input, .select input {
       background-color: $light-light-grey;
       border-color: $light-grey;

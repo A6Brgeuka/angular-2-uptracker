@@ -33,6 +33,7 @@ export class InventoryService extends ModelService {
   outerPackageList = [];
   innerPackageList = [];
   consumablePackageList = [];
+  public selectedStep3Tab:any = null;
   
   constructor(
     public injector: Injector,

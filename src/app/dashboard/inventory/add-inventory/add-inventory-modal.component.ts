@@ -16,6 +16,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { debug } from 'util';
 import { APP_DI_CONFIG } from '../../../../../env';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { FileUploadService } from '../../../core/services/file-upload.service';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -63,7 +64,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public showSelect: boolean = true;
   public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  //options;
+  
   public file$:Observable<any>;
   public file;
   public loadFile$: Subject<any> = new Subject<any>();
@@ -79,12 +80,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   @ViewChild('step3') step3: ElementRef;
   @ViewChild('step4') step4: ElementRef;
   
+  public locations$: Observable<any>;
+  
   constructor(
     public dialog: DialogRef<AddInventoryModalContext>,
     public userService: UserService,
     public accountService: AccountService,
     public inventoryService: InventoryService,
-    public toasterService: ToasterService
+    public toasterService: ToasterService,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -277,6 +280,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .subscribe(res => {
       this.mcds = res;
     });
+    
+    this.locations$ = this.accountService.locations$
     
   }
   
@@ -526,7 +531,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       //deleteFromFile$
     ).publishReplay(1).refCount();
     this.file$.subscribe(res => {
-      console.log('files',res);
+      //console.log('files',res);
       this.file = res;
       //this.hasFiles = res.length > 0;
     });
@@ -535,11 +540,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   onMSDCFileUpload(event) {
     this.mcds$.next(event.target.files[0]);
     }
-  //onAttachmentUpload(event) {
-  //  debugger;
-  //  this.addFileToFile$.next(event.target.files[0]);
-  //  //this.inventoryService.onAttachmentUpload(event.target.files[0])
-  //}
+  
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
