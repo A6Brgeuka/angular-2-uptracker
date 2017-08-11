@@ -315,7 +315,18 @@
 
         <div class="row mrg-top-15">
           <div class="col s6">
-            <img>
+            <div class="img-container"
+              fileDrop
+              [ngClass]="{'file-is-over': fileIsOver}"
+              [options]="options"
+              (fileOver)="fileOver($event)"
+              (onImgDrop)="onImgDrop($event)">
+              <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }">
+                <div class="del-img-btn" (click)="uploadedImage = null">
+                  <i class="material-icons">delete</i>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col s6">
             <div class="ttl">
@@ -325,10 +336,10 @@
               Please upload a JPG or PNG max size 10 MB
             </div>
             <div class="input add-attachment">
-              <input type="file">
-              <div class="ttl tealish-text input-placeholder">
-                Upload a photo
-              </div>
+              <!--<div class="upload-link">-->
+                <input type="file" accept="image/*" (change)="changeListener($event)"/>
+                <a>Upload a photo</a>
+              <!--</div>-->
             </div>
           </div>
         </div>
@@ -385,86 +396,97 @@
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
       <ul class="tabs location-tabs" materialize="tabs">
         <li class="tab" *ngFor="let location of (locations$ | async)">
-          <a href="#inventoryLocation">{{ location.name }}</a>
+          <a href="#{{location.id}}" (click)="selectLocationTab(location)">{{ location.name }}</a>
         </li>
       </ul>
     </div>
-    <div id="inventoryLocation">
-      <div class="row">
-        <div class="col s6">
-          <div class="ttl">Tracking Method</div>
-          <div class="select">
-            <select materialize="material_select">
-              <option>Perpetual</option>
-              <option>None</option>
-              <option>Scheduled</option>
-            </select>
-          </div>
-          <div class="ttl mrg-top-15">Inventory Levels</div>
-          <div class="row mrg-btm-5">
-            <div class="col s4">Critical</div>
-            <div class="col s4">Fully Stocked</div>
-            <div class="col s4">Overstocked</div>
-          </div>
-          <div class="row">
-            <div class="col s4 input">
-              <input type="text" placeholder="Qty.">
+    <div *ngFor="let location of (locations$ | async)">
+      <div id="{{location.id}}" [hidden]="!location.active">
+        <div class="row">
+          <div class="col s6 custom-left-col">
+            <div class="ttl">Tracking Method</div>
+            <div class="select">
+              <select materialize="material_select">
+                <option>Perpetual</option>
+                <option>None</option>
+                <option>Scheduled</option>
+              </select>
             </div>
-            <div class="col s4 input">
-              <input type="text" placeholder="Qty.">
+            <div class="ttl mrg-top-15">Inventory Levels</div>
+            <div class="row mrg-btm-5">
+              <div class="col s4">Critical</div>
+              <div class="col s4">Fully Stocked</div>
+              <div class="col s4">Overstocked</div>
             </div>
-            <div class="col s4 input">
-              <input type="text" placeholder="Qty.">
-            </div>
-          </div>
-          <div class="ttl">Auto Reorder</div>
-          <div class="row">
-            <div class="col s4">Start Date</div>
-            <div class="col s2">Frequency</div>
-            <div class="col s4"></div>
-            <div class="col s2">Quantity</div>
-          </div>
-          <div class="row">
-            <div class="col s4 input">
-              <input materialize="pickadate"
-                [materializeParams]="[{format:'mm/dd/yyyy', selectMonths: true, selectYears: 10}]"
-                type="text"
-                placeholder = 'MM/DD/YYYY'
-              >
-            </div>
-            <div class="col s2 input">
-              <input type="text">
-            </div>
-            <div class="col s4">
-              <div class="input select">
-                <select materialize="material_select">
-                  <option>Month(s)</option>
-                </select>
+            <div class="row">
+              <div class="col s4 input">
+                <input type="text" placeholder="Qty.">
+              </div>
+              <div class="col s4 input">
+                <input type="text" placeholder="Qty.">
+              </div>
+              <div class="col s4 input">
+                <input type="text" placeholder="Qty.">
               </div>
             </div>
-            <div class="col s2 input">
-              <input type="text" placeholder="Qty.">
+            <div class="ttl">Auto Reorder</div>
+            <div class="row">
+              <div class="col s4">Start Date</div>
+              <div class="col s2">Frequency</div>
+              <div class="col s4"></div>
+              <div class="col s2">Quantity</div>
+            </div>
+            <div class="row">
+              <div class="col s4 input">
+                <input materialize="pickadate"
+                  [materializeParams]="[{format:'mm/dd/yyyy', selectMonths: true, selectYears: 10}]"
+                  type="text"
+                  placeholder = 'MM/DD/YYYY'
+                >
+              </div>
+              <div class="col s2 input">
+                <input type="text">
+              </div>
+              <div class="col s4">
+                <div class="input select">
+                  <select materialize="material_select">
+                    <option>Month(s)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col s2 input">
+                <input type="text" placeholder="Qty.">
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col s6">
-          <div class="ttl ttl-stock border-btm">Back Stock</div>
-          <div class="row border-btm">
-            <div class="col s10">
-              Back Stock #1
+          <div class="col s6">
+            <div class="row">
+              <div class="ttl ttl-stock border-btm col s12">Back Stock</div>
             </div>
-            <div class="col s2 input">
-              <input type="text" placeholder="Qty.">
+            <div *ngFor="let floorStock of location.inventory_locations">
+              <div class="row border-btm stock" *ngIf="!floorStock.floor_stock">
+                <div class="col s10">
+                  {{floorStock.name}}
+                </div>
+                <div class="col s2 input">
+                  <input type="text" placeholder="Qty.">
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="ttl ttl-stock border-btm">Floor Stock</div>
-          <div class="row border-btm">
-            <div class="col s10">
-              Floor Stock #1
+            <div class="row">
+              <div class="ttl ttl-stock border-btm col s12">Floor Stock</div>
             </div>
-            <div class="col s2 input">
-              <input type="text" placeholder="Qty.">
+            <div *ngFor="let floorStock of location.inventory_locations">
+              <div class="row border-btm stock" *ngIf="floorStock.floor_stock">
+                <div class="col s10">
+                  {{floorStock.name}}
+                </div>
+                <div class="col s2 input">
+                  <input type="text" placeholder="Qty.">
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
