@@ -163,7 +163,7 @@
                   {{ item.name }}
                 </div>
                 <div class="vendor-name">
-                  <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor }}<span>,</span> </span>
+                  <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor.vendor_name }}<span>,</span> </span>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -228,7 +228,7 @@
                 {{ item?.name }}
               </div>
               <div class="vendor-name">
-                <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor }}<span>,</span> </span>
+                <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor.vendor_name }}<span>,</span> </span>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -318,7 +318,6 @@
             <div class="img-container"
               fileDrop
               [ngClass]="{'file-is-over': fileIsOver}"
-              [options]="options"
               (fileOver)="fileOver($event)"
               (onImgDrop)="onImgDrop($event)">
               <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }">
@@ -336,10 +335,12 @@
               Please upload a JPG or PNG max size 10 MB
             </div>
             <div class="input add-attachment">
-              <!--<div class="upload-link">-->
-                <input type="file" accept="image/*" (change)="changeListener($event)"/>
-                <a>Upload a photo</a>
-              <!--</div>-->
+              <div class="file-field">
+                <div class="upload-link">
+                  <input type="file" accept="image/*" (change)="changeListener($event)"/>
+                  <a>Upload a photo</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -373,7 +374,7 @@
                 {{ item?.name }}
               </div>
               <div class="vendor-name">
-                <span>{{ item.vendors[0] }} <span *ngIf="item.vendors.length > 1">& {{ item.vendors.length-1 }} more</span></span>
+                <span>{{ item.vendors[0].vendor_name }} <span *ngIf="item.vendors.length > 1">& {{ item.vendors.length-1 }} more</span></span>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -382,7 +383,7 @@
             <div class="select">
               <select materialize="material_select">
                 <option>Auto</option>
-                <option *ngFor="let vendor of item.vendors" value="{{ vendor }}">{{ vendor }}</option>
+                <option *ngFor="let vendor of item.vendors" value="{{ vendor }}">{{ vendor.vendor_name }}</option>
               </select>
             </div>
           </div>
@@ -396,20 +397,20 @@
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
       <ul class="tabs location-tabs" materialize="tabs">
         <li class="tab" *ngFor="let location of (locations$ | async)">
-          <a href="#{{location.id}}" (click)="selectLocationTab(location)">{{ location.name }}</a>
+          <a href="#{{location.id}}" (click)="selectTab(location)">{{ location.name }}</a>
         </li>
       </ul>
     </div>
     <div *ngFor="let location of (locations$ | async)">
-      <div id="{{location.id}}" [hidden]="!location.active">
+      <div id="{{ location.id }}" [hidden]="!location.active">
         <div class="row">
-          <div class="col s6 custom-left-col">
+          <div class="col s6 custom-col-pdg">
             <div class="ttl">Tracking Method</div>
             <div class="select">
               <select materialize="material_select">
-                <option>Perpetual</option>
-                <option>None</option>
-                <option>Scheduled</option>
+                <option value="Perpetual">Perpetual</option>
+                <option value="None">None</option>
+                <option value="Scheduled">Scheduled</option>
               </select>
             </div>
             <div class="ttl mrg-top-15">Inventory Levels</div>
@@ -463,10 +464,10 @@
             <div class="row">
               <div class="ttl ttl-stock border-btm col s12">Back Stock</div>
             </div>
-            <div *ngFor="let floorStock of location.inventory_locations">
-              <div class="row border-btm stock" *ngIf="!floorStock.floor_stock">
+            <div *ngFor="let stock of location.inventory_locations">
+              <div class="row border-btm stock" *ngIf="!stock.floor_stock">
                 <div class="col s10">
-                  {{floorStock.name}}
+                  {{ stock.name }}
                 </div>
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty.">
@@ -476,17 +477,16 @@
             <div class="row">
               <div class="ttl ttl-stock border-btm col s12">Floor Stock</div>
             </div>
-            <div *ngFor="let floorStock of location.inventory_locations">
-              <div class="row border-btm stock" *ngIf="floorStock.floor_stock">
+            <div *ngFor="let stock of location.inventory_locations">
+              <div class="row border-btm stock" *ngIf="stock.floor_stock">
                 <div class="col s10">
-                  {{floorStock.name}}
+                  {{ stock.name }}
                 </div>
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty.">
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -495,7 +495,7 @@
   <div id="step4">
     <div class="row uptracker-form">
       <div class="col s6">
-        <div class="ttl">Name</div>
+        <div class="ttl">Department</div>
         <div class="select">
           <select materialize="material_select">
             <option>Department</option>
@@ -540,19 +540,38 @@
           <textarea class="materialize-textarea"></textarea>
         </div>
         <div class="ttl mrg-top-15">MSDS/Hazardous Form</div>
+        <div *ngFor="let msds of (msds$ | async)" class="attachments mrg-btm-5">
+          <a href="{{ msds.public_url }}"  target="_blank">
+            <fa *ngIf="msds.type == 'application/pdf'" name="file-pdf-o"></fa>
+            <fa *ngIf="msds.type == 'application/zip'" name="file-zip-o"></fa>
+            <fa *ngIf="(getType(msds.type) == 'application')
+          && (msds.type != 'application/pdf')
+          && (msds.type != 'application/zip')"
+              name="file-code-o"></fa>
+            <fa *ngIf="getType(msds.type) == 'image'" name="file-image-o"></fa>
+            <fa *ngIf="getType(msds.type) == 'text'" name="file-word-o"></fa>
+            <fa *ngIf="getType(msds.type) == 'audio'" name="file-audio-o"></fa>
+            <fa *ngIf="getType(msds.type) == 'video'" name="file-video-o"></fa>
+            MSDS/Hazardous Form - {{ msds.file_name }}
+          </a>
+          <a href="{{ msds.public_url }}"  target="_blank" class="link-icon">
+            <fa class="tealish-text invis" name="external-link"></fa>
+          </a>
+          <fa class="red-text invis" name="trash" (click)="removeFile(file)"></fa>
+        </div>
         <div class="input input-file">
           <input type="file" (change)="onMSDCFileUpload($event)">
-          <div class="ttl input-placeholder file-added" *ngIf="mcds">{{ mcds.file_name }}</div>
+          <!--<div class="ttl input-placeholder file-added" *ngIf="msds">{{ msds.file_name }}</div>-->
           <div class="ttl tealish-text input-placeholder">Upload File</div>
         </div>
         <div class="ttl mrg-top-15">Attachments</div>
-        <div class="attachments">
-          <a href="#" target="_blank">
-            <fa name="file-pdf-o"></fa>
-            Purchase Order #
-            <fa class="tealish-text invis" name="external-link"></fa>
-          </a>
-        </div>
+        <!--<div class="attachments">-->
+          <!--<a href="#" target="_blank">-->
+            <!--<fa name="file-pdf-o"></fa>-->
+            <!--Purchase Order #-->
+            <!--<fa class="tealish-text invis" name="external-link"></fa>-->
+          <!--</a>-->
+        <!--</div>-->
         <div *ngFor="let file of (file$ | async)" class="attachments">
           <a href="{{ file.public_url }}"  target="_blank">
             <fa *ngIf="file.type == 'application/pdf'" name="file-pdf-o"></fa>

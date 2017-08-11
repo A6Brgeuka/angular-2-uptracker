@@ -18,8 +18,6 @@
     }
     .border-btm.ttl-stock {
       border-bottom: 1px solid $grey;
-      padding-bottom: 10px;
-      margin-bottom: 0;
     }
     .input input, .select input {
       background-color: $light-light-grey;
@@ -40,27 +38,23 @@
       font-weight: bold;
       margin-bottom: 5px;
     }
-    .stock {
-      display: flex;
-      align-items: baseline;
+    .ttl-stock {
       padding-bottom: 10px;
-      input {
-        height: 27px;
-      }
+      margin-bottom: 0;
     }
     .low-padding {
       padding: 0 .45rem;
     }
-    .custom-left-col {
-      padding: 0 1.5rem 0 0;
-    }
     .custom-width {
+
       & > .col {
         padding: 0 .25rem;
+
         &:nth-of-type(2n) {
           width: 12.5%;
           white-space: nowrap;
         }
+
         &:nth-of-type(2n-1) {
           width: 25%;
         }
@@ -68,6 +62,7 @@
     }
     .checkbox.inline-block {
       padding-right: 5px;
+
       label {
         vertical-align: sub;
       }
@@ -228,35 +223,20 @@
     .next-btn, .save-btn {
       right: 0.75rem;
     }
-    .attachments {
-      a:first-of-type {
-        color: $dark;
-      }
-      &:hover {
-        .invis {
-          opacity: 1;
-        }
-      }
-    }
-    .invis {
-      opacity: 0;
-      transition: opacity .3s;
-      margin-left: 15px;
-    }
     .img-container {
-      width: 200px;
+      width: 180px;
       height: 100px;
       border-radius: 5px;
-      background: $light-light-grey no-repeat 50%;
-      border: 1px dashed $light-grey;
+      background: #f5f6f7 no-repeat center center;
+      border: 1px dashed #d6d6d6;
       max-width: 100%;
       .img {
-        height: 100%;
+        height: calc(100%);
         overflow: hidden;
         text-align: center;
-        background-color: $light-light-grey;
+        background-color: #f5f6f7;
         background-repeat: no-repeat;
-        background-position: 50%;
+        background-position: center center;
         background-size: cover;
         position: relative;
         z-index: 5;
@@ -276,6 +256,32 @@
           opacity: .7;
         }
       }
+    }
+    .stock {
+      display: flex;
+      align-items: baseline;
+      padding-bottom: 10px;
+      input {
+        height: 27px;
+      }
+    }
+    .custom-col-pdg {
+      padding: 0 1.5rem 0 0;
+    }
+    .attachments {
+      a:first-of-type {
+        color: $dark;
+      }
+      &:hover {
+        .invis {
+          opacity: 1;
+        }
+      }
+    }
+    .invis {
+      opacity: 0;
+      transition: opacity .3s;
+      margin-left: 15px;
     }
   }
   .uptracker-form-btn {
@@ -321,3 +327,4 @@
 .vendor:last-child>span {
   display: none;
 }
+

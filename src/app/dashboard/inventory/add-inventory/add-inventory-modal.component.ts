@@ -65,16 +65,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   
-  //adding attachments step 4
   public file$:Observable<any>;
   public file;
   public loadFile$: Subject<any> = new Subject<any>();
   public addFileToFile$: Subject<any> = new Subject<any>();
   public deleteFromFile$: Subject<any> = new Subject<any>();
   public updateFile$: Subject<any> = new Subject<any>();
-  public mcds$: ReplaySubject<any> = new ReplaySubject(1);
-  public mcds: any;
-  public img$: ReplaySubject<any> = new ReplaySubject(1);
+  public msds$:Observable<any>;
+  public loadMsds$: Subject<any> = new Subject<any>();
+  public addMsdsToMsds$: Subject<any> = new Subject<any>();
+  public productImg$: ReplaySubject<any> = new ReplaySubject(1);
+  public msds: any;
   public uploadedImage;
   public fileIsOver: boolean = false;
   
@@ -85,15 +86,16 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public locations$: Observable<any> = this.accountService.locations$;
   public locations: any[];
+  public trackingMethod: string = 'Perpetual';
   
   constructor(
+    public zone: NgZone,
     public dialog: DialogRef<AddInventoryModalContext>,
     public userService: UserService,
     public accountService: AccountService,
     public inventoryService: InventoryService,
     public toasterService: ToasterService,
     public fileUploadService: FileUploadService,
-    public zone: NgZone,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -152,6 +154,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     });
     
     this.fileActions();
+    this.msdsActions();
     
   }
   
@@ -170,6 +173,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   ngOnInit() {
   
     this.loadFile$.next([]);
+    this.loadMsds$.next([]);
     
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
@@ -281,34 +285,22 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       return checkboxResult;
     });
     
-    this.mcds$
-    .switchMap((mcds: any) => this.inventoryService.uploadAttachment(mcds))
-    .subscribe(res => {
-      this.mcds = res;
-    });
-    
-    this.img$
+    this.productImg$
     .switchMap((img: any) => this.inventoryService.uploadAttachment(img))
     .subscribe();
     
-    this.locations$.subscribe(res => {
-      this.locations = res;
+    this.locations$.subscribe(location => {
+      this.locations = location;
       this.locations[0].active = true;
+      console.log(this.locations)
     })
     
   }
   
   ngOnDestroy() {
     this.saveAdded$.unsubscribe();
-    this.mcds$.unsubscribe();
-    this.img$.unsubscribe();
+    //this.msds$.unsubscribe();
     //this.items$.unsubscribe();
-  }
-  
-  selectLocationTab(location) {
-    this.locations.forEach((location) => {
-      location.active = false;
-    });
   }
   
   checkExistedProduct(itemsToCheck) {
@@ -334,7 +326,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
             this.toasterService.pop('error',  `${item.name} exists`);
           })
         }
-        
+        console.log(newNotExistedItems);
         return newNotExistedItems;
       })
   }
@@ -512,6 +504,34 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     else this.step1.nativeElement.click();
   }
   
+  selectTab(location) {
+    this.locations.forEach((location) => {
+      location.active = false;
+    });
+  }
+  // MSDS load, add, delete actions
+  msdsActions(): any {
+    let addMsdsToMsds$ = this.addMsdsToMsds$
+    .switchMap((msds:File)=>this.inventoryService.uploadAttachment(msds[0]))
+    .switchMap((res:AttachmentFiles) => {
+      return this.msds$.first()
+      .map((msds: any) => {
+        msds = msds.concat(res);
+        return msds;
+      });
+    });
+
+    this.msds$ = Observable.merge(
+      this.loadMsds$,
+      addMsdsToMsds$,
+      //deleteFromFile$
+    ).publishReplay(1).refCount();
+    this.msds$.subscribe(res => {
+      //console.log('files',res);
+      this.msds = res;
+      //this.hasFiles = res.length > 0;
+    });
+  }
   // File load, add, delete actions
   fileActions(): any {
     let addFileToFile$ = this.addFileToFile$
@@ -555,34 +575,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       //this.hasFiles = res.length > 0;
     });
   }
-  
-  onMSDCFileUpload(event) {
-    this.mcds$.next(event.target.files[0]);
-  }
-  
-  onFileDrop(file: any): void {
-    let myReader: any = new FileReader();
-    myReader.fileName = file.name;
-    this.addFile(file);
-  }
-  
-  onAttachmentUpload(event) {
-    this.onFileDrop(event.target.files[0]);
-  }
-  
-  addFile(file) {
-    this.addFileToFile$.next([file]);
-  }
-  
-  removeFile(file) {
-    console.log(`remove ${file.file_name}`);
-    this.deleteFromFile$.next(file);
-  }
-  
-  getType(mime){
-    return mime.split('/')[0];
-  }
-  
   // upload by input type=file
   changeListener($event): void {
     this.readThis($event.target);
@@ -596,8 +588,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.onImgDrop(myReader.result);
     };
     myReader.readAsDataURL(file);
-    //TODO send the img after click save inventory button
-    this.img$.next(file);
+    //TODO send img after click on Save button
+    this.productImg$.next(file);
   }
   
   // upload by filedrop
@@ -617,6 +609,39 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       });
     };
     img.src = imgBase64;
+  }
+  onMSDCFileUpload(event) {
+    this.onMsdsDrop(event.target.files[0]);
+    }
+  onMsdsDrop(msds: any): void {
+    let myReader: any = new FileReader();
+    myReader.fileName = msds.name;
+    this.addMsds(msds);
+  }
+  onFileDrop(file: any): void {
+    let myReader: any = new FileReader();
+    myReader.fileName = file.name;
+    this.addFile(file);
+  }
+  
+  onAttachmentUpload(event) {
+    this.onFileDrop(event.target.files[0]);
+  }
+  
+  addFile(file) {
+    this.addFileToFile$.next([file]);
+  }
+  addMsds(msds) {
+    this.addMsdsToMsds$.next([msds]);
+  }
+  
+  removeFile(file) {
+    console.log(`remove ${file.file_name}`);
+    this.deleteFromFile$.next(file);
+  }
+  
+  getType(mime){
+    return mime.split('/')[0];
   }
   
 }
