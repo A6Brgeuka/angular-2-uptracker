@@ -254,7 +254,7 @@
         <div class="ttl mrg-top-15">UPC</div>
         <div class="input">
           <input type="text">
-          <a><fa name="barcode"></fa></a>
+          <a><fa name="barcode barcode-pdg"></fa></a>
         </div>
         <div class="ttl mrg-top-15">How do you receive this?</div>
         <div class="row custom-width low-padding mrg-btm-5">
@@ -406,57 +406,63 @@
         <div class="row">
           <div class="col s6 custom-col-pdg">
             <div class="ttl">Tracking Method</div>
-            <div class="select">
-              <select materialize="material_select">
+            <div class="select select-light">
+              <select materialize="material_select"
+                (ngModelChange)="changeTrackingMethod(location, $event)"
+                [ngModel]="location?.trackingMethod">
                 <option value="Perpetual">Perpetual</option>
                 <option value="None">None</option>
                 <option value="Scheduled">Scheduled</option>
               </select>
             </div>
-            <div class="ttl mrg-top-15">Inventory Levels</div>
-            <div class="row mrg-btm-5">
-              <div class="col s4">Critical</div>
-              <div class="col s4">Fully Stocked</div>
-              <div class="col s4">Overstocked</div>
-            </div>
-            <div class="row">
-              <div class="col s4 input">
-                <input type="text" placeholder="Qty.">
+            <div *ngIf="location.trackingMethod != 'None'">
+              <div class="ttl mrg-top-15">Inventory Levels</div>
+              <div class="row mrg-btm-5">
+                <div class="col s4">Critical</div>
+                <div class="col s4">Fully Stocked</div>
+                <div class="col s4">Overstocked</div>
               </div>
-              <div class="col s4 input">
-                <input type="text" placeholder="Qty.">
-              </div>
-              <div class="col s4 input">
-                <input type="text" placeholder="Qty.">
-              </div>
-            </div>
-            <div class="ttl">Auto Reorder</div>
-            <div class="row">
-              <div class="col s4">Start Date</div>
-              <div class="col s2">Frequency</div>
-              <div class="col s4"></div>
-              <div class="col s2">Quantity</div>
-            </div>
-            <div class="row">
-              <div class="col s4 input">
-                <input materialize="pickadate"
-                  [materializeParams]="[{format:'mm/dd/yyyy', selectMonths: true, selectYears: 10}]"
-                  type="text"
-                  placeholder = 'MM/DD/YYYY'
-                >
-              </div>
-              <div class="col s2 input">
-                <input type="text">
-              </div>
-              <div class="col s4">
-                <div class="input select">
-                  <select materialize="material_select">
-                    <option>Month(s)</option>
-                  </select>
+              <div class="row">
+                <div class="col s4 input">
+                  <input type="text" placeholder="Qty.">
+                </div>
+                <div class="col s4 input">
+                  <input type="text" placeholder="Qty.">
+                </div>
+                <div class="col s4 input">
+                  <input type="text" placeholder="Qty.">
                 </div>
               </div>
-              <div class="col s2 input">
-                <input type="text" placeholder="Qty.">
+              <div *ngIf="location.trackingMethod != 'Scheduled'">
+                <div class="ttl">Auto Reorder</div>
+                <div class="row">
+                  <div class="col s4">Start Date</div>
+                  <div class="col s2">Frequency</div>
+                  <div class="col s4"></div>
+                  <div class="col s2">Quantity</div>
+                </div>
+                <div class="row">
+                  <div class="col s4 input">
+                    <input materialize="pickadate"
+                      [materializeParams]="[{format:'mm/dd/yyyy', selectMonths: true, selectYears: 10}]"
+                      type="text"
+                      placeholder = 'MM/DD/YYYY'
+                    >
+                  </div>
+                  <div class="col s2 input">
+                    <input type="text">
+                  </div>
+                  <div class="col s4">
+                    <div class="input select">
+                      <select materialize="material_select">
+                        <option>Month(s)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col s2 input">
+                    <input type="text" placeholder="Qty.">
+                  </div>
+                </div>
               </div>
             </div>
           </div>

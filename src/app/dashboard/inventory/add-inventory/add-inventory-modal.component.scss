@@ -103,7 +103,6 @@
       button {
         margin: 0 15px;
         padding: 0 15px;
-
       }
       .text {
         clear: both;
@@ -139,11 +138,12 @@
     .uptracker-form-btn.tealish {
       height: 32px;
     }
-
     .bulk-actions {
       cursor:pointer;
     }
-
+    .fa-barcode.barcode-pdg {
+      right: 10px;
+    }
     .search-results, .added-items {
       position: relative;
 

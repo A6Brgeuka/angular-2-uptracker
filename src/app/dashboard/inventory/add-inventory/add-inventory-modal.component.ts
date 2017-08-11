@@ -14,7 +14,6 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { debug } from 'util';
-import { APP_DI_CONFIG } from '../../../../../env';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { FileUploadService } from '../../../core/services/file-upload.service';
 
@@ -27,6 +26,7 @@ export class AddInventoryModalContext extends BSModalContext {
   templateUrl: './add-inventory-modal.component.html',
   styleUrls: ['./add-inventory-modal.component.scss']
 })
+
 @DestroySubscribers()
 export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalComponent<AddInventoryModalContext> {
   public subscribers: any = {};
@@ -133,7 +133,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.checkSubPackage(null);
         this.checkConsPackage(null);
       }
-      this.checkedProduct$.next({})
+        this.checkedProduct$.next({})
     });
     
     this.saveAdded$
@@ -171,7 +171,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   ngOnInit() {
-  
+    
     this.loadFile$.next([]);
     this.loadMsds$.next([]);
     
@@ -292,6 +292,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.locations$.subscribe(location => {
       this.locations = location;
       this.locations[0].active = true;
+      
       console.log(this.locations)
     })
     
@@ -299,8 +300,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   ngOnDestroy() {
     this.saveAdded$.unsubscribe();
-    //this.msds$.unsubscribe();
-    //this.items$.unsubscribe();
+    this.productImg$.unsubscribe();
+    //this.locations$.unsubscribe();
   }
   
   checkExistedProduct(itemsToCheck) {
@@ -508,6 +509,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.locations.forEach((location) => {
       location.active = false;
     });
+  }
+  
+  changeTrackingMethod(location, trackingMethod) {
+    location.trackingMethod = trackingMethod;
   }
   // MSDS load, add, delete actions
   msdsActions(): any {
