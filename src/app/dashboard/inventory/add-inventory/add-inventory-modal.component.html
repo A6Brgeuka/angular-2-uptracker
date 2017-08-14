@@ -503,20 +503,25 @@
       <div class="col s6">
         <div class="ttl">Department</div>
         <div class="select">
-          <select materialize="material_select">
-            <option>Department</option>
+          <select materialize="material_select"
+            [materializeSelectOptions]="departmentCollection$ | async">
+            <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
           </select>
         </div>
         <div class="ttl mrg-top-15">Category</div>
         <div class="select">
-          <select materialize="material_select">
-            <option>Category</option>
+          <select materialize="material_select"
+            [materializeSelectOptions]="productCategoriesCollection$ | async">
+            <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}
+            </option>
           </select>
         </div>
         <div class="ttl mrg-top-15">Accounting</div>
         <div class="select">
-          <select materialize="material_select">
-            <option>Accounting</option>
+          <select materialize="material_select"
+            [materializeSelectOptions]="productAccountingCollection$ | async">
+            <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}
+            </option>
           </select>
         </div>
         <div class="row mrg-top-15">

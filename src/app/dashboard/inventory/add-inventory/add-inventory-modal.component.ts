@@ -52,9 +52,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public newInventoryPackage: any = new NewInventoryPackage;
   
-  public outerPackageList: any[] = this.inventoryService.outerPackageList;
-  public innerPackageList: any[] = this.inventoryService.innerPackageList;
-  public consumablePackageList: any[] = this.inventoryService.consumablePackageList;
+  public outerPackageList: any[];
+  public innerPackageList: any[];
+  public consumablePackageList: any[];
   
   public packageType$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public resultItems$: Observable<any>;
@@ -78,6 +78,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public msds: any;
   public uploadedImage;
   public fileIsOver: boolean = false;
+  
+  public departmentCollection$: Observable<any> = new Observable<any>();
+  public productAccountingCollection$: Observable<any> = new Observable<any>();
+  public productCategoriesCollection$: Observable<any> = new Observable<any>();
   
   @ViewChild('step1') step1: ElementRef;
   @ViewChild('step2') step2: ElementRef;
@@ -155,7 +159,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.fileActions();
     this.msdsActions();
-    
+    this.departmentCollection$ = this.accountService.getDepartments().take(1);
+    this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
+    this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
+  
+    this.outerPackageList = this.inventoryService.outerPackageList;
+    this.innerPackageList = this.inventoryService.innerPackageList;
+    this.consumablePackageList = this.inventoryService.consumablePackageList;
   }
   
   onSearchTypeIn(event) {
