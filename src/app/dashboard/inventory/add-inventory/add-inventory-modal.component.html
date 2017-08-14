@@ -9,7 +9,8 @@
       </button>
       Add Inventory Item
       <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light"
-        *ngIf="step4.className != 'active'" (click)="nextTab()">
+        *ngIf="step4.className != 'active'" (click)="nextTab()"
+        [disabled] = '!items.length'>
         Next
         <fa name="chevron-right "></fa>
       </button>
@@ -249,7 +250,7 @@
       <div class="col s6">
         <div class="ttl">Name</div>
         <div class="input">
-          <input type="text">
+          <input type="text" [(ngModel)]="newInventory.name">
         </div>
         <div class="ttl mrg-top-15">UPC</div>
         <div class="input">
@@ -305,11 +306,13 @@
         <div class="ttl mrg-top-15">How do you count this?</div>
         <div class="select select-light">
           <select materialize="material_select"
-            (ngModelChange)="checkConsPackage($event)"
-            [ngModel]="newInventoryPackage.consumable_unit_type"
+            [(ngModel)]="newInventory.inventory_by"
             [materializeSelectOptions]="inventoryService.consumablePackageList">
-            <option value="">N/A</option>
-            <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
+            <option value="Package">Package</option>
+            <option value="Sub-Package">Sub-Package</option>
+            <option value="Consumable Unit">Consumable Unit</option>
+            <!--<option value="">N/A</option>-->
+            <!--<option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>-->
           </select>
         </div>
 
@@ -381,9 +384,11 @@
           </div>
           <div class="col s4">
             <div class="select">
-              <select materialize="material_select">
+              <select materialize="material_select"
+                [(ngModel)]="item.selectedVendor"
+              >
                 <option>Auto</option>
-                <option *ngFor="let vendor of item.vendors" value="{{ vendor }}">{{ vendor.vendor_name }}</option>
+                <option *ngFor="let vendor of item.vendors" value="{{ vendor.vendor_name }}">{{ vendor.vendor_name }}</option>
               </select>
             </div>
           </div>
@@ -424,13 +429,13 @@
               </div>
               <div class="row">
                 <div class="col s4 input">
-                  <input type="text" placeholder="Qty.">
+                  <input type="text" placeholder="Qty." [(ngModel)]="location.critical_level">
                 </div>
                 <div class="col s4 input">
-                  <input type="text" placeholder="Qty.">
+                  <input type="text" placeholder="Qty." [(ngModel)]="location.fully_stocked">
                 </div>
                 <div class="col s4 input">
-                  <input type="text" placeholder="Qty.">
+                  <input type="text" placeholder="Qty." [(ngModel)]="location.overstock_level">
                 </div>
               </div>
               <div *ngIf="location.trackingMethod != 'Scheduled'">
@@ -444,23 +449,26 @@
                 <div class="row">
                   <div class="col s4 input">
                     <input materialize="pickadate"
+                      [(ngModel)]="location.auto_reorder_start_date"
                       [materializeParams]="[{format:'mm/dd/yyyy', selectMonths: true, selectYears: 10}]"
                       type="text"
                       placeholder = 'MM/DD/YYYY'
                     >
                   </div>
                   <div class="col s2 input">
-                    <input type="text">
+                    <input type="text" [(ngModel)]="location.auto_reorder_frequency">
                   </div>
                   <div class="col s4">
                     <div class="input select">
-                      <select materialize="material_select">
+                      <select materialize="material_select"
+                        [(ngModel)]="location.auto_reorder_timespan"
+                      >
                         <option>Month(s)</option>
                       </select>
                     </div>
                   </div>
                   <div class="col s2 input">
-                    <input type="text" placeholder="Qty.">
+                    <input type="text" placeholder="Qty." [(ngModel)]="location.auto_reorder_qty">
                   </div>
                 </div>
               </div>
@@ -476,7 +484,7 @@
                   {{ stock.name }}
                 </div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty.">
+                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
                 </div>
               </div>
             </div>
@@ -502,23 +510,26 @@
     <div class="row uptracker-form">
       <div class="col s6">
         <div class="ttl">Department</div>
-        <div class="select">
+        <div class="select select-light">
           <select materialize="material_select"
+            [(ngModel)]="newInventory.department"
             [materializeSelectOptions]="departmentCollection$ | async">
             <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
           </select>
         </div>
         <div class="ttl mrg-top-15">Category</div>
-        <div class="select">
+        <div class="select select-light">
           <select materialize="material_select"
+            [(ngModel)]="newInventory.category"
             [materializeSelectOptions]="productCategoriesCollection$ | async">
             <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}
             </option>
           </select>
         </div>
         <div class="ttl mrg-top-15">Accounting</div>
-        <div class="select">
+        <div class="select select-light">
           <select materialize="material_select"
+            [(ngModel)]="newInventory.account_category"
             [materializeSelectOptions]="productAccountingCollection$ | async">
             <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}
             </option>
@@ -527,14 +538,16 @@
         <div class="row mrg-top-15">
           <div class="col s6">
             <div class="input-checkbox  checkbox">
-              <input id="taxExempt" type="checkbox">
+              <input id="taxExempt" type="checkbox"
+                [(ngModel)]="newInventory.tax_exempt">
               <label for="taxExempt"></label>
               <span>Tax Exempt</span>
             </div>
           </div>
           <div class="col s6">
             <div class="input-checkbox  checkbox">
-              <input id="trackable" type="checkbox">
+              <input id="trackable" type="checkbox"
+                [(ngModel)]="newInventory.trackakble">
               <label for="trackable"></label>
               <span>Trackable</span>
             </div>
@@ -542,13 +555,15 @@
         </div>
         <div class="ttl">Description</div>
         <div class="textarea">
-          <textarea class="materialize-textarea"></textarea>
+          <textarea class="materialize-textarea" type="text"
+            [(ngModel)]="newInventory.description"></textarea>
         </div>
       </div>
       <div class="col s6">
         <div class="ttl">Notes</div>
         <div class="textarea">
-          <textarea class="materialize-textarea"></textarea>
+          <textarea class="materialize-textarea"
+            [(ngModel)]="newInventory.notes"></textarea>
         </div>
         <div class="ttl mrg-top-15">MSDS/Hazardous Form</div>
         <div *ngFor="let msds of (msds$ | async)" class="attachments mrg-btm-5">
@@ -568,7 +583,7 @@
           <a href="{{ msds.public_url }}"  target="_blank" class="link-icon">
             <fa class="tealish-text invis" name="external-link"></fa>
           </a>
-          <fa class="red-text invis" name="trash" (click)="removeFile(file)"></fa>
+          <fa class="red-text invis" name="trash" (click)="removeMsds(msds)"></fa>
         </div>
         <div class="input input-file">
           <input type="file" (change)="onMSDCFileUpload($event)">

@@ -79,3 +79,39 @@ export class AttachmentFiles {
   type: string;
 }
 
+export class NewInventoryStorageLocation {
+  name: string = '';
+  inventory_location_id: string = '';
+  on_hand: number = 0;
+}
+
+export class NewInventoryLocation {
+  name: string = '';
+  location_id: string = '';
+  critical_level: number = 0;
+  fully_stocked: number = 0;
+  overstock_level: number = 0;
+  tracking_method: string = '';
+  auto_reorder_start_date = null;
+  auto_reorder_frequency = null;
+  auto_reorder_timespan = null;
+  auto_reorder_qty = null;
+  storage_locations: NewInventoryStorageLocation[] = [];
+}
+
+export class NewInventory {
+  name: string = '';
+  products: string[] = [];
+  department: string = '';
+  category: string = '';
+  account_category: string = '';
+  tax_exempt: boolean = false;
+  trackable: boolean = false;
+  description: string = '';
+  notes: string = '';
+  msds = [];
+  attachments = [];
+  image: string = '';
+  locations: NewInventoryLocation[] =[];
+  inventory_by: string = '';
+}

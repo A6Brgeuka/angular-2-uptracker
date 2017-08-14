@@ -5,7 +5,8 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import {
-  AttachmentFiles, InventorySearchResults, NewInventoryPackage,
+  AttachmentFiles, InventorySearchResults, NewInventory, NewInventoryLocation, NewInventoryPackage,
+  NewInventoryStorageLocation,
   searchData
 } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
@@ -51,6 +52,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public saveAdded$: any = new Subject<any>();
   
   public newInventoryPackage: any = new NewInventoryPackage;
+  public newInventory: any = new NewInventory;
+  public newInventoryLocation: any = new NewInventoryLocation;
+  public newInventoryStorageLocation: any = new NewInventoryStorageLocation;
   
   public outerPackageList: any[];
   public innerPackageList: any[];
@@ -74,6 +78,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public msds$:Observable<any>;
   public loadMsds$: Subject<any> = new Subject<any>();
   public addMsdsToMsds$: Subject<any> = new Subject<any>();
+  public deleteFromMsds$: Subject<any> = new Subject<any>();
   public productImg$: ReplaySubject<any> = new ReplaySubject(1);
   public msds: any;
   public uploadedImage;
@@ -143,7 +148,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.saveAdded$
     .switchMap(() => {
       return this.items$
-      .switchMap(items => this.inventoryService.addItemsToInventory(items, this.newInventoryPackage))
+      .switchMap(items => this.inventoryService.addItemsToInventory(items, this.newInventory, this.locations, this.newInventoryPackage))
     })
     .subscribe(newInventory => {
         this.dismissModal()
@@ -227,7 +232,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.items$.subscribe(res => {
       this.showSelect = false;
       if(res.length) {
-        
+        this.newInventory.name = res[0].name;
         this.outerPackageList = [res[0].package_type];
         this.innerPackageList = [res[0].sub_package.properties.unit_type];
         this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
@@ -297,15 +302,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.productImg$
     .switchMap((img: any) => this.inventoryService.uploadAttachment(img))
-    .subscribe();
+    .subscribe((image: any) => {
+        this.newInventory.image = image.public_url
+    });
     
     this.locations$.subscribe(location => {
       this.locations = location;
       this.locations[0].active = true;
       
-      console.log(this.locations)
+      console.log(this.locations);
     })
     
+    //console.log(this.newInventory);
   }
   
   ngOnDestroy() {
@@ -317,7 +325,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   checkExistedProduct(itemsToCheck) {
     return (source) =>
       source.map(resItems => {
-        
         const existedItems: any[] = _.filter(resItems, 'exists');
         
         const notExistedItems: any[] = _.reject(resItems, 'exists');
@@ -461,6 +468,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   saveAdded(){
     this.saveAdded$.next();
+    console.log(this.locations);
+    
   }
   
   nextPackage(value) {
@@ -535,15 +544,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         return msds;
       });
     });
-
+    
+    let deleteFromMsds$ = this.deleteFromMsds$
+    .switchMap((deleteMsds) =>
+      this.msds$.first()
+      .map((msds: any) =>
+        msds.filter((el: any) => el.id !== deleteMsds.id)
+      )
+    );
+    
     this.msds$ = Observable.merge(
       this.loadMsds$,
       addMsdsToMsds$,
-      //deleteFromFile$
+      deleteFromMsds$
     ).publishReplay(1).refCount();
     this.msds$.subscribe(res => {
-      //console.log('files',res);
-      this.msds = res;
+      console.log('files',res);
+      this.newInventory.msds = res;
       //this.hasFiles = res.length > 0;
     });
   }
@@ -559,34 +576,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       });
     });
     
-    //let tmpFile;
-    //let deleteFromFile$ = this.deleteFromFile$
-    //.switchMap((attach: AttachmentFiles) => {
-    //  tmpFile = attach;
-    //  return this.inventoryService.deleteAttachment(attach);
-    //})
-    //.filter((status:any)=>status)
-    //.switchMap(() => {
-    //  this.file$.subscribe((res) => {
-    //    console.log('Model Service delete from file ' + res);
-    //  });
-    //  return this.file$.first()
-    //  .map((file: any) => {
-    //    return file.filter((el: any) => {
-    //      return el.id != tmpFile.id;
-    //    });
-    //  });
-    //});
+    let deleteFromFile$ = this.deleteFromFile$
+    .switchMap((deleteFiles) =>
+      this.file$.first()
+      .map((files: any) =>
+        files.filter((el: any) => el.id !== deleteFiles.id)
+      )
+    );
     
     this.file$ = Observable.merge(
       this.loadFile$,
       this.updateFile$,
       addFileToFile$,
-      //deleteFromFile$
+      deleteFromFile$
     ).publishReplay(1).refCount();
     this.file$.subscribe(res => {
-      //console.log('files',res);
-      this.file = res;
+      console.log('files',res);
+      this.newInventory.attachments = res;
       //this.hasFiles = res.length > 0;
     });
   }
@@ -653,6 +659,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   removeFile(file) {
     console.log(`remove ${file.file_name}`);
     this.deleteFromFile$.next(file);
+  }
+  removeMsds(msds) {
+    console.log(`remove ${msds.file_name}`);
+    this.deleteFromMsds$.next(msds);
   }
   
   getType(mime){
