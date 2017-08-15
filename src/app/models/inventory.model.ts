@@ -79,13 +79,13 @@ export class AttachmentFiles {
   type: string;
 }
 
-export class NewInventoryStorageLocation {
+export class InventoryStorageLocation {
   name: string = '';
   inventory_location_id: string = '';
   on_hand: number = 0;
 }
 
-export class NewInventoryLocation {
+export class InventoryLocation {
   name: string = '';
   location_id: string = '';
   critical_level: number = 0;
@@ -93,15 +93,16 @@ export class NewInventoryLocation {
   overstock_level: number = 0;
   tracking_method: string = '';
   auto_reorder_start_date = null;
-  auto_reorder_frequency = null;
+  auto_reorder_frequency = 1;
   auto_reorder_timespan = null;
   auto_reorder_qty = null;
-  storage_locations: NewInventoryStorageLocation[] = [];
+  storage_locations: InventoryStorageLocation[] = [];
+
 }
 
-export class NewInventory {
+export class InventoryModel {
   name: string = '';
-  products: string[] = [];
+  products: ProductModel[] = [];
   department: string = '';
   category: string = '';
   account_category: string = '';
@@ -112,6 +113,16 @@ export class NewInventory {
   msds = [];
   attachments = [];
   image: string = '';
-  locations: NewInventoryLocation[] =[];
+  locations: InventoryLocation[] =[];
   inventory_by: string = '';
 }
+
+export class ProductModel {
+  product_id:"";
+  variant_id:"";
+  vendor_name:null;
+  vendor_id:null
+}
+
+//a  = new InventoryModel();
+//a.products = elements.map(ff => new ProductModel());

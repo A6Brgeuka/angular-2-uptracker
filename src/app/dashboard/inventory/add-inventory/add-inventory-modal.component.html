@@ -7,7 +7,7 @@
         <fa name="chevron-left"></fa>
         Back
       </button>
-      Add Inventory Item
+      Add Inventory Group
       <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light"
         *ngIf="step4.className != 'active'" (click)="nextTab()"
         [disabled] = '!items.length'>
@@ -252,11 +252,6 @@
         <div class="input">
           <input type="text" [(ngModel)]="newInventory.name">
         </div>
-        <div class="ttl mrg-top-15">UPC</div>
-        <div class="input">
-          <input type="text">
-          <a><fa name="barcode barcode-pdg"></fa></a>
-        </div>
         <div class="ttl mrg-top-15">How do you receive this?</div>
         <div class="row custom-width low-padding mrg-btm-5">
           <div class="col s1 ">Package</div>
@@ -307,12 +302,10 @@
         <div class="select select-light">
           <select materialize="material_select"
             [(ngModel)]="newInventory.inventory_by"
-            [materializeSelectOptions]="inventoryService.consumablePackageList">
+          >
             <option value="Package">Package</option>
             <option value="Sub-Package">Sub-Package</option>
-            <option value="Consumable Unit">Consumable Unit</option>
-            <!--<option value="">N/A</option>-->
-            <!--<option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>-->
+            <option value="Consumable Unit" [selected]="true" >Consumable Unit</option>
           </select>
         </div>
 
@@ -383,12 +376,12 @@
             </div>
           </div>
           <div class="col s4">
-            <div class="select">
+            <div class="select select-light">
               <select materialize="material_select"
                 [(ngModel)]="item.selectedVendor"
               >
-                <option>Auto</option>
-                <option *ngFor="let vendor of item.vendors" value="{{ vendor.vendor_name }}">{{ vendor.vendor_name }}</option>
+                <option [ngValue]="" selected>Auto</option>
+                <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor.vendor_name }}</option>
               </select>
             </div>
           </div>
@@ -497,7 +490,7 @@
                   {{ stock.name }}
                 </div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty.">
+                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
                 </div>
               </div>
             </div>
@@ -547,7 +540,7 @@
           <div class="col s6">
             <div class="input-checkbox  checkbox">
               <input id="trackable" type="checkbox"
-                [(ngModel)]="newInventory.trackakble">
+                [(ngModel)]="newInventory.trackable">
               <label for="trackable"></label>
               <span>Trackable</span>
             </div>
@@ -587,7 +580,6 @@
         </div>
         <div class="input input-file">
           <input type="file" (change)="onMSDCFileUpload($event)">
-          <!--<div class="ttl input-placeholder file-added" *ngIf="msds">{{ msds.file_name }}</div>-->
           <div class="ttl tealish-text input-placeholder">Upload File</div>
         </div>
         <div class="ttl mrg-top-15">Attachments</div>

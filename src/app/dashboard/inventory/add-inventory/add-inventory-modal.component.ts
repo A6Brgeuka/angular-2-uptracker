@@ -5,8 +5,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import {
-  AttachmentFiles, InventorySearchResults, NewInventory, NewInventoryLocation, NewInventoryPackage,
-  NewInventoryStorageLocation,
+  AttachmentFiles, InventoryModel, InventorySearchResults, NewInventoryPackage,
   searchData
 } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
@@ -52,9 +51,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public saveAdded$: any = new Subject<any>();
   
   public newInventoryPackage: any = new NewInventoryPackage;
-  public newInventory: any = new NewInventory;
-  public newInventoryLocation: any = new NewInventoryLocation;
-  public newInventoryStorageLocation: any = new NewInventoryStorageLocation;
+  public newInventory: any = new InventoryModel;
+  //public newInventoryLocation: any = new NewInventoryLocation;
+  //public newInventoryStorageLocation: any = new NewInventoryStorageLocation;
   
   public outerPackageList: any[];
   public innerPackageList: any[];

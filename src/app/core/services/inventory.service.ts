@@ -139,20 +139,24 @@ export class InventoryService extends ModelService {
     return this.restangular.one('inventory', id || 1).customGET().map((res: any) => res.data);
   }
   
-  addItemsToInventory(data: any, newInventory, locations, newInventoryPackage) {
+  addItemsToInventory(data, newInventory, locations, newInventoryPackage) {
+    debugger;
     let payload = {
-      products: data.map(({product_id,variant_id}: any) => ({
-        product_id,
-        variant_id,
-        vendor_name:null,
-        vendor_id:null
-      })),
+      products: data.map((product) => {
+        debugger;
+        return {
+          product_id: product.product_id,
+          variant_id: product.variant_id,
+          vendor_name:product.selectedVendor.vendor_name,
+          vendor_id:product.selectedVendor.vendor_id
+        }
+      }),
       name: newInventory.name,
       department: newInventory.department,
       category: newInventory.category,
       account_category: newInventory.account_category,
       tax_exempt: newInventory.tax_exempt,
-      trackakble: newInventory.trackable,
+      trackable: newInventory.trackable,
       description: newInventory.description,
       notes: newInventory.notes,
       msds: newInventory.msds,
@@ -182,13 +186,14 @@ export class InventoryService extends ModelService {
       }),
       package_type: newInventoryPackage.package_type,
       sub_package_type: newInventoryPackage.sub_package_type,
-      sub_package_qty: newInventoryPackage.sub_package_qty,
+      sub_package_qty: newInventoryPackage.sub_package_qty[0],
       consumable_unit_type: newInventoryPackage.consumable_unit_type,
-      consumable_unit_qty: newInventoryPackage.consumable_unit_qty
+      consumable_unit_qty: newInventoryPackage.consumable_unit_qty[0]
     };
     return this.restangular.all('inventory').customPOST(payload)
     .map((newInventory: any) =>
       {
+        debugger;
         this.totalCount$.next(this.totalCount$['_value']+1);
         this.addCollectionToCollection$.next(newInventory.data);
       }
