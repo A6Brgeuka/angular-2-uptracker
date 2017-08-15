@@ -5,7 +5,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import {
-  AttachmentFiles, InventoryModel, InventorySearchResults, NewInventoryPackage,
+  AttachmentFiles, InventorySearchResults, InventoryPackage,
   searchData
 } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
@@ -16,6 +16,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { debug } from 'util';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { FileUploadService } from '../../../core/services/file-upload.service';
+import { InventoryModel, InventoryProductModel } from '../../../models/create-inventory.model';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -50,10 +51,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public saveAdded$: any = new Subject<any>();
   
-  public newInventoryPackage: any = new NewInventoryPackage;
+  public newInventoryPackage: any = new InventoryPackage;
   public newInventory: any = new InventoryModel;
-  //public newInventoryLocation: any = new NewInventoryLocation;
-  //public newInventoryStorageLocation: any = new NewInventoryStorageLocation;
   
   public outerPackageList: any[];
   public innerPackageList: any[];
@@ -229,6 +228,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ).publishReplay(1).refCount();
     
     this.items$.subscribe(res => {
+      this.newInventory.products = res.map((el:any) => {
+        //debugger;
+        new InventoryProductModel(el)});
       this.showSelect = false;
       if(res.length) {
         this.newInventory.name = res[0].name;
@@ -312,13 +314,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       console.log(this.locations);
     })
     
-    //console.log(this.newInventory);
   }
   
   ngOnDestroy() {
     this.saveAdded$.unsubscribe();
     this.productImg$.unsubscribe();
-    //this.locations$.unsubscribe();
   }
   
   checkExistedProduct(itemsToCheck) {
@@ -468,7 +468,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   saveAdded(){
     this.saveAdded$.next();
     console.log(this.locations);
-    
   }
   
   nextPackage(value) {
@@ -560,7 +559,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.msds$.subscribe(res => {
       console.log('files',res);
       this.newInventory.msds = res;
-      //this.hasFiles = res.length > 0;
     });
   }
   // File load, add, delete actions

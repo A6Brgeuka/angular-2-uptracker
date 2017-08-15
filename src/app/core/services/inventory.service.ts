@@ -140,10 +140,8 @@ export class InventoryService extends ModelService {
   }
   
   addItemsToInventory(data, newInventory, locations, newInventoryPackage) {
-    debugger;
     let payload = {
       products: data.map((product) => {
-        debugger;
         return {
           product_id: product.product_id,
           variant_id: product.variant_id,
