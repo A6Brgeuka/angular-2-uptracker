@@ -168,7 +168,7 @@
         [(ngModel)]="location.zip_code"
         name="zip_code"
         #zip_code="ngModel"
-        required minlength="5"
+        required minlength="4"
         type="text">
       <div [hidden]="zip_code.valid || zip_code.pristine" class="error red-text left-align">
         Zip code is required.
