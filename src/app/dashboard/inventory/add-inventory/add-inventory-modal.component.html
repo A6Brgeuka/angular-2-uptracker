@@ -135,7 +135,7 @@
           <div *ngIf="total" class="row border-bottom">
             <div class="col s12 ">
               <div class="input-checkbox checkbox inline-block">
-              <input [(ngModel)]="checkBoxCandidates" (change)="selectAllCandidates()" id="variantsAll" type="checkbox">
+              <input [(ngModel)]="checkBoxCandidates" [disabled]="!matchingProductDisabled" (change)="selectAllCandidates()" id="variantsAll" type="checkbox">
               <label for="variantsAll"></label>
               </div>
               <span class="bold">Matching Products</span>
@@ -149,8 +149,8 @@
             *ngFor="let item of (resultItems$ | async); let i=index;"
             class="row search-results" [class.warning]="item.notActive">
             <div class="col s9 product-row-fields">
-              <div class="input-checkbox  checkbox" *ngIf="!item.notActive">
-                <input [ngModel]="item.checked" id="variant{{ i }}" type="checkbox" (click)="putCheckbox(item)">
+              <div class="input-checkbox  checkbox">
+                <input [ngModel]="item.checked" [disabled]="item.notActive" id="variant{{ i }}" type="checkbox" (click)="putCheckbox(item)">
                 <label for="variant{{ i }}"></label>
               </div>
               <div class="image" *ngIf="(item.images && item.images[0])"

@@ -61,6 +61,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public resultItems$: Observable<any>;
   public checkedProduct$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public checkedProduct: any[] = [];
+  public matchingProductDisabled: boolean = true;
   
   public showSelect: boolean = true;
   public autocompleteProducts: any =  [];
@@ -266,7 +267,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$)
     .map(([packageType,searchResults,checkedProduct]: any) => {
-      
       let filteredResults = _.filter(searchResults,packageType);
       
       let checkedResults = searchResults.reduce((acc: any[], item) => {
@@ -371,6 +371,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   putCheckbox(item) {
     this.showSelect = false;
     item.checked = !item.checked;
+    //debugger;
+    //if (!this.checkedProduct.length) {
+    //  this.matchingProductDisabled = false;
+    //}
     
     if(!this.checkedProduct.length && !this.items.length) {
      
@@ -418,6 +422,35 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     },0.6);
   }
   
+  selectAllCandidates() {
+    this.resultItems$ = this.resultItems$.map((items) => {
+      console.log(items);
+      return items.map(item => {
+        if (!item.notActive) {
+          item.checked = this.checkBoxCandidates;
+        }
+        return item;
+      });
+      
+    })
+    //this.searchResults$.next(
+    //  this.searchResults.map((item: InventorySearchResults) => {
+    //    debugger;
+    //    item.checked = this.checkBoxCandidates;
+    //    return item;
+    //  })
+    //);
+  }
+  
+  selectAllItems() {
+    this.loadItems$.next(
+      this.items.map((item: InventorySearchResults) => {
+        item.checked = this.checkBoxItems;
+        return item;
+      })
+    );
+  }
+  
   bulkAdd() {
     this.resultItems$
     .take(1)
@@ -447,25 +480,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     //]);
     console.log(this.newProductData);
     this.toggleCustomAdd();
-  }
-  
-  selectAllCandidates() {
-    console.log(this.checkBoxCandidates);
-    this.searchResults$.next(
-      this.searchResults.map((item: InventorySearchResults) => {
-        item.checked = this.checkBoxCandidates;
-        return item;
-      })
-    );
-  }
-  
-  selectAllItems() {
-    this.loadItems$.next(
-      this.items.map((item: InventorySearchResults) => {
-        item.checked = this.checkBoxItems;
-        return item;
-      })
-    );
   }
   
   saveAdded(){

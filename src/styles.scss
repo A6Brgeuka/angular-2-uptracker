@@ -1323,3 +1323,6 @@ input[type=range] {
 .mrg-btm-5 {
   margin-bottom: 5px;
 }
+[type="checkbox"]:not(:checked):disabled + label:before {
+  background: transparent;
+}
