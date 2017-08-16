@@ -54,22 +54,6 @@ export class searchData {
   results:InventorySearchResults[];
 }
 
-export class InventoryPackage {
-  package_type:string = null;
-  sub_package_type:string = null;
-  sub_package_qty:string = null;
-  consumable_unit_type:string = null;
-  consumable_unit_qty:string = null;
-  
-  constructor(obj?:any) {
-    for (let field in obj) {
-      if (typeof this[field] !== "undefined") {
-        this[field] = obj && obj[field];
-      }
-    }
-  }
-}
-
 export class AttachmentFiles {
   file_name: string;
   s3_object: string;

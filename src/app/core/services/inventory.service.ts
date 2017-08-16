@@ -139,56 +139,8 @@ export class InventoryService extends ModelService {
     return this.restangular.one('inventory', id || 1).customGET().map((res: any) => res.data);
   }
   
-  addItemsToInventory(data, newInventory, locations, newInventoryPackage) {
-    let payload = {
-      products: data.map((product) => {
-        return {
-          product_id: product.product_id,
-          variant_id: product.variant_id,
-          vendor_name:product.selectedVendor.vendor_name,
-          vendor_id:product.selectedVendor.vendor_id
-        }
-      }),
-      name: newInventory.name,
-      department: newInventory.department,
-      category: newInventory.category,
-      account_category: newInventory.account_category,
-      tax_exempt: newInventory.tax_exempt,
-      trackable: newInventory.trackable,
-      description: newInventory.description,
-      notes: newInventory.notes,
-      msds: newInventory.msds,
-      attachments: newInventory.attachments,
-      image: newInventory.image,
-      inventory_by: newInventory.inventory_by,
-      locations: locations.map((location) => {
-        return {
-          name: location.name,
-          location_id: location.id,
-          critical_level: location.critical_level,
-          fully_stocked: location.fully_stocked,
-          overstock_level: location.overstock_level,
-          tracking_method: location.tracking_method,
-          auto_reorder_start_date: location.auto_reorder_start_date,
-          auto_reorder_frequency: location.auto_reorder_frequency,
-          auto_reorder_timespan: location.auto_reorder_timespan,
-          auto_reorder_qty: location.auto_reorder_qty,
-          storage_locations: location.inventory_locations.map((storage) => {
-            return {
-              name: storage.name,
-              inventory_location_id: storage.id,
-              on_hand: storage.on_hand
-            }
-          })
-        }
-      }),
-      package_type: newInventoryPackage.package_type,
-      sub_package_type: newInventoryPackage.sub_package_type,
-      sub_package_qty: newInventoryPackage.sub_package_qty[0],
-      consumable_unit_type: newInventoryPackage.consumable_unit_type,
-      consumable_unit_qty: newInventoryPackage.consumable_unit_qty[0]
-    };
-    return this.restangular.all('inventory').customPOST(payload)
+  addItemsToInventory(newInventory) {
+    return this.restangular.all('inventory').customPOST(newInventory)
     .map((newInventory: any) =>
       {
         debugger;

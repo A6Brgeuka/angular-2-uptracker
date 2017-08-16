@@ -264,7 +264,7 @@
           <div class="col s1 select select-light custom-select">
             <select materialize="material_select" class="customSelect1"
               (ngModelChange)="checkPackage($event)"
-              [ngModel]="newInventoryPackage.package_type"
+              [ngModel]="newInventory.package_type"
               [materializeSelectOptions]="inventoryService.outerPackageList"
               *ngIf="showSelect"
             >
@@ -273,24 +273,24 @@
             </select>
           </div>
           <div class="col s1 input">
-            <input placeholder="Qty." type="text" [(ngModel)]="newInventoryPackage.sub_package_qty">
+            <input placeholder="Qty." type="text" [(ngModel)]="newInventory.sub_package_qty">
           </div>
           <div class="col s1 select select-light custom-select">
             <select materialize="material_select"
               (ngModelChange)="checkSubPackage($event)"
-              [ngModel]="newInventoryPackage.sub_package_type"
+              [ngModel]="newInventory.sub_package_type"
               [materializeSelectOptions]="inventoryService.innerPackageList">
               <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
               <option *ngFor="let innerPackage of innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
             </select>
           </div>
           <div class="col s1 input">
-            <input placeholder="Qty." type="text" [(ngModel)]="newInventoryPackage.consumable_unit_qty">
+            <input placeholder="Qty." type="text" [(ngModel)]="newInventory.consumable_unit_qty">
           </div>
           <div class="col s1 select select-light custom-select">
             <select materialize="material_select"
               (ngModelChange)="checkConsPackage($event)"
-              [ngModel]="newInventoryPackage.consumable_unit_type"
+              [ngModel]="newInventory.consumable_unit_type"
               [materializeSelectOptions]="inventoryService.consumablePackageList">
               <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
               <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
@@ -341,7 +341,6 @@
           </div>
         </div>
       </div>
-
       <div class="col s6">
         <div class="row border-bottom">
           <div class="col s12 ttl">
@@ -352,7 +351,7 @@
           </div>
         </div>
         <div
-          *ngFor="let item of (items$ | async); let i=index;"
+          *ngFor="let item of newInventory.products; let i=index;"
           class="row added-items">
           <div class="col s8 product-row-fields">
             <div class="input-checkbox  checkbox">
@@ -378,7 +377,8 @@
           <div class="col s4">
             <div class="select select-light">
               <select materialize="material_select"
-                [(ngModel)]="item.selectedVendor"
+                (ngModelChange)="selectVendor(item, $event)"
+                [ngModel]="item.selectedVendor"
               >
                 <option [ngValue]="" selected>Auto</option>
                 <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor.vendor_name }}</option>
@@ -394,26 +394,26 @@
   <div id="step3">
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
       <ul class="tabs location-tabs" materialize="tabs">
-        <li class="tab" *ngFor="let location of (locations$ | async)">
-          <a href="#{{location.id}}" (click)="selectTab(location)">{{ location.name }}</a>
+        <li class="tab" *ngFor="let location of newInventory.locations">
+          <a href="#{{location.location_id}}" (click)="selectTab(location)">{{ location.name }}</a>
         </li>
       </ul>
     </div>
-    <div *ngFor="let location of (locations$ | async)">
-      <div id="{{ location.id }}" [hidden]="!location.active">
+    <div *ngFor="let location of newInventory.locations">
+      <div id="{{ location.location_id }}" [hidden]="!location.active">
         <div class="row">
           <div class="col s6 custom-col-pdg">
             <div class="ttl">Tracking Method</div>
             <div class="select select-light">
               <select materialize="material_select"
                 (ngModelChange)="changeTrackingMethod(location, $event)"
-                [ngModel]="location?.trackingMethod">
+                [ngModel]="location?.tracking_method">
                 <option value="Perpetual">Perpetual</option>
                 <option value="None">None</option>
                 <option value="Scheduled">Scheduled</option>
               </select>
             </div>
-            <div *ngIf="location.trackingMethod != 'None'">
+            <div *ngIf="location.tracking_method != 'None'">
               <div class="ttl mrg-top-15">Inventory Levels</div>
               <div class="row mrg-btm-5">
                 <div class="col s4">Critical</div>
@@ -431,7 +431,7 @@
                   <input type="text" placeholder="Qty." [(ngModel)]="location.overstock_level">
                 </div>
               </div>
-              <div *ngIf="location.trackingMethod != 'Scheduled'">
+              <div *ngIf="location.tracking_method != 'Scheduled'">
                 <div class="ttl">Auto Reorder</div>
                 <div class="row">
                   <div class="col s4">Start Date</div>
@@ -452,11 +452,11 @@
                     <input type="text" [(ngModel)]="location.auto_reorder_frequency">
                   </div>
                   <div class="col s4">
-                    <div class="input select">
+                    <div class="input select select-light">
                       <select materialize="material_select"
                         [(ngModel)]="location.auto_reorder_timespan"
                       >
-                        <option>Month(s)</option>
+                        <option value="Month(s)">Month(s)</option>
                       </select>
                     </div>
                   </div>
@@ -471,7 +471,7 @@
             <div class="row">
               <div class="ttl ttl-stock border-btm col s12">Back Stock</div>
             </div>
-            <div *ngFor="let stock of location.inventory_locations">
+            <div *ngFor="let stock of location.storage_locations">
               <div class="row border-btm stock" *ngIf="!stock.floor_stock">
                 <div class="col s10">
                   {{ stock.name }}
@@ -484,7 +484,7 @@
             <div class="row">
               <div class="ttl ttl-stock border-btm col s12">Floor Stock</div>
             </div>
-            <div *ngFor="let stock of location.inventory_locations">
+            <div *ngFor="let stock of location.storage_locations">
               <div class="row border-btm stock" *ngIf="stock.floor_stock">
                 <div class="col s10">
                   {{ stock.name }}

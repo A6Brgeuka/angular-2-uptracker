@@ -5,7 +5,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import {
-  AttachmentFiles, InventorySearchResults, InventoryPackage,
+  AttachmentFiles, InventorySearchResults,
   searchData
 } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
@@ -16,7 +16,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { debug } from 'util';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { FileUploadService } from '../../../core/services/file-upload.service';
-import { InventoryModel, InventoryProductModel } from '../../../models/create-inventory.model';
+import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -51,7 +51,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public saveAdded$: any = new Subject<any>();
   
-  public newInventoryPackage: any = new InventoryPackage;
   public newInventory: any = new InventoryModel;
   
   public outerPackageList: any[];
@@ -120,8 +119,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.outerPackageList = [this.items[0].package_type];
         this.innerPackageList = [this.items[0].sub_package.properties.unit_type];
         this.consumablePackageList = [this.items[0].consumable_unit.properties.unit_type];
-        this.newInventoryPackage.sub_package_qty = [this.items[0].sub_package.properties.qty];
-        this.newInventoryPackage.consumable_unit_qty = [this.items[0].consumable_unit.properties.qty];
+        this.newInventory.sub_package_qty = [this.items[0].sub_package.properties.qty];
+        this.newInventory.consumable_unit_qty = [this.items[0].consumable_unit.properties.qty];
   
         this.checkPackage(this.items[0].package_type);
         this.checkSubPackage(this.items[0].sub_package.properties.unit_type);
@@ -146,7 +145,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.saveAdded$
     .switchMap(() => {
       return this.items$
-      .switchMap(items => this.inventoryService.addItemsToInventory(items, this.newInventory, this.locations, this.newInventoryPackage))
+      .switchMap(items => this.inventoryService.addItemsToInventory(this.newInventory))
     })
     .subscribe(newInventory => {
         this.dismissModal()
@@ -228,25 +227,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ).publishReplay(1).refCount();
     
     this.items$.subscribe(res => {
-      this.newInventory.products = res.map((el:any) => {
-        //debugger;
-        new InventoryProductModel(el)});
+      this.newInventory.products = res.map((el:any) => new InventoryProductModel(el));
       this.showSelect = false;
       if(res.length) {
         this.newInventory.name = res[0].name;
         this.outerPackageList = [res[0].package_type];
         this.innerPackageList = [res[0].sub_package.properties.unit_type];
         this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
-        this.newInventoryPackage.sub_package_qty = [res[0].sub_package.properties.qty];
-        this.newInventoryPackage.consumable_unit_qty = [res[0].consumable_unit.properties.qty];
+        this.newInventory.sub_package_qty = [res[0].sub_package.properties.qty];
+        this.newInventory.consumable_unit_qty = [res[0].consumable_unit.properties.qty];
         
         this.checkPackage(res[0].package_type);
         this.checkSubPackage(res[0].sub_package.properties.unit_type);
         this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
       }
       if(!res.length) {
-        this.newInventoryPackage.sub_package_qty = null;
-        this.newInventoryPackage.consumable_unit_qty = null;
+        this.newInventory.sub_package_qty = null;
+        this.newInventory.consumable_unit_qty = null;
       }
       if(!res.length && !this.checkedProduct.length) {
         
@@ -310,8 +307,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.locations$.subscribe(location => {
       this.locations = location;
       this.locations[0].active = true;
-      
-      console.log(this.locations);
+      this.newInventory.locations = location.map(el => {
+        el.location_id = el.id;
+        el.storage_locations = el.inventory_locations.map(storage => {
+          storage.inventory_location_id = storage.id;
+          return new InventoryStorageLocationModel(storage)
+        });
+        return new InventoryLocationModel(el);
+      });
     })
     
   }
@@ -467,7 +470,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   saveAdded(){
     this.saveAdded$.next();
-    console.log(this.locations);
   }
   
   nextPackage(value) {
@@ -492,18 +494,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   checkPackage(e) {
-    this.newInventoryPackage.package_type = e;
-    this.nextPackage(this.newInventoryPackage);
+    this.newInventory.package_type = e;
+    this.nextPackage(this.newInventory);
   }
 
   checkSubPackage(e) {
-    this.newInventoryPackage.sub_package_type = e;
-    this.nextPackage(this.newInventoryPackage);
+    this.newInventory.sub_package_type = e;
+    this.nextPackage(this.newInventory);
   }
 
   checkConsPackage(e) {
-    this.newInventoryPackage.consumable_unit_type = e;
-    this.nextPackage(this.newInventoryPackage);
+    this.newInventory.consumable_unit_type = e;
+    this.nextPackage(this.newInventory);
   }
   
   nextTab() {
@@ -523,13 +525,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   selectTab(location) {
-    this.locations.forEach((location) => {
+    this.newInventory.locations.forEach((location) => {
       location.active = false;
     });
   }
   
-  changeTrackingMethod(location, trackingMethod) {
-    location.trackingMethod = trackingMethod;
+  changeTrackingMethod(location, tracking_method) {
+    location.tracking_method = tracking_method;
+  }
+  selectVendor(item, selectedVendor) {
+    item.selectedVendor = selectedVendor;
+    item.vendor_id = selectedVendor.vendor_id;
+    item.vendor_name = selectedVendor.vendor_name;
   }
   // MSDS load, add, delete actions
   msdsActions(): any {
