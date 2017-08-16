@@ -143,7 +143,6 @@ export class InventoryService extends ModelService {
     return this.restangular.all('inventory').customPOST(newInventory)
     .map((newInventory: any) =>
       {
-        debugger;
         this.totalCount$.next(this.totalCount$['_value']+1);
         this.addCollectionToCollection$.next(newInventory.data);
       }
