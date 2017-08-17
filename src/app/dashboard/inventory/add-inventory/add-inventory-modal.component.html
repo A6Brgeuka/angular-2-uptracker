@@ -62,7 +62,7 @@
             <div class="col s12">
               <div class="ttl">Vendor</div>
               <div class="input">
-                <input [(ngModel)]="newProductData.vendor.properties.name"  type="text" placeholder="Vendor Name">
+                <input [(ngModel)]="newProductData.vendor_name"  type="text" placeholder="Vendor Name">
               </div>
             </div>
           </div>
@@ -70,8 +70,17 @@
             <div class="col s12">
               <div class="ttl">Outer Package</div>
               <div class="select select-light">
-                <select title="Package" [(ngModel)]="newProductData.package_type" materialize="material_select">
-                  <option *ngFor="let outerPackage of inventoryService.outerPackageList" value="{{ outerPackage }}">{{outerPackage}}</option>
+                <!--<select title="Package" [(ngModel)]="newProductData.package_type" materialize="material_select">-->
+                  <!--<option *ngFor="let outerPackage of inventoryService.outerPackageList" value="{{ outerPackage }}">{{outerPackage}}</option>-->
+                <!--</select>-->
+                <select materialize="material_select" class="customSelect1"
+                  (ngModelChange)="checkPackage($event)"
+                  [ngModel]="newInventory.package_type"
+                  [materializeSelectOptions]="inventoryService.outerPackageList"
+                  *ngIf="showSelect"
+                >
+                  <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
+                  <option *ngFor="let outerPackage of outerPackageList" [ngValue]="outerPackage">{{outerPackage}}</option>
                 </select>
               </div>
             </div>
@@ -82,13 +91,20 @@
               <div class="row">
                 <div class="col s4">
                   <div class="input">
-                    <input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">
+                    <input [(ngModel)]="newInventory.sub_package_qty" type="text" placeholder="Qty">
                   </div>
                 </div>
                 <div class="col s8">
                   <div class="select select-light">
-                    <select title="Package" [(ngModel)]="newProductData.sub_package.properties.unit_type" materialize="material_select">
-                      <option *ngFor="let innerPackage of inventoryService.innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
+                    <!--<select title="Package" [(ngModel)]="newProductData.sub_package.properties.unit_type" materialize="material_select">-->
+                      <!--<option *ngFor="let innerPackage of inventoryService.innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>-->
+                    <!--</select>-->
+                    <select materialize="material_select"
+                      (ngModelChange)="checkSubPackage($event)"
+                      [ngModel]="newInventory.sub_package_type"
+                      [materializeSelectOptions]="inventoryService.innerPackageList">
+                      <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
+                      <option *ngFor="let innerPackage of innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
                     </select>
                   </div>
                 </div>
@@ -101,13 +117,20 @@
               <div class="row">
                 <div class="col s4">
                   <div class="input">
-                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">
+                    <input [(ngModel)]="newInventory.consumable_unit_qty" type="text" placeholder="Qty">
                   </div>
                 </div>
                 <div class="col s8">
                   <div class="select select-light">
-                    <select title="Package" [(ngModel)]="newProductData.consumable_unit.properties.unit_type" materialize="material_select">
-                      <option *ngFor="let consumablePackage of inventoryService.consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
+                    <!--<select title="Package" [(ngModel)]="newProductData.consumable_unit.properties.unit_type" materialize="material_select">-->
+                      <!--<option *ngFor="let consumablePackage of inventoryService.consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>-->
+                    <!--</select>-->
+                    <select materialize="material_select"
+                      (ngModelChange)="checkConsPackage($event)"
+                      [ngModel]="newInventory.consumable_unit_type"
+                      [materializeSelectOptions]="inventoryService.consumablePackageList">
+                      <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
+                      <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
                     </select>
                   </div>
                 </div>
@@ -369,7 +392,7 @@
                 {{ item?.name }}
               </div>
               <div class="vendor-name">
-                <span>{{ item.vendors[0].vendor_name }} <span *ngIf="item.vendors.length > 1">& {{ item.vendors.length-1 }} more</span></span>
+                <span>{{ item.vendors[0]?.vendor_name }} <span *ngIf="item.vendors.length > 1">& {{ item.vendors.length-1 }} more</span></span>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -381,7 +404,7 @@
                 [ngModel]="item.selectedVendor"
               >
                 <option [ngValue]="" selected>Auto</option>
-                <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor.vendor_name }}</option>
+                <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor?.vendor_name }}</option>
               </select>
             </div>
           </div>

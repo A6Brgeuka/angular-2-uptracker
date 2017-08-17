@@ -46,6 +46,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public loadItems$: Subject<any> = new Subject<any>();
   public addItemsToItems$: Subject<any> = new Subject<any>();
   public deleteFromItems$: Subject<any> = new Subject<any>();
+  public addCustomItemToItems$: Subject<any> = new Subject<any>();
   
   public addCustomProduct: boolean = false;
   
@@ -180,7 +181,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.typeIn$.next(keyword);
   }
   observableSource(keyword: any) {
-    console.log(this.autocompleteProducts);
     return Observable.of(this.autocompleteProducts)
   }
   
@@ -191,9 +191,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
-      this.inventoryService.checkIfNotExist(itemsToCheck)
-      .let(this.checkExistedProduct(itemsToCheck))
-    )
+        this.inventoryService.checkIfNotExist(itemsToCheck)
+        .let(this.checkExistedProduct(itemsToCheck)))
     .switchMap((newItems: any[]) =>
       this.items$.first()
       .map((items: any) => {
@@ -222,9 +221,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       )
     );
     
+    let addCustomItemToItems$ = this.addCustomItemToItems$
+    //.switchMap((customItem) =>
+    //  this.items$.first()
+      //.map((items:any) =>
+      //{
+      //  debugger;
+      // items = items.push(customItem);
+      // return items;
+      //}
+     
+      //)
+    //);
+    
     this.items$ = Observable.merge(
       this.loadItems$,
       addItemsToItems$,
+      addCustomItemToItems$,
       deleteFromItems$
     ).publishReplay(1).refCount();
     
@@ -259,7 +272,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       }
       setTimeout(()=>{ this.showSelect = true;
       },0.6);
-      
+      console.log(res);
       this.items = res;
     });
 
@@ -347,25 +360,24 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     return (source) =>
       source.map(resItems => {
         const existedItems: any[] = _.filter(resItems, 'exists');
-        
+
         const notExistedItems: any[] = _.reject(resItems, 'exists');
-        
+
         const newNotExistedItems: any[] = notExistedItems.reduce((acc: any[], {product_id,variant_id}) => {
           let item = _.find(itemsToCheck,{variant_id,product_id});
           return item ? [...acc,item] : acc
         },[]);
-        
+
         const newExistedItems: any[] = existedItems.reduce((acc: any[], {product_id,variant_id}) => {
           let item = _.find(itemsToCheck,{variant_id,product_id});
           return item ? [...acc,item] : acc
         },[]);
-        
+
         if(newExistedItems.length) {
           newExistedItems.forEach((item: any) => {
             this.toasterService.pop('error',  `${item.name} exists`);
           })
         }
-        console.log(newNotExistedItems);
         return newNotExistedItems;
       })
   }
@@ -380,6 +392,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   addToInventory(items: InventorySearchResults[]) {
     this.addItemsToItems$.next(items);
+  }
+  
+  addCustomToInventory(items: InventorySearchResults[]) {
+    this.addCustomItemToItems$.next(items);
   }
   
   deleteFromInventory(items: InventorySearchResults[]) {
@@ -441,7 +457,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.checkConsPackage(null);
       this.packageType$.next({});
     }
-    console.log(this.checkedProduct);
     setTimeout(()=>{ this.showSelect = true
     },0.6);
   }
@@ -456,7 +471,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     if (!this.checkBoxCandidates && !this.items.length) {
       this.packageType$.next({});
     }
-    console.log(this.checkedProduct);
+    
   }
   
   selectAllItems() {
@@ -489,12 +504,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addNewProduct() {
-    debugger;
-    //this.addToInventory([
-    //  new InventorySearchResults(
-    //    Object.assign(this.newProductData, {variant_id: 'tmp' + Math.floor(Math.random() * 1000000)})
-    //  )
-    //]);
+    this.addCustomToInventory([
+      new InventorySearchResults(
+        Object.assign(this.newProductData, {
+          variant_id: 'tmp' + Math.floor(Math.random() * 1000000),
+        })
+      )
+    ]);
     console.log(this.newProductData);
     this.toggleCustomAdd();
   }

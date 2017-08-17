@@ -14,15 +14,16 @@ export class VendorProperties{
 }
 
 export class Vendor{
-  id:string;
-  name:string;
+  vendor_id:string;
+  vendor_name:string;
 }
 
 export class InventorySearchResults {
   consumable_unit: PackageProperties =  {properties:{qty:null, unit_type:null}};
   sub_package: PackageProperties =  {properties:{qty:null, unit_type:null}};
   'package': PackageProperties =  {properties:{qty:null, unit_type:null}};
-  vendor:VendorProperties = {properties:{name:"", id:null}};
+  //vendor:Vendor = {vendor_name:"", vendor_id:null};
+  vendors: Vendor[] = [];
   description:string = "";
   catalog_number: string = "";
   club_price:number = 0;
@@ -39,6 +40,8 @@ export class InventorySearchResults {
   checked:boolean = false; // my prop
   
   notActive:boolean = false; // my prop
+  
+  custom_product_id:string = null; // my prop
   
   constructor(obj?:any) {
     for (let field in obj) {
