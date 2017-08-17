@@ -61,7 +61,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public resultItems$: Observable<any>;
   public checkedProduct$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public checkedProduct: any[] = [];
-  public matchingProductDisabled: boolean = true;
+  public matchingProductDisabled: boolean = false;
+  public matchingAll$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   
   public showSelect: boolean = true;
   public autocompleteProducts: any =  [];
@@ -265,8 +266,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     // load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
     
-    this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$)
-    .map(([packageType,searchResults,checkedProduct]: any) => {
+    this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
+    .map(([packageType,searchResults,checkedProduct,matchingAll]: any) => {
       let filteredResults = _.filter(searchResults,packageType);
       
       let checkedResults = searchResults.reduce((acc: any[], item) => {
@@ -281,20 +282,38 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       },[]);
   
       let checkboxResult = checkedResults.reduce((acc: any[], item) => {
-        const { variant_id, product_id} = item;
-        let foundedItem = _.find(
-          checkedProduct,
-          { variant_id, product_id}
-        );
-        return [
-          ...acc,
-          {
-          ...item,
-          checked: !!foundedItem
+          if (!matchingAll) {
+            const {variant_id, product_id} = item;
+            let foundedItem = _.find(
+              checkedProduct,
+              {variant_id, product_id}
+            );
+            return [
+              ...acc,
+              {
+                ...item,
+                checked: !!foundedItem
+              }
+            ];
           }
-        ];
-      },[]);
-      
+          else {
+            const {notActive} = item;
+            let foundedItem = _.find(
+              checkedProduct,
+              {notActive}
+            );
+            
+            return [
+              ...acc,
+              {
+                ...item,
+                checked: !!foundedItem
+              }
+            ];
+          }
+        },
+        []);
+      this.checkedProduct = _.filter(checkboxResult, 'checked');
       return checkboxResult;
     });
     
@@ -369,12 +388,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   putCheckbox(item) {
+    
     this.showSelect = false;
     item.checked = !item.checked;
-    //debugger;
-    //if (!this.checkedProduct.length) {
-    //  this.matchingProductDisabled = false;
-    //}
     
     if(!this.checkedProduct.length && !this.items.length) {
      
@@ -404,7 +420,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     if (result && !item.checked) {
       _.remove(this.checkedProduct, result)
     }
+    
     this.checkedProduct$.next(this.checkedProduct);
+    this.matchingAll$.next(false);
+    
+    this.matchingProductDisabled = (this.checkedProduct.length || this.items.length) ? true : false;
+    
+    if (!item.checked) {
+      this.checkBoxCandidates = false;
+    }
     
     if(!this.checkedProduct.length && !this.items.length) {
       
@@ -417,29 +441,22 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.checkConsPackage(null);
       this.packageType$.next({});
     }
-    
+    console.log(this.checkedProduct);
     setTimeout(()=>{ this.showSelect = true
     },0.6);
   }
   
   selectAllCandidates() {
-    this.resultItems$ = this.resultItems$.map((items) => {
-      console.log(items);
-      return items.map(item => {
-        if (!item.notActive) {
-          item.checked = this.checkBoxCandidates;
-        }
-        return item;
-      });
-      
-    })
-    //this.searchResults$.next(
-    //  this.searchResults.map((item: InventorySearchResults) => {
-    //    debugger;
-    //    item.checked = this.checkBoxCandidates;
-    //    return item;
-    //  })
-    //);
+    this.matchingProductDisabled = this.checkBoxCandidates ? true : false;
+    this.matchingAll$.next(this.checkBoxCandidates);
+    if (!this.checkBoxCandidates) {
+      this.checkedProduct = [];
+      this.checkedProduct$.next(this.checkedProduct);
+    }
+    if (!this.checkBoxCandidates && !this.items.length) {
+      this.packageType$.next({});
+    }
+    console.log(this.checkedProduct);
   }
   
   selectAllItems() {
