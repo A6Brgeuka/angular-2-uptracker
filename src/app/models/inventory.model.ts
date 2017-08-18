@@ -14,15 +14,15 @@ export class VendorProperties{
 }
 
 export class Vendor{
-  vendor_id:string;
-  vendor_name:string;
+  vendor_id:string = null;
+  vendor_name:string = null;
 }
 
 export class InventorySearchResults {
   consumable_unit: PackageProperties =  {properties:{qty:null, unit_type:null}};
   sub_package: PackageProperties =  {properties:{qty:null, unit_type:null}};
   'package': PackageProperties =  {properties:{qty:null, unit_type:null}};
-  //vendor:Vendor = {vendor_name:"", vendor_id:null};
+  vendor:Vendor = {vendor_name:"", vendor_id:null};
   vendors: Vendor[] = [];
   description:string = "";
   catalog_number: string = "";
@@ -33,9 +33,9 @@ export class InventorySearchResults {
   name:string = "";
   package_type:string = "";
   //price:number = 0;
-  product_id:string  = "";
+  product_id:string  = null;
   upc:string = "";
-  variant_id:string = "";
+  variant_id:string = null;
   
   checked:boolean = false; // my prop
   

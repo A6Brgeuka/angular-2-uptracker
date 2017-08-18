@@ -6,7 +6,7 @@ import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import {
   AttachmentFiles, InventorySearchResults,
-  searchData
+  searchData, Vendor
 } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -221,18 +221,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       )
     );
     
-    let addCustomItemToItems$ = this.addCustomItemToItems$
-    //.switchMap((customItem) =>
-    //  this.items$.first()
-      //.map((items:any) =>
-      //{
-      //  debugger;
-      // items = items.push(customItem);
-      // return items;
-      //}
-     
-      //)
-    //);
+    let addCustomItemToItems$ = this.addCustomItemToItems$.switchMap((customItem) =>
+      this.items$.first().map((items:any) => {
+        items =_.concat(items, [customItem[0]]);
+        return items;
+      })
+    );
     
     this.items$ = Observable.merge(
       this.loadItems$,
@@ -503,11 +497,19 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.addCustomProduct = !this.addCustomProduct;
   }
   
+  toggleCustomCancel() {
+    this.addCustomProduct = !this.addCustomProduct;
+    if(!this.items.length) {
+      this.nextPackage({});
+    }
+  }
+  
   addNewProduct() {
     this.addCustomToInventory([
       new InventorySearchResults(
         Object.assign(this.newProductData, {
           variant_id: 'tmp' + Math.floor(Math.random() * 1000000),
+          vendors:[{vendor_name:this.newProductData.vendor_name, vendor_id:null}]
         })
       )
     ]);
@@ -542,16 +544,19 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   checkPackage(e) {
     this.newInventory.package_type = e;
+    this.newProductData.package_type = e;
     this.nextPackage(this.newInventory);
   }
 
   checkSubPackage(e) {
     this.newInventory.sub_package_type = e;
+    this.newProductData.sub_package.properties.unit_type = e;
     this.nextPackage(this.newInventory);
   }
 
   checkConsPackage(e) {
     this.newInventory.consumable_unit_type = e;
+    this.newProductData.consumable_unit.properties.unit_type = e;
     this.nextPackage(this.newInventory);
   }
   

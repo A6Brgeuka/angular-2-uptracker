@@ -1,6 +1,6 @@
 export class InventoryProductModel {
-  product_id: string = "";
-  variant_id: string = "";
+  product_id: string = null;
+  variant_id: string = null;
   vendor_name: string = null;
   vendor_id: string = null;
   
