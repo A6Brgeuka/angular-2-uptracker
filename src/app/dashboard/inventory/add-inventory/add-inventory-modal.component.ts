@@ -6,7 +6,7 @@ import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import {
   AttachmentFiles, InventorySearchResults,
-  searchData, Vendor
+  searchData
 } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -147,7 +147,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.saveAdded$
     .switchMap(() => {
       return this.items$
-      .switchMap(items => this.inventoryService.addItemsToInventory(this.newInventory))
+      .switchMap(items => {
+        this.newInventory.products.map((product) => {
+          if(product.product_id === null) {
+            product.variant_id = null
+          }
+        })
+        return this.inventoryService.addItemsToInventory(this.newInventory)})
     })
     .subscribe(newInventory => {
         this.dismissModal()
