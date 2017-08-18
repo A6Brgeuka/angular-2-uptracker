@@ -54,7 +54,7 @@
             <div class="col s12">
               <div class="ttl">Name</div>
               <div class="input">
-                <input [(ngModel)]="newProductData.name" type="text" placeholder="Product Name" required>
+                <input [(ngModel)]="newProductData.name" type="text" placeholder="Product Name">
               </div>
             </div>
           </div>
@@ -62,7 +62,7 @@
             <div class="col s12">
               <div class="ttl">Vendor</div>
               <div class="input">
-                <input [(ngModel)]="newProductData.vendor_name"  type="text" placeholder="Vendor Name" required="">
+                <input [(ngModel)]="newProductData.vendor_name"  type="text" placeholder="Vendor Name">
               </div>
             </div>
           </div>
@@ -70,9 +70,6 @@
             <div class="col s12">
               <div class="ttl">Outer Package</div>
               <div class="select select-light custom-select">
-                <!--<select title="Package" [(ngModel)]="newProductData.package_type" materialize="material_select">-->
-                  <!--<option *ngFor="let outerPackage of inventoryService.outerPackageList" value="{{ outerPackage }}">{{outerPackage}}</option>-->
-                <!--</select>-->
                 <select materialize="material_select" class="customSelect1"
                   (ngModelChange)="checkPackage($event)"
                   [ngModel]="newProductData.package_type"
@@ -96,14 +93,11 @@
                 </div>
                 <div class="col s8">
                   <div class="select select-light custom-select">
-                    <!--<select title="Package" [(ngModel)]="newProductData.sub_package.properties.unit_type" materialize="material_select">-->
-                      <!--<option *ngFor="let innerPackage of inventoryService.innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>-->
-                    <!--</select>-->
                     <select materialize="material_select"
                       (ngModelChange)="checkSubPackage($event)"
                       [ngModel]="newProductData.sub_package.properties.unit_type"
                       [materializeSelectOptions]="inventoryService.innerPackageList"
-                    required>
+                    >
                       <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
                       <option *ngFor="let innerPackage of innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
                     </select>
@@ -123,14 +117,11 @@
                 </div>
                 <div class="col s8">
                   <div class="select select-light custom-select">
-                    <!--<select title="Package" [(ngModel)]="newProductData.consumable_unit.properties.unit_type" materialize="material_select">-->
-                      <!--<option *ngFor="let consumablePackage of inventoryService.consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>-->
-                    <!--</select>-->
                     <select materialize="material_select"
                       (ngModelChange)="checkConsPackage($event)"
                       [ngModel]="newProductData.consumable_unit.properties.unit_type"
                       [materializeSelectOptions]="inventoryService.consumablePackageList"
-                    required>
+                    >
                       <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
                       <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
                     </select>
@@ -159,7 +150,7 @@
         <div class="col s6 mrg-top-20">
           <div *ngIf="total" class="row border-bottom">
             <div class="col s12 ">
-              <div class="input-checkbox checkbox inline-block">
+              <div class="input-checkbox checkbox inline-block" *ngIf="matchingProductDisabled">
               <input [(ngModel)]="checkBoxCandidates" [disabled]="!matchingProductDisabled" (change)="selectAllCandidates()" id="variantsAll" type="checkbox">
               <label for="variantsAll"></label>
               </div>
@@ -379,10 +370,10 @@
           *ngFor="let item of newInventory.products; let i=index;"
           class="row added-items">
           <div class="col s8 product-row-fields">
-            <div class="input-checkbox  checkbox">
-              <input [(ngModel)]="item.checked" id="addeditem1{{ i }}" type="checkbox">
-              <label for="addeditem1{{ i }}"></label>
-            </div>
+            <!--<div class="input-checkbox  checkbox">-->
+              <!--<input [(ngModel)]="item.checked" id="addeditem1{{ i }}" type="checkbox">-->
+              <!--<label for="addeditem1{{ i }}"></label>-->
+            <!--</div>-->
             <div class="image" *ngIf="(item.images && item.images[0])"
               [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
             </div>

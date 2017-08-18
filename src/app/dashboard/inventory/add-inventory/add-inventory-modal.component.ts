@@ -95,7 +95,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public locations$: Observable<any> = this.accountService.locations$;
   public locations: any[];
-  public trackingMethod: string = 'Perpetual';
   
   constructor(
     public zone: NgZone,
@@ -434,7 +433,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.checkedProduct$.next(this.checkedProduct);
     this.matchingAll$.next(false);
     
-    this.matchingProductDisabled = (this.checkedProduct.length || this.items.length) ? true : false;
+    this.matchingProductDisabled = (this.checkedProduct.length) ? true : false;
     
     if (!item.checked) {
       this.checkBoxCandidates = false;
