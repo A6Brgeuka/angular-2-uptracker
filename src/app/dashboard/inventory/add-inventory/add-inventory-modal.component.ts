@@ -590,6 +590,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   changeTrackingMethod(location, tracking_method) {
     location.tracking_method = tracking_method;
   }
+  changeFrequency(location, frequency) {
+    location.auto_reorder_timespan = frequency;
+  }
   selectVendor(item, selectedVendor) {
     item.selectedVendor = selectedVendor;
     item.vendor_id = selectedVendor.vendor_id;

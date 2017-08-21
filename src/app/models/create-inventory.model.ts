@@ -41,7 +41,7 @@ export class InventoryLocationModel {
   tracking_method: string = 'Perpetual';
   auto_reorder_start_date: string = null;
   auto_reorder_frequency: number = 1;
-  auto_reorder_timespan: string = 'Month(s)';
+  auto_reorder_timespan: string = 'Months';
   auto_reorder_qty: number = null;
   storage_locations: InventoryStorageLocationModel[] = [];
   active: boolean = false;
