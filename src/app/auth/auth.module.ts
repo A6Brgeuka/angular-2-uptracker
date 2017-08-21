@@ -10,6 +10,7 @@ import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { SignupModule } from './signup/signup.module';
 import { ForgotPasswordCongratsModule } from './forgot-password-congrats/forgot-password-congrats.module';
 import { InviteModule } from './invite/invite.module';
+import { SSOModule } from './sso/sso.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { InviteModule } from './invite/invite.module';
     SignupModule,
     ForgotPasswordCongratsModule,
     EmailVerificationModule,
-    InviteModule
+    InviteModule,
+    SSOModule
   ],
   providers: []
 })

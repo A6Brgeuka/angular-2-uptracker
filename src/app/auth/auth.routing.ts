@@ -9,6 +9,7 @@ import { LoginRoutes } from './login/login.routing';
 import { SignupRoutes } from './signup/signup.routing';
 import { ResetPasswordRoutes } from './reset-password/reset-password.routing';
 import { InviteRoutes } from './invite/invite.routing';
+import { SSORoutes } from './sso/sso.routing';
 
 export const AuthRoutes = [
   {
@@ -21,7 +22,8 @@ export const AuthRoutes = [
       ...LoginRoutes,
       ...SignupRoutes,
       ...ResetPasswordRoutes,
-      ...InviteRoutes
+      ...InviteRoutes,
+      ...SSORoutes
     ]
   }
 ];

@@ -164,14 +164,33 @@ export class UserService extends ModelService {
       });
   }
   
-  afterLogin(data){ 
+  afterLogin(data){
     data.data.user.user.token = data.data.user.token;
     let user = this.transformAccountInfo(data.data.user);
 
     this.updateSelfData(user);
     this.addToCollection$.next(user);
   }
-
+  
+  afterLoginRedirect(res) {
+    let redLink: string = '';
+    let account_status: any = this.selfData.account ? this.selfData.account.status || null : null;
+    account_status != 2 ? redLink='/onboard/locations' : redLink='/dashboard';
+  
+    // Get the redirect URL from service
+    // If no redirect has been set, use the default
+    let redirect = this.redirectUrl ? this.redirectUrl : redLink;
+  
+    // check for passing signup steps for navigation
+    let signupStep = this.currentSignupStep();
+    switch(signupStep) {
+      case 2:   this.router.navigate(['/signup', 'about-company']); return;
+      case 3:   this.router.navigate(['/signup', 'payment-info']); return;
+      case 4:   this.router.navigate(['/email-verification']); return;
+      default:  this.router.navigate([redirect]);
+    }
+  }
+  
   signUp(data){
     return this.restangular.all('register').all('user').post(data)
         .do(
@@ -277,5 +296,12 @@ export class UserService extends ModelService {
  
   sendInvitationData(code, data){
     return this.restangular.all('users').one('invite', code).customPOST(data);
+  }
+  
+  postSSOToken(ssoToken) {
+    return this.restangular.all('sso').customPOST(ssoToken)
+    .map((res) => {
+      this.afterLogin(res);
+    })
   }
 }
