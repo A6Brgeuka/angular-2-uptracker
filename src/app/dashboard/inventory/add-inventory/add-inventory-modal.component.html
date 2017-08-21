@@ -422,8 +422,8 @@
             <div class="ttl">Tracking Method</div>
             <div class="select select-light">
               <select materialize="material_select"
-                (ngModelChange)="changeTrackingMethod(location, $event)"
-                [ngModel]="location?.tracking_method">
+                [(ngModel)]="location.tracking_method"
+              >
                 <option value="Perpetual">Perpetual</option>
                 <option value="None">None</option>
                 <option value="Scheduled">Scheduled</option>

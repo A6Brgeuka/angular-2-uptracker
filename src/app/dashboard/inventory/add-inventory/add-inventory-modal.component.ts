@@ -161,7 +161,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     );
     
     this.autocompleteProducts$
-    .debounceTime(10)
     .switchMap((keywords:string) => this.inventoryService.autocompleteSearch(keywords))
     .subscribe(res => {
       this.autocompleteProducts = res['suggestions'];
@@ -586,13 +585,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       location.active = false;
     });
   }
-  
-  changeTrackingMethod(location, tracking_method) {
-    location.tracking_method = tracking_method;
-  }
-  changeFrequency(location, frequency) {
-    location.auto_reorder_timespan = frequency;
-  }
+
   selectVendor(item, selectedVendor) {
     item.selectedVendor = selectedVendor;
     item.vendor_id = selectedVendor.vendor_id;
