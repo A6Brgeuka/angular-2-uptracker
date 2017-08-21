@@ -396,7 +396,7 @@
                 (ngModelChange)="selectVendor(item, $event)"
                 [ngModel]="item.selectedVendor"
               >
-                <option [ngValue]="" selected>Auto</option>
+                <option [ngValue]="" selected *ngIf="item.product_id !== null">Auto</option>
                 <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor?.vendor_name }}</option>
               </select>
             </div>
