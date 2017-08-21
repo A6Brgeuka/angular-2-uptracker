@@ -85,13 +85,13 @@
           <div class="row">
             <div class="col s12">
               <div class="ttl">Inner Package</div>
-              <div class="row">
-                <div class="col s4">
-                  <div class="input">
-                    <input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">
-                  </div>
-                </div>
-                <div class="col s8">
+              <!--<div class="row">-->
+                <!--<div class="col s4">-->
+                  <!--<div class="input">-->
+                    <!--<input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col s8">-->
                   <div class="select select-light custom-select">
                     <select materialize="material_select"
                       (ngModelChange)="checkSubPackage($event)"
@@ -102,20 +102,20 @@
                       <option *ngFor="let innerPackage of innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
                     </select>
                   </div>
-                </div>
-              </div>
+                <!--</div>-->
+              <!--</div>-->
             </div>
           </div>
           <div class="row">
             <div class="col s12">
               <div class="ttl">Consumable Unit</div>
-              <div class="row">
-                <div class="col s4">
-                  <div class="input">
-                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">
-                  </div>
-                </div>
-                <div class="col s8">
+              <!--<div class="row">-->
+                <!--<div class="col s4">-->
+                  <!--<div class="input">-->
+                    <!--<input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col s8">-->
                   <div class="select select-light custom-select">
                     <select materialize="material_select"
                       (ngModelChange)="checkConsPackage($event)"
@@ -126,8 +126,8 @@
                       <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>
                     </select>
                   </div>
-                </div>
-              </div>
+                <!--</div>-->
+              <!--</div>-->
             </div>
           </div>
         </div>
@@ -394,9 +394,9 @@
             <div class="select select-light">
               <select materialize="material_select"
                 (ngModelChange)="selectVendor(item, $event)"
-                [ngModel]="item.selectedVendor"
+                [(ngModel)]="item.selectedVendor"
               >
-                <option [ngValue]="" selected *ngIf="item.product_id !== null">Auto</option>
+                <option [ngValue]="" *ngIf="item.product_id !== null">Auto</option>
                 <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor?.vendor_name }}</option>
               </select>
             </div>

@@ -150,9 +150,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       .switchMap(items => {
         this.newInventory.products.map((product) => {
           if(product.product_id === null) {
-            product.variant_id = null
+            product.variant_id = null;
+            product.vendor_name = product.vendors[0].vendor_name;
           }
-        })
+        });
         return this.inventoryService.addItemsToInventory(this.newInventory)})
     })
     .subscribe(newInventory => {
@@ -185,7 +186,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.typeIn$.next(keyword);
   }
   observableSource(keyword: any) {
-    return Observable.of(this.autocompleteProducts)
+    return Observable.of(this.autocompleteProducts).take(1);
   }
   
   ngOnInit() {
@@ -517,7 +518,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         })
       )
     ]);
-    console.log(this.newProductData);
     this.toggleCustomAdd();
   }
   
