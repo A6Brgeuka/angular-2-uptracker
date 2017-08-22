@@ -236,22 +236,22 @@
 
 }
 
-@media all and (max-width: 768px) {
-  .filter {
-    .filter-right {
-      float: none !important;
-
-      //
-      //&.red-helper{
-      //  float:right !important;
-      //}
-
-      button {
-        //float:left;
-      }
-    }
-  }
-}
+//@media all and (max-width: 768px) {
+//  .filter {
+//    .filter-right {
+//      float: none !important;
+//
+//      //
+//      //&.red-helper{
+//      //  float:right !important;
+//      //}
+//
+//      button {
+//        //float:left;
+//      }
+//    }
+//  }
+//}
 
 @media all and (max-width: 500px) {
   .products {
@@ -359,4 +359,3 @@ div.top {
 }
 
 .mtop{margin-top:10px;}
-

@@ -4,33 +4,32 @@
       <div class="col s9">Product Name</div>
 
       <div class="col s1">#Products</div>
-      <div class="col s2 right-align">
-        <div class="right edititem filled"
-          materialize="dropdown"
-          [attr.data-activates]='"order_dd_"+i'>
-          <fa name="pencil"></fa>
-        </div>
+      <div class="col s2">
+        <!--<div class="right edititem filled"-->
+          <!--materialize="dropdown"-->
+          <!--[attr.data-activates]='"order_dd_"+i'>-->
+          <!--<fa name="ellipsis-h"></fa>-->
+        <!--</div>-->
 
-        <ul [id]='"order_dd_"+i' class='dropdown-content'>
-          <li>
-            <a class="tealish-text" href="/">Edit</a>
-          </li>
-          <li>
-            <a class="tealish-text" href="/">Resend</a>
-          </li>
-          <li>
-            <a class="tealish-text" href="/">Reorder</a>
-          </li>
-        </ul>
-
-
-        <div class="right">Total</div>
+        <!--<ul [id]='"order_dd_"+i' class='dropdown-content'>-->
+          <!--<li>-->
+            <!--<a class="tealish-text" href="/">Edit</a>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<a class="tealish-text" href="/">Resend</a>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<a class="tealish-text" href="/">Reorder</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+        <div>Total</div>
       </div>
     </div>
     <div class="flex-row item row smallrow" *ngFor="let item of items;let i=index;">
       <div class="col s9 flex-center">
         <div class="input-checkbox left checkbox">
           <input
+            [(ngModel)]='item.checked'
             type="checkbox"
             class="subselected-input{{i}}"
             id="subselected{{i}}"
@@ -42,25 +41,31 @@
         </div>
       </div>
       <div class="col s1">{{ item.quantity }}</div>
-      <div class="col s2 right-align ">
+      <div class="col s2">
         <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
           <fa name="ellipsis-h"></fa>
         </div>
         <ul [id]='"order_dd"+i' class='dropdown-content'>
           <li>
-            <a class="tealish-text" href="/">Edit</a>
+            <a class="tealish-text" href="#">Edit</a>
           </li>
           <li>
-            <a class="tealish-text" [routerLink]="['receive']" href="/">Receive</a>
+            <a class="tealish-text" href="#">Resend</a>
           </li>
           <li>
-            <a class="tealish-text" href="/">Backorder</a>
+            <a class="tealish-text" [routerLink]="['receive']">Receive</a>
           </li>
           <li>
-            <a class="red-text" href="/">Void</a>
+            <a class="tealish-text" href="#">Reconcile</a>
+          </li>
+          <li>
+            <a class="tealish-text" href="#">Reorder</a>
+          </li>
+          <li>
+            <a class="red-text" href="#">Void</a>
           </li>
         </ul>
-        <div class="right">{{ item.sub_total }}</div>
+        <div>{{ item.sub_total }}</div>
       </div>
       <div class="clearfix"></div>
     </div>

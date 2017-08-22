@@ -69,7 +69,7 @@
                 {{product.name | slice:0:60}}
               </div>
               <div class="bottom">
-                <div class="range-field">
+                <div class="range-field" *ngIf="locationId !== ''">
                   <div class="range-value left-align red-text bold">{{ product.critical_level }}</div>
                   <input
                     #inputRange

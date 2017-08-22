@@ -34,7 +34,6 @@ export class DashboardComponent implements OnInit {
       console.log('location arr', res);
     });
     
-    
   }
   
   ngOnInit() {

@@ -130,6 +130,12 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
           if (!item.image && !_.isEmpty(item.images)) {
             item.image = item.images[0];
           }
+          //item.inventory_item_locations.map(location => {
+          //  if(this.locationId === location.location_id) {
+          //    item.critical_level = location.critical_level;
+          //    item.fully_stocked = location.fully_stocked;
+          //  }
+          //})
           return item;
         }
       );

@@ -43,8 +43,6 @@
     top:10px;
     right:0;
 
-
-
     button {
       display:block;
       float:left;
@@ -78,7 +76,6 @@
       }
     }
   }
-
 
   .dashboard {
     min-height: 100vh;
@@ -280,7 +277,7 @@
           .filter {
             
             input {
-              width: 200px;
+              //width: 200px;
               margin: 0;
               font: 12px Lato;
               box-sizing: border-box;

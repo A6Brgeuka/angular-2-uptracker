@@ -52,9 +52,18 @@ export class OrdersComponent implements OnInit {
     // 0 = unused, 1 = selectAll, 2 = deselectAll
     this.selectAll$.next(event ? 1 : 2);
     this.onCheck();
+    this.selectAll$
+    .switchMap(() => this.pastOrderService.collection$)
+    .subscribe(res => {
+      res.map((item)=> {
+        item.checked = event;
+      })
+    })
+    
   }
   
   onCheck() {
+  
   }
   
   chooseTab(a){
