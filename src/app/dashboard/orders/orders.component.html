@@ -99,7 +99,7 @@
                 <a class="tealish-text" href="#">Resend</a>
               </li>
               <li>
-                <a class="tealish-text" [routerLink]="['receive']">Receive</a>
+                <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
               </li>
               <li>
                 <a class="tealish-text" href="#">Reconcile</a>
@@ -154,13 +154,13 @@
                 <li>
                   <a class="tealish-text" href="#">Edit</a>
                 </li>
-                <li>
+                <li *ngIf="item.status !== 5">
                   <a class="tealish-text" href="#">Resend</a>
                 </li>
-                <li>
+                <li *ngIf="item.status !== 5">
                   <a class="tealish-text" [routerLink]="['receive']">Receive</a>
                 </li>
-                <li>
+                <li *ngIf="item.status === 5">
                   <a class="tealish-text" href="#">Reconcile</a>
                 </li>
                 <li>

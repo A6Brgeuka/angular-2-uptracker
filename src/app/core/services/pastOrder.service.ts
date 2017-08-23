@@ -22,6 +22,7 @@ export class ConvertData {
 export class PastOrderService extends ModelService {
   public appConfig: AppConfig;
   public itemsVisibility: boolean[];
+  public ordersToReceive$: BehaviorSubject<any> = new BehaviorSubject([]);
   
   constructor(
     public injector: Injector,

@@ -142,16 +142,15 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
       return (location && products.length)
     })
     .switchMap(([location, products]) => {
-      products.map(product => {
+      return products.map(product => {
         product.inventory_item_locations.map(productLocation => {
-          if(location !== '' && location.id === productLocation.location_id) {
+          if(location.id === productLocation.location_id) {
             product.critical_level = productLocation.critical_level;
             product.overstock_level = productLocation.overstock_level;
             product.on_hand = productLocation.on_hand;
           }
         })
       });
-      return products;
     }).subscribe();
     
     Observable.combineLatest(this.infiniteScroll$, this.products$)

@@ -29,15 +29,6 @@
           class="col s12"
         />
       </div>
-
-      <!--<div class="ptop5 filter-right">-->
-        <!--<div class="col m9 l3 input wide-input">-->
-          <!--<input type="text"-->
-            <!--placeholder="Packing Slip #"-->
-            <!--[(ngModel)]="searchKey"-->
-            <!--class="col s12"-->
-            <!--/>-->
-        <!--</div>-->
         <div class="col m3 l2 s12 right-align">
           <button
             (click)="save()"
@@ -62,8 +53,19 @@
           <!--<div class="col s3">Product</div>-->
           <div class="col s1"></div>
         </div>
-        <div class="item row" *ngFor="let item of mockItems">
+        <div class="item row" *ngFor="let item of orders$ | async">
           <div class="col s3 ">
+            {{ item.po_number }}
+          </div>
+          <div class="col s1">
+          </div>
+          <div class="col s4">
+            Band Lower Unilateral
+          </div>
+          <div class="col s3">
+            {{ item.location }}
+          </div>
+          <div class="col s3">
             <div class="select flex-center">
               <select
                 materialize="material_select"
@@ -84,9 +86,7 @@
               <select
                 materialize="material_select"
                 [materializeSelectOptions]="">
-                <option value="">Band Lower Unilateral</option>
-                <option value="">Band Lower Unilateral2</option>
-                <option value="">Band Lower Unilateral3</option>
+                <option value="" *ngFor="let inventoryGroup of inventoryService.collection$ | async">{{ inventoryGroup.name }}</option>
               </select>
             </div>
           </div>

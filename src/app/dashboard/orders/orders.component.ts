@@ -5,6 +5,11 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../core/services/pastOrder.service';
 
+import * as _ from 'lodash';
+import { Subject } from 'rxjs/Subject';
+import { Router } from '@angular/router';
+import { ModalWindowService } from '../../core/services/modal-window.service';
+import { SelectVendorModal } from './select-vendor-modal/select-vendor.component';
 
 @Component({
   selector: 'app-orders',
@@ -13,6 +18,7 @@ import { PastOrderService } from '../../core/services/pastOrder.service';
 })
 @DestroySubscribers()
 export class OrdersComponent implements OnInit {
+  public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public selectAll: boolean;
   public searchKey: string;
@@ -21,17 +27,48 @@ export class OrdersComponent implements OnInit {
   public total: number = 6;
   public visible:boolean[] = [];
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
+  private ordersToReceive$:  any = new Subject<any>();
   
   constructor(
       public modal: Modal,
-      public pastOrderService: PastOrderService
+      public router: Router,
+      public pastOrderService: PastOrderService,
+      public modalWindowService: ModalWindowService,
   ) {
-  
   
   }
 
   ngOnInit() {
-  
+    this.subscribers.ordersToReceive = this.ordersToReceive$
+    .switchMap(() => {
+      return this.pastOrderService.collection$
+    })
+    .map((product) => {
+      let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
+      let firstVendor:any = filteredCheckedProducts[0].vendor_name;
+      let filteredVendors:any[]  = _.filter(filteredCheckedProducts, item => firstVendor === item.vendor_name);
+      
+      if(filteredCheckedProducts.length === filteredVendors.length) {
+        this.pastOrderService.ordersToReceive$.next(filteredCheckedProducts);
+        this.router.navigate(['orders/receive']);
+      }
+      else {
+        console.log('err');
+        this.modal
+        .open(SelectVendorModal, this.modalWindowService
+        .overlayConfigFactoryWithParams({"text": 'Lorem ipsum'}, true, 'mid'))
+        .then((resultPromise) => {
+          resultPromise.result.then(
+            (res) => {
+              // this.filterProducts();
+            },
+            (err) => {
+            }
+          );
+        });
+      }
+    })
+    .subscribe()
   }
   
   searchFilter(event){
@@ -81,6 +118,10 @@ export class OrdersComponent implements OnInit {
   getOrder(id){
     this.pastOrderService.getPastOrder(id)
     .subscribe((res)=>console.log(res));
+  }
+  
+  onReceiveOrders() {
+    this.ordersToReceive$.next([]);
   }
   
 }

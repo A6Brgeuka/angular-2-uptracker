@@ -5,6 +5,7 @@ import { AppSharedModule } from '../../shared/shared.module';
 import { OrdersShortDetailComponent } from './orders-short-detail/orders-short-detail.component';
 import { ReceiveModule } from './receive/receive.module';
 import { OrderModule } from './order/order.module';
+import { SelectVendorModule } from './select-vendor-modal/select-vendor.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { OrderModule } from './order/order.module';
   imports: [
     AppSharedModule,
     ReceiveModule,
-    OrderModule
+    OrderModule,
+    SelectVendorModule
   ],
   providers: []
 })
