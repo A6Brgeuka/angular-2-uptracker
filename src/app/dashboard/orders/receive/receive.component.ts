@@ -17,20 +17,21 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   public total:number = 10;
   public searchKey:string= "";
   public mockItems:number[] = [0,0,0,0,0,0];
-  public locationArr: any;
-  public inventoryGroupArr: any;
+  public locationArr: any = [];
+  public inventoryGroupArr: any = [];
+  public tempArr: any = [];
   public orders$ = this.pastOrderService.ordersToReceive$;
   
   constructor(
     public accountService: AccountService,
     public inventoryService: InventoryService,
-    public router:Router,
+    public router: Router,
     public pastOrderService: PastOrderService
   ) {
     this.accountService.locations$
-    .subscribe(r=>{this.locationArr = r});
-    //this.inventoryService.collection$
-    //.subscribe(r => this.inventoryGroupArr = r);
+    .subscribe(r => this.locationArr = r );
+
+    this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
   }
   
   ngOnInit() {

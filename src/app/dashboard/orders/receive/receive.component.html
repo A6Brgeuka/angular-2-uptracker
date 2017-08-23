@@ -85,8 +85,8 @@
             <div class="select flex-center">
               <select
                 materialize="material_select"
-                [materializeSelectOptions]="">
-                <option value="" *ngFor="let inventoryGroup of inventoryService.collection$ | async">{{ inventoryGroup.name }}</option>
+                [materializeSelectOptions]="tempArr">
+                <option [value]="inventoryGroup.name" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
               </select>
             </div>
           </div>
@@ -97,30 +97,28 @@
             <div class="select flex-center">
               <select
                 materialize="material_select"
-                [materializeSelectOptions]="">
+                [materializeSelectOptions]="tempArr">
                 <option *ngFor="let location of locationArr" [value]="location.id">{{ location.name }}</option>
               </select>
             </div>
           </div>
-
-
           <div class="col s1 center-align flex-center justify-center">
             <a href (click)="remove(item)">
               <fa name="trash" class="tealish-text"></fa>
             </a>
           </div>
+          <button
+                  (click)="addProduct()"
+                  type="submit"
+                  class="right mtop uptracker-form-btn white-text waves-effect waves-light"
+          >
+            <fa name="plus"></fa>
+            Add Product
+          </button>
+
         </div>
       </div>
     </div>
-
-    <button
-      (click)="addProduct()"
-      type="submit"
-      class="right mtop uptracker-form-btn white-text waves-effect waves-light"
-    >
-      <fa name="plus"></fa>
-      Add Product
-    </button>
 
   </div>
 </div>
