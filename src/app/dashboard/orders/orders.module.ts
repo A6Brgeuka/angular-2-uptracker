@@ -16,7 +16,7 @@ import { SelectVendorModule } from './select-vendor-modal/select-vendor.module';
     AppSharedModule,
     ReceiveModule,
     OrderModule,
-    SelectVendorModule
+    SelectVendorModule,
   ],
   providers: []
 })
