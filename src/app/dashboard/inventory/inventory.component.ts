@@ -65,9 +65,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   
   ngOnInit() {
     
-    this.accountService.dashboardLocation$.subscribe((loc: any) => {
-      this.locationId = loc ? loc['id'] : '';
-    });
+    this.accountService.dashboardLocation$.subscribe((loc: any) =>
+      this.locationId = loc ? loc['id'] : ''
+    );
     
     this.inventoryService.totalCount$.subscribe(total => this.total = total);
     
@@ -130,18 +130,29 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
           if (!item.image && !_.isEmpty(item.images)) {
             item.image = item.images[0];
           }
-          //item.inventory_item_locations.map(location => {
-          //  if(this.locationId === location.location_id) {
-          //    item.critical_level = location.critical_level;
-          //    item.fully_stocked = location.fully_stocked;
-          //  }
-          //})
           return item;
         }
       );
       this.products = products;
       return products;
     });
+    
+    Observable.combineLatest(this.accountService.dashboardLocation$, this.products$)
+    .filter(([location, products]) => {
+      return (location && products.length)
+    })
+    .switchMap(([location, products]) => {
+      products.map(product => {
+        product.inventory_item_locations.map(productLocation => {
+          if(location !== '' && location.id === productLocation.location_id) {
+            product.critical_level = productLocation.critical_level;
+            product.overstock_level = productLocation.overstock_level;
+            product.on_hand = productLocation.on_hand;
+          }
+        })
+      });
+      return products;
+    }).subscribe();
     
     Observable.combineLatest(this.infiniteScroll$, this.products$)
     .filter(([infinite, products]) => {
