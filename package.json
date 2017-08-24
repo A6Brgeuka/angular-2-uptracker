@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@types/googlemaps": "^3.25.38",
-    "@types/lodash": "^4.14.58",
+    "@types/lodash": "4.14.73",
     "@angular/cli": "^1.0.0",
     "@angular/compiler-cli": "^4.0.0",
     "@types/jasmine": "2.5.38",
