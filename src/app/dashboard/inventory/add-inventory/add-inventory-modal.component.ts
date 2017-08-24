@@ -117,7 +117,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.searchResults = data.results;
       
       if(this.items.length) {
-        this.checkedProduct =[];
+        this.checkedProduct = [];
         this.outerPackageList = [this.items[0].package_type];
         this.innerPackageList = [this.items[0].sub_package.properties.unit_type];
         this.consumablePackageList = [this.items[0].consumable_unit.properties.unit_type];
@@ -149,7 +149,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       return this.items$
       .switchMap(items => {
         this.newInventory.products.map((product) => {
-          if(product.product_id === null) {
+          if (product.product_id === null) {
             product.variant_id = null;
             product.vendor_name = product.vendors[0].vendor_name;
           }

@@ -53,10 +53,11 @@ export class OrdersComponent implements OnInit {
         this.router.navigate(['orders/receive']);
       }
       else {
-        console.log('err');
+        // const allVendors: any[] = filteredCheckedProducts.map(product => product.vendor_name);
+        const uniqVendors: any[] = _.uniqBy(filteredCheckedProducts, 'vendor_name');
         this.modal
         .open(SelectVendorModal, this.modalWindowService
-        .overlayConfigFactoryWithParams({"text": 'Lorem ipsum'}, true, 'mid'))
+        .overlayConfigFactoryWithParams({"vendors": uniqVendors}, true, 'mid'))
         .then((resultPromise) => {
           resultPromise.result.then(
             (res) => {

@@ -4,7 +4,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 export class InfoModalContext extends BSModalContext {
-  public text: any;
+  public vendors: any[];
 }
 
 
@@ -15,10 +15,12 @@ export class InfoModalContext extends BSModalContext {
 })
 export class SelectVendorModal implements OnInit, CloseGuard, ModalComponent<InfoModalContext> {
   context;
+  public selectedVendor: string = '';
+
   constructor(
     public dialog: DialogRef<InfoModalContext>,
   ) {
-    this.context = dialog.context.text;
+    this.context = dialog.context.vendors;
     dialog.setCloseGuard(this);
   }
   ngOnInit() {
@@ -27,5 +29,9 @@ export class SelectVendorModal implements OnInit, CloseGuard, ModalComponent<Inf
   
   dismissModal() {
     this.dialog.dismiss();
+  }
+
+  onchooseVendor() {
+
   }
 }

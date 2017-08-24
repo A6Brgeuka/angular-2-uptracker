@@ -1,8 +1,18 @@
 <div class="inner">
-  <div>
-    {{ context }}
+  <div class="select flex-center">
+    <select
+            materialize="material_select"
+            [materializeSelectOptions]="context"
+    >
+      <option *ngFor="let vendor of context">{{vendor.vendor_name}}</option>
+    </select>
   </div>
-  <div class="center-align col s12 clearfix bottom-buttons">
-    <button class="uptracker-form-btn" (click)="dismissModal()">Close</button>
+  <div class="row">
+    <div class="col s6 bottom-buttons">
+      <button class="uptracker-form-btn" (click)="dismissModal()">Close</button>
+    </div>
+    <div class="col s6 bottom-buttons">
+      <button class="uptracker-form-btn" (click)="onchooseVendor()">Ok</button>
+    </div>
   </div>
 </div>
