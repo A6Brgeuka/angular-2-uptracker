@@ -28,6 +28,9 @@ export class OrdersComponent implements OnInit {
   public visible:boolean[] = [];
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   private ordersToReceive$:  any = new Subject<any>();
+  private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public showMenuItem: boolean = true;
+  public showMenuReconcile: boolean = false;
   
   constructor(
       public modal: Modal,
@@ -49,19 +52,19 @@ export class OrdersComponent implements OnInit {
       let filteredVendors:any[]  = _.filter(filteredCheckedProducts, item => firstVendor === item.vendor_name);
       
       if(filteredCheckedProducts.length === filteredVendors.length) {
-        this.pastOrderService.ordersToReceive$.next(filteredCheckedProducts);
-        this.router.navigate(['orders/receive']);
+        this.sendToReceiveProducts(filteredCheckedProducts);
       }
+      
       else {
-        // const allVendors: any[] = filteredCheckedProducts.map(product => product.vendor_name);
         const uniqVendors: any[] = _.uniqBy(filteredCheckedProducts, 'vendor_name');
         this.modal
         .open(SelectVendorModal, this.modalWindowService
         .overlayConfigFactoryWithParams({"vendors": uniqVendors}, true, 'mid'))
         .then((resultPromise) => {
           resultPromise.result.then(
-            (res) => {
-              // this.filterProducts();
+            (selectedVendor) => {
+              filteredCheckedProducts = _.filter(filteredCheckedProducts, item => selectedVendor === item.vendor_name);
+              this.sendToReceiveProducts(filteredCheckedProducts);
             },
             (err) => {
             }
@@ -69,7 +72,33 @@ export class OrdersComponent implements OnInit {
         });
       }
     })
-    .subscribe()
+    .subscribe();
+    
+    this.subscribers.ordersChecked = this.ordersChecked$
+    .switchMap(() => {
+      return this.pastOrderService.collection$
+    })
+    .map(product => {
+      let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
+      let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 5);
+      let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 5);
+      this.showMenuItem = (findNotReceivedProducts) ? true : false;
+      this.showMenuReconcile = (findReceivedProducts) ? true : false;
+    })
+    .subscribe();
+  }
+  
+  sendToReceiveProducts(filteredCheckedProducts) {
+    let sendItems: any[] = [];
+    let sendOrders = filteredCheckedProducts.map((order) => {
+      sendItems = sendItems.concat(order.order_items.map((item) => item.id));
+      return order.order_id;
+    });
+    this.pastOrderService.getReceive(sendOrders, sendItems)
+  }
+  
+  sendToReceiveOrder(order) {
+    this.sendToReceiveProducts([order]);
   }
   
   searchFilter(event){
@@ -89,7 +118,6 @@ export class OrdersComponent implements OnInit {
   toggleSelectAll(event) {
     // 0 = unused, 1 = selectAll, 2 = deselectAll
     this.selectAll$.next(event ? 1 : 2);
-    this.onCheck();
     this.selectAll$
     .switchMap(() => this.pastOrderService.collection$)
     .subscribe(res => {
@@ -98,10 +126,6 @@ export class OrdersComponent implements OnInit {
       })
     })
     
-  }
-  
-  onCheck() {
-  
   }
   
   chooseTab(a){
@@ -125,4 +149,7 @@ export class OrdersComponent implements OnInit {
     this.ordersToReceive$.next([]);
   }
   
+  setCheckbox() {
+    this.ordersChecked$.next([]);
+  }
 }

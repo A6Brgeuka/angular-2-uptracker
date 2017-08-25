@@ -7,11 +7,13 @@ import * as _ from 'lodash';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { AccountService } from '../../../core/services/account.service';
+import { PastOrderService } from '../../../core/services/pastOrder.service';
+import { Router } from "@angular/router";
 
 
-export class ViewProductModalContext extends BSModalContext {
-  public items: any;
-}
+//export class ViewProductModalContext extends BSModalContext {
+  //public items: any;
+//}
 
 
 @Component({
@@ -26,13 +28,15 @@ export class ViewProductModalContext extends BSModalContext {
 export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
   public locationArr: any;
   
-  @Input("items") public items: any = [];
+  @Input("item") public item: any = [];
   @Input("visible") public visible;
 
   constructor(
     public modalWindowService: ModalWindowService,
     public modal: Modal,
     public accountService: AccountService,
+    public router: Router,
+    public pastOrderService: PastOrderService,
 
   ) {
     this.accountService.locations$
@@ -54,5 +58,15 @@ export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
     //this.variant.detailView = false;
   }
   
+  onReceiveProduct(item, product) {
+    //let allProductsArr: any[] = item.order_items;
+    //let filteredCheckedProducts = _.filter(allProductsArr, item => item.id === product.id);
+    //item.order_items = filteredCheckedProducts;
+    
+    this.pastOrderService.getReceive(item.order_id, product.id);
+    
+    //this.pastOrderService.ordersToReceive$.next([item]);
+    //this.router.navigate(['orders/receive']);
+  }
  
 }

@@ -11,7 +11,7 @@
             class="wide"
             materialize="material_select"
             [materializeSelectOptions]="">
-            <option value="" disabled selected>Patterson</option>
+            <option value="" disabled selected *ngFor="let item of orders$ | async">{{ item.vendor_name }}</option>
           </select>
         </div>
       </div>
@@ -66,13 +66,13 @@
             {{ item.location }}
           </div>
           <div class="col s3">
-            <div class="select flex-center">
+            <div class="select select-light flex-center">
               <select
                 materialize="material_select"
-                [materializeSelectOptions]="">
-                <option value="">Receive</option>
-                <option value="">Other Option 1</option>
-                <option value="">Other Option 2</option>
+                [materializeSelectOptions]="pastOrderService.statusList"
+                [(ngModel)] = 'item.status'
+              >
+                <option [value]="status" *ngFor="let status of pastOrderService.statusList">{{ status }}</option>
               </select>
             </div>
           </div>

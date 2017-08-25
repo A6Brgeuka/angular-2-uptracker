@@ -7,6 +7,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import * as _ from 'lodash';
 import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
+import { Router } from '@angular/router';
 
 export class ConvertData {
   vendor_id: string[];
@@ -23,11 +24,13 @@ export class PastOrderService extends ModelService {
   public appConfig: AppConfig;
   public itemsVisibility: boolean[];
   public ordersToReceive$: BehaviorSubject<any> = new BehaviorSubject([]);
+  public statusList: any[] = [];
   
   constructor(
     public injector: Injector,
     public restangular: Restangular,
     public userService: UserService,
+    public router: Router,
     public accountService: AccountService
   ) {
     super(restangular);
@@ -50,6 +53,20 @@ export class PastOrderService extends ModelService {
     //GET /po/{order_id} - the order_id, not po_number
     return this.restangular.one('po',id).customGET()
     .map((res:any)=>res.data);
+  }
+  
+  getStatusList() {
+    return this.restangular.one('config', 'order_receiving_status').customGET('')
+    .map(res => this.statusList = res.data);
+  }
+  
+  getReceive(orders, items) {
+    return this.restangular.all('receive').customGET('', {'order_ids': orders.toString(), 'items_ids' : items.toString()})
+      .map(res => res.data)
+    .subscribe((res) => {
+      this.ordersToReceive$.next(res.orders);
+      this.router.navigate(['orders/receive']);
+    });
   }
   
 }

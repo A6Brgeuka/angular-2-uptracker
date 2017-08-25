@@ -25,11 +25,11 @@
         <div>Total</div>
       </div>
     </div>
-    <div class="flex-row item row smallrow" *ngFor="let item of items;let i=index;">
+    <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i=index;">
       <div class="col s9 flex-center">
         <div class="input-checkbox left checkbox">
           <input
-            [(ngModel)]='item.checked'
+            [(ngModel)]='product.checked'
             type="checkbox"
             class="subselected-input{{i}}"
             id="subselected{{i}}"
@@ -37,10 +37,10 @@
           <label for="subselected{{i}}"></label>
         </div>
         <div class="left flex-center">
-          <div> {{ item.item_name }}</div>
+          <div> {{ product.item_name }}</div>
         </div>
       </div>
-      <div class="col s1">{{ item.quantity }}</div>
+      <div class="col s1">{{ product.quantity }}</div>
       <div class="col s2">
         <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
           <fa name="ellipsis-h"></fa>
@@ -49,13 +49,13 @@
           <li>
             <a class="tealish-text" href="#">Edit</a>
           </li>
-          <li>
+          <li *ngIf="product.status !== 5">
             <a class="tealish-text" href="#">Resend</a>
           </li>
-          <li>
-            <a class="tealish-text" [routerLink]="['receive']">Receive</a>
+          <li *ngIf="product.status !== 5">
+            <a class="tealish-text" (click)="onReceiveProduct(item, product)">Receive</a>
           </li>
-          <li>
+          <li *ngIf="product.status === 5">
             <a class="tealish-text" href="#">Reconcile</a>
           </li>
           <li>
@@ -65,7 +65,7 @@
             <a class="red-text" href="#">Void</a>
           </li>
         </ul>
-        <div>{{ item.sub_total }}</div>
+        <div>{{ product.sub_total }}</div>
       </div>
       <div class="clearfix"></div>
     </div>

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { AccountService, VendorService, ProductService } from '../../core/services/index';
 import { LocationService } from "../../core/services/location.service";
 import { InventoryService } from '../../core/services/inventory.service';
+import { PastOrderService } from '../../core/services/pastOrder.service';
 
 @Injectable()
 export class StateCollectionResolve implements Resolve<any> {
@@ -115,6 +116,18 @@ export class InventoryPackageListResolve implements Resolve<any> {
   }
 }
 
+@Injectable()
+export class StatusListResolve implements Resolve<any> {
+  constructor(
+    public pastOrderService: PastOrderService,
+  ) {
+  
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.pastOrderService.getStatusList().take(1);
+  }
+}
+
 // an array of services to resolve routes with data
 export const MAIN_RESOLVER_PROVIDERS = [
   StateCollectionResolve,
@@ -125,5 +138,6 @@ export const MAIN_RESOLVER_PROVIDERS = [
   ProductCollectionResolve,
   ProductAccountingCollectionResolve,
   ProductCategoriesCollectionResolve,
-  InventoryPackageListResolve
+  InventoryPackageListResolve,
+  StatusListResolve
 ];

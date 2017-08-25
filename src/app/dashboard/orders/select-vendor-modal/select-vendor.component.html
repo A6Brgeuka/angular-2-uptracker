@@ -1,15 +1,19 @@
 <div class="inner">
-  <div class="select flex-center">
+  <div>
+    You can only receive products from the same vendor. Which vendor would you like to receive now?
+  </div>
+  <div class="select select-light">
     <select
             materialize="material_select"
             [materializeSelectOptions]="context"
+      [(ngModel)] = 'selectedVendor'
     >
       <option *ngFor="let vendor of context">{{vendor.vendor_name}}</option>
     </select>
   </div>
   <div class="row">
-    <div class="col s6 bottom-buttons">
-      <button class="uptracker-form-btn" (click)="dismissModal()">Close</button>
+    <div class="col s6 bottom-buttons right-align">
+      <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
     </div>
     <div class="col s6 bottom-buttons">
       <button class="uptracker-form-btn" (click)="onchooseVendor()">Ok</button>

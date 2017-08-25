@@ -95,13 +95,13 @@
               <li>
                 <a class="tealish-text" href="#">Edit</a>
               </li>
-              <li>
+              <li *ngIf="showMenuItem">
                 <a class="tealish-text" href="#">Resend</a>
               </li>
-              <li>
+              <li *ngIf="showMenuItem">
                 <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
               </li>
-              <li>
+              <li *ngIf="showMenuReconcile">
                 <a class="tealish-text" href="#">Reconcile</a>
               </li>
               <li>
@@ -124,6 +124,7 @@
                 <input
                   type="checkbox"
                   [(ngModel)] = 'item.checked'
+                  (ngModelChange)="setCheckbox($event)"
                   class="selected-input{{i}}"
                   id="selected{{i}}"
                 />
@@ -158,7 +159,7 @@
                   <a class="tealish-text" href="#">Resend</a>
                 </li>
                 <li *ngIf="item.status !== 5">
-                  <a class="tealish-text" [routerLink]="['receive']">Receive</a>
+                  <a class="tealish-text" (click) = sendToReceiveOrder(item)>Receive</a>
                 </li>
                 <li *ngIf="item.status === 5">
                   <a class="tealish-text" href="#">Reconcile</a>
@@ -175,7 +176,7 @@
             </div>
             <div class="clearfix"></div>
 
-            <app-order-detail [visible]="pastOrderService.itemsVisibility[i]" [items]="item.order_items"></app-order-detail>
+            <app-order-detail [visible]="pastOrderService.itemsVisibility[i]" [item]="item"></app-order-detail>
 
             <div class="clearfix"></div>
           </div>
