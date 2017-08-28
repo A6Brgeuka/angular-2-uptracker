@@ -62,11 +62,20 @@ export class PastOrderService extends ModelService {
   
   getReceive(orders, items) {
     return this.restangular.all('receive').customGET('', {'order_ids': orders.toString(), 'items_ids' : items.toString()})
-      .map(res => res.data)
-    .subscribe((res) => {
-      this.ordersToReceive$.next(res.orders);
+    .map(res => {
+      this.ordersToReceive$.next(res.data);
       this.router.navigate(['orders/receive']);
-    });
+      return res.data;
+    })
+  }
+  
+  getReceiveProduct(item) {
+    return this.restangular.all('receive').customGET('', { 'item_ids' : item })
+    .map(res => {
+      this.ordersToReceive$.next(res.data);
+      this.router.navigate(['orders/receive']);
+      return res.data;
+    })
   }
   
 }

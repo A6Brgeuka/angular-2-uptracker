@@ -4,6 +4,8 @@ import { AccountService } from '../../../core/services/account.service';
 import { Router } from '@angular/router';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { InventoryService } from '../../../core/services/inventory.service';
+import { Observable } from 'rxjs/Observable';
+import { ReceiveProductsModel } from '../../../models/receive-products.model';
 
 
 @Component({
@@ -14,13 +16,15 @@ import { InventoryService } from '../../../core/services/inventory.service';
 @DestroySubscribers()
 export class ReceiveComponent implements OnInit, AfterViewInit {
 
-  public total:number = 10;
+  //public total:number = 10;
   public searchKey:string= "";
   public mockItems:number[] = [0,0,0,0,0,0];
   public locationArr: any = [];
   public inventoryGroupArr: any = [];
   public tempArr: any = [];
-  public orders$ = this.pastOrderService.ordersToReceive$;
+  public orders$: Observable<any>;
+  
+  public receiveProducts: any = new ReceiveProductsModel;
   
   constructor(
     public accountService: AccountService,
@@ -32,6 +36,13 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     .subscribe(r => this.locationArr = r );
 
     this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
+    
+    this.orders$ = this.pastOrderService.ordersToReceive$;
+    this.orders$.subscribe(res => {
+      console.log(res);
+      this.receiveProducts = new ReceiveProductsModel(res);
+      console.log(this.receiveProducts);
+    });
   }
   
   ngOnInit() {
@@ -42,15 +53,15 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   }
 
   remove(item){
-    this.mockItems.pop();
+    //this.mockItems.pop();
   }
  
-  save(){
+  save() {
   
   }
   
-  addProduct(){
-      this.router.navigate(['/products']);
+  addProduct() {
+      //this.router.navigate(['/products']);
   }
   
 }

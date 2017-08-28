@@ -132,10 +132,10 @@
         .item {
           margin-bottom: 0;
           font-size: 14px;
-
+           &>.col {
+             padding-top: 20px;
+           }
           .col {
-            min-height: 50px;
-            line-height: 30px;
             color: #888;
             &:nth-of-type(1) {
               color: $tealish;
@@ -153,6 +153,9 @@
             .fa-eye-slash {
               color: $red;
             }
+          }
+          .trash-icon {
+            padding: 10px 0;
           }
         }
 
@@ -346,9 +349,11 @@ div.top {
 }
 
 .list .item {
-  border-bottom: 1px solid #ddd;
-  &.no-border-bottom {
-    border-bottom:none;
+  .product-row {
+    border-bottom: 1px solid #ddd;
+  }
+  .row {
+    margin-bottom: 0;
   }
 }
 

@@ -94,7 +94,8 @@ export class OrdersComponent implements OnInit {
       sendItems = sendItems.concat(order.order_items.map((item) => item.id));
       return order.order_id;
     });
-    this.pastOrderService.getReceive(sendOrders, sendItems)
+    this.subscribers.receiveOrders = this.pastOrderService.getReceive(sendOrders, sendItems)
+    .subscribe();
   }
   
   sendToReceiveOrder(order) {

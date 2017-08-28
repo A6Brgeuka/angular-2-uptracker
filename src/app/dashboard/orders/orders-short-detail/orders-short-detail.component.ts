@@ -26,6 +26,7 @@ import { Router } from "@angular/router";
 })
 @DestroySubscribers()
 export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
+  public subscribers: any = {};
   public locationArr: any;
   
   @Input("item") public item: any = [];
@@ -59,14 +60,13 @@ export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
   }
   
   onReceiveProduct(item, product) {
-    //let allProductsArr: any[] = item.order_items;
-    //let filteredCheckedProducts = _.filter(allProductsArr, item => item.id === product.id);
-    //item.order_items = filteredCheckedProducts;
-    
-    this.pastOrderService.getReceive(item.order_id, product.id);
-    
-    //this.pastOrderService.ordersToReceive$.next([item]);
-    //this.router.navigate(['orders/receive']);
+    this.subscribers.receiveOrders = this.pastOrderService.getReceive(item.order_id, product.id)
+    .subscribe();
+  }
+  
+  getReceiveProduct(item) {
+    this.subscribers.receiveOrders = this.pastOrderService.getReceiveProduct(item.id)
+    .subscribe();
   }
  
 }

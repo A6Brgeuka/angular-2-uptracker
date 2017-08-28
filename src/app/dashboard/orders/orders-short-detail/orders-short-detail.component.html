@@ -53,7 +53,7 @@
             <a class="tealish-text" href="#">Resend</a>
           </li>
           <li *ngIf="product.status !== 5">
-            <a class="tealish-text" (click)="onReceiveProduct(item, product)">Receive</a>
+            <a class="tealish-text" (click)="getReceiveProduct(product)">Receive</a>
           </li>
           <li *ngIf="product.status === 5">
             <a class="tealish-text" href="#">Reconcile</a>

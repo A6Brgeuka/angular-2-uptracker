@@ -120,6 +120,7 @@ export class InventoryPackageListResolve implements Resolve<any> {
 export class StatusListResolve implements Resolve<any> {
   constructor(
     public pastOrderService: PastOrderService,
+    
   ) {
   
   }
@@ -127,6 +128,18 @@ export class StatusListResolve implements Resolve<any> {
     return this.pastOrderService.getStatusList().take(1);
   }
 }
+
+//@Injectable()
+//export class InventoryResolve implements Resolve<any> {
+//  constructor(
+//    public inventoryService: InventoryService,
+//  ) {
+//
+//  }
+//  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+//    return this.inventoryService.getInventories().take(1);
+//  }
+//}
 
 // an array of services to resolve routes with data
 export const MAIN_RESOLVER_PROVIDERS = [
