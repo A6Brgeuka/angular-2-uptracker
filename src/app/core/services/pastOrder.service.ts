@@ -78,4 +78,8 @@ export class PastOrderService extends ModelService {
     })
   }
   
+  onReceiveProducts(productsToReceive) {
+    return this.restangular.all('receive').customPOST(productsToReceive);
+  }
+  
 }

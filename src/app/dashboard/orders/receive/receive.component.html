@@ -11,7 +11,7 @@
             class="wide"
             materialize="material_select"
             [materializeSelectOptions]="">
-            <option value="" disabled selected >{{ (orders$ | async).vendor?.vendor_name }}</option>
+            <option value="" disabled selected >{{ (orders$ | async)?.vendor?.vendor_name }}</option>
           </select>
         </div>
       </div>
@@ -104,6 +104,49 @@
                       materialize="material_select"
                       [materializeSelectOptions]="tempArr">
                       <option *ngFor="let location of locationArr" [value]="location.id">{{ location.name }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s1 flex-center justify-center trash-icon">
+                  <a href (click)="remove(item)">
+                    <fa name="trash" class="tealish-text"></fa>
+                  </a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s3">
+                  <div class="select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      [materializeSelectOptions]="pastOrderService.statusList"
+                      [(ngModel)] = 'item.status'
+                    >
+                      <option [value]="status" *ngFor="let status of pastOrderService.statusList">{{ status }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s1">
+                  <div class="input flex-center">
+                    <input type="text" [value]="product.quantity">
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="select flex-center">
+                    <select
+                      materialize="material_select"
+                      [attr.disabled]="true"
+                      [materializeSelectOptions]="tempArr">
+                      <option disabled>N/A</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s3">
+                  <div class="select flex-center">
+                    <select
+                      materialize="material_select"
+                      [attr.disabled]="true"
+                      [materializeSelectOptions]="tempArr">
+                      <option disabled>N/A</option>
                     </select>
                   </div>
                 </div>

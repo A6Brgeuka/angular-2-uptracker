@@ -5,7 +5,12 @@ import { Router } from '@angular/router';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { Observable } from 'rxjs/Observable';
-import { ReceiveProductsModel } from '../../../models/receive-products.model';
+import {
+  ItemModel, OrderModel, ReceiveProductsModel, StatusModel,
+  StorageLocationModel
+} from '../../../models/receive-products.model';
+import { Subject } from 'rxjs/Subject';
+import { OrderItems } from '../../../core/services/order.service';
 
 
 @Component({
@@ -15,8 +20,7 @@ import { ReceiveProductsModel } from '../../../models/receive-products.model';
 })
 @DestroySubscribers()
 export class ReceiveComponent implements OnInit, AfterViewInit {
-
-  //public total:number = 10;
+  
   public searchKey:string= "";
   public mockItems:number[] = [0,0,0,0,0,0];
   public locationArr: any = [];
@@ -25,6 +29,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   public orders$: Observable<any>;
   
   public receiveProducts: any = new ReceiveProductsModel;
+  public statusList: any = new StatusModel;
   
   constructor(
     public accountService: AccountService,
@@ -38,11 +43,27 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
     
     this.orders$ = this.pastOrderService.ordersToReceive$;
+
     this.orders$.subscribe(res => {
       console.log(res);
       this.receiveProducts = new ReceiveProductsModel(res);
+      this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
+        order = new OrderModel(order);
+        order.items = order.items.map((item: any) => {
+          let quantity = item.quantity;
+          item.item_id = item.id;
+          item = new ItemModel(item);
+          item.status = [new StatusModel()];
+          item.status[0].qty = quantity;
+          item.status[0].type = 'receive';
+          item.storage_locations = [new StorageLocationModel()];
+          return item;
+        });
+        return order;
+      });
       console.log(this.receiveProducts);
     });
+
   }
   
   ngOnInit() {
@@ -57,7 +78,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   }
  
   save() {
-  
+    this.pastOrderService.onReceiveProducts(this.receiveProducts);
   }
   
   addProduct() {

@@ -1,6 +1,6 @@
 export class StorageLocationModel {
   storage_location_is: string = '';
-  qty: '';
+  qty: string = '';
   
   constructor(obj?:any) {
     for (let field in obj) {
