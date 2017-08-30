@@ -9,9 +9,7 @@ import {
   ItemModel, OrderModel, ReceiveProductsModel, StatusModel,
   StorageLocationModel
 } from '../../../models/receive-products.model';
-import { Subject } from 'rxjs/Subject';
-import { OrderItems } from '../../../core/services/order.service';
-
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-order-detail',
@@ -52,10 +50,20 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
         order.items = order.items.map((item: any) => {
           let quantity = item.quantity;
           item.item_id = item.id;
+          item.inventory_group_id = item.inventory_group.id;
           item = new ItemModel(item);
           item.status = [new StatusModel()];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';
+          item.status[1] = new StatusModel();
+          item.status[1].qty = 0;
+          item.status[1].type = 'pending';
+          item.status = item.status.map(status => {
+            if(status.type === 'receive' || status.type === 'partial receive') {
+              status.primary_status = true;
+            }
+            return status;
+          });
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
@@ -73,16 +81,16 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
 
   }
 
-  remove(item){
-    //this.mockItems.pop();
+  remove(product, status) {
+    product = _.remove(product.status, status);
   }
  
   save() {
     this.pastOrderService.onReceiveProducts(this.receiveProducts);
   }
   
-  addProduct() {
-      //this.router.navigate(['/products']);
+  addProduct(product) {
+    //product = product.status.push(new StatusModel({qty: 0, type: 'pending'}));
   }
   
 }

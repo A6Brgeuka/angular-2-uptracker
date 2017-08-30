@@ -18,18 +18,18 @@
       <div class="col l2 m6 s6 input wide-input">
         <input type="text"
           placeholder="Packing Slip #"
-          [(ngModel)]="searchKey"
+          [(ngModel)]="receiveProducts.packing_slip"
           required
           class="col s12"
         />
-        <!--<div [hidden]="packingSlip.valid || packingSlip.pristine" class="error red-text left-align">-->
+        <!--<div [hidden]="receiveProducts.packing_slip.valid || receiveProducts.packing_slip.pristine" class="error red-text left-align">-->
           <!--Packing slip is required-->
         <!--</div>-->
       </div>
       <div class="col m6 l2 s6 input wide-input">
         <input type="text"
           placeholder="Invoice #"
-          [(ngModel)]="searchKey"
+          [(ngModel)]="receiveProducts.invoice_number"
           class="col s12"
         />
       </div>
@@ -43,7 +43,6 @@
             Save
           </button>
         </div>
-      <!--</div>-->
       <div class="clearfix"></div>
     </div>
       <div class="list is-grid-view">
@@ -53,10 +52,9 @@
             <div class="col s1">Quantity</div>
             <div class="col s4">Inventory Group</div>
             <div class="col s3">Location</div>
-            <!--<div class="col s3">Product</div>-->
             <div class="col s1"></div>
           </div>
-          <div class="item row" *ngFor="let item of (orders$ | async)?.orders">
+          <div class="item row" *ngFor="let item of receiveProducts.orders">
             <div class="col s12" *ngFor="let product of item.items">
               <div class="row">
                 <div class="col s3 ">
@@ -69,24 +67,24 @@
                   {{ product.item_name }}
                 </div>
                 <div class="col s4">
-                  {{ product.location_id }}
+                  {{ product.location_name }}
                 </div>
               </div>
-              <div class="row">
+              <div class="row" *ngFor="let status of product.status">
                 <div class="col s3">
                   <div class="select select-light flex-center">
                     <select
                       materialize="material_select"
                       [materializeSelectOptions]="pastOrderService.statusList"
-                      [(ngModel)] = 'item.status'
+                      [(ngModel)] = 'status.type'
                     >
-                      <option [value]="status" *ngFor="let status of pastOrderService.statusList">{{ status }}</option>
+                      <option [value]="statusItem.value" *ngFor="let statusItem of pastOrderService.statusList">{{ statusItem.text }}</option>
                     </select>
                   </div>
                 </div>
                 <div class="col s1 ">
                   <div class="input flex-center">
-                    <input type="text" [value]="product.quantity">
+                    <input type="text" [value]="status.qty">
                   </div>
                 </div>
                 <div class="col s4">
@@ -108,50 +106,7 @@
                   </div>
                 </div>
                 <div class="col s1 flex-center justify-center trash-icon">
-                  <a href (click)="remove(item)">
-                    <fa name="trash" class="tealish-text"></fa>
-                  </a>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s3">
-                  <div class="select select-light flex-center">
-                    <select
-                      materialize="material_select"
-                      [materializeSelectOptions]="pastOrderService.statusList"
-                      [(ngModel)] = 'item.status'
-                    >
-                      <option [value]="status" *ngFor="let status of pastOrderService.statusList">{{ status }}</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col s1">
-                  <div class="input flex-center">
-                    <input type="text" [value]="product.quantity">
-                  </div>
-                </div>
-                <div class="col s4">
-                  <div class="select flex-center">
-                    <select
-                      materialize="material_select"
-                      [attr.disabled]="true"
-                      [materializeSelectOptions]="tempArr">
-                      <option disabled>N/A</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col s3">
-                  <div class="select flex-center">
-                    <select
-                      materialize="material_select"
-                      [attr.disabled]="true"
-                      [materializeSelectOptions]="tempArr">
-                      <option disabled>N/A</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col s1 flex-center justify-center trash-icon">
-                  <a href (click)="remove(item)">
+                  <a (click)="remove(product, status)">
                     <fa name="trash" class="tealish-text"></fa>
                   </a>
                 </div>
@@ -159,7 +114,7 @@
               <div class="row product-row">
                 <div class="col s12">
                   <button
-                    (click)="addProduct()"
+                    (click)="addProduct(product)"
                     type="submit"
                     class="right mtop uptracker-form-btn white-text waves-effect waves-light"
                   >
@@ -168,7 +123,6 @@
                   </button>
                 </div>
               </div>
-
             </div>
         </div>
       </div>
