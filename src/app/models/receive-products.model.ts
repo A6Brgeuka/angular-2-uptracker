@@ -15,6 +15,7 @@ export class StatusModel {
   type: string = '';
   qty: number = null;
   primary_status: boolean = false;
+  showStatusSelect: boolean = true;
   
   constructor(obj?:any) {
     for (let field in obj) {

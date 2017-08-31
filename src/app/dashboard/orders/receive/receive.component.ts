@@ -10,6 +10,7 @@ import {
   StorageLocationModel
 } from '../../../models/receive-products.model';
 import * as _ from 'lodash';
+import { ToasterService } from '../../../core/services/toaster.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -29,15 +30,18 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = new StatusModel;
   
+  //public showStatusSelect: boolean = true;
+  
   constructor(
     public accountService: AccountService,
     public inventoryService: InventoryService,
     public router: Router,
-    public pastOrderService: PastOrderService
+    public pastOrderService: PastOrderService,
+    public toasterService: ToasterService,
   ) {
     this.accountService.locations$
     .subscribe(r => this.locationArr = r );
-
+    this.inventoryService.getNextInventory();
     this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
     
     this.orders$ = this.pastOrderService.ordersToReceive$;
@@ -91,6 +95,31 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   
   addProduct(product) {
     //product = product.status.push(new StatusModel({qty: 0, type: 'pending'}));
+  }
+  
+  changeLocation(location, product) {
+    product.location_id = location.id;
+    product.location_name = location.name;
+  }
+  
+  changeStatus(setStatus, product, curStatus) {
+    curStatus.showStatusSelect = false;
+    if (setStatus !== curStatus.type) {
+      let filteredStatus = _.find(product.status, {'type':setStatus});
+      if (curStatus.type === 'pending' && !filteredStatus) {
+        product.status.push(new StatusModel({type: 'pending', qty: '0'}));
+        curStatus.type = setStatus;
+      }
+      else if (filteredStatus) {
+        this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
+      }
+      else if (!filteredStatus) {
+        curStatus.type = setStatus;
+      }
+    }
+    // used setTimeout because materialize-select doesn't change the text
+    setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
+    console.log(product.status);
   }
   
 }

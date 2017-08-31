@@ -72,11 +72,12 @@
               </div>
               <div class="row" *ngFor="let status of product.status">
                 <div class="col s3">
-                  <div class="select select-light flex-center">
+                  <div class="select custom-select select-light flex-center" *ngIf="status.showStatusSelect">
                     <select
                       materialize="material_select"
                       [materializeSelectOptions]="pastOrderService.statusList"
-                      [(ngModel)] = 'status.type'
+                      (ngModelChange)="changeStatus($event, product, status)"
+                      [ngModel] = 'status.type'
                     >
                       <option [value]="statusItem.value" *ngFor="let statusItem of pastOrderService.statusList">{{ statusItem.text }}</option>
                     </select>
@@ -88,25 +89,37 @@
                   </div>
                 </div>
                 <div class="col s4">
-                  <div class="select flex-center">
+                  <div class="select select-light flex-center"
+                    >
                     <select
                       materialize="material_select"
-                      [materializeSelectOptions]="tempArr">
-                      <option [value]="inventoryGroup.name" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
+                      [materializeSelectOptions]="inventoryGroupArr"
+                      [(ngModel)] = 'product.inventory_group_id'>
+                      <option value="null">N/A</option>
+                      <ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
+                        <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
+                      </ng-container>
                     </select>
                   </div>
                 </div>
                 <div class="col s3">
-                  <div class="select flex-center">
+                  <div class="select select-light flex-center custom-select">
                     <select
                       materialize="material_select"
-                      [materializeSelectOptions]="tempArr">
-                      <option *ngFor="let location of locationArr" [value]="location.id">{{ location.name }}</option>
+                      [materializeSelectOptions]="locationArr"
+                      (ngModelChange)="changeLocation($event, product)"
+                      [ngModel] = 'product.selectedLocation'>
+                      <ng-container *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'">
+                        <option value="null">N/A</option>
+                      </ng-container>
+                      <ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
+                        <option *ngFor="let location of locationArr" [ngValue]="location">{{ location.name }}</option>
+                      </ng-container>
                     </select>
                   </div>
                 </div>
                 <div class="col s1 flex-center justify-center trash-icon">
-                  <a (click)="remove(product, status)">
+                  <a (click)="remove(product, status)" *ngIf="status.type !== 'pending'">
                     <fa name="trash" class="tealish-text"></fa>
                   </a>
                 </div>

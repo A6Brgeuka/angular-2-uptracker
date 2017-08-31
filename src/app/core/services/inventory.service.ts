@@ -58,6 +58,20 @@ export class InventoryService extends ModelService {
   }
   
   onInit() {
+  
+    this.getAllInventories();
+    
+    this.selfData$ = Observable.merge(
+      this.updateSelfData$
+    );
+    this.selfData$.subscribe((res) => {
+      this.selfData = res;
+      console.log(`${this.constructor.name} Update SELF DATA`, res);
+    });
+    
+  }
+  
+  getAllInventories() {
     this.getInventoryData$
     .withLatestFrom(this.location$)
     .map(([queryParams, location]) => {
@@ -77,14 +91,6 @@ export class InventoryService extends ModelService {
         return res.data;
       }
     );
-    this.selfData$ = Observable.merge(
-      this.updateSelfData$
-    );
-    this.selfData$.subscribe((res) => {
-      this.selfData = res;
-      console.log(`${this.constructor.name} Update SELF DATA`, res);
-    });
-    
   }
   
   getNextInventory(page?, search_string?, sortBy?) {
