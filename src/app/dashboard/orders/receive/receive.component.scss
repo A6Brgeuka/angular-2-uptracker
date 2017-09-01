@@ -344,7 +344,7 @@ div.top {
 }
 
 .list .item {
-  .product-row {
+   .product-row {
     border-bottom: 1px solid #ddd;
   }
   .row {
@@ -355,7 +355,7 @@ div.top {
 .products .list.is-grid-view input {
   box-sizing: border-box;
   border-color:$light-grey;
-  background-color: $white!important;
+  //background-color: $white!important;
 }
 
 .mtop{margin-top:10px;}

@@ -10,7 +10,8 @@
             [attr.disabled]="true"
             class="wide"
             materialize="material_select"
-            [materializeSelectOptions]="">
+            [materializeSelectOptions]=""
+          >
             <option value="" disabled selected >{{ (orders$ | async)?.vendor?.vendor_name }}</option>
           </select>
         </div>
@@ -38,6 +39,7 @@
             (click)="save()"
             type="submit"
             class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            [disabled]="!receiveProducts.packing_slip"
           >
             <fa name="check"></fa>
             Save
@@ -55,7 +57,7 @@
             <div class="col s1"></div>
           </div>
           <div class="item row" *ngFor="let item of receiveProducts.orders">
-            <div class="col s12" *ngFor="let product of item.items">
+            <div class="col s12 product-row" *ngFor="let product of item.items">
               <div class="row">
                 <div class="col s3 ">
                   {{ item.po_number }}
@@ -85,7 +87,10 @@
                 </div>
                 <div class="col s1 ">
                   <div class="input flex-center">
-                    <input type="text" [value]="status.qty">
+                    <input type="text" [(ngModel)]="status.qty"
+                      [disabled]="status.type === 'pending'"
+                      (change)="onchangeStatusQty(product)"
+                     >
                   </div>
                 </div>
                 <div class="col s4">
@@ -94,7 +99,9 @@
                     <select
                       materialize="material_select"
                       [materializeSelectOptions]="inventoryGroupArr"
-                      [(ngModel)] = 'product.inventory_group_id'>
+                      [(ngModel)] = 'product.inventory_group_id'
+                      [disabled]="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'"
+                    >
                       <option value="null">N/A</option>
                       <ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
                         <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
@@ -103,12 +110,14 @@
                   </div>
                 </div>
                 <div class="col s3">
-                  <div class="select select-light flex-center custom-select">
+                  <div class="select select-light flex-center">
                     <select
                       materialize="material_select"
                       [materializeSelectOptions]="locationArr"
                       (ngModelChange)="changeLocation($event, product)"
-                      [ngModel] = 'product.selectedLocation'>
+                      [ngModel] = 'product.selectedLocation'
+                      [disabled]="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'"
+                    >
                       <ng-container *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'">
                         <option value="null">N/A</option>
                       </ng-container>
@@ -124,22 +133,21 @@
                   </a>
                 </div>
               </div>
-              <div class="row product-row">
-                <div class="col s12">
-                  <button
-                    (click)="addProduct(product)"
-                    type="submit"
-                    class="right mtop uptracker-form-btn white-text waves-effect waves-light"
-                  >
-                    <fa name="plus"></fa>
-                    Add Product
-                  </button>
-                </div>
-              </div>
             </div>
+        </div>
+        <div class="row product-row">
+          <div class="col s12">
+            <button
+              (click)="addProduct()"
+              type="submit"
+              class="right mtop uptracker-form-btn white-text waves-effect waves-light"
+            >
+              <fa name="plus"></fa>
+              Add Product
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>

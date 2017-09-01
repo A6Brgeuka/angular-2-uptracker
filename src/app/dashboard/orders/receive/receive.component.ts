@@ -19,18 +19,14 @@ import { ToasterService } from '../../../core/services/toaster.service';
 })
 @DestroySubscribers()
 export class ReceiveComponent implements OnInit, AfterViewInit {
-  
+  public subscribers: any = {};
   public searchKey:string= "";
-  public mockItems:number[] = [0,0,0,0,0,0];
   public locationArr: any = [];
   public inventoryGroupArr: any = [];
-  public tempArr: any = [];
   public orders$: Observable<any>;
   
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = new StatusModel;
-  
-  //public showStatusSelect: boolean = true;
   
   constructor(
     public accountService: AccountService,
@@ -39,14 +35,14 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     public pastOrderService: PastOrderService,
     public toasterService: ToasterService,
   ) {
-    this.accountService.locations$
-    .subscribe(r => this.locationArr = r );
+    this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
+    
     this.inventoryService.getNextInventory();
-    this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
+    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
     
     this.orders$ = this.pastOrderService.ordersToReceive$;
-
-    this.orders$.subscribe(res => {
+  
+    this.subscribers.ordersSubscription = this.orders$.subscribe(res => {
       console.log(res);
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
@@ -62,12 +58,6 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
           item.status[1] = new StatusModel();
           item.status[1].qty = 0;
           item.status[1].type = 'pending';
-          item.status = item.status.map(status => {
-            if(status.type === 'receive' || status.type === 'partial receive') {
-              status.primary_status = true;
-            }
-            return status;
-          });
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
@@ -86,14 +76,27 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   }
 
   remove(product, status) {
-    product = _.remove(product.status, status);
+    let removedStatus = _.remove(product.status, status);
+    this.onchangeStatusQty(product);
   }
  
   save() {
+    debugger;
+    this.receiveProducts.orders.map((order) => {
+      order.items.map(item => {
+        item.status.map(status => {
+          if(status.type === 'receive' || status.type === 'partial receive') {
+            status.primary_status = true;
+          }
+          return status;
+        })
+      })
+    });
+    
     this.pastOrderService.onReceiveProducts(this.receiveProducts);
   }
   
-  addProduct(product) {
+  addProduct() {
     //product = product.status.push(new StatusModel({qty: 0, type: 'pending'}));
   }
   
@@ -120,6 +123,28 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     // used setTimeout because materialize-select doesn't change the text
     setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
     console.log(product.status);
+    this.onchangeStatusQty(product);
+  }
+  
+  onchangeStatusQty(product) {
+    
+    let pendingSum  = product.status.reduce((sum, currentStatus) => {
+
+      if(currentStatus.type === 'pending' || currentStatus.type === 'return') {
+        return +sum;
+      }
+      else {
+        return +sum + Number(currentStatus.qty);
+      }
+    }, 0);
+    
+    product.status.map(currentStatus => {
+      if(currentStatus.type === 'pending') {
+        currentStatus.qty = product.quantity - +pendingSum;
+      }
+      return currentStatus;
+    })
+    
   }
   
 }
