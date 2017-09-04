@@ -74,7 +74,7 @@ export class OrdersComponent implements OnInit {
     })
     .subscribe();
     
-    this.subscribers.ordersChecked = this.ordersChecked$
+    this.subscribers.ordersCheckedSubscription = this.ordersChecked$
     .switchMap(() => {
       return this.pastOrderService.collection$
     })
@@ -94,7 +94,7 @@ export class OrdersComponent implements OnInit {
       sendItems = sendItems.concat(order.order_items.map((item) => item.id));
       return order.order_id;
     });
-    this.subscribers.receiveOrders = this.pastOrderService.getReceive(sendOrders, sendItems)
+    this.subscribers.receiveOrdersSubscription = this.pastOrderService.getReceive(sendOrders, sendItems)
     .subscribe();
   }
   
@@ -119,14 +119,14 @@ export class OrdersComponent implements OnInit {
   toggleSelectAll(event) {
     // 0 = unused, 1 = selectAll, 2 = deselectAll
     this.selectAll$.next(event ? 1 : 2);
-    this.selectAll$
+    this.subscribers.selectAllSubscription = this.selectAll$
     .switchMap(() => this.pastOrderService.collection$)
     .subscribe(res => {
       res.map((item)=> {
         item.checked = event;
       })
-    })
-    
+    });
+    this.ordersChecked$.next([]);
   }
   
   chooseTab(a){

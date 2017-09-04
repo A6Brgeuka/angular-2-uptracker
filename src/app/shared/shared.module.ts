@@ -42,13 +42,15 @@ import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal
 import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.component';
 import { APP_DI_CONFIG } from '../../../env';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { BarcodeScannerModal } from './modals/barcode-scanner-modal/barcode-scanner-modal.component';
 
 let modalsArr = [
   EditUserModal,
   EditLocationModal,
   ChangePasswordUserModal,
   EditCommentModal,
-  UniConfirmModal
+  UniConfirmModal,
+  BarcodeScannerModal
 ];
 
 

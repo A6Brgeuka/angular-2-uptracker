@@ -164,7 +164,7 @@
             </div>
           </div>
           <div class="bottom col s3">
-            <div class="range-field">
+            <div class="range-field" *ngIf="locationId !== ''">
               <div class="range-value grey-bg left-align red-text bold">{{ product.critical_level }}</div>
               <input
                 #inputRange

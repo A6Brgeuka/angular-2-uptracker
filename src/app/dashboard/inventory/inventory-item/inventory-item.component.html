@@ -122,7 +122,7 @@
               </div>
               <div class="col m4  l2">
                 <label>Accounting</label>
-                <div class="value">{{(product$ | async)?.accounting}}</div>
+                <div class="value">{{(product$ | async)?.account_category}}</div>
               </div>
             </div>
             <div class="row">
@@ -132,11 +132,11 @@
               </div>
               <div class="col m4 l2">
                 <label>Sub-package</label>
-                <div class="value">{{ (product$ | async)?.unit_type }}</div>
+                <div class="value">{{ (product$ | async)?.sub_package_type }}</div>
               </div>
               <div class="col m4  l2">
                 <label>Consumable Unit</label>
-                <div class="value">{{ (product$ | async)?.sub_unit_type }}</div>
+                <div class="value">{{ (product$ | async)?.consumable_unit_type }}</div>
               </div>
             </div>
           </div>
@@ -166,7 +166,6 @@
     </div>
     <div class="clearfix"></div>
 
-
     <div class="row table-head-filter">
       <div class="col s12">
         <ul class="tabs" materialize="tabs">
@@ -189,7 +188,6 @@
         </ul>
       </div>
     </div>
-
 
     <div id="info">
       <div class="inner uptracker-form">

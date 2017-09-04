@@ -81,7 +81,6 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   }
  
   save() {
-    debugger;
     this.receiveProducts.orders.map((order) => {
       order.items.map(item => {
         item.status.map(status => {
