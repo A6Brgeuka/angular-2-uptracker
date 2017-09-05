@@ -307,9 +307,12 @@
               class="validate minlength-validation"
             >
               <option value=""></option>
-              <option value="Package">Package</option>
-              <option value="Sub-Package">Sub-Package</option>
-              <option value="Consumable Unit" [selected]="true" >Consumable Unit</option>
+              <!--<option value="Package">Package</option>-->
+              <!--<option value="Sub-Package">Sub-Package</option>-->
+              <!--<option value="Consumable Unit">Consumable Unit</option>-->
+              <option [value]="newInventory.package_type">{{ newInventory.package_type }}</option>
+              <option [value]="newInventory.sub_package_type">{{ newInventory.sub_package_type }}</option>
+              <option [value]="newInventory.consumable_unit_type">{{ newInventory.consumable_unit_type }}</option>
             </select>
           </div>
           <div class="col s1 mrg-top-5">=</div>

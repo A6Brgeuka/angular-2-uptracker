@@ -244,12 +244,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newInventory.products = res.map((el:any) => new InventoryProductModel(el));
       this.showSelect = false;
       if(res.length) {
+        
         this.newInventory.name = res[0].name;
-        //this.newInventory.department = res[0].department;
-        //this.newInventory.category = res[0].category;
-        //this.newInventory.account_category = res[0].account_category;
-        //this.newInventory.description = res[0].description;
-        //this.newInventory.notes = res[0].notes;
+        this.newInventory.department = (res[0].department) ? res[0].department : this.newInventory.department;
+        this.newInventory.category = (res[0].category) ? res[0].category : this.newInventory.category;
+        this.newInventory.account_category = (res[0].account_category) ? res[0].account_category: this.newInventory.account_category;
+        this.newInventory.description = (res[0].description) ? res[0].description : this.newInventory.description;
         this.outerPackageList = [res[0].package_type];
         this.innerPackageList = [res[0].sub_package.properties.unit_type];
         this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
