@@ -58,9 +58,9 @@ export class InventoryLocationModel {
 export class InventoryModel {
   name: string = '';
   products: InventoryProductModel[] = [];
-  department: string = 'Administrative';
-  category: string = 'Assets';
-  account_category: string = 'Supplies';
+  department: string = 'Clinic';
+  category: string = '';
+  account_category: string = 'Supplies: Clinical';
   tax_exempt: boolean = false;
   trackable: boolean = false;
   description: string = '';

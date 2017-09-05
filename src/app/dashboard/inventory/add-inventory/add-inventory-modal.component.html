@@ -16,7 +16,7 @@
       </button>
       <button (click)="saveAdded()"
         class="uptracker-form-btn save-btn white-text tealish waves-effect waves-light right"
-        [disabled] = '!items.length'
+        [disabled] = '!newInventory.category'
         *ngIf="step4.className == 'active'"
       >
       <fa name="check"></fa>
@@ -419,15 +419,18 @@
                 <div class="col s4">Overstocked</div>
               </div>
               <div class="row">
-                <div class="col s4 input">
+                <div class="col s2 input">
                   <input type="text" placeholder="Qty." [(ngModel)]="location.critical_level">
                 </div>
-                <div class="col s4 input">
+                <div class="col s2 mrg-top-5 custom-pdg-l">Units</div>
+                <div class="col s2 input">
                   <input type="text" placeholder="Qty." [(ngModel)]="location.fully_stocked">
                 </div>
-                <div class="col s4 input">
+                <div class="col s2 mrg-top-5 custom-pdg-l">Units</div>
+                <div class="col s2 input">
                   <input type="text" placeholder="Qty." [(ngModel)]="location.overstock_level">
                 </div>
+                <div class="col s2 mrg-top-5 custom-pdg-l">Units</div>
               </div>
               <div *ngIf="location.tracking_method != 'Perpetual'">
                 <div class="ttl">Auto Reorder</div>
@@ -515,10 +518,19 @@
         <div class="select select-light">
           <select materialize="material_select"
             [(ngModel)]="newInventory.category"
-            [materializeSelectOptions]="productCategoriesCollection$ | async">
+            [materializeSelectOptions]="productCategoriesCollection$ | async"
+            required minlength="1"
+            name="cat"
+            #cat="ngModel"
+            class="validate minlength-validation"
+          >
+            <option value=""></option>
             <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}
             </option>
           </select>
+        </div>
+        <div [hidden]="cat.valid || cat.pristine" class="error red-text left-align">
+          Category is required
         </div>
         <div class="ttl mrg-top-15">Accounting</div>
         <div class="select select-light">

@@ -115,7 +115,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
-      
+      console.log(this.searchResults);
       if(this.items.length) {
         this.checkedProduct = [];
         this.outerPackageList = [this.items[0].package_type];
@@ -245,6 +245,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.showSelect = false;
       if(res.length) {
         this.newInventory.name = res[0].name;
+        //this.newInventory.department = res[0].department;
+        //this.newInventory.category = res[0].category;
+        //this.newInventory.account_category = res[0].account_category;
+        //this.newInventory.description = res[0].description;
+        //this.newInventory.notes = res[0].notes;
         this.outerPackageList = [res[0].package_type];
         this.innerPackageList = [res[0].sub_package.properties.unit_type];
         this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
@@ -280,19 +285,20 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
     .map(([packageType,searchResults,checkedProduct,matchingAll]: any) => {
-      let filteredResults = _.filter(searchResults,packageType);
+      let filteredResults = _.filter(searchResults, packageType);
       
       let checkedResults = searchResults.reduce((acc: any[], item) => {
         let foundedItem = _.find(
           filteredResults,
           { variant_id: item.variant_id, product_id: item.product_id}
         );
+        
         return [...acc,{
           ...item,
           notActive: !foundedItem
         }]
       },[]);
-  
+      
       let checkboxResult = checkedResults.reduce((acc: any[], item) => {
           if (!matchingAll) {
             const {variant_id, product_id} = item;
@@ -411,16 +417,16 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
      
       let packageType = {
         package_type: item.package_type,
-        sub_package: {properties: {unit_type: item.consumable_unit.properties.unit_type}},
+        sub_package: {properties: {unit_type: item.sub_package.properties.unit_type}},
         consumable_unit: {properties: {unit_type: item.consumable_unit.properties.unit_type}}
       };
   
       this.outerPackageList = [item.package_type];
-      this.innerPackageList = [item.consumable_unit.properties.unit_type];
+      this.innerPackageList = [item.sub_package.properties.unit_type];
       this.consumablePackageList = [item.consumable_unit.properties.unit_type];
   
       this.checkPackage(item.package_type);
-      this.checkSubPackage(item.consumable_unit.properties.unit_type);
+      this.checkSubPackage(item.sub_package.properties.unit_type);
       this.checkConsPackage(item.consumable_unit.properties.unit_type);
       
       this.packageType$.next(packageType);
