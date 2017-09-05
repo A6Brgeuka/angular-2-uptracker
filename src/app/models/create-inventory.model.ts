@@ -69,7 +69,7 @@ export class InventoryModel {
   attachments: any[] = [];
   image: string = '';
   locations: InventoryLocationModel[] =[];
-  inventory_by: string = 'Consumable Unit';
+  inventory_by: string = '';
   package_type:string = null;
   sub_package_type:string = null;
   sub_package_qty:number = null;
