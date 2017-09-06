@@ -352,24 +352,21 @@
         <div class="row">
           <div class="col s7 select select-light">
             <select materialize="material_select"
-              [(ngModel)]="newInventory.inventory_by"
+              [(ngModel)]="newInventory.inventory_selected"
+              (ngModelChange)="selectPackageType($event)"
+              [materializeSelectOptions]="newInventory.inventory_by_array"
               required minlength="1"
               name="inventory_by"
-              #inventory_by="ngModel"
+              #inventory_by = "ngModel"
               class="validate minlength-validation"
             >
-              <option value=""></option>
-              <!--<option value="Package">Package</option>-->
-              <!--<option value="Sub-Package">Sub-Package</option>-->
-              <!--<option value="Consumable Unit">Consumable Unit</option>-->
-              <option [value]="newInventory.package_type">{{ newInventory.package_type }}</option>
-              <option [value]="newInventory.sub_package_type">{{ newInventory.sub_package_type }}</option>
-              <option [value]="newInventory.consumable_unit_type">{{ newInventory.consumable_unit_type }}</option>
+              <option [ngValue]=""></option>
+              <option *ngFor="let package of newInventory.inventory_by_array" [ngValue]="package">{{ package.label }}</option>
             </select>
           </div>
           <div class="col s1 mrg-top-5">=</div>
           <div class="col s2 input">
-            <input type="text" placeholder="Qty.">
+            <input type="text" placeholder="Qty." [disabled] = 'true' [ngModel]='newInventory?.inventory_by_qty'>
           </div>
           <div class="col s2 custom-pdg-l mrg-top-5">Units</div>
         </div>
@@ -538,13 +535,26 @@
                   </div>
                 </div>
                 <div class="ttl">Restock Frequency</div>
-
+                <div class="input select select-light">
+                  <select materialize="material_select"
+                    [(ngModel)]="location.restock_frequency"
+                  >
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
           <div class="col s6">
             <div class="row">
-              <div class="ttl ttl-stock border-btm col s12">Back Stock</div>
+              <div class="ttl ttl-stock border-btm col s12">On-Hand Quantities</div>
+              <div class="border-btm col s12 descr-text">
+                This is the quantity you currently have on-hand at each storage location.
+                This number will automatically increase when items are received and decrease when marked as used.
+              </div>
             </div>
             <div *ngFor="let stock of location.storage_locations">
               <div class="row border-btm stock" *ngIf="!stock.floor_stock">
@@ -557,7 +567,11 @@
               </div>
             </div>
             <div class="row">
-              <div class="ttl ttl-stock border-btm col s12">Floor Stock</div>
+              <div class="ttl ttl-stock border-btm col s12">Refill Quantities</div>
+              <div class="border-btm col s12 descr-text">
+                This is the quantity you refill the floor locations with on a regular basis as your working stock.
+                It is not counted toward your inventory total.
+              </div>
             </div>
             <div *ngFor="let stock of location.storage_locations">
               <div class="row border-btm stock" *ngIf="stock.floor_stock">

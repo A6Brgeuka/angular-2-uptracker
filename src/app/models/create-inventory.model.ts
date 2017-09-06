@@ -4,6 +4,8 @@ export class InventoryProductModel {
   vendor_name: string = null;
   vendor_id: string = null;
   
+  inventory_by: any[] = [];
+  
   name: string = '';
   images: any[] = [];
   vendors: any[] = [];
@@ -20,7 +22,7 @@ export class InventoryProductModel {
 export class InventoryStorageLocationModel {
   name: string = '';
   inventory_location_id: string = '';
-  on_hand: number = null;
+  on_hand: number = 0;
   floor_stock: boolean = false;
   
   constructor(obj?:any) {
@@ -43,6 +45,7 @@ export class InventoryLocationModel {
   auto_reorder_frequency: number = 1;
   auto_reorder_timespan: string = 'Months';
   auto_reorder_qty: number = null;
+  restock_frequency: string = 'Monthly';
   storage_locations: InventoryStorageLocationModel[] = [];
   active: boolean = false;
   
@@ -59,7 +62,7 @@ export class InventoryModel {
   name: string = '';
   products: InventoryProductModel[] = [];
   department: string = 'Clinic';
-  category: string = '';
+  category: string = null;
   account_category: string = 'Supplies: Clinical';
   tax_exempt: boolean = false;
   trackable: boolean = false;
@@ -75,6 +78,10 @@ export class InventoryModel {
   sub_package_qty:number = null;
   consumable_unit_type:string = null;
   consumable_unit_qty:number = null;
+  
+  inventory_by_array: any[] =[];
+  //inventory_by_qty: string = '';
+  //inventory_by_label: string = '';
   
   constructor(obj?:any) {
     for (let field in obj) {
