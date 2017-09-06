@@ -273,7 +273,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.newInventory.inventory_by_array = res[0].inventory_by;
         this.newInventory.department = (res[0].department) ? res[0].department : this.newInventory.department;
         this.newInventory.category = (res[0].category) ? res[0].category : this.newInventory.category;
-        this.newInventory.account_category = (res[0].account_category) ? res[0].account_category: this.newInventory.account_category;
         this.newInventory.description = (res[0].description) ? res[0].description : this.newInventory.description;
         this.outerPackageList = [res[0].package_type];
         this.innerPackageList = [res[0].sub_package.properties.unit_type];
@@ -556,6 +555,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   selectPackageType(packageType) {
     this.newInventory.inventory_by = packageType.value;
     this.newInventory.inventory_by_qty = packageType.qty;
+    this.newInventory.inventory_by_type = packageType.type;
   }
   
   saveAdded(){

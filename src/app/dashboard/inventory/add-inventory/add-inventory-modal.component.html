@@ -501,24 +501,24 @@
               <div *ngIf="location.tracking_method != 'Perpetual'">
                 <div class="ttl">Auto Reorder</div>
                 <div class="row">
-                  <div class="col s4">Start Date</div>
+                  <div class="col s3">Start Date</div>
                   <div class="col s2">Frequency</div>
-                  <div class="col s4"></div>
-                  <div class="col s2">Quantity</div>
+                  <div class="col s3"></div>
+                  <div class="col s4">Quantity</div>
                 </div>
                 <div class="row">
-                  <div class="col s4 input">
+                  <div class="col s3 input">
                     <input materialize="pickadate"
                       [(ngModel)]="location.auto_reorder_start_date"
                       [materializeParams]="[{format:'mm/dd/yyyy', selectMonths: true, selectYears: 10}]"
                       type="text"
-                      placeholder = 'MM/DD/YYYY'
+                      placeholder = 'mm/dd/yyyy'
                     >
                   </div>
                   <div class="col s2 input">
                     <input type="text" [(ngModel)]="location.auto_reorder_frequency">
                   </div>
-                  <div class="col s4">
+                  <div class="col s3">
                     <div class="input select select-light">
                       <select materialize="material_select"
                         [(ngModel)]="location.auto_reorder_timespan"
@@ -532,6 +532,9 @@
                   </div>
                   <div class="col s2 input">
                     <input type="text" placeholder="Qty." [(ngModel)]="location.auto_reorder_qty">
+                  </div>
+                  <div class="col s2 mrg-top-5 custom-pdg-l">
+                    {{ newInventory?.inventory_by_type }}
                   </div>
                 </div>
                 <div class="ttl">Restock Frequency</div>
