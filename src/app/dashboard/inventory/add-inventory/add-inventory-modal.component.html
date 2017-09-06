@@ -61,8 +61,15 @@
           <div class="row">
             <div class="col s12">
               <div class="ttl">Vendor</div>
-              <div class="input">
-                <input [(ngModel)]="newProductData.vendor_name"  type="text" placeholder="Vendor Name">
+              <div class="input search">
+                <input auto-complete
+                  placeholder="Vendor Name"
+                  [source]="observableSourceVendor.bind(this)"
+                  (input) = 'onSearchVendor($event)'
+                  [min-chars] = '2'
+                  (ngModelChange) = 'selectedAutocompledVendor($event)'
+                  [list-formatter] = 'vendorListFormatter(data)'
+                />
               </div>
             </div>
           </div>
@@ -535,14 +542,14 @@
         <div class="select select-light">
           <select materialize="material_select"
             [(ngModel)]="newInventory.category"
-            [materializeSelectOptions]="productCategoriesCollection$ | async"
+            [materializeSelectOptions]="productCategoriesCollection"
             required minlength="1"
             name="cat"
             #cat="ngModel"
             class="validate minlength-validation"
           >
             <option value=""></option>
-            <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}
+            <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
             </option>
           </select>
         </div>

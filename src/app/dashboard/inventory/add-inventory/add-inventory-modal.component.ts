@@ -34,6 +34,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   context: AddInventoryModalContext;
   total: number = 0;
   public typeIn$: any = new Subject();
+  //public vendorTypeIn$: any = new Subject();
   searchResults$: any = new BehaviorSubject([]);
   searchResults: any[] = [];
   
@@ -68,6 +69,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public showSelect: boolean = true;
   public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public autocompleteVendors: any = [];
   
   public file$:Observable<any>;
   public file;
@@ -86,7 +89,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public departmentCollection$: Observable<any> = new Observable<any>();
   public productAccountingCollection$: Observable<any> = new Observable<any>();
-  public productCategoriesCollection$: Observable<any> = new Observable<any>();
+  public productCategoriesCollection: any;
   
   @ViewChild('step1') step1: ElementRef;
   @ViewChild('step2') step2: ElementRef;
@@ -152,6 +155,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           if (product.product_id === null) {
             product.variant_id = null;
             product.vendor_name = product.vendors[0].vendor_name;
+            product.vendor_id = product.vendors[0].vendor_id;
           }
         });
         return this.inventoryService.addItemsToInventory(this.newInventory)})
@@ -166,12 +170,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .subscribe(res => {
       this.autocompleteProducts = res['suggestions'];
     });
+  
+    this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
+    .subscribe((res:any) => {
+      this.autocompleteVendors = res;
+    });
     
     this.fileActions();
     this.msdsActions();
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
+    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1).subscribe(res => this.productCategoriesCollection = res);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
-    this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
   
     this.outerPackageList = this.inventoryService.outerPackageList;
     this.innerPackageList = this.inventoryService.innerPackageList;
@@ -185,8 +195,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   selectedAutocompled(keyword) {
     this.typeIn$.next(keyword);
   }
+  selectedAutocompledVendor(vendor) {
+    this.newProductData.vendors = [vendor];
+  }
   observableSource(keyword: any) {
     return Observable.of(this.autocompleteProducts).take(1);
+  }
+  
+  onSearchVendor(event) {
+    this.newProductData.vendor_name = event.target.value;
+    this.autocompleteVendors$.next(event.target.value);
+  }
+  
+  observableSourceVendor(keyword: any) {
+    return Observable.of(this.autocompleteVendors).take(1);
+  }
+  vendorListFormatter(data:any) {
+      return 'vendor_name';
   }
   
   ngOnInit() {
@@ -244,7 +269,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newInventory.products = res.map((el:any) => new InventoryProductModel(el));
       this.showSelect = false;
       if(res.length) {
-        
         this.newInventory.name = res[0].name;
         this.newInventory.department = (res[0].department) ? res[0].department : this.newInventory.department;
         this.newInventory.category = (res[0].category) ? res[0].category : this.newInventory.category;
@@ -516,11 +540,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addNewProduct() {
+    let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name:this.newProductData.vendor_name, vendor_id:null}];
     this.addCustomToInventory([
       new InventorySearchResults(
         Object.assign(this.newProductData, {
           variant_id: 'tmp' + Math.floor(Math.random() * 1000000),
-          vendors:[{vendor_name:this.newProductData.vendor_name, vendor_id:null}]
+          vendors:vendor
         })
       )
     ]);

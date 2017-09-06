@@ -457,6 +457,10 @@ a {
 
 }
 
+ngui-auto-complete {
+  z-index: 11 !important;
+}
+
 button {
   &[disabled] {
     cursor: default !important;

@@ -162,6 +162,10 @@ export class InventoryService extends ModelService {
   autocompleteSearch(keywords: string) {
     return this.restangular.one('inventory', 'suggest').customGET('', {'q': keywords}).map((res: any) => res.data);
   }
+  
+  autocompleteSearchVendor(keywords: string) {
+    return this.restangular.one('vendors', 'suggest').customGET('', {'q': keywords}).map((res: any) => res.data.suggestions);
+  }
   addInventoryItemComment(c: any) {
   }
   
