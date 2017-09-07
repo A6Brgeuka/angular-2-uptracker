@@ -80,8 +80,6 @@ export class InventoryModel {
   consumable_unit_qty:number = null;
   
   inventory_by_array: any[] =[];
-  //inventory_by_qty: string = '';
-  //inventory_by_label: string = '';
   
   constructor(obj?:any) {
     for (let field in obj) {

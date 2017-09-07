@@ -4,10 +4,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
-import {
-  AttachmentFiles, InventorySearchResults,
-  searchData
-} from '../../../models/inventory.model';
+import { AttachmentFiles, InventorySearchResults, searchData } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -34,7 +31,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   context: AddInventoryModalContext;
   total: number = 0;
   public typeIn$: any = new Subject();
-  //public vendorTypeIn$: any = new Subject();
   searchResults$: any = new BehaviorSubject([]);
   searchResults: any[] = [];
   
@@ -500,7 +496,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     if (!this.checkBoxCandidates && !this.items.length) {
       this.packageType$.next({});
     }
-    
   }
   
   selectAllItems() {
@@ -541,11 +536,32 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   addNewProduct() {
     let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name:this.newProductData.vendor_name, vendor_id:null}];
+    let inventory_by_arr = [
+      {
+        type: "Package",
+        label: this.newProductData.package_type,
+        value:"package",
+        qty: ''
+      },
+      {
+        type: "Sub Package",
+        label: this.newProductData.sub_package.properties.unit_type,
+        value:"sub_package",
+        qty: this.newProductData.sub_package.properties.qty,
+      },
+      {
+        type: "Consumable Unit",
+        label: this.newProductData.consumable_unit.properties.unit_type,
+        value:"consumable_unit",
+        qty: this.newProductData.consumable_unit.properties.qty,
+      }
+    ];
     this.addCustomToInventory([
       new InventorySearchResults(
         Object.assign(this.newProductData, {
           variant_id: 'tmp' + Math.floor(Math.random() * 1000000),
-          vendors:vendor
+          vendors:vendor,
+          inventory_by: inventory_by_arr
         })
       )
     ]);
@@ -688,7 +704,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.file$.subscribe(res => {
       console.log('files',res);
       this.newInventory.attachments = res;
-      //this.hasFiles = res.length > 0;
     });
   }
   // upload by input type=file

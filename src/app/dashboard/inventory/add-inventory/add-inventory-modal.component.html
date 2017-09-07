@@ -175,9 +175,7 @@
               (ngModelChange) = 'selectedAutocompled($event)'
               [min-chars] = '3'
             />
-            <a>
-              <fa name="barcode"></fa>
-            </a>
+            <a><fa name="barcode"></fa></a>
           </div>
 
         <div class="col s6 mrg-top-20">
@@ -209,9 +207,7 @@
                 [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
               </div>
               <div>
-                <div class="product-name tealish-text">
-                  {{ item.name }}
-                </div>
+                <div class="product-name tealish-text">{{ item.name }}</div>
                 <div class="vendor-name">
                   <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor.vendor_name }}<span>,</span> </span>
                 </div>
@@ -283,9 +279,6 @@
               <div class="clearfix"></div>
             </div>
           </div>
-          <!--<div class="col s3 right-align low-padding item-price">-->
-          <!--${{ item.price/100 | number : '1.2-2' }}-->
-          <!--</div>-->
           <div (click)="deleteFromInventory([item])" class="action-button">
             <fa name="minus"></fa>
           </div>
@@ -417,10 +410,6 @@
           *ngFor="let item of newInventory.products; let i=index;"
           class="row added-items">
           <div class="col s8 product-row-fields">
-            <!--<div class="input-checkbox  checkbox">-->
-              <!--<input [(ngModel)]="item.checked" id="addeditem1{{ i }}" type="checkbox">-->
-              <!--<label for="addeditem1{{ i }}"></label>-->
-            <!--</div>-->
             <div class="image" *ngIf="(item.images && item.images[0])"
               [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
             </div>
@@ -683,13 +672,6 @@
           <div class="ttl tealish-text input-placeholder">Upload File</div>
         </div>
         <div class="ttl mrg-top-15">Attachments</div>
-        <!--<div class="attachments">-->
-          <!--<a href="#" target="_blank">-->
-            <!--<fa name="file-pdf-o"></fa>-->
-            <!--Purchase Order #-->
-            <!--<fa class="tealish-text invis" name="external-link"></fa>-->
-          <!--</a>-->
-        <!--</div>-->
         <div *ngFor="let file of (file$ | async)" class="attachments">
           <a href="{{ file.public_url }}"  target="_blank">
             <fa *ngIf="file.type == 'application/pdf'" name="file-pdf-o"></fa>

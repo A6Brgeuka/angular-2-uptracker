@@ -21,7 +21,7 @@ export class Vendor{
 export class InventorySearchResults {
   consumable_unit: PackageProperties =  {properties:{qty:null, unit_type:null}};
   sub_package: PackageProperties =  {properties:{qty:null, unit_type:null}};
-  'package': PackageProperties =  {properties:{qty:null, unit_type:null}};
+  //'package': PackageProperties =  {properties:{qty:null, unit_type:null}};
   vendor:Vendor = {vendor_name:"", vendor_id:null};
   vendors: Vendor[] = [];
   description:string = "";
@@ -32,10 +32,12 @@ export class InventorySearchResults {
   mfg_number:string|number = "";
   name:string = "";
   package_type:string = "";
-  //price:number = 0;
+  price:string = "$0";
   product_id:string  = null;
   upc:string = "";
   variant_id:string = null;
+  
+  inventory_by: any[] = [];
   
   checked:boolean = false; // my prop
   
