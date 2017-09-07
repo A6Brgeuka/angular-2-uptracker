@@ -4,6 +4,10 @@ export class InventoryProductModel {
   vendor_name: string = null;
   vendor_id: string = null;
   
+  price:string = null;
+  catalog_number:string = null;
+  upc:string = null;
+  
   inventory_by: any[] = [];
   
   name: string = '';
