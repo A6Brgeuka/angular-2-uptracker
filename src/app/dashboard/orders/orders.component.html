@@ -36,22 +36,22 @@
 
     <div class="row">
       <ul class="tabs location-tabs" materialize="tabs">
-        <li class="tab" (click)="chooseTab('all')">
+        <li class="tab" (click)="chooseTab('All')">
           <a [class.active]="true">All</a>
         </li>
-        <li class="tab" (click)="chooseTab('open')">
+        <li class="tab" (click)="chooseTab('Open')">
           <a [class.active]="false">Open</a>
         </li>
-        <li class="tab" (click)="chooseTab('received')">
+        <li class="tab" (click)="chooseTab('Received')">
           <a [class.active]="false">Received</a>
         </li>
-        <li class="tab" (click)="chooseTab('backorded')">
+        <li class="tab" (click)="chooseTab('Backorded')">
           <a [class.active]="false">Backorded</a>
         </li>
-        <li class="tab" (click)="chooseTab('flagged')">
+        <li class="tab" (click)="chooseTab('Flagged')">
           <a [class.active]="false">Flagged</a>
         </li>
-        <li class="tab" (click)="chooseTab('closed')">
+        <li class="tab" (click)="chooseTab('Closed')">
           <a [class.active]="false">Closed</a>
         </li>
 
@@ -79,11 +79,11 @@
           </div>
 
           <div class="col s2">Vendor</div>
-          <div class="col s1">Location</div>
+          <div class="col s2">Location</div>
           <div class="col s1">Status</div>
-          <div class="col s1">Placed</div>
-          <div class="col s1">Received</div>
-          <div class="col s1">Reconcieled</div>
+          <div class="col s2">Placed</div>
+          <!--<div class="col s1">Received</div>-->
+          <!--<div class="col s1">Reconcieled</div>-->
           <div class="col s1">#Products</div>
           <div class="col s2">
             <div class="right edititem"
@@ -116,7 +116,7 @@
         </div>
 
         <div class="item row"
-          *ngFor="let item of (pastOrderService.collection$ | async);let i=index;"
+          *ngFor="let item of (orders$ | async);let i=index;"
           [class.no-border-bottom]="item">
           <div>
             <div class="col s2 left-align">
@@ -137,11 +137,11 @@
             <div (click)="changeVisibility(i)" class="col s2 pointer flex-center">
               <div>{{ item.vendor_name }}</div>
             </div>
-            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.location }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.location }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.status }}</div>
-            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.placed_date }}</div>
-            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.received_date }}</div>
-            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.reconciled_date }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.placed_date }}</div>
+            <!--<div (click)="changeVisibility(i)" class="col pointer s1">{{ item.received_date }}</div>-->
+            <!--<div (click)="changeVisibility(i)" class="col pointer s1">{{ item.reconciled_date }}</div>-->
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.product_count }}</div>
             <div class="col s2">
 

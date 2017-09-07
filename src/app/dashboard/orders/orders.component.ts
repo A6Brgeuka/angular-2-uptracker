@@ -10,6 +10,7 @@ import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { SelectVendorModal } from './select-vendor-modal/select-vendor.component';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-orders',
@@ -20,10 +21,12 @@ import { SelectVendorModal } from './select-vendor-modal/select-vendor.component
 export class OrdersComponent implements OnInit {
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public selectAll: boolean;
   public searchKey: string;
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public filterTabBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number = 6;
   public visible:boolean[] = [];
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
@@ -42,9 +45,23 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subscribers.ordersSubscription = Observable.combineLatest(
+      this.pastOrderService.collection$,
+      this.filterTabBy$
+    )
+    .subscribe(([r, f]) => {
+      if (f && f !== 'All') {
+        let orders = _.filter(r, ['status', f]);
+        this.orders$.next(orders);
+      }
+      else {
+        this.orders$.next(r);
+      }
+    });
+    
     this.subscribers.ordersToReceive = this.ordersToReceive$
     .switchMap(() => {
-      return this.pastOrderService.collection$
+      return this.orders$
     })
     .map((product) => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
@@ -76,7 +93,7 @@ export class OrdersComponent implements OnInit {
     
     this.subscribers.ordersCheckedSubscription = this.ordersChecked$
     .switchMap(() => {
-      return this.pastOrderService.collection$
+      return this.orders$
     })
     .map(product => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
@@ -134,8 +151,7 @@ export class OrdersComponent implements OnInit {
   }
   
   setFilter(filter:any){
-    //TODO
-    console.log(`tab ${filter} enabled`)
+    this.filterTabBy$.next(filter);
   }
   changeVisibility(i){
     this.pastOrderService.itemsVisibility[i] = !this.pastOrderService.itemsVisibility[i];

@@ -1,10 +1,14 @@
 <div *ngIf="visible" class="list is-grid-view orders-short-detail">
   <div>
     <div class="flex-row heading row">
-      <div class="col s9">Product Name</div>
-
-      <div class="col s1">#Products</div>
-      <div class="col s2">
+      <div class="col s4">Product Name</div>
+      <div class="col s2">Location</div>
+      <div class="col s1">Status</div>
+      <div class="col s1">Catalog #</div>
+      <div class="col s1">Qty</div>
+      <div class="col s1">Unit Price</div>
+      <div class="col s2">Total</div>
+      <!--<div class="col s2">-->
         <!--<div class="right edititem filled"-->
           <!--materialize="dropdown"-->
           <!--[attr.data-activates]='"order_dd_"+i'>-->
@@ -22,11 +26,11 @@
             <!--<a class="tealish-text" href="/">Reorder</a>-->
           <!--</li>-->
         <!--</ul>-->
-        <div>Total</div>
-      </div>
+        <!--<div>Total</div>-->
+      <!--</div>-->
     </div>
     <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i=index;">
-      <div class="col s9 flex-center">
+      <div class="col s4 flex-center">
         <div class="input-checkbox left checkbox">
           <input
             [(ngModel)]='product.checked'
@@ -40,7 +44,11 @@
           <div> {{ product.item_name }}</div>
         </div>
       </div>
+      <div class="col s2">{{ product.location_id }}</div>
+      <div class="col s1">{{ product.status }}</div>
+      <div class="col s1">{{ product.catalog_number }}</div>
       <div class="col s1">{{ product.quantity }}</div>
+      <div class="col s1">{{ product.unit_price }}</div>
       <div class="col s2">
         <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
           <fa name="ellipsis-h"></fa>
