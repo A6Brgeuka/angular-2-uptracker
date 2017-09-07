@@ -556,6 +556,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.newInventory.inventory_by = packageType.value;
     this.newInventory.inventory_by_qty = packageType.qty;
     this.newInventory.inventory_by_type = packageType.type;
+    this.newInventory.inventory_by_label = packageType.label;
   }
   
   saveAdded(){

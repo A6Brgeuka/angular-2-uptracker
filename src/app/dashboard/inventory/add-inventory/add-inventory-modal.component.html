@@ -94,12 +94,7 @@
             <div class="col s12">
               <div class="ttl">Inner Package</div>
               <div class="row">
-                <div class="col s4">
-                  <div class="input">
-                    <input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">
-                  </div>
-                </div>
-                <div class="col s8">
+                <div class="col s9">
                   <div class="select select-light custom-select">
                     <select materialize="material_select"
                       (ngModelChange)="checkSubPackage($event)"
@@ -110,7 +105,12 @@
                       <option *ngFor="let innerPackage of innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>
                     </select>
                   </div>
-              </div>
+                </div>
+                <div class="col s3">
+                  <div class="input">
+                    <input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">
+                  </div>
+                </div>
             </div>
             </div>
           </div>
@@ -118,12 +118,7 @@
             <div class="col s12">
               <div class="ttl">Consumable Unit</div>
               <div class="row">
-                <div class="col s4">
-                  <div class="input">
-                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">
-                  </div>
-                </div>
-                <div class="col s8">
+                <div class="col s9">
                   <div class="select select-light custom-select">
                     <select materialize="material_select"
                       (ngModelChange)="checkConsPackage($event)"
@@ -131,10 +126,14 @@
                       [materializeSelectOptions]="inventoryService.consumablePackageList"
                     >
                       <option value="" [disabled]='items.length || checkedProduct.length'>N/A</option>
-                      <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">
-                        {{consumablePackage}}
+                      <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}
                       </option>
                     </select>
+                  </div>
+                </div>
+                <div class="col s3">
+                  <div class="input">
+                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">
                   </div>
                 </div>
               </div>
@@ -488,15 +487,15 @@
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty." [(ngModel)]="location.critical_level">
                 </div>
-                <div class="col s2 mrg-top-5 custom-pdg-l">Units</div>
+                <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty." [(ngModel)]="location.fully_stocked">
                 </div>
-                <div class="col s2 mrg-top-5 custom-pdg-l">Units</div>
+                <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty." [(ngModel)]="location.overstock_level">
                 </div>
-                <div class="col s2 mrg-top-5 custom-pdg-l">Units</div>
+                <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
               </div>
               <div *ngIf="location.tracking_method != 'Perpetual'">
                 <div class="ttl">Auto Reorder</div>
@@ -534,21 +533,21 @@
                     <input type="text" placeholder="Qty." [(ngModel)]="location.auto_reorder_qty">
                   </div>
                   <div class="col s2 mrg-top-5 custom-pdg-l">
-                    {{ newInventory?.inventory_by_type }}
+                    {{ newInventory?.inventory_by_label }}
                   </div>
                 </div>
-                <div class="ttl">Restock Frequency</div>
-                <div class="input select select-light">
-                  <select materialize="material_select"
-                    [(ngModel)]="location.restock_frequency"
-                  >
-                    <option value="Daily">Daily</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Quarterly">Quarterly</option>
-                  </select>
-                </div>
               </div>
+            </div>
+            <div class="ttl">Restock Frequency</div>
+            <div class="input select select-light">
+              <select materialize="material_select"
+                [(ngModel)]="location.restock_frequency"
+              >
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+                <option value="Quarterly">Quarterly</option>
+              </select>
             </div>
           </div>
           <div class="col s6">
