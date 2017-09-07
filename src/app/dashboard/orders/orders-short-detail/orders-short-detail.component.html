@@ -2,9 +2,9 @@
   <div>
     <div class="flex-row heading row">
       <div class="col s4">Product Name</div>
-      <div class="col s2">Location</div>
+      <div class="col s1">Location</div>
       <div class="col s1">Status</div>
-      <div class="col s1">Catalog #</div>
+      <div class="col s2">Catalog #</div>
       <div class="col s1">Qty</div>
       <div class="col s1">Unit Price</div>
       <div class="col s2">Total</div>
@@ -44,9 +44,9 @@
           <div> {{ product.item_name }}</div>
         </div>
       </div>
-      <div class="col s2">{{ product.location_id }}</div>
+      <div class="col s1">{{ product.location_name }}</div>
       <div class="col s1">{{ product.status }}</div>
-      <div class="col s1">{{ product.catalog_number }}</div>
+      <div class="col s2">{{ product.catalog_number }}</div>
       <div class="col s1">{{ product.quantity }}</div>
       <div class="col s1">{{ product.unit_price }}</div>
       <div class="col s2">
