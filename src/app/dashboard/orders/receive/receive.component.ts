@@ -35,14 +35,30 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     public pastOrderService: PastOrderService,
     public toasterService: ToasterService,
   ) {
+    console.log(111);
+
+  }
+  
+  ngOnChanges() {
+    console.log('changes')
+  }
+  
+  ngOnInit() {console.log('init')
     this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
-    
+  
     this.inventoryService.getNextInventory();
     this.subscribers.inventoryArrSubscription = this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
-    
-    this.orders$ = this.pastOrderService.ordersToReceive$;
   
-    this.subscribers.ordersSubscription = this.orders$.subscribe(res => {
+    this.orders$ = this.pastOrderService.ordersToReceive$;
+  }
+
+  ngAfterViewInit() {
+
+  }
+  
+  addSubscribers() {
+    this.subscribers.ordersSubscription = this.orders$
+    .subscribe(res => {
       console.log(res);
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
@@ -65,14 +81,6 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
       });
       console.log(this.receiveProducts);
     });
-
-  }
-  
-  ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-
   }
 
   remove(product, status) {
@@ -99,9 +107,9 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     //product = product.status.push(new StatusModel({qty: 0, type: 'pending'}));
   }
   
-  changeLocation(location, product) {
-    product.location_id = location.id;
-    product.location_name = location.name;
+  changeLocation(location, status) {
+    status.location_id = location.id;
+    status.location_name = location.name;
   }
   
   changeStatus(setStatus, product, curStatus) {

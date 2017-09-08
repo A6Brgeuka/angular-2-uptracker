@@ -16,6 +16,8 @@ export class StatusModel {
   qty: number = null;
   primary_status: boolean = false;
   showStatusSelect: boolean = true;
+  location_name: string = '';
+  location_id: string = '';
   
   constructor(obj?:any) {
     for (let field in obj) {

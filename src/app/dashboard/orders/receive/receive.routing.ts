@@ -8,6 +8,5 @@ export const ReceiveRoutes = [
     resolve: {
       statusList: StatusListResolve,
     },
-    canActivate: [],
   }
 ];

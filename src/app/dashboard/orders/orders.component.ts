@@ -60,9 +60,9 @@ export class OrdersComponent implements OnInit {
     });
     
     this.subscribers.ordersToReceive = this.ordersToReceive$
-    .switchMap(() => {
-      return this.orders$
-    })
+    .switchMapTo(
+      this.orders$
+    )
     .map((product) => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
       let firstVendor:any = filteredCheckedProducts[0].vendor_name;

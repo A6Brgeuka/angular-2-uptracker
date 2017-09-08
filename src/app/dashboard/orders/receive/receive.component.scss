@@ -356,6 +356,9 @@ div.top {
   box-sizing: border-box;
   border-color:$light-grey;
   //background-color: $white!important;
+  &:disabled {
+    color: $grey;
+}
 }
 
 .mtop{margin-top:10px;}
