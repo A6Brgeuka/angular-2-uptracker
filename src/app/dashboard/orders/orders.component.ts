@@ -27,7 +27,7 @@ export class OrdersComponent implements OnInit {
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public filterTabBy$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public total: number = 6;
+  public total$: BehaviorSubject<any> = new BehaviorSubject(null);
   public visible:boolean[] = [];
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   private ordersToReceive$:  any = new Subject<any>();
@@ -50,8 +50,10 @@ export class OrdersComponent implements OnInit {
       this.filterTabBy$
     )
     .subscribe(([r, f]) => {
+      this.total$.next(r.length);
       if (f && f !== 'All') {
         let orders = _.filter(r, ['status', f]);
+        this.total$.next(orders.length);
         this.orders$.next(orders);
       }
       else {

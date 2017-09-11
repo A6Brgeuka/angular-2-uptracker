@@ -352,13 +352,15 @@
               #inventory_by = "ngModel"
               class="validate minlength-validation"
             >
-              <option [ngValue]=""></option>
-              <option *ngFor="let package of newInventory.inventory_by_array" [ngValue]="package">{{ package.label }}</option>
+              <option [ngValue]="">N/A</option>
+              <ng-container *ngFor="let package of newInventory.inventory_by_array">
+                <option *ngIf="package.label" [ngValue]="package">{{ package.label }}</option>
+              </ng-container>
             </select>
           </div>
           <div class="col s1 mrg-top-5">=</div>
           <div class="col s2 input">
-            <input type="text" placeholder="Qty." [disabled] = 'true' [ngModel]='newInventory?.inventory_by_qty'>
+            <input type="text" placeholder="Qty." [(ngModel)]='newInventory.inventory_by_qty'>
           </div>
           <div class="col s2 custom-pdg-l mrg-top-5">Units</div>
         </div>
