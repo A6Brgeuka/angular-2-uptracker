@@ -92,8 +92,13 @@
           </div>
           <div class="row">
             <div class="col s12">
-              <div class="ttl">Inner Package</div>
+              <div class="ttl">Inner Packages</div>
               <div class="row">
+                <div class="col s3">
+                  <div class="input">
+                    <input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">
+                  </div>
+                </div>
                 <div class="col s9">
                   <div class="select select-light custom-select">
                     <select materialize="material_select"
@@ -106,18 +111,18 @@
                     </select>
                   </div>
                 </div>
-                <div class="col s3">
-                  <div class="input">
-                    <input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">
-                  </div>
-                </div>
             </div>
             </div>
           </div>
           <div class="row">
             <div class="col s12">
-              <div class="ttl">Consumable Unit</div>
+              <div class="ttl">Total Consumable Units</div>
               <div class="row">
+                <div class="col s3">
+                  <div class="input">
+                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">
+                  </div>
+                </div>
                 <div class="col s9">
                   <div class="select select-light custom-select">
                     <select materialize="material_select"
@@ -129,11 +134,6 @@
                       <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}
                       </option>
                     </select>
-                  </div>
-                </div>
-                <div class="col s3">
-                  <div class="input">
-                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">
                   </div>
                 </div>
               </div>
