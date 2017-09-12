@@ -17,6 +17,7 @@ import { InventoryLocationModel, InventoryModel, InventoryProductModel, Inventor
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
+  inventoryGroup: any = null;
 }
 
 @Component({
@@ -44,6 +45,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public addItemsToItems$: Subject<any> = new Subject<any>();
   public deleteFromItems$: Subject<any> = new Subject<any>();
   public addCustomItemToItems$: Subject<any> = new Subject<any>();
+  public editAddItemToItems$: Subject<any> = new Subject<any>();
   
   public addCustomProduct: boolean = false;
   
@@ -256,6 +258,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.items$ = Observable.merge(
       this.loadItems$,
+      this.editAddItemToItems$,
       addItemsToItems$,
       addCustomItemToItems$,
       deleteFromItems$
@@ -300,8 +303,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.items = res;
     });
 
-    // load initial items from context
+     //load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
+    if (this.context.inventoryGroup) {
+      //debugger;
+      let editedItems = this.context.inventoryGroup.inventoryGroup.inventory_products.map(product => {
+        new InventorySearchResults(product);
+      });
+      console.log(editedItems);
+      //this.editAddItemToItems$.next(editedItems);
+
+    }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
     .map(([packageType,searchResults,checkedProduct,matchingAll]: any) => {

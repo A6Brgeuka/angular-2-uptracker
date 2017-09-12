@@ -166,10 +166,23 @@ export class InventoryService extends ModelService {
   autocompleteSearchVendor(keywords: string) {
     return this.restangular.one('vendors', 'suggest').customGET('', {'q': keywords}).map((res: any) => res.data.suggestions);
   }
-  addInventoryItemComment(c: any) {
+  //addInventoryItemComment(c: any) {
+  //}
+  //
+  //editInventoryItemComment(c: any) {
+  //}
+  
+  addInventoryItemComment(comment) {
+    return this.restangular.all('comments').post(comment).map(res => res.data);
   }
   
-  editInventoryItemComment(c: any) {
+  deleteInventoryItemComment(id) {
+    return this.restangular.one('comments', id).remove()
+  }
+  
+  editInventoryItemComment(comment) {
+    let commentRestangularized = this.restangular.restangularizeElement(null, comment, "comments");
+    return commentRestangularized.put()
   }
   
   checkIfNotExist(items:InventorySearchResults[]){

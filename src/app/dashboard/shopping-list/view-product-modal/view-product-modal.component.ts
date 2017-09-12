@@ -130,6 +130,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
       .filter(res => res.data)
       .map(res => res.data)
       .subscribe(data => {
+        debugger;
         this.variants = data.variants;
 
         this.variants$.next(data.variants); // update variants

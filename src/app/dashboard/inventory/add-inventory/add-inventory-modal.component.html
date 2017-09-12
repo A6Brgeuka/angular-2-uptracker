@@ -263,10 +263,10 @@
               <input [(ngModel)]="item.checked" id="addeditem{{ i }}" type="checkbox">
               <label for="addeditem{{ i }}"></label>
             </div>
-            <div class="image" *ngIf="(item.images && item.images[0])"
-              [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
+            <div class="image" *ngIf="(item?.images && item?.images[0])"
+              [ngStyle]="{'background-image':'url(\''+item?.images[0]+'\')'}">
             </div>
-            <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
+            <div class="image no-image" *ngIf="(!item?.images || !item?.images[0])"
               [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
             </div>
             <div>
@@ -274,7 +274,7 @@
                 {{ item?.name }}
               </div>
               <div class="vendor-name">
-                <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor.vendor_name }}<span>,</span> </span>
+                <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor?.vendor_name }}<span>,</span> </span>
               </div>
               <div class="clearfix"></div>
             </div>

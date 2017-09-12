@@ -1,8 +1,4 @@
-import {
-  Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef,
-  OnDestroy
-} from '@angular/core';
-
+import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { Modal } from 'angular2-modal';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
@@ -16,7 +12,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ConfigService } from '../../../core/services/config.service';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { InfoModal } from './default-info-modal/info-modal-component';
-
+import { AddInventoryModal } from '../add-inventory/add-inventory-modal.component';
 
 @Component({
   selector: 'app-inventory-item-modal',
@@ -24,7 +20,7 @@ import { InfoModal } from './default-info-modal/info-modal-component';
   styleUrls: ['./inventory-item.component.scss']
 })
 @DestroySubscribers()
-export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit {
+export class InventoryItemComponent implements OnInit, AfterViewInit {
   public subscribers: any = {};
   public product: any;
   public productCopy: any;
@@ -82,9 +78,9 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
   public deleteFromDoc$: Subject<any> = new Subject<any>();
   public updateDoc$: Subject<any> = new Subject<any>();
   public hasInfoTab: boolean = false;
-  public product_id: string;
+  public inventory_id: string;
+  public favorite: boolean;
   public locationArr: any;
-  //public product$: Subject<any> = new Subject<any>();
   public product$: any = new BehaviorSubject<any>(null);
   public updateFavorite$: any = new Subject();
   public deleteInventory$: any = new Subject();
@@ -106,24 +102,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
     this.showEdit$.next(false);
   }
   
-  
   ngOnInit() {
-    this.route.params
-    .switchMap((p:Params)=>this.InventoryService.getInventoryItem(p['id']))
-    .subscribe((a)=> {
-      this.product$.next(a);
-    });
-  
-    this.configService.environment$
-    .filter((a:string)=>a=='development')
-    .subscribe((a)=> {
-      this.canEdit = true;
-    });
-  
-    this.accountService.locations$
-    .subscribe(r => {
-      this.locationArr = r
-    });
     
     this.loadFile$.next([]);
     
@@ -152,7 +131,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
       })
     });
     
-    
     this.filteredComments$ = Observable.merge(
       this.comments$,
       addToComments$,
@@ -177,7 +155,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
       }, ['desc'])
     });
     
-    
     this.filteredVariants$ = Observable.combineLatest(
       this.variants$,
       this.filterSelectOption$,
@@ -188,7 +165,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
     )
     .map(([variants, filterSelectOption, filterName, filterPrice, variantChecked, showEdit]) => {
       if (showEdit) {
-        
         return variants;
       }
       // check if at least on variant is checked to show add order button
@@ -211,34 +187,76 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
         });
       }
       variants = _.filter(variants, filterSelectOption);
-      //
       return variants;
     });
+    
+  }
   
-    this.updateFavorite$
-    .switchMap(() => {return this.product$ })
-    .switchMap(inventory => this.InventoryService.setFavorite(inventory))
+  addSubscribers() {
+    
+    this.getCurrentInventory();
+  
+    this.subscribers.selectLocationSubscription = Observable.combineLatest(this.accountService.dashboardLocation$, this.product$)
+    .filter(([location, product]:any) => {
+      return (location && product)
+    })
+    .switchMap(([location, product]:any) => {
+      return product.inventory_item_locations.map(inventoryLocation => {
+        if(location.id === inventoryLocation.location_id) {
+          product.critical_level = inventoryLocation.critical_level;
+          product.overstock_level = inventoryLocation.overstock_level;
+          product.fully_stocked = inventoryLocation.fully_stocked;
+          product.on_hand = inventoryLocation.on_hand;
+          product.storage_locations = inventoryLocation.storage_locations;
+        }
+      })
+    }).subscribe();
+  
+    this.subscribers.environmentSubscription = this.configService.environment$
+    .filter((a:string)=>a=='development')
+    .subscribe((a)=> {
+      this.canEdit = true;
+    });
+  
+    this.subscribers.locationSubscription = this.accountService.locations$
+    .subscribe(r => {
+      this.locationArr = r
+    });
+    
+    this.subscribers.updateFavouriteSubscription = this.updateFavorite$
+    .switchMap(() => {
+      let inventory = {
+        inventory_id: this.inventory_id,
+        favorite: this.favorite
+      };
+      return this.InventoryService.setFavorite(inventory)})
     .subscribe(res => {
         this.InventoryService.updateInventoryItem(res);
+        this.getCurrentInventory();
         this.toasterService.pop('', res.favorite ? 'Added to favorites' : "Removed from favorites");
       },
       err => console.log('error')
     );
-    
-    this.deleteInventory$
+  
+    this.subscribers.deleteInventorySubscription = this.deleteInventory$
     .switchMap(() => {return this.product$ })
     .switchMap(inventory => this.InventoryService.deleteInventory(inventory))
     .subscribe(res =>
-      this.goBack()
-    ,
+        this.goBack()
+      ,
       err => console.log('error')
     );
-    
   }
   
-  ngOnDestroy() {
-    this.updateFavorite$.unsubscribe();
-    this.deleteInventory$.unsubscribe();
+  getCurrentInventory() {
+    this.subscribers.getInventorySubscription = this.route.params
+    .switchMap((p:Params)=>this.InventoryService.getInventoryItem(p['id']))
+    .subscribe((a:any)=> {
+      this.inventory_id = a.id;
+      this.favorite = a.favorite;
+      this.product$.next(a);
+      //this.comments$.next(a.comments); // update comments
+    });
   }
   
   changeSelected(loc_id, var_id) {
@@ -247,7 +265,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
   
   showEditFields() {
     if (this.canEdit) {
-      
       this.showEdit = true;
       this.productCopy = _.clone(this.product);
       this.variants$.take(1).subscribe(r => {
@@ -260,11 +277,9 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
   closeEditFields() {
     this.showEdit = false;
     this.showEdit$.next(false);
-    
     this.productCopy = [];
     this.variants$.next(this.variantsCopy);
   }
-  
   
   resetText() {
     this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
@@ -272,7 +287,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
     this.product.tax_exempt_string = this.product.tax_exempt ? 'Yes' : 'No';
     this.product.account_category = this.product.account_category ? this.product.account_category : 'Not Specified';
   }
-  
   
   // File load, add, delete actions
   fileActions(): any {
@@ -385,7 +399,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
     this.filterPrice$.next(event.target.value.trim())
   }
   
-  
   changeSize(event) {
     if (this.checkFilterValue(event)) {
       this.variation.size = event.target.value;
@@ -409,7 +422,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
   toggleVariationVisibility() {
     this.variation.status = this.variation.status == 2 ? this.variation.status = 1 : this.variation.status = 2;
     this.filterSelectOption$.next(this.variation);
-    
   }
   
   toggleVariantVisibility(variant) {
@@ -424,14 +436,15 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
     Object.assign(this.comment,
       {
         "user_id": this.userService.selfData.id,
-        "object_type": "products",
-        "object_id": this.product.id
+        "object_type": "inventory_item",
+        "object_id": this.inventory_id
       }
     );
-    //this.subscribers.addInventoryItemSubscriber = this.InventoryService.addInventoryItemComment(this.comment).subscribe(res => {
-    //  this.comment = {};
-    //  this.addToComments$.next(res.data);
-    //});
+    this.subscribers.addInventoryItemSubscriber = this.InventoryService.addInventoryItemComment(this.comment)
+    .subscribe(res => {
+      //this.comment = {};
+      this.addToComments$.next(res);
+    });
   }
   
   editComment(comment) {
@@ -440,22 +453,30 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
       let regKey = new RegExp('<br/>', 'g');
       clonedComment['body'] = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
     }
-    //this.modal
-    //.open(EditCommentModal, this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment}))
-    //.then((resultPromise) => {
-    //  resultPromise.result.then(
-    //    (comment) => {
-    //      this.subscribers.editInventoryItemComment = this.InventoryService.editInventoryItemComment(comment).subscribe(res => {
-    //        this.editCommentComments$.next(res.data);
-    //      })
-    //    },
-    //    (err) => {
-    //    }
-    //  );
-    //});
+    this.modal
+    .open(EditCommentModal, this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (comment) => {
+          this.subscribers.editInventoryItemComment = this.InventoryService.editInventoryItemComment(comment).subscribe(res => {
+            this.editCommentComments$.next(res.data);
+          })
+        },
+        (err) => {
+        }
+      );
+    });
+  }
+  deleteComment(comment) {
+    this.modalWindowService.confirmModal('Delete Comment?', 'Are you sure you want to delete this comment?', this.deleteCommentFunc.bind(this, comment.id));
   }
   
-  
+  deleteCommentFunc(id) {
+    this.subscribers.deleteProductSubscriber = this.InventoryService.deleteInventoryItemComment(id)
+    .subscribe(res => {
+    
+    })
+  }
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
@@ -484,7 +505,6 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
     console.log(`remove ${doc.file_name}`);
     this.deleteFromDoc$.next(doc);
   }
-  
   
   reformatOrderHistory(ina: any): any {
     let out: any = [];
@@ -540,6 +560,26 @@ export class InventoryItemComponent implements OnInit, OnDestroy, AfterViewInit 
   
   deleteInventoryFunc() {
     this.deleteInventory$.next();
+  }
+  
+  openAddInventoryModal(){
+    this.product$
+    .take(1)
+    .subscribe((inventory)=>{
+    let data = {
+      inventoryGroup:inventory
+    };
+    this.modal
+    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+        },
+        (err) => {
+        }
+      );
+    });
+    });
   }
   
 }
