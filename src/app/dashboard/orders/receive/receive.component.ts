@@ -39,11 +39,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
 
   }
   
-  ngOnChanges() {
-    console.log('changes')
-  }
-  
-  ngOnInit() {console.log('init')
+  ngOnInit() {
     this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
   
     this.inventoryService.getNextInventory();

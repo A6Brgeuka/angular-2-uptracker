@@ -224,7 +224,7 @@
                     Hazardous Form
                   </div>
                   <div class="col s12">
-                    <a href="#">{{(product$ | async)?.hazardous}}</a>
+                    <a *ngIf="(product$ | async)?.hazardous">{{(product$ | async)?.hazardous}}</a>
                     <i class="no-info" *ngIf="!(product$ | async)?.hazardous">No additional information</i>
                   </div>
                 </div>

@@ -306,13 +306,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
      //load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
     if (this.context.inventoryGroup) {
-      //debugger;
       let editedItems = this.context.inventoryGroup.inventoryGroup.inventory_products.map(product => {
-        new InventorySearchResults(product);
+        return new InventorySearchResults(product);
       });
-      console.log(editedItems);
-      //this.editAddItemToItems$.next(editedItems);
-
+      this.editAddItemToItems$.next(editedItems);
+      //this.context.inventoryGroup.inventoryGroup.products = this.context.inventoryGroup.inventoryGroup.inventory_products;
+      this.newInventory = new InventoryModel(this.context.inventoryGroup.inventoryGroup);
+      console.log(this.context.inventoryGroup.inventoryGroup);
+      console.log(this.newInventory);
     }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)

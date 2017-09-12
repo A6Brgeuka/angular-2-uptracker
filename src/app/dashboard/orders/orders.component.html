@@ -82,8 +82,6 @@
           <div class="col s1">Location</div>
           <div class="col s1">Status</div>
           <div class="col s2">Placed</div>
-          <!--<div class="col s1">Received</div>-->
-          <!--<div class="col s1">Reconcieled</div>-->
           <div class="col s2">#Products</div>
           <div class="col s2">
             <div class="right edititem"
@@ -140,8 +138,6 @@
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.location }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.status }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.placed_date }}</div>
-            <!--<div (click)="changeVisibility(i)" class="col pointer s1">{{ item.received_date }}</div>-->
-            <!--<div (click)="changeVisibility(i)" class="col pointer s1">{{ item.reconciled_date }}</div>-->
             <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.product_count }}</div>
             <div class="col s2">
 
@@ -155,13 +151,13 @@
                 <li>
                   <a class="tealish-text" href="#">Edit</a>
                 </li>
-                <li *ngIf="item.status !== 5">
+                <li *ngIf="item.status !== 'Received'">
                   <a class="tealish-text" href="#">Resend</a>
                 </li>
-                <li *ngIf="item.status !== 5">
+                <li *ngIf="item.status !== 'Received'">
                   <a class="tealish-text" (click) = sendToReceiveOrder(item)>Receive</a>
                 </li>
-                <li *ngIf="item.status === 5">
+                <li *ngIf="item.status === 'Received'">
                   <a class="tealish-text" href="#">Reconcile</a>
                 </li>
                 <li>

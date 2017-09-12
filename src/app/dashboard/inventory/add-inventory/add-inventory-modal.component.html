@@ -413,7 +413,7 @@
           class="row added-items">
           <div class="col s8 product-row-fields">
             <div class="image" *ngIf="(item.images && item.images[0])"
-              [ngStyle]="{'background-image':'url(\''+item.images[0]+'\')'}">
+              [ngStyle]="{'background-image':'url(\''+item?.images[0]+'\')'}">
             </div>
             <div class="image no-image" *ngIf="(!item.images || !item.images[0])"
               [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
@@ -423,7 +423,7 @@
                 {{ item?.name }}
               </div>
               <div class="vendor-name">
-                <span>{{ item.vendors[0]?.vendor_name }} <span *ngIf="item.vendors.length > 1">& {{ item.vendors.length-1 }} more</span></span>
+                <span>{{ item.vendors[0]?.vendor_name }} <span *ngIf="item?.vendors.length > 1">& {{ item?.vendors.length-1 }} more</span></span>
               </div>
               <div class="clearfix"></div>
             </div>

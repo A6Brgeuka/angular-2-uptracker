@@ -99,8 +99,8 @@ export class OrdersComponent implements OnInit {
     })
     .map(product => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
-      let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 5);
-      let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 5);
+      let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 'Received');
+      let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 'Received');
       this.showMenuItem = (findNotReceivedProducts) ? true : false;
       this.showMenuReconcile = (findReceivedProducts) ? true : false;
     })
