@@ -247,24 +247,26 @@
             <div class="row">
               <div class="col s6 ttl">Storage Locations</div>
               <div class="col s6 left-align ttl">Qty</div>
-              <div *ngFor="let storage of (product$ | async)?.storage_locations">
-                <div *ngIf="!storage.floorstock">
-                  <div class="col s6">{{ storage.name }}</div>
-                  <div class="col s6 left-align">{{ storage.on_hand }}</div>
+              <div *ngIf="(accountService.dashboardLocation$ | async)">
+                <div *ngFor="let storage of (product$ | async)?.storage_locations">
+                  <div *ngIf="!storage.floorstock">
+                    <div class="col s6">{{ storage.name }}</div>
+                    <div class="col s6 left-align">{{ storage.on_hand }}</div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col s6 ttl">Floor Locations</div>
               <div class="col s6 left-align ttl">Qty</div>
-
-              <div *ngFor="let storage of (product$ | async)?.storage_locations">
-                <div *ngIf="storage.floorstock">
-                  <div class="col s6">{{ storage.name }}</div>
-                  <div class="col s6 left-align">{{ storage.on_hand }}</div>
+              <div *ngIf="(accountService.dashboardLocation$ | async)">
+                <div *ngFor="let storage of (product$ | async)?.storage_locations">
+                  <div *ngIf="storage.floorstock">
+                    <div class="col s6">{{ storage.name }}</div>
+                    <div class="col s6 left-align">{{ storage.on_hand }}</div>
+                  </div>
                 </div>
               </div>
-
               <div class="col s12 left-align small grey-text italic">*Floor stock is not counted as inventory</div>
             </div>
           </div>

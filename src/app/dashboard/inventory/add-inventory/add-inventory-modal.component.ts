@@ -269,7 +269,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.showSelect = false;
       if(res.length) {
         
-        let searchedCategory = this.productCategoriesCollection.indexOf(res[0].category);
+        let searchedCategory = (res[0].category) ? this.productCategoriesCollection.indexOf(res[0].category) : null;
         
         this.newInventory.name = res[0].name;
         this.newInventory.inventory_by_array = res[0].inventory_by;
