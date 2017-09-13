@@ -75,7 +75,7 @@
                 <div class="col s4 tealish-text">
                   {{ product.item_name }}
                 </div>
-                <div class="col s4">
+                <div class="col s4 tealish-text">
                   {{ product.location_name }}
                 </div>
               </div>
@@ -109,11 +109,11 @@
                       materialize="material_select"
                       [materializeSelectOptions]="inventoryGroupArr"
                       [(ngModel)] = 'product.inventory_group_id'
-                      [disabled]="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'"
+                      [disabled]="status.type !== product.status[0].type"
                       name="inventory{{i}}"
                     >
                       <option value="null">N/A</option>
-                      <ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
+                      <ng-container *ngIf="status.type === product.status[0].type">
                         <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
                       </ng-container>
                     </select>

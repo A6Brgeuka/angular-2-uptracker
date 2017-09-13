@@ -35,16 +35,11 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     public pastOrderService: PastOrderService,
     public toasterService: ToasterService,
   ) {
-    console.log(111);
-
+  
   }
   
   ngOnInit() {
-    this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
-  
     this.inventoryService.getNextInventory();
-    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
-  
     this.orders$ = this.pastOrderService.ordersToReceive$;
   }
 
@@ -53,6 +48,9 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   }
   
   addSubscribers() {
+    this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
+    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
+    
     this.subscribers.ordersSubscription = this.orders$
     .subscribe(res => {
       console.log(res);
