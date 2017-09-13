@@ -540,11 +540,8 @@ export class InventoryItemComponent implements OnInit {
     .overlayConfigFactoryWithParams({"text": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea c'}, true, 'mid'))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
+        (res) => {},
+        (err) => {}
       );
     });
   }
@@ -573,10 +570,8 @@ export class InventoryItemComponent implements OnInit {
     .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (res) => {
-        },
-        (err) => {
-        }
+        (res) => {},
+        (err) => {}
       );
     });
     });

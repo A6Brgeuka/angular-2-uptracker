@@ -70,7 +70,7 @@
           <div class="sub-image-btns">
             <div class="col s6">
               <div class="small left">On-hand</div>
-              <div class="digits right">{{(product$ | async)?.on_hand}}</div>
+              <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{(product$ | async)?.on_hand}}</div>
             </div>
             <div class="col s6">
               <div class="small left">Pending</div>
@@ -139,15 +139,15 @@
           <div class="sub-image-btns">
             <div class="col s2">
               <div class="small left">Critical</div>
-              <div class="digits right">{{ (product$ | async)?.critical_level }}</div>
+              <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.critical_level }}</div>
             </div>
             <div class="col s3">
               <div class="small left">Fully Stocked</div>
-              <div class="digits right">{{ (product$ | async)?.fully_stocked }}</div>
+              <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.fully_stocked }}</div>
             </div>
             <div class="col s3">
               <div class="small left">Overstocked</div>
-              <div class="digits right">{{ (product$ | async)?.overstock_level }}</div>
+              <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.overstock_level }}</div>
             </div>
             <div class="col s4 two-lines">
               <div class="small ">Inventory By</div>
