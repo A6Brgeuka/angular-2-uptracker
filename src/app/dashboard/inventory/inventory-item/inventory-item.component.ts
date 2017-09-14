@@ -208,6 +208,7 @@ export class InventoryItemComponent implements OnInit {
           product.fully_stocked = inventoryLocation.fully_stocked;
           product.on_hand = inventoryLocation.on_hand;
           product.storage_locations = inventoryLocation.storage_locations;
+          product.pending = inventoryLocation.pending;
         }
       })
     }).subscribe();
@@ -255,7 +256,7 @@ export class InventoryItemComponent implements OnInit {
       this.inventory_id = a.id;
       this.favorite = a.favorite;
       this.product$.next(a);
-      //this.comments$.next(a.comments); // update comments
+      this.comments$.next(a.comments); // update comments
     });
   }
   
@@ -474,7 +475,8 @@ export class InventoryItemComponent implements OnInit {
   deleteCommentFunc(id) {
     this.subscribers.deleteProductSubscriber = this.InventoryService.deleteInventoryItemComment(id)
     .subscribe(res => {
-    
+      this.deleteFromComments$.next(id);
+      this.toasterService.pop("", res.message)
     })
   }
   // upload by filedrop

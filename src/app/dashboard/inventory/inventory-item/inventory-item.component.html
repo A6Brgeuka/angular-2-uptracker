@@ -74,7 +74,7 @@
             </div>
             <div class="col s6">
               <div class="small left">Pending</div>
-              <div class="digits right">0</div>
+              <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{(product$ | async)?.pending}}</div>
             </div>
             <div class="clearfix"></div>
           </div>
