@@ -214,9 +214,6 @@
                 <div class="clearfix"></div>
               </div>
             </div>
-            <!--<div class="col s3 right-align item-price">-->
-            <!--${{ item.price/100 | number : '1.2-2' }}-->
-            <!--</div>-->
             <div (click)="addToInventory([item])" class="action-button waves-light waves-effect" *ngIf="!item.notActive">
               <fa name="plus"></fa>
             </div>
@@ -374,6 +371,11 @@
               [ngClass]="{'file-is-over': fileIsOver}"
               (fileOver)="fileOver($event)"
               (onImgDrop)="onImgDrop($event)">
+              <div class="img" *ngIf="!uploadedImage" [ngStyle]="{ 'background-image': 'url(' + newInventory.image + ')' }">
+                <div class="del-img-btn" (click)="newInventory.image = ''">
+                  <i class="material-icons">delete</i>
+                </div>
+              </div>
               <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }">
                 <div class="del-img-btn" (click)="uploadedImage = null">
                   <i class="material-icons">delete</i>
@@ -550,7 +552,7 @@
               </div>
             </div>
             <div *ngFor="let stock of location.storage_locations">
-              <div class="row border-btm stock" *ngIf="!stock.floor_stock">
+              <div class="row border-btm stock" *ngIf="(!stock?.floor_stock && !context.inventoryGroup) || (context.inventoryGroup && !stock?.floorstock)">
                 <div class="col s10">
                   {{ stock.name }}
                 </div>
@@ -567,12 +569,15 @@
               </div>
             </div>
             <div *ngFor="let stock of location.storage_locations">
-              <div class="row border-btm stock" *ngIf="stock.floor_stock">
+              <div class="row border-btm stock" *ngIf="stock?.floor_stock || stock?.floorstock">
                 <div class="col s10">
                   {{ stock.name }}
                 </div>
-                <div class="col s2 input">
+                <div class="col s2 input" *ngIf="stock?.floor_stock">
                   <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
+                </div>
+                <div class="col s2 input" *ngIf="stock?.floorstock">
+                  <input type="text" placeholder="Qty." [(ngModel)]="stock.working_stock">
                 </div>
               </div>
             </div>

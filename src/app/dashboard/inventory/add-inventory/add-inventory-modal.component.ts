@@ -313,8 +313,20 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         return new InventorySearchResults(product);
       });
       this.editAddItemToItems$.next(editedItems);
-      //this.context.inventoryGroup.inventoryGroup.products = this.context.inventoryGroup.inventoryGroup.inventory_products;
-      this.newInventory = new InventoryModel(this.context.inventoryGroup.inventoryGroup);
+      this.newInventory = new InventoryModel(
+        Object.assign(this.context.inventoryGroup.inventoryGroup, {
+          products: this.context.inventoryGroup.inventoryGroup.inventory_products,
+          inventory_by: this.context.inventoryGroup.inventoryGroup.inventory_by,
+          locations: this.context.inventoryGroup.inventoryGroup.inventory_item_locations,
+          inventory_by_array: this.newInventory.inventory_by_array,
+        })
+      );
+      this.locations = this.newInventory.locations;
+      this.locations[0].active = true;
+      this.loadMsds$.next(this.newInventory.msds);
+      this.loadFile$.next(this.newInventory.attachments);
+      this.newInventory.inventory_selected = _.find(this.newInventory.inventory_by_array, ['value', this.newInventory.inventory_by]);
+      this.newInventory.inventory_by_qty = this.newInventory.inventory_selected.qty;
       console.log(this.context.inventoryGroup.inventoryGroup);
       console.log(this.newInventory);
     }
@@ -376,19 +388,21 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .subscribe((image: any) => {
         this.newInventory.image = image.public_url
     });
-    
-    this.locations$.subscribe(location => {
-      this.locations = location;
-      this.locations[0].active = true;
-      this.newInventory.locations = location.map(el => {
-        el.location_id = el.id;
-        el.storage_locations = el.inventory_locations.map(storage => {
-          storage.inventory_location_id = storage.id;
-          return new InventoryStorageLocationModel(storage)
+  
+    if (!this.context.inventoryGroup) {
+      this.locations$.subscribe(location => {
+        this.locations = location;
+        this.locations[0].active = true;
+        this.newInventory.locations = location.map(el => {
+          el.location_id = el.id;
+          el.storage_locations = el.inventory_locations.map(storage => {
+            storage.inventory_location_id = storage.id;
+            return new InventoryStorageLocationModel(storage)
+          });
+          return new InventoryLocationModel(el);
         });
-        return new InventoryLocationModel(el);
-      });
-    })
+      })
+    }
     
   }
   
@@ -687,7 +701,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       deleteFromMsds$
     ).publishReplay(1).refCount();
     this.msds$.subscribe(res => {
-      console.log('files',res);
       this.newInventory.msds = res;
     });
   }
@@ -718,7 +731,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       deleteFromFile$
     ).publishReplay(1).refCount();
     this.file$.subscribe(res => {
-      console.log('files',res);
       this.newInventory.attachments = res;
     });
   }

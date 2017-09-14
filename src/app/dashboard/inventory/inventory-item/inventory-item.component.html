@@ -263,7 +263,7 @@
                 <div *ngFor="let storage of (product$ | async)?.storage_locations">
                   <div *ngIf="storage.floorstock">
                     <div class="col s6">{{ storage.name }}</div>
-                    <div class="col s6 left-align">{{ storage.on_hand }}</div>
+                    <div class="col s6 left-align">{{ storage.working_stock }}</div>
                   </div>
                 </div>
               </div>
