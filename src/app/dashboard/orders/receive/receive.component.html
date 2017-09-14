@@ -89,7 +89,9 @@
                       [ngModel] = 'status.type'
                       name="status{{i}}"
                     >
-                      <option [value]="statusItem.value" *ngFor="let statusItem of pastOrderService.statusList">{{ statusItem.text }}</option>
+                      <ng-container *ngFor="let statusItem of pastOrderService.statusList">
+                        <option [value]="statusItem.value">{{ statusItem.text }}</option>
+                      </ng-container>
                     </select>
                   </div>
                 </div>
@@ -97,7 +99,7 @@
                   <div class="input flex-center">
                     <input type="text" [(ngModel)]="status.qty"
                       [disabled]="status.type === 'pending'"
-                      (change)="onchangeStatusQty(product)"
+                      (change)="onchangeStatusQty(product, status)"
                       name="qty{{i}}"
                      >
                   </div>

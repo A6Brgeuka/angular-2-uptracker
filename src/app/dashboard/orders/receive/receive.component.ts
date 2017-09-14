@@ -79,7 +79,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
 
   remove(product, status) {
     let removedStatus = _.remove(product.status, status);
-    this.onchangeStatusQty(product);
+    this.onchangeStatusQty(product, status);
   }
  
   save() {
@@ -124,10 +124,10 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     // used setTimeout because materialize-select doesn't change the text
     setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
     console.log(product.status);
-    this.onchangeStatusQty(product);
+    this.onchangeStatusQty(product, curStatus);
   }
   
-  onchangeStatusQty(product) {
+  onchangeStatusQty(product, status) {
     
     let pendingSum  = product.status.reduce((sum, currentStatus) => {
 
@@ -138,7 +138,6 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
         return +sum + Number(currentStatus.qty);
       }
     }, 0);
-    
     product.status.map(currentStatus => {
       if(currentStatus.type === 'pending') {
         currentStatus.qty = product.quantity - +pendingSum;
