@@ -96,7 +96,10 @@
               <div class="row">
                 <div class="col s3">
                   <div class="input">
-                    <input [(ngModel)]="newProductData.sub_package.properties.qty" type="text" placeholder="Qty">
+                    <input [(ngModel)]="newProductData.sub_package.properties.qty"
+                      type="text" placeholder="Qty"
+                      [disabled] ="!newProductData.sub_package.properties.unit_type"
+                    >
                   </div>
                 </div>
                 <div class="col s9">
