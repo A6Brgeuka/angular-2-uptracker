@@ -349,7 +349,7 @@
               #inventory_by = "ngModel"
               class="validate minlength-validation"
             >
-              <option [ngValue]="">N/A</option>
+              <option [ngValue]="" disabled>Select One</option>
               <ng-container *ngFor="let package of newInventory.inventory_by_array">
                 <option *ngIf="package.label" [ngValue]="package">{{ package.label }}</option>
               </ng-container>
