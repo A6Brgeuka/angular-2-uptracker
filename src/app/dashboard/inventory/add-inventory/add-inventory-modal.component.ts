@@ -597,6 +597,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ]);
     this.newProductData.upc ='';
     this.newProductData.catalog_number ='';
+    this.newProductData.vendor_name ='';
     this.toggleCustomAdd();
   }
   

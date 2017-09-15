@@ -1336,3 +1336,6 @@ input[type=range] {
 [type="checkbox"]:not(:checked):disabled + label:before {
   background: transparent;
 }
+.select-wrapper input.select-dropdown:disabled {
+  background: $light-grey !important;
+}

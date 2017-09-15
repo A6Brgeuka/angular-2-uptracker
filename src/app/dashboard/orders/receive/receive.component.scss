@@ -358,6 +358,7 @@ div.top {
   //background-color: $white!important;
   &:disabled {
     color: $grey;
+    background: $light-grey;
 }
 }
 

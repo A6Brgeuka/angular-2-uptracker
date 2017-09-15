@@ -11,6 +11,9 @@ import {
 } from '../../../models/receive-products.model';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
+import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
+import { Modal } from 'angular2-modal';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -27,7 +30,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = new StatusModel;
-  
+  public existInvGroup: boolean = false;
   constructor(
     public accountService: AccountService,
     public inventoryService: InventoryService,

@@ -80,17 +80,15 @@
                   [min-chars] = '2'
                   (ngModelChange) = 'selectedAutocompledVendor($event)'
                   [list-formatter] = 'vendorListFormatter(data)'
-                  [(ngModel)]="newProductData.vendor_name"
                   name="vendor"
-                  #vendor="ngModel"
                   required
                 />
-                <div *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
-                  class="error red-text left-align">
-                  <div *ngIf="vendor.errors.required">
-                    Vendor is required.
-                  </div>
-                </div>
+                <!--<div *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"-->
+                  <!--class="error red-text left-align">-->
+                  <!--<div *ngIf="vendor.errors.required">-->
+                    <!--Vendor is required.-->
+                  <!--</div>-->
+                <!--</div>-->
               </div>
             </div>
           </div>
