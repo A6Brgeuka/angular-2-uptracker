@@ -339,7 +339,7 @@
 
         <div class="ttl mrg-top-15">How do you count this?</div>
         <div class="row">
-          <div class="col s7 select select-light">
+          <div class="col s6 select select-light">
             <select materialize="material_select"
               [(ngModel)]="newInventory.inventory_selected"
               (ngModelChange)="selectPackageType($event)"
@@ -359,7 +359,7 @@
           <div class="col s2 input">
             <input type="text" placeholder="Qty." [(ngModel)]='newInventory.inventory_by_qty'>
           </div>
-          <div class="col s2 custom-pdg-l mrg-top-5">Units</div>
+          <div class="col s3 custom-pdg-l mrg-top-5">Total Units</div>
         </div>
         <div [hidden]="inventory_by.valid || inventory_by.pristine" class="error red-text left-align">
           How do you count this is required
@@ -469,7 +469,7 @@
                 <option value="Scheduled">Scheduled</option>
               </select>
             </div>
-            <div *ngIf="location.tracking_method != 'None'">
+            <div *ngIf="location.tracking_method != 'None'" class="border-btm pdg-btm-5">
               <div class="ttl mrg-top-15">Inventory Levels</div>
               <div class="row mrg-btm-5">
                 <div class="col s4">Critical</div>
@@ -531,11 +531,12 @@
                 </div>
               </div>
             </div>
-            <div class="ttl">Restock Frequency</div>
+            <div class="ttl mrg-top-15">Floor Restock Frequency</div>
             <div class="input select select-light">
               <select materialize="material_select"
                 [(ngModel)]="location.restock_frequency"
               >
+                <option value="N/A">N/A</option>
                 <option value="Daily">Daily</option>
                 <option value="Weekly">Weekly</option>
                 <option value="Monthly">Monthly</option>
