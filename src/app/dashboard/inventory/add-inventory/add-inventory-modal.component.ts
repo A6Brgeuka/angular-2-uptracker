@@ -595,6 +595,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         })
       )
     ]);
+    this.newProductData.upc ='';
+    this.newProductData.catalog_number ='';
     this.toggleCustomAdd();
   }
   
@@ -637,6 +639,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
 
   checkSubPackage(e) {
+    if(e === '') {
+      this.newProductData.sub_package.properties.qty = '';
+    }
     this.newInventory.sub_package_type = e;
     this.newProductData.sub_package.properties.unit_type = e;
     this.nextPackage(this.newInventory);
