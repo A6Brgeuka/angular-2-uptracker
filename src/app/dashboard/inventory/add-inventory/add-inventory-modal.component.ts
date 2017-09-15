@@ -600,6 +600,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.toggleCustomAdd();
   }
   
+  changePrice(val) {
+    const regex = /[\d\.]*/g;
+    let m: any = regex.exec(val);
+    regex.lastIndex++;
+    let m1: any = regex.exec(val);
+    if (m && m[0]) {
+      val = parseFloat(m[0] ? m[0] : '0');
+    } else if (m1 && m1[0]) {
+      val = parseFloat(m1[0] ? m1[0] : '0');
+    }
+    if (!val) {
+      val = 0;
+    }
+    this.newProductData.price = val;
+    this.newProductData.formattedPrice = val.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
+  
   selectPackageType(packageType) {
     this.newInventory.inventory_by = packageType.value;
     this.newInventory.inventory_by_qty = packageType.qty;

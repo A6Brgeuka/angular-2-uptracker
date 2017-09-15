@@ -35,7 +35,8 @@
   <div id="step1">
     <div class="row">
       <div *ngIf="addCustomProduct" class="col s6">
-        <!--<form>-->
+        <form materialize (ngSubmit)="addNewProduct()" #customProdForm="ngForm" autocomplete="off"
+          novalidate>
         <div class="custom-product-add">
           <div class="row">
             <div class="col s6 title">
@@ -45,8 +46,8 @@
               <button class="uptracker-form-btn  redbtn waves-effect waves-light" (click)="toggleCustomCancel()">
                 Cancel
               </button>
-              <button class="uptracker-form-btn tealish  white-text waves-effect waves-light" (click)="addNewProduct()"
-              [disabled] = '!newProductData.price'>
+              <button class="uptracker-form-btn tealish  white-text waves-effect waves-light" type="submit"
+              [disabled] = '!customProdForm.form.valid || !newProductData.vendor_name'>
                 <fa name="plus"></fa>
                 Add
               </button>
@@ -56,7 +57,15 @@
             <div class="col s12">
               <div class="ttl">Name</div>
               <div class="input">
-                <input [(ngModel)]="newProductData.name" type="text" placeholder="Product Name">
+                <input [(ngModel)]="newProductData.name" type="text" placeholder="Product Name" required
+                  name="name"
+                  #name="ngModel">
+                <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                  class="error red-text left-align">
+                  <div *ngIf="name.errors.required">
+                    Name is required.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -71,7 +80,17 @@
                   [min-chars] = '2'
                   (ngModelChange) = 'selectedAutocompledVendor($event)'
                   [list-formatter] = 'vendorListFormatter(data)'
+                  [(ngModel)]="newProductData.vendor_name"
+                  name="vendor"
+                  #vendor="ngModel"
+                  required
                 />
+                <div *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
+                  class="error red-text left-align">
+                  <div *ngIf="vendor.errors.required">
+                    Vendor is required.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -84,6 +103,8 @@
                   [ngModel]="newProductData.package_type"
                   [materializeSelectOptions]="inventoryService.outerPackageList"
                   *ngIf="showSelect"
+                  name="package_type"
+                  required
                 >
                   <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
                   <option *ngFor="let outerPackage of outerPackageList" [ngValue]="outerPackage">{{outerPackage}}</option>
@@ -100,6 +121,8 @@
                     <input [(ngModel)]="newProductData.sub_package.properties.qty"
                       type="text" placeholder="Qty"
                       [disabled] ="!newProductData.sub_package.properties.unit_type"
+                      name="qty"
+                      #qty="ngModel"
                     >
                   </div>
                 </div>
@@ -109,6 +132,7 @@
                       (ngModelChange)="checkSubPackage($event)"
                       [ngModel]="newProductData.sub_package.properties.unit_type"
                       [materializeSelectOptions]="inventoryService.innerPackageList"
+                      name="innerPackageList"
                     >
                       <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
                       <ng-container *ngFor="let innerPackage of innerPackageList">
@@ -126,7 +150,9 @@
               <div class="row">
                 <div class="col s3">
                   <div class="input">
-                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty">
+                    <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty"
+                      name="qty2"
+                      #qty2="ngModel">
                   </div>
                 </div>
                 <div class="col s9">
@@ -135,6 +161,7 @@
                       (ngModelChange)="checkConsPackage($event)"
                       [ngModel]="newProductData.consumable_unit.properties.unit_type"
                       [materializeSelectOptions]="inventoryService.consumablePackageList"
+                      name="consumablePackageList"
                     >
                       <option value="" [disabled]='items.length || checkedProduct.length'>N/A</option>
                       <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}
@@ -149,7 +176,21 @@
             <div class="col s12">
               <div class="ttl">Price</div>
               <div class="input">
-                <input [(ngModel)]="newProductData.price" required type="text" placeholder="Price">
+                <input [(ngModel)]="newProductData.formattedPrice" type="text" placeholder="Price"
+                  (change)="changePrice(newProductData.formattedPrice)"
+                  pattern="^\$(\d{1,3}(\,\d{3})*|(\d+))(\.\d{2})?$" required
+                  name="price"
+                  #price="ngModel"
+                >
+                <div *ngIf="price.invalid && (price.dirty || price.touched)"
+                  class="error red-text left-align">
+                  <div *ngIf="price.errors.required">
+                    Price is required.
+                  </div>
+                  <div *ngIf="price.errors.pattern">
+                    Price should be a number.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -157,7 +198,9 @@
             <div class="col s12">
               <div class="ttl">Catalog #</div>
               <div class="input">
-                <input [(ngModel)]="newProductData.catalog_number" type="text" placeholder="Catalog #">
+                <input [(ngModel)]="newProductData.catalog_number" type="text" placeholder="Catalog #"
+                  name="catalog"
+                  #catalog="ngModel">
               </div>
             </div>
           </div>
@@ -165,12 +208,14 @@
             <div class="col s12">
               <div class="ttl">UPC</div>
               <div class="input">
-                <input [(ngModel)]="newProductData.upc" type="text" placeholder="UPC">
+                <input [(ngModel)]="newProductData.upc" type="text" placeholder="UPC"
+                  name="upc"
+                  #upc="ngModel">
               </div>
             </div>
           </div>
         </div>
-        <!--</form>-->
+        </form>
       </div>
       <div *ngIf="!addCustomProduct">
 

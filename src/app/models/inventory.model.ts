@@ -32,7 +32,7 @@ export class InventorySearchResults {
   mfg_number:string|number = "";
   name:string = "";
   package_type:string = "";
-  price:string = "$0";
+  price: number = 0;
   product_id:string  = null;
   upc:string = "";
   variant_id:string = null;
@@ -43,6 +43,7 @@ export class InventorySearchResults {
   
   notActive:boolean = false; // my prop
   
+  formattedPrice: any = "$0.00";
   custom_product_id:string = null; // my prop
   
   constructor(obj?:any) {
