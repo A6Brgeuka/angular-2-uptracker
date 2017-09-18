@@ -57,13 +57,13 @@
           <li>
             <a class="tealish-text" href="#">Edit</a>
           </li>
-          <li *ngIf="product.status !== 5">
+          <li *ngIf="product.status !== 'Received'">
             <a class="tealish-text" href="#">Resend</a>
           </li>
-          <li *ngIf="product.status !== 5">
+          <li *ngIf="product.status !== 'Received'">
             <a class="tealish-text" (click)="getReceiveProduct(product)">Receive</a>
           </li>
-          <li *ngIf="product.status === 5">
+          <li *ngIf="product.status === 'Received'">
             <a class="tealish-text" href="#">Reconcile</a>
           </li>
           <li>

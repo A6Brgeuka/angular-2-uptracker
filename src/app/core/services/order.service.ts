@@ -101,7 +101,7 @@ export class OrderItems {
   reconciled_quantity: string;
   reconciled_user: string;
   requires_approval: string;
-  status: number;
+  status: string;
   unit_price: string;
   package_price: string;
   sub_total: string;
