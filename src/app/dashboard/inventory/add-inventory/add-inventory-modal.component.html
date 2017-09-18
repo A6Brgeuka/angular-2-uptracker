@@ -77,7 +77,7 @@
                   placeholder="Vendor Name"
                   [source]="observableSourceVendor.bind(this)"
                   (input) = 'onSearchVendor($event)'
-                  [min-chars] = '2'
+                  [min-chars] = '1'
                   (ngModelChange) = 'selectedAutocompledVendor($event)'
                   [list-formatter] = 'vendorListFormatter(data)'
                   name="vendor"
@@ -150,7 +150,8 @@
                   <div class="input">
                     <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty"
                       name="qty2"
-                      #qty2="ngModel">
+                      #qty2="ngModel"
+                      required>
                   </div>
                 </div>
                 <div class="col s9">
@@ -160,6 +161,7 @@
                       [ngModel]="newProductData.consumable_unit.properties.unit_type"
                       [materializeSelectOptions]="inventoryService.consumablePackageList"
                       name="consumablePackageList"
+                      required
                     >
                       <option value="" [disabled]='items.length || checkedProduct.length'>N/A</option>
                       <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}
