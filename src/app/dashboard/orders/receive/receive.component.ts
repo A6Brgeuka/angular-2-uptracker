@@ -114,7 +114,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
       let filteredStatus = _.find(product.status, {'type':setStatus});
-      if (curStatus.type === 'pending' && !filteredStatus) {
+      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase'|| filteredStatus.type === 'quantity decrease')) {
         product.status.push(new StatusModel({type: 'pending', qty: '0'}));
         curStatus.type = setStatus;
       }

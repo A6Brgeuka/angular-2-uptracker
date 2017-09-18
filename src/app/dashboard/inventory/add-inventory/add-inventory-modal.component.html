@@ -161,7 +161,6 @@
                       [ngModel]="newProductData.consumable_unit.properties.unit_type"
                       [materializeSelectOptions]="inventoryService.consumablePackageList"
                       name="consumablePackageList"
-                      required
                     >
                       <option value="" [disabled]='items.length || checkedProduct.length'>N/A</option>
                       <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}

@@ -90,7 +90,7 @@
                       name="status{{i}}"
                     >
                       <ng-container *ngFor="let statusItem of pastOrderService.statusList">
-                        <option [value]="statusItem.value">{{ statusItem.text }}</option>
+                        <option [value]="statusItem.value" [hidden]="statusItem.value === 'pending'">{{ statusItem.text }}</option>
                       </ng-container>
                     </select>
                   </div>
@@ -112,6 +112,7 @@
                       [(ngModel)] = 'product.inventory_group_id'
                       name="inventory{{i}}"
                       [disabled] = "product.existInvGroup"
+                      required
                     >
                       <option value="null" disabled>Select one</option>
                       <option value="null"><a routerLink="/inventory" routerLinkActive="active">Create New Inventory Group</a></option>
