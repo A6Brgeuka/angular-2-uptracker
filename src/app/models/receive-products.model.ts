@@ -38,6 +38,7 @@ export class ItemModel {
   quantity: string = '';
   item_name: string = '';
   location_name: string = '';
+  existInvGroup: boolean = false;
   
   constructor(obj?:any) {
     for (let field in obj) {

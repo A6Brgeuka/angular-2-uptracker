@@ -1,6 +1,6 @@
 <!--<form class="uptracker-form" materialize #receiveProductForm="ngForm" autocomplete="off"-->
   <!--novalidate>-->
-<div class="products content uptracker-form">
+<div class="products content uptracker-form receive-orders">
   <div class="top">
     <div class="row filter clearfix">
       <div class="col m12 l3 title">
@@ -105,15 +105,15 @@
                   </div>
                 </div>
                 <div class="col s4">
-                  <div class="select select-light flex-center" *ngIf="status.type === 'receive' || status.type === 'partial receive'">
+                  <div class="select select-light flex-center" *ngIf="product.status[0].type === status.type && (status.type === 'receive' || status.type === 'partial receive')">
                     <select
                       materialize="material_select"
                       [materializeSelectOptions]="inventoryGroupArr"
                       [(ngModel)] = 'product.inventory_group_id'
                       name="inventory{{i}}"
-                      [disabled] = "existInvGroup"
+                      [disabled] = "product.existInvGroup"
                     >
-                      <option value="null" disabled *ngIf="!product.inventory_group_id"></option>
+                      <option value="null" disabled>Select one</option>
                       <option value="null"><a routerLink="/inventory" routerLinkActive="active">Create New Inventory Group</a></option>
                       <ng-container>
                         <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
@@ -121,7 +121,7 @@
                     </select>
                   </div>
                   <div class="select select-light flex-center"
-                    *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
+                    *ngIf="product.status[0].type !== status.type || status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
                     <select
                       materialize="material_select"
                       [disabled]="true"

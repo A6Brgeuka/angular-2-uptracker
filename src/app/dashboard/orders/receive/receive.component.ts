@@ -30,7 +30,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = new StatusModel;
-  public existInvGroup: boolean = false;
+  //public existInvGroup: boolean = false;
   constructor(
     public accountService: AccountService,
     public inventoryService: InventoryService,
@@ -64,6 +64,7 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
           let quantity = item.quantity;
           item.item_id = item.id;
           item.inventory_group_id = item.inventory_group.id;
+          if(item.inventory_group_id) {item.existInvGroup = true}
           item = new ItemModel(item);
           item.status = [new StatusModel()];
           item.status[0].qty = quantity;
