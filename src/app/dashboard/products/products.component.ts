@@ -90,7 +90,6 @@ export class ProductsComponent implements OnInit {
       }
     );
   
-  
     this.searchKey$
     .subscribe(
       (r) => {
@@ -102,7 +101,7 @@ export class ProductsComponent implements OnInit {
       });
   
     this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
-
+ 
     this.sortBy$
     .filter(r => r)
     .subscribe(
@@ -133,7 +132,12 @@ export class ProductsComponent implements OnInit {
       return products;
     });
     
-    this.productService.collection$.subscribe(r => this.products = r);
+    this.productService.collection$
+    .delay(500)
+    .subscribe(r => {
+      this.getInfiniteScroll();
+      return this.products = r;
+    });
     
     Observable.combineLatest(this.infiniteScroll$, this.products$)
     //.debounceTime(100)

@@ -176,7 +176,6 @@ export class VendorsComponent implements OnInit {
   getInfiniteScroll() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     let scrollBottom = (document.body.scrollHeight - scrollTop - window.innerHeight < 285) ;
-    //debugger;
     this.infiniteScroll$.next(scrollBottom);
   }
   
