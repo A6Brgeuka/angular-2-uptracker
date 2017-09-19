@@ -18,6 +18,7 @@ export class StatusModel {
   showStatusSelect: boolean = true;
   location_name: string = '';
   location_id: string = '';
+  tmp_id: string = '';
   
   constructor(obj?:any) {
     for (let field in obj) {

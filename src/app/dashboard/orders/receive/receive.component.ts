@@ -14,6 +14,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
 import { Modal } from 'angular2-modal';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
+// import event = google.maps.event;
 
 @Component({
   selector: 'app-order-detail',
@@ -61,10 +62,10 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
         order.items = order.items.map((item: any) => {
-          let quantity = item.quantity;
+          const quantity = item.quantity;
           item.item_id = item.id;
           item.inventory_group_id = item.inventory_group.id;
-          if(item.inventory_group_id) {item.existInvGroup = true}
+          if (item.inventory_group_id) {item.existInvGroup = true};
           item = new ItemModel(item);
           item.status = [new StatusModel()];
           item.status[0].qty = quantity;
@@ -83,19 +84,19 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
 
   remove(product, status) {
     let removedStatus = _.remove(product.status, status);
-    this.onchangeStatusQty(product, status);
+    this.onchangeStatusQty(product, status, status.qty);
   }
  
   save() {
     this.receiveProducts.orders.map((order) => {
       order.items.map(item => {
         item.status.map(status => {
-          if(status.type === 'receive' || status.type === 'partial receive') {
+          if (status.type === 'receive' || status.type === 'partial receive') {
             status.primary_status = true;
           }
           return status;
-        })
-      })
+        });
+      });
     });
     
     this.pastOrderService.onReceiveProducts(this.receiveProducts);
@@ -113,42 +114,45 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   changeStatus(setStatus, product, curStatus) {
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
-      let filteredStatus = _.find(product.status, {'type':setStatus});
-      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase'|| filteredStatus.type === 'quantity decrease')) {
-        product.status.push(new StatusModel({type: 'pending', qty: '0'}));
+      const filteredStatus = _.find(product.status, {'type': setStatus});
+      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase' || filteredStatus.type === 'quantity decrease')) {
+        product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
         curStatus.type = setStatus;
       }
-      else if (filteredStatus) {
+      else if (filteredStatus && (filteredStatus.type === 'receive' || filteredStatus.type === 'return' || filteredStatus.type === 'backorder')) {
         this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
       }
-      else if (!filteredStatus) {
+      else if (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase' || filteredStatus.type === 'quantity decrease') {
         curStatus.type = setStatus;
       }
     }
     // used setTimeout because materialize-select doesn't change the text
     setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
     console.log(product.status);
-    this.onchangeStatusQty(product, curStatus);
+    this.onchangeStatusQty(product, curStatus, curStatus.qty);
   }
   
-  onchangeStatusQty(product, status) {
-    
-    let pendingSum  = product.status.reduce((sum, currentStatus) => {
+  onchangeStatusQty(product, status, newValue) {
+    status.qty = newValue;
+    const pendingSum  = product.status.reduce((sum, currentStatus) => {
 
-      if(currentStatus.type === 'pending' || currentStatus.type === 'return') {
+      if (currentStatus.type === 'pending') {
         return +sum;
-      }
-      else {
+      } else {
         return +sum + Number(currentStatus.qty);
       }
     }, 0);
     product.status.map(currentStatus => {
-      if(currentStatus.type === 'pending') {
+      if (currentStatus.type === 'pending') {
         currentStatus.qty = product.quantity - +pendingSum;
+        if (currentStatus.qty < 0) {
+            this.toasterService.pop('error', `The full amount should not be more than ${product.quantity}`);
+            status.qty = Number(status.qty) + Number(currentStatus.qty);
+            currentStatus.qty = 0;
+        }
       }
       return currentStatus;
-    })
-    
+    });
   }
   
 }

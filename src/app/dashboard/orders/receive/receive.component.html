@@ -99,7 +99,7 @@
                   <div class="input flex-center">
                     <input type="text" [(ngModel)]="status.qty"
                       [disabled]="status.type === 'pending'"
-                      (change)="onchangeStatusQty(product, status)"
+                      (change)="onchangeStatusQty(product, status, $event.target.value)"
                       name="qty{{i}}"
                      >
                   </div>
