@@ -34,6 +34,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public typeIn$: any = new Subject();
   searchResults$: any = new BehaviorSubject([]);
   searchResults: any[] = [];
+  public noSearchedRes: string = null;
   
   checkBoxCandidates:boolean=false;
   checkBoxItems:boolean=false;

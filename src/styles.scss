@@ -1351,3 +1351,20 @@ input[type=range] {
     line-height: 1.2rem !important;
   }
 }
+ngui-auto-complete {
+  .no-match-found {
+    display: none;
+  }
+  .ngui-auto-complete > ul {
+    border-top: none;
+    border-bottom: none;
+    li:last-child {
+      border-bottom: 1px solid #ccc;
+    }
+    li:first-child {
+      border-top: 1px solid #ccc;
+    }
+  }
+}
+
+
