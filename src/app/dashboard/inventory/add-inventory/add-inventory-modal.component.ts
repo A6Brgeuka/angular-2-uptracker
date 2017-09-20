@@ -56,6 +56,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public outerPackageList: any[];
   public innerPackageList: any[];
   public consumablePackageList: any[];
+  public classDirty: boolean = false;
   
   public packageType$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public resultItems$: Observable<any>;
@@ -69,6 +70,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
+  public vendorDirty: boolean = false;
+  public vendorValid: boolean = false;
   
   public file$:Observable<any>;
   public file;
@@ -199,6 +202,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   onSearchVendor(event) {
     this.newProductData.vendor_name = event.target.value;
+    this.vendorDirty = true;
+    this.vendorValid = !!(event.target.value);
     this.autocompleteVendors$.next(event.target.value);
   }
   
@@ -664,6 +669,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.newInventory.consumable_unit_type = e;
     this.newProductData.consumable_unit.properties.unit_type = e;
     this.nextPackage(this.newInventory);
+    if (e !== null) {this.classDirty = true;}
   }
   
   nextTab() {

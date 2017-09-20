@@ -110,6 +110,9 @@ body {
     }
   }
 }
+.uptracker-form.ng-valid .select .select-wrapper.ng-valid input.select-dropdown {
+  border-color: #4caf50;
+}
 
 .select.ultra-low-height .select-wrapper, .select.ultra-low-height .select-wrapper.ng-valid  {
   input.select-dropdown {
@@ -627,6 +630,9 @@ button {
       &[type=file] {
         height: inherit;
         margin: 0;
+      }
+      &.ng-touched.ng-invalid {
+        border-color: red;
       }
     }
   }
