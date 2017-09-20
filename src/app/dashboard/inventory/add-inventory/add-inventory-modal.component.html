@@ -476,6 +476,7 @@
               <select materialize="material_select"
                 (ngModelChange)="selectVendor(item, $event)"
                 [(ngModel)]="item.selectedVendor"
+                [compareWith] = "compareVendor"
               >
                 <option [ngValue]="">Auto</option>
                 <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor?.vendor_name }}</option>

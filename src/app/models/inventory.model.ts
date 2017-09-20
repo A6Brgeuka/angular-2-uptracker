@@ -45,6 +45,8 @@ export class InventorySearchResults {
   
   formattedPrice: any = '$0.00';
   custom_product_id: string = null; // my prop
+  vendor_id: string = '';
+  vendor_name: string = '';
 
   constructor(obj?:any) {
     for (let field in obj) {

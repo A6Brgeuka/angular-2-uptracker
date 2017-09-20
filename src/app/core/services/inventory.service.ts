@@ -127,7 +127,12 @@ export class InventoryService extends ModelService {
   updateSelfData(data) {
     this.updateSelfData$.next(data);
   }
-  
+
+  updateInventory(inventory: any) {
+      return this.restangular.one('inventory', inventory.id).customPUT(inventory)
+          .map((updatedInventory: any) => this.updateInventoryItem(updatedInventory));
+  }
+
   updateInventoryItem(data: any) {
     this.updateElementCollection$.next(data);
   }

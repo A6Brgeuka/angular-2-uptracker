@@ -50,7 +50,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public addCustomProduct: boolean = false;
   
   public saveAdded$: any = new Subject<any>();
-  
+  public updateAdded$: any = new Subject<any>();
+
   public newInventory: any = new InventoryModel;
   
   public outerPackageList: any[];
@@ -158,10 +159,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         });
         return this.inventoryService.addItemsToInventory(this.newInventory)});
     })
-    .subscribe(newInventory => {
-        this.dismissModal();
-      }
-    );
+    .subscribe(newInventory => this.dismissModal());
+
+      this.updateAdded$
+          .switchMap(() => {
+              return this.inventoryService.updateInventory(this.newInventory)
+          })
+          .subscribe(newInventory => this.dismissModal());
 
     this.autocompleteProducts$
     .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
@@ -267,9 +271,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ).publishReplay(1).refCount();
     
     this.items$.subscribe(res => {
-      this.newInventory.products = res.map((el:any) => new InventoryProductModel(el));
+      this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
-      if(res.length) {
+      if (res.length) {
         
         let searchedCategory = (res[0].category) ? this.productCategoriesCollection.indexOf(res[0].category) : null;
         
@@ -288,11 +292,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.checkSubPackage(res[0].sub_package.properties.unit_type);
         this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
       }
-      if(!res.length) {
+      if (!res.length) {
         this.newInventory.sub_package_qty = null;
         this.newInventory.consumable_unit_qty = null;
       }
-      if(!res.length && !this.checkedProduct.length) {
+      if (!res.length && !this.checkedProduct.length) {
         
         this.outerPackageList = this.inventoryService.outerPackageList;
         this.innerPackageList = this.inventoryService.innerPackageList;
@@ -321,14 +325,19 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           inventory_by: this.context.inventoryGroup.inventoryGroup.inventory_by,
           locations: this.context.inventoryGroup.inventoryGroup.inventory_item_locations,
           inventory_by_array: this.newInventory.inventory_by_array,
+            id: this.context.inventoryGroup.inventoryGroup.id,
         })
       );
       this.locations = this.newInventory.locations;
       this.locations[0].active = true;
       this.loadMsds$.next(this.newInventory.msds);
       this.loadFile$.next(this.newInventory.attachments);
+      this.newInventory.id = this.context.inventoryGroup.inventoryGroup.id;
       this.newInventory.inventory_selected = _.find(this.newInventory.inventory_by_array, ['value', this.newInventory.inventory_by]);
-      this.newInventory.inventory_by_qty = this.newInventory.inventory_selected.qty;
+      this.newInventory.products.map(item => {
+        item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
+        this.compareVendor(item.selectedVendor, item.selectedVendor);
+      });
       console.log(this.context.inventoryGroup.inventoryGroup);
       console.log(this.newInventory);
     }
@@ -410,8 +419,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   ngOnDestroy() {
     this.saveAdded$.unsubscribe();
     this.productImg$.unsubscribe();
+    this.updateAdded$.unsubscribe();
   }
-  
+
+  compareVendor(v1, v2) {
+      return v1 && v2 ? v1.vendor_id === v2.vendor_id : v1 === v2;
+  }
+
   checkExistedProduct(itemsToCheck) {
     return (source) =>
       source.map(resItems => {
@@ -626,7 +640,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   saveAdded() {
-    this.saveAdded$.next();
+    if (this.context.inventoryGroup) {
+        this.updateAdded$.next();
+    } else {
+        this.saveAdded$.next();
+    }
   }
   
   nextPackage(value) {
