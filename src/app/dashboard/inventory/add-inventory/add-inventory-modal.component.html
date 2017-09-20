@@ -102,7 +102,6 @@
                   [materializeSelectOptions]="inventoryService.outerPackageList"
                   *ngIf="showSelect"
                   name="package_type"
-                  required
                 >
                   <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
                   <option *ngFor="let outerPackage of outerPackageList" [ngValue]="outerPackage">{{outerPackage}}</option>
@@ -487,7 +486,7 @@
                 (ngModelChange)="selectVendor(item, $event)"
                 [(ngModel)]="item.selectedVendor"
               >
-                <option [ngValue]="" *ngIf="item.product_id !== null">Auto</option>
+                <option [ngValue]="">Auto</option>
                 <option *ngFor="let vendor of item.vendors" [ngValue]="vendor">{{ vendor?.vendor_name }}</option>
               </select>
             </div>

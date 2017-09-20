@@ -118,11 +118,9 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
       if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase' || filteredStatus.type === 'quantity decrease')) {
         product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
         curStatus.type = setStatus;
-      }
-      else if (filteredStatus && (filteredStatus.type === 'receive' || filteredStatus.type === 'return' || filteredStatus.type === 'backorder')) {
+      } else if (filteredStatus && (filteredStatus.type === 'receive' || filteredStatus.type === 'return' || filteredStatus.type === 'backorder')) {
         this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
-      }
-      else if (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase' || filteredStatus.type === 'quantity decrease') {
+      } else if (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase' || filteredStatus.type === 'quantity decrease') {
         curStatus.type = setStatus;
       }
     }
@@ -131,7 +129,6 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
     console.log(product.status);
     this.onchangeStatusQty(product, curStatus, curStatus.qty);
   }
-  
   onchangeStatusQty(product, status, newValue) {
     status.qty = newValue;
     const pendingSum  = product.status.reduce((sum, currentStatus) => {
@@ -154,5 +151,4 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
       return currentStatus;
     });
   }
-  
 }

@@ -43,9 +43,9 @@ export class InventorySearchResults {
   
   notActive:boolean = false; // my prop
   
-  formattedPrice: any = "$0.00";
-  custom_product_id:string = null; // my prop
-  
+  formattedPrice: any = '$0.00';
+  custom_product_id: string = null; // my prop
+
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {
