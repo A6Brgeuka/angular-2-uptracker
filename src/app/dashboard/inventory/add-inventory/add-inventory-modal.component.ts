@@ -124,24 +124,24 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       console.log(this.searchResults);
       if (this.items.length) {
         this.checkedProduct = [];
-        this.outerPackageList = [this.items[0].package_type];
-        this.innerPackageList = [this.items[0].sub_package.properties.unit_type];
+        //this.outerPackageList = [this.items[0].package_type];
+        //this.innerPackageList = [this.items[0].sub_package.properties.unit_type];
         this.consumablePackageList = [this.items[0].consumable_unit.properties.unit_type];
-        this.newInventory.sub_package_qty = [this.items[0].sub_package.properties.qty];
-        this.newInventory.consumable_unit_qty = [this.items[0].consumable_unit.properties.qty];
-        this.checkPackage(this.items[0].package_type);
-        this.checkSubPackage(this.items[0].sub_package.properties.unit_type);
+        //this.newInventory.sub_package_qty = [this.items[0].sub_package.properties.qty];
+        //this.newInventory.consumable_unit_qty = [this.items[0].consumable_unit.properties.qty];
+        //this.checkPackage(this.items[0].package_type);
+        //this.checkSubPackage(this.items[0].sub_package.properties.unit_type);
         this.checkConsPackage(this.items[0].consumable_unit.properties.unit_type);
       }
       if (!this.items.length && this.checkedProduct.length) {
         this.checkedProduct = [];
         this.packageType$.next({});
-        this.outerPackageList = this.inventoryService.outerPackageList;
-        this.innerPackageList = this.inventoryService.innerPackageList;
+        //this.outerPackageList = this.inventoryService.outerPackageList;
+        //this.innerPackageList = this.inventoryService.innerPackageList;
         this.consumablePackageList = this.inventoryService.consumablePackageList;
 
-        this.checkPackage(null);
-        this.checkSubPackage(null);
+        //this.checkPackage(null);
+        //this.checkSubPackage(null);
         this.checkConsPackage(null);
       }
         this.checkedProduct$.next({});
@@ -154,19 +154,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.newInventory.products.map((product) => {
           if (product.product_id === null) {
             product.variant_id = null;
-            // product.vendor_name = product.vendors[0].vendor_name;
-            // product.vendor_id = product.vendors[0].vendor_id;
           }
         });
         return this.inventoryService.addItemsToInventory(this.newInventory)});
     })
     .subscribe(newInventory => this.dismissModal());
 
-      this.updateAdded$
-          .switchMap(() => {
-              return this.inventoryService.updateInventory(this.newInventory)
-          })
-          .subscribe(newInventory => this.dismissModal());
+    this.updateAdded$
+    .switchMap(() => {
+      return this.inventoryService.updateInventory(this.newInventory)
+    })
+    .subscribe(newInventory => this.dismissModal());
 
     this.autocompleteProducts$
     .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
@@ -292,28 +290,28 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.newInventory.department = (res[0].department) ? res[0].department : this.newInventory.department;
         this.newInventory.category = (searchedCategory !== -1) ? res[0].category : null;
         this.newInventory.description = (res[0].description) ? res[0].description : this.newInventory.description;
-        this.outerPackageList = [res[0].package_type];
-        this.innerPackageList = [res[0].sub_package.properties.unit_type];
+        //this.outerPackageList = [res[0].package_type];
+        //this.innerPackageList = [res[0].sub_package.properties.unit_type];
         this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
-        this.newInventory.sub_package_qty = [res[0].sub_package.properties.qty];
-        this.newInventory.consumable_unit_qty = [res[0].consumable_unit.properties.qty];
+        //this.newInventory.sub_package_qty = [res[0].sub_package.properties.qty];
+        //this.newInventory.consumable_unit_qty = [res[0].consumable_unit.properties.qty];
         
-        this.checkPackage(res[0].package_type);
-        this.checkSubPackage(res[0].sub_package.properties.unit_type);
+        //this.checkPackage(res[0].package_type);
+        //this.checkSubPackage(res[0].sub_package.properties.unit_type);
         this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
       }
       if (!res.length) {
-        this.newInventory.sub_package_qty = null;
+        //this.newInventory.sub_package_qty = null;
         this.newInventory.consumable_unit_qty = null;
       }
       if (!res.length && !this.checkedProduct.length) {
         
-        this.outerPackageList = this.inventoryService.outerPackageList;
-        this.innerPackageList = this.inventoryService.innerPackageList;
+        //this.outerPackageList = this.inventoryService.outerPackageList;
+        //this.innerPackageList = this.inventoryService.innerPackageList;
         this.consumablePackageList = this.inventoryService.consumablePackageList;
 
-        this.checkPackage(null);
-        this.checkSubPackage(null);
+        //this.checkPackage(null);
+        //this.checkSubPackage(null);
         this.checkConsPackage(null);
       }
       setTimeout(()=>{ this.showSelect = true;
@@ -491,17 +489,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     if(!this.checkedProduct.length && !this.items.length) {
      
       let packageType = {
-        package_type: item.package_type,
-        sub_package: {properties: {unit_type: item.sub_package.properties.unit_type}},
+        //package_type: item.package_type,
+        //sub_package: {properties: {unit_type: item.sub_package.properties.unit_type}},
         consumable_unit: {properties: {unit_type: item.consumable_unit.properties.unit_type}}
       };
   
-      this.outerPackageList = [item.package_type];
-      this.innerPackageList = [item.sub_package.properties.unit_type];
+      //this.outerPackageList = [item.package_type];
+      //this.innerPackageList = [item.sub_package.properties.unit_type];
       this.consumablePackageList = [item.consumable_unit.properties.unit_type];
   
-      this.checkPackage(item.package_type);
-      this.checkSubPackage(item.sub_package.properties.unit_type);
+      //this.checkPackage(item.package_type);
+      //this.checkSubPackage(item.sub_package.properties.unit_type);
       this.checkConsPackage(item.consumable_unit.properties.unit_type);
       
       this.packageType$.next(packageType);
@@ -528,12 +526,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     if(!this.checkedProduct.length && !this.items.length) {
       
-      this.outerPackageList = this.inventoryService.outerPackageList;
-      this.innerPackageList = this.inventoryService.innerPackageList;
+      //this.outerPackageList = this.inventoryService.outerPackageList;
+      //this.innerPackageList = this.inventoryService.innerPackageList;
       this.consumablePackageList = this.inventoryService.consumablePackageList;
   
-      this.checkPackage(null);
-      this.checkSubPackage(null);
+      //this.checkPackage(null);
+      //this.checkSubPackage(null);
       this.checkConsPackage(null);
       this.packageType$.next({});
     }
@@ -589,7 +587,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addNewProduct() {
-    let vendor = (this.newProductData.vendors[0].vendor_name) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
+    let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
     let inventory_by_arr = [
       {
         type: "Package",
@@ -660,15 +658,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   nextPackage(value) {
     let formValue = {};
     
-    formValue = value.package_type ? {
-      ...formValue,
-      package_type: value.package_type,
-    }: formValue;
-  
-    formValue = value.sub_package_type ? {
-      ...formValue,
-      sub_package: {properties: {unit_type: value.sub_package_type}},
-    }: formValue;
+    //formValue = value.package_type ? {
+    //  ...formValue,
+    //  package_type: value.package_type,
+    //}: formValue;
+    //
+    //formValue = value.sub_package_type ? {
+    //  ...formValue,
+    //  sub_package: {properties: {unit_type: value.sub_package_type}},
+    //}: formValue;
   
     formValue = value.consumable_unit_type ? {
       ...formValue,
@@ -679,18 +677,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   checkPackage(e) {
-    this.newInventory.package_type = e;
+    //this.newInventory.package_type = e;
     this.newProductData.package_type = e;
-    this.nextPackage(this.newInventory);
+    //this.nextPackage(this.newInventory);
   }
 
   checkSubPackage(e) {
     if(e === '') {
       this.newProductData.sub_package.properties.qty = '';
     }
-    this.newInventory.sub_package_type = e;
+    //this.newInventory.sub_package_type = e;
     this.newProductData.sub_package.properties.unit_type = e;
-    this.nextPackage(this.newInventory);
+    //this.nextPackage(this.newInventory);
   }
 
   checkConsPackage(e) {

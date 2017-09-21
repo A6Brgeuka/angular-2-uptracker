@@ -129,9 +129,8 @@ export class InventoryService extends ModelService {
   }
 
   updateInventory(inventory: any) {
-    //debugger;
-      return this.restangular.one('inventory', inventory.id).customPUT(inventory)
-          .map((updatedInventory: any) => this.updateInventoryCollection(updatedInventory));
+    return this.restangular.one('inventory', inventory.id).customPUT(inventory)
+    .map((updatedInventory: any) => this.updateInventoryCollection(updatedInventory));
   }
   
   updateInventoryCollection(data: any) {
