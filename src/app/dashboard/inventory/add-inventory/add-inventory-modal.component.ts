@@ -193,10 +193,19 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   onSearchTypeIn(event) {
       this.autocompleteProducts$.next(event.target.value);
-      this.typeIn$.next(event.target.value);
+      if (event.target.value.length > 2) {
+        this.typeIn$.next(event.target.value);
+      } else {
+        this.typeIn$.next(null);
+      }
+      
   }
   selectedAutocompled(keyword) {
-    this.typeIn$.next(keyword);
+    if (keyword.length > 2) {
+      this.typeIn$.next(keyword);
+    } else {
+      this.typeIn$.next(null);
+    }
   }
   selectedAutocompledVendor(vendor) {
     this.newProductData.vendors = [vendor];

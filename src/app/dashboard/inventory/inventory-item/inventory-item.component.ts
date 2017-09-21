@@ -232,7 +232,7 @@ export class InventoryItemComponent implements OnInit {
       };
       return this.InventoryService.setFavorite(inventory)})
     .subscribe(res => {
-        this.InventoryService.updateInventoryItem(res);
+        this.InventoryService.updateInventoryCollection(res);
         this.getCurrentInventory();
         this.toasterService.pop('', res.favorite ? 'Added to favorites' : "Removed from favorites");
       },
