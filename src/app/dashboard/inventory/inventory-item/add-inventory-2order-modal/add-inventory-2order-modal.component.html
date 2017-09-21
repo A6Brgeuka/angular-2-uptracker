@@ -1,0 +1,10 @@
+<div class="inner">
+  <div class="row title center-align">Add to Order</div>
+
+  <div class="row mtop">
+    <div class="center-align col s12">
+      <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
+      <button [disabled]="!valid" class="uptracker-form-btn " (click)="saveOrder()">Add</button>
+    </div>
+  </div>
+</div>

@@ -587,7 +587,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
   
-  
   addToOrder(variant, vid = null) {
     let modalData: AddToOrderData = {
       'quantity': 1,
