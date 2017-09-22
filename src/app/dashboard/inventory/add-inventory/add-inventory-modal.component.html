@@ -46,7 +46,7 @@
                 Cancel
               </button>
               <button class="uptracker-form-btn tealish  white-text waves-effect waves-light" type="submit"
-              [disabled] = '!customProdForm.form.valid || !newProductData.vendor_name'>
+              [disabled] = '!customProdForm.form.valid || !newProductData.vendor_name || !newProductData.consumable_unit.properties.unit_type'>
                 <fa name="plus"></fa>
                 Add
               </button>
@@ -78,7 +78,7 @@
                   (input) = 'onSearchVendor($event)'
                   [min-chars] = '1'
                   (ngModelChange) = 'selectedAutocompledVendor($event)'
-                  [list-formatter] = 'vendorListFormatter(data)'
+                  [list-formatter] = '"vendor_name"'
                   name="vendor"
                   required
                 />
@@ -88,17 +88,28 @@
           <div class="row">
             <div class="col s12">
               <div class="ttl">Outer Package</div>
-              <div class="select select-light custom-select">
-                <select materialize="material_select" class="customSelect1"
-                  (ngModelChange)="checkPackage($event)"
-                  [ngModel]="newProductData.package_type"
-                  [materializeSelectOptions]="inventoryService.outerPackageList"
-                  *ngIf="showSelect"
+              <!--<div class="select select-light custom-select">-->
+                <!--<select materialize="material_select" class="customSelect1"-->
+                  <!--(ngModelChange)="checkPackage($event)"-->
+                  <!--[ngModel]="newProductData.package_type"-->
+                  <!--[materializeSelectOptions]="inventoryService.outerPackageList"-->
+                  <!--*ngIf="showSelect"-->
+                  <!--name="package_type"-->
+                <!--&gt;-->
+                  <!--<option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>-->
+                  <!--<option *ngFor="let outerPackage of outerPackageList" [ngValue]="outerPackage">{{outerPackage}}</option>-->
+                <!--</select>-->
+              <!--</div>-->
+              <div class="input search">
+                <input auto-complete
+                  placeholder="Outer Package"
+                  [source]="observableSourceOuterPackage.bind(this)"
+                  (input) = 'onSearchOuterPackage($event)'
+                  [min-chars] = '1'
+                  (ngModelChange) = 'selectedAutocompledOuterPackage($event)'
+                  [list-formatter] = '"unit_name"'
                   name="package_type"
                 >
-                  <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
-                  <option *ngFor="let outerPackage of outerPackageList" [ngValue]="outerPackage">{{outerPackage}}</option>
-                </select>
               </div>
             </div>
           </div>
@@ -117,18 +128,16 @@
                   </div>
                 </div>
                 <div class="col s9">
-                  <div class="select select-light custom-select" *ngIf="showSelect">
-                    <select materialize="material_select"
-                      (ngModelChange)="checkSubPackage($event)"
-                      [ngModel]="newProductData.sub_package.properties.unit_type"
-                      [materializeSelectOptions]="inventoryService.innerPackageList"
-                      name="innerPackageList"
+                  <div class="input search">
+                    <input auto-complete
+                      placeholder="Inner Packages"
+                      [source]="observableSourceInnerPackage.bind(this)"
+                      (input) = 'onSearchInnerPackage($event)'
+                      [min-chars] = '1'
+                      (ngModelChange) = 'selectedAutocompledInnerPackage($event)'
+                      [list-formatter] = '"plural_unit_name"'
+                      name="sub_package_type"
                     >
-                      <option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>
-                      <ng-container *ngFor="let innerPackage of innerPackageList">
-                        <option value="{{ innerPackage }}" *ngIf="innerPackage !== ''">{{innerPackage}}</option>
-                      </ng-container>
-                    </select>
                   </div>
                 </div>
             </div>
@@ -147,18 +156,20 @@
                   </div>
                 </div>
                 <div class="col s9">
-                  <div class="select " [class.dirty]="classDirty">
-                    <select materialize="material_select"
-                      (ngModelChange)="checkConsPackage($event)"
-                      [ngModel]="newProductData.consumable_unit.properties.unit_type"
-                      [materializeSelectOptions]="inventoryService.consumablePackageList"
-                      name="consumablePackageList"
-                            required
+                  <div class="input search" [class.dirty]="packDirty"
+                    [class.valid]="newProductData.consumable_unit.properties.unit_type">
+                    <input auto-complete
+                      placeholder="Total Consumable Units"
+                      [source]="observableSourceConsPackage.bind(this)"
+                      (input) = 'onSearchConsPackage($event)'
+                      [min-chars] = '1'
+                      (ngModelChange) = 'selectedAutocompledConsPackage($event)'
+                      [ngModel] = "newProductData.consumable_unit.properties.unit_type"
+                      [list-formatter] = '"unit_name"'
+                      [disabled] = 'items.length'
+                      name="cons_package_type"
+                      required
                     >
-                      <option value="" [disabled]='true'>N/A</option>
-                      <option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -333,52 +344,6 @@
         <div class="input">
           <input type="text" [(ngModel)]="newInventory.name">
         </div>
-        <!--<div class="ttl mrg-top-15">How do you receive this?</div>-->
-        <!--<div class="row custom-width low-padding mrg-btm-5">-->
-          <!--<div class="col s1 ">Package</div>-->
-          <!--<div class="col s1 ">Sub-Package</div>-->
-          <!--<div class="col s1 "></div>-->
-          <!--<div class="col s1 ">Consumable unit</div>-->
-          <!--<div class="col s1 "></div>-->
-        <!--</div>-->
-        <!--<div class="row custom-width low-padding">-->
-          <!--<div class="col s1 select select-light custom-select">-->
-            <!--<select materialize="material_select" class="customSelect1"-->
-              <!--(ngModelChange)="checkPackage($event)"-->
-              <!--[ngModel]="newInventory.package_type"-->
-              <!--[materializeSelectOptions]="inventoryService.outerPackageList"-->
-              <!--*ngIf="showSelect"-->
-            <!--&gt;-->
-              <!--<option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>-->
-              <!--<option *ngFor="let outerPackage of outerPackageList" [ngValue]="outerPackage">{{outerPackage}}</option>-->
-            <!--</select>-->
-          <!--</div>-->
-          <!--<div class="col s1 input">-->
-            <!--<input placeholder="Qty." type="text" [(ngModel)]="newInventory.sub_package_qty">-->
-          <!--</div>-->
-          <!--<div class="col s1 select select-light custom-select">-->
-            <!--<select materialize="material_select"-->
-              <!--(ngModelChange)="checkSubPackage($event)"-->
-              <!--[ngModel]="newInventory.sub_package_type"-->
-              <!--[materializeSelectOptions]="inventoryService.innerPackageList">-->
-              <!--<option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>-->
-              <!--<option *ngFor="let innerPackage of innerPackageList" value="{{ innerPackage }}">{{innerPackage}}</option>-->
-            <!--</select>-->
-          <!--</div>-->
-          <!--<div class="col s1 input">-->
-            <!--<input placeholder="Qty." type="text" [(ngModel)]="newInventory.consumable_unit_qty">-->
-          <!--</div>-->
-          <!--<div class="col s1 select select-light custom-select">-->
-            <!--<select materialize="material_select"-->
-              <!--(ngModelChange)="checkConsPackage($event)"-->
-              <!--[ngModel]="newInventory.consumable_unit_type"-->
-              <!--[materializeSelectOptions]="inventoryService.consumablePackageList">-->
-              <!--<option value="" [disabled] = 'items.length || checkedProduct.length'>N/A</option>-->
-              <!--<option *ngFor="let consumablePackage of consumablePackageList" value="{{ consumablePackage }}">{{consumablePackage}}</option>-->
-            <!--</select>-->
-          <!--</div>-->
-        <!--</div>-->
-
         <div class="ttl mrg-top-15">How do you count this?</div>
         <div class="row">
           <div class="col s6 select select-light">

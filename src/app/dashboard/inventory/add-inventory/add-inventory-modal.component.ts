@@ -72,8 +72,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
+  public autocompleteOuterPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public autocompleteOuterPackage: any = [];
+  public autocompleteInnerPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public autocompleteInnerPackage: any = [];
+  public autocompleteConsPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public autocompleteConsPackage: any = [];
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
+  public packDirty: boolean = false;
   
   public file$:Observable<any>;
   public file;
@@ -126,7 +133,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.checkedProduct = [];
         //this.outerPackageList = [this.items[0].package_type];
         //this.innerPackageList = [this.items[0].sub_package.properties.unit_type];
-        this.consumablePackageList = [this.items[0].consumable_unit.properties.unit_type];
+        //this.consumablePackageList = [this.items[0].consumable_unit.properties.unit_type];
+        this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
         //this.newInventory.sub_package_qty = [this.items[0].sub_package.properties.qty];
         //this.newInventory.consumable_unit_qty = [this.items[0].consumable_unit.properties.qty];
         //this.checkPackage(this.items[0].package_type);
@@ -138,7 +146,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.packageType$.next({});
         //this.outerPackageList = this.inventoryService.outerPackageList;
         //this.innerPackageList = this.inventoryService.innerPackageList;
-        this.consumablePackageList = this.inventoryService.consumablePackageList;
+        //this.consumablePackageList = this.inventoryService.consumablePackageList;
 
         //this.checkPackage(null);
         //this.checkSubPackage(null);
@@ -171,12 +179,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .subscribe(res => {
       this.autocompleteProducts = res['suggestions'];
     });
-
-    this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
-    .subscribe((res:any) => {
-      this.autocompleteVendors = res;
-    });
     
     this.fileActions();
     this.msdsActions();
@@ -184,9 +186,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1).subscribe(res => this.productCategoriesCollection = res);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
   
-    this.outerPackageList = this.inventoryService.outerPackageList;
-    this.innerPackageList = this.inventoryService.innerPackageList;
-    this.consumablePackageList = this.inventoryService.consumablePackageList;
+    //this.outerPackageList = this.inventoryService.outerPackageList;
+    //this.innerPackageList = this.inventoryService.innerPackageList;
+    //this.consumablePackageList = this.inventoryService.consumablePackageList;
   }
   
   onSearchTypeIn(event) {
@@ -205,29 +207,75 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.typeIn$.next(null);
     }
   }
-  selectedAutocompledVendor(vendor) {
-    this.newProductData.vendors = [vendor];
-  }
   observableSource(keyword: any) {
     return Observable.of(this.autocompleteProducts).take(1);
   }
   
+  selectedAutocompledVendor(vendor) {
+    this.newProductData.vendors = [vendor];
+  }
   onSearchVendor(event) {
     this.newProductData.vendor_name = event.target.value;
     this.vendorDirty = true;
     this.vendorValid = !!(event.target.value);
     this.autocompleteVendors$.next(event.target.value);
   }
-  
   observableSourceVendor(keyword: any) {
     return Observable.of(this.autocompleteVendors).take(1);
   }
-  vendorListFormatter(data:any) {
-      return 'vendor_name';
+  
+  selectedAutocompledOuterPackage(outerPackage) {
+    this.newProductData.package_type = outerPackage.unit_name;
+  }
+  onSearchOuterPackage(event) {
+    this.newProductData.package_type = event.target.value;
+    this.autocompleteOuterPackage$.next(event.target.value);
+  }
+  observableSourceOuterPackage(keyword: any) {
+    return Observable.of(this.autocompleteOuterPackage).take(1);
   }
   
+  selectedAutocompledInnerPackage(innerPackage) {
+    this.newProductData.sub_package.properties.unit_type = innerPackage.plural_unit_name;
+  }
+  onSearchInnerPackage(event) {
+    this.newProductData.sub_package.properties.unit_type = event.target.value;
+    this.autocompleteInnerPackage$.next(event.target.value);
+  }
+  observableSourceInnerPackage(keyword: any) {
+    return Observable.of(this.autocompleteInnerPackage).take(1);
+  }
+  
+  selectedAutocompledConsPackage(consPackage) {
+    this.newProductData.consumable_unit.properties.unit_type = consPackage.unit_name;
+  }
+  onSearchConsPackage(event) {
+    this.packDirty = true;
+    this.newProductData.consumable_unit.properties.unit_type = event.target.value;
+    this.autocompleteConsPackage$.next(event.target.value);
+  }
+  observableSourceConsPackage(keyword: any) {
+    return Observable.of(this.autocompleteConsPackage).take(1);
+  }
+  
+  addSubscribers() {
+    this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
+    .subscribe((vendors:any) => this.autocompleteVendors = vendors);
+  
+    this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+    .subscribe((pack:any) => this.autocompleteOuterPackage = pack);
+  
+    this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+    .subscribe((pack:any) => this.autocompleteInnerPackage = pack);
+  
+    this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+    .subscribe((pack:any) => this.autocompleteConsPackage = pack);
+  }
   ngOnInit() {
-    
     this.loadFile$.next([]);
     this.loadMsds$.next([]);
     
@@ -292,7 +340,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.newInventory.description = (res[0].description) ? res[0].description : this.newInventory.description;
         //this.outerPackageList = [res[0].package_type];
         //this.innerPackageList = [res[0].sub_package.properties.unit_type];
-        this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
+        //this.consumablePackageList = [res[0].consumable_unit.properties.unit_type];
+        this.autocompleteConsPackage = [res[0].consumable_unit.properties.unit_type];
         //this.newInventory.sub_package_qty = [res[0].sub_package.properties.qty];
         //this.newInventory.consumable_unit_qty = [res[0].consumable_unit.properties.qty];
         
@@ -308,7 +357,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         
         //this.outerPackageList = this.inventoryService.outerPackageList;
         //this.innerPackageList = this.inventoryService.innerPackageList;
-        this.consumablePackageList = this.inventoryService.consumablePackageList;
+        //this.consumablePackageList = this.inventoryService.consumablePackageList;
+        this.autocompleteConsPackage = this.inventoryService.consumablePackageList;
 
         //this.checkPackage(null);
         //this.checkSubPackage(null);
@@ -496,7 +546,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
       //this.outerPackageList = [item.package_type];
       //this.innerPackageList = [item.sub_package.properties.unit_type];
-      this.consumablePackageList = [item.consumable_unit.properties.unit_type];
+      //this.consumablePackageList = [item.consumable_unit.properties.unit_type];
+      this.autocompleteConsPackage = [item.consumable_unit.properties.unit_type];
   
       //this.checkPackage(item.package_type);
       //this.checkSubPackage(item.sub_package.properties.unit_type);
@@ -528,7 +579,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       
       //this.outerPackageList = this.inventoryService.outerPackageList;
       //this.innerPackageList = this.inventoryService.innerPackageList;
-      this.consumablePackageList = this.inventoryService.consumablePackageList;
+      //this.consumablePackageList = this.inventoryService.consumablePackageList;
+      this.autocompleteConsPackage = this.inventoryService.consumablePackageList;
   
       //this.checkPackage(null);
       //this.checkSubPackage(null);
@@ -620,6 +672,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.newProductData.upc = '';
     this.newProductData.catalog_number = '';
     this.newProductData.vendor_name = '';
+    this.vendorValid = false;
     this.toggleCustomAdd();
   }
   
@@ -676,20 +729,20 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.packageType$.next(formValue);
   }
   
-  checkPackage(e) {
+  //checkPackage(e) {
     //this.newInventory.package_type = e;
-    this.newProductData.package_type = e;
+    //this.newProductData.package_type = e;
     //this.nextPackage(this.newInventory);
-  }
+  //}
 
-  checkSubPackage(e) {
-    if(e === '') {
-      this.newProductData.sub_package.properties.qty = '';
-    }
+  //checkSubPackage(e) {
+    //if(e === '') {
+      //this.newProductData.sub_package.properties.qty = '';
+    //}
     //this.newInventory.sub_package_type = e;
-    this.newProductData.sub_package.properties.unit_type = e;
+    //this.newProductData.sub_package.properties.unit_type = e;
     //this.nextPackage(this.newInventory);
-  }
+  //}
 
   checkConsPackage(e) {
     this.newInventory.consumable_unit_type = e;
