@@ -1,9 +1,8 @@
 @import "../../../../../colors.scss";
 
 :host /deep/ {
-  .inner {
+  .inner .add-to-order-modal {
     .row {
-      margin-bottom: 10px;
       &.check {
         margin: 10px 0;
         .s2 {
@@ -11,35 +10,8 @@
         }
       }
     }
-    .select {
-      width: 100%;
-    }
-    input.select-dropdown {
-      border-color: #9a9c9e !important;
-      margin-bottom: 10px;
-      background-color: #f5f5f5;
-    }
     .select-title {
       margin-bottom: 5px;
-    }
-    .uptracker-form-btn {
-      height: 36px;
-      font-size: 14px;
-      border: 1px solid #fff;
-      width: 100px;
-      margin: 0 10px;
-      font-weight: normal;
-      min-width: 80px !important;
-      &:first-of-type {
-        border-color: red;
-        background-color: #fff;
-        color: red;
-      }
-      &:last-of-type {
-        border-color: $tealish;
-        background-color: $tealish;
-        color: #fff;
-      }
     }
   }
 
@@ -159,68 +131,6 @@
 
     input[disabled]::-ms-thumb {
       @include range-thumb-disabled;
-    }
-  }
-  .uptracker-form-btn {
-    min-width: 80px;
-    &[disabled] {
-      background-color: $grey !important;
-      border-color: $grey !important;
-    }
-  }
-  input {
-    height: 32px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-    background: $light-light-grey;
-    padding-left: 8px;
-    text-indent: 0;
-    text-overflow: ellipsis;
-    border: 1px solid #9a9a9a !important;
-    border-radius: 5px;
-
-    &.empty {
-      color: $light-grey;
-    }
-  }
-  .mtop {
-    margin-top: 20px;
-  }
-  .inner input.select-dropdown {
-    color: $dark;
-  }
-  .inner .invalid input.select-dropdown,
-  .invalid input {
-    border-color: red !important;
-  }
-  .mbot {
-    margin-bottom: 20px;
-  }
-
-  .heading-row {
-    border-bottom:1px solid $dark;
-    line-height: 2;
-    font-weight:bold;
-    color:$dark;
-    .col {padding:0 0.25rem;}
-  }
-  .content-row {
-    border-bottom:1px solid $grey;
-
-    .col {padding:0 0.25rem;}
-
-    .col:first-of-type > div:nth-of-type(1) {
-      color:$tealish;
-      font-size: .9rem;
-      font-weight: bold;
-      line-height:1;
-      padding-top:3px;
-    }
-    .col:first-of-type > div:nth-of-type(2) {
-      color:$grey;
-      font-size: .9rem;
-      line-height:1;
-      padding-bottom: 10px;
     }
   }
 }

@@ -19,20 +19,15 @@ export class AddInventory2OrderModalContext extends BSModalContext {
 @DestroySubscribers()
 export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalComponent<AddInventory2OrderModalContext> {
   context: AddInventory2OrderModalContext;
-  public quantity: string = '1';
-  public vendor: any = {id: "", vendor_id: ""};
-  public location: string = '';
-  public valid: boolean = false;
-  public isAuto: boolean = true;
-  public unit_type: string = 'package';
-  public last_unit_type: string = 'package';
+  public inventory: any;
   
   constructor(
     public dialog: DialogRef<AddInventory2OrderModalContext>,
     public cartService: CartService,
     public toasterService: ToasterService,
   ) {
-    this.context = dialog.context;
+    this.inventory = dialog.context.data;
+    console.log(this.inventory);
     dialog.setCloseGuard(this);
   }
   

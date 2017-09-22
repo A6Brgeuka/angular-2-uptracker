@@ -23,7 +23,7 @@ import { AddInventory2OrderModal } from './add-inventory-2order-modal/add-invent
 @DestroySubscribers()
 export class InventoryItemComponent implements OnInit {
   public subscribers: any = {};
-  public product: any;
+  //public product: any;
   public currentVariant: any = {};
   public showVariant: boolean = false;
   public comment: any = {};
@@ -42,6 +42,7 @@ export class InventoryItemComponent implements OnInit {
   public favorite: boolean;
   //public locationArr: any;
   public product$: any = new BehaviorSubject<any>(null);
+  public inventory: any;
   public updateFavorite$: any = new Subject();
   public deleteInventory$: any = new Subject();
   
@@ -174,6 +175,7 @@ export class InventoryItemComponent implements OnInit {
     this.subscribers.getInventorySubscription = this.route.params
     .switchMap((p:Params)=>this.InventoryService.getInventoryItem(p['id']))
     .subscribe((a:any)=> {
+      this.inventory = a;
       this.inventory_id = a.id;
       this.favorite = a.favorite;
       this.product$.next(a);
@@ -309,7 +311,7 @@ export class InventoryItemComponent implements OnInit {
   addToOrder() {
     
     this.modal
-    .open(AddInventory2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: 'add to order'}, true))
+    .open(AddInventory2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: this.inventory}, true, 'big'))
     .then((resultPromise) => {
       resultPromise.result.then(
         (comment) => {
