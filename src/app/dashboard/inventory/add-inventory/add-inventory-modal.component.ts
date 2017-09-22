@@ -359,6 +359,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newInventory.products.map(item => {
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
+        delete item.inventory_product_id;
+        
       });
       console.log(this.context.inventoryGroup.inventoryGroup);
       console.log(this.newInventory);
