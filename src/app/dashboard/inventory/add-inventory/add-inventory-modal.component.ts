@@ -93,6 +93,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public msds: any;
   public uploadedImage;
   public fileIsOver: boolean = false;
+  public categoryValid: boolean = true;
   
   public departmentCollection$: Observable<any> = new Observable<any>();
   public productAccountingCollection$: Observable<any> = new Observable<any>();
@@ -360,7 +361,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
         delete item.inventory_product_id;
-        
       });
       console.log(this.context.inventoryGroup.inventoryGroup);
       console.log(this.newInventory);
@@ -646,10 +646,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   saveAdded() {
-    if (this.context.inventoryGroup) {
-        this.updateAdded$.next();
+    if (!this.newInventory.category) {
+      this.categoryValid = false;
     } else {
+      if (this.context.inventoryGroup) {
+        this.updateAdded$.next();
+      } else {
         this.saveAdded$.next();
+      }
     }
   }
   
