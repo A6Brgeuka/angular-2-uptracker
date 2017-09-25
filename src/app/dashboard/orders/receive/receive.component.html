@@ -84,12 +84,12 @@
                   <div class="select custom-select select-light flex-center" *ngIf="status.showStatusSelect">
                     <select
                       materialize="material_select"
-                      [materializeSelectOptions]="pastOrderService.statusList"
+                      [materializeSelectOptions]="statusList"
                       (ngModelChange)="changeStatus($event, product, status)"
                       [ngModel] = 'status.type'
                       name="status{{i}}"
                     >
-                      <ng-container *ngFor="let statusItem of pastOrderService.statusList">
+                      <ng-container *ngFor="let statusItem of statusList">
                         <option [value]="statusItem.value" [hidden]="statusItem.value === 'pending'">{{ statusItem.text }}</option>
                       </ng-container>
                     </select>

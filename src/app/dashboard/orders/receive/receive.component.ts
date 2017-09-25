@@ -11,9 +11,6 @@ import {
 } from '../../../models/receive-products.model';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
-import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
-import { Modal } from 'angular2-modal';
-import { ModalWindowService } from '../../../core/services/modal-window.service';
 // import event = google.maps.event;
 
 @Component({
@@ -22,7 +19,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
   styleUrls: ['./receive.component.scss']
 })
 @DestroySubscribers()
-export class ReceiveComponent implements OnInit, AfterViewInit {
+export class ReceiveComponent implements OnInit {
   public subscribers: any = {};
   public searchKey:string= "";
   public locationArr: any = [];
@@ -30,8 +27,8 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   public orders$: Observable<any>;
   
   public receiveProducts: any = new ReceiveProductsModel;
-  public statusList: any = new StatusModel;
-  //public existInvGroup: boolean = false;
+  public statusList: any = this.pastOrderService.statusList;
+  
   constructor(
     public accountService: AccountService,
     public inventoryService: InventoryService,
@@ -45,10 +42,6 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.inventoryService.getNextInventory();
     this.orders$ = this.pastOrderService.ordersToReceive$;
-  }
-
-  ngAfterViewInit() {
-
   }
   
   addSubscribers() {
@@ -112,15 +105,26 @@ export class ReceiveComponent implements OnInit, AfterViewInit {
   }
   
   changeStatus(setStatus, product, curStatus) {
+    //debugger;
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
       const filteredStatus = _.find(product.status, {'type': setStatus});
-      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase' || filteredStatus.type === 'quantity decrease')) {
+      const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
+      const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
+      let quantityStatus: boolean = false;
+      
+      if ((findIncreaseStatus && setStatus === 'quantity decrease' && curStatus.type !== 'quantity increase')
+        || (findDecreaseStatus && setStatus === 'quantity increase' && curStatus.type !== 'quantity decrease')) {
+        this.toasterService.pop('error', `You can set either quantity decrease or quantity increase status`);
+        quantityStatus = true;
+      }
+      
+      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus) {
         product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
         curStatus.type = setStatus;
-      } else if (filteredStatus && (filteredStatus.type === 'receive' || filteredStatus.type === 'return' || filteredStatus.type === 'backorder')) {
+      } else if (filteredStatus && (filteredStatus.type !== 'partial receive') && !quantityStatus) {
         this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
-      } else if (!filteredStatus || filteredStatus.type === 'partial receive' || filteredStatus.type === 'quantity increase' || filteredStatus.type === 'quantity decrease') {
+      } else if ((!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus) {
         curStatus.type = setStatus;
       }
     }
