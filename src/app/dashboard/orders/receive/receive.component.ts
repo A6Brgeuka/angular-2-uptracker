@@ -105,28 +105,35 @@ export class ReceiveComponent implements OnInit {
   }
   
   changeStatus(setStatus, product, curStatus) {
-    //debugger;
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
       const filteredStatus = _.find(product.status, {'type': setStatus});
       const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
       const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
+      const findReceiveStatus = _.find(product.status, {'type': 'receive'});
       let quantityStatus: boolean = false;
+      let receiveStatus: boolean = false;
       
       if ((findIncreaseStatus && setStatus === 'quantity decrease' && curStatus.type !== 'quantity increase')
         || (findDecreaseStatus && setStatus === 'quantity increase' && curStatus.type !== 'quantity decrease')) {
         this.toasterService.pop('error', `You can set either quantity decrease or quantity increase status`);
         quantityStatus = true;
       }
+  
+      if (findReceiveStatus && setStatus === 'partial receive' && curStatus.type !== 'receive'){
+        this.toasterService.pop('error', `You can set either receive or partial receive status`);
+        receiveStatus = true;
+      }
       
-      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus) {
+      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
         product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
         curStatus.type = setStatus;
-      } else if (filteredStatus && (filteredStatus.type !== 'partial receive') && !quantityStatus) {
+      } else if (filteredStatus && (filteredStatus.type !== 'partial receive') && !quantityStatus && !receiveStatus) {
         this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
-      } else if ((!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus) {
+      } else if ((!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
         curStatus.type = setStatus;
       }
+      
     }
     // used setTimeout because materialize-select doesn't change the text
     setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
@@ -151,6 +158,13 @@ export class ReceiveComponent implements OnInit {
             status.qty = Number(status.qty) + Number(currentStatus.qty);
             currentStatus.qty = 0;
         }
+      }
+      if (status.type === 'receive' && Number(status.qty) !== Number(product.quantity)) {
+        status.type = 'partial receive';
+      }
+      if (status.type === 'partial receive' && Number(status.qty) === Number(product.quantity)) {
+        status.type = 'receive';
+        _.remove(product.status, {'type': 'partial receive'});
       }
       return currentStatus;
     });

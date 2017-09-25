@@ -105,7 +105,7 @@
                   </div>
                 </div>
                 <div class="col s4">
-                  <div class="select select-light flex-center" *ngIf="product.status[0].type === status.type && (status.type === 'receive' || status.type === 'partial receive')">
+                  <div class="select select-light flex-center" *ngIf="status.type === 'receive' || status.type === 'partial receive'">
                     <select
                       materialize="material_select"
                       [materializeSelectOptions]="inventoryGroupArr"
@@ -122,7 +122,7 @@
                     </select>
                   </div>
                   <div class="select select-light flex-center"
-                    *ngIf="product.status[0].type !== status.type || status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
+                    *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
                     <select
                       materialize="material_select"
                       [disabled]="true"
