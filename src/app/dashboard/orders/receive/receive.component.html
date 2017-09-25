@@ -90,7 +90,7 @@
                       name="status{{i}}"
                     >
                       <ng-container *ngFor="let statusItem of statusList">
-                        <option [value]="statusItem.value" [hidden]="statusItem.value === 'pending'">{{ statusItem.text }}</option>
+                        <option [value]="statusItem.value">{{ statusItem.text }}</option>
                       </ng-container>
                     </select>
                   </div>

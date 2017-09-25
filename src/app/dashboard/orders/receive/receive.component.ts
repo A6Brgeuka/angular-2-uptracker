@@ -107,10 +107,12 @@ export class ReceiveComponent implements OnInit {
   changeStatus(setStatus, product, curStatus) {
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
+      //curStatus.inventoryHide = false;
       const filteredStatus = _.find(product.status, {'type': setStatus});
       const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
       const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
       const findReceiveStatus = _.find(product.status, {'type': 'receive'});
+      //const filterPartReceiveStatus = _.filter(product.status, {'type': 'partial receive', 'inventoryHide': true});
       let quantityStatus: boolean = false;
       let receiveStatus: boolean = false;
       
@@ -124,6 +126,10 @@ export class ReceiveComponent implements OnInit {
         this.toasterService.pop('error', `You can set either receive or partial receive status`);
         receiveStatus = true;
       }
+      
+      //if (filterPartReceiveStatus.length && setStatus === 'partial receive') {
+      //  curStatus.inventoryHide = true;
+      //}
       
       if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
         product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
