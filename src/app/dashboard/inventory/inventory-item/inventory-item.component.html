@@ -351,41 +351,45 @@
       </div>
       <div class="row">
         <div class="col s12 white all-product-info">
-          <div class="img left img-container" *ngIf="(product$ | async) && (product$ | async)?.image "
-            [ngStyle]="{ 'background-image': 'url(' + (product$ | async)?.image + ')' }">
+          <div *ngFor="let item of (product$ | async)?.inventory_products">
+            <div *ngIf="item.default_product || (product$ | async)?.inventory_products[0].id === item.id">
+              <div class="img left img-container" *ngIf="item.images"
+                [ngStyle]="{ 'background-image': 'url(' + item?.images[0] + ')' }">
+              </div>
+              <div class="row right default-product-info">
+                <div class="col s5">
+                  <div class="col s12 ttl bigger tealish-text">{{item.name}}</div>
+                  <div class="col s12 small">{{item.vendor_name}}</div>
+                  <div class="col s2 grey-text small">CAT#</div>
+                  <div class="col s4 small">123-210</div>
+                  <div class="col s2 small grey-text">UPC#</div>
+                  <div class="col s4 very-small">{{item.upc}}</div>
+                </div>
+                <div class="col s2">
+                  <div>
+                    <div class="">Pkg Price</div>
+                    <div class="grey-text">$50</div>
+                  </div>
+                </div>
+                <div class="col s2">
+                  <div>
+                    <div class="">Sub-Pkg Price</div>
+                    <div class="grey-text">40 @ $1.25</div>
+                  </div>
+                </div>
+                <div class="col s2">
+                  <div>
+                    <div class="">Unit Price</div>
+                    <div class="grey-text">2000 @ $0.03</div>
+                  </div>
+                </div>
+                <div class="col s1 center-align">
+                  <fa name="ellipsis-h"></fa>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
           </div>
-          <div class="row right default-product-info">
-            <div class="col s5">
-              <div class="col s12 ttl bigger tealish-text">A really long product name</div>
-              <div class="col s12 small">Henry Schein</div>
-              <div class="col s2 grey-text small">CAT#</div>
-              <div class="col s4 small">123-210</div>
-              <div class="col s2 small grey-text">UPC#</div>
-              <div class="col s4 very-small">762174521422</div>
-            </div>
-            <div class="col s2">
-              <div>
-                <div class="">Pkg Price</div>
-                <div class="grey-text">$50</div>
-              </div>
-            </div>
-            <div class="col s2">
-              <div>
-                <div class="">Sub-Pkg Price</div>
-                <div class="grey-text">40 @ $1.25</div>
-              </div>
-            </div>
-            <div class="col s2">
-              <div>
-                <div class="">Unit Price</div>
-                <div class="grey-text">2000 @ $0.03</div>
-              </div>
-            </div>
-            <div class="col s1 center-align">
-              <fa name="ellipsis-h"></fa>
-            </div>
-          </div>
-          <div class="clearfix"></div>
         </div>
       </div>
       <div class="row no-pad">
@@ -412,22 +416,24 @@
         <div class="table-body">
           <div class="variant-table">
             <div class="uptracker-form  table-item tealish-text"
-              *ngFor="let order of [1,1,1,1,1,1]">
-              <div class="name-heading variant-name row-item valign-wrapper">
-                <div class="valign tealish-text">
-                  Petterson Non-sterile Cotton Rolls
+              *ngFor="let item of (product$ | async)?.inventory_products">
+              <div *ngIf="!item.default_product && (product$ | async)?.inventory_products[0].id !== item.id">
+                <div class="name-heading variant-name row-item valign-wrapper">
+                  <div class="valign tealish-text">
+                    {{ item.name }}
+                  </div>
+                  <div>
+                    {{item.vendor_name}}
+                  </div>
                 </div>
-                <div>
-                  Patterson
+                <div class="small-heading row-item">$50</div>
+                <div class="small-heading row-item">50 @ $0.4</div>
+                <div class="small-heading row-item">1000 @ $0.02</div>
+                <div class="small-heading row-item tealish-text">
+                  <fa name="ellipsis-h"></fa>
                 </div>
+                <div class="clearfix"></div>
               </div>
-              <div class="small-heading row-item">$50</div>
-              <div class="small-heading row-item">50 @ $0.4</div>
-              <div class="small-heading row-item">1000 @ $0.02</div>
-              <div class="small-heading row-item tealish-text">
-                <fa name="ellipsis-h"></fa>
-              </div>
-              <div class="clearfix"></div>
             </div>
           </div>
         </div>
