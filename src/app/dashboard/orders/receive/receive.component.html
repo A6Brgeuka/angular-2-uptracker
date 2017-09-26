@@ -115,7 +115,11 @@
                       required
                     >
                       <option value="null" disabled>Select one</option>
-                      <option value="null"><a routerLink="/inventory" routerLinkActive="active">Create New Inventory Group</a></option>
+                      <option value="null">
+                        <a [routerLink]="['/inventory']">
+                          Create New Inventory Group
+                        </a>
+                      </option>
                       <ng-container>
                         <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
                       </ng-container>

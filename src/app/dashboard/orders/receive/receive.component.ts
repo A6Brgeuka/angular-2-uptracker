@@ -11,7 +11,6 @@ import {
 } from '../../../models/receive-products.model';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
-// import event = google.maps.event;
 
 @Component({
   selector: 'app-order-detail',
@@ -25,7 +24,6 @@ export class ReceiveComponent implements OnInit {
   public locationArr: any = [];
   public inventoryGroupArr: any = [];
   public orders$: Observable<any>;
-  
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
   
@@ -50,7 +48,7 @@ export class ReceiveComponent implements OnInit {
     
     this.subscribers.ordersSubscription = this.orders$
     .subscribe(res => {
-      console.log(res);
+      
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
@@ -73,7 +71,7 @@ export class ReceiveComponent implements OnInit {
         });
         return order;
       });
-      console.log(this.receiveProducts);
+      
     });
   }
 
@@ -98,7 +96,7 @@ export class ReceiveComponent implements OnInit {
   }
   
   addProduct() {
-    //product = product.status.push(new StatusModel({qty: 0, type: 'pending'}));
+  
   }
   
   changeLocation(location, status) {
@@ -109,12 +107,10 @@ export class ReceiveComponent implements OnInit {
   changeStatus(setStatus, product, curStatus) {
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
-      //curStatus.inventoryHide = false;
       const filteredStatus = _.find(product.status, {'type': setStatus});
       const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
       const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
       const findReceiveStatus = _.find(product.status, {'type': 'receive'});
-      //const filterPartReceiveStatus:any[] = _.filter(product.status, {'type': 'partial receive'});
       let quantityStatus: boolean = false;
       let receiveStatus: boolean = false;
       
@@ -138,20 +134,13 @@ export class ReceiveComponent implements OnInit {
         curStatus.type = setStatus;
       }
       
-      //product.status.map(status => {
-      //  if (status.type === 'partial receive' && status.tmp_id === filterPartReceiveStatus[0].tmp_id) {
-      //    status.inventoryHide = true;
-      //  } else if (status.type === 'partial receive' && status.tmp_id !== filterPartReceiveStatus[0].tmp_id) {
-      //    status.inventoryHide = false;
-      //  }
-      //})
-      
     }
     // used setTimeout because materialize-select doesn't change the text
     setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
     console.log(product.status);
     this.onchangeStatusQty(product, curStatus, curStatus.qty);
   }
+  
   onchangeStatusQty(product, status, newValue) {
     status.qty = newValue;
     
@@ -193,4 +182,5 @@ export class ReceiveComponent implements OnInit {
       return currentStatus;
     });
   }
+  
 }

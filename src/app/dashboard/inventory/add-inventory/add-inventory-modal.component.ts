@@ -35,10 +35,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   searchResults$: any = new BehaviorSubject([]);
   searchResults: any[] = [];
   public noSearchedRes: string = null;
-  
   checkBoxCandidates:boolean=false;
   checkBoxItems:boolean=false;
-  
   public newProductData: any = new InventorySearchResults();
   public items$: Observable<any>;
   public items;
@@ -47,23 +45,17 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public deleteFromItems$: Subject<any> = new Subject<any>();
   public addCustomItemToItems$: Subject<any> = new Subject<any>();
   public editAddItemToItems$: Subject<any> = new Subject<any>();
-  
   public addCustomProduct: boolean = false;
-  
   public saveAdded$: any = new Subject<any>();
   public updateAdded$: any = new Subject<any>();
-
   public newInventory: any = new InventoryModel;
-  
   public classDirty: boolean = false;
-  
   public packageType$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public resultItems$: Observable<any>;
   public checkedProduct$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public checkedProduct: any[] = [];
   public matchingProductDisabled: boolean = false;
   public matchingAll$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  
   public showSelect: boolean = true;
   public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -168,7 +160,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.fileActions();
     this.msdsActions();
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
-    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1).subscribe(res => this.productCategoriesCollection = res);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
   }
   
@@ -240,6 +231,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addSubscribers() {
+    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1).subscribe(res => this.productCategoriesCollection = res);
     this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
     .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
     .subscribe((vendors:any) => this.autocompleteVendors = vendors);
@@ -256,6 +248,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
     .subscribe((pack:any) => this.autocompleteConsPackage = pack);
   }
+  
   ngOnInit() {
     this.loadFile$.next([]);
     this.loadMsds$.next([]);
@@ -331,7 +324,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       }
       setTimeout(()=>{ this.showSelect = true;
       },0.6);
-      console.log(res);
       this.items = res;
     });
 
@@ -360,10 +352,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newInventory.products.map(item => {
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
-        delete item.inventory_product_id;
       });
-      console.log(this.context.inventoryGroup.inventoryGroup);
-      console.log(this.newInventory);
+      
     }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
