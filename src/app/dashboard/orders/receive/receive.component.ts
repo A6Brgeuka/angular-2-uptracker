@@ -63,9 +63,11 @@ export class ReceiveComponent implements OnInit {
           item.status = [new StatusModel()];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';
+          item.status[0].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
           item.status[1] = new StatusModel();
           item.status[1].qty = 0;
           item.status[1].type = 'pending';
+          item.status[1].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
@@ -112,7 +114,7 @@ export class ReceiveComponent implements OnInit {
       const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
       const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
       const findReceiveStatus = _.find(product.status, {'type': 'receive'});
-      //const filterPartReceiveStatus = _.filter(product.status, {'type': 'partial receive', 'inventoryHide': true});
+      //const filterPartReceiveStatus:any[] = _.filter(product.status, {'type': 'partial receive'});
       let quantityStatus: boolean = false;
       let receiveStatus: boolean = false;
       
@@ -127,10 +129,6 @@ export class ReceiveComponent implements OnInit {
         receiveStatus = true;
       }
       
-      //if (filterPartReceiveStatus.length && setStatus === 'partial receive') {
-      //  curStatus.inventoryHide = true;
-      //}
-      
       if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
         product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
         curStatus.type = setStatus;
@@ -140,6 +138,14 @@ export class ReceiveComponent implements OnInit {
         curStatus.type = setStatus;
       }
       
+      //product.status.map(status => {
+      //  if (status.type === 'partial receive' && status.tmp_id === filterPartReceiveStatus[0].tmp_id) {
+      //    status.inventoryHide = true;
+      //  } else if (status.type === 'partial receive' && status.tmp_id !== filterPartReceiveStatus[0].tmp_id) {
+      //    status.inventoryHide = false;
+      //  }
+      //})
+      
     }
     // used setTimeout because materialize-select doesn't change the text
     setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
@@ -148,15 +154,17 @@ export class ReceiveComponent implements OnInit {
   }
   onchangeStatusQty(product, status, newValue) {
     status.qty = newValue;
+    
     const pendingSum  = product.status.reduce((sum, currentStatus) => {
-
       if (currentStatus.type === 'pending') {
         return +sum;
       } else {
         return +sum + Number(currentStatus.qty);
       }
     }, 0);
+    
     product.status.map(currentStatus => {
+      
       if (currentStatus.type === 'pending') {
         currentStatus.qty = product.quantity - +pendingSum;
         if (currentStatus.qty < 0) {
@@ -165,13 +173,23 @@ export class ReceiveComponent implements OnInit {
             currentStatus.qty = 0;
         }
       }
+      
       if (status.type === 'receive' && Number(status.qty) !== Number(product.quantity)) {
         status.type = 'partial receive';
       }
+      
       if (status.type === 'partial receive' && Number(status.qty) === Number(product.quantity)) {
         status.type = 'receive';
         _.remove(product.status, {'type': 'partial receive'});
       }
+      
+      const filterPartReceiveStatus:any[] = _.filter(product.status, {'type': 'partial receive'});
+      if (filterPartReceiveStatus.length && currentStatus.type === 'partial receive' && currentStatus.tmp_id === filterPartReceiveStatus[0].tmp_id) {
+        currentStatus.inventoryHide = true;
+      } else if (filterPartReceiveStatus.length && currentStatus.type === 'partial receive' && currentStatus.tmp_id !== filterPartReceiveStatus[0].tmp_id) {
+        currentStatus.inventoryHide = false;
+      }
+      
       return currentStatus;
     });
   }
