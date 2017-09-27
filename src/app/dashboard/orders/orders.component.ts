@@ -18,7 +18,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./orders.component.scss']
 })
 @DestroySubscribers()
-export class OrdersComponent implements OnInit {
+export class OrdersComponent {
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -43,8 +43,8 @@ export class OrdersComponent implements OnInit {
   ) {
   
   }
-
-  ngOnInit() {
+  
+  addSubscribers() {
     this.subscribers.ordersSubscription = Observable.combineLatest(
       this.pastOrderService.collection$,
       this.filterTabBy$

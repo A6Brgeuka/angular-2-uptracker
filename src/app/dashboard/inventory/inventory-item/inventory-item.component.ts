@@ -164,7 +164,8 @@ export class InventoryItemComponent implements OnInit {
     this.subscribers.deleteInventorySubscription = this.deleteInventory$
     .switchMap(() => {return this.product$ })
     .switchMap(inventory => this.InventoryService.deleteInventory(inventory))
-    .subscribe(res =>
+    .subscribe(
+      res =>
         this.goBack()
       ,
       err => console.log('error')
@@ -200,7 +201,6 @@ export class InventoryItemComponent implements OnInit {
     );
     this.subscribers.addInventoryItemSubscriber = this.InventoryService.addInventoryItemComment(this.comment)
     .subscribe(res => {
-      //this.comment = {};
       this.addToComments$.next(res);
     });
   }
@@ -291,11 +291,8 @@ export class InventoryItemComponent implements OnInit {
   }
   
   openAddInventoryModal(){
-    this.product$
-    .take(1)
-    .subscribe((inventory)=>{
     let data = {
-      inventoryGroup:inventory
+      inventoryGroup:this.inventory
     };
     this.modal
     .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
@@ -306,7 +303,6 @@ export class InventoryItemComponent implements OnInit {
         },
         (err) => {}
       );
-    });
     });
   }
   

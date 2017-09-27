@@ -183,4 +183,10 @@ export class ReceiveComponent implements OnInit {
     });
   }
   
+  changeInventory(invenory) {
+    if (invenory === 'routerLink') {
+      this.router.navigate(['/inventory']);
+    }
+  }
+  
 }

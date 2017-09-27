@@ -118,7 +118,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
-      console.log(this.searchResults);
+      
       if (this.items.length) {
         this.checkedProduct = [];
         this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
@@ -150,12 +150,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       return this.inventoryService.updateInventory(this.newInventory)
     })
     .subscribe(newInventory => this.closeModal(newInventory));
-
-    this.autocompleteProducts$
-    .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
-    .subscribe(res => {
-      this.autocompleteProducts = res['suggestions'];
-    });
     
     this.fileActions();
     this.msdsActions();
@@ -170,8 +164,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       } else {
         this.typeIn$.next(null);
       }
-      
   }
+  
   selectedAutocompled(keyword) {
     if (keyword.length > 2) {
       this.typeIn$.next(keyword);
@@ -232,6 +226,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   addSubscribers() {
     this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1).subscribe(res => this.productCategoriesCollection = res);
+  
+    this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
+    .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
+    .subscribe(res => {
+      this.autocompleteProducts = res['suggestions'];
+    });
+    
     this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
     .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
     .subscribe((vendors:any) => this.autocompleteVendors = vendors);
@@ -513,7 +514,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.checkedProduct$.next(this.checkedProduct);
     this.matchingAll$.next(false);
     
-    this.matchingProductDisabled = (this.checkedProduct.length) ? true : false;
+    this.matchingProductDisabled = !!this.checkedProduct.length;
     
     if (!item.checked) {
       this.checkBoxCandidates = false;
@@ -528,7 +529,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   selectAllCandidates() {
-    this.matchingProductDisabled = this.checkBoxCandidates ? true : false;
+    this.matchingProductDisabled = !!this.checkBoxCandidates;
     this.matchingAll$.next(this.checkBoxCandidates);
     if (!this.checkBoxCandidates) {
       this.checkedProduct = [];
@@ -757,8 +758,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
+    let file: File = inputValue.files[0];
+    let myReader: FileReader = new FileReader();
     
     myReader.onloadend = (e) => {
       this.onImgDrop(myReader.result);
@@ -774,7 +775,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   onImgDrop(imgBase64: string): void {
-    var img = new Image();
+    let img = new Image();
     img.onload = () => {
       let resizedImg: any = this.fileUploadService.resizeImage(img, {resizeMaxHeight: 250, resizeMaxWidth: 250});
       let orientation = this.fileUploadService.getOrientation(imgBase64);
