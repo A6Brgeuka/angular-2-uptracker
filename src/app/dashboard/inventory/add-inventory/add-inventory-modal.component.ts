@@ -149,7 +149,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .switchMap(() => {
       return this.inventoryService.updateInventory(this.newInventory)
     })
-    .subscribe(newInventory => this.dismissModal());
+    .subscribe(newInventory => this.closeModal(newInventory));
 
     this.autocompleteProducts$
     .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()

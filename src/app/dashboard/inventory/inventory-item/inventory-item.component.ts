@@ -301,7 +301,9 @@ export class InventoryItemComponent implements OnInit {
     .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (res) => {},
+        (res) => {
+          this.product$.next(res);
+        },
         (err) => {}
       );
     });
