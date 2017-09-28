@@ -26,6 +26,7 @@ export class ReceiveComponent implements OnInit {
   public orders$: Observable<any>;
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
+  public packingSlipValid: boolean = true;
   
   constructor(
     public accountService: AccountService,
@@ -81,18 +82,22 @@ export class ReceiveComponent implements OnInit {
   }
  
   save() {
-    this.receiveProducts.orders.map((order) => {
-      order.items.map(item => {
-        item.status.map(status => {
-          if (status.type === 'receive' || status.type === 'partial receive') {
-            status.primary_status = true;
-          }
-          return status;
+    if (this.receiveProducts.packing_slip) {
+      this.receiveProducts.orders.map((order) => {
+        order.items.map(item => {
+          item.status.map(status => {
+            if (status.type === 'receive' || status.type === 'partial receive') {
+              status.primary_status = true;
+            }
+            return status;
+          });
         });
       });
-    });
-    
-    this.pastOrderService.onReceiveProducts(this.receiveProducts);
+  
+      this.pastOrderService.onReceiveProducts(this.receiveProducts);
+    } else {
+      this.packingSlipValid = false;
+    }
   }
   
   addProduct() {

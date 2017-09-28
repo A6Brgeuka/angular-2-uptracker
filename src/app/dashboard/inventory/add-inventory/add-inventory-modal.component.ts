@@ -435,6 +435,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.saveAdded$.unsubscribe();
     this.productImg$.unsubscribe();
     this.updateAdded$.unsubscribe();
+    //this.items$.unsubscribe();
   }
 
   compareVendor(v1, v2) {

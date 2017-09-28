@@ -1,5 +1,4 @@
-<!--<form class="uptracker-form" materialize #receiveProductForm="ngForm" autocomplete="off"-->
-  <!--novalidate>-->
+<!--<form class="uptracker-form" materialize #receiveProductForm="ngForm" autocomplete="off" novalidate>-->
 <div class="products content uptracker-form receive-orders">
   <div class="top">
     <div class="row filter clearfix">
@@ -9,7 +8,7 @@
       <div class="col l3 m12 s12">
         <div class="select">
           <select
-            [attr.disabled]="true"
+            [disabled]="true"
             class="wide"
             materialize="material_select"
             [materializeSelectOptions]=""
@@ -28,8 +27,9 @@
           name="packing_slip"
           #packing_slip="ngModel"
           id="packing_slip"
+          [class.ng-touched]="!packingSlipValid"
         />
-        <div [hidden]="packing_slip.valid || packing_slip.pristine" class="error red-text left-align">
+        <div [hidden]="packingSlipValid || receiveProducts.packing_slip" class="error red-text left-align">
           Packing slip is required
         </div>
       </div>
@@ -46,7 +46,6 @@
             (click)="save()"
             type="submit"
             class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
-            [disabled]="!receiveProducts.packing_slip"
           >
             <fa name="check"></fa>
             Save
