@@ -168,13 +168,16 @@ export class ReceiveComponent implements OnInit {
         }
       }
       
-      if (status.type === 'receive' && Number(status.qty) !== Number(product.quantity)) {
-        status.type = 'partial receive';
+      if (currentStatus.type === 'receive' && Number(currentStatus.qty) < Number(product.quantity)) {
+        currentStatus.type = 'partial receive';
       }
       
-      if (status.type === 'partial receive' && Number(status.qty) === Number(product.quantity)) {
-        status.type = 'receive';
+      if (currentStatus.type === 'partial receive'
+        && Number(currentStatus.qty) === Number(pendingSum)
+        && Number(currentStatus.qty) === Number(product.quantity)) {
+        currentStatus.type = 'receive';
         _.remove(product.status, {'type': 'partial receive'});
+        product.status[product.status.length-1].qty = 0;
       }
       
       const filterPartReceiveStatus:any[] = _.filter(product.status, {'type': 'partial receive'});

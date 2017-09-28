@@ -16,7 +16,7 @@ export class AddInventory2OrderModalContext extends BSModalContext {
   templateUrl: './add-inventory-2order-modal.component.html',
   styleUrls: ['./add-inventory-2order-modal.component.scss']
 })
-@DestroySubscribers()
+
 export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalComponent<AddInventory2OrderModalContext> {
   context: AddInventory2OrderModalContext;
   public inventory: any;
