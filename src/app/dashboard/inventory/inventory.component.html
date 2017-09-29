@@ -89,7 +89,6 @@
         </div>
       </div>
       <div *ngIf="inventoryService.isGrid">
-
         <div class="heading row">
           <div class="col s1 right-align">
             <div class="input-checkbox checkbox">
@@ -135,8 +134,6 @@
           <div class="col s1 star-container">
             <div class="star-right" [class.favorite]="product.favorite">
               <i (click)="setFavorite($event,product)" class="fa" [class.fa-star-o]="!product.favorite" [class.fa-star]="product.favorite"></i>
-              <!--<i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>-->
-              <!--<i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>-->
             </div>
           </div>
           <div class="col s1">
@@ -185,12 +182,9 @@
               [class.fa-eye-slash]="!product.status"
               (click)="toggleInventoryItemVisibility(product)"
               aria-hidden="true"></i>
-
           </div>
         </div>
-
       </div>
-
       <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="inventoryService.isGrid">
         <div class="cssload-loader">
           <div class="cssload-inner cssload-one"></div>
@@ -198,10 +192,8 @@
           <div class="cssload-inner cssload-three"></div>
         </div>
       </div>
-
       <div class="clearfix"></div>
     </div>
-
     <div class="no_results_container" [class.not_hidden]="!total">
       <div class="img">
         <i class="fa fa-question" aria-hidden="true"></i>
@@ -212,5 +204,4 @@
         <button class="uptracker-form-btn">Request Product</button>
       </div>
     </div>
-
 </div>

@@ -299,17 +299,37 @@ export class InventoryItemComponent implements OnInit {
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
-          this.product$.next(res);
+          // temp new request, because the vendors array doesn't return
+          this.getCurrentInventory();
+          //this.product$.next(res);
         },
         (err) => {}
       );
     });
+    //this.product$
+    //.take(1)
+    //.subscribe((inventory)=>{
+    //  debugger;
+    //  let data = {
+    //    inventoryGroup:inventory
+    //  };
+    //  this.modal
+    //  .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
+    //  .then((resultPromise) => {
+    //    resultPromise.result.then(
+    //      (res) => {
+    //        this.product$.next(res);
+    //      },
+    //      (err) => {}
+    //    );
+    //  });
+    //});
   }
   
   addToOrder() {
     
     this.modal
-    .open(AddInventory2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: this.inventory}, true, 'big'))
+    .open(AddInventory2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: this.inventory}, true))
     .then((resultPromise) => {
       resultPromise.result.then(
         (comment) => {

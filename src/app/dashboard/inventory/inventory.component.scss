@@ -59,8 +59,6 @@
       background-image: url(/assets/img/download-icon.png);
     }
 
-
-
     .star-right {
       color: $tealish;
       position: absolute;
@@ -121,29 +119,12 @@
             cursor: pointer;
             border-radius: 5px;
 
-
-
-
             .hazardous {
               position: absolute;
               left: 10px;
               top: 10px;
               color: #f1594e;
             }
-
-            //&:hover{
-            //  width:260px;
-            //  height:260px;
-            //  transform: translateX(-5px) translateY(-5px);
-            //  box-shadow: 2px 2px 0 0 #e6e6e6;
-            //
-            //  .img{
-            //    margin-top:34px;
-            //    margin-bottom:27px;
-            //    height:125px;
-            //    width:125px;
-            //  }
-            //}
 
             &.active {
               border: 3px solid #000;
@@ -155,7 +136,6 @@
               }
             }
           }
-
 
           .img {
             margin: 21px auto 10px;

@@ -88,6 +88,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
             this.getInfiniteScroll();
           }
         );
+        
       }
     );
     

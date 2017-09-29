@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone } from '@angular/core';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -305,9 +305,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length) {
-        
         let searchedCategory = (res[0].category) ? this.productCategoriesCollection.indexOf(res[0].category) : null;
-        
         this.newInventory.name = res[0].name;
         this.newInventory.inventory_by_array = res[0].inventory_by;
         this.newInventory.department = (res[0].department) ? res[0].department : this.newInventory.department;
@@ -327,7 +325,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       },0.6);
       this.items = res;
     });
-
      //load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
     if (this.context.inventoryGroup) {
@@ -354,7 +351,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
       });
-      
     }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
@@ -446,9 +442,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     return (source) =>
       source.map(resItems => {
         const existedItems: any[] = _.filter(resItems, 'exists');
-
         const notExistedItems: any[] = _.reject(resItems, 'exists');
-
         const newNotExistedItems: any[] = notExistedItems.reduce((acc: any[], {product_id,variant_id}) => {
           let item = _.find(itemsToCheck,{variant_id,product_id});
           return item ? [...acc,item] : acc
@@ -766,7 +760,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.onImgDrop(myReader.result);
     };
     myReader.readAsDataURL(file);
-    //TODO send img after click on Save button
     this.productImg$.next(file);
   }
   
