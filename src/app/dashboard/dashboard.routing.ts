@@ -21,6 +21,9 @@ import { homeRoutes } from './products/home/home.routing';
 import { AuthGuard } from '../auth-guard.service';
 import { OrdersPreviewRoutes } from './shopping-list/orders-preview/orders-preview.routing';
 import { PurchaseOrderRoutes } from './shopping-list/orders-preview/purchase-order/purchase-order.routing';
+import { ReportsRoutes } from './reports/reports.routing';
+import { AppliancesRoutes } from './appliances/appliances.routing';
+import { AssetsRoutes } from './assets/assets.routing';
 
 
 export const DashboardRoutes = [
@@ -28,6 +31,8 @@ export const DashboardRoutes = [
     path: '',
     component: DashboardComponent,
     children: [
+      ...AppliancesRoutes,
+      ...AssetsRoutes,
       ...InnerDashboardRoutes,
       ...OrdersRoutes,
       ...LocationsRoutes,
@@ -36,6 +41,7 @@ export const DashboardRoutes = [
       ...ProductsRoutes,
       ...InventoryRoutes,
       ...TransferRoutes,
+      ...ReportsRoutes,
       ...ShoppingListRoutes,
       ...homeRoutes,
       ...OrdersPreviewRoutes,

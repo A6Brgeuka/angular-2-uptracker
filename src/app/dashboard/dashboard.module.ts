@@ -18,6 +18,9 @@ import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 import { HomeModule } from './products/home/home.module';
 import { OrdersPreviewModule } from './shopping-list/orders-preview/orders-preview.module';
 import { PurchaseOrderModule } from './shopping-list/orders-preview/purchase-order/purchase-order.module';
+import { ReportsModule } from './reports/reports.module';
+import { AppliancesModule } from './appliances/appliances.module';
+import { AssetsModule } from './assets/assets.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { PurchaseOrderModule } from './shopping-list/orders-preview/purchase-ord
   ],
   imports: [
     //routing,
+    AppliancesModule,
     AppSharedModule,
+    AssetsModule,
     OrdersPreviewModule,
     PurchaseOrderModule,
     InnerDashboardModule,
@@ -36,6 +41,7 @@ import { PurchaseOrderModule } from './shopping-list/orders-preview/purchase-ord
     ProductsModule,
     InventoryModule,
     TranseferModule,
+    ReportsModule,
     ShoppingListModule,
     HomeModule
   ],

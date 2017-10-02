@@ -12,14 +12,17 @@
         Dashboard
         <fa *ngIf="dashboardService?.hasInfo" class="ds-info-flag red-text" name="info-circle"></fa>
       </a>
+      <a [routerLink]="['/products']" class="products" routerLinkActive="active">Marketplace</a>
       <a [routerLink]="['/shoppinglist']" class="shopping" routerLinkActive="active">Shopping List</a>
       <a [routerLink]="['/orders']" class="orders" routerLinkActive="active">Orders</a>
-      <a [routerLink]="['/products']" class="products" routerLinkActive="active">Marketplace</a>
+      <a [routerLink]="['/transfers']" class="transfers" routerLinkActive="active" *ngIf="locationArr.length > 1">Transfers</a>
       <a [routerLink]="['/inventory']" class="inventory" routerLinkActive="active">Inventory</a>
-      <a [routerLink]="['/transfers']" class="transfers" routerLinkActive="active">Assets</a>
+      <a [routerLink]="['/reports']" class="reports" routerLinkActive="active">Reports</a>
+      <a [routerLink]="['/assets']" class="assets" routerLinkActive="active">Assets</a>
+      <a [routerLink]="['/appliances']" class="appliances" routerLinkActive="active">Appliances</a>
       <a [routerLink]="['/vendors']" class="vendors" routerLinkActive="active">Vendors</a>
-      <a [routerLink]="['/locations']" class="locations" routerLinkActive="active">Locations</a>
-      <a [routerLink]="['/users']" class="users"  routerLinkActive="active">Users</a>
+      <!--<a [routerLink]="['/locations']" class="locations" routerLinkActive="active">Locations</a>-->
+      <!--<a [routerLink]="['/users']" class="users"  routerLinkActive="active">Users</a>-->
     </div>
   </aside>
   <section class="main-column">

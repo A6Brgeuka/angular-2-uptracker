@@ -6,8 +6,4 @@ export const TransferRoutes = [
     component: TransferComponent,
     canActivate: [],
   }
-  // {
-  //   path: '',
-  //   redirectTo: 'orders'
-  // }
 ];

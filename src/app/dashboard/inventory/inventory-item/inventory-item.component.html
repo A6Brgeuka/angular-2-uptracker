@@ -363,24 +363,24 @@
                   <div class="col s2 grey-text small">CAT#</div>
                   <div class="col s4 small">123-210</div>
                   <div class="col s2 small grey-text">UPC#</div>
-                  <div class="col s4 very-small">{{item.upc}}</div>
+                  <div class="col s4 very-small">{{item?.upc}}</div>
                 </div>
                 <div class="col s2">
                   <div>
                     <div class="">Pkg Price</div>
-                    <div class="grey-text">$50</div>
+                    <div class="grey-text">{{ item?.price?.package_price }}</div>
                   </div>
                 </div>
                 <div class="col s2">
                   <div>
                     <div class="">Sub-Pkg Price</div>
-                    <div class="grey-text">40 @ $1.25</div>
+                    <div class="grey-text">{{ item?.price?.sub_package_price }}</div>
                   </div>
                 </div>
                 <div class="col s2">
                   <div>
                     <div class="">Unit Price</div>
-                    <div class="grey-text">2000 @ $0.03</div>
+                    <div class="grey-text">{{ item?.price?.unit_price }}</div>
                   </div>
                 </div>
                 <div class="col s1 center-align">
@@ -426,9 +426,9 @@
                     {{item.vendor_name}}
                   </div>
                 </div>
-                <div class="small-heading row-item">$50</div>
-                <div class="small-heading row-item">50 @ $0.4</div>
-                <div class="small-heading row-item">1000 @ $0.02</div>
+                <div class="small-heading row-item">{{ item.price.package_price }}</div>
+                <div class="small-heading row-item">{{ item.price.sub_package_price }}</div>
+                <div class="small-heading row-item">{{ item.price.unit_price }}</div>
                 <div class="small-heading row-item tealish-text">
                   <fa name="ellipsis-h"></fa>
                 </div>
