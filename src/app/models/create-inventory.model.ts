@@ -5,6 +5,8 @@ export class InventoryProductModel {
   vendor_id: string = null;
   
   price:string = null;
+  forum_price:string = null;
+  club_price:string = null;
   catalog_number:string = null;
   upc:string = null;
   

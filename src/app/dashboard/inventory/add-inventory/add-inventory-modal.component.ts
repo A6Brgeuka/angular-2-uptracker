@@ -4,7 +4,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
-import { AttachmentFiles, InventorySearchResults, searchData } from '../../../models/inventory.model';
+import { AttachmentFiles, InventorySearchResults, searchData, Vendor } from '../../../models/inventory.model';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -115,7 +115,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
-      debugger;
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
@@ -182,7 +181,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.newProductData.vendors = [vendor];
   }
   onSearchVendor(event) {
-    this.newProductData.vendor_name = event.target.value;
+    this.newProductData.vendors = [{vendor_name: event.target.value, vendor_id: null}];
     this.vendorDirty = true;
     this.vendorValid = !!(event.target.value);
     this.autocompleteVendors$.next(event.target.value);
@@ -626,8 +625,25 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     if (!val) {
       val = 0;
     }
-    this.newProductData.price = val;
-    this.newProductData.formattedPrice = val.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    return val;
+  }
+  
+  onChangeListPrice(val) {
+    let value = this.changePrice(val);
+    this.newProductData.price = value;
+    this.newProductData.formattedPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
+  
+  onChangeForumPrice(val) {
+    let value = this.changePrice(val);
+    this.newProductData.forum_price = value;
+    this.newProductData.formattedForumPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
+  
+  onChangeClubPrice(val) {
+    let value = this.changePrice(val);
+    this.newProductData.club_price = value;
+    this.newProductData.formattedClubPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
   
   selectPackageType(packageType) {

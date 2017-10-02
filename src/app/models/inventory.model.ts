@@ -22,17 +22,17 @@ export class InventorySearchResults {
   consumable_unit: PackageProperties =  {properties:{qty:null, unit_type:null}};
   sub_package: PackageProperties =  {properties:{qty:null, unit_type:null}};
   //'package': PackageProperties =  {properties:{qty:null, unit_type:null}};
-  vendor:Vendor = {vendor_name:"", vendor_id:null};
+  vendor:Vendor = {vendor_name:null, vendor_id:null};
   vendors: Vendor[] = [];
   description:string = "";
   catalog_number: string = "";
+  price: number = 0;
   club_price:number = 0;
   forum_price:number = 0;
   images:string[] = [];
   mfg_number:string|number = "";
   name:string = "";
   package_type:string = "";
-  price: number = 0;
   product_id:string  = null;
   upc:string = "";
   variant_id:string = null;
@@ -44,9 +44,11 @@ export class InventorySearchResults {
   notActive:boolean = false; // my prop
   
   formattedPrice: any = '$0.00';
+  formattedForumPrice: any = '$0.00';
+  formattedClubPrice: any = '$0.00';
   custom_product_id: string = null; // my prop
-  vendor_id: string = '';
-  vendor_name: string = '';
+  vendor_id: string = null;
+  vendor_name: string = null;
 
   constructor(obj?:any) {
     for (let field in obj) {
