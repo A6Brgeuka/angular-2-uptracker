@@ -302,7 +302,10 @@ export class InventoryItemComponent implements OnInit {
       .then((resultPromise) => {
         resultPromise.result.then(
           (res) => {
-            this.product$.next(res);
+            //this.product$.next(res);
+            // TODO don't make request again
+            // again request because not all fields are returned after updating
+            this.getCurrentInventory();
           },
           (err) => {}
         );
