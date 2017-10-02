@@ -115,6 +115,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
+      debugger;
       this.total = data.count;
       this.searchResults$.next(data.results);
       this.searchResults = data.results;
@@ -304,13 +305,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.items$.subscribe(res => {
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
-      if (res.length) {
+      if (res.length && !this.context.inventoryGroup) {
         let searchedCategory = (res[0].category) ? this.productCategoriesCollection.indexOf(res[0].category) : null;
         this.newInventory.name = res[0].name;
         this.newInventory.inventory_by_array = res[0].inventory_by;
         this.newInventory.department = (res[0].department) ? res[0].department : this.newInventory.department;
         this.newInventory.category = (searchedCategory !== -1) ? res[0].category : null;
         this.newInventory.description = (res[0].description) ? res[0].description : this.newInventory.description;
+        this.autocompleteConsPackage = [res[0].consumable_unit.properties.unit_type];
+        this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
+      }
+      if (res.length && this.context.inventoryGroup) {
+        this.newInventory.inventory_by_array = res[0].inventory_by;
         this.autocompleteConsPackage = [res[0].consumable_unit.properties.unit_type];
         this.checkConsPackage(res[0].consumable_unit.properties.unit_type);
       }
