@@ -291,39 +291,23 @@ export class InventoryItemComponent implements OnInit {
   }
   
   openAddInventoryModal(){
-    let data = {
-      inventoryGroup:this.inventory
-    };
-    this.modal
-    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          // temp new request, because the vendors array doesn't return
-          this.getCurrentInventory();
-          //this.product$.next(res);
-        },
-        (err) => {}
-      );
+    this.product$
+    .take(1)
+    .subscribe((inventory)=>{
+      let data = {
+        inventoryGroup:inventory
+      };
+      this.modal
+      .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (res) => {
+            this.product$.next(res);
+          },
+          (err) => {}
+        );
+      });
     });
-    //this.product$
-    //.take(1)
-    //.subscribe((inventory)=>{
-    //  debugger;
-    //  let data = {
-    //    inventoryGroup:inventory
-    //  };
-    //  this.modal
-    //  .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
-    //  .then((resultPromise) => {
-    //    resultPromise.result.then(
-    //      (res) => {
-    //        this.product$.next(res);
-    //      },
-    //      (err) => {}
-    //    );
-    //  });
-    //});
   }
   
   addToOrder() {
