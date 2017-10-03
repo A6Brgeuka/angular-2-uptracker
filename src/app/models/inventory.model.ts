@@ -28,7 +28,7 @@ export class InventorySearchResults {
   catalog_number: string = "";
   price: number = 0;
   club_price:number = 0;
-  forum_price:number = 0;
+  list_price:number = 0;
   images:string[] = [];
   mfg_number:string|number = "";
   name:string = "";

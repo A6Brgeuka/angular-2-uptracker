@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone } from '@angular/core';
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
@@ -14,6 +14,8 @@ import { debug } from 'util';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { BarcodeScannerModal } from '../../barcode-scanner/barcode-scanner.component';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -107,6 +109,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     public inventoryService: InventoryService,
     public toasterService: ToasterService,
     public fileUploadService: FileUploadService,
+    public modalWindowService: ModalWindowService,
+    public modal: Modal
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -630,13 +634,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   onChangeListPrice(val) {
     let value = this.changePrice(val);
-    this.newProductData.price = value;
+    this.newProductData.list_price = value;
     this.newProductData.formattedPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
   
   onChangeForumPrice(val) {
     let value = this.changePrice(val);
-    this.newProductData.forum_price = value;
+    this.newProductData.price = value;
     this.newProductData.formattedForumPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
   
@@ -839,6 +843,19 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   getType(mime){
     return mime.split('/')[0];
+  }
+  
+  openBarcodeScanner() {
+    this.modal
+    .open(BarcodeScannerModal, this.modalWindowService.overlayConfigFactoryWithParams({data: ''}, true, 'big'))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (comment) => {
+        },
+        (err) => {
+        }
+      );
+    });
   }
   
 }

@@ -170,6 +170,9 @@
             <a href="#info">Info</a>
           </li>
           <li class="tab col s2">
+            <a href="#locations">Locations</a>
+          </li>
+          <li class="tab col s2">
             <a href="#history">History</a>
           </li>
           <li class="tab col s2" ngClass="hidden">
@@ -274,6 +277,52 @@
       </div>
     </div>
 
+    <div id="locations">
+      <div class="inner">
+        <div class="variant-table">
+          <div class="uptracker-form variant-head">
+            <div class="head-item">
+              Location
+            </div>
+            <div class="head-item">
+              On-hand
+            </div>
+            <div class="head-item">
+              Pending
+            </div>
+            <div class="head-item">
+              Critical
+            </div>
+            <div class="head-item">
+              Fully Stocked
+            </div>
+            <div class="head-item">
+              Overstocked
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div class="table-body">
+          <div class="variant-table">
+            <div class="uptracker-form  table-item tealish-text"
+              *ngFor="let location of (product$ | async)?.inventory_item_locations">
+              <div class="name-heading variant-name row-item valign-wrapper">
+                <span class="valign tealish-text">
+                  {{ location.name }}
+                </span>
+              </div>
+              <div class="small-heading row-item">{{ location.on_hand }}</div>
+              <div class="small-heading row-item">{{ location.pending }}</div>
+              <div class="small-heading row-item">{{ location.critical_level }}</div>
+              <div class="small-heading row-item">{{ location.fully_stocked }}</div>
+              <div class="small-heading row-item ">{{ location.overstock_level }}</div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="history">
       <div class="inner">
         <div class="variant-table">
@@ -306,7 +355,7 @@
         <div class="table-body">
           <div class="variant-table">
             <div class="uptracker-form  table-item tealish-text"
-              *ngFor="let order of [1,1,1,1,1,1]">
+              *ngFor="let order of [1,1,1]">
               <div class="name-heading variant-name row-item valign-wrapper">
                 <span class="valign tealish-text" (click)="toggleVariantDetailView(order)">
                   Jane Doe
