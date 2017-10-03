@@ -5,7 +5,7 @@
       <div class="input">
         <input type="file" accept="image/*" capture="camera" (change)="onChangeFile($event)">
       </div>
-      <button>Rerun</button>
+      <button (click)="rerun()">Rerun</button>
     </fieldset>
     <fieldset class="reader-config-group">
         <div class="ttl">Barcode-Type</div>
@@ -47,9 +47,9 @@
           </select>
         </div>
         <div class="ttl">Half-Sample</div>
-        <!--<div class="input-checkbox checkbox">-->
+        <div class="input-checkbox checkbox">
           <input type="checkbox" name="locator_half-sample">
-        <!--</div>-->
+        </div>
         <div class="ttl">Workers</div>
         <div class="select">
           <select name="numOfWorkers" materialize="material_select" [(ngModel)] = 'quaggaConfig.numOfWorkers'>

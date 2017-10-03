@@ -20,6 +20,7 @@ export class BarcodeScannerModal implements OnInit, CloseGuard, ModalComponent<B
   CameraIsAvailable: boolean = false;
   quaggaConfig: any;
   barcodeRes: string = '';
+  codeImg: string = '';
   
   constructor(
     public dialog: DialogRef<BarcodeScannerModalContext>,
@@ -50,15 +51,18 @@ export class BarcodeScannerModal implements OnInit, CloseGuard, ModalComponent<B
   }
   
   onChangeFile(file) {
-    const codeImg = URL.createObjectURL(file.target.files[0]);
-    this.onDecodeSingle(codeImg);
+    const barcodeImg = URL.createObjectURL(file.target.files[0]);
+    this.codeImg = barcodeImg;
+    this.onDecodeSingle(barcodeImg);
+  }
+  
+  rerun() {
+    this.onDecodeSingle(this.codeImg);
   }
   
   onDecodeSingle(src) {
     this.quaggaConfig.src = src;
-    
     Quagga.decodeSingle(this.quaggaConfig, result => {
-      debugger;
       if (result.codeResult) {
         this.barcodeRes = result.codeResult.code;
         console.log("result", result.codeResult.code);
