@@ -14,7 +14,6 @@ export class BarcodeScannerModalContext extends BSModalContext {
   public data: any;
 }
 
-
 @Component({
   selector: 'app-barcode-scanner',
   templateUrl: './barcode-scanner.component.html',
@@ -26,11 +25,10 @@ export class BarcodeScannerModalContext extends BSModalContext {
 export class BarcodeScannerModal implements OnInit, CloseGuard, ModalComponent<BarcodeScannerModalContext> {
   subscribers: any = {};
   context;
-  CameraIsAvailable: boolean = false;
   quaggaConfig: any;
   barcodeRes: string = '';
-  barcodeRes$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   codeImg: string = '';
+  selectedCodeType: boolean;
   
   src$: ReplaySubject<string> = new ReplaySubject(1);
   
@@ -89,6 +87,7 @@ export class BarcodeScannerModal implements OnInit, CloseGuard, ModalComponent<B
   }
   
   onChangeFile(file) {
+    debugger;
     if (file.target.files.length) {
       this.codeImg = URL.createObjectURL(file.target.files[0]);
       this.onDecodeSingle(this.codeImg);
@@ -97,6 +96,10 @@ export class BarcodeScannerModal implements OnInit, CloseGuard, ModalComponent<B
   
   rerun() {
     this.onDecodeSingle(this.codeImg);
+  }
+  
+  onSelectType(data) {
+    this.selectedCodeType = data;
   }
   
   onDecodeSingle(src) {

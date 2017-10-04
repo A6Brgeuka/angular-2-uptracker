@@ -1,5 +1,20 @@
 <div class="inner add-to-order-modal">
+  <div class="input">
+    <input type="file" accept="image/*" capture="camera" (change)="onChangeFile($event)">
+    <button (click)="rerun()" class="uptracker-form-btn tealish">Rerun</button>
+  </div>
 
+<div class="input row">
+  <div class="col s3" (click)="onSelectType(true)">
+    <input [attr.checked]="selectedCodeType" type="radio" name="code-type" id="code_type_bar">
+    <label for="code_type_bar">Barcode</label>
+  </div>
+  <div  class="col s3" (click)="onSelectType(false)">
+    <input [attr.checked]="!selectedCodeType" type="radio" name="code-type" id="code_type_qr">
+    <label for="code_type_qr">QR</label>
+  </div>
+</div>
+<div *ngIf="selectedCodeType">
   <div class="controls">
         <div class="ttl">Barcode-Type</div>
         <div class="select">
@@ -53,10 +68,6 @@
             <option value="8">8</option>
           </select>
         </div>
-    <div class="input">
-      <input type="file" accept="image/*" capture="camera" (change)="onChangeFile($event)">
-      <button (click)="rerun()" class="uptracker-form-btn tealish">Rerun</button>
-    </div>
   </div>
 
   <div id="result_strip">
@@ -75,7 +86,7 @@
   </div>
 
   <div id="interactive" class="viewport" #interactive></div>
-
+</div>
   <div class="center-align col s12 clearfix bottom-buttons">
     <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
     <button class="uptracker-form-btn" (click)="closeModal(barcodeRes)">Search</button>
