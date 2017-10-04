@@ -59,6 +59,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public matchingProductDisabled: boolean = false;
   public matchingAll$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public showSelect: boolean = true;
+  public searchText: string = '';
   public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -850,7 +851,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .open(BarcodeScannerModal, this.modalWindowService.overlayConfigFactoryWithParams({data: ''}, true, 'big'))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (comment) => {
+        (barcode) => {
+          this.typeIn$.next(barcode);
+          this.searchText = barcode;
         },
         (err) => {
         }

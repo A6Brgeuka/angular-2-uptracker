@@ -1,28 +1,20 @@
 <div class="inner add-to-order-modal">
 
   <div class="controls">
-    <fieldset class="input-group">
-      <div class="input">
-        <input type="file" accept="image/*" capture="camera" (change)="onChangeFile($event)">
-      </div>
-      <button (click)="rerun()">Rerun</button>
-    </fieldset>
-    <fieldset class="reader-config-group">
         <div class="ttl">Barcode-Type</div>
         <div class="select">
-          <select name="decoder_readers" materialize="material_select" [(ngModel)] = 'quaggaConfig.decoder.readers'>
-            <option value="code_128" selected="selected">Code 128</option>
-            <option value="code_39">Code 39</option>
-            <option value="code_39_vin">Code 39 VIN</option>
-            <option value="ean">EAN</option>
-            <option value="ean_extended">EAN-extended</option>
-            <option value="ean_8">EAN-8</option>
-            <option value="upc">UPC</option>
-            <option value="upc_e">UPC-E</option>
-            <option value="codabar">Codabar</option>
-            <option value="i2of5">ITF</option>
-            <option value="2of5">Standard 2 of 5</option>
-            <option value="code_93">Code 93</option>
+          <select name="decoder_readers" materialize="material_select" [(ngModel)] = 'quaggaConfig.decoder.readers[0]'>
+            <option value="code_128_reader">Code 128</option>
+            <option value="code_39_reader">Code 39</option>
+            <option value="code_39_vin_reader">Code 39 VIN</option>
+            <option value="ean_reader">EAN</option>
+            <option value="ean_8_reader">EAN-8</option>
+            <option value="upc_reader">UPC</option>
+            <option value="upc_e_reader">UPC-E</option>
+            <option value="codabar_reader">Codabar</option>
+            <option value="i2of5_reader">ITF</option>
+            <option value="2of5_reader">Standard 2 of 5</option>
+            <option value="code_93_reader">Code 93</option>
           </select>
         </div>
         <div class="ttl">Resolution (long side)</div>
@@ -30,7 +22,7 @@
           <select name="input-stream_size" materialize="material_select" [(ngModel)] = 'quaggaConfig.inputStream.size'>
             <option value="320">320px</option>
             <option value="640">640px</option>
-            <option selected="selected" value="800">800px</option>
+            <option value="800">800px</option>
             <option value="1280">1280px</option>
             <option value="1600">1600px</option>
             <option value="1920">1920px</option>
@@ -46,21 +38,25 @@
             <option value="x-large">x-large</option>
           </select>
         </div>
-        <div class="ttl">Half-Sample</div>
         <div class="input-checkbox checkbox">
-          <input type="checkbox" name="locator_half-sample">
+          <input type="checkbox" name="locator_half-sample" id="locator_half-sample" [(ngModel)] = 'quaggaConfig.locator.halfSample'>
+          <label for= "locator_half-sample"></label>
+          <span class="ttl">Half-Sample</span>
         </div>
         <div class="ttl">Workers</div>
         <div class="select">
           <select name="numOfWorkers" materialize="material_select" [(ngModel)] = 'quaggaConfig.numOfWorkers'>
             <option value="0">0</option>
-            <option value="1" selected="selected">1</option>
+            <option value="1">1</option>
             <option value="2">2</option>
             <option value="4">4</option>
             <option value="8">8</option>
           </select>
         </div>
-    </fieldset>
+    <div class="input">
+      <input type="file" accept="image/*" capture="camera" (change)="onChangeFile($event)">
+      <button (click)="rerun()" class="uptracker-form-btn tealish">Rerun</button>
+    </div>
   </div>
 
   <div id="result_strip">
@@ -71,18 +67,17 @@
             <img src="">
           </div>
           <div class="caption">
-            <h4 class="code">{{ barcodeRes }}</h4>
+            <div class="code">{{ barcodeRes }}</div>
           </div>
         </div>
       </li>
     </ul>
   </div>
 
-  <div id="interactive" class="viewport" #interactive>
-    <canvas class="imgBuffer" width="400" height="300"></canvas>
-  </div>
+  <div id="interactive" class="viewport" #interactive></div>
 
   <div class="center-align col s12 clearfix bottom-buttons">
-    <button class="uptracker-form-btn" (click)="dismissModal()">Close</button>
+    <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
+    <button class="uptracker-form-btn" (click)="closeModal(barcodeRes)">Search</button>
   </div>
 </div>

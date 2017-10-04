@@ -252,7 +252,8 @@
               [source]="observableSource.bind(this)"
               (ngModelChange) = 'selectedAutocompled($event)'
               [min-chars] = '3'
-                   [no-match-found-text] ='noSearchedRes'
+              [ngModel] = 'searchText'
+              [no-match-found-text] ='noSearchedRes'
             />
             <a (click)="openBarcodeScanner()"><fa name="barcode"></fa></a>
           </div>
