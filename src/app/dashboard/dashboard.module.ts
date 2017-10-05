@@ -43,7 +43,7 @@ import { AssetsModule } from './assets/assets.module';
     TranseferModule,
     ReportsModule,
     ShoppingListModule,
-    HomeModule
+    HomeModule,
   ],
   providers: []
 })

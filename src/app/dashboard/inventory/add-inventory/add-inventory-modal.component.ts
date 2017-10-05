@@ -15,7 +15,6 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
-import { BarcodeScannerModal } from '../../barcode-scanner/barcode-scanner.component';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -111,7 +110,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     public toasterService: ToasterService,
     public fileUploadService: FileUploadService,
     public modalWindowService: ModalWindowService,
-    public modal: Modal
+    public modal: Modal,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -846,19 +845,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     return mime.split('/')[0];
   }
   
-  openBarcodeScanner() {
-    this.modal
-    .open(BarcodeScannerModal, this.modalWindowService.overlayConfigFactoryWithParams({data: ''}, true, 'big'))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (barcode) => {
-          this.typeIn$.next(barcode);
-          this.searchText = barcode;
-        },
-        (err) => {
-        }
-      );
-    });
+  onSearchTextUpdated(searchText){
+    this.searchText = searchText;
+    this.typeIn$.next(searchText);
+    console.log(this.searchText);
   }
   
 }

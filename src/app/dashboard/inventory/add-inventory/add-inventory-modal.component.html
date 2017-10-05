@@ -255,7 +255,7 @@
               [ngModel] = 'searchText'
               [no-match-found-text] ='noSearchedRes'
             />
-            <a (click)="openBarcodeScanner()"><fa name="barcode"></fa></a>
+            <app-scanner (searchText)="onSearchTextUpdated($event)"></app-scanner>
           </div>
 
         <div class="col s6 mrg-top-20">

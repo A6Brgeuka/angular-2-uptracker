@@ -37,6 +37,7 @@
     "ng2-destroy-subscribers": "0.0.28",
     "ngx-cookie": "^1.0.0",
     "ngx-restangular": "^1.0.9",
+    "qrcode-reader": "^1.0.3",
     "quagga": "^0.12.1",
     "rxjs": "^5.1.0",
     "text-mask-addons": "^1.0.1",

@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 
 import { AddInventoryModal } from './add-inventory-modal.component';
 import { AppSharedModule } from '../../../shared/shared.module';
-import { BarcodeScannerModule } from '../../barcode-scanner/barcode-scanner.module';
+import { ScannerModule } from '../../scanner/scanner.module';
 
 @NgModule({
   declarations: [
-    AddInventoryModal
+    AddInventoryModal,
   ],
   imports: [
     AppSharedModule,
-    BarcodeScannerModule
+    ScannerModule
   ],
   providers: [],
   entryComponents: [ AddInventoryModal ]

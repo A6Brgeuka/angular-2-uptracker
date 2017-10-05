@@ -1,0 +1,14 @@
+.scanner {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  width: 50px;
+  input {
+    padding-left: 0 !important;
+    position: absolute;
+    width: 50px;
+    opacity: 0;
+    z-index: 5;
+    cursor: pointer;
+  }
+}
