@@ -34,7 +34,7 @@
   </div>
   <div id="step1">
     <div class="row">
-      <div *ngIf="addCustomProduct" class="col s6">
+      <div *ngIf="addCustomProduct" class="col s12 m6">
         <form materialize (ngSubmit)="addNewProduct()" novalidate #customProdForm="ngForm" autocomplete="off" class="uptracker-form custom-prod-form">
         <div class="custom-product-add">
           <div class="row">
@@ -258,7 +258,7 @@
             <app-scanner (searchText)="onSearchTextUpdated($event)"></app-scanner>
           </div>
 
-        <div class="col s6 mrg-top-20">
+        <div class="col s12 m6 mrg-top-20">
           <div *ngIf="total" class="row border-bottom">
             <div class="col s12 ">
               <div class="input-checkbox checkbox inline-block" *ngIf="matchingProductDisabled">
@@ -318,7 +318,7 @@
           </div>
         </div>
       </div>
-      <div class="col s6 mrg-top-20">
+      <div class="col s12 m6 mrg-top-20">
         <div class="row border-bottom">
           <div class="col s12 low-padding">
             <div class="input-checkbox checkbox inline-block">

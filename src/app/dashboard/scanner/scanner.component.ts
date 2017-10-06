@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, NgZone, OnInit, Output } from '@angular
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
+import { ToasterService } from '../../core/services/toaster.service';
 
 @Component({
   selector: 'app-scanner',
@@ -20,7 +21,8 @@ export class ScannerComponent implements OnInit {
   @Output() searchText = new EventEmitter();
   
   constructor(
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    public toasterService: ToasterService,
   ) {
   }
   
@@ -38,12 +40,15 @@ export class ScannerComponent implements OnInit {
   
   addSubscribers() {
     this.subscribers.srcSubscriber = this.code$.subscribe(res => {
-      //alert(res[0]);
-      //alert(res[1]);
+      //alert(res);
       console.log(res);
       let filteredRes = _.filter(res, null);
       this.ngZone.run(() => {
-        this.searchText.emit(filteredRes[0]);
+        if (filteredRes.length) {
+          this.searchText.emit(filteredRes[0]);
+        } else {
+          this.toasterService.pop('error',  `not detected`);
+        }
       });
     })
   }

@@ -2,6 +2,6 @@
 <app-qr-scanner [file]="selectedFile$ | async" (codeUpdated)="onQrCodeUpdated($event)"></app-qr-scanner>
 
 <div class="scanner">
-  <input type="file" accept="image/*" capture="camera" (change)="onChangeFile($event)">
+  <input type="file" accept="image/*;capture=camera"  (change)="onChangeFile($event)">
     <fa name="barcode"></fa>
 </div>
