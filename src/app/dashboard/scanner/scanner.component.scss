@@ -12,7 +12,9 @@
     cursor: pointer;
   }
   .start {
+    position: relative;
     height: 32px;
     width: 50px;
+    z-index: 55;
   }
 }

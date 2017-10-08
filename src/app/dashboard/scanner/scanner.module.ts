@@ -3,6 +3,7 @@ import { ScannerComponent } from './scanner.component';
 import { BarcodeScannerModule } from './barcode-scanner/barcode-scanner.module';
 import { QrScannerModule } from './qr-scanner/qr-scanner.module';
 import { AppSharedModule } from '../../shared/shared.module';
+import {VideoModule} from './video-modal/video-modal.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { AppSharedModule } from '../../shared/shared.module';
     AppSharedModule,
   
     BarcodeScannerModule,
-    QrScannerModule
+    QrScannerModule,
+    VideoModule
   ],
   providers: [],
 })

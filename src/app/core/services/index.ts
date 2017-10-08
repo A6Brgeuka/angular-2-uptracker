@@ -20,6 +20,7 @@ import { ConfigService } from './config.service';
 import { DashboardService } from './dashboard.service';
 import { InventoryService } from './inventory.service';
 import { PastOrderService } from './pastOrder.service';
+import {ScannerService} from './scanner.service';
 
 
 export {
@@ -44,7 +45,8 @@ export {
   PastOrderService,
   ConfigService,
   DashboardService,
-  InventoryService
+  InventoryService,
+  ScannerService
 };
 
 // an array of services to resolve routes with data
@@ -69,5 +71,6 @@ export const APP_SERVICE_PROVIDERS = [
   PastOrderService,
   ConfigService,
   DashboardService,
-  InventoryService
+  InventoryService,
+  ScannerService
 ];

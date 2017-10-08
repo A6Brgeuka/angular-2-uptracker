@@ -1,17 +1,8 @@
-<app-barcode-scanner [file]="selectedFile$ | async" (codeUpdated)="onBarCodeUpdated($event)"></app-barcode-scanner>
-<app-qr-scanner [file]="selectedFile$ | async" (codeUpdated)="onQrCodeUpdated($event)"></app-qr-scanner>
-
-
-<div>
-  <div>
-    <video #video id="video" width="320" height="240" autoplay="autoplay"></video>
-    <canvas style="display: none" #canvas id="canvas" width="320" height="240" ></canvas>
-    <!--<input id="button" type="button" value="Жми!" (click)="captureMe()" />-->
-  </div>
-</div>
+<app-barcode-scanner [file]="scannerService.selectedFile$ | async" (codeUpdated)="onBarCodeUpdated($event)"></app-barcode-scanner>
+<app-qr-scanner [file]="scannerService.selectedFile$ | async" (codeUpdated)="onQrCodeUpdated($event)"></app-qr-scanner>
 
 <div class="scanner">
-  <input *ngIf="!navigator.mediaDevices.ondevicechange" type="file" accept="image/*;capture=camera" (change)="onChangeFile($event)">
-  <div *ngIf="navigator.mediaDevices.ondevicechange" (click)="onStartStream()" class="start"></div>
+  <input *ngIf="notCamera" type="file" accept="image/*;capture=camera" (change)="onChangeFile($event)">
+  <div *ngIf="!notCamera" (click)="onOpenVideo()" class="start"></div>
   <fa name="barcode"></fa>
 </div>
