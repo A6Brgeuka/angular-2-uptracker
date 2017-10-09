@@ -155,7 +155,17 @@ $normal: 14px;
         }
       }
     }
-
+    #locations {
+      .row-item, .head-item {
+        width: 15%;
+        &:first-of-type {
+          width: 20%;
+        }
+        &:nth-of-type(6) {
+          width: calc(20% - 30px);
+        }
+      }
+    }
     #products {
       .variant-table .table-item {
         padding: 0;

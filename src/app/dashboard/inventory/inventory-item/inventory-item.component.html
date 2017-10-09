@@ -70,7 +70,7 @@
           <div class="sub-image-btns">
             <div class="col s6">
               <div class="small left">On-hand</div>
-              <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{(product$ | async)?.on_hand}}</div>
+              <div class="digits right">{{(product$ | async)?.on_hand}}</div>
             </div>
             <div class="col s6">
               <div class="small left">Pending</div>
@@ -137,15 +137,15 @@
             </div>
           </div>
           <div class="sub-image-btns">
-            <div class="col s2">
+            <div class="col s2" *ngIf="locations.className !== 'active'">
               <div class="small left">Critical</div>
               <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.critical_level }}</div>
             </div>
-            <div class="col s3">
+            <div class="col s3" *ngIf="locations.className !== 'active'">
               <div class="small left">Fully Stocked</div>
               <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.fully_stocked }}</div>
             </div>
-            <div class="col s3">
+            <div class="col s3" *ngIf="locations.className !== 'active'">
               <div class="small left">Overstocked</div>
               <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.overstock_level }}</div>
             </div>
@@ -170,7 +170,7 @@
             <a href="#info">Info</a>
           </li>
           <li class="tab col s2">
-            <a href="#locations">Locations</a>
+            <a href="#locations" #locations>Locations</a>
           </li>
           <li class="tab col s2">
             <a href="#history">History</a>
@@ -281,22 +281,22 @@
       <div class="inner">
         <div class="variant-table">
           <div class="uptracker-form variant-head">
-            <div class="head-item">
+            <div class="head-item bold">
               Location
             </div>
-            <div class="head-item">
+            <div class="head-item bold">
               On-hand
             </div>
-            <div class="head-item">
+            <div class="head-item bold">
               Pending
             </div>
-            <div class="head-item">
+            <div class="head-item bold">
               Critical
             </div>
-            <div class="head-item">
+            <div class="head-item bold">
               Fully Stocked
             </div>
-            <div class="head-item">
+            <div class="head-item bold">
               Overstocked
             </div>
             <div class="clearfix"></div>

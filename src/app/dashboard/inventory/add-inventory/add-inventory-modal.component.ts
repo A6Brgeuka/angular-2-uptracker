@@ -119,7 +119,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.typeIn$
     .debounceTime(500)
     .switchMap((key: string) => {
-      this.showAddCustomBtn = !!(key !== null);
+      this.showAddCustomBtn = (key !== null);
       return this.inventoryService.search(key)})
     .subscribe((data: searchData) => {
       if (data.results) {

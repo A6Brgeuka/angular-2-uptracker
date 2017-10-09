@@ -40,7 +40,6 @@ export class InventoryItemComponent implements OnInit {
   public canEdit:boolean = false;
   public inventory_id: string;
   public favorite: boolean;
-  //public locationArr: any;
   public product$: any = new BehaviorSubject<any>(null);
   public inventory: any;
   public updateFavorite$: any = new Subject();
@@ -128,7 +127,7 @@ export class InventoryItemComponent implements OnInit {
           product.critical_level = inventoryLocation.critical_level;
           product.overstock_level = inventoryLocation.overstock_level;
           product.fully_stocked = inventoryLocation.fully_stocked;
-          product.on_hand = inventoryLocation.on_hand;
+          //product.on_hand = inventoryLocation.on_hand;
           product.storage_locations = inventoryLocation.storage_locations;
           product.pending = inventoryLocation.pending;
         }
@@ -140,11 +139,6 @@ export class InventoryItemComponent implements OnInit {
     .subscribe((a)=> {
       this.canEdit = true;
     });
-  
-    //this.subscribers.locationSubscription = this.accountService.locations$
-    //.subscribe(r => {
-    //  this.locationArr = r
-    //});
     
     this.subscribers.updateFavouriteSubscription = this.updateFavorite$
     .switchMap(() => {
