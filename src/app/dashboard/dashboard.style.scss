@@ -185,6 +185,16 @@
             background-image: url(/assets/img/icon-nav-users.svg);
             background-position: 14px center;
           }
+
+          &.reports {
+            background-image: url(/assets/img/icon-nav-reports.svg);
+            background-position: 14px center;
+          }
+
+          &.appliances {
+            background-image: url(/assets/img/icon-nav-attachments.svg);
+            background-position: 14px center;
+          }
         }
       }
 
