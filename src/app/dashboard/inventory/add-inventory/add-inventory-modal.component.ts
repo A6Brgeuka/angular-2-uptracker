@@ -119,21 +119,26 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .debounceTime(500)
     .switchMap((key: string) => this.inventoryService.search(key))
     .subscribe((data: searchData) => {
-      this.total = data.count;
-      this.searchResults$.next(data.results);
-      this.searchResults = data.results;
-      
-      if (this.items.length) {
-        this.checkedProduct = [];
-        this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
-        this.checkConsPackage(this.items[0].consumable_unit.properties.unit_type);
-      }
-      if (!this.items.length && this.checkedProduct.length) {
-        this.checkedProduct = [];
-        this.packageType$.next({});
-        this.checkConsPackage(null);
-      }
+      if (data.results) {
+        this.total = data.count;
+        this.searchResults$.next(data.results);
+        this.searchResults = data.results;
+  
+        if (this.items.length) {
+          this.checkedProduct = [];
+          this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
+          this.checkConsPackage(this.items[0].consumable_unit.properties.unit_type);
+        }
+        if (!this.items.length && this.checkedProduct.length) {
+          this.checkedProduct = [];
+          this.packageType$.next({});
+          this.checkConsPackage(null);
+        }
         this.checkedProduct$.next({});
+      } else {
+        console.log(data);
+      }
+
     });
     
     this.saveAdded$

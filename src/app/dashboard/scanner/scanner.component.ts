@@ -23,7 +23,7 @@ export class ScannerComponent implements OnInit {
   code$: Observable<[string, string]>;
   window: any;
   navigator: any;
-    notCamera = true;
+    notCamera: boolean = true;
 
   @Output() searchText = new EventEmitter();
 
@@ -61,7 +61,6 @@ export class ScannerComponent implements OnInit {
         console.log('camera');
         this.notCamera = false;
     }, function () {
-        this.notCamera = true;
         console.log('Block camera access');
     });
   }
@@ -76,8 +75,6 @@ export class ScannerComponent implements OnInit {
           if (!this.notCamera) {
               this.scannerService.onStopStrem();
           }
-        } else {
-          this.toasterService.pop('error',  `not detected`);
         }
       });
     });

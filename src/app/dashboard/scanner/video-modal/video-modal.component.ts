@@ -20,14 +20,12 @@ export class VideoModal implements ModalComponent<VideoModalContext>, OnInit {
 
     @ViewChild('canvas') canvas;
     @ViewChild('video') video;
-    @ViewChild('modal') modal;
 
   constructor(
     public dialog: DialogRef<VideoModalContext>,
     public scannerService: ScannerService,
   ) {
     this.context = dialog.context.video;
-    // debugger;
     dialog.setCloseGuard(this);
 
   }
