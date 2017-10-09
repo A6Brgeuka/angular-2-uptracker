@@ -54,7 +54,7 @@ export class ScannerService {
         this.subscribers.qwe.unsubscribe();
         this.videoStreamUrl = '';
         this.video.nativeElement.src = this.videoStreamUrl;
-        this.modal.nativeElement.click();
+        this.modal.dismiss();
     }
 
     onStartStream(video, canvas, modal) {
