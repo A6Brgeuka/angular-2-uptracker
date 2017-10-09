@@ -856,4 +856,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     console.log(this.searchText);
   }
   
+  onUpcUpdated(upc) {
+    this.newProductData.upc = upc;
+  }
+  
 }
