@@ -122,6 +122,12 @@
       }
 
     }
+    .sub-buttons {
+      text-align: center;
+      button {
+        padding: 0 10px;
+      }
+    }
     .input {
       position: relative;
       .fa-barcode {

@@ -100,6 +100,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   public locations$: Observable<any> = this.accountService.locations$;
   public locations: any[];
+  public showAddCustomBtn: boolean;
   
   constructor(
     public zone: NgZone,
@@ -117,7 +118,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.typeIn$
     .debounceTime(500)
-    .switchMap((key: string) => this.inventoryService.search(key))
+    .switchMap((key: string) => {
+      this.showAddCustomBtn = !!(key !== null);
+      return this.inventoryService.search(key)})
     .subscribe((data: searchData) => {
       if (data.results) {
         this.total = data.count;
@@ -578,6 +581,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   toggleCustomCancel() {
     this.addCustomProduct = !this.addCustomProduct;
+    this.showAddCustomBtn = !this.showAddCustomBtn;
     if (!this.items.length) {
       this.nextPackage({});
     }

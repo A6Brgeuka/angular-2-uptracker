@@ -307,13 +307,13 @@
                   <i class="fa fa-question" aria-hidden="true"></i>
                 </div>
                 <div class="text">No Products Found</div>
-                <div class="sub-buttons">
-                  <button (click)="toggleCustomAdd()"
-                    class="uptracker-form-btn waves-effect waves-light tealish white-text">
-                    <fa name="plus"></fa>
-                    Add Custom Product
-                  </button>
-                </div>
+              </div>
+              <div class="sub-buttons" [class.hidden] = "!showAddCustomBtn">
+                <button (click)="toggleCustomAdd()"
+                  class="uptracker-form-btn waves-effect waves-light tealish white-text">
+                  <fa name="plus"></fa>
+                  Add Custom Product
+                </button>
               </div>
             </div>
           </div>
