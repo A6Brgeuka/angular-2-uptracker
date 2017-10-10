@@ -193,6 +193,11 @@
 
           &.appliances {
             background-image: url(/assets/img/icon-nav-attachments.svg);
+            background-position: 13px center;
+          }
+
+          &.transfers {
+            background-image: url(/assets/img/icon-nav-transfers.svg);
             background-position: 14px center;
           }
         }
