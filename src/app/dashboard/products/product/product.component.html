@@ -1,6 +1,6 @@
 <div class="product-page">
   <div class="close fa fa-chevron-left" (click)="goBack()"></div>
-  <div *ngIf="(configService.environment$ | async) == 'development'" class="row right edit-buttons">
+  <div class="row right edit-buttons">
     <button class="bt-edit-product edbtn bluebtn" *ngIf="!showEdit" (click)="showEditFields()">
       <fa [name]="'pencil'"></fa>
       Edit
