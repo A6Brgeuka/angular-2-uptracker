@@ -79,6 +79,7 @@ export class InventoryModel {
   image: string = '';
   locations: InventoryLocationModel[] =[];
   inventory_by: string = '';
+  hazardous: boolean = false;
   //package_type: string = null;
   //sub_package_type: string = null;
   //sub_package_qty: number = null;

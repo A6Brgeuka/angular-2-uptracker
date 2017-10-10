@@ -7,7 +7,9 @@
         <fa name="chevron-left"></fa>
         Back
       </button>
-      Add Inventory Group
+      <span *ngIf="!context.inventoryGroup">Add </span>
+      <span *ngIf="context.inventoryGroup">Edit </span>
+      Inventory Group
       <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light"
         *ngIf="step4.className != 'active'" (click)="nextTab()"
         [disabled] = '!items.length || (step2.className === "active" && !newInventory.inventory_by)'>
@@ -714,6 +716,16 @@
         <div class="input input-file">
           <input type="file" (change)="onMSDCFileUpload($event)">
           <div class="ttl tealish-text input-placeholder">Upload File</div>
+        </div>
+        <div class="row mrg-top-15">
+          <div class="col s12">
+            <div class="input-checkbox  checkbox">
+              <input id="hazardous" type="checkbox"
+                [(ngModel)]="newInventory.hazardous">
+              <label for="hazardous"></label>
+              <span>Hazardous</span>
+            </div>
+          </div>
         </div>
         <div class="ttl mrg-top-15">Attachments</div>
         <div *ngFor="let file of (file$ | async)" class="attachments">
