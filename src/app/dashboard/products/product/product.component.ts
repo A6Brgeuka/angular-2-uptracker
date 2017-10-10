@@ -139,7 +139,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   public addFileToFile$: Subject<any> = new Subject<any>();
   public deleteFromFile$: Subject<any> = new Subject<any>();
   public updateFile$: Subject<any> = new Subject<any>();
-  public canEdit:boolean = false;
+  //public canEdit:boolean = false;
   
   public doc$: Observable<any>;
   public doc;
@@ -185,11 +185,11 @@ export class ProductComponent implements OnInit, AfterViewInit {
     .subscribe((arr:string[])=>this.productCategoriesCollection = arr);
   
   
-    this.configService.environment$
-    .filter((a:string)=>a=='development')
-    .subscribe((a)=> {
-      this.canEdit = true;
-    });
+    //this.configService.environment$
+    //.filter((a:string)=>a=='development')
+    //.subscribe((a)=> {
+    //  this.canEdit = true;
+    //});
   
   
     this.accountService.locations$
@@ -307,7 +307,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   showEditFields() {
-    if (this.canEdit) {
+    //if (this.canEdit) {
       
       this.showEdit = true;
       this.productCopy = _.clone(this.product);
@@ -315,7 +315,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         this.variantsCopy = _.cloneDeep(r);
       });
       this.showEdit$.next(true);
-    }
+    //}
   }
   
   closeEditFields() {
