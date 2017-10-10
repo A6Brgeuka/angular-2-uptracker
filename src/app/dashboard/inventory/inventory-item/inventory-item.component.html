@@ -151,7 +151,10 @@
             </div>
             <div class="col s4 two-lines">
               <div class="small ">Inventory By</div>
-              <div class="small  red-text">{{ (product$ | async)?.inventory_by_label }}</div>
+              <div class="small  red-text">
+                {{ (product$ | async)?.inventory_by_label }}
+                <span *ngIf="!(product$ | async)?.inventory_by_label">{{ (product$ | async)?.inventory_by }}</span>
+              </div>
             </div>
             <div class="clearfix"></div>
           </div>
