@@ -91,7 +91,7 @@
 
     .left-panel {
       //float:left;
-      width: 70px;
+      width: 90px;
       transition: width .3s ease-out 0.05s;
       overflow: auto;
       position: fixed;
@@ -378,6 +378,12 @@
     .left-panel .nav a {
       line-height: calc(10vh - 4px) !important;
       background-size: auto 6vh;
+      &.appliances {
+        background-size: auto 2.2vh;
+      }
+      &.assets {
+        background-size: auto 5.5vh;
+      }
     }
   }
 }
