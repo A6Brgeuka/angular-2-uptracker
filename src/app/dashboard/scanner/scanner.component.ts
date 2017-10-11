@@ -67,7 +67,6 @@ export class ScannerComponent implements OnInit {
 
   addSubscribers() {
     this.subscribers.srcSubscriber = this.code$.subscribe(res => {
-      console.log(res);
       const filteredRes = _.filter(res, null);
       this.ngZone.run(() => {
         if (filteredRes.length) {

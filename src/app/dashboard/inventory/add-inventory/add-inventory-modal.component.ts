@@ -858,7 +858,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   onSearchTextUpdated(searchText){
     this.searchText = searchText;
     this.typeIn$.next(searchText);
-    console.log(this.searchText);
   }
   
   onUpcUpdated(upc) {

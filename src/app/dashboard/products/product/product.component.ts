@@ -307,15 +307,12 @@ export class ProductComponent implements OnInit, AfterViewInit {
   }
   
   showEditFields() {
-    //if (this.canEdit) {
-      
       this.showEdit = true;
       this.productCopy = _.clone(this.product);
       this.variants$.take(1).subscribe(r => {
         this.variantsCopy = _.cloneDeep(r);
       });
       this.showEdit$.next(true);
-    //}
   }
   
   closeEditFields() {
