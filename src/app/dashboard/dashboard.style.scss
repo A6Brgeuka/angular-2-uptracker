@@ -128,7 +128,7 @@
           color: #fff;
           font-family: 'Ubuntu';
           font-weight: bold;
-          padding-left: 66px;
+          padding-left: 75px;
           line-height: 70px;
           text-transform: uppercase;
           background-repeat: no-repeat;
@@ -143,27 +143,27 @@
 
           &.orders {
             background-image: url(/assets/img/icon-nav-orders.svg);
-            background-position: 19px center;
+            background-position: 20px center;
           }
 
           &.dash {
             background-image: url(/assets/img/icon-nav-dashboard.svg);
-            background-position: 13px center;
+            background-position: 15px center;
           }
 
           &.shopping {
             background-image: url(/assets/img/icon-nav-shoppinglist.svg);
-            background-position: 15px center;
+            background-position: 17px center;
           }
 
           &.products {
             background-image: url(/assets/img/icon-nav-products.svg);
-            background-position: 22px center;
+            background-position: 23px center;
           }
 
           &.inventory {
             background-image: url(/assets/img/icon-nav-inventory.svg);
-            background-position: 16px center;
+            background-position: 18px center;
           }
 
           &.assets {
@@ -173,7 +173,7 @@
 
           &.vendors {
             background-image: url(/assets/img/icon-nav-vendors.svg);
-            background-position: 17px center;
+            background-position: 19px center;
           }
 
           &.locations {
@@ -198,7 +198,7 @@
 
           &.transfers {
             background-image: url(/assets/img/icon-nav-transfers.svg);
-            background-position: 14px center;
+            background-position: 15px center;
           }
         }
       }

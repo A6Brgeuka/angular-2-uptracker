@@ -26,7 +26,10 @@
     </div>
 
     <div *ngFor="let item of variant.vendor_variants" class="variant-detail-table variant-detail-table-body-row">
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col18">{{item.vendor_name}}
+        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col18">
+            <a [routerLink]="'/vendors/view/'+[item.vendor_id]" target="_blank">
+                {{item.vendor_name}}
+            </a>
         </div>
         <div class="name-column variant-detail-table-head-item variant-detail-table-head-col10">
             {{item.catalog_number}}

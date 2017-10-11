@@ -7,9 +7,7 @@
         <fa name="chevron-left"></fa>
         Back
       </button>
-      <span *ngIf="!context.inventoryGroup">Add </span>
-      <span *ngIf="context.inventoryGroup">Edit </span>
-      Inventory Group
+      <span>{{context.inventoryGroup ? 'Edit' : 'Add' }}</span> Inventory Group
       <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light"
         *ngIf="step4.className != 'active'" (click)="nextTab()"
         [disabled] = '!items.length || (step2.className === "active" && !newInventory.inventory_by)'>

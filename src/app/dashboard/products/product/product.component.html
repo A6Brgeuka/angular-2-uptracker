@@ -171,8 +171,6 @@
         </ul>
       </div>
     </div>
-
-
     <div id="variations">
       <div *ngIf="!showVariant" class="inner product">
         <div class="variant-table">
@@ -373,7 +371,11 @@
         <div class="table-body">
           <div class="variant-table">
             <div *ngFor="let item of currentVariant.vendor_variants" class="uptracker-form  table-item">
-              <div class="flex-middle name-heading row-item">{{item.vendor_name || ""}}</div>
+              <div class="flex-middle name-heading row-item">
+                <a [routerLink]="'/vendors/view/'+[item.vendor_id]" target="_blank">
+                  {{item.vendor_name || ""}}
+                </a>
+              </div>
               <div class="row-item nowrap">{{item.catalog_number || ""}}</div>
               <div class="row-item">{{item.avg_lead_time || ""}}</div>
               <div class="row-item">{{item.price || ""}}</div>
