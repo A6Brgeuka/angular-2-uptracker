@@ -1338,6 +1338,9 @@ input[type=range] {
 .custom-select .select-wrapper:not(:first-child) {
   display: none;
 }
+.border-btm {
+  border-bottom: 1px solid $light-grey;
+}
 .mrg-top-20 {
   margin-top: 20px;
 }
@@ -1349,6 +1352,9 @@ input[type=range] {
 }
 .mrg-btm-5 {
   margin-bottom: 5px;
+}
+.mrg-btm-0 {
+  margin-bottom: 0;
 }
 .pdg-btm-5 {
   padding-bottom: 5px;
