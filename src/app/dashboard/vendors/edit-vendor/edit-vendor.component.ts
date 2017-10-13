@@ -27,6 +27,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public options: any;
   public subscribers: any = {};
   public vendor: AccountVendorModel;
+  public accountVendors: AccountVendorModel[];
   public vendorData: any;
   public formData: FormData = new FormData();
   public currency$: Observable<any>;
@@ -101,38 +102,11 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
-    this.viewInit$.subscribe((aaaa)=>{});
-    this.vendorLoaded$.subscribe((qqqq)=>{});
-    Observable
-    .combineLatest(this.viewInit$, this.vendorLoaded$)
-    .filter(([a, b]) => (a && b))
-    //.do(([a, b]) => {
-    //  return this.initTabs();
-    //})
-    .subscribe(()=>{
-      this.initTabs()
-    });
-  
-  
+    
     this.allVendor$ = this.route.params.switchMap((route)=>{
       return this.vendorService.getVendor(route['id']);
-    });
+    }).publishReplay(1).refCount();
     
-    Observable.combineLatest(
-      this.route.params,
-      this.vendorService.getAccountVendors(),
-    )
-    .map(([r, v]: any) => _.filter(v, {'vendor_id': r['id']}))
-    .subscribe(vendors => {
-      
-      if (!_.isEmpty(vendors)) {
-        this.vendorData = vendors[0];
-        this.vendorData['vendor_id'] = vendors[0]['vendor_id'];
-        this.vendorId = vendors[0]['vendor_id'];
-      }
-      
-      this.vendorLoaded$.next(true);
-    });
     
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
@@ -161,6 +135,33 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
   }
   
+  addSubscribers() {
+    this.subscribers.AccountVendorsSubscribtion = Observable.combineLatest(
+      this.route.params,
+      this.vendorService.getAccountVendors(),
+    )
+    .map(([route, vendors]: any) => _.filter(vendors, {'vendor_id': route['id']}))
+    .subscribe((vendors: any[]) => {
+    
+      if (!_.isEmpty(vendors)) {
+        this.vendorData = vendors[0];
+        this.vendorData['vendor_id'] = vendors[0]['vendor_id'];
+        this.vendorId = vendors[0]['vendor_id'];
+      }
+      
+      this.accountVendors = vendors;
+    
+      this.vendorLoaded$.next(true);
+    });
+  
+    this.subscribers.viewInitAndVendorLoadedSubscriber = Observable
+    .combineLatest(this.viewInit$, this.vendorLoaded$)
+    .filter(([a, b]) => (a && b))
+    .subscribe(()=>{
+      this.initTabs()
+    });
+  }
+  
   initTabs() {
     
      //this.secondaryLocationLink.nativeElement.click();
@@ -168,7 +169,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
       this.chooseTabLocation(res);
       if (this.secondaryLocationArr.length == 1) return;
-      if (res ? res.id != this.primaryLocation.id : null) {
+      if (res && res.id != this.primaryLocation.id ) {
         this.secondaryLocationLink.nativeElement.click();
       }
     });
@@ -212,7 +213,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   chooseTabLocation(location = null) {
-  
+    
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': null}) || {};
@@ -241,8 +242,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
 
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
-
-  
+      
       this.secondaryLocation = location;
     } else {
       this.sateliteLocationActive = false;
@@ -250,12 +250,22 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     }
     
     this.currentLocation = location;
-    let currentVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': this.currentLocation ? this.currentLocation.id : null});
-    this.allVendor$.map(v=>v.data.vendor).subscribe((v:VendorModel)=>{
+    
+    //location have been choosen
+    
+    let currentVendor = _.find(_.cloneDeep(this.accountVendors), {'location_id': this.currentLocation ? this.currentLocation.id : null});
+    
+    let subscriber = this.allVendor$
+    .first()
+    .pluck('data','vendor')
+    .subscribe((vendor:VendorModel)=>{
+      
       if (!currentVendor || _.isEmpty(currentVendor)) {
         this.noAV = true;
       }
-      this.fillForm(Object.assign(v,currentVendor || {}));
+      
+      this.fillForm(Object.assign(vendor,currentVendor || {}));
+      //subscriber.unsubscribe();
     });
     
   }

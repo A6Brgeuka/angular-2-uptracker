@@ -50,23 +50,32 @@ export class ViewVendorComponent implements OnInit {
   ngOnInit() {
     this.route.params
     .switchMap((params: Params) => this.vendorService.getVendor(params['id']))
-    .map((v: any) => v.data.vendor)
+    .pluck('data','vendor')
     .subscribe(vendor => {
+      
       this.vendor = new VendorModel(vendor);
+      console.log(11111,this.vendor)
+      
       this.basicnfo = _.cloneDeep(new VendorModel(vendor));
+      
       this.vendorId = this.vendor['id'];
     });
   
     this.all_locations$ = this.accountService.locations$;
-    this.locations$ = this.accountService.locations$
+    
+    this.locations$ = this.all_locations$
     .map((res: any) => {
       console.log('locations',res);
       this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+      
       this.secondaryLocationArr = _.filter(res, (loc) => {
         return this.primaryLocation != loc;
       });
-      if (this.secondaryLocationArr.length > 0)
+      
+      if (this.secondaryLocationArr.length > 0) {
         this.secondaryLocation = this.secondaryLocationArr[0];
+      }
+      
       return this.secondaryLocationArr;
     });
   
@@ -74,23 +83,31 @@ export class ViewVendorComponent implements OnInit {
       this.route.params,
       this.vendorService.getAccountVendors()
     )
-    .map(([r,v]: any) =>_.filter(v, {'vendor_id': r['id']}))
-    .subscribe((v:AccountVendorModel[])=>{
+    .map(([r,v]: any) =>
+      _.filter(v, {'vendor_id': r['id']})
+    )
+    .subscribe((v: AccountVendorModel[])=>{
       this.accountVendors = v;
     });
 
-    this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies().subscribe((res: any) => {
+    this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies()
+    .subscribe((res: any) => {
       this.currencyArr = res;
     });
   }
   
   ngAfterViewInit() {
-    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
+    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
+    .subscribe((res: any) => {
+      
       this.chooseTabLocation(res);
+      
       if (this.secondaryLocationArr.length == 1) return;
+      
       if (res ? res.id != this.primaryLocation.id : null) {
         this.secondaryLocationLink.nativeElement.click();
       }
+      
     });
     // observer to detect class change
     if (this.secondaryLocationLink) {
@@ -103,6 +120,7 @@ export class ViewVendorComponent implements OnInit {
           }
         });
       });
+      
       observer.observe(this.secondaryLocationLink.nativeElement, {
         attributes: true,
         attributeOldValue: true
@@ -110,14 +128,11 @@ export class ViewVendorComponent implements OnInit {
     }
   
     this.currentLocation = this.vendorService.selectedTab;
-    if (!this.currentLocation){
-    
-    } else {
-      if (this.primaryLocation == this.currentLocation) {
-      } else {
-        this.secondaryLocationLink.nativeElement.click();
-      }
+  
+    if (this.currentLocation && this.primaryLocation !== this.currentLocation) {
+      this.secondaryLocationLink.nativeElement.click();
     }
+    
   }
   
   
@@ -140,6 +155,7 @@ export class ViewVendorComponent implements OnInit {
     let generalAccountVendor: any = _.cloneDeep(_.find(this.accountVendors, {'location_id': null}));
   
     this.vendor = new VendorModel(this.basicnfo);
+    console.log(22222,this.vendor)
   
     // account vendor info for specific location
     

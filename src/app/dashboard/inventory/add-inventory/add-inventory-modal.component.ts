@@ -122,6 +122,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.showAddCustomBtn = (key !== null);
       return this.inventoryService.search(key)})
     .subscribe((data: searchData) => {
+      console.log(data)
       if (data.results) {
         this.total = data.count;
         this.searchResults$.next(data.results);
@@ -369,6 +370,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
       });
+      console.log(this.newInventory);
     }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
