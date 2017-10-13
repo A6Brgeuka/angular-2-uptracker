@@ -35,6 +35,8 @@ export class ViewVendorComponent implements OnInit {
   public body = document.getElementsByTagName("body")[0];
   
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
+  @ViewChild('all') allLocationLink: ElementRef;
+  @ViewChild('primary') primaryLocationLink: ElementRef;
   public vendorId: string;
   
   constructor(
@@ -54,7 +56,6 @@ export class ViewVendorComponent implements OnInit {
     .subscribe(vendor => {
       
       this.vendor = new VendorModel(vendor);
-      console.log(11111,this.vendor)
       
       this.basicnfo = _.cloneDeep(new VendorModel(vendor));
       
@@ -99,7 +100,6 @@ export class ViewVendorComponent implements OnInit {
   ngAfterViewInit() {
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
     .subscribe((res: any) => {
-      
       this.chooseTabLocation(res);
       
       if (this.secondaryLocationArr.length == 1) return;
@@ -126,15 +126,25 @@ export class ViewVendorComponent implements OnInit {
         attributeOldValue: true
       });
     }
-  
     this.currentLocation = this.vendorService.selectedTab;
   
     if (this.currentLocation && this.primaryLocation !== this.currentLocation) {
       this.secondaryLocationLink.nativeElement.click();
     }
     
+    if (!this.currentLocation){
+    
+      this.allLocationLink.nativeElement.click();
+    } else {
+    
+      if (this.primaryLocation == this.currentLocation) {
+        this.primaryLocationLink.nativeElement.click();
+      } else {
+        this.secondaryLocationLink.nativeElement.click();
+      }
+    }
+    
   }
-  
   
   editVendor(vendor = null) {
     this.accountService.dashboardLocation$.next(this.currentLocation);
@@ -143,7 +153,7 @@ export class ViewVendorComponent implements OnInit {
   
   chooseTabLocation(location = null) {
     this.vendorService.selectedTab = location;
-    this.locVendorChosen = location ? true : false;
+    this.locVendorChosen = !!location;
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
       this.secondaryLocation = location;
@@ -155,7 +165,6 @@ export class ViewVendorComponent implements OnInit {
     let generalAccountVendor: any = _.cloneDeep(_.find(this.accountVendors, {'location_id': null}));
   
     this.vendor = new VendorModel(this.basicnfo);
-    console.log(22222,this.vendor)
   
     // account vendor info for specific location
     
@@ -173,6 +182,7 @@ export class ViewVendorComponent implements OnInit {
       let currentVendorCurrency: any = _.find(res, {'iso_code': this.vendor.currency ? this.vendor.currency : "USD"});
       this.currencySign = currentVendorCurrency.html_entity;
     });
+    
   }
   
   

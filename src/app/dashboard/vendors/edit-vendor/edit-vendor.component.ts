@@ -166,14 +166,14 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
      //this.secondaryLocationLink.nativeElement.click();
     
-    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
-      this.chooseTabLocation(res);
-      if (this.secondaryLocationArr.length == 1) return;
-      if (res && res.id != this.primaryLocation.id ) {
-        this.secondaryLocationLink.nativeElement.click();
-      }
-    });
-
+    //this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
+    //  //this.chooseTabLocation(res);
+    //  if (this.secondaryLocationArr.length == 1) return;
+    //  if (res && res.id != this.primaryLocation.id ) {
+    //    this.secondaryLocationLink.nativeElement.click();
+    //  }
+    //});
+ 
     // observer to detect class change
     if (this.secondaryLocationLink) {
       let observer = new MutationObserver((mutations) => {

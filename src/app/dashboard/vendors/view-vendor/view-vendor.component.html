@@ -30,13 +30,13 @@
     <li class="tab col"
       [class.s12]="(all_locations$ | async)?.length < 2"
       [class.s4]="(all_locations$ | async)?.length > 1">
-      <a href="#general" (click)="chooseTabLocation()">General</a>
+      <a href="#general" #all (click)="chooseTabLocation()">General</a>
     </li>
     <li class="tab col s4">
-      <a *ngIf="(all_locations$ | async)?.length > 1"
+      <a *ngIf="(all_locations$ | async)?.length > 1" #primary
         href="#specific"
         (click)="chooseTabLocation(primaryLocation)"
-        [class.active]="primaryLocation?.id == vendorService.selectedTab?.id ">
+        [class.active]="primaryLocation?.id == vendorService.selectedTab?.id">
         {{primaryLocation?.name}}
       </a>
     </li>
@@ -44,7 +44,7 @@
       <a href="#specific"
         [class.active1]="sateliteLocationActive"
         (click)="chooseTabLocation(secondaryLocation)"
-        [class.active]="secondaryLocation?.id == vendorService.selectedTab?.id " #secondary>
+        [class.active]="secondaryLocation?.id == vendorService.selectedTab?.id" #secondary>
         <span>{{secondaryLocation?.name}}</span>
       </a>
     </li>
