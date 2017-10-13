@@ -20,7 +20,8 @@ import { GooglePlacesInputModule } from "./directives";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
-  directives.UserDropdownMenuDirective
+  directives.UserDropdownMenuDirective,
+  directives.CustomDropdownMenuDirective
 ];
 
 

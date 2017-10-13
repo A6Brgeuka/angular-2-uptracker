@@ -1,0 +1,14 @@
+<div class="custom-menu">
+  <div materialize="dropdown" class="dropdown-button" data-activates="custom-dropdown">
+    <a class="center-align waves-effect waves-light" >
+      <fa name="gear" class="gear-icon"></fa>
+    </a>
+  </div>
+  <ul id="custom-dropdown" class="dropdown-content">
+    <li *ngFor="let item of model">
+      <a [routerLink]="item.routerLink" [href]="item.routerLink">
+        {{ item.label }}
+      </a>
+    </li>
+  </ul>
+</div>

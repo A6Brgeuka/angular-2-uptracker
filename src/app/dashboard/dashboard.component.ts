@@ -17,6 +17,16 @@ export class DashboardComponent implements OnInit {
   public selectedLocation: string = '';
   public locations$: any;
   public locationArr: any;
+  public gearDropdownLinks = [
+    {
+      label: 'Locations',
+      routerLink: ['/locations']
+    },
+    {
+      label: 'Users',
+      routerLink: ['/users']
+    }
+  ];
   
   constructor(
     public userService: UserService,
