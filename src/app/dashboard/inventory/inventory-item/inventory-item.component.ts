@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { Modal } from 'angular2-modal';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
@@ -23,7 +23,6 @@ import { AddInventory2OrderModal } from './add-inventory-2order-modal/add-invent
 @DestroySubscribers()
 export class InventoryItemComponent implements OnInit {
   public subscribers: any = {};
-  //public product: any;
   public currentVariant: any = {};
   public showVariant: boolean = false;
   public comment: any = {};
@@ -44,6 +43,15 @@ export class InventoryItemComponent implements OnInit {
   public inventory: any;
   public updateFavorite$: any = new Subject();
   public deleteInventory$: any = new Subject();
+  public selectedLocation: boolean = false;
+  public selectedTab: string = 'info';
+  
+  @ViewChild('info') info: ElementRef;
+  @ViewChild('locations') locations: ElementRef;
+  @ViewChild('history') history: ElementRef;
+  @ViewChild('tracking') tracking: ElementRef;
+  @ViewChild('products') products: ElementRef;
+  @ViewChild('comments') comments: ElementRef;
   
   constructor(
     public userService: UserService,
@@ -127,7 +135,6 @@ export class InventoryItemComponent implements OnInit {
           product.critical_level = inventoryLocation.critical_level;
           product.overstock_level = inventoryLocation.overstock_level;
           product.fully_stocked = inventoryLocation.fully_stocked;
-          //product.on_hand = inventoryLocation.on_hand;
           product.storage_locations = inventoryLocation.storage_locations;
           product.pending = inventoryLocation.pending;
         }
@@ -164,6 +171,23 @@ export class InventoryItemComponent implements OnInit {
       ,
       err => console.log('error')
     );
+  }
+  
+  ngAfterViewInit() {
+    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
+    .subscribe(location => {
+      if (location && this.selectedTab === 'locations') {
+        this.info.nativeElement.click();
+      } else {
+        setTimeout(() => {
+          this[this.selectedTab].nativeElement.click();
+        },0);
+      }
+    });
+  }
+  
+  selectInventoryTab(tab) {
+    this.selectedTab = tab;
   }
   
   getCurrentInventory() {
