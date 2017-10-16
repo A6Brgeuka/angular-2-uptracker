@@ -209,7 +209,7 @@ export class AccountingComponent implements OnInit {
 
     // calculate amount of sliders that can be changed (not current draggable slider && enabled slider && slider value is > 0)
     let k: number = 0;
-    _.each(this.accounting.total, (value, key) => {
+    _.each(this.accounting.total, (value: any, key) => {
       let cond = diff > 0 ? value > 0 : true;
       if ( i != key && !this.disabledRange[key] && cond) {
         k++;

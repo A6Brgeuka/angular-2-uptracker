@@ -141,7 +141,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         } else {
           if (this.user.permissions[0]) {
             this.permissionArr = this.user.permissions;
-            _.each(this.rolesArr, (roleItem) => {
+            _.each(this.rolesArr, (roleItem: any) => {
               if (_.isEqual(roleItem.permissions, this.permissionArr)) {
                 this.selectedRole = roleItem.role;
               }
@@ -248,7 +248,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
     } else {
       newRole = this.selectedRole;
     }
-    _.each(this.rolesArr, (roleItem) => {
+    _.each(this.rolesArr, (roleItem: any) => {
       if (roleItem.role == newRole) {
         this.permissionArr = _.cloneDeep(roleItem.permissions);
       }
@@ -258,7 +258,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   togglePreset(i) {
     let z = 0;
     this.permissionArr[i].default = !this.permissionArr[i].default;
-    _.each(this.rolesArr, (roleItem) => {
+    _.each(this.rolesArr, (roleItem: any) => {
       if (_.isEqual(roleItem.permissions, this.permissionArr)) {
         this.selectedRole = roleItem.role;
         this.showCustomRole = false;

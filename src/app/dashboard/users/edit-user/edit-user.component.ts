@@ -150,7 +150,7 @@ export class EditUserComponent implements OnInit {
         } else {
           if (this.user.permissions[0]) {
             this.permissionArr = this.user.permissions;
-            _.each(this.rolesArr, (roleItem) => {
+            _.each(this.rolesArr, (roleItem: any) => {
               if (_.isEqual(roleItem.permissions, this.permissionArr)) {
                 this.selectedRole = roleItem.role;
               }
@@ -239,7 +239,7 @@ export class EditUserComponent implements OnInit {
     } else {
       newRole = this.selectedRole;
     }
-    _.each(this.rolesArr, (roleItem) => {
+    _.each(this.rolesArr, (roleItem: any) => {
       if (roleItem.role == newRole) {
         this.permissionArr = _.cloneDeep(roleItem.permissions);
       }
@@ -249,7 +249,7 @@ export class EditUserComponent implements OnInit {
   togglePreset(i) {
     let z = 0;
     this.permissionArr[i].default = !this.permissionArr[i].default;
-    _.each(this.rolesArr, (roleItem) => {
+    _.each(this.rolesArr, (roleItem: any) => {
       if (_.isEqual(roleItem.permissions, this.permissionArr)) {
         this.selectedRole = roleItem.role;
         this.showCustomRole = false;

@@ -217,7 +217,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': null}) || {};
-      _.each(this.defaultPlaceholder, (value, key) => {
+      _.each(this.defaultPlaceholder, (value, key: any) => {
         switch (key) {
           case 'rep_office_phone':
             this.placeholder.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(allLocationsVendor[key]);
