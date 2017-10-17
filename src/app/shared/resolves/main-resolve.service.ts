@@ -1,4 +1,4 @@
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 
 import { AccountService, VendorService, ProductService } from '../../core/services/index';
@@ -91,6 +91,19 @@ export class VendorCollectionResolve implements Resolve<any> {
 }
 
 @Injectable()
+export class CurrentVendorResolve implements Resolve<any> {
+  constructor(
+    public vendorService: VendorService,
+  ) {
+  
+  }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    let id = route.params.id;
+    return this.vendorService.getVendor(id).take(1);
+  }
+}
+
+@Injectable()
 export class ProductCollectionResolve implements Resolve<any> {
   constructor(
       public productService: ProductService,
@@ -129,18 +142,6 @@ export class StatusListResolve implements Resolve<any> {
   }
 }
 
-//@Injectable()
-//export class InventoryResolve implements Resolve<any> {
-//  constructor(
-//    public inventoryService: InventoryService,
-//  ) {
-//
-//  }
-//  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-//    return this.inventoryService.getInventories().take(1);
-//  }
-//}
-
 // an array of services to resolve routes with data
 export const MAIN_RESOLVER_PROVIDERS = [
   StateCollectionResolve,
@@ -152,5 +153,6 @@ export const MAIN_RESOLVER_PROVIDERS = [
   ProductAccountingCollectionResolve,
   ProductCategoriesCollectionResolve,
   InventoryPackageListResolve,
-  StatusListResolve
+  StatusListResolve,
+  CurrentVendorResolve
 ];

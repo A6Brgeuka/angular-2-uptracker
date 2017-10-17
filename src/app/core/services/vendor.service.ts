@@ -11,6 +11,7 @@ import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { VendorModel, AccountVendorModel } from '../../models/index';
 import { BehaviorSubject } from "rxjs";
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 @Subscribers({
@@ -30,6 +31,7 @@ export class VendorService extends ModelService {
   vendors$: Observable<any> = Observable.empty();
   public isDataLoaded$: any = new BehaviorSubject(false);
   public selectedTab:any = null;
+  currentVendor$: BehaviorSubject<any> = new BehaviorSubject(1);
   
   constructor(
     public injector: Injector,
@@ -149,7 +151,9 @@ export class VendorService extends ModelService {
   }
   
   getVendor(id) {
-    return this.restangular.one('vendors', id).get();
+    return this.restangular.one('vendors', id).get().map(vendor => {
+      this.currentVendor$.next(vendor);
+    });
   }
   
   getAccountVendor(id) {

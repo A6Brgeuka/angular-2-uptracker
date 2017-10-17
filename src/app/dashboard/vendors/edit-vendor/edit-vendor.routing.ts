@@ -1,9 +1,10 @@
 import { EditVendorComponent } from './edit-vendor.component';
+import { CurrentVendorResolve } from '../../../shared/resolves/main-resolve.service';
 export const EditVendorRoutes = [
   {
     path: 'vendors/edit/:id',
     component: EditVendorComponent,
-    resolve: {
+    resolve: { curVendor: CurrentVendorResolve
     },
     canActivate: []
   },

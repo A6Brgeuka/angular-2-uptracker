@@ -26,6 +26,7 @@ import { VendorModel } from '../../../models/vendor.model';
 export class EditVendorComponent implements OnInit, AfterViewInit {
   public options: any;
   public subscribers: any = {};
+  public currentVendor$;
   public vendor: AccountVendorModel;
   public accountVendors: AccountVendorModel[];
   public vendorData: any;
@@ -102,11 +103,11 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
-    
-    this.allVendor$ = this.route.params.switchMap((route)=>{
-      return this.vendorService.getVendor(route['id']);
-    }).publishReplay(1).refCount();
-    
+    this.currentVendor$ = this.vendorService.currentVendor$;
+    //this.allVendor$ = this.route.params.switchMap((route)=>{
+    //  debugger;
+    //  return this.vendorService.getVendor(route['id']);
+    //}).publishReplay(1).refCount();
     
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
@@ -255,9 +256,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     let currentVendor = _.find(_.cloneDeep(this.accountVendors), {'location_id': this.currentLocation ? this.currentLocation.id : null});
     
-    let subscriber = this.allVendor$
+    let subscriber = this.currentVendor$
     .first()
-    .pluck('data','vendor')
+    .pluck('data', 'vendor')
     .subscribe((vendor:VendorModel)=>{
       
       if (!currentVendor || _.isEmpty(currentVendor)) {

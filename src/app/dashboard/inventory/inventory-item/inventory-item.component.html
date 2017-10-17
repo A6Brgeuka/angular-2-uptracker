@@ -235,8 +235,8 @@
                   <div class="ttl col s12">
                     MSDS
                   </div>
-                  <div class="col s12">
-                    <a href="{{msds.public_url}}" *ngFor="let msds of (product$ | async)?.msds" target="_blank">{{msds.file_name}}</a>
+                  <div class="col s12" *ngFor="let msds of (product$ | async)?.msds">
+                    <a href="{{msds.public_url}}" target="_blank">{{msds.file_name}}</a>
                     <i class="no-info" *ngIf="!(product$ | async)?.msds">No additional information</i>
                   </div>
                 </div>
