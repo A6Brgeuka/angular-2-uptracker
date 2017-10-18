@@ -38,19 +38,19 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
   saveOrder() {
   
     let data = {
-      //"location_id": this.inventory.inventory_item_locations[0].location_id,
-      //"product_id": this.inventory.inventory_products.id,
-      //"variants": [
-      //  {
-      //    "location_id": this.location,
-      //    "vendor_id": this.vendor.vendor_id,
-      //    "variant_id": this.vendor.variant_id,
-      //    "vendor_variant_id": this.vendor.variant_id,
-      //    "qty": parseInt(this.quantity),
-      //    "unit_type": this.unit_type,
-      //    "vendor_auto_select": this.isAuto,
-      //  }
-      //]
+      "location_id": this.inventory.inventory_item_locations[0].location_id,
+      "product_id": this.inventory.inventory_products[0].id,
+      "variants": [
+        {
+          "location_id": this.inventory.inventory_item_locations[0].location_id,
+          "vendor_id": this.inventory.inventory_products[0].vendor_id,
+          "variant_id": this.inventory.inventory_products[0].variant_id,
+          "vendor_variant_id": '',
+          "qty": this.inventory.inventory_products[0].on_hand,
+          "unit_type": this.inventory.inventory_products[0].inventory_by,
+          "vendor_auto_select": true,
+        }
+      ]
     };
     
     this.cartService.addToCart(data)

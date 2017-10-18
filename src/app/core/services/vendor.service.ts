@@ -31,7 +31,7 @@ export class VendorService extends ModelService {
   vendors$: Observable<any> = Observable.empty();
   public isDataLoaded$: any = new BehaviorSubject(false);
   public selectedTab:any = null;
-  currentVendor$: BehaviorSubject<any> = new BehaviorSubject(1);
+  globalVendor$: BehaviorSubject<any> = new BehaviorSubject(1);
   
   constructor(
     public injector: Injector,
@@ -152,7 +152,7 @@ export class VendorService extends ModelService {
   
   getVendor(id) {
     return this.restangular.one('vendors', id).get().map(vendor => {
-      this.currentVendor$.next(vendor);
+      this.globalVendor$.next(vendor.data.vendor);
     });
   }
   

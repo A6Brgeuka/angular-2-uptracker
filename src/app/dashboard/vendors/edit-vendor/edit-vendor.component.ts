@@ -103,7 +103,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
-    this.currentVendor$ = this.vendorService.currentVendor$;
+    this.currentVendor$ = this.vendorService.globalVendor$;
     //this.allVendor$ = this.route.params.switchMap((route)=>{
     //  debugger;
     //  return this.vendorService.getVendor(route['id']);
@@ -258,7 +258,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     let subscriber = this.currentVendor$
     .first()
-    .pluck('data', 'vendor')
     .subscribe((vendor:VendorModel)=>{
       
       if (!currentVendor || _.isEmpty(currentVendor)) {

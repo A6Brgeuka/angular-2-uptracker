@@ -9,6 +9,7 @@ import { VendorModel, AccountVendorModel } from '../../../models/index';
 import { UserService, AccountService } from '../../../core/services/index';
 import { ActivatedRoute, Params } from '@angular/router';
 import { VendorService } from '../../../core/services/vendor.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-view-vendor',
@@ -19,12 +20,12 @@ import { VendorService } from '../../../core/services/vendor.service';
 export class ViewVendorComponent implements OnInit {
   public subscribers: any = {};
   
-  public currentVendor$;
+  public globalVendor$;
   public vendor: any = {};
   public basicnfo: any = {};
   public accountVendors: any;
   public locationArr: any = [];
-  public locations$: Observable<any>;
+  //public locations$: Observable<any>;
   public all_locations$: Observable<any>;
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
@@ -35,6 +36,9 @@ export class ViewVendorComponent implements OnInit {
   public currencyArr: any = [];
   public currencySign: string;
   public body = document.getElementsByTagName("body")[0];
+  
+  public displayingVendor$: BehaviorSubject<any> = new BehaviorSubject({});
+  public accauntVendors$: Observable<any>;
   
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
   @ViewChild('all') allLocationLink: ElementRef;
@@ -47,110 +51,124 @@ export class ViewVendorComponent implements OnInit {
     public accountService: AccountService,
     public vendorService: VendorService,
     public location: Location,
-    //public modalWindowService: ModalWindowService
   ) {
-  
+    this.globalVendor$ = this.vendorService.globalVendor$;
+    this.all_locations$ = this.accountService.locations$;
   }
   
   ngOnInit() {
-    //this.route.params
-    //.switchMap((params: Params) => this.vendorService.getVendor(params['id']))
-    //.pluck('data','vendor')
-    this.currentVendor$ = this.vendorService.currentVendor$;
-    this.currentVendor$
-    .pluck('data', 'vendor')
-    .subscribe(vendor => {
-     
-      this.vendor = new VendorModel(vendor);
-      
-      this.basicnfo = _.cloneDeep(new VendorModel(vendor));
-
-      this.vendorId = this.vendor.id;
-    });
-  
-    this.all_locations$ = this.accountService.locations$;
     
-    this.locations$ = this.all_locations$
-    .map((res: any) => {
-     
-      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-      
-      this.secondaryLocationArr = _.filter(res, (loc) => {
-        return this.primaryLocation != loc;
-      });
-      
-      if (this.secondaryLocationArr.length > 0) {
-        this.secondaryLocation = this.secondaryLocationArr[0];
-      }
-      return this.secondaryLocationArr;
-    });
-  
-    Observable.combineLatest(
-      this.route.params,
+    this.accauntVendors$ = Observable.combineLatest(
+      this.globalVendor$,
       this.vendorService.getAccountVendors()
     )
-    .map(([r,v]: any) => {
-       return _.filter(v, {'vendor_id': r['id']})
+    .map(([globalVendor,vendors]: any) => {
+       return _.filter(vendors, {'vendor_id': globalVendor['id']})
       }
-    )
-    .subscribe((v: AccountVendorModel[])=>{
-      this.accountVendors = v;
-    });
-
-    this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies()
-    .subscribe((res: any) => {
-      this.currencyArr = res;
-    });
+    );
 
   }
   
+  addSubscribers() {
+  
+    this.subscribers.allLocationsSubscription = this.all_locations$
+    .subscribe((res: any) => {
+    
+      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+    
+      this.secondaryLocationArr = _.filter(res, (loc) => {
+        return this.primaryLocation != loc;
+      });
+    
+      if (this.secondaryLocationArr.length > 0) {
+        this.secondaryLocation = this.secondaryLocationArr[0];
+      }
+    
+      return this.secondaryLocationArr;
+    
+    });
+    
+    
+    this.subscribers.accauntVendorsSubscription = this.accauntVendors$
+    .subscribe((accauntVendors: AccountVendorModel[]) =>
+      this.accountVendors = accauntVendors
+    );
+    
+    
+    this.subscribers.globalVendorSubscription = this.globalVendor$
+    .subscribe(vendor => {
+  
+      this.vendor = new VendorModel(vendor);
+  
+      this.basicnfo = _.cloneDeep(new VendorModel(vendor));
+  
+      this.vendorId = this.vendor.id;
+    });
+    
+  }
+  
   ngAfterViewInit() {
+
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
     .subscribe((res: any) => {
       
       this.chooseTabLocation(res);
-      
-      if (this.secondaryLocationArr.length == 1) return;
-      
-      if (res ? res.id != this.primaryLocation.id : null) {
-        this.secondaryLocationLink.nativeElement.click();
+      if (this.secondaryLocationArr.length) {
+        
+        //if (this.secondaryLocationArr.length == 1) return;
+  
+        if (res ? res.id != this.primaryLocation.id : null) {
+          this.secondaryLocationLink.nativeElement.click();
+        }
+        
+        if (res && res.id == this.primaryLocation.id ) {
+          this.primaryLocationLink.nativeElement.click();
+        }
+  
+        if (!res) {
+          this.allLocationLink.nativeElement.click();
+        }
       }
       
     });
     // observer to detect class change
-    if (this.secondaryLocationLink) {
-      // observer to detect class change
-      let observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation: any) => {
-          if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
-             //this.secondaryLocationLink.nativeElement.click();
-            this.chooseTabLocation(this.secondaryLocation);
-          }
-        });
-      });
-
-      observer.observe(this.secondaryLocationLink.nativeElement, {
-        attributes: true,
-        attributeOldValue: true
-      });
-    }
+    
+    //if (this.secondaryLocationLink) {
+    //  // observer to detect class change
+    //  let observer = new MutationObserver((mutations) => {
+    //    mutations.forEach((mutation: any) => {
+    //      if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
+    //         //this.secondaryLocationLink.nativeElement.click();
+    //        //debugger;
+    //        this.chooseTabLocation(this.secondaryLocation);
+    //      }
+    //    });
+    //  });
+    //
+    //  observer.observe(this.secondaryLocationLink.nativeElement, {
+    //    attributes: true,
+    //    attributeOldValue: true
+    //  });
+    //}
+    
     this.currentLocation = this.vendorService.selectedTab;
-  
-    if (this.currentLocation && this.primaryLocation !== this.currentLocation) {
-      this.secondaryLocationLink.nativeElement.click();
-    }
     
-    if (!this.currentLocation){
-    
-      this.allLocationLink.nativeElement.click();
-    } else {
-    
-      if (this.primaryLocation == this.currentLocation) {
-        this.primaryLocationLink.nativeElement.click();
-      } else {
-        this.secondaryLocationLink.nativeElement.click();
-      }
-    }
+
+    //if (this.currentLocation && this.primaryLocation !== this.currentLocation) {
+    //  this.secondaryLocationLink.nativeElement.click();
+    //}
+    //
+    //if (!this.currentLocation){
+    //
+    //  this.allLocationLink.nativeElement.click();
+    //} else {
+    //
+    //  if (this.primaryLocation == this.currentLocation) {
+    //    this.primaryLocationLink.nativeElement.click();
+    //  } else {
+    //    this.secondaryLocationLink.nativeElement.click();
+    //  }
+    //}
     
   }
   
@@ -164,6 +182,7 @@ export class ViewVendorComponent implements OnInit {
   }
   
   chooseTabLocation(location = null) {
+   
     this.vendorService.selectedTab = location;
     this.locVendorChosen = !!location;
     if (location && location != this.primaryLocation) {
@@ -171,7 +190,7 @@ export class ViewVendorComponent implements OnInit {
       this.secondaryLocation = location;
       //this.secondaryLocationLink.nativeElement.click();
     }
-    else if (!location) {
+    else if (!location && this.secondaryLocationArr.length) {
       this.allLocationLink.nativeElement.click();
     } else {
       this.sateliteLocationActive = false;
@@ -185,6 +204,9 @@ export class ViewVendorComponent implements OnInit {
     // account vendor info for specific location
     let locationAccountVendor: AccountVendorModel = new AccountVendorModel(_.find(this.accountVendors, {'location_id': this.currentLocation ? this.currentLocation.id : null}) || null);
     // fill vendor info for modal view vendor
+    
+    console.log(locationAccountVendor);
+    
     _.each(locationAccountVendor, (value, key) => {
       if (generalAccountVendor && generalAccountVendor[key]) {
         this.vendor[key] = generalAccountVendor[key];
@@ -195,13 +217,12 @@ export class ViewVendorComponent implements OnInit {
     
     this.subscribers.getCurrenciesSubscription = this.accountService.getCurrencies().subscribe((res: any) => {
       this.currencyArr = res;
-      this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
+      //this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
       let currentVendorCurrency: any = _.find(res, {'iso_code': this.vendor.currency ? this.vendor.currency : "USD"});
       this.currencySign = currentVendorCurrency.html_entity;
     });
     
   }
-  
   
   goBack(): void {
     this.location.back();

@@ -59,7 +59,7 @@
         <i class="caret"></i>
       </a>
       <ul id="location_dropdown" class="dropdown-content">
-        <li *ngFor="let location of (locations$ | async)"
+        <li *ngFor="let location of secondaryLocationArr"
           (click)="chooseTabLocation(location)"
           [class.active]="location.name == currentLocation?.name">
           {{location.name}}
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div *ngIf="(locations$ | async)?.length < 2">
+      <div *ngIf="(!this.secondaryLocationArr.length)">
         <div class="row" *ngIf="vendor.ext_account_number">
           <div class="col s6 label">Account #</div>
           <div class="col s6">
@@ -134,7 +134,7 @@
         <div class="row" *ngIf="vendor.discount_percentage">
           <div class="col s6 label">Discount</div>
           <div class="col s6">
-            {{vendor.discount_percentage}}%
+            {{vendor.discount_percentage | percent }}
           </div>
         </div>
         <div class="row" *ngIf="vendor.shipping_handling">
@@ -167,6 +167,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -224,7 +225,7 @@
       <div class="row" *ngIf="vendor.discount_percentage">
         <div class="col s6 label">Discount</div>
         <div class="col s6">
-          {{vendor.discount_percentage}}%
+          {{vendor.discount_percentage | percent }}
         </div>
       </div>
       <div class="row" *ngIf="vendor.shipping_handling">
