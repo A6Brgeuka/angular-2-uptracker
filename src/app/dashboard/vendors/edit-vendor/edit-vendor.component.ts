@@ -104,10 +104,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   
   ngOnInit() {
     this.currentVendor$ = this.vendorService.globalVendor$;
-    //this.allVendor$ = this.route.params.switchMap((route)=>{
-    //  debugger;
-    //  return this.vendorService.getVendor(route['id']);
-    //}).publishReplay(1).refCount();
     
     this.currency$ = this.accountService.getCurrencies().do((res: any) => {
       this.currencyArr = res;
@@ -205,8 +201,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     }
   
     this.inited = true;
-  
-  
+    
   }
   
   ngAfterViewInit() {

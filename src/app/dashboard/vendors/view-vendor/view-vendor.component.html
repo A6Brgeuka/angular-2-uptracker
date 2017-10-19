@@ -50,7 +50,6 @@
     </li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(all_locations$ | async)?.length > 2">
       <a href="#specific"
-        (click)="chooseTabSubLocation($event)"
         materialize="dropdown"
         data-activates="location_dropdown"
         [class.active1]="sateliteLocationActive"
@@ -171,6 +170,7 @@
     </div>
   </div>
 </div>
+
 <div id="specific" [class.active]="locVendorChosen" class="tab-content">
   <div class="inner">
     <div class="info">
