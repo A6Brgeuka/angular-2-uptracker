@@ -90,7 +90,7 @@
               <div class="ttl">Outer Package</div>
               <div class="input search">
                 <input auto-complete
-                  placeholder="Outer Package"
+                  placeholder="Type"
                   [source]="observableSourceOuterPackage.bind(this)"
                   (input) = 'onSearchOuterPackage($event)'
                   [min-chars] = '1'
@@ -118,7 +118,7 @@
                 <div class="col s9">
                   <div class="input search">
                     <input auto-complete
-                      placeholder="Inner Packages"
+                      placeholder="Type"
                       [source]="observableSourceInnerPackage.bind(this)"
                       (input) = 'onSearchInnerPackage($event)'
                       [min-chars] = '1'
@@ -133,7 +133,11 @@
           </div>
           <div class="row">
             <div class="col s12">
-              <div class="ttl">Total Consumable Units</div>
+              <div class="ttl">
+                Consumable Units
+                <span *ngIf="newProductData.sub_package.properties.unit_type">per {{ newProductData.sub_package.properties.unit_type }}</span>
+                <span *ngIf="!newProductData.sub_package.properties.unit_type && newProductData.package_type">per {{ newProductData.package_type }}</span>
+              </div>
               <div class="row">
                 <div class="col s3">
                   <div class="input">
@@ -147,7 +151,7 @@
                   <div class="input search" [class.dirty]="packDirty"
                     [class.valid]="newProductData.consumable_unit.properties.unit_type">
                     <input auto-complete
-                      placeholder="Total Consumable Units"
+                      placeholder="Type"
                       [source]="observableSourceConsPackage.bind(this)"
                       (input) = 'onSearchConsPackage($event)'
                       [min-chars] = '1'
