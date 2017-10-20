@@ -27,7 +27,6 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
     public toasterService: ToasterService,
   ) {
     this.inventory = dialog.context.data;
-    console.log(this.inventory);
     dialog.setCloseGuard(this);
   }
   
@@ -36,7 +35,7 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
   }
   
   saveOrder() {
-  
+  let noVendorAutoSelect = !!(this.inventory.inventory_products[0].vendor_id);
     let data = {
       "location_id": this.inventory.inventory_item_locations[0].location_id,
       "product_id": this.inventory.inventory_products[0].id,
@@ -47,8 +46,8 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
           "variant_id": this.inventory.inventory_products[0].variant_id,
           "vendor_variant_id": '',
           "qty": this.inventory.inventory_products[0].on_hand,
-          "unit_type": this.inventory.inventory_products[0].inventory_by,
-          "vendor_auto_select": true,
+          "unit_type": this.inventory.inventory_by,
+          "vendor_auto_select": !noVendorAutoSelect,
         }
       ]
     };
@@ -57,7 +56,7 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
     .subscribe(() => {
       this.toasterService.pop("", this.inventory.name + " successfully added to the shopping list");
       this.dismissModal();
-    }, (e) => console.log(e));
+    }, (error) => console.log(error));
   }
   
   dismissModal() {

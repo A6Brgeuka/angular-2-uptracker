@@ -27,7 +27,7 @@
     <div class="col s12 select-title">Vendor</div>
     <div class="col s12">
       <div class="left select">
-        <select [(ngModel)]="inventory?.inventory_products[0].vendors.vendor_id"
+        <select [(ngModel)]="inventory?.inventory_products[0].vendor_id"
         materialize="material_select">
           <option value="">Auto</option>
           <ng-container *ngFor="let v of inventory?.inventory_products[0].vendors">
