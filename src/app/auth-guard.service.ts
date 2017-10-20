@@ -74,10 +74,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       return true;
     }
 
-    if (this.userService.emailVerified()) {
-      this.router.navigate(['/dashboard']);
-      return false;
-    }
+    //if (this.userService.emailVerified()) {
+    //  this.router.navigate(['/dashboard']);
+    //  return false;
+    //}
 
     // TODO: remove after testing
     // if (this.userService.currentSignupStep() == 4) {
@@ -89,10 +89,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   checkSignupSteps(url){ 
-    if (this.userService.emailVerified()) {
-      this.router.navigate(['/dashboard']);
-      return false;
-    }
+    //if (this.userService.emailVerified()) {
+    //  this.router.navigate(['/dashboard']);
+    //  return false;
+    //}
 
     let registerInProgress: boolean = function(): boolean {
       switch( _.last(url.split('/')) ) {
@@ -103,10 +103,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       }
     }();
 
-    if (this.userService.currentSignupStep() == 4 && registerInProgress) {
-      this.router.navigate(['/email-verification']);
-      return false;
-    }
+    //if (this.userService.currentSignupStep() == 4 && registerInProgress) {
+    //  this.router.navigate(['/email-verification']);
+    //  return false;
+    //}
 
     return true;
   }
@@ -156,17 +156,18 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       return false;
     }
 
-    if (!this.userService.emailVerified()) {
-      // check for passing signup steps for navigation
-      let signupStep = this.userService.currentSignupStep();
-      switch(signupStep) {
-        case 2:   this.router.navigate(['/signup', 'about-company']); return;
-        case 3:   this.router.navigate(['/signup', 'payment-info']); return;
-        case 4:   this.router.navigate(['/email-verification']); return;
-        default:  this.router.navigate(['/signup']);
-      }
-      return false;
-    }
+    //if (!this.userService.emailVerified()) {
+    //  // check for passing signup steps for navigation
+    //  let signupStep = this.userService.currentSignupStep();
+    //  switch(signupStep) {
+    //    case 2:   this.router.navigate(['/signup', 'about-company']); return;
+    //    case 3:   this.router.navigate(['/signup', 'payment-info']); return;
+    //    //case 4:   this.router.navigate(['/email-verification']); return;
+    //    case 4:   this.router.navigate(['/login']); return;
+    //    default:  this.router.navigate(['/signup']);
+    //  }
+    //  return false;
+    //}
 
     return true;
   }

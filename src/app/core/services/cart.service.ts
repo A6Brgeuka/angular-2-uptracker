@@ -145,7 +145,7 @@ export class CartService extends ModelService {
     let payload = {
       item_ids: idArray
     };
-    debugger;
+    
     return this.restangular.all('cart').remove('', payload)
   }
   

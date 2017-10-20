@@ -89,12 +89,12 @@ export class CardService extends ModelService {
 
   addCard(data){
     return this.restangular.all('register').all('payment').post(data)
-        .do(
-            (res: any) => {
-              this.addToCollection$.next(res.data.account);
-              this.updateEntity$.next(res.data.account);
-              this.updateSelfData$.next(res.data.account);
-            }
-        );
+      .do(
+        (res: any) => {
+          this.addToCollection$.next(res.data.account);
+          this.updateEntity$.next(res.data.account);
+          this.updateSelfData$.next(res.data.account);
+        }
+      );
   }
 }
