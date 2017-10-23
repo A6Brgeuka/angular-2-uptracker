@@ -44,6 +44,10 @@ export class DashboardComponent implements OnInit {
     this.subscribers.dashboardLocationProductSubscription = this.accountService.locations$
     .subscribe(res => {
       this.locationArr = res;
+      if (this.locationArr.length <2) {
+        this.selectedLocation = this.locationArr[0].id;
+        this.accountService.dashboardLocation$.next(this.locationArr[0]);
+      }
     });
     
   }

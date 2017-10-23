@@ -66,7 +66,10 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     
     this.accountService.dashboardLocation$.subscribe((loc: any) =>
-      this.locationId = loc ? loc['id'] : ''
+    {
+      return this.locationId = loc ? loc['id'] : '';
+    }
+    
     );
     
     this.inventoryService.totalCount$.subscribe(total => this.total = total);
