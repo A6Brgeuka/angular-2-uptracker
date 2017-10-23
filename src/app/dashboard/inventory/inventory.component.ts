@@ -246,9 +246,35 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   
   // sets the style of the range-field thumb;
   calcQuantityMargin(product) {
-    let quantityMargin = 'calc(' + ((product.on_hand - 1 - product.critical_level) * 100 / (product.overstock_level - 1 - product.critical_level)).toString() + '% - 16px)';
+  
+    product.on_hand = Number(product.on_hand);
+    product.critical_level = Number(product.critical_level);
+    product.overstock_level = Number(product.overstock_level);
+    
+    let valueArr: number[] = [product.on_hand, product.critical_level, product.overstock_level];
+  
+    product.max = Math.max(...valueArr);
+    product.min = Math.min(...valueArr);
+    
+    let quantityMargin = 'calc(' + ((product.on_hand - product.critical_level) * 100 / (product.overstock_level - product.critical_level)).toString() + '% - 10px)';
     let thumbColor = this.calcThumbColor(product.on_hand / product.overstock_level );
-    return { 'left': quantityMargin, 'background-color' : thumbColor };
+    
+    if (product.on_hand < product.critical_level) {
+      let criticalMargin = 'calc(' + ((product.critical_level - product.on_hand) * 100 / (product.overstock_level - product.on_hand)).toString() + '% - 10px)';
+      product.criticalLevel = {'left': criticalMargin, 'right': 'inherit' };
+      return { 'left': '-15px', 'background-color' : 'red' };
+    } else if (product.on_hand === product.critical_level) {
+      return { 'left': '-15px', 'background-color' : 'red' };
+    } else if (product.on_hand > product.overstock_level) {
+      let overStockMargin = 'calc(' + ((product.overstock_level - product.critical_level) * 100 / (product.on_hand - product.critical_level)).toString() + '% - 10px)';
+      product.overstockLevel = {'left': overStockMargin, 'right': 'inherit' };
+      return { 'right': '-15px', 'background-color' : thumbColor };
+    } else {
+      product.criticalLevel = {'left': '0', 'right': 'inherit'};
+      product.overstockLevel = {'left': 'inherit', 'right': '0' };
+      return { 'left': quantityMargin, 'background-color' : thumbColor };
+    }
+    
   }
   
   private calcThumbColor(number: number) {
