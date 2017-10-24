@@ -185,7 +185,7 @@
             <a href="#info" #info (click)="selectInventoryTab('info')">Info</a>
           </li>
           <li class="tab col s2"
-            [class.hidden] = '(accountService.dashboardLocation$ | async) && (product$ | async)?.inventory_item_locations.length > 1'>
+            [class.hidden] = '(accountService.dashboardLocation$ | async)'>
             <a href="#locations" #locations (click)="selectInventoryTab('locations')">
               Locations
             </a>
@@ -333,7 +333,7 @@
               <div class="small-heading row-item">{{ location.pending }}</div>
               <div class="small-heading row-item">{{ location.critical_level }}</div>
               <div class="small-heading row-item">{{ location.fully_stocked }}</div>
-              <div class="small-heading row-item ">{{ location.overstock_level }}</div>
+              <div class="small-heading row-item">{{ location.overstock_level }}</div>
               <div class="clearfix"></div>
             </div>
           </div>
