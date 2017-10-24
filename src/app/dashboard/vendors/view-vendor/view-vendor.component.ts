@@ -122,9 +122,7 @@ export class ViewVendorComponent implements OnInit {
 
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
     .subscribe((res: any) => {
-
-        this.chooseTabLocation(res);
-  
+      
         if (this.secondaryLocationArr.length) {
     
           //if (this.secondaryLocationArr.length == 1) return;
@@ -141,7 +139,11 @@ export class ViewVendorComponent implements OnInit {
           if (!res) {
             this.allLocationLink.nativeElement.click();
           }
+          this.chooseTabLocation(res);
+        } else {
+          this.chooseTabLocation();
         }
+        
       
     });
     // observer to detect class change
@@ -177,7 +179,9 @@ export class ViewVendorComponent implements OnInit {
    
     this.vendorService.selectedTab = location;
     this.locVendorChosen = !!location;
-    
+    //if (!this.secondaryLocation) {
+    //  this.locVendorChosen = false;
+    //}
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
       this.secondaryLocation = location;

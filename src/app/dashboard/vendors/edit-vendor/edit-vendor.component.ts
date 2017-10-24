@@ -189,7 +189,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.currentLocation = this.vendorService.selectedTab;
     
     if (!this.currentLocation){
-      
       this.allLocationLink.nativeElement.click();
     } else {
       
