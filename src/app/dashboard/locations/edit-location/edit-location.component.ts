@@ -266,7 +266,8 @@ export class EditLocationComponent implements OnInit {
   }
 
   deleteLocationFunc() {
-    this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location).subscribe((res: any) => {
+    this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location)
+    .subscribe((res: any) => {
       this.goBack();
     });
   }
