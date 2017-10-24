@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { Location }                 from '@angular/common';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
@@ -67,6 +67,7 @@ export class EditLocationComponent implements OnInit {
   public forStockLocation: boolean;
   public sortBy;
   subs:any;
+  public locationTypesArr: string[] = [];
 
   uploadedImage;
   fileIsOver: boolean = false;
@@ -128,7 +129,12 @@ export class EditLocationComponent implements OnInit {
 
     // this.states$ = this.accountService.getStates().take(1);
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
-
+    
+  }
+  
+  addSubscribers() {
+    this.subscribers.locationTypesSubscription = this.locationTypes$
+    .subscribe(types => this.locationTypesArr = types)
   }
   
   updateLocs(location){
@@ -244,7 +250,7 @@ export class EditLocationComponent implements OnInit {
     } else {
       this.addLocation(this.location);
     }
-    
+    //console.log(this.locationForm.form.valid)
   }
 
   addLocation(data) {
@@ -391,8 +397,7 @@ export class EditLocationComponent implements OnInit {
     }
 
     this.location.formattedAddress = event.inputValue;
-
-
+    
   }
   
   goBack(): void {

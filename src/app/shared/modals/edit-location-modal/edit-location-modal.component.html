@@ -185,7 +185,6 @@
       [(ngModel)]="location.city"
       name="city"
       #city="ngModel"
-      required
       type="hidden">
 
     <input
@@ -199,7 +198,6 @@
       [(ngModel)]="location.state"
       name="state"
       #state="ngModel"
-      required
       type="hidden">
   </div>
 
@@ -310,9 +308,8 @@
     <button
       type="submit"
       class="btn white-text waves-effect waves-light"
+      [disabled]="!locationForm.form.valid"
       >
-      <!--[class.disabled]="!locationForm.form.valid"-->
-      <!--[disabled]="!locationForm.form.valid"-->
       Save
     </button>
     <button
