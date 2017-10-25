@@ -345,4 +345,7 @@ export class InventoryItemComponent implements OnInit {
     });
   }
   
+  printPage() {
+    window.print();
+  }
 }

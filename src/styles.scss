@@ -1491,3 +1491,26 @@ ngui-auto-complete {
 .gear-icon i {
   font-size: 27px;
 }
+
+@media print {
+  * {
+    -webkit-print-color-adjust:exact;
+    color-adjust: exact;
+  }
+  body {
+    background: #fff;
+    .dashboard .main-column {
+      margin-left: 0 !important;
+      margin-top: 0 !important;
+    }
+  }
+  body * {
+    visibility: hidden;
+    .toprint * {
+      visibility: visible;
+    }
+    .noprint, .tabs .indicator {
+      display: none;
+    }
+  }
+}

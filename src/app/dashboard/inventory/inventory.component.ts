@@ -68,9 +68,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.accountService.dashboardLocation$.subscribe((loc: any) =>
     {
       return this.locationId = loc ? loc['id'] : '';
-    }
-    
-    );
+    });
     
     this.inventoryService.totalCount$.subscribe(total => this.total = total);
     
@@ -201,7 +199,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     product.status = !product.status;
     //TODO add save to server
   }
-  
   
   searchFilter(event) {
     // replace forbidden characters

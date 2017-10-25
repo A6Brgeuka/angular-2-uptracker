@@ -1,6 +1,6 @@
-<div class="product-page">
-  <div class="close fa fa-chevron-left" (click)="goBack()"></div>
-  <div class="row right edit-buttons buttons-topright">
+<div class="product-page toprint">
+  <div class="close fa fa-chevron-left noprint" (click)="goBack()"></div>
+  <div class="row right edit-buttons buttons-topright noprint">
     <button materialize="dropdown" data-activates="drdn" class="bt-edit-product edbtn bluebtn">
       <fa name="bars"></fa>
       Actions
@@ -38,7 +38,7 @@
         </a>
       </li>
       <li>
-        <a href="#" class="tealish-text">
+        <a (click)="printPage()" class="tealish-text">
           <fa name="print"></fa>
           Print
         </a>
@@ -74,11 +74,11 @@
           </div>
 
           <div class="sub-image-btns">
-            <div class="col s6">
+            <div class="col s12 m6">
               <div class="small left">On-hand</div>
               <div class="digits right">{{(product$ | async)?.on_hand}}</div>
             </div>
-            <div class="col s6">
+            <div class="col s12 m6">
               <div class="small left">Pending</div>
               <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{(product$ | async)?.pending}}</div>
             </div>
@@ -149,19 +149,19 @@
             </div>
           </div>
           <div class="sub-image-btns">
-            <div class="col s2" *ngIf="locations.className !== 'active'">
+            <div class="col s3 l2" *ngIf="locations.className !== 'active'">
               <div class="small left">Critical</div>
               <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.critical_level }}</div>
             </div>
-            <div class="col s3" *ngIf="locations.className !== 'active'">
+            <div class="col s3 l3" *ngIf="locations.className !== 'active'">
               <div class="small left">Fully Stocked</div>
               <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.fully_stocked }}</div>
             </div>
-            <div class="col s3" *ngIf="locations.className !== 'active'">
+            <div class="col s3 l3" *ngIf="locations.className !== 'active'">
               <div class="small left">Overstocked</div>
               <div class="digits right" *ngIf="(accountService.dashboardLocation$ | async)">{{ (product$ | async)?.overstock_level }}</div>
             </div>
-            <div class="col s4 two-lines">
+            <div class="col s3 l4 two-lines">
               <div class="small ">Inventory By</div>
               <div class="small  red-text">
                 {{ (product$ | async)?.inventory_by_label }}
