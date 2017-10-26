@@ -253,40 +253,42 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     product.min = Math.min(...valueArr);
     
     let quantityMargin = ((product.on_hand - product.critical_level) * 100 / (product.overstock_level - product.critical_level)).toString();
-    let quantityMargin1 = 'calc(' + quantityMargin + '% - 10px)';
     let thumbColor = this.calcThumbColor(product.on_hand / product.overstock_level );
     
     let defaultLeft = {'left': '0', 'right': 'inherit'};
     let defaultRight = {'left': 'inherit', 'right': '0'};
     
     if (product.on_hand < product.critical_level) {
-      let criticalMargin = 'calc(' + ((product.critical_level - product.on_hand) * 100 / (product.overstock_level - product.on_hand)).toString() + '% - 10px)';
-      product.criticalLevel = {'left': criticalMargin, 'right': 'inherit' };
+      let criticalMargin = ((product.critical_level - product.on_hand) * 100 / (product.overstock_level - product.on_hand)).toString();
+      product.criticalLevel = this.checkOverlaps(criticalMargin, product);
       product.overstockLevel = defaultRight;
-      return { 'left': '-15px', 'background-color' : 'red' };
+      return { 'left': '-18px', 'background-color' : 'red' };
     } else if (product.on_hand === product.critical_level) {
       product.criticalLevel = defaultLeft;
       product.overstockLevel = defaultRight;
       return { 'left': '-15px', 'background-color' : 'red' };
     } else if (product.on_hand > product.overstock_level) {
-      let overStockMargin = 'calc(' + ((product.overstock_level - product.critical_level) * 100 / (product.on_hand - product.critical_level)).toString() + '% - 10px)';
-      product.overstockLevel = {'left': overStockMargin, 'right': 'inherit' };
+      let overStockMargin = ((product.overstock_level - product.critical_level) * 100 / (product.on_hand - product.critical_level)).toString();
+      product.overstockLevel = this.checkOverlaps(overStockMargin, product);
       product.criticalLevel = defaultLeft;
       return { 'right': '-15px', 'background-color' : thumbColor };
     } else {
       product.criticalLevel = defaultLeft;
       product.overstockLevel = defaultRight;
-      if (Number(quantityMargin) < 8) {
-        return { 'left': 'calc(8% - 10px)', 'background-color' : thumbColor };
-      }
-      else if (Number(quantityMargin) > 92 && product.on_hand !== product.overstock_level) {
-        return { 'left': 'calc(92% - 10px)', 'background-color' : thumbColor };
-      } else {
-        return { 'left': quantityMargin1, 'background-color' : thumbColor };
-      }
-      
+      return this.checkOverlaps(quantityMargin, product, thumbColor);
     }
     
+  }
+  
+  private checkOverlaps(margin, product, thumbColor = '#fff') {
+    if (Number(margin) < 11) {
+      return { 'left': 'calc(11% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    }
+    else if (Number(margin) > 89 && product.on_hand !== product.overstock_level) {
+      return { 'left': 'calc(89% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else {
+      return { 'left': `calc(${margin}% - 12px)`, 'background-color' : thumbColor, 'right': 'inherit' };
+    }
   }
   
   private calcThumbColor(number: number) {
