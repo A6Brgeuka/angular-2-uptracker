@@ -200,9 +200,7 @@ export class ProductsComponent implements OnInit {
   }
   
   searchFilter(event) {
-    // replace forbidden characters
-    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-    this.searchKey$.next(value);
+    this.searchKey$.next(event.target.value);
   }
   
   itemsSort(event) {

@@ -20,6 +20,7 @@ export class AddInventory2OrderModalContext extends BSModalContext {
 export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalComponent<AddInventory2OrderModalContext> {
   context: AddInventory2OrderModalContext;
   public inventory: any;
+  public defaultProduct: any;
   
   constructor(
     public dialog: DialogRef<AddInventory2OrderModalContext>,
@@ -27,6 +28,7 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
     public toasterService: ToasterService,
   ) {
     this.inventory = dialog.context.data;
+    this.defaultProduct = _.find(this.inventory.inventory_products, 'default_product')
     dialog.setCloseGuard(this);
   }
   
@@ -35,26 +37,43 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
   }
   
   saveOrder() {
-  let noVendorAutoSelect = !!(this.inventory.inventory_products[0].vendor_id);
+  let noVendorAutoSelect = !!(this.defaultProduct.vendor_id);
+    //let data = {
+    //  "location_id": this.inventory.inventory_item_locations[0].location_id,
+    //  "product_id": this.defaultProduct.product_id,
+    //  "variants": [
+    //    {
+    //      "location_id": this.inventory.inventory_item_locations[0].location_id,
+    //      "vendor_id": this.defaultProduct.vendor_id,
+    //      "variant_id": this.defaultProduct.variant_id,
+    //      "vendor_variant_id": '',
+    //      "qty": this.defaultProduct.on_hand,
+    //      "unit_type": this.inventory.inventory_by,
+    //      "vendor_auto_select": !noVendorAutoSelect,
+    //    }
+    //  ]
+    //};
+  
     let data = {
-      "location_id": this.inventory.inventory_item_locations[0].location_id,
-      "product_id": this.inventory.inventory_products[0].id,
+      "product_id": null,
+      "account_product_id": this.defaultProduct.product_id,
       "variants": [
         {
           "location_id": this.inventory.inventory_item_locations[0].location_id,
-          "vendor_id": this.inventory.inventory_products[0].vendor_id,
-          "variant_id": this.inventory.inventory_products[0].variant_id,
-          "vendor_variant_id": '',
-          "qty": this.inventory.inventory_products[0].on_hand,
-          "unit_type": this.inventory.inventory_by,
+          "variant_id": null,
+          "account_variant_id": this.defaultProduct.variant_id,
+          "vendor_variant_id": null,
+          "vendor_id": null,
+          "qty": this.defaultProduct.on_hand,
           "vendor_auto_select": !noVendorAutoSelect,
+          "unit_type": this.inventory.inventory_by,
         }
       ]
     };
     
     this.cartService.addToCart(data)
     .subscribe(() => {
-      this.toasterService.pop("", this.inventory.name + " successfully added to the shopping list");
+      this.toasterService.pop("", this.defaultProduct.name + " successfully added to the shopping list");
       this.dismissModal();
     }, (error) => console.log(error));
   }
