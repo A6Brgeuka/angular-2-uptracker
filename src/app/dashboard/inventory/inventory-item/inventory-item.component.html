@@ -264,7 +264,7 @@
               </div>
             </div>
           </div>
-          <div class="col s5">
+          <div class="col s5" *ngIf="(accountService.dashboardLocation$ | async)">
             <div class="row">
               <div class="col s6 ttl">Storage Locations</div>
               <div class="col s6 left-align ttl">Qty</div>
