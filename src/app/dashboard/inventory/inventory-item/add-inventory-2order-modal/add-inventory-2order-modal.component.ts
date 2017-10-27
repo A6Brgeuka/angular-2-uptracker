@@ -17,8 +17,11 @@ export class AddInventory2OrderModalContext extends BSModalContext {
   styleUrls: ['./add-inventory-2order-modal.component.scss']
 })
 
+@DestroySubscribers()
+
 export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalComponent<AddInventory2OrderModalContext> {
   context: AddInventory2OrderModalContext;
+  public subscribers: any = {};
   public inventory: any;
   public defaultProduct: any;
   
@@ -71,7 +74,7 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
       ]
     };
     
-    this.cartService.addToCart(data)
+   this.subscribers.addToCartSubscription = this.cartService.addToCart(data)
     .subscribe(() => {
       this.toasterService.pop("", this.defaultProduct.name + " successfully added to the shopping list");
       this.dismissModal();

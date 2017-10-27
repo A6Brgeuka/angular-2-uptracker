@@ -111,9 +111,6 @@ export class ProductService extends ModelService {
     if (search_string) {
       // replace forbidden characters
       query.query = search_string.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-      //query.query = encodeURIComponent(search_string);
-      //query.query = search_string;
-    } else {
     }
     if (sortBy && sortBy == 'Z-A') {
       query.sort = 'desc';
