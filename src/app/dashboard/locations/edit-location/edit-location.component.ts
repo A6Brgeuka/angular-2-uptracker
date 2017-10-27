@@ -75,6 +75,7 @@ export class EditLocationComponent implements OnInit {
     readAs: 'DataURL'
   };
   public locationId: string;
+  public classValid: string = '';
 
   constructor(public zone: NgZone,
               public toasterService: ToasterService,
@@ -385,6 +386,7 @@ export class EditLocationComponent implements OnInit {
             postalFlag = true;
             this.zone.run(() => {
               this.location.zip_code = item.long_name;
+              this.classValid = 'valid';
             });
             break;
         }
