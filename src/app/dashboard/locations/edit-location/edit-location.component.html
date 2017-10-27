@@ -51,7 +51,6 @@
         </div>
         <div class="col l3 m6 s12 add-storage-location-buttons">
           <button type="submit"
-            [class.disabled]="!addStorageForm.form.valid"
             [disabled]="!addStorageForm.form.valid"
             class="not-submit add-btn uptracker-form-btn waves-light waves-effect">
             <span *ngIf="!inventory_location._id">Add</span>
@@ -131,9 +130,9 @@
           materialize="material_select"
           required
           (change)="changeType()"
-          [materializeSelectOptions]="locationTypes$ | async">
+          [materializeSelectOptions]="locationTypesArr">
           <option value="">Please select one</option>
-          <option *ngFor="let type of locationTypes$ | async" [value]="type">{{type}}</option>
+          <option *ngFor="let type of locationTypesArr" [value]="type">{{type}}</option>
         </select>
       </div>
     </div>
@@ -184,7 +183,6 @@
       [(ngModel)]="location.city"
       name="city"
       #city="ngModel"
-      required
       type="hidden">
 
     <input
@@ -198,7 +196,6 @@
       [(ngModel)]="location.state"
       name="state"
       #state="ngModel"
-      required
       type="hidden">
   </div>
 

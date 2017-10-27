@@ -138,6 +138,7 @@ export class CartService extends ModelService {
   updatePriceInfo(data:any, location_id){
     return this.restangular.one('cart',location_id).all('pricing').customPUT(data);
   }
+  
   removeItems(items) {
     let idArray = [];
     items.map((item) => idArray.push(item.id));
@@ -145,8 +146,7 @@ export class CartService extends ModelService {
     let payload = {
       item_ids: idArray
     };
-    debugger;
-    return this.restangular.all('cart').remove('', payload)
+    return this.restangular.all('cart').customDELETE('', payload)
   }
   
 }

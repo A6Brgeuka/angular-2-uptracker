@@ -29,8 +29,8 @@
     <header class="header">
       <div class="row">
         <div class="col s6 m6">
-          <div class="select low-height input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard')">
-            <select *ngIf="(accountService.locations$ | async)?.length>1"
+          <div class="select custom-select low-height input-field" *ngIf="!stateService.isUrl('/dashboard/locations') && !stateService.isUrl('/dashboard') && (accountService.locations$ | async)?.length >1">
+            <select *ngIf="showLocSelect"
                 [(ngModel)]="selectedLocation"
                 name="location"
                 materialize="material_select"
@@ -39,15 +39,9 @@
               <option selected value="" >All Locations</option>
               <option *ngFor="let location of accountService.locations$ | async" [value]="location.id">{{location.name}}</option>
             </select>
-            <div class="text-label-locations" *ngIf="(accountService.locations$ | async)?.length<2">
-              All Locations
-            </div>
           </div>
         </div>
         <div class="col s6 m6 user-menu-col">
-          <custom-dropdown-menu
-            [model]="gearDropdownLinks"
-          ></custom-dropdown-menu>
           <user-dropdown-menu></user-dropdown-menu>
         </div>
       </div>

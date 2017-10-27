@@ -186,7 +186,7 @@ export class UserService extends ModelService {
     switch(signupStep) {
       case 2:   this.router.navigate(['/signup', 'about-company']); return;
       case 3:   this.router.navigate(['/signup', 'payment-info']); return;
-      case 4:   this.router.navigate(['/email-verification']); return;
+      //case 4:   this.router.navigate(['/email-verification']); return;
       default:  this.router.navigate([redirect]);
     }
   }
@@ -249,14 +249,15 @@ export class UserService extends ModelService {
   }
 
   currentSignupStep(){
+    
     if (!this.getSelfIdFromSelfData()) {
       return 1;
     }
 
     let user = this.selfData;
-    if (user.email_verified) {
-      return null;
-    }
+    //if (user.email_verified) {
+    //  return null;
+    //}
     if (!user.account_id) {
       return 2;
     }

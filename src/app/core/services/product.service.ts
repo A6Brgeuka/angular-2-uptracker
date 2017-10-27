@@ -109,7 +109,10 @@ export class ProductService extends ModelService {
       limit: this.pagination_limit,
     };
     if (search_string) {
-      query.query = search_string;
+      // replace forbidden characters
+      query.query = search_string.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+      //query.query = encodeURIComponent(search_string);
+      //query.query = search_string;
     } else {
     }
     if (sortBy && sortBy == 'Z-A') {

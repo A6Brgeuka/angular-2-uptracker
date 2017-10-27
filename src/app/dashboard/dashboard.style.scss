@@ -98,11 +98,11 @@
       z-index: 999;
       background-color: $tealish;
       .nav {
-        height: calc(100vh - 70px);
+        height: calc(100vh - 65px);
       }
       .logo {
         background: #404852;
-        height: 70px;
+        height: 65px;
         padding: 15px 7px 0 0;
 
         a {
@@ -129,7 +129,7 @@
           font-family: 'Ubuntu';
           font-weight: bold;
           padding-left: 75px;
-          line-height: 70px;
+          line-height: 63px;
           text-transform: uppercase;
           background-repeat: no-repeat;
           white-space: nowrap;
@@ -213,7 +213,7 @@
       margin-top: 70px;
       flex: 1;
       //margin-left:70px;
-      min-height: calc(100vh - 70px);
+      min-height: calc(100vh - 65px);
       background: #f5f6f7;
       overflow: hidden;
 
@@ -376,7 +376,7 @@
 @media all and (max-height: 700px) {
   :host /deep/ {
     .left-panel .nav a {
-      line-height: calc(10vh - 4px) !important;
+      line-height: calc(10vh - 7px) !important;
       background-size: auto 6vh;
       &.appliances {
         background-size: auto 2.2vh;

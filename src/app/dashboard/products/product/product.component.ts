@@ -131,7 +131,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   public fileArr: any = [];
   public oldFileArr: any = [];
-  // @ViewChild('secondary') secondaryLocationLink: ElementRef;
   
   public file$: Observable<any>;
   public file;
@@ -234,7 +233,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
       })
     });
     
-    
     this.filteredComments$ = Observable.merge(
       this.comments$,
       addToComments$,
@@ -323,7 +321,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     this.variants$.next(this.variantsCopy);
   }
   
-  
   resetText() {
     this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
@@ -344,7 +341,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
       || !_.isEmpty(data.product.documents));
       
       this.loadDoc$.next(data.product.documents);
-      this.loadDoc$.subscribe(r => console.log(r));
+      //this.loadDoc$.subscribe(r => console.log(r));
       
       this.resetText();
       this.variants = _.map(data.variants, (item: any) => {
@@ -439,7 +436,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     
     this.doc$
     .subscribe(res => {
-      console.log('docs', res);
       this.doc = res;
       this.hasDocs = res.length > 0;
     });

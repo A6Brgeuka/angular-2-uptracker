@@ -66,8 +66,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     
     this.accountService.dashboardLocation$.subscribe((loc: any) =>
-      this.locationId = loc ? loc['id'] : ''
-    );
+    {
+      return this.locationId = loc ? loc['id'] : '';
+    });
     
     this.inventoryService.totalCount$.subscribe(total => this.total = total);
     
@@ -199,7 +200,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     //TODO add save to server
   }
   
-  
   searchFilter(event) {
     // replace forbidden characters
     let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
@@ -246,9 +246,49 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   
   // sets the style of the range-field thumb;
   calcQuantityMargin(product) {
-    let quantityMargin = 'calc(' + ((product.on_hand - 1 - product.critical_level) * 100 / (product.overstock_level - 1 - product.critical_level)).toString() + '% - 16px)';
+    
+    let valueArr: number[] = [product.on_hand, product.critical_level, product.overstock_level];
+  
+    product.max = Math.max(...valueArr);
+    product.min = Math.min(...valueArr);
+    
+    let quantityMargin = ((product.on_hand - product.critical_level) * 100 / (product.overstock_level - product.critical_level)).toString();
     let thumbColor = this.calcThumbColor(product.on_hand / product.overstock_level );
-    return { 'left': quantityMargin, 'background-color' : thumbColor };
+    
+    let defaultLeft = {'left': '0', 'right': 'inherit'};
+    let defaultRight = {'left': 'inherit', 'right': '0'};
+    
+    if (product.on_hand < product.critical_level) {
+      let criticalMargin = ((product.critical_level - product.on_hand) * 100 / (product.overstock_level - product.on_hand)).toString();
+      product.criticalLevel = this.checkOverlaps(criticalMargin, product);
+      product.overstockLevel = defaultRight;
+      return { 'left': '-18px', 'background-color' : 'red' };
+    } else if (product.on_hand === product.critical_level) {
+      product.criticalLevel = defaultLeft;
+      product.overstockLevel = defaultRight;
+      return { 'left': '-15px', 'background-color' : 'red' };
+    } else if (product.on_hand > product.overstock_level) {
+      let overStockMargin = ((product.overstock_level - product.critical_level) * 100 / (product.on_hand - product.critical_level)).toString();
+      product.overstockLevel = this.checkOverlaps(overStockMargin, product);
+      product.criticalLevel = defaultLeft;
+      return { 'right': '-15px', 'background-color' : thumbColor };
+    } else {
+      product.criticalLevel = defaultLeft;
+      product.overstockLevel = defaultRight;
+      return this.checkOverlaps(quantityMargin, product, thumbColor);
+    }
+    
+  }
+  
+  private checkOverlaps(margin, product, thumbColor = '#fff') {
+    if (Number(margin) < 11) {
+      return { 'left': 'calc(11% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    }
+    else if (Number(margin) > 89 && product.on_hand !== product.overstock_level) {
+      return { 'left': 'calc(89% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else {
+      return { 'left': `calc(${margin}% - 12px)`, 'background-color' : thumbColor, 'right': 'inherit' };
+    }
   }
   
   private calcThumbColor(number: number) {

@@ -17,16 +17,7 @@ export class DashboardComponent implements OnInit {
   public selectedLocation: string = '';
   public locations$: any;
   public locationArr: any;
-  public gearDropdownLinks = [
-    {
-      label: 'Locations',
-      routerLink: ['/locations']
-    },
-    {
-      label: 'Users',
-      routerLink: ['/users']
-    }
-  ];
+  public showLocSelect: boolean = true;
   
   constructor(
     public userService: UserService,
@@ -53,7 +44,16 @@ export class DashboardComponent implements OnInit {
     });
     this.subscribers.dashboardLocationProductSubscription = this.accountService.locations$
     .subscribe(res => {
+      this.showLocSelect = false;
       this.locationArr = res;
+      if (this.locationArr.length <2) {
+        this.selectedLocation = this.locationArr[0].id;
+        this.accountService.dashboardLocation$.next(this.locationArr[0]);
+      }
+      // setTimeout because list with locations doesn't change dynamically
+      setTimeout(() => {
+        this.showLocSelect = true;
+      }, 1)
     });
     
   }
