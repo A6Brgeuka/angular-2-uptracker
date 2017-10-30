@@ -5,22 +5,50 @@
     </div>
     <div class="nav">
       <a [routerLink]="['/dashboard']"
-        class="dash relative"
+        class="relative"
         [routerLinkActiveOptions]="{ exact: true }"
         routerLinkActive="active"
       >
+        <div class="icon dash"></div>
         Dashboard
         <fa *ngIf="dashboardService?.hasInfo" class="ds-info-flag red-text" name="info-circle"></fa>
       </a>
-      <a [routerLink]="['/products']" class="products" routerLinkActive="active">Marketplace</a>
-      <a [routerLink]="['/shoppinglist']" class="shopping" routerLinkActive="active">Shopping List</a>
-      <a [routerLink]="['/orders']" class="orders" routerLinkActive="active">Orders</a>
-      <a [routerLink]="['/transfers']" class="transfers" routerLinkActive="active" *ngIf="locationArr.length > 1">Transfers</a>
-      <a [routerLink]="['/inventory']" class="inventory" routerLinkActive="active">Inventory</a>
-      <a [routerLink]="['/reports']" class="reports" routerLinkActive="active">Reports</a>
-      <a [routerLink]="['/assets']" class="assets" routerLinkActive="active">Assets</a>
-      <a [routerLink]="['/appliances']" class="appliances" routerLinkActive="active">Appliances</a>
-      <a [routerLink]="['/vendors']" class="vendors" routerLinkActive="active">Vendors</a>
+      <a [routerLink]="['/products']" routerLinkActive="active">
+        <div class="icon products"></div>
+        Marketplace
+      </a>
+      <a [routerLink]="['/shoppinglist']" routerLinkActive="active">
+        <div class="icon shopping"></div>
+        Shopping List
+      </a>
+      <a [routerLink]="['/orders']" routerLinkActive="active">
+        <div class="icon orders"></div>
+        Orders
+      </a>
+      <a [routerLink]="['/transfers']" routerLinkActive="active" *ngIf="locationArr.length > 1">
+        <div class="icon transfers"></div>
+        Transfers
+      </a>
+      <a [routerLink]="['/inventory']" routerLinkActive="active">
+        <div class="icon inventory"></div>
+        Inventory
+      </a>
+      <a [routerLink]="['/reports']" routerLinkActive="active">
+        <div class="icon reports"></div>
+        Reports
+      </a>
+      <a [routerLink]="['/assets']" routerLinkActive="active">
+        <div class="icon assets"></div>
+        Assets
+      </a>
+      <a [routerLink]="['/appliances']" routerLinkActive="active">
+        <div class="icon appliances"></div>
+        Appliances
+      </a>
+      <a [routerLink]="['/vendors']" routerLinkActive="active">
+        <div class="icon vendors"></div>
+        Vendors
+      </a>
     </div>
   </aside>
   <section class="main-column">

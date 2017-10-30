@@ -9,9 +9,6 @@
       width: 153px;
       height: 34px;
       padding-right: 35px;
-      // TODO: remove after testing
-      //background: url(/assets/img/logo.svg) no-repeat center center;
-      //background-size: auto 100%;
     }
   }
 
@@ -82,16 +79,13 @@
     display: flex;
     align-items: stretch;
     align-content: stretch;
-    //justify-content: flex-end;
-    //flex-shrink: 0;
     .main-column {
-      margin-left: 90px;
+      margin-left: 75px;
       margin-top: 70px;
     }
 
     .left-panel {
-      //float:left;
-      width: 90px;
+      width: 75px;
       transition: width .3s ease-out 0.05s;
       overflow: auto;
       position: fixed;
@@ -106,12 +100,7 @@
         padding: 15px 7px 0 0;
 
         a {
-          // TODO: remove after testing
-          //background-image: url(/assets/img/icon-nav-uptracker.svg);
-          //width:26px;
-          //height:45px;
           padding-right: 0;
-
           height: 34px;
           width: 22px;
           background: url(/assets/img/logo.svg) no-repeat right center;
@@ -128,78 +117,70 @@
           color: #fff;
           font-family: 'Ubuntu';
           font-weight: bold;
-          padding-left: 75px;
           line-height: 63px;
           text-transform: uppercase;
           background-repeat: no-repeat;
           white-space: nowrap;
           text-indent: -5000px;
-
+          .icon {
+            width: 75px;
+            float: left;
+            height: 63px;
+          }
           &:hover,
           &.active {
             background-color: #18a6b9;
             text-decoration: none;
           }
 
-          &.orders {
-            background-image: url(/assets/img/icon-nav-orders.svg);
-            background-position: 20px center;
+          .orders {
+            background: url(/assets/img/icon-nav-orders.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.dash {
-            background-image: url(/assets/img/icon-nav-dashboard.svg);
-            background-position: 18px center;
-            background-size: auto 50%;
+          .dash {
+            background: url(/assets/img/icon-nav-dashboard.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.shopping {
-            background-image: url(/assets/img/icon-nav-shoppinglist.svg);
-            background-position: 17px center;
+          .shopping {
+            background: url(/assets/img/icon-nav-shoppinglist.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.products {
-            background-image: url(/assets/img/icon-nav-products.svg);
-            background-position: 23px center;
+          .products {
+            background: url(/assets/img/icon-nav-products.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.inventory {
-            background-image: url(/assets/img/icon-nav-inventory.svg);
-            background-position: 18px center;
+          .inventory {
+            background: url(/assets/img/icon-nav-inventory.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.assets {
-            background-image: url(/assets/img/icon-nav-assets.svg);
-            background-position: 14px center;
+          .assets {
+            background: url(/assets/img/icon-nav-assets.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.vendors {
-            background-image: url(/assets/img/icon-nav-vendors.svg);
-            background-position: 19px center;
+          .vendors {
+            background: url(/assets/img/icon-nav-vendors.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.locations {
-            background-image: url(/assets/img/icon-nav-locations.svg);
-            background-position: 17px center;
+          .reports {
+            background: url(/assets/img/icon-nav-reports.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.users {
-            background-image: url(/assets/img/icon-nav-users.svg);
-            background-position: 14px center;
+          .appliances {
+            background: url(/assets/img/icon-nav-attachments.svg) no-repeat;
+            background-position: center center;
           }
 
-          &.reports {
-            background-image: url(/assets/img/icon-nav-reports.svg);
-            background-position: 14px center;
-          }
-
-          &.appliances {
-            background-image: url(/assets/img/icon-nav-attachments.svg);
-            background-position: 13px center;
-          }
-
-          &.transfers {
-            background-image: url(/assets/img/icon-nav-transfers.svg);
-            background-position: 15px center;
+          .transfers {
+            background: url(/assets/img/icon-nav-transfers.svg) no-repeat;
+            background-position: center center;
           }
         }
       }
@@ -213,7 +194,6 @@
     .main-column {
       margin-top: 70px;
       flex: 1;
-      //margin-left:70px;
       min-height: calc(100vh - 65px);
       background: #f5f6f7;
       overflow: hidden;
@@ -293,7 +273,6 @@
           .filter {
             
             input {
-              //width: 200px;
               margin: 0;
               font: 12px Lato;
               box-sizing: border-box;
@@ -378,12 +357,21 @@
   :host /deep/ {
     .left-panel .nav a {
       line-height: calc(10vh - 7px) !important;
-      background-size: auto 6vh;
-      &.appliances {
-        background-size: auto 2.2vh;
+      .icon {
+        height: calc(10vh - 8px) !important;
       }
-      &.assets {
-        background-size: auto 5.5vh;
+    }
+  }
+}
+
+@media all and (max-height: 600px) {
+  :host /deep/ {
+    .left-panel .nav a {
+      .icon {
+        background-size: 70% 70% !important;
+        &.appliances {
+          background-size: 50% 50% !important;
+        }
       }
     }
   }
@@ -415,8 +403,6 @@
 @media all and (max-width: 480px) {
   .dashboard {
     .main-column {
-      //margin-left: 70px;
-
       .header {
         .select {
           margin-left: 0;
