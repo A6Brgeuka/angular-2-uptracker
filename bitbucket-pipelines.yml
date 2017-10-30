@@ -6,13 +6,14 @@
 image: uptracker/app:latest
 
 pipelines:
-  default:
-    - step:
-        script: # Modify the commands below to build your repository.
-          - ng -v
-          - cp _env.ts env.ts
-          - npm i
-          - ng build --prod
-          - zip -r dist.zip dist
-          - python3 s3_upload.py app.up-tracker.com dist.zip versions/`git rev-parse --short HEAD`.zip
-          - python3 s3_upload.py app.up-tracker.com dist
+  branches:
+    master:
+      - step:
+          script: # Modify the commands below to build your repository.
+            - ng -v
+            - cp _env.ts env.ts
+            - npm i
+            - ng build --prod
+            - zip -r dist.zip dist
+            - python3 s3_upload.py app.up-tracker.com dist.zip versions/`git rev-parse --short HEAD`.zip
+            - python3 s3_upload.py app.up-tracker.com dist
