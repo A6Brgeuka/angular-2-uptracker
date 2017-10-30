@@ -379,7 +379,16 @@
               <div class="row-item nowrap">{{item.catalog_number || ""}}</div>
               <div class="row-item">{{item.avg_lead_time || ""}}</div>
               <div class="row-item">{{item.price || ""}}</div>
-              <div class="row-item">{{item.your_price || ""}}</div>
+
+              <div class="row-item">
+                <span *ngIf="!showEdit">
+                  {{item.your_price}}
+                </span>
+                <div *ngIf="showEdit" class="input variant-detail-table-head-item">
+                  <input (click)="$event.stopPropagation();" type="text" class="yourprice" [(ngModel)]="item.your_price" >
+                </div>
+              </div>
+
               <div class="row-item">{{item.club_price || ""}}</div>
               <div class="row-item">{{item.forum_price || ""}}</div>
               <div *ngIf="!showEdit" class="add-order-heading right head-item">

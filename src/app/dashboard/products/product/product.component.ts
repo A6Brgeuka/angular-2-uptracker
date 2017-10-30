@@ -534,7 +534,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
   toggleVariationVisibility() {
     this.variation.status = this.variation.status == 2 ? this.variation.status = 1 : this.variation.status = 2;
     this.filterSelectOption$.next(this.variation);
-    
   }
   
   toggleVariantVisibility(variant) {
@@ -669,7 +668,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
     })
   }
   
-  
   showVariantDetails($event, variant) {
     $event.stopPropagation();
     this.showVariant = true;
@@ -776,7 +774,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
         }
       },
       err => this.toasterService.pop("error", err));
-    
     
   }
   
