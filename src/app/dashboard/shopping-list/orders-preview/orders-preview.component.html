@@ -68,16 +68,18 @@
 
           <div class="card-content">
             <div class="row heading-row">
-              <div class="col s6">Product Name</div>
+              <div class="col s4">Product Name</div>
               <div class="col s3">Location</div>
-              <div class="col s1">Qty.</div>
-              <div class="col s2 right-align">Price</div>
+              <div class="col s1 center-align">Qty.</div>
+              <div class="col s2 center-align">Unit Price</div>
+              <div class="col s2 center-align">Price</div>
             </div>
             <div class="row" *ngFor="let item of order.items">
-              <div class="col tealish-text s6">{{ item.name }}</div>
+              <div class="col tealish-text s4">{{ item.name }}</div>
               <div class="col s3">{{ item.location_name }}</div>
               <div class="col s1 center-align">{{ item.qty }}</div>
-              <div class="col s2 right-align">{{ item.price }}</div>
+              <div class="col s2 center-align">{{ item.price }}</div>
+              <div class="col s2 center-align">{{ item.price }}</div>
               <div class="clearfix"></div>
               <div class="row" *ngFor="let discount of item.discounts">
                 <div class="col  s6">Discount - {{ discount.type }}</div>
@@ -133,7 +135,7 @@
               </div>
               <div class="row">
                 <div class="col s6 grey-text">Primary Tax</div>
-                <div class="col s6 bold ">
+                <div class="col s6 bold nopad">
                   <div class="input">
                     <input (change)="saveOrder(orderId,'primary_tax',order.primary_tax,order.vendor_id)"
                       [(ngModel)]="order.primary_tax">
@@ -142,7 +144,7 @@
               </div>
               <div class="row">
                 <div class="col s6 grey-text">Secondary Tax</div>
-                <div class="col s6 bold ">
+                <div class="col s6 bold nopad">
                   <div class="input">
                     <input (change)="saveOrder(orderId,'secondary_tax',order.secondary_tax,order.vendor_id)"
                       [(ngModel)]="order.secondary_tax">
@@ -151,7 +153,7 @@
               </div>
               <div class="row">
                 <div class="col s6 grey-text">Shipping + Handling</div>
-                <div class="col s6 bold ">
+                <div class="col s6 bold nopad">
                   <div class="input">
                     <input (change)="saveOrder(orderId,'shipping_handling',order.shipping_handling,order.vendor_id)"
                       [(ngModel)]="order.shipping_handling">
@@ -160,7 +162,7 @@
               </div>
               <div class="row">
                 <div class="col s6 grey-text">Total</div>
-                <div class="col s6 bold o-price reddish-text ">
+                <div class="col s6 bold o-price reddish-text nopad">
                   {{ order.total }}
                 </div>
               </div>
