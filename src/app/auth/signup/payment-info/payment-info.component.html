@@ -1,9 +1,9 @@
 <div class="auth-box center-align">
-  <div [class.hidden]="!isHidden" >
-    <div class="title">Please wait...</div>
-  </div>
+  <!--<div [class.hidden]="!isHidden" >-->
+    <!--<div class="title">Please wait...</div>-->
+  <!--</div>-->
 
-  <div [class.hidden]="isHidden">
+  <div>
     <div class="title">Payment Information</div>
     <div class="subtitle">How will you be paying for orders?</div>
     <form class="uptracker-form" materialize (ngSubmit)="onSubmit()" #signupForm="ngForm" autocomplete="off" novalidate>
