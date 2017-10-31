@@ -88,7 +88,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return true;
   }
 
-  checkSignupSteps(url){ 
+  checkSignupSteps(url){
     //if (this.userService.emailVerified()) {
     //  this.router.navigate(['/dashboard']);
     //  return false;

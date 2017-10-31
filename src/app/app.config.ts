@@ -30,6 +30,7 @@ export function RESTANGULAR_CONFIG (
     if ( sessionService.get('uptracker_token') && jwtService.tokenExpired(sessionService.get('uptracker_token')) ) {
       sessionService.remove('uptracker_selfId');
       sessionService.remove('uptracker_token');
+      sessionService.remove('uptracker_onboardAccounting');
       router.navigate['/login'];
       toasterService.pop('error', 'Your session has expired.');
       return;
@@ -79,6 +80,7 @@ export function RESTANGULAR_CONFIG (
     if ((err.status == 401 || err.status == 404) || (new RegExp("User doesn't exist.", 'i').test(errMsg) && actionAuth)) {
       sessionService.remove('uptracker_token');
       sessionService.remove('uptracker_selfId');
+      sessionService.remove('uptracker_onboardAccounting');
       router.navigate(['/login']);
     }
 

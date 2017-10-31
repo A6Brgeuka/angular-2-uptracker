@@ -379,7 +379,6 @@ export class AccountingComponent implements OnInit {
         annual_budget: this.accounting.total[i]
       }
     }
-
     this.accountService.putAccounting(this.accounting).subscribe(
       (res: any) => {
         this.router.navigate(['/dashboard']);

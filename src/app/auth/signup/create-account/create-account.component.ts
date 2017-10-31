@@ -40,13 +40,17 @@ export class CreateAccountComponent implements OnInit {
   onSubmit(){
     this.signupAccount.phone = this.selectedCountry[2] + ' ' + this.signupFormPhone;
     this.userService.signUp(this.signupAccount)
+    .do(res => console.log(res, 'AFTER SIGNUP'))
         .subscribe(
             (res: any) => {
+              console.log(res, 'REGISTRATION DATA');
               if (res.data.token)
                 this.userService.setSessionToken(res.data.token);
               this.router.navigate(['/signup/about-company']);
             },
-            (err) => {}
+            (err) => {
+              console.log(err);
+            }
         );
   }
 
