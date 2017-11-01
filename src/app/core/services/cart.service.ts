@@ -144,9 +144,10 @@ export class CartService extends ModelService {
     items.map((item) => idArray.push(item.id));
     
     let payload = {
-      item_ids: idArray
+      item_ids: idArray.toString()
     };
-    return this.restangular.all('cart').customDELETE('', payload)
+    return this.restangular.all('cart').customDELETE('', payload).map(res => res.data)
+    
   }
   
 }

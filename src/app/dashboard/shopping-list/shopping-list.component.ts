@@ -26,6 +26,7 @@ import { SlFilters } from '../../models/slfilters.model';
 })
 @DestroySubscribers()
 export class ShoppingListComponent implements OnInit {
+  public subscribers: any = {};
   public selectAll: string;
   public last_loc: string = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -226,11 +227,17 @@ export class ShoppingListComponent implements OnInit {
   
   deleteCheckedProducts() {
     let checkedResult = _.filter(this.cart$['_value'], 'status');
-    this.cartService.removeItems(checkedResult);
     
-   //let test$ =  this.cart$.map(items => {
-   //   let checkedResult = _.filter(items, 'status');
-   //   this.cartService.removeItems(checkedResult);
-   // }).subscribe()
+    this.subscribers.removeItemsSubscriber =  this.cartService.removeItems(checkedResult)
+    .subscribe(res => {
+      this.updateCart(res.items);
+      this.cartService.ordersPreview$.next([]);
+      this.totalOrders = 0;
+    })
   }
+  
+  updateCart(data) {
+    this.cart$.next(data);
+  }
+  
 }
