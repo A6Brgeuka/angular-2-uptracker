@@ -233,7 +233,9 @@ export class ShoppingListComponent implements OnInit {
       this.updateCart(res.items);
       this.cartService.ordersPreview$.next([]);
       this.totalOrders = 0;
-    })
+    },
+      (err) => console.log(err)
+    )
   }
   
   updateCart(data) {

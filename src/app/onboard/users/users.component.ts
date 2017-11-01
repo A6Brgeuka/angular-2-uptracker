@@ -28,7 +28,7 @@ export class OnboardUsersComponent implements OnInit {
 
   ngOnInit() {
     this.subscribers.getUsersSubscription = this.userService.selfData$.subscribe((res: any) => {
-      if (res.account) { 
+      if (res.account) {
         this.userArr = res.account.users;
       }
     });

@@ -30,7 +30,7 @@ export class AccountService extends ModelService{
   productAccountingCollection$ = Observable.empty();
   roleCollection$ = Observable.empty();
 
-  onboardAccounting: any = {
+  onboardacc: any = {
     total: [],
     budget_distribution: [],
     currency: 'USD',

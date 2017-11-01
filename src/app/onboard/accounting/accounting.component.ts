@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import * as _ from 'lodash';
@@ -13,7 +13,7 @@ import { UserService, AccountService, ToasterService, SessionService } from '../
   styleUrls: ['./accounting.component.scss']
 })
 @DestroySubscribers()
-export class AccountingComponent implements OnInit {
+export class AccountingComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public locationArr: any = [];
   public accounting: any = {};
@@ -49,15 +49,32 @@ export class AccountingComponent implements OnInit {
       public sessionService: SessionService
   ) {
   }
-
+  
+  addSubscribers() {
+    this.subscribers.getLocationsSubscription = this.userService.selfData$
+    .filter(res => res.account)
+    .subscribe((res: any) => {
+      console.log(res, 'LOCATIONSARR')
+      this.locationArr = res.account.locations;
+      if (this.locationArr.length > 1) {
+        this.moreThanOneSlider = true;
+      }
+      this.setLocationBudget();
+    });
+  }
+ ngOnDestroy() {
+   this.subscribers.getLocationsSubscription.unsubscribe();
+   this.subscribers.getCurrencySubscription.unsubscribe();
+   this.subscribers.taxRateSubscription.unsubscribe();
+ }
   ngOnInit() {
-    this.accounting = this.accountService.onboardAccounting;
+    this.accounting = this.accountService.onboardacc;
   
     this.subscribers.getCurrencySubscription = this.accountService.getCurrencies().subscribe((res) => {
       this.currencyArr = res;
     });
   
-    this.localAccounting = JSON.parse(this.sessionService.getLocal("onboardAccounting")) || {
+    this.localAccounting = JSON.parse(this.sessionService.getLocal("onboardacc")) || {
         total: [],
         budget_distribution: [],
         currency: 'USD',
@@ -67,13 +84,13 @@ export class AccountingComponent implements OnInit {
         disabledRange: [],
         taxRate: null
       };
-    _.each(this.accountService.onboardAccounting, (value, key) => {
+    _.each(this.accountService.onboardacc, (value, key) => {
       if(_.isArray(value) && !value.length) {
         if(this.localAccounting[key]) {
           this.accounting[key] = this.localAccounting[key];
         }
       }
-      else if(!this.accountService.onboardAccounting[key] || this.accountService.onboardAccounting[key] == "USD") {
+      else if(!this.accountService.onboardacc[key] || this.accountService.onboardacc[key] == "USD") {
         if(this.localAccounting[key]) {
           this.accounting[key] = this.localAccounting[key];
         }
@@ -82,15 +99,7 @@ export class AccountingComponent implements OnInit {
 
     this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 0; //1000000;
 
-    this.subscribers.getLocationsSubscription = this.userService.selfData$
-      .filter(res => res.account)
-      .subscribe((res: any) => {
-        this.locationArr = res.account.locations;
-        if (this.locationArr.length > 1) {
-          this.moreThanOneSlider = true;
-        }
-        this.setLocationBudget();
-      });
+
 
 
     //Tax Rate autocalc throw API
@@ -117,12 +126,12 @@ export class AccountingComponent implements OnInit {
     this.prev_annual_inventory_budget = this.accounting.annual_inventory_budget;
     this.maxRange = this.accounting.annual_inventory_budget;
     // set stored slider input values to null
-    let nulledTotals = _.map(this.accountService.onboardAccounting.total, (value) => {
+    let nulledTotals = _.map(this.accountService.onboardacc.total, (value) => {
       return null;
     });
-    this.accountService.onboardAccounting.total = nulledTotals;
+    this.accountService.onboardacc.total = nulledTotals;
     this.setLocationBudget();
-    this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting))
+    this.sessionService.setLocal('onboardacc', JSON.stringify(this.accounting))
   }
 
   setLocationBudget(){
@@ -131,12 +140,12 @@ export class AccountingComponent implements OnInit {
     let mod: number = this.amount2number(annual_inventory_budget) % this.locationArr.length;
 
     // check if saved location budget values count == current locations count for setting the values
-    if (this.accountService.onboardAccounting.total.length != this.locationArr.length) {
+    if (this.accountService.onboardacc.total.length != this.locationArr.length) {
       // set array length to current locationArr length and fill it with null values
-      this.accountService.onboardAccounting.total = _.map(_.cloneDeep(this.locationArr), (value) => {
+      this.accountService.onboardacc.total = _.map(_.cloneDeep(this.locationArr), (value) => {
         return null;
       });
-      this.accountService.onboardAccounting.disabledRange = _.map(_.cloneDeep(this.locationArr), (value) => {
+      this.accountService.onboardacc.disabledRange = _.map(_.cloneDeep(this.locationArr), (value) => {
         return false;
       });
       this.accounting.total = _.map(_.cloneDeep(this.locationArr), (value) => {
@@ -145,13 +154,13 @@ export class AccountingComponent implements OnInit {
       this.accounting.disabledRange = _.map(_.cloneDeep(this.locationArr), (value) => {
         return false;
       });
-      this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting));
+      this.sessionService.setLocal("onboardacc", JSON.stringify(this.accounting));
     }
 
     for (let i=0; i<this.locationArr.length; i++){
       this.disabledRange[i] = !this.moreThanOneSlider;
 
-      let budgetValue = this.accountService.onboardAccounting.total[i] || this.amount2number(locationBudget) + mod;
+      let budgetValue = this.accountService.onboardacc.total[i] || this.amount2number(locationBudget) + mod;
       mod = 0;
       this.setSliderValue(i, budgetValue);
 
@@ -159,10 +168,10 @@ export class AccountingComponent implements OnInit {
       this.prevInputValue[i] = this.accounting.total[i];
       console.log('prev value '+i, this.prevInputValue[i]);
     }
-    this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting));
+    this.sessionService.setLocal("onboardacc", JSON.stringify(this.accounting));
 
-    if(this.accountService.onboardAccounting.disabledRange.length || this.localAccounting) {
-      let local = this.accountService.onboardAccounting.disabledRange;
+    if(this.accountService.onboardacc.disabledRange.length || this.localAccounting) {
+      let local = this.accountService.onboardacc.disabledRange;
       let storage = this.localAccounting.disabledRange;
 
       if(local) {
@@ -262,7 +271,7 @@ export class AccountingComponent implements OnInit {
       });
     } while (mod != 0);
     this.prevInputValue[i] = changedInputValue;
-    this.sessionService.setLocal("onboardAccounting", JSON.stringify(this.accounting));
+    this.sessionService.setLocal("onboardacc", JSON.stringify(this.accounting));
   }
 
   setSliderValue(i, value){ console.log('new value ' + i + ' = ', value);
@@ -316,17 +325,17 @@ export class AccountingComponent implements OnInit {
     this.currencyDirty = true;
     this.currencySign = currency ? currency['html_entity'] : '$';
     this.accounting.currency = event.target.value;
-    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
+    this.sessionService.setLocal('onboardacc', JSON.stringify(this.accounting));
   }
 
   changeAnnualIncome(event) {
     this.accounting.annual_income = this.amount2number(event.target.value);
-    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
+    this.sessionService.setLocal('onboardacc', JSON.stringify(this.accounting));
   }
 
   changeTaxRate(event) {
     this.accounting.taxRate = event.target.value;
-    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
+    this.sessionService.setLocal('onboardacc', JSON.stringify(this.accounting));
   }
 
   viewCurrencySign(){
@@ -337,15 +346,15 @@ export class AccountingComponent implements OnInit {
   changeDate(event){
     this.monthDirty = true;
     this.accounting.fiscal_year = event.target.value;
-    this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
+    this.sessionService.setLocal('onboardacc', JSON.stringify(this.accounting));
   }
 
   toggleLock(i) {
     if (this.moreThanOneSlider) {
       this.disabledRange[i] = !this.disabledRange[i];
       this.accounting.disabledRange = this.disabledRange;
-      this.accountService.onboardAccounting.disabledRange = this.disabledRange;
-      this.sessionService.setLocal('onboardAccounting', JSON.stringify(this.accounting));
+      this.accountService.onboardacc.disabledRange = this.disabledRange;
+      this.sessionService.setLocal('onboardacc', JSON.stringify(this.accounting));
     } else {
       this.toasterService.pop('error', 'Only multiple locations can be adjusted.');
     }
