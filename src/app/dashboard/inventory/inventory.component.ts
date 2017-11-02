@@ -281,13 +281,17 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   private checkOverlaps(margin, product, thumbColor = '#fff') {
-    if (Number(margin) < 11) {
-      return { 'left': 'calc(11% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    if (Number(margin) < 11 && product.on_hand < product.critical_level) {
+      return { 'left': 'calc(11% - 5px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) > 89 && product.on_hand > product.overstock_level) {
+      return { 'left': 'calc(89% - 25px)', 'background-color' : thumbColor, 'right': 'inherit' };
     }
     else if (Number(margin) > 89 && product.on_hand !== product.overstock_level) {
-      return { 'left': 'calc(89% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
+      return { 'left': 'calc(89% - 18px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) < 11) {
+      return { 'left': 'calc(11% - 15px)', 'background-color' : thumbColor, 'right': 'inherit' };
     } else {
-      return { 'left': `calc(${margin}% - 12px)`, 'background-color' : thumbColor, 'right': 'inherit' };
+      return { 'left': `calc(${margin}% - 10px)`, 'background-color' : thumbColor, 'right': 'inherit' };
     }
   }
   
