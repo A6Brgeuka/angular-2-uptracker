@@ -285,8 +285,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
       return { 'left': 'calc(11% - 5px)', 'background-color' : thumbColor, 'right': 'inherit' };
     } else if (Number(margin) > 89 && product.on_hand > product.overstock_level) {
       return { 'left': 'calc(89% - 25px)', 'background-color' : thumbColor, 'right': 'inherit' };
-    }
-    else if (Number(margin) > 89 && product.on_hand !== product.overstock_level) {
+    } else if (Number(margin) > 89 && product.on_hand !== product.overstock_level) {
       return { 'left': 'calc(89% - 18px)', 'background-color' : thumbColor, 'right': 'inherit' };
     } else if (Number(margin) < 11) {
       return { 'left': 'calc(11% - 15px)', 'background-color' : thumbColor, 'right': 'inherit' };
