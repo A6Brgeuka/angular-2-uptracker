@@ -83,8 +83,8 @@
                   materialize="material_select"
                   required
                   (change)="changeLocation($event)"
-                  [materializeSelectOptions]="locations$ | async">
-                <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
+                  [materializeSelectOptions]="locationArr">
+                <option *ngFor="let location of locationArr" [value]="location.id">{{location.name}}</option>
               </select>
             </div>
           </div>

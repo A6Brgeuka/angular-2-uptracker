@@ -634,8 +634,8 @@
         <div class="select select-light">
           <select materialize="material_select"
             [(ngModel)]="newInventory.department"
-            [materializeSelectOptions]="departmentCollection$ | async">
-            <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+            [materializeSelectOptions]="departmentCollection">
+            <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
           </select>
         </div>
         <div class="ttl mrg-top-15">Category</div>
@@ -660,8 +660,8 @@
         <div class="select select-light">
           <select materialize="material_select"
             [(ngModel)]="newInventory.account_category"
-            [materializeSelectOptions]="productAccountingCollection$ | async">
-            <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}
+            [materializeSelectOptions]="productAccountingCollection">
+            <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
             </option>
           </select>
         </div>

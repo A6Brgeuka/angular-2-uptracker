@@ -63,7 +63,7 @@
                 [materializeActions]=""
                 (change)="changeLocation($event)">
               <option selected value="" >All Locations</option>
-              <option *ngFor="let location of accountService.locations$ | async" [value]="location.id">{{location.name}}</option>
+              <option *ngFor="let location of locationArr" [value]="location.id">{{location.name}}</option>
             </select>
           </div>
         </div>

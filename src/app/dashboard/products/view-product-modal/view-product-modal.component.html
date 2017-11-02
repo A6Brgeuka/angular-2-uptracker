@@ -98,8 +98,8 @@
             <select
               [(ngModel)]="productCopy.department"
               materialize="material_select"
-              [materializeSelectOptions]="departmentCollection$ | async">
-              <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+              [materializeSelectOptions]="departmentCollection">
+              <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
             </select>
           </div>
         </div>
@@ -111,8 +111,8 @@
             <select
               [(ngModel)]="productCopy.category"
               materialize="material_select"
-              [materializeSelectOptions]="productCategoriesCollection$ | async">
-              <option *ngFor="let cat of productCategoriesCollection$ | async" [value]="cat">{{cat}}
+              [materializeSelectOptions]="productCategoriesCollection">
+              <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
               </option>
             </select>
           </div>
@@ -125,8 +125,8 @@
             <select
               [(ngModel)]="productCopy.account_category"
               materialize="material_select"
-              [materializeSelectOptions]="productAccountingCollection$ | async">
-              <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}
+              [materializeSelectOptions]="productAccountingCollection">
+              <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
               </option>
             </select>
           </div>

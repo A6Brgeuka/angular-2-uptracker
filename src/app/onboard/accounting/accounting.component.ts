@@ -54,7 +54,6 @@ export class AccountingComponent implements OnInit, OnDestroy {
     this.subscribers.getLocationsSubscription = this.userService.selfData$
     .filter(res => res.account)
     .subscribe((res: any) => {
-      console.log(res, 'LOCATIONSARR')
       this.locationArr = res.account.locations;
       if (this.locationArr.length > 1) {
         this.moreThanOneSlider = true;

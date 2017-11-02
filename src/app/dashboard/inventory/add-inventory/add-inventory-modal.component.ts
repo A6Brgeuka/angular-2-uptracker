@@ -90,7 +90,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public categoryValid: boolean = true;
   
   public departmentCollection$: Observable<any> = new Observable<any>();
+  public departmentCollection: any[] = [];
   public productAccountingCollection$: Observable<any> = new Observable<any>();
+  public productAccountingCollection:  any[] = [];
   public productCategoriesCollection: any;
   
   @ViewChild('step1') step1: ElementRef;
@@ -261,6 +263,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
     .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
     .subscribe((pack:any) => this.autocompleteConsPackage = pack);
+    
+    this.subscribers.departmentCollectionSubscription = this.departmentCollection$
+    .subscribe(departments => this.departmentCollection = departments);
+    
+    this.subscribers.productAccountingCollectionSubscription = this.productAccountingCollection$
+    .subscribe(productAccountingCol => this.productAccountingCollection = productAccountingCol);
   }
   
   ngOnInit() {

@@ -34,23 +34,31 @@ export class ViewUserComponent implements OnInit {
   }
   
   ngOnInit() {
-    Observable.combineLatest(
+    this.subscribers.userSubscription = Observable.combineLatest(
       this.route.params,
       this.userService.selfData$
     )
+    .filter(([id, user]) => {
+      return user.id;
+    })
     .map(([params, selfData]) => {
       this.userId = params['id'];
       return selfData.account.users;
     })
     .subscribe(user => {
       this.user = _.find(user, (us: any) => (us.id == this.userId));
-      this.userLocations = _.filter(this.accountService.selfData.locations, (location: any) => {
-        let userLocation: any = _.find(this.user.locations, {location_id: location.id});
-        if (userLocation) {
-          return userLocation.checked;
-        }
-        return false;
-      });
+      if (!this.user) {
+        this.goBack();
+      } else {
+        this.userLocations = _.filter(this.accountService.selfData.locations, (location: any) => {
+          let userLocation: any = _.find(this.user.locations, {location_id: location.id});
+          if (userLocation) {
+            return userLocation.checked;
+          }
+          return false;
+        });
+      }
+
     });
     //ToDO
     //this.toSendMessage = userData.sendMessage || false;

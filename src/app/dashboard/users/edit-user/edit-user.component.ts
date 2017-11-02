@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Location }                 from '@angular/common';
 
 import { Modal } from 'angular2-modal';
@@ -24,7 +24,7 @@ import { UserModel } from '../../../models/user.model';
   styleUrls: ['./edit-user.component.scss']
 })
 @DestroySubscribers()
-export class EditUserComponent implements OnInit {
+export class EditUserComponent implements OnInit, OnDestroy {
   public searchKey: any;
   public roleArr: any;
   
@@ -34,6 +34,7 @@ export class EditUserComponent implements OnInit {
   public locations$: Observable<any>;
   public locationCheckboxes$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public departmentCollection$: Observable<any> = new Observable<any>();
+  public departmentCollection: any[];
   public locationDirty: boolean = false;
   public departmentDirty: boolean = false;
   public profileFormPhone: string = null;
@@ -83,14 +84,15 @@ export class EditUserComponent implements OnInit {
   
   ngOnInit() {
     
-    
     this.locations$ = Observable
     .combineLatest(
       this.userService.selfData$,
       this.locationCheckboxes$
     )
+    .filter(([user, checkbox]) => {
+      return user.id;
+    })
     .map(([selfData, checkboxes]) => {
-      
       this.locationArr = selfData.account.locations;
       
       // set default location for new user or selfData (current user)
@@ -114,10 +116,13 @@ export class EditUserComponent implements OnInit {
       return this.locationArr;
     });
   
-    Observable.combineLatest(
+    this.subscribers.usersSubscription = Observable.combineLatest(
       this.route.params,
       this.userService.selfData$
     )
+    .filter(([id, user]) => {
+      return user.id;
+    })
     .map(([params, selfData]) => {
       this.userId = params['id'];
       return selfData.account.users;
@@ -139,6 +144,8 @@ export class EditUserComponent implements OnInit {
   
   
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
+    this.subscribers.departmentCollectionSubscription = this.departmentCollection$
+    .subscribe(departments => this.departmentCollection = departments);
     
     this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {
       if (res.account) {
@@ -161,6 +168,10 @@ export class EditUserComponent implements OnInit {
         }
       }
     });
+  }
+  
+  ngOnDestroy() {
+    this.subscribers.usersSubscription.unsubscribe();
   }
   
   setDefaultPermissions() {
