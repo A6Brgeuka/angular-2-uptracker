@@ -160,62 +160,62 @@ export class AccountService extends ModelService{
       return this.productAccountingCollection$;
     });
   }
-
-  getUsers(){
+  
+  getUsers() {
     let usersLoaded = (this.userService.selfData.account.users && !_.isEmpty(this.userService.selfData.account.users)) ? this.userService.selfData.account.users[0].name : false;
     if (!usersLoaded) {
       return this.restangular.one('accounts', this.userService.selfData.account_id).all('users').customGET('')
-          .map((res: any) => {
-            return res.data.users;
-          })
-          .do((res: any) => {
-            let account = this.userService.selfData.account;
-            account.users = res;
-            this.updateSelfData(account);
-          });
+      .map((res: any) => {
+        return res.data.users;
+      })
+      .do((res: any) => {
+        let account = this.userService.selfData.account;
+        account.users = res;
+        this.updateSelfData(account);
+      });
     } else {
       return this.userService.selfData$.map(res => res.account.users);
     }
   }
-
-  addUser(data){
+  
+  addUser(data) {
     return this.restangular.all('users').post(data)
-        .do((res: any) => {
-          let account = this.userService.selfData.account;
-          // if new user push him to account users array, else update user in array
-          if (_.some(account.users, {'id': res.data.user.id})){
-            let userArr = _.map(account.users, function(user){
-              if (user['id'] == res.data.user.id) {
-                return _.cloneDeep(res.data.user);
-              } else {
-                return user;
-              }
-            });
-            account.users = userArr;
+    .do((res: any) => {
+      let account = this.userService.selfData.account;
+      // if new user push him to account users array, else update user in array
+      if (_.some(account.users, {'id': res.data.user.id})) {
+        let userArr = _.map(account.users, function (user) {
+          if (user['id'] == res.data.user.id) {
+            return _.cloneDeep(res.data.user);
           } else {
-            account.users.push(res.data.user);
-          }
-
-          // check if changed user self data
-          if (res.data.user.id == this.userService.getSelfId()){
-            let user = res.data.user;
-            user.account = account;
-            this.userService.updateSelfData(user);
-          } else {
-            this.updateSelfData(account);
+            return user;
           }
         });
+        account.users = userArr;
+      } else {
+        account.users.push(res.data.user);
+      }
+      
+      // check if changed user self data
+      if (res.data.user.id == this.userService.getSelfId()) {
+        let user = res.data.user;
+        user.account = account;
+        this.userService.updateSelfData(user);
+      } else {
+        this.updateSelfData(account);
+      }
+    });
   }
 
   deleteUser(data: any){
     return this.restangular.one('users', data.id).remove()
-        .do((res: any) => {
-          let account = this.userService.selfData.account;
-          _.remove(account.users, (user: any) => {
-            return user.id == data.id;
-          });
-          this.updateSelfData(account);
+      .do((res: any) => {
+        let account = this.userService.selfData.account;
+        _.remove(account.users, (user: any) => {
+          return user.id == data.id;
         });
+        this.updateSelfData(account);
+      });
   }
 
   changeUserPassword(id, passObj) {
@@ -227,9 +227,9 @@ export class AccountService extends ModelService{
 
   putAccounting(data: any){
     return this.restangular.one('accounts', data.account_id).customPUT(data)
-        .do((res: any) => {
-          this.updateSelfData(res.data.account.account);
-        });
+      .do((res: any) => {
+        this.updateSelfData(res.data.account.account);
+      });
   }
 
   getCurrencies(){
@@ -272,7 +272,6 @@ export class AccountService extends ModelService{
   }
 
   getTaxRate(address) {
-    
     let url = this.appConfig.taxRate.endpoint + "?postal=" + address.postal_code + "&country=usa" + "&state=" + address.state + "&city=" + address.city + "&street=" + encodeURIComponent(address.street_1) + "&apikey=" + encodeURIComponent(this.appConfig.taxRate.apiKey);
     return this.http.get(url)
   }
