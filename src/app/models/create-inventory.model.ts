@@ -16,6 +16,10 @@ export class InventoryProductModel {
   images: any[] = [];
   vendors: any[] = [];
   
+  account_product_id: string = null;
+  account_variant_id: string = null;
+  inventory_product_id: string = null;
+  
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {
@@ -80,11 +84,6 @@ export class InventoryModel {
   locations: InventoryLocationModel[] =[];
   inventory_by: string = '';
   hazardous: boolean = false;
-  //package_type: string = null;
-  //sub_package_type: string = null;
-  //sub_package_qty: number = null;
-  //consumable_unit_type: string = null;
-  //consumable_unit_qty: number = null;
   
   inventory_by_array: any[] = [];
   

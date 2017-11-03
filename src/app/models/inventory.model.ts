@@ -49,6 +49,10 @@ export class InventorySearchResults {
   custom_product_id: string = null; // my prop
   vendor_id: string = null;
   vendor_name: string = null;
+  
+  account_product_id: string = null;
+  account_variant_id: string = null;
+  inventory_product_id: string = null;
 
   constructor(obj?:any) {
     for (let field in obj) {
