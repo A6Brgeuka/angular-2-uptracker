@@ -89,10 +89,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public fileIsOver: boolean = false;
   public categoryValid: boolean = true;
   
-  public departmentCollection$: Observable<any> = new Observable<any>();
-  public departmentCollection: any[] = [];
-  public productAccountingCollection$: Observable<any> = new Observable<any>();
-  public productAccountingCollection:  any[] = [];
+  public departmentCollection: any;
+  public productAccountingCollection:  any;
   public productCategoriesCollection: any;
   
   @ViewChild('step1') step1: ElementRef;
@@ -124,7 +122,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.showAddCustomBtn = (key !== null);
       return this.inventoryService.search(key)})
     .subscribe((data: searchData) => {
-      console.log(data)
+      
       if (data.results) {
         this.total = data.count;
         this.searchResults$.next(data.results);
@@ -141,8 +139,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           this.checkConsPackage(null);
         }
         this.checkedProduct$.next({});
-      } else {
-        console.log(data);
       }
 
     });
@@ -168,8 +164,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.fileActions();
     this.msdsActions();
-    this.departmentCollection$ = this.accountService.getDepartments().take(1);
-    this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
   }
   
   onSearchTypeIn(event) {
@@ -240,7 +234,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addSubscribers() {
-    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1).subscribe(res => this.productCategoriesCollection = res);
+    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1)
+    .subscribe(res => this.productCategoriesCollection = res);
   
     this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
     .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
@@ -264,10 +259,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
     .subscribe((pack:any) => this.autocompleteConsPackage = pack);
     
-    this.subscribers.departmentCollectionSubscription = this.departmentCollection$
+    this.subscribers.departmentCollectionSubscription = this.accountService.getDepartments().take(1)
     .subscribe(departments => this.departmentCollection = departments);
     
-    this.subscribers.productAccountingCollectionSubscription = this.productAccountingCollection$
+    this.subscribers.productAccountingCollectionSubscription = this.accountService.getProductAccounting().take(1)
     .subscribe(productAccountingCol => this.productAccountingCollection = productAccountingCol);
   }
   
@@ -322,7 +317,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       deleteFromItems$
     ).publishReplay(1).refCount();
     
-    this.items$.subscribe(res => {
+    this.subscribers.itemsSubscription = this.items$.subscribe(res => {
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {
@@ -378,7 +373,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
       });
-      console.log(this.newInventory);
     }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
@@ -459,7 +453,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.saveAdded$.unsubscribe();
     this.productImg$.unsubscribe();
     this.updateAdded$.unsubscribe();
-    //this.items$.unsubscribe();
   }
 
   compareVendor(v1, v2) {
