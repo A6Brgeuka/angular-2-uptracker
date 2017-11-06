@@ -42,7 +42,8 @@ export class DashboardComponent implements OnInit {
   }
   
   addSubscribers() {
-    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
+    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
+    .subscribe((res: any) => {
       this.selectedLocation = res ? res.id : '';
     });
     this.subscribers.dashboardLocationProductSubscription = this.accountService.locations$

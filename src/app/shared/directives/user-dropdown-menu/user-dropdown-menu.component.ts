@@ -7,6 +7,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { EditUserModal } from '../../modals/index';
 import { UserService } from '../../../core/services/index';
 import { ModalWindowService } from "../../../core/services/modal-window.service";
+import { AccountService } from '../../../core/services/account.service';
 
 @Component({
   selector: 'user-dropdown-menu',
@@ -25,6 +26,7 @@ export class UserDropdownMenuDirective implements OnInit {
 
   public constructor(
       public userService: UserService,
+      public accountService: AccountService,
       public modal: Modal,
       public modalWindowService: ModalWindowService
   ) {
@@ -56,5 +58,10 @@ export class UserDropdownMenuDirective implements OnInit {
 
   logOut(){
     this.userService.logout().subscribe();
+    this.updateDashboardLocation();
+  }
+  
+  updateDashboardLocation() {
+    this.accountService.dashboardLocation$.next(null);
   }
 }
