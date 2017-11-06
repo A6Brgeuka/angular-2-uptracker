@@ -105,10 +105,10 @@
       </div>
     </div>
     <div class="col s12 m4">
-      <div class="label left-align">Zip</div>
+      <div class="label left-align">Postal Code</div>
       <input
           id="zip"
-          placeholder="Enter Zip Code"
+          placeholder="Enter Postal Code"
           class="validate col s12 minlength-validation"
           [(ngModel)]="location.zip"
           name="zip"
@@ -116,7 +116,7 @@
           required minlength="4"
           type="text">
       <div [hidden]="zip.valid || zip.pristine" class="error red-text left-align">
-        Zip code is required.
+        Postal Code is required.
       </div>
     </div>
   </div>
