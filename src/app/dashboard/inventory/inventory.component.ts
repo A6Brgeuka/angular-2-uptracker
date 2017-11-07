@@ -258,7 +258,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     let defaultLeft = {'left': '0', 'right': 'inherit'};
     let defaultRight = {'left': 'inherit', 'right': '0'};
     
-    if (product.on_hand < product.critical_level) {
+    if (product.critical_level == null || product.overstock_level == null) {
+      return { 'left': 'calc(50% - 10px)', 'background-color' : thumbColor };
+    } else if (product.on_hand < product.critical_level) {
       let criticalMargin = ((product.critical_level - product.on_hand) * 100 / (product.overstock_level - product.on_hand)).toString();
       product.criticalLevel = this.checkOverlaps(criticalMargin, product);
       product.overstockLevel = defaultRight;
@@ -281,14 +283,14 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   private checkOverlaps(margin, product, thumbColor = '#fff') {
-    if (Number(margin) < 11 && product.on_hand < product.critical_level) {
-      return { 'left': 'calc(11% - 5px)', 'background-color' : thumbColor, 'right': 'inherit' };
-    } else if (Number(margin) > 89 && product.on_hand > product.overstock_level) {
-      return { 'left': 'calc(89% - 25px)', 'background-color' : thumbColor, 'right': 'inherit' };
-    } else if (Number(margin) > 89 && product.on_hand !== product.overstock_level) {
-      return { 'left': 'calc(89% - 18px)', 'background-color' : thumbColor, 'right': 'inherit' };
-    } else if (Number(margin) < 11) {
-      return { 'left': 'calc(11% - 15px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    if (Number(margin) < 12 && product.on_hand < product.critical_level) {
+      return { 'left': 'calc(12% - 5px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) > 88 && product.on_hand > product.overstock_level) {
+      return { 'left': 'calc(88% - 25px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) > 88 && product.on_hand !== product.overstock_level) {
+      return { 'left': 'calc(88% - 18px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) < 12) {
+      return { 'left': 'calc(12% - 15px)', 'background-color' : thumbColor, 'right': 'inherit' };
     } else {
       return { 'left': `calc(${margin}% - 10px)`, 'background-color' : thumbColor, 'right': 'inherit' };
     }

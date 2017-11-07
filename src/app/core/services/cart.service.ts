@@ -117,7 +117,6 @@ export class CartService extends ModelService {
       r.selected = true;
       r.prev_location = r.location_id;
       
-      
       return r;
     });
     return res;

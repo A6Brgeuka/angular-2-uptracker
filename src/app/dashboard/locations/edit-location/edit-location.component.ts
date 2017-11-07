@@ -127,8 +127,7 @@ export class EditLocationComponent implements OnInit {
 
     this.floorStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: true}));
     this.backStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: false}));
-
-    // this.states$ = this.accountService.getStates().take(1);
+    
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
     
   }
@@ -255,7 +254,8 @@ export class EditLocationComponent implements OnInit {
   }
 
   addLocation(data) {
-    this.locationService.addLocation(data).subscribe(
+    this.locationService.addLocation(data)
+    .subscribe(
       (res: any) => {
         this.goBack();
       }
@@ -323,11 +323,11 @@ export class EditLocationComponent implements OnInit {
 
     if (this.location.id) {
       this.locationService.updateInventoryLocations(this.location).subscribe(
-          res => {},
-          err => {
-            _.remove(this.location.inventory_locations, {_id: storageLocation._id});
-            this.storageLocations$.next(this.location.inventory_locations);
-          });
+        res => {},
+        err => {
+          _.remove(this.location.inventory_locations, {_id: storageLocation._id});
+          this.storageLocations$.next(this.location.inventory_locations);
+        });
     }
 
     this.inventory_location = { name: '', floor_stock: true};
@@ -363,6 +363,7 @@ export class EditLocationComponent implements OnInit {
   }
 
   addGoogleAddress(event) {
+
     let postalFlag = false;
     if (event.address_components) {
       event.address_components.forEach((item) => {
@@ -401,6 +402,10 @@ export class EditLocationComponent implements OnInit {
 
     this.location.formattedAddress = event.inputValue;
     
+  }
+  
+  addAddress(event) {
+    this.location.address = event.target.value;
   }
   
   goBack(): void {

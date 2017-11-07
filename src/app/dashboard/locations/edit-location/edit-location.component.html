@@ -152,6 +152,7 @@
         type="text"
         (googleAdress)="addGoogleAddress($event)"
         googlePlacesInput
+        (change)="addAddress($event)"
       >
       <div [hidden]="google_adrress.valid || google_adrress.pristine" class="error red-text left-align">
         Google Address is required.

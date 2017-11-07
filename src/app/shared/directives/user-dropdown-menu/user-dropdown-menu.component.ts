@@ -20,36 +20,36 @@ export class UserDropdownMenuDirective implements OnInit {
   
   public subscribers: any = {};
   public user: any;
-  public userName: string;
+  //public userName: string;
   public userShortName: string;
   public showMenu: boolean;
 
   public constructor(
-      public userService: UserService,
-      public accountService: AccountService,
-      public modal: Modal,
-      public modalWindowService: ModalWindowService
+    public userService: UserService,
+    public accountService: AccountService,
+    public modal: Modal,
+    public modalWindowService: ModalWindowService
   ) {
   }
 
   ngOnInit(){
     this.showMenu = !this.onlyLogout;
     this.subscribers.gerSelfDataSubscription = this.userService.selfData$
-        .filter((res: any) => {
-          return !this.userService.isGuest();
-        })
-        .subscribe((res: any) => {
-          this.user = res;
-          let nameArr = this.user.name.split(" ");
-          let firstname = nameArr[0];
-          this.userShortName = firstname.split("")[0];
-          let lastname = null;
-          if (nameArr.length > 1) {
-            lastname = nameArr[nameArr.length-1];
-            let shortLastname = lastname.split("")[0];
-            this.userShortName += shortLastname;
-          }
-        });
+      .filter((res: any) => {
+        return !this.userService.isGuest();
+      })
+      .subscribe((res: any) => {
+        this.user = res;
+        let nameArr = this.user.name.split(" ");
+        let firstname = nameArr[0];
+        this.userShortName = firstname.split("")[0];
+        let lastname = null;
+        if (nameArr.length > 1) {
+          lastname = nameArr[nameArr.length-1];
+          let shortLastname = lastname.split("")[0];
+          this.userShortName += shortLastname;
+        }
+      });
   }
 
   editUserModal(){
