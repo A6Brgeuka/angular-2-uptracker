@@ -104,7 +104,7 @@
       <div class="price-row" *ngFor="let item of (convertedOrder$ | async).order_items">
         <div class="price-item">{{item.catalog_number || '&nbsp;' }}</div>
         <div class="price-item">
-          {{ item.item_description || '&nbsp;' }}
+          {{ item.item_description || item.item_name }}
         </div>
         <div class="price-item">{{ item.quantity || '&nbsp;' }}</div>
         <div class="price-item">{{ item.unit_price || '&nbsp;' }}</div>
@@ -127,7 +127,7 @@
         </div>
         <div *ngFor="let item of (convertedOrder$ | async).discount_items" class="price-row">
           <div class="price-item">{{ item.discount_type }}&nbsp;</div>
-          <div class="price-item">{{ item.item_description }}&nbsp;
+          <div class="price-item">{{ item.item_description || item.item_name }}&nbsp;
           </div>
           <div class="price-item">&nbsp;</div>
           <div class="price-item">{{ item.discount_bogo_discounted }}&nbsp;</div>
