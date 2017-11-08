@@ -112,26 +112,28 @@
         <div class="price-item">{{ item.sub_total || '&nbsp;' }}</div>
       </div>
     </div>
-    <div class="header-with-line">
-      <div>Discounts</div>
-    </div>
-    <div class="price-table">
-      <div class="price-row headings">
-        <div class="price-item">Type</div>
-        <div class="price-item">Description</div>
-        <div class="price-item">&nbsp;</div>
-        <div class="price-item">Discount Qty</div>
-        <div class="price-item">Reward Pts</div>
-        <div class="price-item">Discount</div>
+    <div *ngIf="(convertedOrder$ | async).order?.discount !== 0">
+      <div class="header-with-line">
+        <div>Discounts</div>
       </div>
-      <div *ngFor="let item of (convertedOrder$ | async).discount_items" class="price-row">
-        <div class="price-item">{{ item.discount_type }}&nbsp;</div>
-        <div class="price-item">{{ item.item_description }}&nbsp;
+      <div class="price-table">
+        <div class="price-row headings">
+          <div class="price-item">Type</div>
+          <div class="price-item">Description</div>
+          <div class="price-item">&nbsp;</div>
+          <div class="price-item">Discount Qty</div>
+          <div class="price-item">Reward Pts</div>
+          <div class="price-item">Discount</div>
         </div>
-        <div class="price-item">&nbsp;</div>
-        <div class="price-item">{{ item.discount_bogo_discounted }}&nbsp;</div>
-        <div class="price-item">{{ item.discount_reward_points }}&nbsp;</div>
-        <div class="price-item">-{{ item.discount_amount }}&nbsp;</div>
+        <div *ngFor="let item of (convertedOrder$ | async).discount_items" class="price-row">
+          <div class="price-item">{{ item.discount_type }}&nbsp;</div>
+          <div class="price-item">{{ item.item_description }}&nbsp;
+          </div>
+          <div class="price-item">&nbsp;</div>
+          <div class="price-item">{{ item.discount_bogo_discounted }}&nbsp;</div>
+          <div class="price-item">{{ item.discount_reward_points }}&nbsp;</div>
+          <div class="price-item">-{{ item.discount_amount }}&nbsp;</div>
+        </div>
       </div>
     </div>
     <div class="header-with-line">
@@ -146,7 +148,7 @@
           {{ (convertedOrder$ | async).amounts_formatted?.line_items }}
         </div>
       </div>
-      <div>
+      <div *ngIf="(convertedOrder$ | async).order?.discount !== 0">
         <div class="total-name">
           Discounts
         </div>
