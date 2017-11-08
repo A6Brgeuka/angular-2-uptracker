@@ -44,7 +44,7 @@
         <select
         [(ngModel)]="defaultProduct.location_id"
         materialize="material_select">
-        <option *ngFor="let location of inventory.inventory_item_locations" [value]="location.id">{{location.name}}</option>
+        <option *ngFor="let location of inventory.inventory_item_locations" [value]="location.location_id">{{location.name}}</option>
         </select>
       </div>
     </div>

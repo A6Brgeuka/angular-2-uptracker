@@ -31,7 +31,8 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
     public toasterService: ToasterService,
   ) {
     this.inventory = dialog.context.data;
-    this.defaultProduct = _.find(this.inventory.inventory_products, 'default_product')
+    this.defaultProduct = _.find(this.inventory.inventory_products, 'default_product');
+    this.defaultProduct.location_id = this.inventory.inventory_item_locations[0].location_id;
     dialog.setCloseGuard(this);
   }
   
@@ -41,32 +42,17 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
   
   saveOrder() {
   let noVendorAutoSelect = !!(this.defaultProduct.vendor_id);
-    //let data = {
-    //  "location_id": this.inventory.inventory_item_locations[0].location_id,
-    //  "product_id": this.defaultProduct.product_id,
-    //  "variants": [
-    //    {
-    //      "location_id": this.inventory.inventory_item_locations[0].location_id,
-    //      "vendor_id": this.defaultProduct.vendor_id,
-    //      "variant_id": this.defaultProduct.variant_id,
-    //      "vendor_variant_id": '',
-    //      "qty": this.defaultProduct.on_hand,
-    //      "unit_type": this.inventory.inventory_by,
-    //      "vendor_auto_select": !noVendorAutoSelect,
-    //    }
-    //  ]
-    //};
   
     let data = {
-      "product_id": null,
-      "account_product_id": this.defaultProduct.product_id,
+      "product_id": this.defaultProduct.product_id,
+      "account_product_id": this.defaultProduct.account_product_id,
       "variants": [
         {
-          "location_id": this.inventory.inventory_item_locations[0].location_id,
-          "variant_id": null,
-          "account_variant_id": this.defaultProduct.variant_id,
+          "location_id": this.defaultProduct.location_id,
+          "variant_id": this.defaultProduct.variant_id,
+          "account_variant_id": this.defaultProduct.account_variant_id,
           "vendor_variant_id": null,
-          "vendor_id": null,
+          "vendor_id": this.defaultProduct.vendor_id,
           "qty": this.defaultProduct.on_hand,
           "vendor_auto_select": !noVendorAutoSelect,
           "unit_type": this.inventory.inventory_by,
