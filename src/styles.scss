@@ -400,15 +400,21 @@ a {
       }
     }
 
+    //.caret {
+    //  background: url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
+    //  text-indent: -5000px;
+    //  width: 10px;
+    //  height: 6px;
+    //  top: 50%;
+    //  margin-top: -3px;
+    //  right: 10px;
+    //  z-index: 10;
+    //}
     .caret {
-      background: url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
-      text-indent: -5000px;
-      width: 10px;
-      height: 6px;
-      top: 50%;
-      margin-top: -3px;
-      right: 10px;
-      z-index: 10;
+      opacity: 0;
+    }
+    .caret+input {
+      background: $light-light-grey url(/assets/img/icon-dropdown-arrow.svg) no-repeat 95% center;
     }
 
     input.select-dropdown {
