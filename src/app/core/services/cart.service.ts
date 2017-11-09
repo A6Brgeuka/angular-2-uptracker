@@ -127,7 +127,7 @@ export class CartService extends ModelService {
   }
   
   updateItem (data) {
-    return this.restangular.one('cart',data.location_id).customPUT(data);
+    return this.restangular.one('cart',data.location_id).customPUT(data).map(res => res.data);
   }
   
   removeItem (data) {

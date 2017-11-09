@@ -18,6 +18,7 @@ import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
 import { SlFilters } from '../../models/slfilters.model';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-shopping-list',
@@ -27,10 +28,12 @@ import { SlFilters } from '../../models/slfilters.model';
 @DestroySubscribers()
 export class ShoppingListComponent implements OnInit {
   public subscribers: any = {};
-  public selectAll: string;
+  public selectAll: boolean = false;
   public last_loc: string = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public selectAll$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public selectAllCollection$: Observable<any>;
   public cart: any = [];
   public total: number = 1;
   public products: any = [];
@@ -55,7 +58,7 @@ export class ShoppingListComponent implements OnInit {
      
     Observable.combineLatest(
       this.cartService.collection$,
-      this.cartService.filters$
+      this.cartService.filters$,
     )
     .subscribe(([r, f]) => {
       let cart = _.filter(r, (item: any) => (
@@ -70,6 +73,7 @@ export class ShoppingListComponent implements OnInit {
     });
     
     //this.changePriceModal();
+    
   }
   
   selectOrder(id) {
@@ -187,6 +191,7 @@ export class ShoppingListComponent implements OnInit {
   
   
   saveItem(item: any = {}) {
+   
     let data = {
       "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
       "product_id": item.product_id,
@@ -206,9 +211,9 @@ export class ShoppingListComponent implements OnInit {
       data['variants'][0]['vendor_id'] = item.selected_vendor.id;
     }
     this.cartService.updateItem(data)
-    .subscribe((r: any) => {
+    .subscribe((res: any) => {
         this.changed[item.id] = false;
-        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+        this.cartService.updateCollection(res.items);
       },
       (err: any) => {
         console.error(err);
@@ -218,6 +223,27 @@ export class ShoppingListComponent implements OnInit {
   changeRow(item) {
     this.changed[item['id']] = true;
     this.saveItem(item);
+  }
+  
+  selectAllFunc(selectAll) {
+    this.selectAll$.next(!selectAll);
+    this.updateSelectAll();
+  }
+  
+  updateSelectAll() {
+    this.selectAllCollection$ = Observable.combineLatest(
+      this.cartService.collection$,
+      this.selectAll$
+    ).take(1);
+  
+    this.subscribers.selectAllSubscription = this.selectAllCollection$
+    .subscribe(([r, select]) => {
+      let status = select ? 1 : 0;
+      let cart = _.forEach(r, (item: any) => {
+        item.status = status;
+      });
+      this.updateCart(cart);
+    });
   }
   
   applyFilters(data: SlFilters) {
@@ -231,7 +257,7 @@ export class ShoppingListComponent implements OnInit {
     this.subscribers.removeItemsSubscriber =  this.cartService.removeItems(checkedResult)
     .subscribe(res => {
       this.updateCart(res.items);
-      this.cartService.ordersPreview$.next([]);
+      this.updateOrderPreview([]);
       this.totalOrders = 0;
     },
       (err) => console.log(err)
@@ -240,6 +266,10 @@ export class ShoppingListComponent implements OnInit {
   
   updateCart(data) {
     this.cart$.next(data);
+  }
+  
+  updateOrderPreview(data) {
+    this.cartService.ordersPreview$.next(data);
   }
   
 }
