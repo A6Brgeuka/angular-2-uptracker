@@ -213,6 +213,7 @@ export class ShoppingListComponent implements OnInit {
     this.cartService.updateItem(data)
     .subscribe((res: any) => {
         this.changed[item.id] = false;
+        //this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
         this.cartService.updateCollection(res.items);
       },
       (err: any) => {

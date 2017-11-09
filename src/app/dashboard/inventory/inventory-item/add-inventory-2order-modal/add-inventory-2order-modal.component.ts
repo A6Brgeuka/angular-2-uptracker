@@ -31,13 +31,13 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
     public toasterService: ToasterService,
   ) {
     this.inventory = dialog.context.data;
-    this.defaultProduct = _.find(this.inventory.inventory_products, 'default_product');
-    this.defaultProduct.location_id = this.inventory.inventory_item_locations[0].location_id;
     dialog.setCloseGuard(this);
   }
   
   ngOnInit() {
-  
+    let isDefaulProduct = _.find(this.inventory.inventory_products, 'default_product');
+    this.defaultProduct = (isDefaulProduct) ? isDefaulProduct : this.inventory.inventory_products[0];
+    this.defaultProduct.location_id = this.inventory.inventory_item_locations[0].location_id;
   }
   
   saveOrder() {

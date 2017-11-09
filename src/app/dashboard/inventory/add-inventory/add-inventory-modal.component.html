@@ -93,10 +93,11 @@
                   placeholder="Type"
                   [source]="observableSourceOuterPackage.bind(this)"
                   (input) = 'onSearchOuterPackage($event)'
-                  [min-chars] = '1'
+                  (blur)="updateOuterPackege($event)"
                   (ngModelChange) = 'selectedAutocompledOuterPackage($event)'
                   [list-formatter] = '"unit_name"'
                   name="package_type"
+                  [(ngModel)] = 'outerPack'
                 >
               </div>
             </div>

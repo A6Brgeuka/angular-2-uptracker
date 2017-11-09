@@ -101,6 +101,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public locations$: Observable<any> = this.accountService.locations$;
   public locations: any[];
   public showAddCustomBtn: boolean;
+  public outerPack: string = '';
   
   constructor(
     public zone: NgZone,
@@ -203,11 +204,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.newProductData.package_type = outerPackage.unit_name;
   }
   onSearchOuterPackage(event) {
-    this.newProductData.package_type = event.target.value;
+    //this.newProductData.package_type = event.target.value;
     this.autocompleteOuterPackage$.next(event.target.value);
   }
   observableSourceOuterPackage(keyword: any) {
     return Observable.of(this.autocompleteOuterPackage).take(1);
+  }
+  
+  updateOuterPackege(event) {
+    this.outerPack = (this.newProductData.package_type === event.target.value) ? this.newProductData.package_type : null;
   }
   
   selectedAutocompledInnerPackage(innerPackage) {
@@ -249,7 +254,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
     this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
     .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack:any) => this.autocompleteOuterPackage = pack);
+    .subscribe((pack:any) => this.autocompleteOuterPackage = _.sortBy(pack, ['unit_name']));
   
     this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
     .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
@@ -446,7 +451,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         });
       })
     }
-    
+  
+    //this.onSearchOuterPackage('');
+  
+    this.autocompleteOuterPackage$.next('');
   }
   
   ngOnDestroy() {

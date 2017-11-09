@@ -42,8 +42,8 @@
     <div class="row-half">
       <h3>From</h3>
       <p>{{ (convertedOrder$ | async).order?.from_co_name }}</p>
-      <p>{{ (convertedOrder$ | async).order?.from_address?.postal_code}}</p>
       <p>{{ (convertedOrder$ | async).order?.from_address?.formattedAddress }}</p>
+      <p>{{ (convertedOrder$ | async).order?.from_address?.postal_code}}</p>
       <p>Phone: {{ (convertedOrder$ | async).order?.from_phone_number}}</p>
       <p>Fax: {{ (convertedOrder$ | async).order?.from_fax_number}}</p>
       <p>E-mail: {{ (convertedOrder$ | async).order?.from_email_address}}</p>
@@ -51,17 +51,17 @@
     <div class="row-half">
       <h3>Ship To</h3>
       <p>{{ (convertedOrder$ | async).order?.ship_to_co_name }}</p>
-      <p>{{ (convertedOrder$ | async).order?.ship_to_address?.postal_code}}</p>
       <p>{{ (convertedOrder$ | async).order?.ship_to_address.formattedAddress }}</p>
+      <p>{{ (convertedOrder$ | async).order?.ship_to_address?.postal_code}}</p>
       <p>Phone: {{ (convertedOrder$ | async).order?.ship_to_phone_number}}</p>
       <p>Fax: {{ (convertedOrder$ | async).order?.ship_to_fax_number}}</p>
       <p>E-mail: {{ (convertedOrder$ | async).order?.ship_to_email_address}}</p>
     </div>
     <div class="row-half">
       <h3>To</h3>
-      <p>{{ (convertedOrder$ | async).order?.vendor_co_name }}</p>
-      <p>{{ (convertedOrder$ | async).order?.vendor_address?.postal_code}}</p>
+      <p>{{ (convertedOrder$ | async).order?.vendor_name }}</p>
       <p>{{ (convertedOrder$ | async).order?.vendor_address.formattedAddress }}</p>
+      <p>{{ (convertedOrder$ | async).order?.vendor_address?.postal_code}}</p>
       <p>Phone: {{ (convertedOrder$ | async).order?.vendor_phone_number}}</p>
       <p>Fax: {{ (convertedOrder$ | async).order?.vendor_fax_number}}</p>
       <p>E-mail: {{ (convertedOrder$ | async).order?.vendor_email_address}}</p>
@@ -112,7 +112,7 @@
         <div class="price-item">{{ item.sub_total || '&nbsp;' }}</div>
       </div>
     </div>
-    <div *ngIf="(convertedOrder$ | async).order?.discount !== 0">
+    <div *ngIf="(convertedOrder$ | async).order?.discount">
       <div class="header-with-line">
         <div>Discounts</div>
       </div>
@@ -148,7 +148,7 @@
           {{ (convertedOrder$ | async).amounts_formatted?.line_items }}
         </div>
       </div>
-      <div *ngIf="(convertedOrder$ | async).order?.discount !== 0">
+      <div *ngIf="(convertedOrder$ | async).order?.discount">
         <div class="total-name">
           Discounts
         </div>

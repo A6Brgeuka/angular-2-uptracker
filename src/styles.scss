@@ -1394,6 +1394,7 @@ ngui-auto-complete {
   .ngui-auto-complete > ul {
     border-top: none;
     border-bottom: none;
+    max-height: 300px;
     li:last-child {
       border-bottom: 1px solid #ccc;
     }
