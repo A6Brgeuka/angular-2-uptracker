@@ -9,7 +9,7 @@ import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
 import { SlFilters } from '../../models/slfilters.model';
 
-export class PriceInfoDiscounts{
+export class PriceInfoDiscounts {
   type:string = "fixed";
   amount:number = 5;
   reward_points:number =0; //reward
@@ -27,7 +27,7 @@ export class PriceInfoDiscounts{
   }
 }
 
-export class PriceInfoData{
+export class PriceInfoData {
   public variant_id:string;
   public price:number;
   public price_type:string;
@@ -145,8 +145,7 @@ export class CartService extends ModelService {
     let payload = {
       item_ids: idArray.toString()
     };
-    return this.restangular.all('cart').customDELETE('', payload).map(res => res.data)
-    
+    return this.restangular.all('cart').customDELETE('', payload).map(res => res.data);
   }
   
 }

@@ -33,6 +33,7 @@ export class ShoppingListComponent implements OnInit {
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public selectAll$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public deleteChecked$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public selectAllCollection$: Observable<any>;
   public cart: any = [];
   public total: number = 1;
@@ -68,17 +69,11 @@ export class ShoppingListComponent implements OnInit {
       );
       this.totalOrders = cart.filter((item:any)=>item.status).length;
       this.total = cart.length;
-      this.cart$.next(cart);
+      this.updateCart(cart);
       this.changed = [];
     });
     
-    //this.changePriceModal();
-    
   }
-  
-  selectOrder(id) {
-  }
-  
   
   viewProductModal(product) {
     this.modal
@@ -132,7 +127,6 @@ export class ShoppingListComponent implements OnInit {
     this.searchKey$.next(value);
   }
   
-  
   showFiltersModal() {
     Observable.combineLatest(
       this.cartService.collection$,
@@ -185,13 +179,8 @@ export class ShoppingListComponent implements OnInit {
     this.changeRow(product);
   }
   
-  onCheck() {
-  
-  }
-  
-  
   saveItem(item: any = {}) {
-   
+    
     let data = {
       "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
       "product_id": item.product_id,
@@ -249,18 +238,33 @@ export class ShoppingListComponent implements OnInit {
   
   applyFilters(data: SlFilters) {
     this.cartService.filters$.next(data);
-    console.log(data);
   }
   
   deleteCheckedProducts() {
+    //this.subscribers.removeItemsSubscriber = this.deleteChecked$
+    //.switchMap(() => {
+    //  return this.cartService.collection$
+    //  .map(res => _.filter(res, 'status'))
+    //  .switchMap(res => this.cartService.removeItems(res)
+    //  )
+    //})
+    //.subscribe((res1:any) => {
+    //    //this.updateCart(res1.items);
+    //    this.updateOrderPreview([]);
+    //    this.totalOrders = 0;
+    //    this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+    //  },
+    //  (err) => console.log(err)
+    //)
     let checkedResult = _.filter(this.cart$['_value'], 'status');
-    
+
     this.subscribers.removeItemsSubscriber =  this.cartService.removeItems(checkedResult)
     .subscribe(res => {
-      this.updateCart(res.items);
-      this.updateOrderPreview([]);
-      this.totalOrders = 0;
-    },
+        //this.updateCart(res.items);
+        this.updateOrderPreview([]);
+        this.totalOrders = 0;
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+      },
       (err) => console.log(err)
     )
   }

@@ -122,10 +122,11 @@
                       placeholder="Type"
                       [source]="observableSourceInnerPackage.bind(this)"
                       (input) = 'onSearchInnerPackage($event)'
-                      [min-chars] = '1'
+                      (blur)="updateInnerPackege($event)"
                       (ngModelChange) = 'selectedAutocompledInnerPackage($event)'
                       [list-formatter] = '"plural_unit_name"'
                       name="sub_package_type"
+                      [(ngModel)] = 'innerPack'
                     >
                   </div>
                 </div>
@@ -250,7 +251,6 @@
         </form>
       </div>
       <div *ngIf="!addCustomProduct">
-
           <div class="col s12 ttl">Search Products</div>
           <div class="col s12 input search">
             <input auto-complete (input)="onSearchTypeIn($event)"
