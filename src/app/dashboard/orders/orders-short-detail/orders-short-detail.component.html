@@ -1,21 +1,21 @@
 <div *ngIf="visible" class="list is-grid-view orders-short-detail">
   <div>
     <div class="flex-row heading row">
-      <div class="col s4">Product Name</div>
+      <div class="col s3">Product Name</div>
       <div class="col s1">Location</div>
       <div class="col s1">Status</div>
       <div class="col s2">Catalog #</div>
       <div class="col s1">Qty</div>
       <div class="col s1">Unit Price</div>
       <div class="col s2">Total</div>
-      <!--<div class="col s2">-->
-        <!--<div class="right edititem filled"-->
-          <!--materialize="dropdown"-->
-          <!--[attr.data-activates]='"order_dd_"+i'>-->
-          <!--<fa name="ellipsis-h"></fa>-->
-        <!--</div>-->
+      <div class="col s1">
+        <div class="right edititem filled"
+          materialize="dropdown"
+          [attr.data-activates]='"order_dd_"+i'>
+          <fa name="ellipsis-h"></fa>
+        </div>
 
-        <!--<ul [id]='"order_dd_"+i' class='dropdown-content'>-->
+        <ul [id]='"order_dd_"+i' class='dropdown-content'>
           <!--<li>-->
             <!--<a class="tealish-text" href="/">Edit</a>-->
           <!--</li>-->
@@ -25,12 +25,11 @@
           <!--<li>-->
             <!--<a class="tealish-text" href="/">Reorder</a>-->
           <!--</li>-->
-        <!--</ul>-->
-        <!--<div>Total</div>-->
-      <!--</div>-->
+        </ul>
+      </div>
     </div>
     <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i=index;">
-      <div class="col s4 flex-center">
+      <div class="col s3 flex-center">
         <div class="input-checkbox left checkbox">
           <input
             [(ngModel)]='product.checked'
@@ -49,7 +48,7 @@
       <div class="col s2">{{ product.catalog_number }}</div>
       <div class="col s1">{{ product.quantity }}</div>
       <div class="col s1">{{ product.unit_price }}</div>
-      <div class="col s2">
+      <div class="col s3">
         <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
           <fa name="ellipsis-h"></fa>
         </div>

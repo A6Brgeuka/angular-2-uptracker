@@ -4,14 +4,14 @@
       <i class="fa fa-chevron-left"></i>
       Orders
     </div>
-    <div class="col s6  main-title center-align title">Order #{{ (order$ | async).po_number }}</div>
+    <div class="col s6  main-title center-align title">
+      Order #{{ (order$ | async).po_number }}
+      <span class="red-text smaller-txt">({{(order$ | async).status_label}})</span>
+    </div>
     <div class="col s3">
     </div>
   </div>
   <div class="item-card">
-    <div class="row bold black-text">
-      Status:  <span class="red-text">{{(order$ | async).status_label}}</span>
-    </div>
     <div class="row-half">
       <h3>From</h3>
       <p>{{ (order$ | async).from_co_name }}</p>
@@ -31,7 +31,7 @@
       <p>E-mail: {{ (order$ | async).ship_to_email_address}}</p>
     </div>
     <div class="row-half">
-      <h3>To</h3>
+      <h3>Vendor</h3>
       <p>{{ (order$ | async).vendor_co_name }}</p>
       <p>{{ (order$ | async).vendor_address?.postal_code}}</p>
       <p>{{ (order$ | async).vendor_address?.street_1 }},
@@ -133,7 +133,7 @@
       </div>
       <div>
         <div class="total-name">
-          Shipping & handling
+          Shipping & Handling
         </div>
         <div class="total-value">
           ${{ (order$ | async).shipping_handling/100 | number : '1.2-2' }}
