@@ -24,6 +24,9 @@
       box-sizing: border-box;
       color: $grey;
     }
+    .caret {
+      background: #fff url(/assets/img/icon-dropdown-arrow.svg) no-repeat 98% center;
+    }
     textarea {
       margin: 0;
       min-height: 100px;

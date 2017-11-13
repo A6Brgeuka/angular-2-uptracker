@@ -89,7 +89,7 @@
             <div class="col s12">
               <div class="ttl">Outer Package</div>
               <div class="input search">
-                <input auto-complete
+                <input class="caret" auto-complete
                   placeholder="Type"
                   [source]="observableSourceOuterPackage.bind(this)"
                   (input) = 'onSearchOuterPackage($event)'
@@ -118,7 +118,7 @@
                 </div>
                 <div class="col s9">
                   <div class="input search">
-                    <input auto-complete
+                    <input class="caret" auto-complete
                       placeholder="Type"
                       [source]="observableSourceInnerPackage.bind(this)"
                       (input) = 'onSearchInnerPackage($event)'
