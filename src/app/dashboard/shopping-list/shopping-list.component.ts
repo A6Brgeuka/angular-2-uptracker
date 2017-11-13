@@ -18,7 +18,6 @@ import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
 import { SlFilters } from '../../models/slfilters.model';
-import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-shopping-list',
@@ -180,7 +179,6 @@ export class ShoppingListComponent implements OnInit {
   }
   
   saveItem(item: any = {}) {
-    
     let data = {
       "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
       "product_id": item.product_id,
@@ -202,8 +200,11 @@ export class ShoppingListComponent implements OnInit {
     this.cartService.updateItem(data)
     .subscribe((res: any) => {
         this.changed[item.id] = false;
-        //this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-        this.cartService.updateCollection(res.items);
+        //let filteredResult = (this.accountService.dashboardLocation) ? _.filter(res.items, {'location_id':this.accountService.dashboardLocation.id}) : res.items;
+        //this.cartService.updateCollection(filteredResult);
+      
+      // make a request again, because order_preview isn't returned
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
       },
       (err: any) => {
         console.error(err);
@@ -241,28 +242,24 @@ export class ShoppingListComponent implements OnInit {
   }
   
   deleteCheckedProducts() {
-    //this.subscribers.removeItemsSubscriber = this.deleteChecked$
-    //.switchMap(() => {
-    //  return this.cartService.collection$
-    //  .map(res => _.filter(res, 'status'))
-    //  .switchMap(res => this.cartService.removeItems(res)
-    //  )
-    //})
-    //.subscribe((res1:any) => {
-    //    //this.updateCart(res1.items);
-    //    this.updateOrderPreview([]);
-    //    this.totalOrders = 0;
-    //    this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-    //  },
-    //  (err) => console.log(err)
-    //)
-    let checkedResult = _.filter(this.cart$['_value'], 'status');
-
-    this.subscribers.removeItemsSubscriber =  this.cartService.removeItems(checkedResult)
-    .subscribe(res => {
-        //this.updateCart(res.items);
-        this.updateOrderPreview([]);
-        this.totalOrders = 0;
+    this.subscribers.removeItemsSubscriber = this.deleteChecked$
+    .switchMap(() => {
+      return this.cartService.collection$.first()
+      .map(res => _.filter(res, 'status'))
+      .switchMap(res => this.cartService.removeItems(res)
+      )
+    })
+    .subscribe((res:any) => {
+        //_.map(res.items, (r:any) => {
+        //  r.prev_location = r.location_id;
+        //  return r;
+        //});
+        //let filteredResult = (this.accountService.dashboardLocation) ? _.filter(res.items, {'location_id':this.accountService.dashboardLocation.id}) : res.items;
+        //this.updateCart(filteredResult);
+        //this.updateOrderPreview([]);
+        //this.totalOrders = 0;
+    
+        // make a request again, because order_preview isn't returned
         this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
       },
       (err) => console.log(err)
@@ -273,8 +270,8 @@ export class ShoppingListComponent implements OnInit {
     this.cart$.next(data);
   }
   
-  updateOrderPreview(data) {
-    this.cartService.ordersPreview$.next(data);
-  }
+  //updateOrderPreview(data) {
+  //  this.cartService.ordersPreview$.next(data);
+  //}
   
 }
