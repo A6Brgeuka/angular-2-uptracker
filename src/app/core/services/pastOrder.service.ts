@@ -36,10 +36,11 @@ export class PastOrderService extends ModelService {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
 
-    this.getPastOrders().subscribe((orders) => {
-      this.loadCollection$.next(orders);
-      this.itemsVisibility = new Array(orders.length).fill(false);
-    });
+    //this.getPastOrders().subscribe((orders) => {
+    //  debugger;
+    //  this.loadCollection$.next(orders);
+    //  this.itemsVisibility = new Array(orders.length).fill(false);
+    //});
     
   }
   

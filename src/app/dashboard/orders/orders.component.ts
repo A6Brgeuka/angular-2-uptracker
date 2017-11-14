@@ -45,10 +45,16 @@ export class OrdersComponent implements OnInit {
   }
 
     ngOnInit() {
-
+    
     }
 
   addSubscribers() {
+    this.subscribers.getCollectionSubscription = this.pastOrderService.getPastOrders()
+    .subscribe(orders => {
+        this.pastOrderService.loadCollection$.next(orders);
+        this.pastOrderService.itemsVisibility = new Array(orders.length).fill(false);
+    });
+    
     this.subscribers.ordersSubscription = Observable.combineLatest(
       this.pastOrderService.collection$,
       this.filterTabBy$

@@ -41,6 +41,13 @@ export class ItemModel {
   location_name: string = '';
   existInvGroup: boolean = false;
   
+  catalog_number: string = "";
+  price: number = 0;
+  product_id:string  = null;
+  variant_id:string = null;
+  vendor_id: string = null;
+  
+  
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {

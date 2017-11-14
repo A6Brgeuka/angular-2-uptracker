@@ -111,7 +111,7 @@
                       [(ngModel)] = 'product.inventory_group_id'
                       name="inventory{{i}}"
                       [disabled] = "product.existInvGroup"
-                      (ngModelChange)="changeInventory($event)"
+                      (ngModelChange)="changeInventory($event, product)"
                       required
                     >
                       <option value="null" disabled>Select one</option>

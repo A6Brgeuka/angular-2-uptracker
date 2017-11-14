@@ -11,6 +11,9 @@ import {
 } from '../../../models/receive-products.model';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { Modal } from 'angular2-modal';
+import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -34,6 +37,8 @@ export class ReceiveComponent implements OnInit {
     public router: Router,
     public pastOrderService: PastOrderService,
     public toasterService: ToasterService,
+    public modalWindowService: ModalWindowService,
+    public modal: Modal
   ) {
   
   }
@@ -49,7 +54,6 @@ export class ReceiveComponent implements OnInit {
     
     this.subscribers.ordersSubscription = this.orders$
     .subscribe(res => {
-      
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
@@ -70,6 +74,7 @@ export class ReceiveComponent implements OnInit {
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
+        console.log(order);
         return order;
       });
       
@@ -191,10 +196,23 @@ export class ReceiveComponent implements OnInit {
     });
   }
   
-  changeInventory(invenory) {
+  changeInventory(invenory, product) {
     if (invenory === 'routerLink') {
-      this.router.navigate(['/inventory']);
+      this.openAddInventoryModal(product);
     }
+  }
+  
+  openAddInventoryModal(product) {
+    this.modal
+    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': product, 'inventoryItems':[]}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+
+        },
+        (err) => {}
+      );
+    });
   }
   
 }

@@ -19,6 +19,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
   inventoryGroup: any = null;
+  selectedProduct: any = null;
 }
 
 @Component({
@@ -129,7 +130,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.total = data.count;
         this.searchResults$.next(data.results);
         this.searchResults = data.results;
-  
+  console.log(this.searchResults);
         if (this.items.length) {
           this.checkedProduct = [];
           this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
@@ -275,6 +276,15 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
       });
+    }
+  
+    if (this.context.selectedProduct) {
+      let editedItems: any[] = [new InventorySearchResults(
+        Object.assign(this.context.selectedProduct, {
+          name:this.context.selectedProduct.item_name
+        })
+      )];
+      this.editAddItemToItems$.next(editedItems);
     }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
