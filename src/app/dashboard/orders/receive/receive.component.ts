@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit} from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { AccountService } from '../../../core/services/account.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { Observable } from 'rxjs/Observable';
@@ -14,6 +14,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-order-detail',
@@ -26,7 +27,8 @@ export class ReceiveComponent implements OnInit {
   public searchKey:string= "";
   public locationArr: any = [];
   public inventoryGroupArr: any = [];
-  public orders$: Observable<any>;
+  public orders$: BehaviorSubject<any> = new BehaviorSubject([]);
+  
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
   public packingSlipValid: boolean = true;
@@ -38,17 +40,25 @@ export class ReceiveComponent implements OnInit {
     public pastOrderService: PastOrderService,
     public toasterService: ToasterService,
     public modalWindowService: ModalWindowService,
-    public modal: Modal
+    public modal: Modal,
+    public route: ActivatedRoute,
   ) {
   
   }
   
   ngOnInit() {
     this.inventoryService.getNextInventory();
-    this.orders$ = this.pastOrderService.ordersToReceive$;
   }
   
   addSubscribers() {
+    this.subscribers.getReceiveProductSubscription = this.route.params
+    .switchMap(param => {
+      return this.pastOrderService.getReceiveProduct(param.queryParams);
+    })
+    .subscribe(res => {
+      this.updateOrders(res);
+    });
+    
     this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
     this.subscribers.inventoryArrSubscription = this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
     
@@ -81,6 +91,10 @@ export class ReceiveComponent implements OnInit {
     });
   }
 
+  updateOrders(orders) {
+    this.orders$.next(orders);
+  }
+  
   remove(product, status) {
     let removedStatus = _.remove(product.status, status);
     this.onchangeStatusQty(product, status, status.qty);

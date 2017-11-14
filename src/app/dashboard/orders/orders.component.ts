@@ -123,8 +123,8 @@ export class OrdersComponent implements OnInit {
       sendItems = sendItems.concat(order.order_items.map((item) => item.id));
       return order.order_id;
     });
-    this.subscribers.receiveOrdersSubscription = this.pastOrderService.getReceive(sendOrders, sendItems)
-    .subscribe();
+    let queryParams = sendOrders.toString() + '&' + sendItems.toString();
+    this.pastOrderService.goToReceive(queryParams);
   }
   
   sendToReceiveOrder(order) {

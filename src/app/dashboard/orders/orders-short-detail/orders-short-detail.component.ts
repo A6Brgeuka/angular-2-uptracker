@@ -60,8 +60,7 @@ export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
   }
   
   getReceiveProduct(item) {
-    this.subscribers.receiveOrders = this.pastOrderService.getReceiveProduct(item.id)
-    .subscribe();
+    this.pastOrderService.goToReceive(item.id);
   }
  
 }
