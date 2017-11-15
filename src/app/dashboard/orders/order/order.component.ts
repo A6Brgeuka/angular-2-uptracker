@@ -24,12 +24,11 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
   styleUrls: ['./order.component.scss']
 })
 @DestroySubscribers()
-export class OrderComponent implements OnInit {
+export class OrderComponent {
+  public subscribers: any = {};
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orderId: string;
-  deleteOrder$: Subject<ConvertedOrder> = new Subject();
   order$: BehaviorSubject<any> = new BehaviorSubject({});
-  currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
   
   constructor(
     public modal: Modal,
@@ -45,15 +44,14 @@ export class OrderComponent implements OnInit {
   
   }
   
-  ngOnInit() {
+  addSubscribers() {
     
-    this.route.params
+    this.subscribers.showOrderSubscription = this.route.params
     .switchMap((p: Params) => {
       this.orderId = p['id'];
       return this.pastOrderService.getPastOrder(p['id']);
     })
     .subscribe((item: any) => {
-      console.log(item);
       this.order$.next(item);
     });
     
@@ -62,6 +60,5 @@ export class OrderComponent implements OnInit {
   goBack(): void {
     this.windowLocation.back();
   }
-  
  
 }

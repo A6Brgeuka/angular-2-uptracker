@@ -114,7 +114,7 @@
       <div>Total</div>
     </div>
     <div class="totals">
-      <div>
+      <div *ngIf="(order$ | async).discount">
         <div class="total-name">
           Discounts
         </div>

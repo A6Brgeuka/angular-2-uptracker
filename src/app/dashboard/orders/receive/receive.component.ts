@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { AccountService } from '../../../core/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { InventoryService } from '../../../core/services/inventory.service';
-import { Observable } from 'rxjs/Observable';
 import {
   ItemModel, OrderModel, ReceiveProductsModel, StatusModel,
   StorageLocationModel
@@ -219,6 +218,12 @@ export class ReceiveComponent implements OnInit {
   }
   
   openAddInventoryModal(product) {
+    
+    //this.subscribers.getProductFieldSubscription = this.pastOrderService.getProductFields(product.product_id)
+    //.subscribe(product => {
+    //  let product = product;
+    //});
+    
     this.modal
     .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': product, 'inventoryItems':[]}))
     .then((resultPromise) => {

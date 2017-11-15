@@ -200,9 +200,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     let deleteFromItems$ = this.deleteFromItems$
     .switchMap((deleteItems) =>
       this.items$.first()
-      .map((items: any) => {
-      debugger;
-      return  items.filter((el: any) => el.variant_id !== deleteItems.variant_id)}
+      .map((items: any) => items.filter((el: any) => el.variant_id !== deleteItems.variant_id)
       )
     );
     

@@ -70,30 +70,53 @@ export class InventoryItemComponent implements OnInit {
   
   ngOnInit() {
     
-    let addToComments$ = this.addToComments$.switchMap((item: any) => {
+    let addToComments$ = this.addToComments$
+    .switchMap(comment =>
+      this.InventoryService.addInventoryItemComment(this.comment)
+      .catch(err => Observable.empty())
+    )
+    .switchMap((item: any) => {
       return this.comments$.first().map(collection => {
         collection.unshift(item);
         return collection;
       })
     });
     
-    let deleteFromComments$ = this.deleteFromComments$.switchMap((id: any) => {
+    let deleteFromComments$ = this.deleteFromComments$
+    .switchMap(commentId => {
+      return this.InventoryService.deleteInventoryItemComment(commentId)
+      .catch(err => Observable.empty())
+      .do(res => {
+        this.toasterService.pop("", res.message)
+      })
+      .mapTo(commentId)
+      }
+    )
+    .switchMap((id: any) => {
       return this.comments$.first().map(collection => {
         _.remove(collection, {id: id});
         return collection;
       })
     });
     
-    let editCommentComments$ = this.editCommentComments$.switchMap((commentToUpdate: any) => {
-      return this.comments$.first().map(collection => {
-        return collection.map((comment: any) => {
-          if (comment.id == commentToUpdate.id) {
-            return commentToUpdate
-          }
-          return comment;
-        });
-      })
-    });
+    let editCommentComments$ = this.editCommentComments$
+    .switchMap((resultPromise: Promise<string>) =>
+      Observable.fromPromise(resultPromise)
+      .catch(err => Observable.empty())
+    )
+    .switchMap(comment =>
+      this.InventoryService.editInventoryItemComment(comment)
+      .pluck('data')
+    )
+    .switchMap((commentToUpdate: any) =>
+      this.comments$
+      .first()
+      .map(collection =>
+        collection.map((comment: any) =>
+          comment.id === commentToUpdate.id ? commentToUpdate : comment
+        )
+      )
+    );
     
     this.filteredComments$ = Observable.merge(
       this.comments$,
@@ -217,10 +240,7 @@ export class InventoryItemComponent implements OnInit {
         "object_id": this.inventory_id
       }
     );
-    this.subscribers.addInventoryItemSubscriber = this.InventoryService.addInventoryItemComment(this.comment)
-    .subscribe(res => {
-      this.addToComments$.next(res);
-    });
+    this.addToComments$.next(this.comment)
   }
   
   editComment(comment) {
@@ -229,30 +249,23 @@ export class InventoryItemComponent implements OnInit {
       let regKey = new RegExp('<br/>', 'g');
       clonedComment['body'] = clonedComment.body.replace(regKey, "\r\n"); // replacing <br/> many lines comment
     }
-    this.modal
-    .open(EditCommentModal, this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment}))
+    this.modal.open(
+      EditCommentModal,
+      this.modalWindowService.overlayConfigFactoryWithParams({comment: clonedComment})
+    )
     .then((resultPromise) => {
-      resultPromise.result.then(
-        (comment) => {
-          this.subscribers.editInventoryItemComment = this.InventoryService.editInventoryItemComment(comment).subscribe(res => {
-            this.editCommentComments$.next(res.data);
-          })
-        },
-        (err) => {
-        }
-      );
+      this.editCommentComments$.next(resultPromise.result);
     });
   }
   deleteComment(comment) {
-    this.modalWindowService.confirmModal('Delete Comment?', 'Are you sure you want to delete this comment?', this.deleteCommentFunc.bind(this, comment.id));
+    this.modalWindowService.confirmModal(
+      'Delete Comment?', 'Are you sure you want to delete this comment?',
+      this.deleteCommentFunc.bind(this, comment.id)
+    );
   }
   
   deleteCommentFunc(id) {
-    this.subscribers.deleteProductSubscriber = this.InventoryService.deleteInventoryItemComment(id)
-    .subscribe(res => {
-      this.deleteFromComments$.next(id);
-      this.toasterService.pop("", res.message)
-    })
+    this.deleteFromComments$.next(id);
   }
   
   reformatOrderHistory(ina: any): any {
@@ -309,25 +322,25 @@ export class InventoryItemComponent implements OnInit {
   }
   
   openAddInventoryModal(){
-    this.product$
+    this.subscribers.getProductSubscriber = this.product$
     .take(1)
     .subscribe((inventory)=>{
       let data = {
         inventoryGroup:inventory
       };
-      this.modal
-      .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
-      .then((resultPromise) => {
-        resultPromise.result.then(
-          (res) => {
-            //this.product$.next(res);
-            // TODO don't make request again
-            // again request because not all fields are returned after updating
-            this.getCurrentInventory();
-          },
-          (err) => {}
-        );
-      });
+    this.modal
+    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'inventoryGroup': data, 'inventoryItems':[]}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          //this.product$.next(res);
+          // TODO don't make request again
+          // again request because not all fields are returned after updating
+          this.getCurrentInventory();
+        },
+        (err) => {}
+      );
+    });
     });
   }
   

@@ -34,13 +34,6 @@ export class PastOrderService extends ModelService {
   ) {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
-
-    //this.getPastOrders().subscribe((orders) => {
-    //  debugger;
-    //  this.loadCollection$.next(orders);
-    //  this.itemsVisibility = new Array(orders.length).fill(false);
-    //});
-    
   }
   
   getPastOrders(){
@@ -81,6 +74,10 @@ export class PastOrderService extends ModelService {
   
   onReceiveProducts(productsToReceive) {
     return this.restangular.all('receive').customPOST(productsToReceive);
+  }
+  
+  getProductFields(productId) {
+    //return this.restangular.customGET('', {'product_id' : productId}).map(res => res.data);
   }
   
 }

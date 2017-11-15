@@ -9,10 +9,8 @@ import { ModalWindowService } from '../../core/services/modal-window.service';
 import { AccountService } from '../../core/services/account.service';
 import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
-import { AddInventoryModal, AddInventoryModalContext } from './add-inventory/add-inventory-modal.component';
-import { InventorySearchResults } from '../../models/inventory.model';
+import { AddInventoryModal } from './add-inventory/add-inventory-modal.component';
 import { Subject } from 'rxjs/Subject';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-inventory',
@@ -214,7 +212,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   getInfiniteScroll() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
-    // console.log('toBottom',toBottom);
     let scrollBottom = toBottom < 285;
     this.infiniteScroll$.next(scrollBottom);
   }
