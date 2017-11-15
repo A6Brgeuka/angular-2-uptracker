@@ -59,8 +59,10 @@ export class ReceiveComponent implements OnInit {
       this.updateOrders(res);
     });
     
-    this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
-    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
+    this.subscribers.locationSubscription = this.accountService.locations$
+    .subscribe(r => this.locationArr = r );
+    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
+    .subscribe(r => this.inventoryGroupArr = r);
     
     this.subscribers.ordersSubscription = this.orders$
     .subscribe(res => {

@@ -200,8 +200,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     let deleteFromItems$ = this.deleteFromItems$
     .switchMap((deleteItems) =>
       this.items$.first()
-      .map((items: any) =>
-        items.filter((el: any) => el.variant_id !== deleteItems.variant_id)
+      .map((items: any) => {
+      debugger;
+      return  items.filter((el: any) => el.variant_id !== deleteItems.variant_id)}
       )
     );
     
@@ -253,6 +254,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.loadItems$.next(this.context.inventoryItems);
     if (this.context.inventoryGroup) {
       let editedItems = this.context.inventoryGroup.inventoryGroup.inventory_products.map(product => {
+        if (!product.variant_id) {
+          product.variant_id = 'tmp' + Math.floor(Math.random() * 10000000);
+        }
         return new InventorySearchResults(product);
       });
       this.editAddItemToItems$.next(editedItems);
