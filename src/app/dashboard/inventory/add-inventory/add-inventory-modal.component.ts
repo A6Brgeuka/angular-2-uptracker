@@ -119,18 +119,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     
+   
+  }
+  
+  ngOnInit() {
+  
     this.typeIn$
     .debounceTime(500)
     .switchMap((key: string) => {
       this.showAddCustomBtn = (key !== null);
       return this.inventoryService.search(key)})
     .subscribe((data: searchData) => {
-      
+    
       if (data.results) {
         this.total = data.count;
         this.searchResults$.next(data.results);
         this.searchResults = data.results;
-  console.log(this.searchResults);
+        console.log(this.searchResults);
         if (this.items.length) {
           this.checkedProduct = [];
           this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
@@ -143,9 +148,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         }
         this.checkedProduct$.next({});
       }
-
-    });
     
+    });
+  
     this.saveAdded$
     .switchMap(() => {
       return this.items$
@@ -158,18 +163,16 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         return this.inventoryService.addItemsToInventory(this.newInventory)});
     })
     .subscribe(newInventory => this.dismissModal());
-
+  
     this.updateAdded$
     .switchMap(() => {
       return this.inventoryService.updateInventory(this.newInventory)
     })
     .subscribe(newInventory => this.closeModal(newInventory));
-    
+  
     this.fileActions();
     this.msdsActions();
-  }
-  
-  ngOnInit() {
+    
     this.loadFile$.next([]);
     this.loadMsds$.next([]);
     

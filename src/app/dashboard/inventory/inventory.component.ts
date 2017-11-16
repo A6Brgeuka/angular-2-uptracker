@@ -101,9 +101,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     
-    this.sortBy$.subscribe((sb: string) => {
-      this.sortBy = sb;
-    });
+    this.sortBy$.subscribe((sb: string) =>
+      this.sortBy = sb
+    );
     
     this.sortBy$
     .filter(r => r)
@@ -172,10 +172,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.inventoryService.getNextInventory(this.inventoryService.current_page, this.searchKey, this.sortBy);
       }
     })
-    .subscribe(res => {
-    }, err => {
-    
-    });
+    .subscribe();
     
     this.updateFavorite$
     .switchMap(inventory => this.inventoryService.setFavorite(inventory))

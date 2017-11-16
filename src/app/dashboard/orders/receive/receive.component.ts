@@ -50,16 +50,16 @@ export class ReceiveComponent implements OnInit {
   }
   
   addSubscribers() {
+    
     this.subscribers.getReceiveProductSubscription = this.route.params
-    .switchMap(param => {
-      return this.pastOrderService.getReceiveProduct(param.queryParams);
-    })
-    .subscribe(res => {
-      this.updateOrders(res);
-    });
+    .switchMap(param =>
+      this.pastOrderService.getReceiveProduct(param.queryParams)
+    )
+    .subscribe(res => this.updateOrders(res));
     
     this.subscribers.locationSubscription = this.accountService.locations$
     .subscribe(r => this.locationArr = r );
+    
     this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
     .subscribe(r => this.inventoryGroupArr = r);
     

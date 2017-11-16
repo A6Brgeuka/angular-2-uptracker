@@ -9,6 +9,7 @@ import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class ViewLocationComponent implements OnInit {
   public subscribers: any = {};
   public location: LocationModel;
   public locationId: string;
+  public deleteLocation$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public accountService: AccountService,
@@ -51,6 +53,10 @@ export class ViewLocationComponent implements OnInit {
       this.location.zip_code = this.location.address.postal_code;
       this.location.state = this.location.address.state;
     });
+    
+    this.subscribers.deleteLocationSubscription = this.deleteLocation$
+    .switchMap(() => this.locationService.deleteLocation(this.location))
+    .subscribe(() => this.goBack());
   }
   
   deleteLocation(location) {
@@ -58,9 +64,7 @@ export class ViewLocationComponent implements OnInit {
   }
   
   deleteLocationFunc() {
-    this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location).subscribe((res: any) => {
-     this.goBack();
-    });
+    this.deleteLocation$.next('');
   }
   
   goBack(): void {

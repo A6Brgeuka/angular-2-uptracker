@@ -18,6 +18,7 @@ import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
 import { InventoryLocationModel } from "../../../models/inventory-location.model";
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-edit-location',
@@ -76,6 +77,9 @@ export class EditLocationComponent implements OnInit {
   };
   public locationId: string;
   public classValid: string = '';
+  
+  public deleteLocation$: ReplaySubject<any> = new ReplaySubject(1);
+  public addToLocation$: ReplaySubject<any> = new ReplaySubject(1);
 
   constructor(public zone: NgZone,
               public toasterService: ToasterService,
@@ -134,7 +138,15 @@ export class EditLocationComponent implements OnInit {
   
   addSubscribers() {
     this.subscribers.locationTypesSubscription = this.locationTypes$
-    .subscribe(types => this.locationTypesArr = types)
+    .subscribe(types => this.locationTypesArr = types);
+  
+    this.subscribers.deleteLocationSubscription = this.deleteLocation$
+    .switchMap(() => this.locationService.deleteLocation(this.location))
+    .subscribe(() => this.goBack());
+    
+    this.subscribers.addToLocationSubscription = this.addToLocation$
+    .switchMap((data) => this.locationService.addLocation(data))
+    .subscribe(() => this.goBack());
   }
   
   updateLocs(location){
@@ -254,12 +266,7 @@ export class EditLocationComponent implements OnInit {
   }
 
   addLocation(data) {
-    this.locationService.addLocation(data)
-    .subscribe(
-      (res: any) => {
-        this.goBack();
-      }
-    );
+    this.addToLocation$.next(data);
   }
 
   deleteLocation(data) {
@@ -267,10 +274,7 @@ export class EditLocationComponent implements OnInit {
   }
 
   deleteLocationFunc() {
-    this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location)
-    .subscribe((res: any) => {
-      this.goBack();
-    });
+    this.deleteLocation$.next('');
   }
 
   changeSearchName(event) {

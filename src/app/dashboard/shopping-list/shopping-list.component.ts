@@ -18,6 +18,7 @@ import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
 import { SlFilters } from '../../models/slfilters.model';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-shopping-list',
@@ -31,8 +32,9 @@ export class ShoppingListComponent implements OnInit {
   public last_loc: string = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public selectAll$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public deleteChecked$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public selectAll$: ReplaySubject<any> = new ReplaySubject(1);
+  public deleteChecked$: ReplaySubject<any> = new ReplaySubject(1);
+  public updateItem$: ReplaySubject<any> = new ReplaySubject(1);
   public selectAllCollection$: Observable<any>;
   public cart: any = [];
   public total: number = 1;
@@ -71,6 +73,53 @@ export class ShoppingListComponent implements OnInit {
       this.updateCart(cart);
       this.changed = [];
     });
+    
+  }
+  
+  addSubscribers() {
+    
+    this.subscribers.selectAllListSubscription =
+      this.selectAll$
+      .switchMap(select => {
+        return this.cartService.collection$.first()
+        .map(res => {
+         
+            let status = select ? 1 : 0;
+            res = _.forEach(res, (item: any) => {
+              item.status = status;
+            });
+          
+          return res;
+        })
+      })
+      .subscribe(cart => this.updateCart(cart));
+  
+    
+    this.subscribers.removeItemsSubscriber = this.deleteChecked$
+    .switchMap(() =>
+      this.cartService.collection$.first()
+      .map(res => _.filter(res, 'status'))
+      .switchMap(res => this.cartService.removeItems(res)
+      )
+    )
+    .subscribe((res:any) => {
+        // make a request again, because order_preview isn't returned
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+      },
+      (err) => console.log(err)
+    );
+  
+    
+    this.subscribers.updateItemSubscription = this.updateItem$
+    .switchMap((data) =>
+      this.cartService.updateItem(data)
+    )
+    .subscribe((res: any) => {
+        // make a request again, because order_preview isn't returned
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+      },
+      (err: any) => console.error(err)
+    );
     
   }
   
@@ -197,18 +246,9 @@ export class ShoppingListComponent implements OnInit {
     if (item.selected_vendor.id) {
       data['variants'][0]['vendor_id'] = item.selected_vendor.id;
     }
-    this.cartService.updateItem(data)
-    .subscribe((res: any) => {
-        this.changed[item.id] = false;
-        //let filteredResult = (this.accountService.dashboardLocation) ? _.filter(res.items, {'location_id':this.accountService.dashboardLocation.id}) : res.items;
-        //this.cartService.updateCollection(filteredResult);
-      
-      // make a request again, because order_preview isn't returned
-        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-      },
-      (err: any) => {
-        console.error(err);
-      });
+  
+    this.updateItem$.next(data);
+    
   };
   
   changeRow(item) {
@@ -218,23 +258,6 @@ export class ShoppingListComponent implements OnInit {
   
   selectAllFunc(selectAll) {
     this.selectAll$.next(!selectAll);
-    this.updateSelectAll();
-  }
-  
-  updateSelectAll() {
-    this.selectAllCollection$ = Observable.combineLatest(
-      this.cartService.collection$,
-      this.selectAll$
-    ).take(1);
-  
-    this.subscribers.selectAllSubscription = this.selectAllCollection$
-    .subscribe(([r, select]) => {
-      let status = select ? 1 : 0;
-      let cart = _.forEach(r, (item: any) => {
-        item.status = status;
-      });
-      this.updateCart(cart);
-    });
   }
   
   applyFilters(data: SlFilters) {
@@ -242,36 +265,11 @@ export class ShoppingListComponent implements OnInit {
   }
   
   deleteCheckedProducts() {
-    this.subscribers.removeItemsSubscriber = this.deleteChecked$
-    .switchMap(() => {
-      return this.cartService.collection$.first()
-      .map(res => _.filter(res, 'status'))
-      .switchMap(res => this.cartService.removeItems(res)
-      )
-    })
-    .subscribe((res:any) => {
-        //_.map(res.items, (r:any) => {
-        //  r.prev_location = r.location_id;
-        //  return r;
-        //});
-        //let filteredResult = (this.accountService.dashboardLocation) ? _.filter(res.items, {'location_id':this.accountService.dashboardLocation.id}) : res.items;
-        //this.updateCart(filteredResult);
-        //this.updateOrderPreview([]);
-        //this.totalOrders = 0;
-    
-        // make a request again, because order_preview isn't returned
-        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-      },
-      (err) => console.log(err)
-    )
+    this.deleteChecked$.next('');
   }
   
   updateCart(data) {
     this.cart$.next(data);
   }
-  
-  //updateOrderPreview(data) {
-  //  this.cartService.ordersPreview$.next(data);
-  //}
   
 }
