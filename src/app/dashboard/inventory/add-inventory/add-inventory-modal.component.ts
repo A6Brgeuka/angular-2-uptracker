@@ -1,17 +1,21 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone } from '@angular/core';
+
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+
 import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { AttachmentFiles, InventorySearchResults, searchData, Vendor } from '../../../models/inventory.model';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { debug } from 'util';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
@@ -408,12 +412,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   onSearchTypeIn(event) {
-      this.autocompleteProducts$.next(event.target.value);
-      if (event.target.value.length > 2) {
-        this.typeIn$.next(event.target.value);
-      } else {
-        this.typeIn$.next(null);
-      }
+    this.autocompleteProducts$.next(event.target.value);
+    if (event.target.value.length > 2) {
+      this.typeIn$.next(event.target.value);
+    } else {
+      this.typeIn$.next(null);
+    }
   }
   
   selectedAutocompled(keyword) {

@@ -7,8 +7,8 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { AccountService, ModalWindowService } from '../../../core/services/index';
 import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
-import { Observable } from 'rxjs';
 import * as _ from 'lodash';
+
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 
@@ -17,6 +17,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
   templateUrl: './view-location.component.html',
   styleUrls: ['./view-location.component.scss']
 })
+
 @DestroySubscribers()
 export class ViewLocationComponent implements OnInit {
   public subscribers: any = {};

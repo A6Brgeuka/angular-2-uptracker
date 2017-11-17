@@ -1,8 +1,9 @@
-import {
-  Component, OnInit
-} from '@angular/core';
-import { BehaviorSubject } from 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
 import { Location }                 from '@angular/common';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
+import { BehaviorSubject } from 'rxjs/Rx';
+
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -11,7 +12,6 @@ import * as _ from 'lodash';
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 

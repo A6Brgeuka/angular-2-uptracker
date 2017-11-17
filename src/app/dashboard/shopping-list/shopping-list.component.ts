@@ -1,7 +1,7 @@
-import {
-  Component, OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -18,7 +18,6 @@ import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
 import { SlFilters } from '../../models/slfilters.model';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-shopping-list',
@@ -83,12 +82,10 @@ export class ShoppingListComponent implements OnInit {
       .switchMap(select => {
         return this.cartService.collection$.first()
         .map(res => {
-         
-            let status = select ? 1 : 0;
-            res = _.forEach(res, (item: any) => {
-              item.status = status;
-            });
-          
+          let status = select ? 1 : 0;
+          res = _.forEach(res, (item: any) => {
+            item.status = status;
+          });
           return res;
         })
       })

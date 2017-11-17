@@ -348,6 +348,9 @@
         &.empty {
           color: $light-grey;
         }
+        &:disabled {
+          background: none;
+        }
       }
 
 

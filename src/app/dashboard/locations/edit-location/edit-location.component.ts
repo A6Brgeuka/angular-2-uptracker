@@ -1,10 +1,13 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { Location }                 from '@angular/common';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as _ from 'lodash';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
+import { DestroySubscribers } from 'ng2-destroy-subscribers';
+
+import * as _ from 'lodash';
 
 import {
   AccountService,
@@ -17,14 +20,14 @@ import {
 import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
 import { InventoryLocationModel } from "../../../models/inventory-location.model";
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+
 
 @Component({
   selector: 'app-edit-location',
   templateUrl: './edit-location.component.html',
   styleUrls: ['./edit-location.component.scss']
 })
+
 @DestroySubscribers()
 export class EditLocationComponent implements OnInit {
   public searchKey: any;
@@ -129,8 +132,11 @@ export class EditLocationComponent implements OnInit {
       return locations;
     });
 
-    this.floorStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: true}));
-    this.backStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: false}));
+    this.floorStockStorageLocations$ = this.filteredStorageLocations$
+    .map(location => _.filter(location, {floor_stock: true}));
+    
+    this.backStockStorageLocations$ = this.filteredStorageLocations$
+    .map(location => _.filter(location, {floor_stock: false}));
     
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
     
@@ -262,7 +268,7 @@ export class EditLocationComponent implements OnInit {
     } else {
       this.addLocation(this.location);
     }
-    //console.log(this.locationForm.form.valid)
+    
   }
 
   addLocation(data) {
@@ -356,7 +362,8 @@ export class EditLocationComponent implements OnInit {
     this.storageLocations$.next(this.location.inventory_locations);
 
     if(this.location.id) {
-      this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
+      this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location)
+      .subscribe(res => {
       }, err => {
         if(removedStorageLocation.length) {
           this.location.inventory_locations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);

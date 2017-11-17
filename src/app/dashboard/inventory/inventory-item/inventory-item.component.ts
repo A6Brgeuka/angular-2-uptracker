@@ -350,7 +350,7 @@ export class InventoryItemComponent implements OnInit {
     .open(AddInventory2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: this.inventory}, true))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (comment) => {
+        (res) => {
         },
         (err) => {
         }

@@ -16,7 +16,6 @@
             <i class="fa fa-filter"></i>
             <span>Filters</span>
           </div>
-
           <button type="button"
             routerLink="/products"
             class=" hide-on-small uptracker-form-btn waves-light waves-effect">
@@ -93,11 +92,14 @@
             <span class="caret-select"></span>
             <input materialize="dropdown"
               [attr.data-activates]="'dropd'+i"
-              [(ngModel)]="product.selected_vendor.vendor_name">
+              [(ngModel)]="product.selected_vendor.vendor_name"
+              [disabled] = "product.custom"
+              [class.disable] = "product.custom"
+            >
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
             <ul id="dropd{{ i }}" materialize="dropdown" class='dropdown-content vendors-dd'>
-              <li (click)="updateVendor(product, {vendor_name:'Auto'})">
+              <li (click)="updateVendor(product, {vendor_name:'Auto'})" *ngIf="!product.custom">
                 <div class="col s2 image-container"></div>
                 <div class="col s7 inblock">Auto select</div>
                 <div class="col s3 inblock"></div>
@@ -130,7 +132,6 @@
           <span *ngIf="product.selected_vendor.vendor_name == 'Auto'">
             {{ product.price_lower }}-{{ product.price_upper }}
           </span>
-
         </div>
         <div (click)="saveItem(product)" *ngIf="changed[product.id]" class="save-sign">
           <i class="fa fa-save red-text"></i>

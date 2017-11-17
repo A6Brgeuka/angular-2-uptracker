@@ -17,6 +17,7 @@ import {
 import { ChangePasswordUserModal } from '../../../shared/modals/change-password-user-modal/change-password-user-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserModel } from '../../../models/user.model';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-edit-user',
@@ -63,6 +64,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   @ViewChild('tabPermissions') tabPermissions: ElementRef;
   @ViewChild('tabTemplate') tabTemplate: ElementRef;
   public userId: string;
+  public deleteUser$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public router:Router,
@@ -142,12 +144,12 @@ export class EditUserComponent implements OnInit, OnDestroy {
       }
     });
   
-  
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.subscribers.departmentCollectionSubscription = this.departmentCollection$
     .subscribe(departments => this.departmentCollection = departments);
     
-    this.subscribers.getRolesSubscription = this.userService.selfData$.subscribe((res: any) => {
+    this.subscribers.getRolesSubscription = this.userService.selfData$
+    .subscribe((res: any) => {
       if (res.account) {
         
         this.permissionArr = _.cloneDeep(res.permissions);
@@ -168,6 +170,14 @@ export class EditUserComponent implements OnInit, OnDestroy {
         }
       }
     });
+  
+    this.subscribers.deleteUserSubscription = this.deleteUser$
+    .switchMap(() => this.accountService.deleteUser(this.user))
+    .subscribe((res: any) =>
+        this.goBack(),
+      (err: any) =>
+        this.goBack()
+    );
   }
   
   ngOnDestroy() {
@@ -292,7 +302,8 @@ export class EditUserComponent implements OnInit, OnDestroy {
     }
     this.preset.account_id = this.userService.selfData.account_id;
     this.preset.permissions = this.permissionArr;
-    this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset).subscribe((res: any) => {
+    this.subscribers.addRoleSubscription = this.accountService.addRole(this.preset)
+    .subscribe((res: any) => {
       _.each(res.data.roles, (roleItem: any) => {
         if (roleItem.label == this.preset.role) {
           this.selectedRole = roleItem.role;
@@ -314,7 +325,8 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.user.permissions = this.permissionArr;
     
     console.log(this.user);
-    this.subscribers.addUserSubscription = this.accountService.addUser(this.user).subscribe(
+    this.subscribers.addUserSubscription = this.accountService.addUser(this.user)
+    .subscribe(
       (res: any) => {
         this.goBack();
       },
@@ -341,9 +353,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   }
   
   deleteUserFunc() {
-    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
-      this.goBack();
-    });
+    this.deleteUser$.next('');
   }
   
   changePassword() {
