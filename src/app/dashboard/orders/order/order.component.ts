@@ -22,7 +22,7 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
   styleUrls: ['./order.component.scss']
 })
 @DestroySubscribers()
-export class OrderComponent {
+export class OrderComponent implements OnInit {
   public subscribers: any = {};
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orderId: string;
@@ -41,8 +41,8 @@ export class OrderComponent {
   ) {
   
   }
-  
-  addSubscribers() {
+
+ngOnInit() {
     
     this.subscribers.showOrderSubscription = this.route.params
     .switchMap((p: Params) => {
