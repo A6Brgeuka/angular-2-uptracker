@@ -519,15 +519,21 @@
               </div>
               <div class="row">
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="location.critical_level">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="location.critical_level"
+                  [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="location.fully_stocked">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="location.fully_stocked"
+                    [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="location.overstock_level">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="location.overstock_level"
+                    [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
               </div>
@@ -599,7 +605,9 @@
                   {{ stock.name }}
                 </div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="stock.on_hand"
+                    [disabled]="context.inventoryGroup">
                 </div>
               </div>
             </div>
@@ -616,10 +624,14 @@
                   {{ stock.name }}
                 </div>
                 <div class="col s2 input" *ngIf="stock?.floor_stock">
-                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="stock.on_hand"
+                    [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 input" *ngIf="stock?.floorstock">
-                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="stock.on_hand"
+                    [disabled]="context.inventoryGroup">
                 </div>
               </div>
             </div>

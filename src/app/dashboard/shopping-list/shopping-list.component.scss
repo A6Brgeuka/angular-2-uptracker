@@ -350,9 +350,9 @@
         }
         &:disabled {
           background: none;
+          cursor: inherit;
         }
       }
-
 
     }
   }
