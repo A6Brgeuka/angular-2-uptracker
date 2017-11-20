@@ -18,6 +18,7 @@ import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
 import { SlFilters } from '../../models/slfilters.model';
+import { ChangingShoppingListModel, ItemModel, VariantModel } from '../../models/changing-shopping-list.model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -89,7 +90,7 @@ export class ShoppingListComponent implements OnInit {
           return res;
         })
       })
-      .subscribe(cart => this.updateCart(cart));
+      .subscribe(cart => this.saveItem());
   
     
     this.subscribers.removeItemsSubscriber = this.deleteChecked$
@@ -108,6 +109,10 @@ export class ShoppingListComponent implements OnInit {
   
     
     this.subscribers.updateItemSubscription = this.updateItem$
+    .switchMap(() => this.cart$.first())
+    .map((items: any) => {
+      return new ChangingShoppingListModel({items});
+    })
     .switchMap((data) =>
       this.cartService.updateItem(data)
     )
@@ -225,26 +230,29 @@ export class ShoppingListComponent implements OnInit {
   }
   
   saveItem(item: any = {}) {
-    let data = {
-      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
-      "product_id": item.product_id,
-      "variants": [
-        {
-          "variant_id": item.variant_id,
-          "vendor_variant_id": item.variant_id,
-          "qty": item.qty,
-          "vendor_auto_select": item.selected_vendor.id ? false : true,
-          "location_id": item.location_id,
-          "status": item.status ? 1 : 0,
-        }
-      ]
-    };
-    item.prev_location = item.location_id;
-    if (item.selected_vendor.id) {
-      data['variants'][0]['vendor_id'] = item.selected_vendor.id;
-    }
+    
+    //let data = {
+    //  "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
+    //  "product_id": item.product_id,
+    //  "variants": [
+    //    {
+    //      "variant_id": item.variant_id,
+    //      //"vendor_variant_id": item.variant_id,
+    //      "vendor_id":null,
+    //      "qty": item.qty,
+    //      "vendor_auto_select": item.selected_vendor.id ? false : true,
+    //      "location_id": item.location_id,
+    //      "status": item.status ? 1 : 0,
+    //    }
+    //  ]
+    //};
+    //item.prev_location = item.location_id;
+    //if (item.selected_vendor.id) {
+    //  data['variants'][0]['vendor_id'] = item.selected_vendor.id;
+    //}
   
-    this.updateItem$.next(data);
+    //this.updateItem$.next(data);
+    this.updateItem$.next('');
     
   };
   
