@@ -396,11 +396,11 @@
               </ng-container>
             </select>
           </div>
-          <div class="col s1 mrg-top-5">=</div>
           <div class="col s2 input">
+            <span class="mrg-top-5 sign">=</span>
             <input type="text" placeholder="Qty." [(ngModel)]='newInventory.inventory_by_qty'>
           </div>
-          <div class="col s3 custom-pdg-l custom-height">Total Consumable Units</div>
+          <div class="col s5 mrg-top-10 custom-pdg-l custom-height">Total Consumable Units</div>
         </div>
         <div [hidden]="inventory_by.valid || inventory_by.pristine" class="error red-text left-align">
           How do you count this is required
