@@ -66,9 +66,9 @@
             </div>
             <div [routerLink]="['/', 'inventory','item', product.id]" class="info">
               <div class="ttl" title="{{ product.name }}">
-                {{product.name | slice:0:60}}
+                {{product.name}}
               </div>
-              <div class="bottom">
+              <div class="bottom" *ngIf="product.on_hand">
                 <div class="range-field" *ngIf="locationId !== ''">
                   <input
                     #inputRange
