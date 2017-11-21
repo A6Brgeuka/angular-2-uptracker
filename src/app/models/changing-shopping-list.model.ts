@@ -48,6 +48,7 @@ export class VariantModel extends Model {
     super();
     this.populate(obj);
     this.vendor_auto_select = obj.selected_vendor.id ? false : true;
+    this.vendor_id = obj.selected_vendor.id ? obj.selected_vendor.id : null;
   }
   
 
