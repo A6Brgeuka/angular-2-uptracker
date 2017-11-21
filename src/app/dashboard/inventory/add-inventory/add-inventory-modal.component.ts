@@ -166,7 +166,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         });
         return this.inventoryService.addItemsToInventory(this.newInventory)});
     })
-    .subscribe(newInventory => this.dismissModal());
+    .subscribe(newInventory => this.closeModal(newInventory));
   
     this.updateAdded$
     .switchMap(() => {
@@ -288,11 +288,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     }
   
     if (this.context.selectedProduct) {
-      let editedItems: any[] = [new InventorySearchResults(
-        Object.assign(this.context.selectedProduct, {
-          name:this.context.selectedProduct.item_name
-        })
-      )];
+      let editedItems: any[] = [new InventorySearchResults(this.context.selectedProduct)];
       this.editAddItemToItems$.next(editedItems);
     }
     

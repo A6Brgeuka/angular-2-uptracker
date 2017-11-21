@@ -76,8 +76,9 @@ export class PastOrderService extends ModelService {
     return this.restangular.all('receive').customPOST(productsToReceive);
   }
   
-  getProductFields(productId) {
-    //return this.restangular.customGET('', {'product_id' : productId}).map(res => res.data);
+  getProductFields(variantId) {
+    return this.restangular.one('inventory', 'search').customGET('', {'variant_id' : variantId})
+    .map(res => res.data.results[0]);
   }
   
 }

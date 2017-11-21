@@ -14,6 +14,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 import { Modal } from 'angular2-modal';
 import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-order-detail',
@@ -31,6 +32,7 @@ export class ReceiveComponent implements OnInit {
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
   public packingSlipValid: boolean = true;
+  public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public accountService: AccountService,
@@ -90,6 +92,26 @@ export class ReceiveComponent implements OnInit {
       });
       
     });
+  
+    this.subscribers.getProductFieldSubscription =
+      this.newInventory$
+    .switchMap((product:any) => {
+      return this.pastOrderService.getProductFields(product.variant_id)
+      .map(res => {
+        this.modal
+        .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': res, 'inventoryItems':[]}))
+        .then((resultPromise) => {
+          resultPromise.result.then(
+            (res) => {
+              product.inventory_group_id = res.id;
+            },
+            (err) => {}
+          );
+        });
+      })
+    })
+    .subscribe();
+    
   }
 
   updateOrders(orders) {
@@ -218,22 +240,7 @@ export class ReceiveComponent implements OnInit {
   }
   
   openAddInventoryModal(product) {
-    
-    //this.subscribers.getProductFieldSubscription = this.pastOrderService.getProductFields(product.product_id)
-    //.subscribe(product => {
-    //  let product = product;
-    //});
-    
-    this.modal
-    .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': product, 'inventoryItems':[]}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-
-        },
-        (err) => {}
-      );
-    });
+    this.newInventory$.next(product);
   }
   
 }

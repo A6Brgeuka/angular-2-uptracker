@@ -159,6 +159,7 @@ export class InventoryService extends ModelService {
       {
         this.totalCount$.next(this.totalCount$['_value']+1);
         this.addCollectionToCollection$.next(newInventory.data);
+        return newInventory.data;
       }
     );
   }
