@@ -16,9 +16,9 @@
         </div>
 
         <ul [id]='"order_dd_"+i' class='dropdown-content'>
-          <!--<li>-->
-            <!--<a class="tealish-text" href="/">Edit</a>-->
-          <!--</li>-->
+          <li>
+            <a class="tealish-text" (click)="onReceiveCheckedProducts()">Receive</a>
+          </li>
           <!--<li>-->
             <!--<a class="tealish-text" href="/">Resend</a>-->
           <!--</li>-->
@@ -28,16 +28,16 @@
         </ul>
       </div>
     </div>
-    <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i=index;">
+    <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i = index;">
       <div class="col s3 flex-center">
         <div class="input-checkbox left checkbox">
           <input
             [(ngModel)]='product.checked'
             type="checkbox"
-            class="subselected-input{{i}}"
-            id="subselected{{i}}"
+            class="subselected-input{{i + product.id}}"
+            id="subselected{{i + product.id}}"
           />
-          <label for="subselected{{i}}"></label>
+          <label for="subselected{{i + product.id}}"></label>
         </div>
         <div class="left flex-center">
           <div> {{ product.item_name }}</div>
@@ -60,7 +60,7 @@
             <a class="tealish-text" href="#">Resend</a>
           </li>
           <li *ngIf="product.status !== 'Received'">
-            <a class="tealish-text" (click)="getReceiveProduct(product)">Receive</a>
+            <a class="tealish-text" (click)="getReceiveProduct(item, product)">Receive</a>
           </li>
           <li *ngIf="product.status === 'Received'">
             <a class="tealish-text" href="#">Reconcile</a>
