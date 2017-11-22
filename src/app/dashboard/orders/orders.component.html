@@ -74,10 +74,12 @@
             </div>
           </div>
 
-          <div class="col s2">Vendor</div>
+          <div class="col s1">Vendor</div>
           <div class="col s1">Location</div>
           <div class="col s1">Status</div>
-          <div class="col s2">Placed</div>
+          <div class="col s1">Placed</div>
+          <div class="col s1">Received</div>
+          <div class="col s1">Reconciled</div>
           <div class="col s2">#Products</div>
           <div class="col s2">
             <div class="right edititem"
@@ -128,12 +130,14 @@
                 {{ item.po_number }}
               </div>
             </div>
-            <div (click)="changeVisibility(i)" class="col s2 pointer flex-center">
+            <div (click)="changeVisibility(i)" class="col s1 pointer flex-center">
               <div>{{ item.vendor_name }}</div>
             </div>
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.location }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.status }}</div>
-            <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.placed_date }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.placed_date }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.received_date }}</div>
+            <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.reconciled_date }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.product_count }}</div>
             <div class="col s2">
 

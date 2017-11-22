@@ -4,10 +4,13 @@
       <div class="col s3">Product Name</div>
       <div class="col s1">Location</div>
       <div class="col s1">Status</div>
-      <div class="col s2">Catalog #</div>
+      <div class="col s1">Placed</div>
+      <div class="col s1">Received</div>
+      <div class="col s1">Reconciled</div>
+      <!--<div class="col s2">Catalog #</div>-->
       <div class="col s1">Qty</div>
       <div class="col s1">Unit Price</div>
-      <div class="col s2">Total</div>
+      <div class="col s1">Total</div>
       <div class="col s1">
         <div class="right edititem filled"
           materialize="dropdown"
@@ -45,10 +48,13 @@
       </div>
       <div class="col s1">{{ product.location_name }}</div>
       <div class="col s1">{{ product.status }}</div>
-      <div class="col s2">{{ product.catalog_number }}</div>
+      <div class="col s1">{{ product.placed_date }}</div>
+      <div class="col s1">{{ product.received_date }}</div>
+      <div class="col s1">{{ product.reconciled_date }}</div>
+      <!--<div class="col s2">{{ product.catalog_number }}</div>-->
       <div class="col s1">{{ product.quantity }}</div>
       <div class="col s1">{{ product.unit_price }}</div>
-      <div class="col s3">
+      <div class="col s1">
         <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
           <fa name="ellipsis-h"></fa>
         </div>
