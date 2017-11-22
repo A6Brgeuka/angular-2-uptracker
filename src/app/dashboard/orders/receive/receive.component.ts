@@ -124,7 +124,7 @@ export class ReceiveComponent implements OnInit {
   }
  
   save() {
-    if (this.receiveProducts.packing_slip) {
+    if (this.receiveProducts.packing_slip_number) {
       this.receiveProducts.orders.map((order) => {
         order.items.map(item => {
           item.status.map(status => {

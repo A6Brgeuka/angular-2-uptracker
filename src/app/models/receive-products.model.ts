@@ -18,6 +18,7 @@ export class StatusModel {
   showStatusSelect: boolean = true;
   location_name: string = '';
   location_id: string = '';
+  storage_location_id: string = '';
   tmp_id: string = '';
   
   constructor(obj?:any) {
@@ -73,8 +74,8 @@ export class OrderModel {
 
 export class ReceiveProductsModel {
   orders: OrderModel[] = [];
-  packing_slip: string = '';
-  invoice_number: '';
+  packing_slip_number: string = '';
+  invoice_number: string = '';
   
   constructor(obj?:any) {
     for (let field in obj) {
