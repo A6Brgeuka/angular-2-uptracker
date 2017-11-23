@@ -26,6 +26,7 @@ export class ChangingShoppingListModel extends Model {
 export class ItemModel extends Model {
   product_id: string = '';
   location_id: string = '';
+  custom: boolean = false;
   variants: VariantModel[] =[];
   
   constructor(obj?:any) {

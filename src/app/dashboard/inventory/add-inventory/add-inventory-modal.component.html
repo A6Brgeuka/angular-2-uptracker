@@ -79,6 +79,7 @@
                   [min-chars] = '1'
                   (ngModelChange) = 'selectedAutocompledVendor($event)'
                   [list-formatter] = '"vendor_name"'
+                  [tab-to-select] = 'false'
                   name="vendor"
                   required
                 />
@@ -96,6 +97,7 @@
                   (blur)="updateOuterPackege($event)"
                   (ngModelChange) = 'selectedAutocompledOuterPackage($event)'
                   [list-formatter] = '"unit_name"'
+                  [tab-to-select] = 'false'
                   name="package_type"
                   [(ngModel)] = 'outerPack'
                 >
@@ -126,6 +128,7 @@
                       (blur)="updateInnerPackege($event)"
                       (ngModelChange) = 'selectedAutocompledInnerPackage($event)'
                       [list-formatter] = '"plural_unit_name"'
+                      [tab-to-select] = 'false'
                       name="sub_package_type"
                       [(ngModel)] = 'innerPack'
                     >
@@ -162,6 +165,7 @@
                       [ngModel] = "newProductData.consumable_unit.properties.unit_type"
                       [list-formatter] = '"unit_name"'
                       [disabled] = 'items.length'
+                      [tab-to-select] = 'false'
                       name="cons_package_type"
                       required
                     >
@@ -261,6 +265,7 @@
               [min-chars] = '3'
               [ngModel] = 'searchText'
               [no-match-found-text] ='noSearchedRes'
+              [tab-to-select] = 'false'
             />
             <app-scanner (searchText)="onSearchTextUpdated($event)"></app-scanner>
           </div>

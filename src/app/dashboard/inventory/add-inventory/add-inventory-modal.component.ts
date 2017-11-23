@@ -417,7 +417,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   selectedAutocompled(keyword) {
-    if (keyword.length > 2) {
+    if (keyword && keyword.length > 2) {
       this.typeIn$.next(keyword);
     } else {
       this.typeIn$.next(null);
