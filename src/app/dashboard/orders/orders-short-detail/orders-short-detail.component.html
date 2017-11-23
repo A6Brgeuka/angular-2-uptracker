@@ -55,6 +55,9 @@
       <div class="col s1">{{ product.quantity }}</div>
       <div class="col s1">{{ product.unit_price }}</div>
       <div class="col s1">
+        <div>{{ product.sub_total }}</div>
+      </div>
+      <div class="col s1">
         <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
           <fa name="ellipsis-h"></fa>
         </div>
@@ -78,7 +81,6 @@
             <a class="red-text" href="#">Void</a>
           </li>
         </ul>
-        <div>{{ product.sub_total }}</div>
       </div>
       <div class="clearfix"></div>
     </div>
