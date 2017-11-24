@@ -13,10 +13,9 @@ export class StorageLocationModel {
 
 export class StatusModel {
   type: string = '';
-  qty: number = null;
+  qty: string = '';
   primary_status: boolean = false;
   showStatusSelect: boolean = true;
-  location_name: string = '';
   location_id: string = '';
   storage_location_id: string = '';
   tmp_id: string = '';
@@ -34,6 +33,7 @@ export class ItemModel {
   item_id: string = '';
   status: StatusModel[] = [];
   inventory_group_id: string = '';
+  inventory_group = {};
   location_id: string = '';
   storage_locations: StorageLocationModel[] =[];
   

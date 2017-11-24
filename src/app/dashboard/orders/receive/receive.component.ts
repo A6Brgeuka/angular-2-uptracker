@@ -75,15 +75,18 @@ export class ReceiveComponent implements OnInit {
           item.item_id = item.id;
           item.inventory_group_id = item.inventory_group.id;
           if (item.inventory_group_id) {item.existInvGroup = true};
+          item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
           item = new ItemModel(item);
-          item.status = [new StatusModel()];
+          item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';
           item.status[0].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
-          item.status[1] = new StatusModel();
+          item.status[0].storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+          item.status[1] = new StatusModel(item);
           item.status[1].qty = 0;
           item.status[1].type = 'pending';
           item.status[1].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
+  
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
@@ -131,6 +134,9 @@ export class ReceiveComponent implements OnInit {
             if (status.type === 'receive' || status.type === 'partial receive') {
               status.primary_status = true;
             }
+            if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
+              status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+            }
             return status;
           });
         });
@@ -146,9 +152,9 @@ export class ReceiveComponent implements OnInit {
   
   }
   
-  changeLocation(location, status) {
-    status.location_id = location.id;
-    status.location_name = location.name;
+  changeLocation(location, status, product) {
+    status.storage_location_id = location.id;
+    status.location_id = product.location_id;
   }
   
   changeStatus(setStatus, product, curStatus) {
@@ -173,7 +179,12 @@ export class ReceiveComponent implements OnInit {
       }
       
       if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
-        product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
+        product.status.push(new StatusModel({
+          type: 'pending',
+          qty: '0',
+          location_id: product.location_id,
+          tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)
+        }));
         curStatus.type = setStatus;
       } else if (filteredStatus && (filteredStatus.type !== 'partial receive') && !quantityStatus && !receiveStatus) {
         this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
