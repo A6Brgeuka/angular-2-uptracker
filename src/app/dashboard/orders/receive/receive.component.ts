@@ -74,14 +74,19 @@ export class ReceiveComponent implements OnInit {
           const quantity = item.quantity;
           item.item_id = item.id;
           item.inventory_group_id = item.inventory_group.id;
-          if (item.inventory_group_id) {item.existInvGroup = true};
-          item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
+          if (item.inventory_group_id) {
+            item.existInvGroup = true;
+            item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
+          };
+          
           item = new ItemModel(item);
           item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';
           item.status[0].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
-          item.status[0].storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+          if (item.existInvGroup) {
+            item.status[0].storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+          }
           item.status[1] = new StatusModel(item);
           item.status[1].qty = 0;
           item.status[1].type = 'pending';

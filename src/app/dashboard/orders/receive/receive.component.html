@@ -131,7 +131,7 @@
                   </div>
                 </div>
                 <div class="col s3">
-                  <div class="select select-light flex-center">
+                  <div class="select select-light flex-center" *ngIf="product.inventory_group.locations">
                     <select materialize="material_select"
                       [materializeSelectOptions]="product.inventory_group.locations[0].storage_locations"
                       (ngModelChange)="changeLocation($event, status, product)"
@@ -140,11 +140,11 @@
                       name="location{{i}}"
                     >
                       <ng-container *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'">
-                      <option value="null">N/A</option>
+                        <option value="null">N/A</option>
                       </ng-container>
                       <ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
-                      <option *ngFor="let location of product.inventory_group.locations[0].storage_locations" [ngValue]="location">{{product.location_name}}: {{ location.name }}
-                      </option>
+                        <option *ngFor="let location of product.inventory_group.locations[0].storage_locations" [ngValue]="location">{{product.location_name}}: {{ location.name }}
+                        </option>
                       </ng-container>
                     </select>
                   </div>
