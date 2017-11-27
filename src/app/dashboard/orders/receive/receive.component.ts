@@ -52,21 +52,19 @@ export class ReceiveComponent implements OnInit {
   }
   
   addSubscribers() {
+  
+    //this.subscribers.locationSubscription = this.accountService.locations$
+    //.subscribe(r => this.locationArr = r);
+    //
+    //this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
+    //.subscribe(r => this.inventoryGroupArr = r);
     
     this.subscribers.getReceiveProductSubscription = this.route.params
     .switchMap(param =>
       this.pastOrderService.getReceiveProduct(param.queryParams)
     )
-    .subscribe(res => this.updateOrders(res));
-    
-    this.subscribers.locationSubscription = this.accountService.locations$
-    .subscribe(r => this.locationArr = r);
-    
-    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
-    .subscribe(r => this.inventoryGroupArr = r);
-    
-    this.subscribers.ordersSubscription = this.orders$
-    .subscribe(res => {
+    .subscribe((res:any) => {
+      let inventoryGroups = res.inventory_groups;
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
@@ -76,9 +74,10 @@ export class ReceiveComponent implements OnInit {
           item.inventory_group_id = item.inventory_group.id;
           if (item.inventory_group_id) {
             item.existInvGroup = true;
-            item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
+            //item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
           };
-          
+          item.inventory_group.locations = _.filter(inventoryGroups[0].locations, ['location_id', item.location_id]);
+  
           item = new ItemModel(item);
           item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
@@ -120,10 +119,6 @@ export class ReceiveComponent implements OnInit {
     })
     .subscribe();
     
-  }
-
-  updateOrders(orders) {
-    this.orders$.next(orders);
   }
   
   remove(product, status) {
