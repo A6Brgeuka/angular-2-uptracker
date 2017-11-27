@@ -13,24 +13,6 @@
   </div>
   <div class="item-card">
     <div class="row-half">
-      <h3>From</h3>
-      <p>{{ (order$ | async).from_co_name }}</p>
-      <p>{{ (order$ | async).from_address?.postal_code}}</p>
-      <p>{{ (order$ | async).from_address?.formattedAddress }}</p>
-      <p>Phone: {{ (order$ | async).from_phone_number}}</p>
-      <p>Fax: {{ (order$ | async).from_fax_number}}</p>
-      <p>E-mail: {{ (order$ | async).from_email_address}}</p>
-    </div>
-    <div class="row-half">
-      <h3>Ship To</h3>
-      <p>{{ (order$ | async).ship_to_co_name }}</p>
-      <p>{{ (order$ | async).ship_to_address?.postal_code}}</p>
-      <p>{{ (order$ | async).ship_to_address?.formattedAddress }}</p>
-      <p>Phone: {{ (order$ | async).ship_to_phone_number}}</p>
-      <p>Fax: {{ (order$ | async).ship_to_fax_number}}</p>
-      <p>E-mail: {{ (order$ | async).ship_to_email_address}}</p>
-    </div>
-    <div class="row-half">
       <h3>Vendor</h3>
       <p>{{ (order$ | async).vendor_co_name }}</p>
       <p>{{ (order$ | async).vendor_address?.postal_code}}</p>
@@ -64,7 +46,24 @@
       <p>{{ (order$ | async).ordered_by_name || 'N/A' }}</p>
       <br>
     </div>
-
+    <div class="row-half">
+      <h3>From</h3>
+      <p>{{ (order$ | async).from_co_name }}</p>
+      <p>{{ (order$ | async).from_address?.postal_code}}</p>
+      <p>{{ (order$ | async).from_address?.formattedAddress }}</p>
+      <p>Phone: {{ (order$ | async).from_phone_number}}</p>
+      <p>Fax: {{ (order$ | async).from_fax_number}}</p>
+      <p>E-mail: {{ (order$ | async).from_email_address}}</p>
+    </div>
+    <div class="row-half">
+      <h3>Ship To</h3>
+      <p>{{ (order$ | async).ship_to_co_name }}</p>
+      <p>{{ (order$ | async).ship_to_address?.postal_code}}</p>
+      <p>{{ (order$ | async).ship_to_address?.formattedAddress }}</p>
+      <p>Phone: {{ (order$ | async).ship_to_phone_number}}</p>
+      <p>Fax: {{ (order$ | async).ship_to_fax_number}}</p>
+      <p>E-mail: {{ (order$ | async).ship_to_email_address}}</p>
+    </div>
     <div class="header-with-line">
       <div>Line Items</div>
     </div>
