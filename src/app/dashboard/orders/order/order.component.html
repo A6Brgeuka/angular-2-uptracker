@@ -14,7 +14,7 @@
   <div class="item-card">
     <div class="row-half">
       <h3>Vendor</h3>
-      <p>{{ (order$ | async).vendor_co_name }}</p>
+      <p>{{ (order$ | async).vendor_name }}</p>
       <p>{{ (order$ | async).vendor_address?.postal_code}}</p>
       <p>{{ (order$ | async).vendor_address?.street_1 }},
         {{ (order$ | async).vendor_address?.city }},
