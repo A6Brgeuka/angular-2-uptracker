@@ -1,10 +1,13 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { Location }                 from '@angular/common';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import * as _ from 'lodash';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
+import { DestroySubscribers } from 'ng2-destroy-subscribers';
+
+import * as _ from 'lodash';
 
 import {
   AccountService,
@@ -17,13 +20,14 @@ import {
 import { LocationModel } from '../../../models/index';
 import { LocationService } from "../../../core/services/location.service";
 import { InventoryLocationModel } from "../../../models/inventory-location.model";
-import { ActivatedRoute, Params, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-edit-location',
   templateUrl: './edit-location.component.html',
   styleUrls: ['./edit-location.component.scss']
 })
+
 @DestroySubscribers()
 export class EditLocationComponent implements OnInit {
   public searchKey: any;
@@ -75,6 +79,10 @@ export class EditLocationComponent implements OnInit {
     readAs: 'DataURL'
   };
   public locationId: string;
+  public classValid: string = '';
+  
+  public deleteLocation$: ReplaySubject<any> = new ReplaySubject(1);
+  public addToLocation$: ReplaySubject<any> = new ReplaySubject(1);
 
   constructor(public zone: NgZone,
               public toasterService: ToasterService,
@@ -124,17 +132,27 @@ export class EditLocationComponent implements OnInit {
       return locations;
     });
 
-    this.floorStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: true}));
-    this.backStockStorageLocations$ = this.filteredStorageLocations$.map(location => _.filter(location, {floor_stock: false}));
-
-    // this.states$ = this.accountService.getStates().take(1);
+    this.floorStockStorageLocations$ = this.filteredStorageLocations$
+    .map(location => _.filter(location, {floor_stock: true}));
+    
+    this.backStockStorageLocations$ = this.filteredStorageLocations$
+    .map(location => _.filter(location, {floor_stock: false}));
+    
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
     
   }
   
   addSubscribers() {
     this.subscribers.locationTypesSubscription = this.locationTypes$
-    .subscribe(types => this.locationTypesArr = types)
+    .subscribe(types => this.locationTypesArr = types);
+  
+    this.subscribers.deleteLocationSubscription = this.deleteLocation$
+    .switchMap(() => this.locationService.deleteLocation(this.location))
+    .subscribe(() => this.goBack());
+    
+    this.subscribers.addToLocationSubscription = this.addToLocation$
+    .switchMap((data) => this.locationService.addLocation(data))
+    .subscribe(() => this.goBack());
   }
   
   updateLocs(location){
@@ -250,15 +268,11 @@ export class EditLocationComponent implements OnInit {
     } else {
       this.addLocation(this.location);
     }
-    //console.log(this.locationForm.form.valid)
+    
   }
 
   addLocation(data) {
-    this.locationService.addLocation(data).subscribe(
-      (res: any) => {
-        this.goBack();
-      }
-    );
+    this.addToLocation$.next(data);
   }
 
   deleteLocation(data) {
@@ -266,10 +280,7 @@ export class EditLocationComponent implements OnInit {
   }
 
   deleteLocationFunc() {
-    this.subscribers.deleteUserSubscription = this.locationService.deleteLocation(this.location)
-    .subscribe((res: any) => {
-      this.goBack();
-    });
+    this.deleteLocation$.next('');
   }
 
   changeSearchName(event) {
@@ -322,11 +333,11 @@ export class EditLocationComponent implements OnInit {
 
     if (this.location.id) {
       this.locationService.updateInventoryLocations(this.location).subscribe(
-          res => {},
-          err => {
-            _.remove(this.location.inventory_locations, {_id: storageLocation._id});
-            this.storageLocations$.next(this.location.inventory_locations);
-          });
+        res => {},
+        err => {
+          _.remove(this.location.inventory_locations, {_id: storageLocation._id});
+          this.storageLocations$.next(this.location.inventory_locations);
+        });
     }
 
     this.inventory_location = { name: '', floor_stock: true};
@@ -351,7 +362,8 @@ export class EditLocationComponent implements OnInit {
     this.storageLocations$.next(this.location.inventory_locations);
 
     if(this.location.id) {
-      this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location).subscribe(res => {
+      this.subscribers.updateInvertorySubscriber = this.locationService.updateInventoryLocations(this.location)
+      .subscribe(res => {
       }, err => {
         if(removedStorageLocation.length) {
           this.location.inventory_locations.splice(removedStorageLocation[0]._id - 1,0,removedStorageLocation[0]);
@@ -362,6 +374,7 @@ export class EditLocationComponent implements OnInit {
   }
 
   addGoogleAddress(event) {
+
     let postalFlag = false;
     if (event.address_components) {
       event.address_components.forEach((item) => {
@@ -385,6 +398,7 @@ export class EditLocationComponent implements OnInit {
             postalFlag = true;
             this.zone.run(() => {
               this.location.zip_code = item.long_name;
+              this.classValid = 'valid';
             });
             break;
         }
@@ -399,6 +413,10 @@ export class EditLocationComponent implements OnInit {
 
     this.location.formattedAddress = event.inputValue;
     
+  }
+  
+  addAddress(event) {
+    this.location.address = event.target.value;
   }
   
   goBack(): void {

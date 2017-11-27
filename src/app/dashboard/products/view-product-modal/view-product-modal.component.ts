@@ -50,8 +50,11 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     public hasFiles: boolean = false;
     public addOrderVariantsButtonShow: boolean = false;
     public departmentCollection$: Observable<any> = new Observable<any>();
+    public departmentCollection: any[];
     public productAccountingCollection$: Observable<any> = new Observable<any>();
+    public productAccountingCollection: any[];
     public productCategoriesCollection$: Observable<any> = new Observable<any>();
+    public productCategoriesCollection: any[];
 
     public variants = [];
     public variants$: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -247,6 +250,17 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
         this.getProducts();
     }
 
+    addSubscribers() {
+        this.subscribers.departmenCollectiontSubscription = this.departmentCollection$
+        .subscribe(departments => this.departmentCollection = departments);
+    
+        this.subscribers.productAccountingCollection = this.productAccountingCollection$
+        .subscribe(products => this.productAccountingCollection = products);
+    
+        this.subscribers.productCategoriesCollection = this.productCategoriesCollection$
+        .subscribe(productsCat => this.productCategoriesCollection = productsCat);
+    }
+    
     getProducts (){
         this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product.id, this.location_id)
         .filter(res => res.data)

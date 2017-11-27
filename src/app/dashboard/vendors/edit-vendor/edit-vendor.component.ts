@@ -105,9 +105,10 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.currentVendor$ = this.vendorService.globalVendor$;
     
-    this.currency$ = this.accountService.getCurrencies().do((res: any) => {
-      this.currencyArr = res;
-    });
+    this.currency$ = this.accountService.getCurrencies();
+    // .map((res: any) => {
+    //  this.currencyArr = res;
+    //});
     
     this.files$ = Observable.combineLatest(
       this.newFiles$,
@@ -157,6 +158,10 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     .subscribe(()=>{
       this.initTabs()
     });
+    
+    this.subscribers.currencySubscription = this.currency$
+    .subscribe(currency => this.currencyArr = currency);
+    
   }
   
   initTabs() {

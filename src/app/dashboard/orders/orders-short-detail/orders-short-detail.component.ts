@@ -59,9 +59,17 @@ export class OrdersShortDetailComponent implements OnInit, AfterViewInit {
     //this.variant.detailView = false;
   }
   
-  getReceiveProduct(item) {
-    this.subscribers.receiveOrders = this.pastOrderService.getReceiveProduct(item.id)
-    .subscribe();
+  getReceiveProduct(item, product) {
+    let queryParams = item.order_id.toString() + '&' + product.id.toString();
+    this.pastOrderService.goToReceive(queryParams);
   }
- 
+  
+  onReceiveCheckedProducts() {
+    let filteredCheckedProducts:any[]  = _.filter(this.item.order_items, 'checked');
+    let sendItems: any[] = [];
+    sendItems = sendItems.concat(filteredCheckedProducts.map((product) => product.id));
+    let queryParams = this.item.order_id.toString() + '&' + sendItems.toString();
+    this.pastOrderService.goToReceive(queryParams);
+  }
+  
 }

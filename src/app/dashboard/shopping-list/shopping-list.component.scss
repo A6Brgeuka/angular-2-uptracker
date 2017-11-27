@@ -337,7 +337,7 @@
         margin: 0;
         height: 30px;
         font-size: 11px;
-        background: #fff;
+        background-color: #fff;
         padding-left: 8px;
         text-indent: 0;
         text-overflow: ellipsis;
@@ -348,8 +348,11 @@
         &.empty {
           color: $light-grey;
         }
+        &:disabled {
+          background: none;
+          cursor: inherit;
+        }
       }
-
 
     }
   }
@@ -359,15 +362,6 @@
   .filter {
     .filter-right {
       float: none !important;
-
-      //
-      //&.red-helper{
-      //  float:right !important;
-      //}
-
-      button {
-        //float:left;
-      }
     }
   }
 }
@@ -486,17 +480,6 @@ div.top {
   background-repeat: no-repeat;
 }
 
-.caret-select {
-  position: absolute;
-  background: url(/assets/img/icon-dropdown-arrow.svg) no-repeat center center;
-  text-indent: -5000px;
-  width: 10px;
-  height: 6px;
-  top: 50%;
-  margin-top: -3px;
-  right: 10px;
-  z-index: 10;
-}
 .relative {
   position:relative;
 }
@@ -506,8 +489,11 @@ div.top {
 }
 
 .select > input {
+  background: #fff url(/assets/img/icon-dropdown-arrow.svg) no-repeat 95% center;
   padding-right: 20px;
+  cursor: pointer;
 }
+
 input {
   color: $dark!important;
 }

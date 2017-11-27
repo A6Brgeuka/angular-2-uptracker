@@ -88,7 +88,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return true;
   }
 
-  checkSignupSteps(url){ 
+  checkSignupSteps(url){
     //if (this.userService.emailVerified()) {
     //  this.router.navigate(['/dashboard']);
     //  return false;
@@ -111,7 +111,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     return true;
   }
 
-  checkOnboard(url: string): boolean { 
+  checkOnboard(url: string): boolean {
     if (!this.checkAuth(url)) {
       return false;
     }

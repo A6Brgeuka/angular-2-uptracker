@@ -21,15 +21,15 @@
       <div class="col l2 m6 s6 input wide-input">
         <input type="text"
           placeholder="Packing Slip #"
-          [(ngModel)]="receiveProducts.packing_slip"
+          [(ngModel)]="receiveProducts.packing_slip_number"
           required minlength="1"
           class="validate col s12 minlength-validation"
-          name="packing_slip"
+          name="packing_slip_number"
           #packing_slip="ngModel"
-          id="packing_slip"
+          id="packing_slip_number"
           [class.ng-touched]="!packingSlipValid"
         />
-        <div [hidden]="packingSlipValid || receiveProducts.packing_slip" class="error red-text left-align">
+        <div [hidden]="packingSlipValid || receiveProducts.packing_slip_number" class="error red-text left-align">
           Packing slip is required
         </div>
       </div>
@@ -111,7 +111,7 @@
                       [(ngModel)] = 'product.inventory_group_id'
                       name="inventory{{i}}"
                       [disabled] = "product.existInvGroup"
-                      (ngModelChange)="changeInventory($event)"
+                      (ngModelChange)="changeInventory($event, product)"
                       required
                     >
                       <option value="null" disabled>Select one</option>
@@ -131,11 +131,10 @@
                   </div>
                 </div>
                 <div class="col s3">
-                  <div class="select select-light flex-center">
-                    <select
-                      materialize="material_select"
-                      [materializeSelectOptions]="locationArr"
-                      (ngModelChange)="changeLocation($event, status)"
+                  <div class="select select-light flex-center" *ngIf="product.inventory_group.locations">
+                    <select materialize="material_select"
+                      [materializeSelectOptions]="product.inventory_group.locations[0].storage_locations"
+                      (ngModelChange)="changeLocation($event, status, product)"
                       [ngModel] = 'status.location'
                       [disabled]="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'"
                       name="location{{i}}"
@@ -144,7 +143,8 @@
                         <option value="null">N/A</option>
                       </ng-container>
                       <ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
-                        <option *ngFor="let location of locationArr" [ngValue]="location">{{ location.name }}</option>
+                        <option *ngFor="let location of product.inventory_group.locations[0].storage_locations" [ngValue]="location">{{product.location_name}}: {{ location.name }}
+                        </option>
                       </ng-container>
                     </select>
                   </div>

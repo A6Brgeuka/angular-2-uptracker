@@ -9,7 +9,7 @@ import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
 import { SlFilters } from '../../models/slfilters.model';
 
-export class PriceInfoDiscounts{
+export class PriceInfoDiscounts {
   type:string = "fixed";
   amount:number = 5;
   reward_points:number =0; //reward
@@ -27,7 +27,7 @@ export class PriceInfoDiscounts{
   }
 }
 
-export class PriceInfoData{
+export class PriceInfoData {
   public variant_id:string;
   public price:number;
   public price_type:string;
@@ -117,7 +117,6 @@ export class CartService extends ModelService {
       r.selected = true;
       r.prev_location = r.location_id;
       
-      
       return r;
     });
     return res;
@@ -128,7 +127,7 @@ export class CartService extends ModelService {
   }
   
   updateItem (data) {
-    return this.restangular.one('cart',data.location_id).customPUT(data);
+    return this.restangular.all('cart').customPUT(data).map(res => res.data);
   }
   
   removeItem (data) {
@@ -144,9 +143,9 @@ export class CartService extends ModelService {
     items.map((item) => idArray.push(item.id));
     
     let payload = {
-      item_ids: idArray
+      item_ids: idArray.toString()
     };
-    return this.restangular.all('cart').customDELETE('', payload)
+    return this.restangular.all('cart').customDELETE('', payload).map(res => res.data);
   }
   
 }

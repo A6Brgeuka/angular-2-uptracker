@@ -13,11 +13,11 @@ export class StorageLocationModel {
 
 export class StatusModel {
   type: string = '';
-  qty: number = null;
+  qty: string = '';
   primary_status: boolean = false;
   showStatusSelect: boolean = true;
-  location_name: string = '';
   location_id: string = '';
+  storage_location_id: string = '';
   tmp_id: string = '';
   
   constructor(obj?:any) {
@@ -33,6 +33,7 @@ export class ItemModel {
   item_id: string = '';
   status: StatusModel[] = [];
   inventory_group_id: string = '';
+  inventory_group = {};
   location_id: string = '';
   storage_locations: StorageLocationModel[] =[];
   
@@ -40,6 +41,13 @@ export class ItemModel {
   item_name: string = '';
   location_name: string = '';
   existInvGroup: boolean = false;
+  
+  catalog_number: string = "";
+  price: number = 0;
+  product_id:string  = null;
+  variant_id:string = null;
+  vendor_id: string = null;
+  
   
   constructor(obj?:any) {
     for (let field in obj) {
@@ -66,8 +74,8 @@ export class OrderModel {
 
 export class ReceiveProductsModel {
   orders: OrderModel[] = [];
-  packing_slip: string = '';
-  invoice_number: '';
+  packing_slip_number: string = '';
+  invoice_number: string = '';
   
   constructor(obj?:any) {
     for (let field in obj) {

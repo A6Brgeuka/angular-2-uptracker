@@ -44,11 +44,17 @@ export class OrdersComponent implements OnInit {
   
   }
 
-    ngOnInit() {
-
-    }
+  ngOnInit() {
+  
+  }
 
   addSubscribers() {
+    this.subscribers.getCollectionSubscription = this.pastOrderService.getPastOrders()
+    .subscribe(orders => {
+        this.pastOrderService.loadCollection$.next(orders);
+        this.pastOrderService.itemsVisibility = new Array(orders.length).fill(false);
+    });
+    
     this.subscribers.ordersSubscription = Observable.combineLatest(
       this.pastOrderService.collection$,
       this.filterTabBy$
@@ -98,9 +104,9 @@ export class OrdersComponent implements OnInit {
     .subscribe();
     
     this.subscribers.ordersCheckedSubscription = this.ordersChecked$
-    .switchMap(() => {
-      return this.orders$
-    })
+    .switchMap(() =>
+      this.orders$
+    )
     .map(product => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
       let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 'Received');
@@ -109,6 +115,14 @@ export class OrdersComponent implements OnInit {
       this.showMenuReconcile = !!(findReceivedProducts);
     })
     .subscribe();
+  
+    this.subscribers.selectAllSubscription = Observable.combineLatest(
+        this.pastOrderService.collection$,
+        this.selectAll$,
+      )
+    .subscribe(([res, select]) =>
+      res.map(item => item.checked = select)
+    );
   }
   
   sendToReceiveProducts(filteredCheckedProducts) {
@@ -117,8 +131,8 @@ export class OrdersComponent implements OnInit {
       sendItems = sendItems.concat(order.order_items.map((item) => item.id));
       return order.order_id;
     });
-    this.subscribers.receiveOrdersSubscription = this.pastOrderService.getReceive(sendOrders, sendItems)
-    .subscribe();
+    let queryParams = sendOrders.toString() + '&' + sendItems.toString();
+    this.pastOrderService.goToReceive(queryParams);
   }
   
   sendToReceiveOrder(order) {
@@ -140,15 +154,7 @@ export class OrdersComponent implements OnInit {
   }
   
   toggleSelectAll(event) {
-    // 0 = unused, 1 = selectAll, 2 = deselectAll
-    this.selectAll$.next(event ? 1 : 2);
-    this.subscribers.selectAllSubscription = this.selectAll$
-    .switchMap(() => this.pastOrderService.collection$)
-    .subscribe(res => {
-      res.map((item)=> {
-        item.checked = event;
-      })
-    });
+    this.selectAll$.next(event);
     this.ordersChecked$.next([]);
   }
   
@@ -161,11 +167,6 @@ export class OrdersComponent implements OnInit {
   }
   changeVisibility(i){
     this.pastOrderService.itemsVisibility[i] = !this.pastOrderService.itemsVisibility[i];
-  }
-  
-  getOrder(id){
-    this.pastOrderService.getPastOrder(id)
-    .subscribe((res)=>console.log(res));
   }
   
   onReceiveOrders() {

@@ -83,8 +83,8 @@
                   materialize="material_select"
                   required
                   (change)="changeLocation($event)"
-                  [materializeSelectOptions]="locations$ | async">
-                <option *ngFor="let location of locations$ | async" [value]="location.id">{{location.name}}</option>
+                  [materializeSelectOptions]="locationArr">
+                <option *ngFor="let location of locationArr" [value]="location.id">{{location.name}}</option>
               </select>
             </div>
           </div>
@@ -157,9 +157,9 @@
                       materialize="material_select"
                       required
                       (change)="changeDepartment()"
-                      [materializeSelectOptions]="departmentCollection$ | async">
+                      [materializeSelectOptions]="departmentsArr">
                     <option value="">Please select one</option>
-                    <option *ngFor="let department of departmentCollection$ | async" [value]="department">{{department}}</option>
+                    <option *ngFor="let department of departmentsArr" [value]="department">{{department}}</option>
                   </select>
                 </div>
               </div>

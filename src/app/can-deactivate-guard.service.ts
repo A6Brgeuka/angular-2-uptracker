@@ -28,7 +28,7 @@ export class CanDeactivateGuard implements CanDeactivate<AccountingComponent>{
 
 
     
-    // if (!accountingComponent.accounting || accountingComponent.accounting == accountingComponent.accountService.onboardAccounting)
+    // if (!accountingComponent.accounting || accountingComponent.accounting == accountingComponent.accountService.onboardacc)
     //     return true;
 
     _.each(accountingComponent.accounting, (key, value) => {

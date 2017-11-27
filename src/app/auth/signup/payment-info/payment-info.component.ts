@@ -23,8 +23,8 @@ export class PaymentInfoComponent implements OnInit {
   public selectYear = [];
   public yearDirty: boolean = false;
   public monthDirty: boolean = false;
-  public isHidden: boolean = true; //TODO remove
-  @ViewChild("buttonsubmit") button_submit;
+  //public isHidden: boolean = true; //TODO remove
+  //@ViewChild("buttonsubmit") button_submit;
   
   constructor(
     public router: Router,
@@ -65,12 +65,12 @@ export class PaymentInfoComponent implements OnInit {
     }
     
     //// fake data
-    
-    this.creditCard.expMonth = 12;
-    this.creditCard.expYear = 2018;
-    this.creditCard.cvc = 123;
-    this.creditCard.cardNumber = 4111111111111111;
-    this.button_submit.nativeElement.click();
+    //
+    //this.creditCard.expMonth = 12;
+    //this.creditCard.expYear = 2018;
+    //this.creditCard.cvc = 123;
+    //this.creditCard.cardNumber = 4111111111111111;
+    //this.button_submit.nativeElement.click();
     
   }
   

@@ -1,7 +1,7 @@
-import {
-  Component, OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -18,6 +18,7 @@ import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
 import { SlFilters } from '../../models/slfilters.model';
+import { ChangingShoppingListModel, ItemModel, VariantModel } from '../../models/changing-shopping-list.model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -26,10 +27,15 @@ import { SlFilters } from '../../models/slfilters.model';
 })
 @DestroySubscribers()
 export class ShoppingListComponent implements OnInit {
-  public selectAll: string;
+  public subscribers: any = {};
+  public selectAll: boolean = false;
   public last_loc: string = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public selectAll$: ReplaySubject<any> = new ReplaySubject(1);
+  public deleteChecked$: ReplaySubject<any> = new ReplaySubject(1);
+  public updateItem$: ReplaySubject<any> = new ReplaySubject(1);
+  public selectAllCollection$: Observable<any>;
   public cart: any = [];
   public total: number = 1;
   public products: any = [];
@@ -54,7 +60,7 @@ export class ShoppingListComponent implements OnInit {
      
     Observable.combineLatest(
       this.cartService.collection$,
-      this.cartService.filters$
+      this.cartService.filters$,
     )
     .subscribe(([r, f]) => {
       let cart = _.filter(r, (item: any) => (
@@ -64,16 +70,60 @@ export class ShoppingListComponent implements OnInit {
       );
       this.totalOrders = cart.filter((item:any)=>item.status).length;
       this.total = cart.length;
-      this.cart$.next(cart);
+      this.updateCart(cart);
       this.changed = [];
     });
     
-    //this.changePriceModal();
   }
   
-  selectOrder(id) {
-  }
+  addSubscribers() {
+    
+    this.subscribers.selectAllListSubscription =
+      this.selectAll$
+      .switchMap(select => {
+        return this.cartService.collection$.first()
+        .map(res => {
+          let status = select ? 1 : 0;
+          res = _.forEach(res, (item: any) => {
+            item.status = status;
+          });
+          return res;
+        })
+      })
+      .subscribe(cart => this.saveItem());
   
+    
+    this.subscribers.removeItemsSubscriber = this.deleteChecked$
+    .switchMap(() =>
+      this.cartService.collection$.first()
+      .map(res => _.filter(res, 'status'))
+      .switchMap(res => this.cartService.removeItems(res)
+      )
+    )
+    .subscribe((res:any) => {
+        // make a request again, because order_preview isn't returned
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+      },
+      (err) => console.log(err)
+    );
+  
+    
+    this.subscribers.updateItemSubscription = this.updateItem$
+    .switchMap(() => this.cart$.first())
+    .map((items: any) => {
+      return new ChangingShoppingListModel({items});
+    })
+    .switchMap((data) =>
+      this.cartService.updateItem(data)
+    )
+    .subscribe((res: any) => {
+        // make a request again, because order_preview isn't returned
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+      },
+      (err: any) => console.error(err)
+    );
+    
+  }
   
   viewProductModal(product) {
     this.modal
@@ -127,7 +177,6 @@ export class ShoppingListComponent implements OnInit {
     this.searchKey$.next(value);
   }
   
-  
   showFiltersModal() {
     Observable.combineLatest(
       this.cartService.collection$,
@@ -180,38 +229,31 @@ export class ShoppingListComponent implements OnInit {
     this.changeRow(product);
   }
   
-  onCheck() {
-  
-  }
-  
-  
   saveItem(item: any = {}) {
-    let data = {
-      "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
-      "product_id": item.product_id,
-      "variants": [
-        {
-          "variant_id": item.variant_id,
-          "vendor_variant_id": item.variant_id,
-          "qty": item.qty,
-          "vendor_auto_select": item.selected_vendor.id ? false : true,
-          "location_id": item.location_id,
-          "status": item.status ? 1 : 0,
-        }
-      ]
-    };
-    item.prev_location = item.location_id;
-    if (item.selected_vendor.id) {
-      data['variants'][0]['vendor_id'] = item.selected_vendor.id;
-    }
-    this.cartService.updateItem(data)
-    .subscribe((r: any) => {
-        this.changed[item.id] = false;
-        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-      },
-      (err: any) => {
-        console.error(err);
-      });
+    
+    //let data = {
+    //  "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
+    //  "product_id": item.product_id,
+    //  "variants": [
+    //    {
+    //      "variant_id": item.variant_id,
+    //      //"vendor_variant_id": item.variant_id,
+    //      "vendor_id":null,
+    //      "qty": item.qty,
+    //      "vendor_auto_select": item.selected_vendor.id ? false : true,
+    //      "location_id": item.location_id,
+    //      "status": item.status ? 1 : 0,
+    //    }
+    //  ]
+    //};
+    //item.prev_location = item.location_id;
+    //if (item.selected_vendor.id) {
+    //  data['variants'][0]['vendor_id'] = item.selected_vendor.id;
+    //}
+  
+    //this.updateItem$.next(data);
+    this.updateItem$.next('');
+    
   };
   
   changeRow(item) {
@@ -219,18 +261,20 @@ export class ShoppingListComponent implements OnInit {
     this.saveItem(item);
   }
   
+  selectAllFunc(selectAll) {
+    this.selectAll$.next(!selectAll);
+  }
+  
   applyFilters(data: SlFilters) {
     this.cartService.filters$.next(data);
-    console.log(data);
   }
   
   deleteCheckedProducts() {
-    let checkedResult = _.filter(this.cart$['_value'], 'status');
-    this.cartService.removeItems(checkedResult);
-    
-   //let test$ =  this.cart$.map(items => {
-   //   let checkedResult = _.filter(items, 'status');
-   //   this.cartService.removeItems(checkedResult);
-   // }).subscribe()
+    this.deleteChecked$.next('');
   }
+  
+  updateCart(data) {
+    this.cart$.next(data);
+  }
+  
 }

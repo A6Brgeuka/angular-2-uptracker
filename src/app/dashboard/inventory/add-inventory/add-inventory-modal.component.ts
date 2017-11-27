@@ -1,17 +1,21 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone } from '@angular/core';
+
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+
 import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { AttachmentFiles, InventorySearchResults, searchData, Vendor } from '../../../models/inventory.model';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { debug } from 'util';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
@@ -19,6 +23,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
   inventoryGroup: any = null;
+  selectedProduct: any = null;
 }
 
 @Component({
@@ -89,8 +94,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public fileIsOver: boolean = false;
   public categoryValid: boolean = true;
   
-  public departmentCollection$: Observable<any> = new Observable<any>();
-  public productAccountingCollection$: Observable<any> = new Observable<any>();
+  public departmentCollection: any;
+  public productAccountingCollection:  any;
   public productCategoriesCollection: any;
   
   @ViewChild('step1') step1: ElementRef;
@@ -101,6 +106,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public locations$: Observable<any> = this.accountService.locations$;
   public locations: any[];
   public showAddCustomBtn: boolean;
+  public outerPack: string = '';
+  public innerPack: string = '';
   
   constructor(
     public zone: NgZone,
@@ -116,18 +123,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.context = dialog.context;
     dialog.setCloseGuard(this);
     
+   
+  }
+  
+  ngOnInit() {
+  
     this.typeIn$
     .debounceTime(500)
     .switchMap((key: string) => {
       this.showAddCustomBtn = (key !== null);
       return this.inventoryService.search(key)})
     .subscribe((data: searchData) => {
-      console.log(data)
+    
       if (data.results) {
         this.total = data.count;
         this.searchResults$.next(data.results);
         this.searchResults = data.results;
-  
+        console.log(this.searchResults);
         if (this.items.length) {
           this.checkedProduct = [];
           this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
@@ -139,12 +151,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           this.checkConsPackage(null);
         }
         this.checkedProduct$.next({});
-      } else {
-        console.log(data);
       }
-
-    });
     
+    });
+  
     this.saveAdded$
     .switchMap(() => {
       return this.items$
@@ -156,121 +166,24 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         });
         return this.inventoryService.addItemsToInventory(this.newInventory)});
     })
-    .subscribe(newInventory => this.dismissModal());
-
+    .subscribe(newInventory => this.closeModal(newInventory));
+  
     this.updateAdded$
     .switchMap(() => {
       return this.inventoryService.updateInventory(this.newInventory)
     })
     .subscribe(newInventory => this.closeModal(newInventory));
-    
+  
     this.fileActions();
     this.msdsActions();
-    this.departmentCollection$ = this.accountService.getDepartments().take(1);
-    this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
-  }
-  
-  onSearchTypeIn(event) {
-      this.autocompleteProducts$.next(event.target.value);
-      if (event.target.value.length > 2) {
-        this.typeIn$.next(event.target.value);
-      } else {
-        this.typeIn$.next(null);
-      }
-  }
-  
-  selectedAutocompled(keyword) {
-    if (keyword.length > 2) {
-      this.typeIn$.next(keyword);
-    } else {
-      this.typeIn$.next(null);
-    }
-  }
-  observableSource(keyword: any) {
-    return Observable.of(this.autocompleteProducts).take(1);
-  }
-  
-  selectedAutocompledVendor(vendor) {
-    this.newProductData.vendors = [vendor];
-  }
-  onSearchVendor(event) {
-    this.newProductData.vendors = [{vendor_name: event.target.value, vendor_id: null}];
-    this.vendorDirty = true;
-    this.vendorValid = !!(event.target.value);
-    this.autocompleteVendors$.next(event.target.value);
-  }
-  observableSourceVendor(keyword: any) {
-    return Observable.of(this.autocompleteVendors).take(1);
-  }
-  
-  selectedAutocompledOuterPackage(outerPackage) {
-    this.newProductData.package_type = outerPackage.unit_name;
-  }
-  onSearchOuterPackage(event) {
-    this.newProductData.package_type = event.target.value;
-    this.autocompleteOuterPackage$.next(event.target.value);
-  }
-  observableSourceOuterPackage(keyword: any) {
-    return Observable.of(this.autocompleteOuterPackage).take(1);
-  }
-  
-  selectedAutocompledInnerPackage(innerPackage) {
-    this.newProductData.sub_package.properties.unit_type = innerPackage.plural_unit_name;
-  }
-  onSearchInnerPackage(event) {
-    this.newProductData.sub_package.properties.unit_type = event.target.value;
-    this.autocompleteInnerPackage$.next(event.target.value);
-  }
-  observableSourceInnerPackage(keyword: any) {
-    return Observable.of(this.autocompleteInnerPackage).take(1);
-  }
-  
-  selectedAutocompledConsPackage(consPackage) {
-    this.newProductData.consumable_unit.properties.unit_type = consPackage.unit_name;
-  }
-  onSearchConsPackage(event) {
-    this.packDirty = true;
-    this.newProductData.consumable_unit.properties.unit_type = event.target.value;
-    this.autocompleteConsPackage$.next(event.target.value);
-  }
-  observableSourceConsPackage(keyword: any) {
-    return Observable.of(this.autocompleteConsPackage).take(1);
-  }
-  
-  addSubscribers() {
-    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1).subscribe(res => this.productCategoriesCollection = res);
-  
-    this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
-    .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
-    .subscribe(res => {
-      this.autocompleteProducts = res['suggestions'];
-    });
     
-    this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
-    .subscribe((vendors:any) => this.autocompleteVendors = vendors);
-  
-    this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack:any) => this.autocompleteOuterPackage = pack);
-  
-    this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack:any) => this.autocompleteInnerPackage = pack);
-  
-    this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack:any) => this.autocompleteConsPackage = pack);
-  }
-  
-  ngOnInit() {
     this.loadFile$.next([]);
     this.loadMsds$.next([]);
     
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
-        this.inventoryService.checkIfNotExist(itemsToCheck)
-        .let(this.checkExistedProduct(itemsToCheck)))
+      this.inventoryService.checkIfNotExist(itemsToCheck)
+      .let(this.checkExistedProduct(itemsToCheck)))
     .switchMap((newItems: any[]) =>
       this.items$.first()
       .map((items: any) => {
@@ -288,14 +201,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         
         return [...items, ...newNotChosenItems];
       })
-      
+    
     );
-  
+    
     let deleteFromItems$ = this.deleteFromItems$
     .switchMap((deleteItems) =>
       this.items$.first()
-      .map((items: any) =>
-        items.filter((el: any) => el.variant_id !== deleteItems.variant_id)
+      .map((items: any) => items.filter((el: any) => el.variant_id !== deleteItems.variant_id)
       )
     );
     
@@ -314,7 +226,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       deleteFromItems$
     ).publishReplay(1).refCount();
     
-    this.items$.subscribe(res => {
+    this.subscribers.itemsSubscription = this.items$.subscribe(res => {
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {
@@ -343,10 +255,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       },0.6);
       this.items = res;
     });
-     //load initial items from context
+    //load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
     if (this.context.inventoryGroup) {
       let editedItems = this.context.inventoryGroup.inventoryGroup.inventory_products.map(product => {
+        if (!product.variant_id) {
+          product.variant_id = 'tmp' + Math.floor(Math.random() * 10000000);
+        }
         return new InventorySearchResults(product);
       });
       this.editAddItemToItems$.next(editedItems);
@@ -356,7 +271,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           inventory_by: this.context.inventoryGroup.inventoryGroup.inventory_by,
           locations: this.context.inventoryGroup.inventoryGroup.inventory_item_locations,
           inventory_by_array: this.newInventory.inventory_by_array,
-            id: this.context.inventoryGroup.inventoryGroup.id,
+          id: this.context.inventoryGroup.inventoryGroup.id,
         })
       );
       this.locations = this.newInventory.locations;
@@ -370,7 +285,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         item.selectedVendor = {vendor_name: item.vendor_name, vendor_id: item.vendor_id};
         this.compareVendor(item.selectedVendor, item.selectedVendor);
       });
-      console.log(this.newInventory);
+    }
+  
+    if (this.context.selectedProduct) {
+      let editedItems: any[] = [new InventorySearchResults(this.context.selectedProduct)];
+      this.editAddItemToItems$.next(editedItems);
     }
     
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
@@ -427,9 +346,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.productImg$
     .switchMap((img: any) => this.inventoryService.uploadAttachment(img))
     .subscribe((image: any) => {
-        this.newInventory.image = image.public_url
+      this.newInventory.image = image.public_url
     });
-  
+    
     if (!this.context.inventoryGroup) {
       this.locations$.subscribe(location => {
         this.locations = location;
@@ -445,13 +364,124 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       })
     }
     
+    this.autocompleteOuterPackage$.next('');
+    this.autocompleteInnerPackage$.next('');
   }
   
   ngOnDestroy() {
     this.saveAdded$.unsubscribe();
     this.productImg$.unsubscribe();
     this.updateAdded$.unsubscribe();
-    //this.items$.unsubscribe();
+  }
+  
+  addSubscribers() {
+    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1)
+    .subscribe(res => this.productCategoriesCollection = res);
+    
+    this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
+    .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
+    .subscribe(res => {
+      this.autocompleteProducts = res['suggestions'];
+    });
+    
+    this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
+    .subscribe((vendors:any) => this.autocompleteVendors = vendors);
+    
+    this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+    .subscribe((pack:any) => this.autocompleteOuterPackage = _.sortBy(pack, ['unit_name']));
+    
+    this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+    .subscribe((pack:any) => this.autocompleteInnerPackage = _.sortBy(pack, ['plural_unit_name']));
+    
+    this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
+    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+    .subscribe((pack:any) => this.autocompleteConsPackage = pack);
+    
+    this.subscribers.departmentCollectionSubscription = this.accountService.getDepartments().take(1)
+    .subscribe(departments => this.departmentCollection = departments);
+    
+    this.subscribers.productAccountingCollectionSubscription = this.accountService.getProductAccounting().take(1)
+    .subscribe(productAccountingCol => this.productAccountingCollection = productAccountingCol);
+  }
+  
+  onSearchTypeIn(event) {
+    this.autocompleteProducts$.next(event.target.value);
+    if (event.target.value.length > 2) {
+      this.typeIn$.next(event.target.value);
+    } else {
+      this.typeIn$.next(null);
+    }
+  }
+  
+  selectedAutocompled(keyword) {
+    if (keyword && keyword.length > 2) {
+      this.typeIn$.next(keyword);
+    } else {
+      this.typeIn$.next(null);
+    }
+  }
+  observableSource(keyword: any) {
+    return Observable.of(this.autocompleteProducts).take(1);
+  }
+  
+  selectedAutocompledVendor(vendor) {
+    this.newProductData.vendors = [vendor];
+  }
+  onSearchVendor(event) {
+    this.newProductData.vendors = [{vendor_name: event.target.value, vendor_id: null}];
+    this.vendorDirty = true;
+    this.vendorValid = !!(event.target.value);
+    this.autocompleteVendors$.next(event.target.value);
+  }
+  observableSourceVendor(keyword: any) {
+    return Observable.of(this.autocompleteVendors).take(1);
+  }
+  
+  selectedAutocompledOuterPackage(outerPackage) {
+    this.newProductData.package_type = outerPackage.unit_name;
+  }
+  onSearchOuterPackage(event) {
+    this.autocompleteOuterPackage$.next(event.target.value);
+  }
+  observableSourceOuterPackage(keyword: any) {
+    return Observable.of(this.autocompleteOuterPackage).take(1);
+  }
+  
+  updateOuterPackege(event) {
+    this.outerPack = (this.newProductData.package_type === event.target.value) ? this.newProductData.package_type : null;
+    if (!this.outerPack) {
+      this.autocompleteOuterPackage$.next('');
+    }
+  }
+  
+  selectedAutocompledInnerPackage(innerPackage) {
+    this.newProductData.sub_package.properties.unit_type = innerPackage.plural_unit_name;
+  }
+  onSearchInnerPackage(event) {
+    this.autocompleteInnerPackage$.next(event.target.value);
+  }
+  observableSourceInnerPackage(keyword: any) {
+    return Observable.of(this.autocompleteInnerPackage).take(1);
+  }
+  updateInnerPackege(event) {
+    this.innerPack = (this.newProductData.sub_package.properties.unit_type === event.target.value) ? this.newProductData.sub_package.properties.unit_type : null;
+    if (!this.innerPack) {
+      this.autocompleteInnerPackage$.next('');
+    }
+  }
+  selectedAutocompledConsPackage(consPackage) {
+    this.newProductData.consumable_unit.properties.unit_type = consPackage.unit_name;
+  }
+  onSearchConsPackage(event) {
+    this.packDirty = true;
+    this.newProductData.consumable_unit.properties.unit_type = event.target.value;
+    this.autocompleteConsPackage$.next(event.target.value);
+  }
+  observableSourceConsPackage(keyword: any) {
+    return Observable.of(this.autocompleteConsPackage).take(1);
   }
 
   compareVendor(v1, v2) {
@@ -845,11 +875,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   removeFile(file) {
-    console.log(`remove ${file.file_name}`);
     this.deleteFromFile$.next(file);
   }
   removeMsds(msds) {
-    console.log(`remove ${msds.file_name}`);
     this.deleteFromMsds$.next(msds);
   }
   

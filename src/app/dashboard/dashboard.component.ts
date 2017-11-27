@@ -39,7 +39,11 @@ export class DashboardComponent implements OnInit {
   
   ngOnInit() {
     
-    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
+  }
+  
+  addSubscribers() {
+    this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
+    .subscribe((res: any) => {
       this.selectedLocation = res ? res.id : '';
     });
     this.subscribers.dashboardLocationProductSubscription = this.accountService.locations$
@@ -55,7 +59,6 @@ export class DashboardComponent implements OnInit {
         this.showLocSelect = true;
       }, 1)
     });
-    
   }
   
   changeLocation(event) {

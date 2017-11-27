@@ -64,6 +64,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   public addPresetForm: boolean = false;
   public preset: any = {};
   public asd:string = "";
+  public departmentsArr: any[] = [];
   
 
   @ViewChild('tabProfile') tabProfile: ElementRef;
@@ -152,6 +153,13 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
         }
       }
     });
+  }
+  
+  addSubscribers() {
+    this.subscribers.departmentCollectionSubscribtion = this.departmentCollection$
+    .subscribe(departments =>
+        this.departmentsArr = departments
+    )
   }
   
   setDefaultPermissions() {

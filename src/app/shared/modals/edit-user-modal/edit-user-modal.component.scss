@@ -1,3 +1,4 @@
+@import "../../../../colors.scss";
 $tealish: #33c6d9;
 
 .tabs{
@@ -27,7 +28,7 @@ $tealish: #33c6d9;
       position:relative;
       width:285px;
       height:285px;
-      background-image: url(/assets/img/onboard/icon-img-placeholder-users.svg);
+      //background-image: url(/assets/img/onboard/icon-img-placeholder-users.svg);
 
       .file-field{
         position:absolute;
@@ -145,6 +146,4 @@ $tealish: #33c6d9;
   button{
     margin:0 5px;
   }
-
-
 }

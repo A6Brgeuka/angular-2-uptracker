@@ -24,6 +24,9 @@
       box-sizing: border-box;
       color: $grey;
     }
+    .caret {
+      background: #fff url(/assets/img/icon-dropdown-arrow.svg) no-repeat 98% center;
+    }
     textarea {
       margin: 0;
       min-height: 100px;
@@ -63,6 +66,9 @@
     }
     .custom-pdg-l {
       padding-left: 0;
+    }
+    .custom-height {
+      line-height: 1;
     }
     .checkbox.inline-block {
       padding-right: 5px;
@@ -321,6 +327,10 @@
     .row.buttons {
       padding-top:5px;
     }
+  }
+  .sign {
+    position: absolute;
+    left: -5px;
   }
 }
 .warning {

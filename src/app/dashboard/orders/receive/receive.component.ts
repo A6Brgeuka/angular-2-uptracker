@@ -1,16 +1,20 @@
-import { Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { AccountService } from '../../../core/services/account.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { InventoryService } from '../../../core/services/inventory.service';
-import { Observable } from 'rxjs/Observable';
 import {
   ItemModel, OrderModel, ReceiveProductsModel, StatusModel,
   StorageLocationModel
 } from '../../../models/receive-products.model';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { Modal } from 'angular2-modal';
+import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-order-detail',
@@ -23,10 +27,12 @@ export class ReceiveComponent implements OnInit {
   public searchKey:string= "";
   public locationArr: any = [];
   public inventoryGroupArr: any = [];
-  public orders$: Observable<any>;
+  public orders$: BehaviorSubject<any> = new BehaviorSubject([]);
+  
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
   public packingSlipValid: boolean = true;
+  public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public accountService: AccountService,
@@ -34,22 +40,33 @@ export class ReceiveComponent implements OnInit {
     public router: Router,
     public pastOrderService: PastOrderService,
     public toasterService: ToasterService,
+    public modalWindowService: ModalWindowService,
+    public modal: Modal,
+    public route: ActivatedRoute,
   ) {
   
   }
   
   ngOnInit() {
     this.inventoryService.getNextInventory();
-    this.orders$ = this.pastOrderService.ordersToReceive$;
   }
   
   addSubscribers() {
-    this.subscribers.locationSubscription = this.accountService.locations$.subscribe(r => this.locationArr = r );
-    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$.subscribe(r => this.inventoryGroupArr = r);
+    
+    this.subscribers.getReceiveProductSubscription = this.route.params
+    .switchMap(param =>
+      this.pastOrderService.getReceiveProduct(param.queryParams)
+    )
+    .subscribe(res => this.updateOrders(res));
+    
+    this.subscribers.locationSubscription = this.accountService.locations$
+    .subscribe(r => this.locationArr = r);
+    
+    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
+    .subscribe(r => this.inventoryGroupArr = r);
     
     this.subscribers.ordersSubscription = this.orders$
     .subscribe(res => {
-      
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
@@ -57,37 +74,73 @@ export class ReceiveComponent implements OnInit {
           const quantity = item.quantity;
           item.item_id = item.id;
           item.inventory_group_id = item.inventory_group.id;
-          if (item.inventory_group_id) {item.existInvGroup = true};
+          if (item.inventory_group_id) {
+            item.existInvGroup = true;
+            item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
+          };
+          
           item = new ItemModel(item);
-          item.status = [new StatusModel()];
+          item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';
           item.status[0].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
-          item.status[1] = new StatusModel();
+          if (item.existInvGroup) {
+            item.status[0].storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+          }
+          item.status[1] = new StatusModel(item);
           item.status[1].qty = 0;
           item.status[1].type = 'pending';
           item.status[1].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
+  
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
+        console.log(order);
         return order;
       });
       
     });
+  
+    this.subscribers.getProductFieldSubscription =
+      this.newInventory$
+    .switchMap((product:any) => {
+      return this.pastOrderService.getProductFields(product.variant_id)
+      .map(res => {
+        this.modal
+        .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': res, 'inventoryItems':[]}))
+        .then((resultPromise) => {
+          resultPromise.result.then(
+            (res) => {
+              product.inventory_group_id = res.id;
+            },
+            (err) => {}
+          );
+        });
+      })
+    })
+    .subscribe();
+    
   }
 
+  updateOrders(orders) {
+    this.orders$.next(orders);
+  }
+  
   remove(product, status) {
     let removedStatus = _.remove(product.status, status);
     this.onchangeStatusQty(product, status, status.qty);
   }
  
   save() {
-    if (this.receiveProducts.packing_slip) {
+    if (this.receiveProducts.packing_slip_number) {
       this.receiveProducts.orders.map((order) => {
         order.items.map(item => {
           item.status.map(status => {
             if (status.type === 'receive' || status.type === 'partial receive') {
               status.primary_status = true;
+            }
+            if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
+              status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
             }
             return status;
           });
@@ -104,9 +157,9 @@ export class ReceiveComponent implements OnInit {
   
   }
   
-  changeLocation(location, status) {
-    status.location_id = location.id;
-    status.location_name = location.name;
+  changeLocation(location, status, product) {
+    status.storage_location_id = location.id;
+    status.location_id = product.location_id;
   }
   
   changeStatus(setStatus, product, curStatus) {
@@ -131,7 +184,12 @@ export class ReceiveComponent implements OnInit {
       }
       
       if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
-        product.status.push(new StatusModel({type: 'pending', qty: '0', tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)}));
+        product.status.push(new StatusModel({
+          type: 'pending',
+          qty: '0',
+          location_id: product.location_id,
+          tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)
+        }));
         curStatus.type = setStatus;
       } else if (filteredStatus && (filteredStatus.type !== 'partial receive') && !quantityStatus && !receiveStatus) {
         this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
@@ -191,10 +249,14 @@ export class ReceiveComponent implements OnInit {
     });
   }
   
-  changeInventory(invenory) {
+  changeInventory(invenory, product) {
     if (invenory === 'routerLink') {
-      this.router.navigate(['/inventory']);
+      this.openAddInventoryModal(product);
     }
+  }
+  
+  openAddInventoryModal(product) {
+    this.newInventory$.next(product);
   }
   
 }

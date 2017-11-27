@@ -1,8 +1,9 @@
-import {
-  Component, OnInit
-} from '@angular/core';
-import { BehaviorSubject } from 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
 import { Location }                 from '@angular/common';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
+import { BehaviorSubject } from 'rxjs/Rx';
+
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -11,10 +12,7 @@ import * as _ from 'lodash';
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ConvertedOrder } from '../../../core/services/order.service';
 import { ToasterService } from '../../../core/services/toaster.service';
-import { Subject } from 'rxjs/Subject';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 
 
@@ -25,11 +23,10 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
 })
 @DestroySubscribers()
 export class OrderComponent implements OnInit {
+  public subscribers: any = {};
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orderId: string;
-  deleteOrder$: Subject<ConvertedOrder> = new Subject();
   order$: BehaviorSubject<any> = new BehaviorSubject({});
-  currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
   
   constructor(
     public modal: Modal,
@@ -44,24 +41,22 @@ export class OrderComponent implements OnInit {
   ) {
   
   }
-  
-  ngOnInit() {
+
+ngOnInit() {
     
-    this.route.params
+    this.subscribers.showOrderSubscription = this.route.params
     .switchMap((p: Params) => {
       this.orderId = p['id'];
       return this.pastOrderService.getPastOrder(p['id']);
     })
-    .subscribe((item: any) => {
-      console.log(item);
-      this.order$.next(item);
-    });
+    .subscribe((item: any) =>
+      this.order$.next(item)
+    );
     
   }
   
   goBack(): void {
     this.windowLocation.back();
   }
-  
  
 }

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Location }                 from '@angular/common';
+import { Location }               from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
 
 import { AccountService, UserService, ModalWindowService } from '../../../core/services/index';
+
 import { Observable } from "rxjs";
-import { ActivatedRoute, Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-view-user',
@@ -22,6 +24,7 @@ export class ViewUserComponent implements OnInit {
   public messageConfirm: boolean = false;
   public toSendMessage: boolean = false;
   public userLocations;
+  public deleteUser$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public router:Router,
@@ -34,26 +37,42 @@ export class ViewUserComponent implements OnInit {
   }
   
   ngOnInit() {
-    Observable.combineLatest(
+    this.subscribers.userSubscription = Observable.combineLatest(
       this.route.params,
       this.userService.selfData$
     )
+    .filter(([id, user]) => {
+      return user.id;
+    })
     .map(([params, selfData]) => {
       this.userId = params['id'];
       return selfData.account.users;
     })
     .subscribe(user => {
       this.user = _.find(user, (us: any) => (us.id == this.userId));
-      this.userLocations = _.filter(this.accountService.selfData.locations, (location: any) => {
-        let userLocation: any = _.find(this.user.locations, {location_id: location.id});
-        if (userLocation) {
-          return userLocation.checked;
-        }
-        return false;
-      });
+      if (!this.user) {
+        this.goBack();
+      } else {
+        this.userLocations = _.filter(this.accountService.selfData.locations, (location: any) => {
+          let userLocation: any = _.find(this.user.locations, {location_id: location.id});
+          if (userLocation) {
+            return userLocation.checked;
+          }
+          return false;
+        });
+      }
+
     });
     //ToDO
     //this.toSendMessage = userData.sendMessage || false;
+    
+    this.subscribers.deleteUserSubscription = this.deleteUser$
+    .switchMap(() => this.accountService.deleteUser(this.user))
+    .subscribe((res: any) =>
+        this.goBack(),
+      (err: any) =>
+        this.goBack()
+    );
   }
   
   deleteUser(user) {
@@ -61,12 +80,7 @@ export class ViewUserComponent implements OnInit {
   }
   
   deleteUserFunc() {
-    this.subscribers.deleteUserSubscription = this.accountService.deleteUser(this.user).subscribe((res: any) => {
-        this.goBack();
-      },
-      (err: any) => {
-        this.goBack();
-      });
+    this.deleteUser$.next('');
   }
   
   confirmMessage() {

@@ -118,6 +118,7 @@ export class UserService extends ModelService {
         });
   }
   static logout(sessionService, router, redirectUrl = 'login') {
+    sessionService.remove('uptracker_onboardacc');
     sessionService.remove('uptracker_token');
     sessionService.remove('uptracker_selfId');
     router.navigate([redirectUrl]);
@@ -195,6 +196,7 @@ export class UserService extends ModelService {
     return this.restangular.all('register').all('user').post(data)
         .do(
           (res: any) => {
+            
             // for SelfDataActions to avoid putting user_id in cookies (for isGuest functionality)
             // res.data.user.signup = true;
             res.data.user.token = res.data.token;

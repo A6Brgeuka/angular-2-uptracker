@@ -9,10 +9,8 @@ import { ModalWindowService } from '../../core/services/modal-window.service';
 import { AccountService } from '../../core/services/account.service';
 import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
-import { AddInventoryModal, AddInventoryModalContext } from './add-inventory/add-inventory-modal.component';
-import { InventorySearchResults } from '../../models/inventory.model';
+import { AddInventoryModal } from './add-inventory/add-inventory-modal.component';
 import { Subject } from 'rxjs/Subject';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-inventory',
@@ -103,9 +101,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     
-    this.sortBy$.subscribe((sb: string) => {
-      this.sortBy = sb;
-    });
+    this.sortBy$.subscribe((sb: string) =>
+      this.sortBy = sb
+    );
     
     this.sortBy$
     .filter(r => r)
@@ -174,10 +172,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.inventoryService.getNextInventory(this.inventoryService.current_page, this.searchKey, this.sortBy);
       }
     })
-    .subscribe(res => {
-    }, err => {
-    
-    });
+    .subscribe();
     
     this.updateFavorite$
     .switchMap(inventory => this.inventoryService.setFavorite(inventory))
@@ -214,7 +209,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   getInfiniteScroll() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
-    // console.log('toBottom',toBottom);
     let scrollBottom = toBottom < 285;
     this.infiniteScroll$.next(scrollBottom);
   }
@@ -258,7 +252,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     let defaultLeft = {'left': '0', 'right': 'inherit'};
     let defaultRight = {'left': 'inherit', 'right': '0'};
     
-    if (product.on_hand < product.critical_level) {
+    if (product.critical_level == null || product.overstock_level == null) {
+      return { 'left': 'calc(50% - 10px)', 'background-color' : thumbColor };
+    } else if (product.on_hand < product.critical_level) {
       let criticalMargin = ((product.critical_level - product.on_hand) * 100 / (product.overstock_level - product.on_hand)).toString();
       product.criticalLevel = this.checkOverlaps(criticalMargin, product);
       product.overstockLevel = defaultRight;
@@ -281,13 +277,16 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   private checkOverlaps(margin, product, thumbColor = '#fff') {
-    if (Number(margin) < 11) {
-      return { 'left': 'calc(11% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
-    }
-    else if (Number(margin) > 89 && product.on_hand !== product.overstock_level) {
-      return { 'left': 'calc(89% - 12px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    if (Number(margin) < 12 && product.on_hand < product.critical_level) {
+      return { 'left': 'calc(12% - 5px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) > 88 && product.on_hand > product.overstock_level) {
+      return { 'left': 'calc(88% - 25px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) > 88 && product.on_hand !== product.overstock_level) {
+      return { 'left': 'calc(88% - 18px)', 'background-color' : thumbColor, 'right': 'inherit' };
+    } else if (Number(margin) < 12) {
+      return { 'left': 'calc(12% - 15px)', 'background-color' : thumbColor, 'right': 'inherit' };
     } else {
-      return { 'left': `calc(${margin}% - 12px)`, 'background-color' : thumbColor, 'right': 'inherit' };
+      return { 'left': `calc(${margin}% - 10px)`, 'background-color' : thumbColor, 'right': 'inherit' };
     }
   }
   

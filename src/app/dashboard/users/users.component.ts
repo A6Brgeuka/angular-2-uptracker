@@ -51,7 +51,10 @@ export class UsersComponent implements OnInit {
       return user.account;
     })
     .map(([user, searchKey, sortBy, location]) => {
+      
       this.total = user.account.users.length;
+      
+      let allLocations = user.account.locations;
       
       let filteredUsers = _.filter(user.account.users, (user: any) => {
         let key = new RegExp(searchKey, 'i');
@@ -59,13 +62,12 @@ export class UsersComponent implements OnInit {
         //check if user has checked this location
         let userLocation: any = _.filter(user.locations, (item: any) => item.checked);
         userLocation = _.map(userLocation, (item: any) => item.location_id);
-        let userIsFromCurrentLocation: boolean = !location || userLocation.indexOf(location.id) >= 0;
+        let userIsFromCurrentLocation: boolean = !location || userLocation.indexOf(location.id) >= 0 || allLocations.length < 2;
         return ((!searchKey || key.test(user.name)) && userIsFromCurrentLocation);
       });
       let key = (sortBy=="relevance") ? "name" : sortBy;
       return _.sortBy(filteredUsers, [key]);
     });
-    
     
     this.sortBy$
     .subscribe(

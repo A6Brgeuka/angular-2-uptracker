@@ -154,7 +154,6 @@ export class ViewVendorComponent implements OnInit {
     //    mutations.forEach((mutation: any) => {
     //      if (mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
     //         //this.secondaryLocationLink.nativeElement.click();
-    //        //debugger;
     //        this.chooseTabLocation(this.secondaryLocation);
     //      }
     //    });

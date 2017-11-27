@@ -79,6 +79,7 @@
                   [min-chars] = '1'
                   (ngModelChange) = 'selectedAutocompledVendor($event)'
                   [list-formatter] = '"vendor_name"'
+                  [tab-to-select] = 'false'
                   name="vendor"
                   required
                 />
@@ -89,14 +90,16 @@
             <div class="col s12">
               <div class="ttl">Outer Package</div>
               <div class="input search">
-                <input auto-complete
+                <input class="caret" auto-complete
                   placeholder="Type"
                   [source]="observableSourceOuterPackage.bind(this)"
                   (input) = 'onSearchOuterPackage($event)'
-                  [min-chars] = '1'
+                  (blur)="updateOuterPackege($event)"
                   (ngModelChange) = 'selectedAutocompledOuterPackage($event)'
                   [list-formatter] = '"unit_name"'
+                  [tab-to-select] = 'false'
                   name="package_type"
+                  [(ngModel)] = 'outerPack'
                 >
               </div>
             </div>
@@ -110,6 +113,7 @@
                     <input [(ngModel)]="newProductData.sub_package.properties.qty"
                       type="text" placeholder="Qty"
                       [disabled] ="!newProductData.sub_package.properties.unit_type"
+                      [required] = "newProductData.sub_package.properties.unit_type"
                       name="qty"
                       #qty="ngModel"
                     >
@@ -117,14 +121,16 @@
                 </div>
                 <div class="col s9">
                   <div class="input search">
-                    <input auto-complete
+                    <input class="caret" auto-complete
                       placeholder="Type"
                       [source]="observableSourceInnerPackage.bind(this)"
                       (input) = 'onSearchInnerPackage($event)'
-                      [min-chars] = '1'
+                      (blur)="updateInnerPackege($event)"
                       (ngModelChange) = 'selectedAutocompledInnerPackage($event)'
                       [list-formatter] = '"plural_unit_name"'
+                      [tab-to-select] = 'false'
                       name="sub_package_type"
+                      [(ngModel)] = 'innerPack'
                     >
                   </div>
                 </div>
@@ -159,6 +165,7 @@
                       [ngModel] = "newProductData.consumable_unit.properties.unit_type"
                       [list-formatter] = '"unit_name"'
                       [disabled] = 'items.length'
+                      [tab-to-select] = 'false'
                       name="cons_package_type"
                       required
                     >
@@ -249,7 +256,6 @@
         </form>
       </div>
       <div *ngIf="!addCustomProduct">
-
           <div class="col s12 ttl">Search Products</div>
           <div class="col s12 input search">
             <input auto-complete (input)="onSearchTypeIn($event)"
@@ -259,6 +265,7 @@
               [min-chars] = '3'
               [ngModel] = 'searchText'
               [no-match-found-text] ='noSearchedRes'
+              [tab-to-select] = 'false'
             />
             <app-scanner (searchText)="onSearchTextUpdated($event)"></app-scanner>
           </div>
@@ -371,14 +378,14 @@
   </div>
   <div id="step2">
     <div class="row">
-      <div class="col s6">
+      <div class="col s12 m6">
         <div class="ttl">Name</div>
         <div class="input">
           <input type="text" [(ngModel)]="newInventory.name">
         </div>
         <div class="ttl mrg-top-15">How do you count this?</div>
         <div class="row">
-          <div class="col s6 select select-light">
+          <div class="col s5 select select-light">
             <select materialize="material_select"
               [(ngModel)]="newInventory.inventory_selected"
               (ngModelChange)="selectPackageType($event)"
@@ -390,15 +397,15 @@
             >
               <option [ngValue]="" disabled>Select One</option>
               <ng-container *ngFor="let package of newInventory.inventory_by_array">
-                <option *ngIf="package.label" [ngValue]="package">{{ package.label }}</option>
+                <option *ngIf="package.label" [ngValue]="package">1 {{ package.label }}</option>
               </ng-container>
             </select>
           </div>
-          <div class="col s1 mrg-top-5">=</div>
           <div class="col s2 input">
+            <span class="mrg-top-5 sign">=</span>
             <input type="text" placeholder="Qty." [(ngModel)]='newInventory.inventory_by_qty'>
           </div>
-          <div class="col s3 custom-pdg-l mrg-top-5">Total Units</div>
+          <div class="col s5 mrg-top-10 custom-pdg-l custom-height">Total Consumable Units</div>
         </div>
         <div [hidden]="inventory_by.valid || inventory_by.pristine" class="error red-text left-align">
           How do you count this is required
@@ -440,7 +447,7 @@
           </div>
         </div>
       </div>
-      <div class="col s6">
+      <div class="col s12 m6">
         <div class="row border-bottom">
           <div class="col s12 ttl">
             Selected products
@@ -486,7 +493,6 @@
       </div>
     </div>
   </div>
-
   <div id="step3">
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
       <ul class="tabs location-tabs" materialize="tabs">
@@ -518,15 +524,21 @@
               </div>
               <div class="row">
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="location.critical_level">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="location.critical_level"
+                  [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="location.fully_stocked">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="location.fully_stocked"
+                    [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="location.overstock_level">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="location.overstock_level"
+                    [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
               </div>
@@ -598,7 +610,9 @@
                   {{ stock.name }}
                 </div>
                 <div class="col s2 input">
-                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="stock.on_hand"
+                    [disabled]="context.inventoryGroup">
                 </div>
               </div>
             </div>
@@ -615,10 +629,14 @@
                   {{ stock.name }}
                 </div>
                 <div class="col s2 input" *ngIf="stock?.floor_stock">
-                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="stock.on_hand"
+                    [disabled]="context.inventoryGroup">
                 </div>
                 <div class="col s2 input" *ngIf="stock?.floorstock">
-                  <input type="text" placeholder="Qty." [(ngModel)]="stock.on_hand">
+                  <input type="text" placeholder="Qty."
+                    [(ngModel)]="stock.on_hand"
+                    [disabled]="context.inventoryGroup">
                 </div>
               </div>
             </div>
@@ -634,8 +652,8 @@
         <div class="select select-light">
           <select materialize="material_select"
             [(ngModel)]="newInventory.department"
-            [materializeSelectOptions]="departmentCollection$ | async">
-            <option *ngFor="let item of departmentCollection$ | async" [value]="item">{{item}}</option>
+            [materializeSelectOptions]="departmentCollection">
+            <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
           </select>
         </div>
         <div class="ttl mrg-top-15">Category</div>
@@ -660,8 +678,8 @@
         <div class="select select-light">
           <select materialize="material_select"
             [(ngModel)]="newInventory.account_category"
-            [materializeSelectOptions]="productAccountingCollection$ | async">
-            <option *ngFor="let acc of productAccountingCollection$ | async" [value]="acc">{{acc}}
+            [materializeSelectOptions]="productAccountingCollection">
+            <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
             </option>
           </select>
         </div>

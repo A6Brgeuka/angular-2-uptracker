@@ -26,8 +26,8 @@ export class OnboardLocationsComponent implements OnInit {
 
   ngOnInit() {
     this.locations$ = this.userService.selfData$
-        .filter(() => {
-          return !this.userService.isGuest();
+        .filter((res) => {
+          return !this.userService.isGuest() && !!res.account;
         })
         .map((res: any) => res.account.locations);
   }

@@ -71,7 +71,7 @@
             (change)="changeCurrency($event)"
             [materializeSelectOptions]="currencyArr">
             <option value="">Please select one</option>
-            <option *ngFor="let currency of currency$ | async" [value]="currency.iso_code">{{currency.name}}
+            <option *ngFor="let currency of currencyArr" [value]="currency.iso_code">{{currency.name}}
             </option>
           </select>
         </div>
