@@ -13,7 +13,6 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
@@ -26,8 +25,6 @@ export class ReceiveComponent implements OnInit {
   public subscribers: any = {};
   public searchKey:string= "";
   public locationArr: any = [];
-  public inventoryGroupArr: any = [];
-  public orders$: BehaviorSubject<any> = new BehaviorSubject([]);
   
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
@@ -52,32 +49,25 @@ export class ReceiveComponent implements OnInit {
   }
   
   addSubscribers() {
-  
-    //this.subscribers.locationSubscription = this.accountService.locations$
-    //.subscribe(r => this.locationArr = r);
-    //
-    //this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
-    //.subscribe(r => this.inventoryGroupArr = r);
     
     this.subscribers.getReceiveProductSubscription = this.route.params
     .switchMap(param =>
       this.pastOrderService.getReceiveProduct(param.queryParams)
     )
     .subscribe((res:any) => {
-      let inventoryGroups = res.inventory_groups;
+      
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
         order.items = order.items.map((item: any) => {
           const quantity = item.quantity;
           item.item_id = item.id;
-          item.inventory_group_id = item.inventory_group.id;
           if (item.inventory_group_id) {
             item.existInvGroup = true;
-            //item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
+            item.inventory_groups = [item.inventory_group];
+            item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
           };
-          item.inventory_group.locations = _.filter(inventoryGroups[0].locations, ['location_id', item.location_id]);
-  
+          
           item = new ItemModel(item);
           item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
@@ -110,6 +100,12 @@ export class ReceiveComponent implements OnInit {
         .then((resultPromise) => {
           resultPromise.result.then(
             (res) => {
+              debugger;
+              let createdInventory = {
+                id: res.id,
+                name: res.name
+              };
+              product.inventory_groups.push(createdInventory);
               product.inventory_group_id = res.id;
             },
             (err) => {}
@@ -134,9 +130,9 @@ export class ReceiveComponent implements OnInit {
             if (status.type === 'receive' || status.type === 'partial receive') {
               status.primary_status = true;
             }
-            if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
-              status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
-            }
+            //if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
+            //  status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+            //}
             return status;
           });
         });

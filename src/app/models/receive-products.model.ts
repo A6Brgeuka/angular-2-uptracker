@@ -34,6 +34,7 @@ export class ItemModel {
   status: StatusModel[] = [];
   inventory_group_id: string = '';
   inventory_group = {};
+  inventory_groups:any =[];
   location_id: string = '';
   storage_locations: StorageLocationModel[] =[];
   
@@ -76,6 +77,7 @@ export class ReceiveProductsModel {
   orders: OrderModel[] = [];
   packing_slip_number: string = '';
   invoice_number: string = '';
+  vendor: any = {};
   
   constructor(obj?:any) {
     for (let field in obj) {
