@@ -25,6 +25,7 @@ export class ReceiveComponent implements OnInit {
   public subscribers: any = {};
   public searchKey:string= "";
   public locationArr: any = [];
+  public inventoryGroupArr: any = [];
   
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
@@ -49,6 +50,11 @@ export class ReceiveComponent implements OnInit {
   }
   
   addSubscribers() {
+  
+    //this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
+    //.subscribe(r => {
+    //  return this.inventoryGroupArr = r;
+    //});
     
     this.subscribers.getReceiveProductSubscription = this.route.params
     .switchMap(param =>
@@ -100,10 +106,10 @@ export class ReceiveComponent implements OnInit {
         .then((resultPromise) => {
           resultPromise.result.then(
             (res) => {
-              debugger;
               let createdInventory = {
                 id: res.id,
-                name: res.name
+                name: res.name,
+                locations: res.inventory_item_locations
               };
               product.inventory_groups.push(createdInventory);
               product.inventory_group_id = res.id;
