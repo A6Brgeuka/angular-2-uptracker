@@ -118,6 +118,16 @@
                       <option value="routerLink">Create New Inventory Group</option>
                       <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of product.inventory_groups">{{ inventoryGroup.name }}</option>
                     </select>
+                    <!--<input auto-complete-->
+                      <!--placeholder="Select one"-->
+                      <!--[source]=""-->
+                      <!--(input) = 'onSearchInventoryGroup($event)'-->
+                      <!--(ngModelChange) = 'selectedAutocompledInventoryGroup($event)'-->
+                      <!--[list-formatter] = '"vendor_name"'-->
+                      <!--[tab-to-select] = 'false'-->
+                      <!--name="inventoryGroup"-->
+                      <!--required-->
+                    <!--/>-->
                   </div>
                   <div class="select select-light flex-center"
                     *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'|| (status.type === 'partial receive' && !status.inventoryHide)">
