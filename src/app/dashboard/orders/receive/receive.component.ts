@@ -51,17 +51,16 @@ export class ReceiveComponent implements OnInit {
   
   addSubscribers() {
   
-    //this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
-    //.subscribe(r => {
-    //  return this.inventoryGroupArr = r;
-    //});
+    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
+    .subscribe(r => {
+      return this.inventoryGroupArr = r;
+    });
     
     this.subscribers.getReceiveProductSubscription = this.route.params
     .switchMap(param =>
       this.pastOrderService.getReceiveProduct(param.queryParams)
     )
     .subscribe((res:any) => {
-      
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
@@ -113,6 +112,7 @@ export class ReceiveComponent implements OnInit {
               };
               product.inventory_groups.push(createdInventory);
               product.inventory_group_id = res.id;
+              
             },
             (err) => {}
           );
@@ -246,12 +246,13 @@ export class ReceiveComponent implements OnInit {
     });
   }
   
-  changeInventory(invenory, product, status) {
+  changeInventory(invenory, product) {
     
     if (invenory === 'routerLink') {
       this.openAddInventoryModal(product);
     } else {
       product.inventory_group = invenory;
+      product.inventory_group_id = product.inventory_group.id;
       product.inventory_group.locations = _.filter(product.inventory_group.locations, ['location_id', product.location_id]);
     }
     

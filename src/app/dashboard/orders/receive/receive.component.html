@@ -108,10 +108,10 @@
                     <select
                       materialize="material_select"
                       [materializeSelectOptions]="product.inventory_groups"
-                      [(ngModel)] = 'product.inventory_group_id'
+                      [(ngModel)] = 'product.inventory_group'
                       name="inventory{{i}}"
                       [disabled] = "product.existInvGroup"
-                      (ngModelChange)="changeInventory($event, product, status)"
+                      (ngModelChange)="changeInventory($event, product)"
                       required
                     >
                       <option value="null" disabled>Select one</option>
