@@ -31,6 +31,7 @@ export class ReceiveComponent implements OnInit {
   public packingSlipValid: boolean = true;
   public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
   public getReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
+  public saveReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public accountService: AccountService,
@@ -118,7 +119,8 @@ export class ReceiveComponent implements OnInit {
         .then((resultPromise) => {
           resultPromise.result.then(
             (res) => {
-              this.getReceiveProducts$.next('');
+              this.getReceiveProducts$.next('success');
+              
             },
             (err) => {}
           );
@@ -126,6 +128,13 @@ export class ReceiveComponent implements OnInit {
       })
     })
     .subscribe();
+    
+    this.subscribers.saveReceiveProductSubscription = this.saveReceiveProducts$
+    .switchMap(() => this.pastOrderService.onReceiveProducts(this.receiveProducts))
+    .subscribe(() => {
+      this.toasterService.pop('', "");
+      this.router.navigate(['/orders'])
+    })
     
   }
   
@@ -149,8 +158,8 @@ export class ReceiveComponent implements OnInit {
           });
         });
       });
-  
-      this.pastOrderService.onReceiveProducts(this.receiveProducts);
+      this.saveReceiveProducts$.next('');
+      //this.pastOrderService.onReceiveProducts(this.receiveProducts);
     } else {
       this.packingSlipValid = false;
     }
