@@ -12,4 +12,5 @@ import { OrderComponent } from './order.component';
   providers: [],
 })
 export class OrderModule {
+
 }

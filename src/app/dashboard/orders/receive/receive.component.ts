@@ -136,9 +136,9 @@ export class ReceiveComponent implements OnInit {
             if (status.type === 'receive' || status.type === 'partial receive') {
               status.primary_status = true;
             }
-            //if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
-            //  status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
-            //}
+            if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
+              status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+            }
             return status;
           });
         });
@@ -246,10 +246,15 @@ export class ReceiveComponent implements OnInit {
     });
   }
   
-  changeInventory(invenory, product) {
+  changeInventory(invenory, product, status) {
+    
     if (invenory === 'routerLink') {
       this.openAddInventoryModal(product);
+    } else {
+      product.inventory_group = invenory;
+      product.inventory_group.locations = _.filter(product.inventory_group.locations, ['location_id', product.location_id]);
     }
+    
   }
   
   openAddInventoryModal(product) {

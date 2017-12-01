@@ -111,12 +111,12 @@
                       [(ngModel)] = 'product.inventory_group_id'
                       name="inventory{{i}}"
                       [disabled] = "product.existInvGroup"
-                      (ngModelChange)="changeInventory($event, product)"
+                      (ngModelChange)="changeInventory($event, product, status)"
                       required
                     >
                       <option value="null" disabled>Select one</option>
                       <option value="routerLink">Create New Inventory Group</option>
-                      <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of product.inventory_groups">{{ inventoryGroup.name }}</option>
+                      <option [ngValue]="inventoryGroup" *ngFor="let inventoryGroup of product.inventory_groups">{{ inventoryGroup.name }}</option>
                     </select>
                     <!--<input auto-complete-->
                       <!--placeholder="Select one"-->
