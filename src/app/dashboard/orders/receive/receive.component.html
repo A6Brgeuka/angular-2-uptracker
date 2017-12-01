@@ -141,7 +141,7 @@
                   </div>
                 </div>
                 <div class="col s3">
-                  <div class="select select-light flex-center" *ngIf="product.inventory_group">
+                  <div class="select select-light flex-center" *ngIf="product.inventory_group_id">
                     <select materialize="material_select"
                       [materializeSelectOptions]="product.inventory_group.locations[0].storage_locations"
                       (ngModelChange)="changeLocation($event, status, product)"

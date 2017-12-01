@@ -25,12 +25,12 @@ export class ReceiveComponent implements OnInit {
   public subscribers: any = {};
   public searchKey:string= "";
   public locationArr: any = [];
-  public inventoryGroupArr: any = [];
   
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
   public packingSlipValid: boolean = true;
   public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
+  public getReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public accountService: AccountService,
@@ -47,16 +47,13 @@ export class ReceiveComponent implements OnInit {
   
   ngOnInit() {
     this.inventoryService.getNextInventory();
+    this.getReceiveProducts$.next('');
   }
   
   addSubscribers() {
-  
-    this.subscribers.inventoryArrSubscription = this.inventoryService.collection$
-    .subscribe(r => {
-      return this.inventoryGroupArr = r;
-    });
     
-    this.subscribers.getReceiveProductSubscription = this.route.params
+    this.subscribers.getReceiveProductSubscription = this.getReceiveProducts$
+    .switchMap(() => this.route.params)
     .switchMap(param =>
       this.pastOrderService.getReceiveProduct(param.queryParams)
     )
@@ -70,7 +67,23 @@ export class ReceiveComponent implements OnInit {
           if (item.inventory_group_id) {
             item.existInvGroup = true;
             item.inventory_groups = [item.inventory_group];
+            
+  
+            let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
+           
+              const array = location.storage_locations.map(storage_location => ({
+                location_id: location.id,
+                location_name: location.name,
+                ...storage_location
+              }));
+              
+              return [...acc, array];
+            }, []);
+            let qqq = _.flatten(locations);
+            console.log(qqq);
+  
             item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
+            
           };
           
           item = new ItemModel(item);
@@ -105,14 +118,7 @@ export class ReceiveComponent implements OnInit {
         .then((resultPromise) => {
           resultPromise.result.then(
             (res) => {
-              let createdInventory = {
-                id: res.id,
-                name: res.name,
-                locations: res.inventory_item_locations
-              };
-              product.inventory_groups.push(createdInventory);
-              product.inventory_group_id = res.id;
-              
+              this.getReceiveProducts$.next('');
             },
             (err) => {}
           );
