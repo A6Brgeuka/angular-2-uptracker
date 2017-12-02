@@ -69,21 +69,9 @@ export class ReceiveComponent implements OnInit {
             item.existInvGroup = true;
             item.inventory_groups = [item.inventory_group];
             
+            this.transformStorageLocations(item);
   
-            let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
-           
-              const array = location.storage_locations.map(storage_location => ({
-                location_id: location.id,
-                location_name: location.name,
-                ...storage_location
-              }));
-              
-              return [...acc, array];
-            }, []);
-            let qqq = _.flatten(locations);
-            console.log(qqq);
-  
-            item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
+            //item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
             
           };
           
@@ -132,10 +120,25 @@ export class ReceiveComponent implements OnInit {
     this.subscribers.saveReceiveProductSubscription = this.saveReceiveProducts$
     .switchMap(() => this.pastOrderService.onReceiveProducts(this.receiveProducts))
     .subscribe(() => {
-      this.toasterService.pop('', "");
+      this.toasterService.pop('', "Successfully received");
       this.router.navigate(['/orders'])
     })
     
+  }
+  
+  transformStorageLocations(item) {
+    let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
+    
+      const array = location.storage_locations.map(storage_location => ({
+        location_id: location.location_id,
+        location_name: location.name,
+        ...storage_location
+      }));
+    
+      return [...acc, array];
+    }, []);
+    item.locations = _.flatten(locations);
+    console.log(item.locations);
   }
   
   remove(product, status) {
@@ -169,9 +172,9 @@ export class ReceiveComponent implements OnInit {
   
   }
   
-  changeLocation(location, status, product) {
+  changeLocation(location, status) {
     status.storage_location_id = location.id;
-    status.location_id = product.location_id;
+    status.location_id = location.location_id;
   }
   
   changeStatus(setStatus, product, curStatus) {
@@ -268,7 +271,8 @@ export class ReceiveComponent implements OnInit {
     } else {
       product.inventory_group = invenory;
       product.inventory_group_id = product.inventory_group.id;
-      product.inventory_group.locations = _.filter(product.inventory_group.locations, ['location_id', product.location_id]);
+      this.transformStorageLocations(product);
+      //product.inventory_group.locations = _.filter(product.inventory_group.locations, ['location_id', product.location_id]);
     }
     
   }

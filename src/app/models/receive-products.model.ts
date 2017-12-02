@@ -36,12 +36,13 @@ export class ItemModel {
   inventory_group = {};
   inventory_groups:any =[];
   location_id: string = '';
-  storage_locations: StorageLocationModel[] =[];
+  //storage_locations: StorageLocationModel[] =[];
   
   quantity: string = '';
   item_name: string = '';
   location_name: string = '';
   existInvGroup: boolean = false;
+  locations: any =[];
   
   catalog_number: string = "";
   price: number = 0;
