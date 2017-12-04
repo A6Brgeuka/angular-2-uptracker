@@ -104,30 +104,18 @@
                   </div>
                 </div>
                 <div class="col s4">
-                  <div class="select select-light flex-center" *ngIf="status.type === 'receive' || (status.type === 'partial receive' && status.inventoryHide)">
-                    <select
-                      materialize="material_select"
-                      [materializeSelectOptions]="product.inventory_groups"
-                      [(ngModel)] = 'product.inventory_group'
-                      name="inventory{{i}}"
+                  <div class="select select-light flex-center input" *ngIf="status.type === 'receive' || (status.type === 'partial receive' && status.inventoryHide)">
+                    <input auto-complete
+                      placeholder="Select one"
+                      [source]="product.inventory_groups"
                       [disabled] = "product.existInvGroup"
-                      (ngModelChange)="changeInventory($event, product)"
+                      [(ngModel)] = 'product.inventory_group'
+                      (ngModelChange) = 'selectedAutocompledInventoryGroup($event, product)'
+                      [list-formatter] = '"name"'
+                      [tab-to-select] = 'false'
+                      name="inventoryGroup"
                       required
-                    >
-                      <option value="null" disabled>Select one</option>
-                      <option value="routerLink">Create New Inventory Group</option>
-                      <option [ngValue]="inventoryGroup" *ngFor="let inventoryGroup of product.inventory_groups">{{ inventoryGroup.name }}</option>
-                    </select>
-                    <!--<input auto-complete-->
-                      <!--placeholder="Select one"-->
-                      <!--[source]=""-->
-                      <!--(input) = 'onSearchInventoryGroup($event)'-->
-                      <!--(ngModelChange) = 'selectedAutocompledInventoryGroup($event)'-->
-                      <!--[list-formatter] = '"vendor_name"'-->
-                      <!--[tab-to-select] = 'false'-->
-                      <!--name="inventoryGroup"-->
-                      <!--required-->
-                    <!--/>-->
+                    />
                   </div>
                   <div class="select select-light flex-center"
                     *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'|| (status.type === 'partial receive' && !status.inventoryHide)">

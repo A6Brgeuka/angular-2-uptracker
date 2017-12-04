@@ -65,14 +65,17 @@ export class ReceiveComponent implements OnInit {
         order.items = order.items.map((item: any) => {
           const quantity = item.quantity;
           item.item_id = item.id;
-          if (item.inventory_group_id) {
+          
+          if (item.inventory_group_id && item.inventory_group) {
             item.existInvGroup = true;
             item.inventory_groups = [item.inventory_group];
-            
             this.transformStorageLocations(item);
-  
-            //item.inventory_group.locations = _.filter(item.inventory_group.locations, ['location_id', item.location_id]);
-            
+          }
+          else {
+            item.inventory_groups.unshift({
+                name: 'Create New Inventory Group',
+                id: 'routerLink'
+              });
           };
           
           item = new ItemModel(item);
@@ -125,6 +128,18 @@ export class ReceiveComponent implements OnInit {
     
   }
   
+  selectedAutocompledInventoryGroup(item, product) {
+    if(item.id) {
+      if (item.id === 'routerLink') {
+        this.openAddInventoryModal(product);
+      } else {
+        product.inventory_group = item;
+        product.inventory_group_id = product.inventory_group.id;
+        this.transformStorageLocations(product);
+      }
+    }
+  }
+  
   transformStorageLocations(item) {
     let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
     
@@ -161,7 +176,6 @@ export class ReceiveComponent implements OnInit {
         });
       });
       this.saveReceiveProducts$.next('');
-      //this.pastOrderService.onReceiveProducts(this.receiveProducts);
     } else {
       this.packingSlipValid = false;
     }
@@ -261,19 +275,6 @@ export class ReceiveComponent implements OnInit {
       
       return currentStatus;
     });
-  }
-  
-  changeInventory(invenory, product) {
-    
-    if (invenory === 'routerLink') {
-      this.openAddInventoryModal(product);
-    } else {
-      product.inventory_group = invenory;
-      product.inventory_group_id = product.inventory_group.id;
-      this.transformStorageLocations(product);
-      //product.inventory_group.locations = _.filter(product.inventory_group.locations, ['location_id', product.location_id]);
-    }
-    
   }
   
   openAddInventoryModal(product) {
