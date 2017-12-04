@@ -250,6 +250,21 @@ a {
   }
 }
 
+.dropdown-content {
+  width:130px!important;
+  left:0!important;
+  top:30px!important;
+  li {
+    min-height:30px;
+    line-height:30px;
+    a {
+      font-size:12px;
+      padding: 5px 10px;
+      text-decoration: none;
+    }
+  }
+}
+
 .uptracker-form {
 
   .filter {

@@ -189,5 +189,12 @@
     color: $tealish;
   }
 }
+.buttons-topright {
+  top: 0;
+  button {
+    margin-right: 0;
+    color: #fff;
+  }
+}
 
 
