@@ -91,7 +91,6 @@ export class ReceiveComponent implements OnInit {
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
-        console.log(order);
         return order;
       });
       
