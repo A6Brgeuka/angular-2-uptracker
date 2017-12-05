@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { PastOrderService } from '../../../core/services/pastOrder.service';
 
 @Component({
   selector: 'received-list',
@@ -8,14 +9,17 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
   styleUrls: ['./received-list.component.scss']
 })
 @DestroySubscribers()
-export class ReceivedListComponent {
+export class ReceivedListComponent implements OnInit{
 
   constructor(
-  
+    public pastOrderService: PastOrderService,
   ) {
 
   }
   
-  
+  ngOnInit() {
+    this.pastOrderService.getReceivedProducts()
+    .subscribe(res => {console.log(res); return res})
+  }
   
 }

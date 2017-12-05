@@ -81,4 +81,9 @@ export class PastOrderService extends ModelService {
     .map(res => res.data.results[0]);
   }
   
+  getReceivedProducts() {
+    return this.restangular.one('pos', '6').customGET()
+    .map((res:any)=>res.data);
+  }
+  
 }
