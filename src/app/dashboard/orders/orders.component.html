@@ -34,14 +34,14 @@
 
     <div class="row">
       <ul class="tabs location-tabs" materialize="tabs">
-        <li class="tab" (click)="chooseTab('All')">
-          <a [class.active]="true">All</a>
+        <li class="tab">
+          <a href="#allTab" [class.active]="true">All</a>
         </li>
         <li class="tab" (click)="chooseTab('Open')">
           <a [class.active]="false">Open</a>
         </li>
-        <li class="tab" (click)="chooseTab('Received')">
-          <a [class.active]="false">Received</a>
+        <li class="tab">
+          <a href="#receivedTab">Received</a>
         </li>
         <li class="tab" (click)="chooseTab('Backorded')">
           <a [class.active]="false">Backordered</a>
@@ -55,7 +55,7 @@
       </ul>
     </div>
 
-    <div class="list is-grid-view">
+    <div class="list is-grid-view" id="allTab">
       <div>
         <div class="heading row">
           <div class="col s2 left-align">
@@ -178,5 +178,6 @@
         </div>
       </div>
     </div>
+    <received-list id="receivedTab"></received-list>
   </div>
 </div>
