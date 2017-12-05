@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
@@ -12,7 +12,7 @@ import { DashboardService } from '../core/services/dashboard.service';
   templateUrl: './dashboard.template.html'
 })
 @DestroySubscribers()
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public selectedLocation: string = '';
   public locations$: any;
@@ -39,6 +39,11 @@ export class DashboardComponent implements OnInit {
   
   ngOnInit() {
     
+  }
+  
+  ngOnDestroy() {
+    this.subscribers.dashboardLocationSubscription.unsubscribe();
+    this.subscribers.dashboardLocationProductSubscription.unsubscribe();
   }
   
   addSubscribers() {
