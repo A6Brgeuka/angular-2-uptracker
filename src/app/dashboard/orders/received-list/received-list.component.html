@@ -54,13 +54,13 @@
           </div>
         </div>
         <div (click)="changeVisibilityReceivedList(i)" class="col s2 pointer flex-center">
-          <div>Vendor ???</div>
+          <div>{{item.vendor_name}}</div>
         </div>
         <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">
           <span *ngFor="let number of item.order_numbers" class="orders-number">{{ number }}<span>, </span></span>
         </div>
-        <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2"># Products ???</div>
-        <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">Date ???</div>
+        <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.product_count}}</div>
+        <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.date}}</div>
         <div class="col s2">
 
           <div class="right edititem"
