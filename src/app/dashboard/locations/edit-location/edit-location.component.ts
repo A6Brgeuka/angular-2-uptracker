@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Location }                 from '@angular/common';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -29,7 +29,7 @@ import { InventoryLocationModel } from "../../../models/inventory-location.model
 })
 
 @DestroySubscribers()
-export class EditLocationComponent implements OnInit {
+export class EditLocationComponent implements OnInit, OnDestroy {
   public searchKey: any;
   
   public subscribers: any = {};
@@ -140,6 +140,10 @@ export class EditLocationComponent implements OnInit {
     
     this.locationTypes$ = this.locationService.getLocationTypes().take(1);
     
+  }
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   addSubscribers() {

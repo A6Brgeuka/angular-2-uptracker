@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { AccountService } from '../../../core/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
   styleUrls: ['./receive.component.scss']
 })
 @DestroySubscribers()
-export class ReceiveComponent implements OnInit {
+export class ReceiveComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public searchKey:string= "";
   public locationArr: any = [];
@@ -49,6 +49,10 @@ export class ReceiveComponent implements OnInit {
   ngOnInit() {
     this.inventoryService.getNextInventory();
     this.getReceiveProducts$.next('');
+  }
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   addSubscribers() {

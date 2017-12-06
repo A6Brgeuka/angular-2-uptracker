@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./orders.component.scss']
 })
 @DestroySubscribers()
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -47,7 +47,11 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
   
   }
-
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
+  }
+  
   addSubscribers() {
     this.subscribers.getCollectionSubscription = this.pastOrderService.getPastOrders()
     .subscribe(orders => {

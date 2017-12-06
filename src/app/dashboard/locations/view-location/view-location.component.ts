@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location }                 from '@angular/common';
 
@@ -19,7 +19,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 })
 
 @DestroySubscribers()
-export class ViewLocationComponent implements OnInit {
+export class ViewLocationComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public location: LocationModel;
   public locationId: string;
@@ -58,6 +58,10 @@ export class ViewLocationComponent implements OnInit {
     this.subscribers.deleteLocationSubscription = this.deleteLocation$
     .switchMap(() => this.locationService.deleteLocation(this.location))
     .subscribe(() => this.goBack());
+  }
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   deleteLocation(location) {

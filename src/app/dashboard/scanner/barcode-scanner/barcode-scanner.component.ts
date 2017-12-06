@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, NgZone, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import Quagga from 'quagga';
 
@@ -14,7 +14,7 @@ import { Subject } from 'rxjs/Subject';
 })
 
 @DestroySubscribers()
-export class BarcodeScannerComponent implements OnInit {
+export class BarcodeScannerComponent implements OnInit, OnDestroy {
   subscribers: any = {};
   context;
   quaggaConfig: any;
@@ -63,6 +63,10 @@ export class BarcodeScannerComponent implements OnInit {
       locate: true,
       src: null
     };
+  }
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   ngOnChanges(changes: SimpleChanges) {

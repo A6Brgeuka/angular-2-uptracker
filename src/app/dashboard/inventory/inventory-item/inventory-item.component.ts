@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Modal } from 'angular2-modal';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
@@ -21,7 +21,7 @@ import { AddInventory2OrderModal } from './add-inventory-2order-modal/add-invent
   styleUrls: ['./inventory-item.component.scss']
 })
 @DestroySubscribers()
-export class InventoryItemComponent implements OnInit {
+export class InventoryItemComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public currentVariant: any = {};
   public showVariant: boolean = false;
@@ -142,6 +142,10 @@ export class InventoryItemComponent implements OnInit {
       }, ['desc'])
     });
     
+  }
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   addSubscribers() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -26,7 +26,7 @@ import { ChangingShoppingListModel, ItemModel, VariantModel } from '../../models
   styleUrls: ['./shopping-list.component.scss']
 })
 @DestroySubscribers()
-export class ShoppingListComponent implements OnInit {
+export class ShoppingListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public selectAll: boolean = false;
   public last_loc: string = '';
@@ -74,6 +74,9 @@ export class ShoppingListComponent implements OnInit {
       this.changed = [];
     });
     
+  }
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   addSubscribers() {

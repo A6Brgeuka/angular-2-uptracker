@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location }                 from '@angular/common';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -24,7 +24,7 @@ import { OrderService } from '../../../core/services/order.service';
   styleUrls: ['./order.component.scss']
 })
 @DestroySubscribers()
-export class OrderComponent implements OnInit {
+export class OrderComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orderId: string;
@@ -56,6 +56,10 @@ ngOnInit() {
       this.order$.next(item)
     );
     
+  }
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   goBack(): void {
