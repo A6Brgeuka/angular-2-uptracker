@@ -34,7 +34,7 @@
 
     <div class="row">
       <ul class="tabs location-tabs" materialize="tabs">
-        <li class="tab">
+        <li class="tab" (click)="chooseTab('All')">
           <a href="#allTab" [class.active]="true">All</a>
         </li>
         <li class="tab" (click)="chooseTab('Open')">
@@ -49,8 +49,8 @@
         <li class="tab" (click)="chooseTab('Flagged')">
           <a [class.active]="false">Flagged</a>
         </li>
-        <li class="tab" (click)="chooseTab('Closed')">
-          <a [class.active]="false">Closed</a>
+        <li class="tab" (click)="chooseTab('Archived')">
+          <a [class.active]="false">Archived</a>
         </li>
       </ul>
     </div>
