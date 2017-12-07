@@ -11,23 +11,23 @@
       <div class="col s1">Unit Price</div>
       <div class="col s1">Total</div>
       <div class="col s1">
-        <div class="right edititem filled"
-          materialize="dropdown"
-          [attr.data-activates]='"order_dd_"+i'>
-          <fa name="ellipsis-h"></fa>
-        </div>
+        <!--<div class="right edititem filled"-->
+          <!--materialize="dropdown"-->
+          <!--[attr.data-activates]='"order_dd_"+i'>-->
+          <!--<fa name="ellipsis-h"></fa>-->
+        <!--</div>-->
 
-        <ul [id]='"order_dd_"+i' class='dropdown-content'>
-          <li>
-            <a class="tealish-text" (click)="onReceiveCheckedProducts()">Receive</a>
-          </li>
-          <li>
-            <a class="tealish-text" href="/">Resend</a>
-          </li>
-          <li>
-            <a class="tealish-text" href="/">Reorder</a>
-          </li>
-        </ul>
+        <!--<ul [id]='"order_dd_"+i' class='dropdown-content'>-->
+          <!--<li>-->
+            <!--<a class="tealish-text" (click)="onReceiveCheckedProducts()">Receive</a>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<a class="tealish-text" href="/">Resend</a>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<a class="tealish-text" href="/">Reorder</a>-->
+          <!--</li>-->
+        <!--</ul>-->
       </div>
     </div>
     <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i = index;">

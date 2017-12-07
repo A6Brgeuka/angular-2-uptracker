@@ -32,8 +32,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   private ordersToReceive$:  any = new Subject<any>();
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public showMenuItem: boolean = true;
-  public showMenuReconcile: boolean = false;
+  //public showMenuItem: boolean = true;
+  //public showMenuReconcile: boolean = false;
   
   constructor(
       public modal: Modal,
@@ -115,8 +115,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
       let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 'Received');
       let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 'Received');
-      this.showMenuItem = !!(findNotReceivedProducts);
-      this.showMenuReconcile = !!(findReceivedProducts);
+      //this.showMenuItem = !!(findNotReceivedProducts);
+      //this.showMenuReconcile = !!(findReceivedProducts);
     })
     .subscribe();
   

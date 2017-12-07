@@ -45,7 +45,6 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
       .switchMap(select => {
         return this.receivedOrders$.first()
         .map(res => {
-          //let status = select ? 1 : 0;
           res = _.forEach(res, (item: any) => {
             item.checked = select;
           });

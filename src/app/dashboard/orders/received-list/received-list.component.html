@@ -37,7 +37,7 @@
 
     <div class="item row"
       *ngFor="let item of (receivedOrders$ | async);let i=index;"
-      [class.no-border-bottom]="item">
+      [class.no-border-bottom]="pastOrderService.itemsVisibilityReceivedList[i]">
       <div>
         <div class="col s2 left-align">
           <div class="input-checkbox left checkbox">
