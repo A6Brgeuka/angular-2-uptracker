@@ -93,13 +93,13 @@
               <li>
                 <a class="tealish-text" href="#">Flag</a>
               </li>
-              <li>
+              <li *ngIf="showMenuItem">
                 <a class="tealish-text" href="#">Resend</a>
               </li>
-              <li>
+              <li *ngIf="showMenuItem">
                 <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
               </li>
-              <li>
+              <li *ngIf="showMenuReconcile">
                 <a class="tealish-text" href="#">Reconcile</a>
               </li>
               <li>
