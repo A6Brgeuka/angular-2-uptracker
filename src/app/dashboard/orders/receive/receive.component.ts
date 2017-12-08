@@ -67,6 +67,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
         order.items = order.items.map((item: any) => {
+          //debugger;
           const quantity = item.quantity;
           item.item_id = item.id;
           
@@ -81,8 +82,13 @@ export class ReceiveComponent implements OnInit, OnDestroy {
                 id: 'routerLink'
               });
           };
-          
+          //if (item.status_line_items) {
+          //  item.quantity = item.status_line_items[item.status_line_items.length -1].quantity;
+          //}
           item = new ItemModel(item);
+          
+          //console.log(item, 111111);
+          
           item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';

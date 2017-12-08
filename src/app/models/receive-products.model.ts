@@ -43,7 +43,7 @@ export class ItemModel {
   location_name: string = '';
   existInvGroup: boolean = false;
   locations: any =[];
-  
+  status_line_items: any = [];
   catalog_number: string = "";
   price: number = 0;
   product_id:string  = null;
