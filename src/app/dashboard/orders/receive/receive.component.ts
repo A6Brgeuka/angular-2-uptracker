@@ -29,6 +29,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   public receiveProducts: any = new ReceiveProductsModel;
   public statusList: any = this.pastOrderService.statusList;
   public packingSlipValid: boolean = true;
+  public inventoryGroupValid: boolean = true;
   public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
   public getReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
   public saveReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
@@ -139,6 +140,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   }
   
   selectedAutocompledInventoryGroup(item, product) {
+    this.inventoryGroupValid = true;
     if(item.id) {
       if (item.id === 'routerLink') {
         this.openAddInventoryModal(product);
@@ -174,20 +176,29 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     if (this.receiveProducts.packing_slip_number) {
       this.receiveProducts.orders.map((order) => {
         order.items.map(item => {
-          item.status.map(status => {
-            if (status.type === 'receive' || status.type === 'partial receive') {
-              status.primary_status = true;
-            }
-            if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
-              status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
-            }
-            return status;
-          });
+          if (item.inventory_group_id) {
+            item.status.map(status => {
+              if (status.type === 'receive' || status.type === 'partial receive') {
+                status.primary_status = true;
+              }
+              if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
+                status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
+              }
+              return status;
+            });
+          }
+          else {
+            this.inventoryGroupValid = false;
+          }
         });
       });
-      this.saveReceiveProducts$.next('');
+      if (this.inventoryGroupValid) {
+        this.saveReceiveProducts$.next('');
+      }
+      
     } else {
       this.packingSlipValid = false;
+      this.inventoryGroupValid = false;
     }
   }
   

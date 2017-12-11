@@ -19,6 +19,7 @@
           <input
             [(ngModel)]='product.checked'
             type="checkbox"
+            (ngModelChange)="setCheckbox($event)"
             class="subselected-input{{i + item.id}}"
             id="subselected{{i + item.id}}"
           />

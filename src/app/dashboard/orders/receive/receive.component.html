@@ -29,7 +29,7 @@
           id="packing_slip_number"
           [class.ng-touched]="!packingSlipValid"
         />
-        <div [hidden]="packingSlipValid || receiveProducts.packing_slip_number" class="error red-text left-align">
+        <div [hidden]="packingSlipValid || packing_slip.valid" class="error red-text left-align">
           Packing slip is required
         </div>
       </div>
@@ -104,7 +104,7 @@
                   </div>
                 </div>
                 <div class="col s4">
-                  <div class="select select-light flex-center input" *ngIf="status.type === 'receive' || (status.type === 'partial receive' && status.inventoryHide)">
+                  <div class="select select-light flex-center input relative" *ngIf="status.type === 'receive' || (status.type === 'partial receive' && status.inventoryHide)">
                     <input auto-complete
                       placeholder="Select one"
                       [source]="product.inventory_groups"
@@ -114,8 +114,13 @@
                       [list-formatter] = '"name"'
                       [tab-to-select] = 'false'
                       name="inventoryGroup"
-                      required
+                      #inventoryGroup = "ngModel"
+                      required minlength="1"
+                      [class.invalid]="!inventoryGroupValid && !product.existInvGroup"
                     />
+                    <div [hidden]="inventoryGroup.untouched || product.inventory_group_id" class="error red-text left-align error-absolute">
+                      Inventory group is required
+                    </div>
                   </div>
                   <div class="select select-light flex-center"
                     *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'|| (status.type === 'partial receive' && !status.inventoryHide)">
@@ -123,6 +128,7 @@
                       materialize="material_select"
                       [disabled]="true"
                       name="inventory{{i}}"
+                      required
                     >
                       <option value="null">N/A</option>
                     </select>

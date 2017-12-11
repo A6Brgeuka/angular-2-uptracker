@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-received-list-detail',
@@ -13,7 +14,8 @@ export class ReceivedListShortDetailComponent {
   
   @Input("item") public item: any = [];
   @Input("visible") public visible;
-
+  @Output() public isAllCheckedChanged = new EventEmitter();
+  
   constructor(
 
   ) {
@@ -22,6 +24,12 @@ export class ReceivedListShortDetailComponent {
 
   toggleVariantVisibility(variant) {
     variant.status = variant.status == 2 ? variant.status =1 : variant.status = 2;
+  }
+  
+  setCheckbox(event) {
+    const filteredCheckedProducts:any[]  = _.filter(this.item.items, 'checked');
+    this.item.checked = filteredCheckedProducts.length === this.item.items.length;
+    this.isAllCheckedChanged.emit(this.item.checked);
   }
   
 }

@@ -59,6 +59,7 @@
             <input
               type="checkbox"
               [(ngModel)] = 'item.checked'
+              (ngModelChange)="setCheckbox(item)"
               class="selected-input{{i + item.id}}"
               id="selected{{i + item.id}}"
             />
@@ -109,7 +110,11 @@
         </div>
         <div class="clearfix"></div>
 
-        <app-received-list-detail [visible]="pastOrderService.itemsVisibilityReceivedList[i]" [item]="item"></app-received-list-detail>
+        <app-received-list-detail
+          [visible]="pastOrderService.itemsVisibilityReceivedList[i]"
+          [item]="item"
+          (isAllCheckedChanged) = "setOrderCheckbox(item)">
+        </app-received-list-detail>
 
         <div class="clearfix"></div>
       </div>

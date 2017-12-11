@@ -20,6 +20,9 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   
   public receivedOrders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private selectAllReceivedList$:  ReplaySubject<any> = new ReplaySubject(1);
+  private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  
+  public showMenuItem: boolean = true;
   
   constructor(
     public pastOrderService: PastOrderService,
@@ -52,7 +55,16 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
         })
       })
       .subscribe();
-    
+  
+    this.subscribers.ordersCheckedSubscription = this.ordersChecked$
+    .switchMap(() =>
+      this.receivedOrders$
+    )
+    .map(product => {
+      let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
+      this.showMenuItem = !!filteredCheckedProducts.length;
+    })
+    .subscribe();
   }
   
   ngOnDestroy() {
@@ -67,4 +79,12 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     this.pastOrderService.itemsVisibilityReceivedList[i] = !this.pastOrderService.itemsVisibilityReceivedList[i];
   }
   
+  setCheckbox(item) {
+    item.items.map(order_item => order_item.checked = item.checked);
+    this.ordersChecked$.next([]);
+  }
+  
+  setOrderCheckbox() {
+    this.ordersChecked$.next([]);
+  }
 }

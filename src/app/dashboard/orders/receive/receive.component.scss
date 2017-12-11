@@ -168,12 +168,20 @@
           &.empty {
             color: $light-grey;
           }
+          &.invalid {
+            border: 1px solid red !important;
+          }
         }
       }
     }
     .ngui-auto-complete-wrapper {
       width: 100%;
     }
+    .error-absolute {
+      position: absolute;
+      top: 40px;
+    }
+
   }
 
   .tabs {

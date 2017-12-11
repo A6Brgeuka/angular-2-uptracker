@@ -50,7 +50,6 @@ export class ItemModel {
   variant_id:string = null;
   vendor_id: string = null;
   
-  
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {
