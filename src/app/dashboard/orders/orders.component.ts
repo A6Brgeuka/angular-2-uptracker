@@ -34,6 +34,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public showMenuItem: boolean = true;
   public showMenuReconcile: boolean = false;
+  public isAllChecked: boolean = false;
   
   constructor(
       public modal: Modal,
@@ -178,7 +179,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.ordersToReceive$.next([]);
   }
   
-  setCheckbox() {
+  setCheckbox(item) {
+    item.order_items.map(order_item => order_item.checked = item.checked);
     this.ordersChecked$.next([]);
   }
+  
+  setOrderCheckbox() {
+    this.ordersChecked$.next([]);
+  }
+  
 }

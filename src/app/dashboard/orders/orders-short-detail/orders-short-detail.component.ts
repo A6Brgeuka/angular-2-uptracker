@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
@@ -23,6 +23,7 @@ export class OrdersShortDetailComponent {
   
   @Input("item") public item: any = [];
   @Input("visible") public visible;
+  @Output() public isAllCheckedChanged = new EventEmitter();
 
   constructor(
     public modalWindowService: ModalWindowService,
@@ -53,6 +54,12 @@ export class OrdersShortDetailComponent {
     sendItems = sendItems.concat(filteredCheckedProducts.map((product) => product.id));
     let queryParams = this.item.order_id.toString() + '&' + sendItems.toString();
     this.pastOrderService.goToReceive(queryParams);
+  }
+  
+  setCheckbox(event) {
+    const filteredCheckedProducts:any[]  = _.filter(this.item.order_items, 'checked');
+    this.item.checked = filteredCheckedProducts.length === this.item.order_items.length;
+    this.isAllCheckedChanged.emit(this.item.checked);
   }
   
 }
