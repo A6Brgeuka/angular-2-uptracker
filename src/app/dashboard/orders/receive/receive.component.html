@@ -78,6 +78,49 @@
                   {{ product.location_name }}
                 </div>
               </div>
+
+              <div class="row" *ngFor="let statusLine of product.status_line_items">
+                <div class="col s3">
+                  <div class="select custom-select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      disabled
+                      name="status{{i}}"
+                    >
+                      <option [value]="statusLine.status">{{ statusLine.status }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s1">
+                  <div class="input flex-center">
+                    <input type="text" value="{{statusLine.quantity}}"
+                      disabled
+                      name="qty{{i}}"
+                    >
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      [disabled]="true"
+                    >
+                      <option [value]="statusLine.inventory_group_name">{{statusLine.inventory_group_name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s3">
+                  <div class="select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      [disabled]="true"
+                    >
+                      <option [value]="statusLine.location_name">{{statusLine.location_name}}: {{statusLine.storage_location_name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <div class="row" *ngFor="let status of product.status; let i=index;">
                 <div class="col s3">
                   <div class="select custom-select select-light flex-center" *ngIf="status.showStatusSelect">
