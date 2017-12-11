@@ -83,7 +83,8 @@
           <div class="col s2">
             <div class="right edititem"
               materialize="dropdown"
-              data-activates='order_ddm'>
+              data-activates='order_ddm'
+              *ngIf="showMenuItem">
               <fa name="ellipsis-h"></fa>
             </div>
             <ul id='order_ddm' class='dropdown-content'>
@@ -93,13 +94,13 @@
               <li>
                 <a class="tealish-text" href="#">Flag</a>
               </li>
-              <li *ngIf="showMenuItem">
+              <li>
                 <a class="tealish-text" href="#">Resend</a>
               </li>
-              <li *ngIf="showMenuItem">
+              <li>
                 <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
               </li>
-              <li *ngIf="showMenuReconcile">
+              <li>
                 <a class="tealish-text" href="#">Reconcile</a>
               </li>
               <li>
@@ -141,7 +142,7 @@
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.received_date }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.reconciled_date }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.product_count }}</div>
-            <div class="col s2">
+            <div class="col s2 pdg-r-0">
 
               <div class="right edititem"
                 materialize="dropdown"

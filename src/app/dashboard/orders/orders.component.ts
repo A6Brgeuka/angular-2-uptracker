@@ -113,10 +113,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
     )
     .map(product => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
-      let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 'Received');
-      let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 'Received');
-      this.showMenuItem = !!(findNotReceivedProducts);
-      this.showMenuReconcile = !!(findReceivedProducts);
+      //let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 'Received');
+      //let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 'Received');
+      //this.showMenuItem = !!(findNotReceivedProducts);
+      //this.showMenuReconcile = !!(findReceivedProducts);
+      this.showMenuItem = !!filteredCheckedProducts.length;
     })
     .subscribe();
   

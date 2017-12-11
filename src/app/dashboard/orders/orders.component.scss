@@ -59,7 +59,9 @@
       background-image: url(/assets/img/download-icon.png);
     }
 
-
+    .col.pdg-r-0 {
+      padding-right: 0;
+    }
 
     .star-right {
       color: $tealish;
@@ -248,6 +250,7 @@
   }
 
   .orders-short-detail {
+    margin: 0 0 0 35px;
     background-color: $white;
     border-radius: 10px;
     padding-bottom: 0!important;
