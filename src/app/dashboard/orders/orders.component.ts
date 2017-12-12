@@ -116,6 +116,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     )
     .map(product => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
+      
+      this.selectAll = (filteredCheckedProducts.length && (filteredCheckedProducts.length === product.length));
       this.showMenuItem = !!filteredCheckedProducts.length;
     })
     .subscribe();

@@ -114,9 +114,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.subscribers.updateItemSubscription = this.updateItem$
     .switchMap(() => this.cart$.first())
     .map((items: any) => {
+      let checkedItemsArr = _.filter(items, 'status');
+      this.selectAll = (checkedItemsArr.length === items.length);
       return new ChangingShoppingListModel({items});
     })
-    .switchMap((data) =>
+    .switchMap((data:any) =>
       this.cartService.updateItem(data)
     )
     .subscribe((res: any) => {
@@ -233,28 +235,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
   
   saveItem(item: any = {}) {
-    
-    //let data = {
-    //  "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
-    //  "product_id": item.product_id,
-    //  "variants": [
-    //    {
-    //      "variant_id": item.variant_id,
-    //      //"vendor_variant_id": item.variant_id,
-    //      "vendor_id":null,
-    //      "qty": item.qty,
-    //      "vendor_auto_select": item.selected_vendor.id ? false : true,
-    //      "location_id": item.location_id,
-    //      "status": item.status ? 1 : 0,
-    //    }
-    //  ]
-    //};
-    //item.prev_location = item.location_id;
-    //if (item.selected_vendor.id) {
-    //  data['variants'][0]['vendor_id'] = item.selected_vendor.id;
-    //}
-  
-    //this.updateItem$.next(data);
     this.updateItem$.next('');
     
   };
