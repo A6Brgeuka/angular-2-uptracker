@@ -16,9 +16,9 @@
         </button>
         <ul id='drdnPO' class='dropdown-content'>
           <li>
-            <a class="tealish-text">
+            <a class="tealish-text" (click) = "setFlag($event)">
               <fa name="flag"></fa>
-              Flag
+              {{(order$ | async).flagged ? 'Unflag' : 'Flag'}}
             </a>
           </li>
           <li>

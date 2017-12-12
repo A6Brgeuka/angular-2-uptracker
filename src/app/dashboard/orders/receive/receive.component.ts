@@ -88,8 +88,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
           }
           item = new ItemModel(item);
           
-          //console.log(item, 111111);
-          
           item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';

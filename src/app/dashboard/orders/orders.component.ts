@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { SelectVendorModal } from './select-vendor-modal/select-vendor.component';
 import { Observable } from 'rxjs/Observable';
+import { ToasterService } from '../../core/services/toaster.service';
 
 @Component({
   selector: 'app-orders',
@@ -33,14 +34,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
   private ordersToReceive$:  any = new Subject<any>();
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public showMenuItem: boolean = true;
-  public showMenuReconcile: boolean = false;
-  public isAllChecked: boolean = false;
+  
+  public updateFlagged$: any = new Subject();
   
   constructor(
       public modal: Modal,
       public router: Router,
       public pastOrderService: PastOrderService,
       public modalWindowService: ModalWindowService,
+      public toasterService: ToasterService
   ) {
   
   }
@@ -114,10 +116,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
     )
     .map(product => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
-      //let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 'Received');
-      //let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 'Received');
-      //this.showMenuItem = !!(findNotReceivedProducts);
-      //this.showMenuReconcile = !!(findReceivedProducts);
       this.showMenuItem = !!filteredCheckedProducts.length;
     })
     .subscribe();
@@ -129,6 +127,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     .subscribe(([res, select]) =>
       res.map(item => item.checked = select)
     );
+  
+    this.subscribers.updateFlaggedSubscription = this.updateFlagged$
+    .switchMap(order => this.pastOrderService.setFlag(order))
+    .subscribe(res => {
+        this.toasterService.pop('', res.flagged ? 'Flagged' : "Unflagged");
+      },
+      err => console.log('error'));
   }
   
   sendToReceiveProducts(filteredCheckedProducts) {
@@ -186,6 +191,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
   
   setOrderCheckbox() {
     this.ordersChecked$.next([]);
+  }
+  
+  setFlag(e, order) {
+    e.stopPropagation();
+    this.updateFlagged$.next(order);
   }
   
 }

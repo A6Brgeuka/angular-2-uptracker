@@ -35,6 +35,32 @@ export class PastOrderService extends ModelService {
   ) {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
+    this.updateCollection();
+  }
+  
+  updateCollection() {
+    let updateElementCollection$ = this.updateElementCollection$
+    .switchMap((entity) => {
+      return this.collection$.first()
+      .map((collection: any) => {
+        return collection.map((el: any) => {
+          if (el.order_id == entity.order_id) {
+            el.flagged = entity.flagged;
+          }
+          return el;
+        });
+      });
+    });
+  
+    this.collection$ = Observable.merge(
+      this.loadCollection$,
+      this.updateCollection$,
+      updateElementCollection$,
+    ).publishReplay(1).refCount();
+    this.collection$.subscribe(res => {
+      this.collection = res;
+      console.log(`${this.constructor.name} Collection Updated`, res);
+    });
   }
   
   getPastOrders(){
@@ -90,6 +116,14 @@ export class PastOrderService extends ModelService {
   getOpenedProducts() {
     return this.restangular.one('pos', '5').customGET()
     .map((res:any)=>res.data);
+  }
+  
+  setFlag(order) {
+    return this.restangular.one('pos', order.order_id).one('flag').customPUT({'flagged' : !order.flagged})
+      .map(res => {
+        this.updateElementCollection$.next(res.data);
+        return res.data;
+      });
   }
   
 }

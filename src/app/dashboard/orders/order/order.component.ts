@@ -16,6 +16,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { EditEmailDataModal } from '../../shopping-list/orders-preview/purchase-order/edit-email-data-modal/edit-email-data-modal.component';
 import { OrderService } from '../../../core/services/order.service';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orderId: string;
   order$: BehaviorSubject<any> = new BehaviorSubject({});
+  public updateFlagged$: any = new Subject();
   
   constructor(
     public modal: Modal,
@@ -57,6 +59,16 @@ ngOnInit() {
     );
     
   }
+  addSubscribers() {
+    this.subscribers.updateOrderFlaggedSubscription = this.updateFlagged$
+    .switchMapTo(this.order$.first())
+    .switchMap(order => this.pastOrderService.setFlag(order))
+    .subscribe(res => {
+        this.order$.next(res);
+        this.toasterService.pop('', res.flagged ? 'Flagged' : "Unflagged");
+      },
+      err => console.log('error'));
+  }
   
   ngOnDestroy() {
     console.log('for unsubscribing')
@@ -80,6 +92,8 @@ ngOnInit() {
     .switchMap((order: any) => this.orderService.sendOrderRequest(order.id))
     .take(1)
     .subscribe((status: any) => {
+      console.log(status, 1111);
+      console.log(order, 2222);
       this.showEmailDataEditModal({
         order_method:order['order_method'],
         attachments: order['attachments'],
@@ -106,5 +120,10 @@ ngOnInit() {
     }
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"));
   }
- 
+  
+  setFlag(e) {
+    e.stopPropagation();
+    this.updateFlagged$.next(this.order$);
+  }
+  
 }
