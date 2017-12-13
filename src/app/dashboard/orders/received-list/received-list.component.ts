@@ -50,6 +50,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
         .map(res => {
           res = _.forEach(res, (item: any) => {
             item.checked = select;
+            item.items.map(product => product.checked = select);
           });
           return res;
         })
@@ -62,6 +63,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     )
     .map(product => {
       let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
+      this.selectAllReceivedList = (filteredCheckedProducts.length && (filteredCheckedProducts.length === product.length));
       this.showMenuItem = !!filteredCheckedProducts.length;
     })
     .subscribe();

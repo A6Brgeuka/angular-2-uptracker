@@ -23,15 +23,13 @@
       <div class="col s2">
         <div class="right edititem"
           materialize="dropdown"
-          data-activates='received_order_ddm'>
+          data-activates='received_order_ddm'
+          *ngIf="showMenuItem">
           <fa name="ellipsis-h"></fa>
         </div>
         <ul id='received_order_ddm' class='dropdown-content'>
           <li>
             <a class="tealish-text" href="#">Edit</a>
-          </li>
-          <li>
-            <a class="tealish-text" href="#">Flag</a>
           </li>
           <li>
             <a class="tealish-text" href="#">Resend</a>
@@ -88,9 +86,6 @@
           <ul [id]='"received_order_dd_" +i' class='dropdown-content'>
             <li>
               <a class="tealish-text" href="#">Edit</a>
-            </li>
-            <li>
-              <a class="tealish-text" href="#">Flag</a>
             </li>
             <li>
               <a class="tealish-text" href="#">Resend</a>

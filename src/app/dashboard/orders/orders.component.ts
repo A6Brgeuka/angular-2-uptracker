@@ -127,7 +127,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.selectAll$,
       )
     .subscribe(([res, select]) =>
-      res.map(item => item.checked = select)
+      res.map(item => {
+        item.checked = select;
+        item.order_items.map(product => product.checked = select);
+      })
     );
   
     this.subscribers.updateFlaggedSubscription = this.updateFlagged$

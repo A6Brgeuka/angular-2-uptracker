@@ -27,7 +27,7 @@
               Print
             </a>
           </li>
-          <li>
+          <li *ngIf="(order$ | async).order_method">
             <a class="tealish-text" (click)="sendOrder()">
               <fa name="send-o"></fa>
               Send
