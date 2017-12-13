@@ -16,7 +16,6 @@
       </button>
       <button (click)="saveAdded()"
         class="uptracker-form-btn save-btn white-text tealish waves-effect waves-light right"
-
         *ngIf="step4.className == 'active'"
       >
       <fa name="check"></fa>
@@ -496,8 +495,10 @@
   <div id="step3">
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
       <ul class="tabs location-tabs" materialize="tabs">
-        <li class="tab" *ngFor="let location of newInventory.locations">
-          <a href="#{{location.location_id}}" (click)="selectTab(location)">{{ location.name }}</a>
+        <li class="tab" *ngFor="let location of newInventory.locations; let i=index;">
+          <a href="#{{location.location_id}}" (click)="selectTab(location)" #{{i}}>
+            {{ location.name }}
+          </a>
         </li>
       </ul>
     </div>

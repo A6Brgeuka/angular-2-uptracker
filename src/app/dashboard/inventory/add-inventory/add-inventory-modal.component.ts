@@ -122,8 +122,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
-    
-   
   }
   
   ngOnInit() {

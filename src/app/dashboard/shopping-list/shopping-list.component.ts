@@ -70,6 +70,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       );
       this.totalOrders = cart.filter((item:any)=>item.status).length;
       this.total = cart.length;
+      this.checkSelectAllItems(r);
       this.updateCart(cart);
       this.changed = [];
     });
@@ -114,8 +115,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.subscribers.updateItemSubscription = this.updateItem$
     .switchMap(() => this.cart$.first())
     .map((items: any) => {
-      let checkedItemsArr = _.filter(items, 'status');
-      this.selectAll = (checkedItemsArr.length === items.length);
+      this.checkSelectAllItems(items);
       return new ChangingShoppingListModel({items});
     })
     .switchMap((data:any) =>
@@ -258,6 +258,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   
   updateCart(data) {
     this.cart$.next(data);
+  }
+  
+  checkSelectAllItems(items) {
+    let checkedItemsArr = _.filter(items, 'status');
+    this.selectAll = (checkedItemsArr.length === items.length);
   }
   
 }
