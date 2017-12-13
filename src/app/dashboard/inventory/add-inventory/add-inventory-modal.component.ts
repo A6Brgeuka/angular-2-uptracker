@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone, ViewChildren, QueryList,
+  Input
+} from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -14,7 +17,6 @@ import { AttachmentFiles, InventorySearchResults, searchData, Vendor } from '../
 
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
-import { debug } from 'util';
 
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
@@ -103,6 +105,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   @ViewChild('step3') step3: ElementRef;
   @ViewChild('step4') step4: ElementRef;
   
+  @ViewChildren('locationTab') locationTabsList: QueryList<any>;
+  
   public locations$: Observable<any> = this.accountService.locations$;
   public locations: any[];
   public showAddCustomBtn: boolean;
@@ -125,7 +129,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   ngOnInit() {
-  
     this.typeIn$
     .debounceTime(500)
     .switchMap((key: string) => {
@@ -137,7 +140,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.total = data.count;
         this.searchResults$.next(data.results);
         this.searchResults = data.results;
-        console.log(this.searchResults);
         if (this.items.length) {
           this.checkedProduct = [];
           this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
@@ -732,6 +734,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.step2.nativeElement.click();
     else if (this.step2.nativeElement.className == 'active')
       this.step3.nativeElement.click();
+    else if (this.step3.nativeElement.className == 'active'
+      && this.newInventory.locations.length > 1
+      && !this.newInventory.locations[this.newInventory.locations.length - 1].active) {
+        let activeLocationIndex = _.findIndex(this.newInventory.locations, 'active');
+        let locationTabsListArr: any[] = this.locationTabsList.toArray();
+        locationTabsListArr[activeLocationIndex + 1].nativeElement.click();
+    }
     else this.step4.nativeElement.click();
   }
   
@@ -747,6 +756,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.newInventory.locations.forEach((location) => {
       location.active = false;
     });
+    location.active = true;
   }
 
   selectVendor(item, selectedVendor) {

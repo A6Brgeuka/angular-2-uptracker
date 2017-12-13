@@ -496,7 +496,7 @@
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
       <ul class="tabs location-tabs" materialize="tabs">
         <li class="tab" *ngFor="let location of newInventory.locations; let i=index;">
-          <a href="#{{location.location_id}}" (click)="selectTab(location)" #{{i}}>
+          <a href="#{{location.location_id}}" (click)="selectTab(location)" #locationTab>
             {{ location.name }}
           </a>
         </li>
