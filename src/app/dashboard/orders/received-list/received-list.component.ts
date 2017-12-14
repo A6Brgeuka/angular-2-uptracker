@@ -89,4 +89,9 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   setOrderCheckbox() {
     this.ordersChecked$.next([]);
   }
+  
+  buyAgainOrder(order) {
+  
+  }
+  
 }

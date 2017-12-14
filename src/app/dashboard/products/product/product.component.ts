@@ -635,7 +635,6 @@ ngOnDestroy() {
           'vendor': {variant_id:v.vendor_variants[0].variant_id},
           'isAuto': true,
         });
-        console.log(v);
         return a;
       });
     })

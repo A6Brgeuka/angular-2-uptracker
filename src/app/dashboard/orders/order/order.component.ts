@@ -92,8 +92,6 @@ ngOnInit() {
     .switchMap((order: any) => this.orderService.sendOrderRequest(order.id))
     .take(1)
     .subscribe((status: any) => {
-      console.log(status, 1111);
-      console.log(order, 2222);
       this.showEmailDataEditModal({
         order_method:order['order_method'],
         attachments: order['attachments'],

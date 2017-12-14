@@ -62,4 +62,8 @@ export class OrdersShortDetailComponent {
     this.isAllCheckedChanged.emit(this.item.checked);
   }
   
+  buyAgainProduct(product) {
+  
+  }
+  
 }

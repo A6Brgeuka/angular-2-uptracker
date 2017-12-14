@@ -184,8 +184,10 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     })
     .subscribe((res: any) => {
       this.toasterService.pop('','Successfully sent');
-      this.dismissModal();
-      this.context.rmFn();
+      this.closeModal(true);
+      if (this.context.rmFn) {
+        this.context.rmFn();
+      }
     });
   }
 }

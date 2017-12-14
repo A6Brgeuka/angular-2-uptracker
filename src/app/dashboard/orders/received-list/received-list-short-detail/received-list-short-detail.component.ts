@@ -32,4 +32,8 @@ export class ReceivedListShortDetailComponent {
     this.isAllCheckedChanged.emit(this.item.checked);
   }
   
+  
+  buyAgainProduct(product) {
+  
+  }
 }

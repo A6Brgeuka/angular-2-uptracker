@@ -12,6 +12,7 @@ import { ModalWindowService } from '../../core/services/modal-window.service';
 import { SelectVendorModal } from './select-vendor-modal/select-vendor.component';
 import { Observable } from 'rxjs/Observable';
 import { ToasterService } from '../../core/services/toaster.service';
+import { ResendOrderModal } from './resend-order-modal/resend-order-modal.component';
 
 @Component({
   selector: 'app-orders',
@@ -42,7 +43,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       public router: Router,
       public pastOrderService: PastOrderService,
       public modalWindowService: ModalWindowService,
-      public toasterService: ToasterService
+      public toasterService: ToasterService,
   ) {
   
   }
@@ -215,5 +216,27 @@ export class OrdersComponent implements OnInit, OnDestroy {
     e.stopPropagation();
     this.updateFlagged$.next(order);
   }
+  
+  buyAgainOrder(order) {
+  
+  }
+  
+  buyAgainOrders() {
+  
+  }
+  
+  openResendDialog(item) {
+    this.modal
+    .open(ResendOrderModal, this.modalWindowService
+    .overlayConfigFactoryWithParams(item, true, 'mid'))
+    //.then((resultPromise) => {
+    //  resultPromise.result.then(
+    //    (res) => {
+    //    },
+    //    (err) => {
+    //    }
+    //  );
+    //})
+  };
   
 }

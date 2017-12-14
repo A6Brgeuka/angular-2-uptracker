@@ -137,7 +137,6 @@ export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<Bu
       })
     };
     
-    console.log('DATA', data);
     this.cartService.addToCart(data)
     .subscribe(() => {
       this.toasterService.pop("",  "Some products had been successfully added to the shopping list");

@@ -91,9 +91,9 @@
               <li>
                 <a class="tealish-text" href="#">Edit</a>
               </li>
-              <li>
-                <a class="tealish-text" href="#">Resend</a>
-              </li>
+              <!--<li>-->
+                <!--<a class="tealish-text" (click)="openResendDialog()">Resend</a>-->
+              <!--</li>-->
               <li>
                 <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
               </li>
@@ -101,7 +101,7 @@
                 <a class="tealish-text" href="#">Reconcile</a>
               </li>
               <li>
-                <a class="tealish-text" href="#">Buy Again</a>
+                <a class="tealish-text" (click) = buyAgainOrders()>Buy Again</a>
               </li>
               <li>
                 <a class="red-text" href="#">Void</a>
@@ -156,8 +156,8 @@
                     {{item.flagged ? 'Unflag' : 'Flag'}}
                   </a>
                 </li>
-                <li *ngIf="item.status !== 'Received'">
-                  <a class="tealish-text" href="#">Resend</a>
+                <li>
+                  <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
                 </li>
                 <li *ngIf="item.status !== 'Received'">
                   <a class="tealish-text" (click) = sendToReceiveOrder(item)>Receive</a>
@@ -166,7 +166,7 @@
                   <a class="tealish-text" href="#">Reconcile</a>
                 </li>
                 <li>
-                  <a class="tealish-text" href="#">Buy Again</a>
+                  <a class="tealish-text" (click) = buyAgainOrder(item)>Buy Again</a>
                 </li>
                 <li>
                   <a class="red-text" href="#">Void</a>
