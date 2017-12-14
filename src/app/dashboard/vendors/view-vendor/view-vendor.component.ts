@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Location }                 from '@angular/common';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -17,7 +17,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   styleUrls: ['./view-vendor.component.scss']
 })
 @DestroySubscribers()
-export class ViewVendorComponent implements OnInit {
+export class ViewVendorComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
   public globalVendor$;
@@ -69,6 +69,10 @@ export class ViewVendorComponent implements OnInit {
       }
     );
 
+  }
+  
+  ngOnDestroy() {
+    this.subscribers.allLocationsSubscription.unsubscribe();
   }
   
   addSubscribers() {

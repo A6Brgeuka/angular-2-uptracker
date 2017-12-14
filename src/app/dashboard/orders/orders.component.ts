@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { SelectVendorModal } from './select-vendor-modal/select-vendor.component';
 import { Observable } from 'rxjs/Observable';
+import { ToasterService } from '../../core/services/toaster.service';
 
 @Component({
   selector: 'app-orders',
@@ -18,7 +19,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./orders.component.scss']
 })
 @DestroySubscribers()
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -33,13 +34,15 @@ export class OrdersComponent implements OnInit {
   private ordersToReceive$:  any = new Subject<any>();
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public showMenuItem: boolean = true;
-  public showMenuReconcile: boolean = false;
+  
+  public updateFlagged$: any = new Subject();
   
   constructor(
       public modal: Modal,
       public router: Router,
       public pastOrderService: PastOrderService,
       public modalWindowService: ModalWindowService,
+      public toasterService: ToasterService
   ) {
   
   }
@@ -47,7 +50,11 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
   
   }
-
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
+  }
+  
   addSubscribers() {
     this.subscribers.getCollectionSubscription = this.pastOrderService.getPastOrders()
     .subscribe(orders => {
@@ -75,8 +82,13 @@ export class OrdersComponent implements OnInit {
     .switchMapTo(
       this.orders$
     )
-    .map((product) => {
-      let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
+    .filter(ord => ord)
+    .map((orders) => {
+      
+      let filteredCheckedProducts:any[]  = _.filter(orders,
+        (order:any) => _.find(order.order_items, 'checked')
+      );
+      
       let firstVendor:any = filteredCheckedProducts[0].vendor_name;
       let filteredVendors:any[]  = _.filter(filteredCheckedProducts, item => firstVendor === item.vendor_name);
       
@@ -107,12 +119,15 @@ export class OrdersComponent implements OnInit {
     .switchMap(() =>
       this.orders$
     )
-    .map(product => {
-      let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
-      let findNotReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status !== 'Received');
-      let findReceivedProducts:any[] = _.find(filteredCheckedProducts, item => item.status === 'Received');
-      this.showMenuItem = !!(findNotReceivedProducts);
-      this.showMenuReconcile = !!(findReceivedProducts);
+    .filter(ord => ord)
+    .map(orders => {
+      let filteredCheckedOrders:any[]  = _.filter(orders, 'checked');
+      let filteredCheckedProductrs: any[] = [];
+      let findFilteredCheckedProductrs = orders.map((order) => {
+        filteredCheckedProductrs = filteredCheckedProductrs.concat(_.filter(order.order_items, 'checked'));
+      });
+      this.selectAll = (filteredCheckedOrders.length && (filteredCheckedOrders.length === orders.length));
+      this.showMenuItem = !!(filteredCheckedOrders.length || filteredCheckedProductrs.length);
     })
     .subscribe();
   
@@ -121,13 +136,26 @@ export class OrdersComponent implements OnInit {
         this.selectAll$,
       )
     .subscribe(([res, select]) =>
-      res.map(item => item.checked = select)
+      res.map(item => {
+        item.checked = select;
+        item.order_items.map(product => product.checked = select);
+      })
     );
+  
+    this.subscribers.updateFlaggedSubscription = this.updateFlagged$
+    .switchMap(order => this.pastOrderService.setFlag(order))
+    .subscribe(res => {
+        this.toasterService.pop('', res.flagged ? 'Flagged' : "Unflagged");
+      },
+      err => console.log('error'));
   }
   
-  sendToReceiveProducts(filteredCheckedProducts) {
+  sendToReceiveProducts(filteredCheckedProducts, singleOrder = false) {
     let sendItems: any[] = [];
     let sendOrders = filteredCheckedProducts.map((order) => {
+      if (!singleOrder) {
+        order.order_items = _.filter(order.order_items, 'checked');
+      }
       sendItems = sendItems.concat(order.order_items.map((item) => item.id));
       return order.order_id;
     });
@@ -136,7 +164,8 @@ export class OrdersComponent implements OnInit {
   }
   
   sendToReceiveOrder(order) {
-    this.sendToReceiveProducts([order]);
+    let singleOrder = true;
+    this.sendToReceiveProducts([order], singleOrder);
   }
   
   searchFilter(event){
@@ -173,7 +202,18 @@ export class OrdersComponent implements OnInit {
     this.ordersToReceive$.next([]);
   }
   
-  setCheckbox() {
+  setCheckbox(item) {
+    item.order_items.map(order_item => order_item.checked = item.checked);
     this.ordersChecked$.next([]);
   }
+  
+  setOrderCheckbox(item) {
+    this.ordersChecked$.next([]);
+  }
+  
+  setFlag(e, order) {
+    e.stopPropagation();
+    this.updateFlagged$.next(order);
+  }
+  
 }

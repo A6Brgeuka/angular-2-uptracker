@@ -3,7 +3,7 @@
     <div class="flex-row heading row">
       <div class="col s3">Product Name</div>
       <div class="col s1">Location</div>
-      <div class="col s1">Status</div>
+      <div class="col s1">Order#</div>
       <div class="col s1">Placed</div>
       <div class="col s1">Received</div>
       <div class="col s1">Reconciled</div>
@@ -11,66 +11,46 @@
       <div class="col s1">Unit Price</div>
       <div class="col s1">Total</div>
       <div class="col s1">
-        <!--<div class="right edititem filled"-->
-          <!--materialize="dropdown"-->
-          <!--[attr.data-activates]='"order_dd_"+i'>-->
-          <!--<fa name="ellipsis-h"></fa>-->
-        <!--</div>-->
-
-        <!--<ul [id]='"order_dd_"+i' class='dropdown-content'>-->
-          <!--<li>-->
-            <!--<a class="tealish-text" (click)="onReceiveCheckedProducts()">Receive</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a class="tealish-text" href="/">Resend</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a class="tealish-text" href="/">Buy Again</a>-->
-          <!--</li>-->
-        <!--</ul>-->
       </div>
     </div>
-    <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i = index;">
+    <div class="flex-row item row smallrow" *ngFor="let product of item.items; let i = index;">
       <div class="col s3 flex-center">
         <div class="input-checkbox left checkbox">
           <input
             [(ngModel)]='product.checked'
             type="checkbox"
             (ngModelChange)="setCheckbox($event)"
-            class="subselected-input{{i + product.id}}"
-            id="subselected{{i + product.id}}"
+            class="subselected-input{{i + item.id}}"
+            id="subselected{{i + item.id}}"
           />
-          <label for="subselected{{i + product.id}}"></label>
+          <label for="subselected{{i + item.id}}"></label>
         </div>
         <div class="left flex-center">
           <div> {{ product.item_name }}</div>
         </div>
       </div>
       <div class="col s1">{{ product.location_name }}</div>
-      <div class="col s1">{{ product.status }}</div>
+      <div class="col s1">{{ product.po_number }}</div>
       <div class="col s1">{{ product.placed_date }}</div>
       <div class="col s1">{{ product.received_date }}</div>
       <div class="col s1">{{ product.reconciled_date }}</div>
-      <div class="col s1">{{ product.quantity }}</div>
-      <div class="col s1">{{ product.unit_price }}</div>
+      <div class="col s1">{{ product.qty }}</div>
+      <div class="col s1">{{ product.package_price }}</div>
       <div class="col s1">
-        <div>{{ product.sub_total }}</div>
+        <div>{{ product.total }}</div>
       </div>
-      <div class="col s1">
-        <div class="right edititem" materialize="dropdown" [attr.data-activates]='"order_dd"+i'>
+      <div class="col s1 right-align">
+        <div class="right edititem" materialize="dropdown" [attr.data-activates]='"received_order_short_dd"+i'>
           <fa name="ellipsis-h"></fa>
         </div>
-        <ul [id]='"order_dd"+i' class='dropdown-content'>
+        <ul [id]='"received_order_short_dd"+i' class='dropdown-content'>
           <li>
             <a class="tealish-text" href="#">Edit</a>
           </li>
-          <li *ngIf="product.status !== 'Received'">
+          <li>
             <a class="tealish-text" href="#">Resend</a>
           </li>
-          <li *ngIf="product.status !== 'Received'">
-            <a class="tealish-text" (click)="getReceiveProduct(item, product)">Receive</a>
-          </li>
-          <li *ngIf="product.status === 'Received'">
+          <li>
             <a class="tealish-text" href="#">Reconcile</a>
           </li>
           <li>

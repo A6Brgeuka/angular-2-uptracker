@@ -11,10 +11,10 @@
             [disabled]="true"
             class="wide"
             materialize="material_select"
-            [materializeSelectOptions]=""
+            [materializeSelectOptions]="[receiveProducts.vendor.vendor_name]"
             name="vendor"
           >
-            <option value="" disabled selected >{{ (orders$ | async).vendor?.vendor_name }}</option>
+            <option value="" disabled selected >{{ receiveProducts.vendor.vendor_name }}</option>
           </select>
         </div>
       </div>
@@ -29,7 +29,7 @@
           id="packing_slip_number"
           [class.ng-touched]="!packingSlipValid"
         />
-        <div [hidden]="packingSlipValid || receiveProducts.packing_slip_number" class="error red-text left-align">
+        <div [hidden]="packingSlipValid || packing_slip.valid" class="error red-text left-align">
           Packing slip is required
         </div>
       </div>
@@ -78,6 +78,49 @@
                   {{ product.location_name }}
                 </div>
               </div>
+
+              <div class="row" *ngFor="let statusLine of product.status_line_items">
+                <div class="col s3">
+                  <div class="select custom-select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      disabled
+                      name="status{{i}}"
+                    >
+                      <option [value]="statusLine.status">{{ statusLine.status }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s1">
+                  <div class="input flex-center">
+                    <input type="text" value="{{statusLine.quantity}}"
+                      disabled
+                      name="qty{{i}}"
+                    >
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      [disabled]="true"
+                    >
+                      <option [value]="statusLine.inventory_group_name">{{statusLine.inventory_group_name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s3">
+                  <div class="select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      [disabled]="true"
+                    >
+                      <option [value]="statusLine.location_name">{{statusLine.location_name}}: {{statusLine.storage_location_name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <div class="row" *ngFor="let status of product.status; let i=index;">
                 <div class="col s3">
                   <div class="select custom-select select-light flex-center" *ngIf="status.showStatusSelect">
@@ -104,20 +147,23 @@
                   </div>
                 </div>
                 <div class="col s4">
-                  <div class="select select-light flex-center" *ngIf="status.type === 'receive' || (status.type === 'partial receive' && status.inventoryHide)">
-                    <select
-                      materialize="material_select"
-                      [materializeSelectOptions]="inventoryGroupArr"
-                      [(ngModel)] = 'product.inventory_group_id'
-                      name="inventory{{i}}"
+                  <div class="select select-light flex-center input relative" *ngIf="status.type === 'receive' || (status.type === 'partial receive' && status.inventoryHide)">
+                    <input auto-complete
+                      placeholder="Select one"
+                      [source]="product.inventory_groups"
                       [disabled] = "product.existInvGroup"
-                      (ngModelChange)="changeInventory($event, product)"
-                      required
-                    >
-                      <option value="null" disabled>Select one</option>
-                      <option value="routerLink">Create New Inventory Group</option>
-                      <option [value]="inventoryGroup.id" *ngFor="let inventoryGroup of inventoryGroupArr">{{ inventoryGroup.name }}</option>
-                    </select>
+                      [(ngModel)] = 'product.inventory_group'
+                      (ngModelChange) = 'selectedAutocompledInventoryGroup($event, product)'
+                      [list-formatter] = '"name"'
+                      [tab-to-select] = 'false'
+                      name="inventoryGroup"
+                      #inventoryGroup = "ngModel"
+                      required minlength="1"
+                      [class.invalid]="!inventoryGroupValid && !product.existInvGroup"
+                    />
+                    <div [hidden]="inventoryGroup.untouched || product.inventory_group_id" class="error red-text left-align error-absolute">
+                      Inventory group is required
+                    </div>
                   </div>
                   <div class="select select-light flex-center"
                     *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'|| (status.type === 'partial receive' && !status.inventoryHide)">
@@ -125,25 +171,26 @@
                       materialize="material_select"
                       [disabled]="true"
                       name="inventory{{i}}"
+                      required
                     >
                       <option value="null">N/A</option>
                     </select>
                   </div>
                 </div>
                 <div class="col s3">
-                  <div class="select select-light flex-center" *ngIf="product.inventory_group.locations">
+                  <div class="select select-light flex-center">
                     <select materialize="material_select"
-                      [materializeSelectOptions]="product.inventory_group.locations[0].storage_locations"
-                      (ngModelChange)="changeLocation($event, status, product)"
+                      [materializeSelectOptions]="product.locations"
+                      (ngModelChange)="changeLocation($event, status)"
                       [ngModel] = 'status.location'
                       [disabled]="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'"
                       name="location{{i}}"
                     >
-                      <ng-container *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'">
+                      <ng-container *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || !product.inventory_group_id">
                         <option value="null">N/A</option>
                       </ng-container>
                       <ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">
-                        <option *ngFor="let location of product.inventory_group.locations[0].storage_locations" [ngValue]="location">{{product.location_name}}: {{ location.name }}
+                        <option *ngFor="let location of product.locations" [ngValue]="location">{{location.location_name}}: {{ location.name }}
                         </option>
                       </ng-container>
                     </select>

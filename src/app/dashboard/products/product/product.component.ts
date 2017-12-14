@@ -1,6 +1,6 @@
 import {
   Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef,
-  ChangeDetectorRef
+  ChangeDetectorRef, OnDestroy
 } from '@angular/core';
 
 import { Modal, Overlay } from 'angular2-modal';
@@ -72,7 +72,7 @@ export class ViewProductModalContext extends BSModalContext {
   styleUrls: ['./product.component.scss']
 })
 @DestroySubscribers()
-export class ProductComponent implements OnInit, AfterViewInit {
+export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   public subscribers: any = {};
   context: ViewProductModalContext;
   public product$: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -191,7 +191,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
     //});
   
   
-    this.accountService.locations$
+    this.subscribers.getLocationArraySubscription = this.accountService.locations$
     .subscribe(r => {
       this.locationArr = r
     });
@@ -296,9 +296,9 @@ export class ProductComponent implements OnInit, AfterViewInit {
     });
   }
   
-  //ngAfterViewInit(){
-  //  this.cd.detectChanges();
-  //}
+ngOnDestroy() {
+  this.subscribers.getLocationArraySubscription.unsubscribe();
+}
   
   changeSelected(loc_id, var_id) {
     this.currentLocation[var_id] = loc_id;

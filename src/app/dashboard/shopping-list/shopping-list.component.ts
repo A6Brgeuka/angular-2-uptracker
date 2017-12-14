@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -26,7 +26,7 @@ import { ChangingShoppingListModel, ItemModel, VariantModel } from '../../models
   styleUrls: ['./shopping-list.component.scss']
 })
 @DestroySubscribers()
-export class ShoppingListComponent implements OnInit {
+export class ShoppingListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public selectAll: boolean = false;
   public last_loc: string = '';
@@ -70,10 +70,14 @@ export class ShoppingListComponent implements OnInit {
       );
       this.totalOrders = cart.filter((item:any)=>item.status).length;
       this.total = cart.length;
+      this.checkSelectAllItems(r);
       this.updateCart(cart);
       this.changed = [];
     });
     
+  }
+  ngOnDestroy() {
+    console.log('for unsubscribing')
   }
   
   addSubscribers() {
@@ -111,9 +115,10 @@ export class ShoppingListComponent implements OnInit {
     this.subscribers.updateItemSubscription = this.updateItem$
     .switchMap(() => this.cart$.first())
     .map((items: any) => {
+      this.checkSelectAllItems(items);
       return new ChangingShoppingListModel({items});
     })
-    .switchMap((data) =>
+    .switchMap((data:any) =>
       this.cartService.updateItem(data)
     )
     .subscribe((res: any) => {
@@ -230,28 +235,6 @@ export class ShoppingListComponent implements OnInit {
   }
   
   saveItem(item: any = {}) {
-    
-    //let data = {
-    //  "location_id": this.accountService.dashboardLocation ? this.accountService.dashboardLocation.id : item.prev_location,
-    //  "product_id": item.product_id,
-    //  "variants": [
-    //    {
-    //      "variant_id": item.variant_id,
-    //      //"vendor_variant_id": item.variant_id,
-    //      "vendor_id":null,
-    //      "qty": item.qty,
-    //      "vendor_auto_select": item.selected_vendor.id ? false : true,
-    //      "location_id": item.location_id,
-    //      "status": item.status ? 1 : 0,
-    //    }
-    //  ]
-    //};
-    //item.prev_location = item.location_id;
-    //if (item.selected_vendor.id) {
-    //  data['variants'][0]['vendor_id'] = item.selected_vendor.id;
-    //}
-  
-    //this.updateItem$.next(data);
     this.updateItem$.next('');
     
   };
@@ -275,6 +258,11 @@ export class ShoppingListComponent implements OnInit {
   
   updateCart(data) {
     this.cart$.next(data);
+  }
+  
+  checkSelectAllItems(items) {
+    let checkedItemsArr = _.filter(items, 'status');
+    this.selectAll = (checkedItemsArr.length === items.length);
   }
   
 }

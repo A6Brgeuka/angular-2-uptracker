@@ -1,6 +1,6 @@
-<div class="inner">
+<div class="inner toprint">
   <div class="row">
-    <div class="col s3 close tealish-text" (click)="goBack()">
+    <div class="col s3 close tealish-text noprint" (click)="goBack()">
       <i class="fa fa-chevron-left"></i>
       Orders
     </div>
@@ -8,7 +8,33 @@
       Order #{{ (order$ | async).po_number }}
       <span class="red-text smaller-txt">({{(order$ | async).status_label}})</span>
     </div>
-    <div class="col s3">
+    <div class="col s3 relative">
+      <div class="right edit-buttons buttons-topright noprint">
+        <button materialize="dropdown" data-activates="drdnPO" class="bluebtn">
+          <fa name="bars"></fa>
+          Actions
+        </button>
+        <ul id='drdnPO' class='dropdown-content'>
+          <li>
+            <a class="tealish-text" (click) = "setFlag($event)">
+              <fa name="flag"></fa>
+              {{(order$ | async).flagged ? 'Unflag' : 'Flag'}}
+            </a>
+          </li>
+          <li>
+            <a (click)="printPage()" class="tealish-text">
+              <fa name="print"></fa>
+              Print
+            </a>
+          </li>
+          <li *ngIf="(order$ | async).order_method">
+            <a class="tealish-text" (click)="sendOrder()">
+              <fa name="send-o"></fa>
+              Send
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="item-card">
@@ -127,7 +153,6 @@
         </div>
         <div class="total-value">
           ${{ (order$ | async).primary_tax/100 | number : '1.2-2' }}
-
         </div>
       </div>
       <div>

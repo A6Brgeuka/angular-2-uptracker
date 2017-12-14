@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
@@ -19,7 +19,7 @@ export class AddInventory2OrderModalContext extends BSModalContext {
 
 @DestroySubscribers()
 
-export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalComponent<AddInventory2OrderModalContext> {
+export class AddInventory2OrderModal implements OnInit, OnDestroy, CloseGuard, ModalComponent<AddInventory2OrderModalContext> {
   context: AddInventory2OrderModalContext;
   public subscribers: any = {};
   public inventory: any;
@@ -40,7 +40,9 @@ export class AddInventory2OrderModal implements OnInit, CloseGuard, ModalCompone
     this.defaultProduct.location_id = this.inventory.inventory_item_locations[0].location_id;
     this.defaultProduct.on_hand = this.inventory.inventory_item_locations[0].on_hand ? this.inventory.inventory_item_locations[0].on_hand : 1;
   }
-  
+  ngOnDestroy() {
+    console.log('for unsubscribing')
+  }
   saveOrder() {
   let noVendorAutoSelect = !!(this.defaultProduct.vendor_id);
   

@@ -64,7 +64,7 @@ export class AccountingComponent implements OnInit, OnDestroy {
  ngOnDestroy() {
    this.subscribers.getLocationsSubscription.unsubscribe();
    this.subscribers.getCurrencySubscription.unsubscribe();
-   this.subscribers.taxRateSubscription.unsubscribe();
+   //this.subscribers.taxRateSubscription.unsubscribe();
  }
   ngOnInit() {
     this.accounting = this.accountService.onboardacc;
@@ -97,20 +97,20 @@ export class AccountingComponent implements OnInit, OnDestroy {
     });
 
     this.maxRange = this.amount2number(this.accounting.annual_inventory_budget) || 0; //1000000;
-
     
     //Tax Rate autocalc throw API
-    this.subscribers.taxRateSubscription = this.accountService.getTaxRate(this.accountService.selfData.address)
-    .subscribe( (res:any) => {
-      try {
-        this.accounting.taxRate = JSON.parse(res._body).totalRate;
-      }
-      catch (err) {
-        console.log(err);
-      }
-    }, err => {
-      this.toasterService.pop("error", err);
-    });
+    // TODO add taxRate library
+    //this.subscribers.taxRateSubscription = this.accountService.getTaxRate(this.accountService.selfData.address)
+    //.subscribe( (res:any) => {
+    //  try {
+    //    this.accounting.taxRate = JSON.parse(res._body).totalRate;
+    //  }
+    //  catch (err) {
+    //    console.log(err);
+    //  }
+    //}, err => {
+    //  this.toasterService.pop("error", err);
+    //});
 
   }
 

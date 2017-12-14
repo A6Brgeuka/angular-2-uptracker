@@ -35,27 +35,27 @@
     <div class="row">
       <ul class="tabs location-tabs" materialize="tabs">
         <li class="tab" (click)="chooseTab('All')">
-          <a [class.active]="true">All</a>
+          <a href="#allTab" [class.active]="true">All</a>
         </li>
         <li class="tab" (click)="chooseTab('Open')">
           <a [class.active]="false">Open</a>
         </li>
-        <li class="tab" (click)="chooseTab('Received')">
-          <a [class.active]="false">Received</a>
+        <li class="tab">
+          <a href="#receivedTab">Received</a>
         </li>
         <li class="tab" (click)="chooseTab('Backorded')">
           <a [class.active]="false">Backordered</a>
         </li>
-        <li class="tab" (click)="chooseTab('Flagged')">
-          <a [class.active]="false">Flagged</a>
+        <li class="tab" (click)="chooseTab('Reconciled')">
+          <a [class.active]="false">Reconciled</a>
         </li>
-        <li class="tab" (click)="chooseTab('Closed')">
-          <a [class.active]="false">Closed</a>
+        <li class="tab" (click)="chooseTab('Archived')">
+          <a [class.active]="false">Archived</a>
         </li>
       </ul>
     </div>
 
-    <div class="list is-grid-view">
+    <div class="list is-grid-view" id="allTab">
       <div>
         <div class="heading row">
           <div class="col s2 left-align">
@@ -83,24 +83,25 @@
           <div class="col s2">
             <div class="right edititem"
               materialize="dropdown"
-              data-activates='order_ddm'>
+              data-activates='order_ddm'
+              *ngIf="showMenuItem">
               <fa name="ellipsis-h"></fa>
             </div>
             <ul id='order_ddm' class='dropdown-content'>
               <li>
                 <a class="tealish-text" href="#">Edit</a>
               </li>
-              <li *ngIf="showMenuItem">
+              <li>
                 <a class="tealish-text" href="#">Resend</a>
               </li>
-              <li *ngIf="showMenuItem">
+              <li>
                 <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
               </li>
-              <li *ngIf="showMenuReconcile">
+              <li>
                 <a class="tealish-text" href="#">Reconcile</a>
               </li>
               <li>
-                <a class="tealish-text" href="#">Reorder</a>
+                <a class="tealish-text" href="#">Buy Again</a>
               </li>
               <li>
                 <a class="red-text" href="#">Void</a>
@@ -112,14 +113,14 @@
 
         <div class="item row"
           *ngFor="let item of (orders$ | async);let i=index;"
-          [class.no-border-bottom]="item">
-          <div>
+          [class.no-border-bottom]="pastOrderService.itemsVisibility[i]">
+          <div class="table-item">
             <div class="col s2 left-align">
               <div class="input-checkbox left checkbox">
                 <input
                   type="checkbox"
                   [(ngModel)] = 'item.checked'
-                  (ngModelChange)="setCheckbox($event)"
+                  (ngModelChange)="setCheckbox(item)"
                   class="selected-input{{i}}"
                   id="selected{{i}}"
                 />
@@ -138,7 +139,7 @@
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.received_date }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s1">{{ item.reconciled_date }}</div>
             <div (click)="changeVisibility(i)" class="col pointer s2">{{ item.product_count }}</div>
-            <div class="col s2">
+            <div class="col s2 pdg-r-0">
 
               <div class="right edititem"
                 materialize="dropdown"
@@ -150,6 +151,11 @@
                 <li>
                   <a class="tealish-text" href="#">Edit</a>
                 </li>
+                <li>
+                  <a class="tealish-text" (click) = "setFlag($event, item)">
+                    {{item.flagged ? 'Unflag' : 'Flag'}}
+                  </a>
+                </li>
                 <li *ngIf="item.status !== 'Received'">
                   <a class="tealish-text" href="#">Resend</a>
                 </li>
@@ -160,23 +166,31 @@
                   <a class="tealish-text" href="#">Reconcile</a>
                 </li>
                 <li>
-                  <a class="tealish-text" href="#">Reorder</a>
+                  <a class="tealish-text" href="#">Buy Again</a>
                 </li>
                 <li>
                   <a class="red-text" href="#">Void</a>
                 </li>
               </ul>
 
-              <div>{{ item.total }}</div>
+              <div>{{ item.total }}
+                <fa name="flag" class="tealish-text right" *ngIf="item.flagged"></fa>
+              </div>
             </div>
             <div class="clearfix"></div>
 
-            <app-order-detail [visible]="pastOrderService.itemsVisibility[i]" [item]="item"></app-order-detail>
+            <app-order-detail
+              [visible]="pastOrderService.itemsVisibility[i]"
+              [item]="item"
+              (isAllCheckedChanged) = "setOrderCheckbox(item, isAllCheckedChanged)"
+              >
+            </app-order-detail>
 
             <div class="clearfix"></div>
           </div>
         </div>
       </div>
     </div>
+    <app-received-list id="receivedTab"></app-received-list>
   </div>
 </div>

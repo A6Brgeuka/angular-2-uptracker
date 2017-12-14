@@ -62,7 +62,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     dialog.setCloseGuard(this);
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.product = this.context.product;
     this.product.hazardous_string = this.product.hazardous ? 'Yes' : 'No';
     this.product.trackable_string = this.product.trackable ? 'Yes' : 'No';
