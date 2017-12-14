@@ -82,8 +82,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
     .switchMapTo(
       this.orders$
     )
-    .map((product) => {
-      let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
+    .filter(ord => ord)
+    .map((orders) => {
+      
+      let filteredCheckedProducts:any[]  = _.filter(orders,
+        (order:any) => _.find(order.order_items, 'checked')
+      );
+      
       let firstVendor:any = filteredCheckedProducts[0].vendor_name;
       let filteredVendors:any[]  = _.filter(filteredCheckedProducts, item => firstVendor === item.vendor_name);
       
@@ -114,11 +119,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
     .switchMap(() =>
       this.orders$
     )
-    .map(product => {
-      let filteredCheckedProducts:any[]  = _.filter(product, 'checked');
-      
-      this.selectAll = (filteredCheckedProducts.length && (filteredCheckedProducts.length === product.length));
-      this.showMenuItem = !!filteredCheckedProducts.length;
+    .filter(ord => ord)
+    .map(orders => {
+      let filteredCheckedOrders:any[]  = _.filter(orders, 'checked');
+      let filteredCheckedProductrs: any[] = [];
+      let findFilteredCheckedProductrs = orders.map((order) => {
+        filteredCheckedProductrs = filteredCheckedProductrs.concat(_.filter(order.order_items, 'checked'));
+      });
+      this.selectAll = (filteredCheckedOrders.length && (filteredCheckedOrders.length === orders.length));
+      this.showMenuItem = !!(filteredCheckedOrders.length || filteredCheckedProductrs.length);
     })
     .subscribe();
   
@@ -141,9 +150,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
       err => console.log('error'));
   }
   
-  sendToReceiveProducts(filteredCheckedProducts) {
+  sendToReceiveProducts(filteredCheckedProducts, singleOrder = false) {
     let sendItems: any[] = [];
     let sendOrders = filteredCheckedProducts.map((order) => {
+      if (!singleOrder) {
+        order.order_items = _.filter(order.order_items, 'checked');
+      }
       sendItems = sendItems.concat(order.order_items.map((item) => item.id));
       return order.order_id;
     });
@@ -152,7 +164,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   
   sendToReceiveOrder(order) {
-    this.sendToReceiveProducts([order]);
+    let singleOrder = true;
+    this.sendToReceiveProducts([order], singleOrder);
   }
   
   searchFilter(event){
@@ -194,7 +207,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.ordersChecked$.next([]);
   }
   
-  setOrderCheckbox() {
+  setOrderCheckbox(item) {
     this.ordersChecked$.next([]);
   }
   

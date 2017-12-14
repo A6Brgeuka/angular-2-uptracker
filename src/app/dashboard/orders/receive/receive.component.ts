@@ -162,7 +162,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       return [...acc, array];
     }, []);
     item.locations = _.flatten(locations);
-    console.log(item.locations);
   }
   
   remove(product, status) {

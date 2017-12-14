@@ -182,7 +182,7 @@
             <app-order-detail
               [visible]="pastOrderService.itemsVisibility[i]"
               [item]="item"
-              (isAllCheckedChanged) = "setOrderCheckbox(item)"
+              (isAllCheckedChanged) = "setOrderCheckbox(item, isAllCheckedChanged)"
               >
             </app-order-detail>
 
