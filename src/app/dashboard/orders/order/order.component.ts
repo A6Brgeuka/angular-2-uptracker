@@ -17,6 +17,7 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { EditEmailDataModal } from '../../shopping-list/orders-preview/purchase-order/edit-email-data-modal/edit-email-data-modal.component';
 import { OrderService } from '../../../core/services/order.service';
 import { Subject } from 'rxjs/Subject';
+import { APP_DI_CONFIG } from '../../../../../env';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   public orderId: string;
   order$: BehaviorSubject<any> = new BehaviorSubject({});
   public updateFlagged$: any = new Subject();
+  public apiUrl:string;
   
   constructor(
     public modal: Modal,
@@ -44,7 +46,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService,
     public orderService: OrderService,
   ) {
-  
+    this.apiUrl = APP_DI_CONFIG.apiEndpoint;
   }
 
 ngOnInit() {
@@ -76,10 +78,6 @@ ngOnInit() {
   
   goBack(): void {
     this.windowLocation.back();
-  }
-  
-  printPage() {
-    window.print();
   }
   
   sendOrder() {

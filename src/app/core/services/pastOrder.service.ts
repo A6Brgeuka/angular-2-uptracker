@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
 
 export class ConvertData {
   vendor_id: string[];
@@ -25,6 +26,7 @@ export class PastOrderService extends ModelService {
   public itemsVisibility: boolean[];
   public itemsVisibilityReceivedList: boolean[];
   public statusList: any[] = [];
+  public updateElementCollectionAfterVoidReq$:Subject<any> = new Subject<any>();
   
   constructor(
     public injector: Injector,
@@ -51,7 +53,7 @@ export class PastOrderService extends ModelService {
         });
       });
     });
-  
+    
     this.collection$ = Observable.merge(
       this.loadCollection$,
       this.updateCollection$,
@@ -126,4 +128,12 @@ export class PastOrderService extends ModelService {
       });
   }
   
+  reorder(data) {
+    return this.restangular.all('reorder').customPOST(data);
+  }
+  
+  onVoidOrder(order, data) {
+    return this.restangular.one('pos', order.order_id).all('void').customPUT(data)
+      .map(res => res.data);
+  }
 }

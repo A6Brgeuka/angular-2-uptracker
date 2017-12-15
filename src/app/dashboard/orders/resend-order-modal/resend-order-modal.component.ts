@@ -9,6 +9,7 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Subject } from 'rxjs/Subject';
 import { OrderService } from '../../../core/services/order.service';
 import { UserService } from '../../../core/services/user.service';
+import { APP_DI_CONFIG } from '../../../../../env';
 
 export class ResendOrderModalContext extends BSModalContext {
   public order: any;
@@ -24,6 +25,7 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
   public subscribers: any = {};
   public context: any;
   public emailModalData$: any = new Subject();
+  public apiUrl:string;
   
   constructor(
     public dialog: DialogRef<ResendOrderModalContext>,
@@ -35,6 +37,7 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
+    this.apiUrl = APP_DI_CONFIG.apiEndpoint;
   }
   
   ngOnInit(){
@@ -103,9 +106,5 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
   
   openEmailModal() {
     this.emailModalData$.next('');
-    //this.pastOrderService.getPastOrder(this.context.order_id);
-    //debugger;
-    //let data = {};
-    //this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"));
   }
 }

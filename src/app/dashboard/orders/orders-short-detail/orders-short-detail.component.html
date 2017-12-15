@@ -44,7 +44,7 @@
           <fa name="ellipsis-h"></fa>
         </div>
         <ul [id]='"order_dd"+i' class='dropdown-content'>
-          <li>
+          <li *ngIf="product.status !== 'Reconciled'">
             <a class="tealish-text" href="#">Edit</a>
           </li>
           <li *ngIf="product.status !== 'Received'">
@@ -54,10 +54,10 @@
             <a class="tealish-text" href="#">Reconcile</a>
           </li>
           <li>
-            <a class="tealish-text" (click) = buyAgainProduct(product)>Buy Again</a>
+            <a class="tealish-text" (click) = "buyAgainProduct(item, product)">Buy Again</a>
           </li>
           <li *ngIf="item.status_int !== 6">
-            <a class="red-text" href="#">Void</a>
+            <a class="red-text" (click) = "onVoidProduct(item, product)">Void</a>
           </li>
         </ul>
       </div>

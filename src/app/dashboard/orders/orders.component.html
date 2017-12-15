@@ -35,10 +35,10 @@
     <div class="row">
       <ul class="tabs location-tabs" materialize="tabs">
         <li class="tab" (click)="chooseTab('All')">
-          <a href="#allTab" [class.active]="true">All</a>
+          <a href="#allTab" [class.active]="true" #allTab>All</a>
         </li>
         <li class="tab" (click)="chooseTab('Open')">
-          <a [class.active]="false">Open</a>
+          <a [class.active]="false" href="#allTab">Open</a>
         </li>
         <li class="tab">
           <a href="#receivedTab">Received</a>
@@ -148,7 +148,7 @@
               </div>
 
               <ul [id]='"order_dd_"+i' class='dropdown-content'>
-                <li>
+                <li *ngIf="item.status !== 'Reconciled'">
                   <a class="tealish-text" href="#">Edit</a>
                 </li>
                 <li>
@@ -169,7 +169,7 @@
                   <a class="tealish-text" (click) = buyAgainOrder(item)>Buy Again</a>
                 </li>
                 <li>
-                  <a class="red-text" href="#">Void</a>
+                  <a class="red-text" (click)="onVoidOrder(item)">Void</a>
                 </li>
               </ul>
 

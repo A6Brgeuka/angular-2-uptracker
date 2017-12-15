@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -20,7 +20,7 @@ import { ResendOrderModal } from './resend-order-modal/resend-order-modal.compon
   styleUrls: ['./orders.component.scss']
 })
 @DestroySubscribers()
-export class OrdersComponent implements OnInit, OnDestroy {
+export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -33,10 +33,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public visible:boolean[] = [];
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   private ordersToReceive$:  any = new Subject<any>();
+  private reorder$:  any = new Subject<any>();
+  public reorderOrders$:  any = new Subject<any>();
+  
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public showMenuItem: boolean = true;
   
   public updateFlagged$: any = new Subject();
+  
+  @ViewChild('allTab') allTab: ElementRef;
   
   constructor(
       public modal: Modal,
@@ -50,6 +55,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   
+  }
+  
+  ngAfterViewInit() {
+    this.allTab.nativeElement.click();
   }
   
   ngOnDestroy() {
@@ -86,9 +95,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     .filter(ord => ord)
     .map((orders) => {
       
-      let filteredCheckedProducts:any[]  = _.filter(orders,
-        (order:any) => _.find(order.order_items, 'checked')
-      );
+      let filteredCheckedProducts:any[]  = this.onFilterCheckedProduct(orders);
       
       let firstVendor:any = filteredCheckedProducts[0].vendor_name;
       let filteredVendors:any[]  = _.filter(filteredCheckedProducts, item => firstVendor === item.vendor_name);
@@ -123,12 +130,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
     .filter(ord => ord)
     .map(orders => {
       let filteredCheckedOrders:any[]  = _.filter(orders, 'checked');
-      let filteredCheckedProductrs: any[] = [];
-      let findFilteredCheckedProductrs = orders.map((order) => {
-        filteredCheckedProductrs = filteredCheckedProductrs.concat(_.filter(order.order_items, 'checked'));
+      let filteredCheckedProducts: any[] = [];
+      let findFilteredCheckedProducts = orders.map((order) => {
+        filteredCheckedProducts = filteredCheckedProducts.concat(_.filter(order.order_items, 'checked'));
       });
       this.selectAll = (filteredCheckedOrders.length && (filteredCheckedOrders.length === orders.length));
-      this.showMenuItem = !!(filteredCheckedOrders.length || filteredCheckedProductrs.length);
+      this.showMenuItem = !!(filteredCheckedOrders.length || filteredCheckedProducts.length);
     })
     .subscribe();
   
@@ -149,6 +156,26 @@ export class OrdersComponent implements OnInit, OnDestroy {
         this.toasterService.pop('', res.flagged ? 'Flagged' : "Unflagged");
       },
       err => console.log('error'));
+  
+    this.subscribers.reorderSubscription = this.reorder$
+    .switchMap(data => this.pastOrderService.reorder(data))
+    .subscribe(res =>
+      this.toasterService.pop('', res.msg)
+    )
+    
+    this.subscribers.reorderOrdersSubscription = this.reorderOrders$
+    .switchMapTo(this.orders$)
+    .filter(ord => ord)
+    .map((orders) => {
+      let filteredCheckedProducts = this.onFilterCheckedProduct(orders);
+    });
+  }
+  
+  onFilterCheckedProduct(orders) {
+    let filteredCheckedProducts: any[] = _.filter(orders,
+      (order: any) => _.find(order.order_items, 'checked')
+    );
+    return filteredCheckedProducts;
   }
   
   sendToReceiveProducts(filteredCheckedProducts, singleOrder = false) {
@@ -218,25 +245,36 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
   
   buyAgainOrder(order) {
-  
+    let data = {
+      "order_id": order.order_id,
+      "items_ids":[],
+    };
+    this.reorder$.next(data);
   }
   
   buyAgainOrders() {
-  
+    this.reorderOrders$.next([]);
   }
   
   openResendDialog(item) {
     this.modal
     .open(ResendOrderModal, this.modalWindowService
     .overlayConfigFactoryWithParams(item, true, 'mid'))
-    //.then((resultPromise) => {
-    //  resultPromise.result.then(
-    //    (res) => {
-    //    },
-    //    (err) => {
-    //    }
-    //  );
-    //})
   };
+  
+  onVoidOrder(order) {
+    let data = {
+      "item_id":null,
+    };
+    this.pastOrderService.onVoidOrder(order, data)
+    .subscribe(res => {
+      order.status = "Voided";
+      order.status_int = 9;
+      order.order_items.map(item => {
+        item.status = "Voided";
+        item.status_int = 9;
+      })
+    });
+  }
   
 }

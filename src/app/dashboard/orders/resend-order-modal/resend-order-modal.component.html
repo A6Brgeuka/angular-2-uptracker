@@ -1,12 +1,14 @@
-
-  <div class="close" (click)="dismissModal()"></div>
-  <div class="inner add-to-order-modal">
-    <div class="row title center-align">Would you like to:</div>
-    <div class="row mtop">
-      <div class="center-align col s12">
-        <button class="uptracker-form-btn waves-effect" (click)="openPrintModal()">Print</button>
-        <button class="uptracker-form-btn waves-effect" (click)="openEmailModal()">Email</button>
-      </div>
+<div class="close" (click)="dismissModal()"></div>
+<div class="inner">
+  <div class="row title center-align">Would you like to:</div>
+  <div class="row mtop">
+    <div class="center-align col s12">
+      <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light">
+        <a href="{{ apiUrl }}/po/{{ context.order_id }}/download"  target="_blank"
+        (click)="dismissModal()">Print</a>
+      </button>
+      <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light" (click)="openEmailModal()">Email</button>
     </div>
   </div>
+</div>
 
