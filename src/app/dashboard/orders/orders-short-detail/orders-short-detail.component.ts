@@ -75,8 +75,12 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
   
   buyAgainProduct(item, product) {
     let data = {
-      "order_id": item.order_id,
-      "items_ids":[product.id],
+      "orders": [
+        {
+          "order_id": item.order_id,
+          "items_ids":[product.id],
+        }
+      ]
     };
     this.reorderProduct$.next(data);
   }

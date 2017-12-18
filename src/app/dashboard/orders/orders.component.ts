@@ -161,14 +161,25 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     .switchMap(data => this.pastOrderService.reorder(data))
     .subscribe(res =>
       this.toasterService.pop('', res.msg)
-    )
+    );
     
     this.subscribers.reorderOrdersSubscription = this.reorderOrders$
     .switchMapTo(this.orders$)
     .filter(ord => ord)
     .map((orders) => {
       let filteredCheckedProducts = this.onFilterCheckedProduct(orders);
-    });
+      filteredCheckedProducts.map(item => {
+        item.items_ids = [];
+        item.order_items = _.filter(item.order_items, 'checked');
+        item.items_ids = item.items_ids.concat(item.order_items.map((item) => item.id))
+      });
+      let data = {
+        "orders": filteredCheckedProducts
+      };
+      return data;
+    })
+    .switchMap(data => this.pastOrderService.reorder(data))
+    .subscribe(res => this.toasterService.pop('', res.msg));
   }
   
   onFilterCheckedProduct(orders) {
@@ -246,14 +257,18 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   
   buyAgainOrder(order) {
     let data = {
-      "order_id": order.order_id,
-      "items_ids":[],
+      "orders": [
+        {
+          "order_id": order.order_id,
+          "items_ids":[],
+        }
+      ]
     };
     this.reorder$.next(data);
   }
   
   buyAgainOrders() {
-    this.reorderOrders$.next([]);
+    this.reorderOrders$.next('');
   }
   
   openResendDialog(item) {
@@ -261,6 +276,10 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     .open(ResendOrderModal, this.modalWindowService
     .overlayConfigFactoryWithParams(item, true, 'mid'))
   };
+  
+  //onVoidOrder() {
+  //  this.modalWindowService.confirmModal(' Set order status to "Void"?', ' Set order status to "Void"', this.onVoidOrderFunc.bind(this));
+  //}
   
   onVoidOrder(order) {
     let data = {
