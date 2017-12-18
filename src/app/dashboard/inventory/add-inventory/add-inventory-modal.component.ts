@@ -53,7 +53,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public deleteFromItems$: Subject<any> = new Subject<any>();
   public addCustomItemToItems$: Subject<any> = new Subject<any>();
   public editAddItemToItems$: Subject<any> = new Subject<any>();
+  public updateItems$: Subject<any> = new Subject<any>();
   public addCustomProduct: boolean = false;
+  public editCustomProduct: boolean = false;
   public saveAdded$: any = new Subject<any>();
   public updateAdded$: any = new Subject<any>();
   public newInventory: any = new InventoryModel;
@@ -135,7 +137,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.showAddCustomBtn = (key !== null);
       return this.inventoryService.search(key)})
     .subscribe((data: searchData) => {
-    
       if (data.results) {
         this.total = data.count;
         this.searchResults$.next(data.results);
@@ -218,12 +219,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       })
     );
     
+    let updateItems$ = this.updateItems$.switchMap((editedCustomItem) =>
+      this.items$.first().map((items:any) => {
+        return items.map((el: any) => {
+          if (el.variant_id == editedCustomItem.variant_id) {
+            el = editedCustomItem;
+          }
+          return el;
+        });
+      }));
+    
     this.items$ = Observable.merge(
       this.loadItems$,
       this.editAddItemToItems$,
       addItemsToItems$,
       addCustomItemToItems$,
-      deleteFromItems$
+      deleteFromItems$,
+      updateItems$
     ).publishReplay(1).refCount();
     
     this.subscribers.itemsSubscription = this.items$.subscribe(res => {
@@ -610,10 +622,19 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   toggleCustomAdd() {
     this.addCustomProduct = !this.addCustomProduct;
+    let test = this.newProductData.consumable_unit.properties.unit_type;
+    this.newProductData = new InventorySearchResults();
+   
+    this.newProductData.custom_product = true;
+    this.newProductData.consumable_unit.properties.unit_type = test;
+    this.innerPack = '';
+    this.outerPack = '';
+    this.vendorDirty = false;
   }
   
   toggleCustomCancel() {
     this.addCustomProduct = !this.addCustomProduct;
+    this.editCustomProduct = false;
     this.showAddCustomBtn = !this.showAddCustomBtn;
     if (!this.items.length) {
       this.nextPackage({});
@@ -621,40 +642,43 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addNewProduct() {
-    let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
-    let inventory_by_arr = [
-      {
-        type: "Package",
-        label: this.newProductData.package_type,
-        value: "package",
-        qty: ''
-      },
-      {
-        type: "Sub Package",
-        label: this.newProductData.sub_package.properties.unit_type,
-        value: "sub_package",
-        qty: this.newProductData.sub_package.properties.qty,
-      },
-      {
-        type: "Consumable Unit",
-        label: this.newProductData.consumable_unit.properties.unit_type,
-        value: "consumable_unit",
-        qty: this.newProductData.consumable_unit.properties.qty,
-      }
-    ];
-    this.addCustomToInventory([
-      new InventorySearchResults(
-        Object.assign(this.newProductData, {
-          variant_id: 'tmp' + Math.floor(Math.random() * 1000000),
-          vendors: vendor,
-          inventory_by: inventory_by_arr
-        })
-      )
-    ]);
-    this.newProductData.upc = '';
-    this.newProductData.catalog_number = '';
-    this.newProductData.vendor_name = '';
-    this.vendorValid = false;
+    
+    if (!this.editCustomProduct) {
+      let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
+      let inventory_by_arr = [
+        {
+          type: "Package",
+          label: this.newProductData.package_type,
+          value: "package",
+          qty: ''
+        },
+        {
+          type: "Sub Package",
+          label: this.newProductData.sub_package.properties.unit_type,
+          value: "sub_package",
+          qty: this.newProductData.sub_package.properties.qty,
+        },
+        {
+          type: "Consumable Unit",
+          label: this.newProductData.consumable_unit.properties.unit_type,
+          value: "consumable_unit",
+          qty: this.newProductData.consumable_unit.properties.qty,
+        }
+      ];
+      this.addCustomToInventory([
+        new InventorySearchResults(
+          Object.assign(this.newProductData, {
+            variant_id: 'tmp' + Math.floor(Math.random() * 1000000),
+            vendors: vendor,
+            inventory_by: inventory_by_arr,
+            custom_product: true,
+          })
+        )
+      ]);
+      this.vendorValid = false;
+    } else {
+      this.updateItems$.next(this.newProductData);
+    }
     this.toggleCustomAdd();
   }
   
@@ -900,6 +924,21 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   onUpcUpdated(upc) {
     this.newProductData.upc = upc;
+  }
+  
+  editProduct(productItem) {
+    this.addCustomProduct = true;
+    this.editCustomProduct = true;
+    this.innerPack = productItem.sub_package.properties.unit_type;
+    this.outerPack = productItem.package_type;
+    if (productItem.custom_product) {
+      this.newProductData = productItem;
+      this.newProductData.vendor.vendor_name = productItem.vendors[0].vendor_name;
+    }
+    else {
+      this.newProductData = new InventorySearchResults();
+      this.newProductData.consumable_unit.properties.unit_type = productItem.consumable_unit.properties.unit_type;
+    }
   }
   
 }
