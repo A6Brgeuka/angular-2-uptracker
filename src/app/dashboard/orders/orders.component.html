@@ -168,7 +168,7 @@
                 <li>
                   <a class="tealish-text" (click) = buyAgainOrder(item)>Buy Again</a>
                 </li>
-                <li>
+                <li *ngIf="item.status !== 'Voided'">
                   <a class="red-text" (click)="onVoidOrder(item)">Void</a>
                 </li>
               </ul>

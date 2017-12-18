@@ -13,6 +13,7 @@ import { SelectVendorModal } from './select-vendor-modal/select-vendor.component
 import { Observable } from 'rxjs/Observable';
 import { ToasterService } from '../../core/services/toaster.service';
 import { ResendOrderModal } from './resend-order-modal/resend-order-modal.component';
+import { ConfirmVoidOrderModal } from './order-modals/confirm-void-order-modal/confirm-void-order-modal.component';
 
 @Component({
   selector: 'app-orders',
@@ -277,11 +278,22 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     .overlayConfigFactoryWithParams(item, true, 'mid'))
   };
   
-  //onVoidOrder() {
-  //  this.modalWindowService.confirmModal(' Set order status to "Void"?', ' Set order status to "Void"', this.onVoidOrderFunc.bind(this));
-  //}
-  
   onVoidOrder(order) {
+    this.modal
+    .open(ConfirmVoidOrderModal, this.modalWindowService
+    .overlayConfigFactoryWithParams('', true, 'mid'))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          this.onVoidOrderFunc(order);
+        },
+        (err) => {
+        }
+      );
+    });
+  }
+  
+  onVoidOrderFunc(order) {
     let data = {
       "item_id":null,
     };

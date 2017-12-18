@@ -10,6 +10,7 @@ import { Router } from "@angular/router";
 import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ConfirmVoidOrderModal } from '../order-modals/confirm-void-order-modal/confirm-void-order-modal.component';
 
 @Component({
   selector: 'app-order-detail',
@@ -86,6 +87,21 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
   }
   
   onVoidProduct(item, product) {
+    this.modal
+    .open(ConfirmVoidOrderModal, this.modalWindowService
+    .overlayConfigFactoryWithParams(item, true, 'mid'))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          this.onVoidProductFunc(item, product);
+        },
+        (err) => {
+        }
+      );
+    });
+  }
+  
+  onVoidProductFunc(item, product) {
     let data = {
       "item_id":product.id,
     };

@@ -56,7 +56,7 @@
           <li>
             <a class="tealish-text" (click) = "buyAgainProduct(item, product)">Buy Again</a>
           </li>
-          <li *ngIf="item.status_int !== 6">
+          <li *ngIf="item.status_int !== 6 && item.status_int !== 9">
             <a class="red-text" (click) = "onVoidProduct(item, product)">Void</a>
           </li>
         </ul>
