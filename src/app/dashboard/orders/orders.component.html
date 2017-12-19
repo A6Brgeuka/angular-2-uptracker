@@ -156,7 +156,7 @@
                     {{item.flagged ? 'Unflag' : 'Flag'}}
                   </a>
                 </li>
-                <li>
+                <li *ngIf="item.order_method !== 'Direct'">
                   <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
                 </li>
                 <li *ngIf="item.status !== 'Received'">
