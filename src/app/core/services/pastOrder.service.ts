@@ -132,8 +132,8 @@ export class PastOrderService extends ModelService {
     return this.restangular.all('reorder').customPOST(data);
   }
   
-  onVoidOrder(order, data) {
-    return this.restangular.one('pos', order.order_id).all('void').customPUT(data)
+  onVoidOrder(data) {
+    return this.restangular.one('pos', 'void').customPOST(data)
       .map(res => res.data);
   }
 }

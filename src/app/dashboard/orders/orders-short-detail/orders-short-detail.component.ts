@@ -25,6 +25,7 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public locationArr: any;
   public reorderProduct$: ReplaySubject<any> = new ReplaySubject(1);
+  public voidProduct$: ReplaySubject<any> = new ReplaySubject(1);
   
   @Input("item") public item: any = [];
   @Input("visible") public visible;
@@ -48,7 +49,13 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
   addSubscribers() {
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
-    .subscribe((res:any) => this.toasterService.pop('', res.msg))
+    .subscribe((res:any) => this.toasterService.pop('', res.msg));
+    
+    this.subscribers.voidProductFromOrderSubscription = this.voidProduct$
+    .switchMap((data: any) => this.pastOrderService.onVoidOrder(data))
+    .subscribe((res:any) => {
+      this.item = res[0];
+    })
   }
   
   ngOnDestroy() {
@@ -89,7 +96,7 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
   onVoidProduct(item, product) {
     this.modal
     .open(ConfirmVoidOrderModal, this.modalWindowService
-    .overlayConfigFactoryWithParams(item, true, 'mid'))
+    .overlayConfigFactoryWithParams('', true, 'mid'))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
@@ -103,13 +110,14 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
   
   onVoidProductFunc(item, product) {
     let data = {
-      "item_id":product.id,
+      "orders": [
+        {
+          "order_id": item.order_id,
+          "items_ids":[product.id],
+        }
+      ]
     };
-    this.pastOrderService.onVoidOrder(item, data)
-    .subscribe(res => {
-      product.status = "Voided";
-      product.status_int = 9;
-    });
+    this.voidProduct$.next(data);
   }
   
 }
