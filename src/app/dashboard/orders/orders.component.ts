@@ -359,4 +359,8 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     this.voidCheckedOrders$.next('');
   }
   
+  updateItemStatus(item, event) {
+    item = event;
+  }
+  
 }

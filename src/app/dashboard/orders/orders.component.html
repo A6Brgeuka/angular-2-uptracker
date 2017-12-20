@@ -183,7 +183,7 @@
               [visible]="pastOrderService.itemsVisibility[i]"
               [item]="item"
               (isAllCheckedChanged) = "setOrderCheckbox(item, isAllCheckedChanged)"
-              (updatedItem) = "updateItemStatus(item, updatedItem)"
+              (updatedItem) = "updateItemStatus(item, $event)"
               >
             </app-order-detail>
 

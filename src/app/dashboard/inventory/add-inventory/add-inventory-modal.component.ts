@@ -486,7 +486,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     }
   }
   selectedAutocompledConsPackage(consPackage) {
-    this.newProductData.consumable_unit.properties.unit_type = consPackage.unit_name;
+    this.newProductData.consumable_unit.properties.unit_type = consPackage.unit_name ? consPackage.unit_name : consPackage;
   }
   onSearchConsPackage(event) {
     this.packDirty = true;
