@@ -299,4 +299,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.newInventory$.next(product);
   }
   
+  editQuantityToggle(product) {
+    product.edit = !product.edit;
+  }
+  
 }

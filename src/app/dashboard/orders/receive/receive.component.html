@@ -68,8 +68,11 @@
                 <div class="col s3 ">
                   {{ item.po_number }}
                 </div>
-                <div class="col s1">
+                <div class="col s1" [class.strikethrough] = product.edit>
                   {{ product.quantity }}
+                  <a (click)="editQuantityToggle(product)" *ngIf="!product.edit">
+                    <fa name="pencil" class="tealish-text"></fa>
+                  </a>
                 </div>
                 <div class="col s4 tealish-text">
                   {{ product.item_name }}
@@ -78,7 +81,40 @@
                   {{ product.location_name }}
                 </div>
               </div>
-
+              <div class="row" *ngIf="product.edit">
+                <div class="col s3">
+                  <div class="input flex-center">
+                    <input type="text" value="New Order Quantity"
+                      disabled
+                      name="edit{{i}}"
+                    >
+                  </div>
+                </div>
+                <div class="col s1">
+                  <div class="input flex-center">
+                    <input type="text" value="{{product.quantity}}"
+                      name="qty{{i}}"
+                    >
+                  </div>
+                </div>
+                <div class="col s7">
+                  <div class="select custom-select select-light flex-center">
+                    <select
+                      materialize="material_select"
+                      name="status{{i}}"
+                    >
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col s1 flex-center justify-center trash-icon">
+                  <a (click)="editQuantityToggle(product)">
+                    <fa name="trash" class="tealish-text"></fa>
+                  </a>
+                </div>
+              </div>
               <div class="row" *ngFor="let statusLine of product.status_line_items">
                 <div class="col s3">
                   <div class="select custom-select select-light flex-center">
