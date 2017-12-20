@@ -21,6 +21,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { HelpTextModal } from './help-text-modal/help-text-modal-component';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -721,6 +722,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.newInventory.inventory_by_qty = packageType.qty;
     this.newInventory.inventory_by_type = packageType.type;
     this.newInventory.inventory_by_label = packageType.label;
+  }
+  
+  openHelperModal() {
+    this.modal.open(HelpTextModal, this.modalWindowService
+    .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
   }
   
   saveAdded() {

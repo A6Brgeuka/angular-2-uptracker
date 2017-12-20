@@ -186,6 +186,30 @@
             </div>
             <div class="row">
               <div class="col s12">
+                <div class="ttl">Packaging Summary</div>
+                <div class="row relative packaging_summary">
+                  <div class="col s3">
+                    <div class="text-center">1</div>
+                    <div class="text-center">{{outerPack || 'Outer Pkg'}}</div>
+                  </div>
+                  <div class="col s1" *ngIf="innerPack">=</div>
+                  <div class="col s3" *ngIf="innerPack">
+                    <div class="text-center">{{newProductData.sub_package.properties.qty || '?'}}</div>
+                    <div class="text-center">{{innerPack || 'Inner Pkg'}}</div>
+                  </div>
+                  <div class="col s1">=</div>
+                  <div class="col s3">
+                    <div class="text-center">
+                      {{(newProductData.sub_package.properties.qty) ? newProductData.sub_package.properties.qty*newProductData.consumable_unit.properties.qty : newProductData.consumable_unit.properties.qty}}
+                    </div>
+                    <div class="text-center">{{newProductData.consumable_unit.properties.unit_type || 'Total Units'}}</div>
+                  </div>
+                  <a class="helper" (click)="openHelperModal()"></a>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
                 <div class="ttl">List Price</div>
                 <div class="input">
                   <input [(ngModel)]="newProductData.formattedPrice" type="text" placeholder="List Price"
