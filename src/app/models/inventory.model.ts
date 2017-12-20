@@ -46,6 +46,7 @@ export class InventorySearchResults {
   formattedForumPrice: any = '$0.00';
   formattedClubPrice: any = '$0.00';
   custom_product_id: string = null; // my prop
+  custom_product: boolean = false; // my prop
   vendor_id: string = null;
   vendor_name: string = null;
   

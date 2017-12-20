@@ -11,23 +11,6 @@
       <div class="col s1">Unit Price</div>
       <div class="col s1">Total</div>
       <div class="col s1">
-        <!--<div class="right edititem filled"-->
-          <!--materialize="dropdown"-->
-          <!--[attr.data-activates]='"order_dd_"+i'>-->
-          <!--<fa name="ellipsis-h"></fa>-->
-        <!--</div>-->
-
-        <!--<ul [id]='"order_dd_"+i' class='dropdown-content'>-->
-          <!--<li>-->
-            <!--<a class="tealish-text" (click)="onReceiveCheckedProducts()">Receive</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a class="tealish-text" href="/">Resend</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a class="tealish-text" href="/">Buy Again</a>-->
-          <!--</li>-->
-        <!--</ul>-->
       </div>
     </div>
     <div class="flex-row item row smallrow" *ngFor="let product of item.order_items; let i = index;">
@@ -61,11 +44,8 @@
           <fa name="ellipsis-h"></fa>
         </div>
         <ul [id]='"order_dd"+i' class='dropdown-content'>
-          <li>
+          <li *ngIf="product.status !== 'Reconciled'">
             <a class="tealish-text" href="#">Edit</a>
-          </li>
-          <li *ngIf="product.status !== 'Received'">
-            <a class="tealish-text" href="#">Resend</a>
           </li>
           <li *ngIf="product.status !== 'Received'">
             <a class="tealish-text" (click)="getReceiveProduct(item, product)">Receive</a>
@@ -74,10 +54,10 @@
             <a class="tealish-text" href="#">Reconcile</a>
           </li>
           <li>
-            <a class="tealish-text" href="#">Buy Again</a>
+            <a class="tealish-text" (click) = "buyAgainProduct(item, product)">Buy Again</a>
           </li>
-          <li>
-            <a class="red-text" href="#">Void</a>
+          <li *ngIf="product.status_int !== 6 && product.status_int !== 9">
+            <a class="red-text" (click) = "onVoidProduct(item, product)">Void</a>
           </li>
         </ul>
       </div>

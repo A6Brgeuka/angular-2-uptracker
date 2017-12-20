@@ -7,6 +7,8 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 
 import * as _ from 'lodash';
+import { Subject } from 'rxjs/Subject';
+import { ToasterService } from '../../../core/services/toaster.service';
 
 @Component({
   selector: 'app-received-list',
@@ -21,11 +23,13 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   public receivedOrders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private selectAllReceivedList$:  ReplaySubject<any> = new ReplaySubject(1);
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public reorderReceivedOrder$: any = new Subject();
   
   public showMenuItem: boolean = true;
   
   constructor(
     public pastOrderService: PastOrderService,
+    public toasterService: ToasterService,
   ) {
 
   }
@@ -67,6 +71,13 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
       this.showMenuItem = !!filteredCheckedProducts.length;
     })
     .subscribe();
+  
+    this.subscribers.reorderSubscription = this.reorderReceivedOrder$
+    .switchMap(data => this.pastOrderService.reorder(data))
+    .subscribe(res =>
+      this.toasterService.pop('', res.msg)
+    )
+    
   }
   
   ngOnDestroy() {
@@ -89,4 +100,13 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   setOrderCheckbox() {
     this.ordersChecked$.next([]);
   }
+  
+  buyAgainReceivedOrder(order) {
+    let data = {
+      "order_id": order.id,
+      "items_ids":[],
+    };
+    this.reorderReceivedOrder$.next(data);
+  }
+  
 }

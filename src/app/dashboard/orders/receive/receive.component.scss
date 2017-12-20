@@ -133,10 +133,10 @@
            }
           .col {
             color: #888;
-            &:nth-of-type(1) {
-              color: $tealish;
-              cursor: pointer;
-            }
+            //&:nth-of-type(1) {
+            //  color: $tealish;
+            //  cursor: pointer;
+            //}
             .fa-eye, .fa-eye-slash {
               margin-right: 9px;
               line-height: 35px;
@@ -181,7 +181,18 @@
       position: absolute;
       top: 40px;
     }
-
+    .strikethrough {
+      text-decoration: line-through;
+    }
+    .strikethrough-line {
+      position: absolute;
+      top: 11px;
+      height: 1px;
+      background: $grey;
+    }
+    .status-line {
+      margin: 10px 0;
+    }
   }
 
   .tabs {

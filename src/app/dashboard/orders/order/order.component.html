@@ -22,7 +22,7 @@
             </a>
           </li>
           <li>
-            <a (click)="printPage()" class="tealish-text">
+            <a href="{{ apiUrl }}/po/{{ (order$ | async).order_id }}/download"  target="_blank" class="tealish-text">
               <fa name="print"></fa>
               Print
             </a>

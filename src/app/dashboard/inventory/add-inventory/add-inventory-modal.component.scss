@@ -296,6 +296,22 @@
       transition: opacity .3s;
       margin-left: 15px;
     }
+    .packaging_summary {
+      color: $grey;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .text-center {
+        text-align: center;
+      }
+      .col.s3, .col.s1 {
+        margin-left: 0;
+      }
+      .helper {
+        top: auto;
+      }
+    }
   }
   .uptracker-form-btn {
     font-size: 14px;
