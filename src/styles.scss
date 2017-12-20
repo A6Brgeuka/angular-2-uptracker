@@ -1381,6 +1381,9 @@ input[type=range] {
 .pdg-r-0 {
   padding-right: 0;
 }
+.pointer {
+  cursor: pointer;
+}
 [type="checkbox"]:not(:checked):disabled + label:before {
   background: transparent;
 }

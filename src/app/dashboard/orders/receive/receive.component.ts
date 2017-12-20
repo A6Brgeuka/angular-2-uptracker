@@ -303,4 +303,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     product.edit = !product.edit;
   }
   
+  removePreviouslyReceivedToggle(statusLine) {
+    statusLine.removed = !statusLine.removed;
+  }
+  
 }

@@ -65,7 +65,7 @@
           <div class="item row" *ngFor="let item of receiveProducts.orders">
             <div class="col s12 product-row" *ngFor="let product of item.items">
               <div class="row">
-                <div class="col s3 ">
+                <div class="col s3 tealish-text pointer" [routerLink]="['/','orders',item.order_id]">
                   {{ item.po_number }}
                 </div>
                 <div class="col s1" [class.strikethrough] = product.edit>
@@ -77,7 +77,7 @@
                 <div class="col s4 tealish-text">
                   {{ product.item_name }}
                 </div>
-                <div class="col s4 tealish-text">
+                <div class="col s4 tealish-text pointer" [routerLink]="['/locations','view',product.location_id]">
                   {{ product.location_name }}
                 </div>
               </div>
@@ -115,46 +115,26 @@
                   </a>
                 </div>
               </div>
-              <div class="row" *ngFor="let statusLine of product.status_line_items">
+              <div class="row relative status-line" *ngFor="let statusLine of product.status_line_items">
                 <div class="col s3">
-                  <div class="select custom-select select-light flex-center">
-                    <select
-                      materialize="material_select"
-                      disabled
-                      name="status{{i}}"
-                    >
-                      <option [value]="statusLine.status">{{ statusLine.status }}</option>
-                    </select>
-                  </div>
+                  {{ statusLine.status }}
                 </div>
                 <div class="col s1">
-                  <div class="input flex-center">
-                    <input type="text" value="{{statusLine.quantity}}"
-                      disabled
-                      name="qty{{i}}"
-                    >
-                  </div>
+                  {{statusLine.quantity}}
                 </div>
-                <div class="col s4">
-                  <div class="select select-light flex-center">
-                    <select
-                      materialize="material_select"
-                      [disabled]="true"
-                    >
-                      <option [value]="statusLine.inventory_group_name">{{statusLine.inventory_group_name}}</option>
-                    </select>
-                  </div>
+                <div class="col s4 tealish-text pointer" [routerLink]="['/', 'inventory','item', statusLine.inventory_group_id]">
+                  {{statusLine.inventory_group_name}}
                 </div>
                 <div class="col s3">
-                  <div class="select select-light flex-center">
-                    <select
-                      materialize="material_select"
-                      [disabled]="true"
-                    >
-                      <option [value]="statusLine.location_name">{{statusLine.location_name}}: {{statusLine.storage_location_name}}</option>
-                    </select>
-                  </div>
+                  {{statusLine.location_name}}: {{statusLine.storage_location_name}}
                 </div>
+                <div class="col s1 flex-center justify-center">
+                  <a (click)="removePreviouslyReceivedToggle(statusLine)">
+                    <fa name="trash" *ngIf="!statusLine.removed" class="tealish-text"></fa>
+                    <fa name="undo" *ngIf="statusLine.removed" class="tealish-text"></fa>
+                  </a>
+                </div>
+                <div class="col s11" [class.strikethrough-line]="statusLine.removed"></div>
               </div>
 
               <div class="row" *ngFor="let status of product.status; let i=index;">
