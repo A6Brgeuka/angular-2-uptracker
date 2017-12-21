@@ -10,6 +10,7 @@ import { Subject } from 'rxjs/Subject';
 import { OrderService } from '../../../core/services/order.service';
 import { UserService } from '../../../core/services/user.service';
 import { APP_DI_CONFIG } from '../../../../../env';
+import { Router } from '@angular/router';
 
 export class ResendOrderModalContext extends BSModalContext {
   public order: any;
@@ -34,6 +35,7 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
     public pastOrderService: PastOrderService,
     public orderService: OrderService,
     public userService: UserService,
+    public router: Router,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -95,4 +97,5 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
   openEmailModal() {
     this.emailModalData$.next('');
   }
+  
 }

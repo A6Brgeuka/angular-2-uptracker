@@ -21,7 +21,7 @@ import { DashboardService } from './dashboard.service';
 import { InventoryService } from './inventory.service';
 import { PastOrderService } from './pastOrder.service';
 import {ScannerService} from './scanner.service';
-import { ReceivedOrderService } from './receivedOrder.service';
+import { ReceivedOrderService } from './received-order.service';
 
 
 export {

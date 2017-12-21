@@ -62,7 +62,9 @@
           </div>
         </div>
         <div (click)="changeVisibilityReceivedList(i)" class="col s2 pointer flex-center">
-          <div>{{item.vendor_name}}</div>
+          <div>
+            <a [routerLink]="['/vendors','view',item.vendor_id]">{{item.vendor_name}}</a>
+          </div>
         </div>
         <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">
           <span *ngFor="let number of item.order_numbers" class="orders-number">{{ number }}<span>, </span></span>
@@ -89,7 +91,11 @@
             </li>
           </ul>
 
-          <div>{{ item.user_name }}</div>
+          <div class="tealish-text">
+            <a [routerLink]="['/users','view',item.user_id]">
+              {{ item.user_name }}
+            </a>
+          </div>
         </div>
         <div class="clearfix"></div>
 

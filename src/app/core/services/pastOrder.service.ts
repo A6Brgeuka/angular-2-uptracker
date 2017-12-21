@@ -53,24 +53,10 @@ export class PastOrderService extends ModelService {
         });
       });
     });
-  
-    let updateElementCollection$ = this.updateElementCollection$
-    .switchMap((entity) => {
-      return this.collection$.first()
-      .map((collection: any) => {
-        return collection.map((el: any) => {
-          if (el.order_id == entity.order_id) {
-            el = entity;
-          }
-          return el;
-        });
-      });
-    });
     
     this.collection$ = Observable.merge(
       this.loadCollection$,
       this.updateCollection$,
-      updateElementCollection$,
       updateFlaggedElementCollection$,
     ).publishReplay(1).refCount();
     this.collection$.subscribe(res => {

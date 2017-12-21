@@ -94,19 +94,13 @@
                   <div class="input flex-center">
                     <input type="text" value="{{product.quantity}}"
                       name="qty{{i}}"
+                      (change)="onChangeProductQuantity(product)"
                     >
                   </div>
                 </div>
                 <div class="col s7">
-                  <div class="select custom-select select-light flex-center">
-                    <select
-                      materialize="material_select"
-                      name="status{{i}}"
-                    >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                    </select>
+                  <div class="input flex-center">
+                    <input type="text">
                   </div>
                 </div>
                 <div class="col s1 flex-center justify-center trash-icon">

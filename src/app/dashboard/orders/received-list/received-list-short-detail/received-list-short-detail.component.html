@@ -8,7 +8,7 @@
       <div class="col s1">Received</div>
       <div class="col s1">Reconciled</div>
       <div class="col s1">Qty</div>
-      <div class="col s1">Unit Price</div>
+      <div class="col s1">Package Price</div>
       <div class="col s1">Total</div>
       <div class="col s1">
       </div>
@@ -29,7 +29,9 @@
           <div> {{ product.item_name }}</div>
         </div>
       </div>
-      <div class="col s1">{{ product.location_name }}</div>
+      <div class="col s1 tealish-text">
+        <a [routerLink]="['/locations','view',product.location_id]">{{ product.location_name }}</a>
+      </div>
       <div class="col s1">{{ product.po_number }}</div>
       <div class="col s1">{{ product.placed_date }}</div>
       <div class="col s1">{{ product.received_date }}</div>

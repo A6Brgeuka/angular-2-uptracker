@@ -14,7 +14,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 import { Modal } from 'angular2-modal';
 import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { ReceivedOrderService } from '../../../core/services/receivedOrder.service';
+import { ReceivedOrderService } from '../../../core/services/received-order.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -215,17 +215,17 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
       const filteredStatus = _.find(product.status, {'type': setStatus});
-      const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
-      const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
+      //const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
+      //const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
       const findReceiveStatus = _.find(product.status, {'type': 'receive'});
       let quantityStatus: boolean = false;
       let receiveStatus: boolean = false;
       
-      if ((findIncreaseStatus && setStatus === 'quantity decrease' && curStatus.type !== 'quantity increase')
-        || (findDecreaseStatus && setStatus === 'quantity increase' && curStatus.type !== 'quantity decrease')) {
-        this.toasterService.pop('error', `You can set either quantity decrease or quantity increase status`);
-        quantityStatus = true;
-      }
+      //if ((findIncreaseStatus && setStatus === 'quantity decrease' && curStatus.type !== 'quantity increase')
+      //  || (findDecreaseStatus && setStatus === 'quantity increase' && curStatus.type !== 'quantity decrease')) {
+      //  this.toasterService.pop('error', `You can set either quantity decrease or quantity increase status`);
+      //  quantityStatus = true;
+      //}
   
       if (findReceiveStatus && setStatus === 'partial receive' && curStatus.type !== 'receive'){
         this.toasterService.pop('error', `You can set either receive or partial receive status`);
@@ -308,6 +308,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   
   removePreviouslyReceivedToggle(statusLine) {
     statusLine.removed = !statusLine.removed;
+  }
+  
+  onChangeProductQuantity(product) {
+    product.updatedQuantity;
   }
   
 }
