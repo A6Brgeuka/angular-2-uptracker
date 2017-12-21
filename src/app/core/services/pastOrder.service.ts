@@ -26,7 +26,7 @@ export class PastOrderService extends ModelService {
   public itemsVisibility: boolean[];
   public itemsVisibilityReceivedList: boolean[];
   public statusList: any[] = [];
-  public updateElementCollectionAfterVoidReq$:Subject<any> = new Subject<any>();
+  public updateFlaggedElementCollection$: Subject<any> = new Subject<any>();
   
   constructor(
     public injector: Injector,
@@ -41,7 +41,7 @@ export class PastOrderService extends ModelService {
   }
   
   updateCollection() {
-    let updateElementCollection$ = this.updateElementCollection$
+    let updateFlaggedElementCollection$ = this.updateFlaggedElementCollection$
     .switchMap((entity) => {
       return this.collection$.first()
       .map((collection: any) => {
@@ -53,11 +53,25 @@ export class PastOrderService extends ModelService {
         });
       });
     });
+  
+    let updateElementCollection$ = this.updateElementCollection$
+    .switchMap((entity) => {
+      return this.collection$.first()
+      .map((collection: any) => {
+        return collection.map((el: any) => {
+          if (el.order_id == entity.order_id) {
+            el = entity;
+          }
+          return el;
+        });
+      });
+    });
     
     this.collection$ = Observable.merge(
       this.loadCollection$,
       this.updateCollection$,
       updateElementCollection$,
+      updateFlaggedElementCollection$,
     ).publishReplay(1).refCount();
     this.collection$.subscribe(res => {
       this.collection = res;
@@ -77,37 +91,8 @@ export class PastOrderService extends ModelService {
     .map((res:any)=>res.data);
   }
   
-  getStatusList() {
-    return this.restangular.one('config', 'order_receiving_status').customGET('')
-    .map(res => this.statusList = res.data);
-  }
-  
   goToReceive(queryParams) {
     this.router.navigate(['orders/receive', queryParams]);
-  }
-  
-  getReceiveProduct(queryParams) {
-    let params: any[] = queryParams.split('&');
-    let orderIds = params[0];
-    let itemsIds = params[1];
-    
-    if(itemsIds) {
-      return this.restangular.all('receive').customGET('', {'order_ids': orderIds, 'items_ids' : itemsIds})
-      .map(res => res.data)
-    } else {
-      return this.restangular.all('receive').customGET('', { 'item_ids' : queryParams })
-      .map(res => res.data)
-    }
-    
-  }
-  
-  onReceiveProducts(productsToReceive) {
-    return this.restangular.all('receive').customPOST(productsToReceive);
-  }
-  
-  getProductFields(variantId) {
-    return this.restangular.one('inventory', 'search').customGET('', {'variant_id' : variantId})
-    .map(res => res.data.results[0]);
   }
   
   getReceivedProducts() {
@@ -123,7 +108,7 @@ export class PastOrderService extends ModelService {
   setFlag(order) {
     return this.restangular.one('pos', order.order_id).one('flag').customPUT({'flagged' : !order.flagged})
       .map(res => {
-        this.updateElementCollection$.next(res.data);
+        this.updateFlaggedElementCollection$.next(res.data);
         return res.data;
       });
   }
@@ -134,6 +119,19 @@ export class PastOrderService extends ModelService {
   
   onVoidOrder(data) {
     return this.restangular.one('pos', 'void').customPOST(data)
-      .map(res => res.data);
+    .map(res => res.data)
+    .switchMap((voidedOrders: any[]) => {
+      return this.collection$.first()
+      .map(orders => {
+        return orders.reduce((acc: any[], item) => {
+          let findedItem = _.find(voidedOrders, ['order_id', item.order_id]);
+          if (findedItem) {
+            item = findedItem;
+          }
+          return [...acc, item];
+        }, []);
+      })
+    })
+    .map(res => this.updateCollection$.next(res));
   }
 }

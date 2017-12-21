@@ -178,19 +178,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     
     this.subscribers.voidOrderSubscription = this.voidOrder$
     .switchMap((data:any) => this.pastOrderService.onVoidOrder(data))
-    .switchMap((voidedOrders: any[]) => {
-      return this.orders$.first()
-      .map(orders => {
-      return orders.reduce((acc: any[], item) => {
-          let findedItem = _.find(voidedOrders, ['order_id', item.order_id]);
-          if (findedItem) {
-            item = findedItem;
-          }
-          return [...acc, item];
-        }, []);
-      })
-    })
-    .subscribe(res => this.orders$.next(res));
+    .subscribe();
     
     this.subscribers.onVoidCheckedOrdersSubscription = this.voidCheckedOrders$
     .switchMapTo(this.orders$.first())
@@ -200,19 +188,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.onFilterCheckedItems(filteredCheckedOrders);
     })
     .switchMap((data:any) => this.pastOrderService.onVoidOrder(data))
-    .switchMap((voidedOrders: any[]) => {
-      return this.orders$.first()
-      .map(orders => {
-        return orders.reduce((acc: any[], item) => {
-          let findedItem = _.find(voidedOrders, ['order_id', item.order_id]);
-          if (findedItem) {
-            item = findedItem;
-          }
-          return [...acc, item];
-        }, []);
-      })
-    })
-    .subscribe(res => this.orders$.next(res));
+    .subscribe();
     
     
   }
@@ -357,10 +333,6 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   
   onVoidCheckedOrdersFunc() {
     this.voidCheckedOrders$.next('');
-  }
-  
-  updateItemStatus(item, event) {
-    item = event;
   }
   
 }
