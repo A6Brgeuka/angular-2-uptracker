@@ -4,8 +4,9 @@
   <div class="row mtop">
     <div class="center-align col s12">
       <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light">
-        <a href="{{ apiUrl }}/po/{{ context.order_id }}/download"  target="_blank"
-        (click)="dismissModal()">Print</a>
+        <a (click)="dismissModal()" href="{{ apiUrl }}/po/{{ context.order_id }}/download"  target="_blank">
+          Print
+        </a>
       </button>
       <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light" (click)="openEmailModal()">Email</button>
     </div>

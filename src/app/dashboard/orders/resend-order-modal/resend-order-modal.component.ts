@@ -68,6 +68,7 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
           from_fax_number: order['from_fax_number'] || '1 11111111111',
           rmFn: null,
         });
+        this.dismissModal();
       },
       (err: any) => {
       })
@@ -81,15 +82,6 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
       data.po_number = "1234567890"
     }
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          this.dismissModal();
-        },
-        (err) => {
-        }
-      );
-    });
   }
   
   dismissModal(){
@@ -98,10 +90,6 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
   
   closeModal(data){
     this.dialog.close(data);
-  }
-  
-  openPrintModal() {
-  
   }
   
   openEmailModal() {
