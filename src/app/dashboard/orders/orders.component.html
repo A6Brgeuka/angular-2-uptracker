@@ -89,7 +89,7 @@
             </div>
             <ul id='order_ddm' class='dropdown-content'>
               <li>
-                <a class="tealish-text" href="#">Edit</a>
+                <a class="tealish-text" (click)="onReceiveOrders()">Edit</a>
               </li>
               <!--<li>-->
                 <!--<a class="tealish-text" (click)="openResendDialog()">Resend</a>-->
@@ -149,7 +149,7 @@
 
               <ul [id]='"order_dd_"+i' class='dropdown-content'>
                 <li *ngIf="item.status !== 'Reconciled'">
-                  <a class="tealish-text" href="#">Edit</a>
+                  <a class="tealish-text" (click) = "sendToReceiveOrder(item)">Edit</a>
                 </li>
                 <li>
                   <a class="tealish-text" (click) = "setFlag($event, item)">
@@ -160,13 +160,13 @@
                   <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
                 </li>
                 <li *ngIf="item.status !== 'Received'">
-                  <a class="tealish-text" (click) = sendToReceiveOrder(item)>Receive</a>
+                  <a class="tealish-text" (click) = "sendToReceiveOrder(item)">Receive</a>
                 </li>
                 <li *ngIf="item.status === 'Received'">
                   <a class="tealish-text" href="#">Reconcile</a>
                 </li>
                 <li>
-                  <a class="tealish-text" (click) = buyAgainOrder(item)>Buy Again</a>
+                  <a class="tealish-text" (click) = "buyAgainOrder(item)">Buy Again</a>
                 </li>
                 <li *ngIf="item.status !== 'Voided'">
                   <a class="red-text" (click)="onVoidOrder(item)">Void</a>
