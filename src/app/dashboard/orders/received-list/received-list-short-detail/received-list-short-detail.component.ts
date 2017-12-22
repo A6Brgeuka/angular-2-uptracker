@@ -43,10 +43,12 @@ export class ReceivedListShortDetailComponent {
     this.isAllCheckedChanged.emit(this.item.checked);
   }
   
-  buyAgainReceivedProduct(item, product) {
+  buyAgainReceivedProduct(product) {
     let data = {
-      "order_id": item.id,
-      "items_ids":[],
+      "orders": [{
+        "order_id": product.order_id,
+        "items_ids":[product.item_id],
+      }]
     };
     this.reorderReceivedProduct$.next(data);
   }

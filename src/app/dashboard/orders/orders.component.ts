@@ -190,7 +190,6 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     .switchMap((data:any) => this.pastOrderService.onVoidOrder(data))
     .subscribe();
     
-    
   }
   
   onFilterCheckedProduct(orders) {
