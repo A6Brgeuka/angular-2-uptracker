@@ -25,6 +25,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public reorderReceivedOrder$: any = new Subject();
   public reorderReceivedCheckedItems$: any = new Subject();
+  public editReceivedCheckedItems$: any = new Subject();
   
   public showMenuItem: boolean = true;
   
@@ -93,6 +94,23 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     })
     .subscribe();
     
+    //this.subscribers.editCheckedItemsSubscription = this.editReceivedCheckedItems$
+    //.switchMapTo(this.receivedOrders$)
+    //.map((receivedOrders: any) => {
+    //  let takeItemsFromPackingSlip = _.flatMap(_.map(receivedOrders, 'items'));
+    //  let checkedItems = _.filter(takeItemsFromPackingSlip, 'checked');
+    //  let sendOrders: any[] = [];
+    //  let sendItems: any[] = [];
+    //
+    //  checkedItems.map((item:any)=> {
+    //    sendOrders.push(item.order_id);
+    //    sendItems.push(item.item_id);
+    //  });
+    //  let queryParams = sendOrders.toString() + '&' + sendItems.toString();
+    //  this.pastOrderService.goToReceive(queryParams);
+    //})
+    //.subscribe();
+    
   }
   
   ngOnDestroy() {
@@ -128,6 +146,23 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   
   buyAgainReceivedCheckedOrders() {
     this.reorderReceivedCheckedItems$.next('');
+  }
+  
+  editReceivedPackingSlip(packingSlip) {
+    
+    let sendOrders: any[] = [];
+    let sendItems: any[] = [];
+    
+    packingSlip.items.map(item => {
+      sendOrders.push(item.order_id);
+      sendItems.push(item.item_id);
+    });
+    let queryParams = _.uniqBy(sendOrders, '').toString() + '&' + sendItems.toString();
+    this.pastOrderService.goToReceive(queryParams);
+  }
+  
+  editCheckedReceivedPackingSlips() {
+    //this.editReceivedCheckedItems$.next('');
   }
   
 }

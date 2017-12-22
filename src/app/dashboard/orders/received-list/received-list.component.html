@@ -29,7 +29,7 @@
         </div>
         <ul id='received_order_ddm' class='dropdown-content'>
           <li>
-            <a class="tealish-text" href="#">Edit</a>
+            <a class="tealish-text" (click) = "editCheckedReceivedPackingSlips()">Edit</a>
           </li>
           <li>
             <a class="tealish-text" href="#">Reconcile</a>
@@ -57,7 +57,7 @@
             />
             <label for="selected{{i + item.id}}"></label>
           </div>
-          <div class="left">
+          <div class="left" (click) = "editReceivedPackingSlip(item)">
             {{ item.packing_slip_number }}
           </div>
         </div>
@@ -81,7 +81,7 @@
 
           <ul [id]='"received_order_dd_" +i' class='dropdown-content'>
             <li>
-              <a class="tealish-text" href="#">Edit</a>
+              <a class="tealish-text" (click) = "editReceivedPackingSlip(item)">Edit</a>
             </li>
             <li>
               <a class="tealish-text" href="#">Reconcile</a>

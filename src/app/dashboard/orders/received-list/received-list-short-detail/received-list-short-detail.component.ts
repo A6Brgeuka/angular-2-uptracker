@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import * as _ from 'lodash';
@@ -12,7 +12,7 @@ import { ToasterService } from '../../../../core/services/toaster.service';
   styleUrls: ['./received-list-short-detail.component.scss']
 })
 @DestroySubscribers()
-export class ReceivedListShortDetailComponent {
+export class ReceivedListShortDetailComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public reorderReceivedProduct$: any = new Subject();
   
@@ -27,11 +27,19 @@ export class ReceivedListShortDetailComponent {
 
   }
   
+  ngOnInit() {
+  
+  }
+  
   addSubscribers() {
     this.subscribers.reorderProductSubscription = this.reorderReceivedProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe(res => this.toasterService.pop('', res.msg))
-  }
+  };
+  
+  ngOnDestroy() {
+    console.log('for unsubscribing');
+  };
   
   toggleVariantVisibility(variant) {
     variant.status = variant.status == 2 ? variant.status =1 : variant.status = 2;
@@ -51,6 +59,11 @@ export class ReceivedListShortDetailComponent {
       }]
     };
     this.reorderReceivedProduct$.next(data);
+  }
+  
+  editReceivedProduct(product) {
+    let queryParams = `${product.order_id}&${product.item_id}`;
+    this.pastOrderService.goToReceive(queryParams);
   }
   
 }

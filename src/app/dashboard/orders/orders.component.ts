@@ -203,7 +203,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     filteredCheckedOrders.map(item => {
       item.items_ids = [];
       item.order_items = _.filter(item.order_items, 'checked');
-      item.items_ids = item.items_ids.concat(item.order_items.map((item) => item.id))
+      item.items_ids = item.items_ids.concat(item.order_items.map((item) => item.id));
     });
     let data = {
       "orders": filteredCheckedOrders
