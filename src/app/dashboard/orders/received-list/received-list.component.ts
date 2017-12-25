@@ -46,6 +46,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     .subscribe(res => {
       this.pastOrderService.itemsVisibilityReceivedList = new Array(res.length).fill(false);
         this.receivedOrders$.next(res);
+        this.pastOrderService.totalReceived$.next(res.length);
     });
   
     this.subscribers.selectAllListSubscription =

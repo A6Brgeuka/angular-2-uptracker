@@ -4,7 +4,7 @@
       <div class="col s12 m6">
         <span class="title">
           <span class="main-title ">Orders</span>
-          <span class="sub-title">{{total$ | async}} items</span>
+          <span class="sub-title">{{pastOrderService.total$ | async}} items</span>
         </span>
       </div>
       <div class="ptop5 filter-right">
@@ -41,13 +41,13 @@
           <a [class.active]="false" href="#allTab">Open</a>
         </li>
         <li class="tab">
-          <a href="#receivedTab">Received</a>
+          <a href="#receivedTab" (click)="chooseTabReceived()">Received</a>
         </li>
-        <li class="tab" (click)="chooseTab('Backorded')">
-          <a [class.active]="false">Backordered</a>
+        <li class="tab">
+          <a href="#backorderedTab">Backordered</a>
         </li>
-        <li class="tab" (click)="chooseTab('Reconciled')">
-          <a [class.active]="false">Reconciled</a>
+        <li class="tab">
+          <a href="#reconciledTab">Reconciled</a>
         </li>
         <li class="tab" (click)="chooseTab('Archived')">
           <a [class.active]="false">Archived</a>
@@ -192,5 +192,7 @@
       </div>
     </div>
     <app-received-list id="receivedTab"></app-received-list>
+    <app-reconciled-list id="reconciledTab"></app-reconciled-list>
+    <app-backordered-list id="backorderedTab"></app-backordered-list>
   </div>
 </div>

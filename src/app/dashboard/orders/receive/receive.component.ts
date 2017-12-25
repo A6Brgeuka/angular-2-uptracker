@@ -72,7 +72,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
         order = new OrderModel(order);
         order.items = order.items.map((item: any) => {
 
-          let quantity = item.quantity;
+          let quantity = (item.status_line_items) ? item.status_line_items[item.status_line_items.length -1].quantity : item.quantity;
           item.item_id = item.id;
 
           if (item.inventory_group_id && item.inventory_group) {
@@ -86,9 +86,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
                 id: 'routerLink'
               });
           };
-          if (item.status_line_items) {
-            quantity = item.status_line_items[item.status_line_items.length -1].quantity;
-          }
+          
           item = new ItemModel(item);
 
           item.status = [new StatusModel(item)];
@@ -215,17 +213,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
       const filteredStatus = _.find(product.status, {'type': setStatus});
-      //const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
-      //const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
       const findReceiveStatus = _.find(product.status, {'type': 'receive'});
       let quantityStatus: boolean = false;
       let receiveStatus: boolean = false;
-      
-      //if ((findIncreaseStatus && setStatus === 'quantity decrease' && curStatus.type !== 'quantity increase')
-      //  || (findDecreaseStatus && setStatus === 'quantity increase' && curStatus.type !== 'quantity decrease')) {
-      //  this.toasterService.pop('error', `You can set either quantity decrease or quantity increase status`);
-      //  quantityStatus = true;
-      //}
   
       if (findReceiveStatus && setStatus === 'partial receive' && curStatus.type !== 'receive'){
         this.toasterService.pop('error', `You can set either receive or partial receive status`);

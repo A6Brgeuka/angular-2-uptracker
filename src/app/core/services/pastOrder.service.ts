@@ -27,6 +27,8 @@ export class PastOrderService extends ModelService {
   public itemsVisibilityReceivedList: boolean[];
   public statusList: any[] = [];
   public updateFlaggedElementCollection$: Subject<any> = new Subject<any>();
+  public total$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public totalReceived$: BehaviorSubject<any> = new BehaviorSubject(null);
   
   constructor(
     public injector: Injector,

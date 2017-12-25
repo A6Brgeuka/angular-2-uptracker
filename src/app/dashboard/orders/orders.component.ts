@@ -30,7 +30,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public filterTabBy$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public total$: BehaviorSubject<any> = new BehaviorSubject(null);
+  //public total$: BehaviorSubject<any> = new BehaviorSubject(null);
   public visible:boolean[] = [];
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   private ordersToReceive$:  any = new Subject<any>();
@@ -38,6 +38,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   private voidOrder$:  any = new Subject<any>();
   private voidCheckedOrders$:  any = new Subject<any>();
   public reorderOrders$:  any = new Subject<any>();
+  public changeTotalQty$:  any = new Subject<any>();
   
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public showMenuItem: boolean = true;
@@ -80,10 +81,10 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
       this.filterTabBy$
     )
     .subscribe(([r, f]) => {
-      this.total$.next(r.length);
+      this.pastOrderService.total$.next(r.length);
       if (f && f !== 'All') {
         let orders = _.filter(r, ['status', f]);
-        this.total$.next(orders.length);
+        this.pastOrderService.total$.next(orders.length);
         this.orders$.next(orders);
       }
       else {
@@ -188,6 +189,11 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.onFilterCheckedItems(filteredCheckedOrders);
     })
     .switchMap((data:any) => this.pastOrderService.onVoidOrder(data))
+    .subscribe();
+    
+    this.subscribers.changeQtySubscription = this.changeTotalQty$
+    .switchMapTo(this.pastOrderService.totalReceived$
+    .map((value: any) => this.pastOrderService.total$.next(value)))
     .subscribe();
     
   }
@@ -334,4 +340,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     this.voidCheckedOrders$.next('');
   }
   
+  chooseTabReceived() {
+    this.changeTotalQty$.next("");
+  }
 }
