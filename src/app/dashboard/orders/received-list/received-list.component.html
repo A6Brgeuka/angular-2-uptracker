@@ -32,7 +32,7 @@
             <a class="tealish-text" (click) = "editCheckedReceivedPackingSlips()">Edit</a>
           </li>
           <li>
-            <a class="tealish-text" href="#">Reconcile</a>
+            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
           </li>
           <li>
             <a class="tealish-text" (click) = "buyAgainReceivedCheckedOrders()">Buy Again</a>
@@ -67,7 +67,9 @@
           </div>
         </div>
         <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">
-          <span *ngFor="let number of item.order_numbers" class="orders-number">{{ number }}<span>, </span></span>
+          <span *ngFor="let number of item.order_numbers" class="orders-number">
+            <a [routerLink]="['/orders', number.order_id]">{{ number.po_number }}</a>
+            <span>, </span></span>
         </div>
         <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.product_count}}</div>
         <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.date}}</div>
@@ -84,7 +86,7 @@
               <a class="tealish-text" (click) = "editReceivedPackingSlip(item)">Edit</a>
             </li>
             <li>
-              <a class="tealish-text" href="#">Reconcile</a>
+              <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
             </li>
             <li>
               <a class="tealish-text" (click)="buyAgainReceivedOrder(item)">Buy Again</a>

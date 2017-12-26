@@ -341,6 +341,33 @@
       }
     }
   }
+
+  // button for orders pages
+  .edititem {
+    transition: all .3s;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: $tealish;
+    line-height: 20px;
+    border-radius: 3px;
+
+    &:hover {
+      background-color: $tealish;
+      color: $white;
+    }
+    &.filled {
+      background-color: $tealish;
+      color: $white;
+      &:hover {
+        opacity: .8;
+      }
+    }
+  }
+
 }
 
 @media all and (min-width: 769px) {

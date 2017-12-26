@@ -54,6 +54,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
       .switchMap(select => {
         return this.receivedOrders$.first()
         .map(res => {
+          this.showMenuItem = select;
           res = _.forEach(res, (item: any) => {
             item.checked = select;
             item.items.map(product => product.checked = select);

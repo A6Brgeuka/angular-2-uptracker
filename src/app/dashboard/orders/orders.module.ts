@@ -11,6 +11,7 @@ import { ResendOrderModalModule } from './resend-order-modal/resend-order-modal.
 import { ConfirmVoidOrderModalModule } from './order-modals/confirm-void-order-modal/confirm-void-order-modal.module';
 import { ReconciledListModule } from './reconciled-list/reconciled-list.module';
 import { BackorderedListModule } from './backordered-list/backordered-list.module';
+import { ReconcileModule } from './reconcile/reconcile.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { BackorderedListModule } from './backordered-list/backordered-list.modul
     SelectVendorModule,
     ReceivedListModule,
     ReconciledListModule,
+    ReconcileModule,
     ResendOrderModalModule,
     ConfirmVoidOrderModalModule,
   ],
