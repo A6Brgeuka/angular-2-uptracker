@@ -63,7 +63,6 @@ export class PastOrderService extends ModelService {
     ).publishReplay(1).refCount();
     this.collection$.subscribe(res => {
       this.collection = res;
-      console.log(`${this.constructor.name} Collection Updated`, res);
     });
   }
   
