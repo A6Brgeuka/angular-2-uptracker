@@ -5,7 +5,7 @@
     letter-spacing: 0;
     word-spacing: 0;
     font-size: 0;
-    padding-bottom: 15px;
+    //padding-bottom: 15px;
     text-align: left;
 
     &.is-grid-view {
@@ -19,7 +19,7 @@
       }
       .heading {
         margin: 10px 0;
-        padding-bottom: 20px;
+        //padding-bottom: 20px;
         color: #444;
         border-bottom: 1px solid #888;
         font-size: 14px;
@@ -96,10 +96,17 @@
     margin-right: 10px;
   }
   .item {
-    padding-bottom: 20px;
+    //padding-bottom: 20px;
     border-bottom: 1px solid #ddd;
     .text-right {
       padding-right: 5px;
+    }
+    input {
+      margin-top: 0;
+    }
+    .flex-center {
+      padding-top: 5px;
+      padding-bottom: 5px;
     }
   }
   .right-bottom-part {
@@ -114,6 +121,9 @@
     .pdg-r-0 {
       padding-right: 0;
     }
+  }
+  .edititem {
+    margin: 0 0 10px 0;
   }
 }
 

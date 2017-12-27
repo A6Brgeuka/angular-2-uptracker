@@ -1,10 +1,10 @@
 <form class="uptracker-form" (ngSubmit)="saveReconcile()" materialize #reconcileProductForm="ngForm" autocomplete="off" novalidate>
   <div class="top">
     <div class="row filter clearfix">
-      <div class="col s3 title">
+      <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
       </div>
-      <div class="col s3">
+      <div class="col l3 m6">
         <div class="select">
           <select
             class="wide"
@@ -16,7 +16,7 @@
           </select>
         </div>
       </div>
-      <div class="col s1">
+      <div class="col l1 m2">
         <div class="input">
           <input
             type="text"
@@ -24,7 +24,7 @@
           >
         </div>
       </div>
-      <div class="col s1">
+      <div class="col l1 m2">
         <div class="input">
           <input
             type="text"
@@ -32,7 +32,7 @@
           >
         </div>
       </div>
-      <div class="col s1">
+      <div class="col l1 m2">
         <div class="select">
           <select
             class="wide"
@@ -44,7 +44,7 @@
           </select>
         </div>
       </div>
-      <div class="col s1">
+      <div class="col l1 m2">
         <div class="input">
           <input
             type="text"
@@ -52,7 +52,7 @@
           >
         </div>
       </div>
-      <div class="col s2 right-align">
+      <div class="col l2 m4 right-align">
         <button
           type="submit"
           class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
@@ -79,11 +79,15 @@
             Product
           </div>
         </div>
-        <div class="col s1">Quantity</div>
-        <div class="col s2">Pkg Price</div>
-        <div class="col s2">Discount</div>
-        <div class="col s1">Disc Price</div>
-        <div class="col s1">Total Price</div>
+        <div class="col s7">
+          <div class="row mrg-btm-0">
+            <div class="col s2">Quantity</div>
+            <div class="col s3">Pkg Price</div>
+            <div class="col s3">Discount</div>
+            <div class="col s2">Disc Price</div>
+            <div class="col s2">Total Price</div>
+          </div>
+        </div>
         <div class="col s1">
           <div class="right edititem">
             <fa name="pencil"></fa>
@@ -108,32 +112,50 @@
             <a>Some Product Name Which We Know Is Longgggg</a>
           </div>
         </div>
-        <div class="col s1">
-          <div class="text-right">20</div>
-          <div class="input">
-            <input class="text-right" type="text" value="20">
+
+        <div class="col s7">
+          <div class="row mrg-btm-0 flex-center">
+            <div class="col s2">
+              <div class="text-right">20</div>
+            </div>
+            <div class="col s3">
+              <div class="text-right">$10.00</div>
+            </div>
+            <div class="col s3">
+              <div class="text-right">$0.00</div>
+            </div>
+            <div class="col s2">
+              <div><i>$10.00</i></div>
+            </div>
+            <div class="col s2">
+              <div>$200.00</div>
+            </div>
+          </div>
+          <div class="row mrg-btm-0 flex-center">
+            <div class="col s2">
+              <div class="input">
+                <input class="text-right" type="text" value="20">
+              </div>
+            </div>
+            <div class="col s3">
+              <div class="input">
+                <input class="text-right" type="text" value="$10.00">
+              </div>
+            </div>
+            <div class="col s3">
+              <div class="input">
+                <input class="text-right" type="text" value="$0.00">
+              </div>
+            </div>
+            <div class="col s2">
+              <div><i>$10.00</i></div>
+            </div>
+            <div class="col s2">
+              <div>$200.00</div>
+            </div>
           </div>
         </div>
-        <div class="col s2">
-          <div class="text-right">$10.00</div>
-          <div class="input">
-            <input class="text-right" type="text" value="$10.00">
-          </div>
-        </div>
-        <div class="col s2">
-          <div class="text-right">$0.00</div>
-          <div class="input">
-            <input class="text-right" type="text" value="$0.00">
-          </div>
-        </div>
-        <div class="col s1">
-          <div><i>$10.00</i></div>
-          <div><i>$10.00</i></div>
-        </div>
-        <div class="col s1 bold">
-          <div>$200.00</div>
-          <div>$200.00</div>
-        </div>
+
         <div class="col s1 flex-center justify-center trash-icon">
           <a>
             <fa name="trash" class="tealish-text"></fa>
@@ -198,12 +220,12 @@
         </div>
       </div>
       <div class="row flex-center">
-        <div class="col s6 bold">
+        <h5 class="col s6">
           Total
-        </div>
-        <div class="col s6 text-right bold pdg-r-0">
+        </h5>
+        <h5 class="col s6 text-right pdg-r-0">
           $200.00
-        </div>
+        </h5>
       </div>
     </div>
   </div>
