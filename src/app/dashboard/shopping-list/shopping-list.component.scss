@@ -179,8 +179,6 @@
           position: relative;
           line-height:40px;
 
-
-
           .inner {
             width: 250px;
             height: 250px;
@@ -311,7 +309,7 @@
           min-height: 30px;
           line-height: 30px;
           color: #444;
-          &:nth-of-type(3), &:nth-of-type(4), &:nth-of-type(5) {
+          &:nth-of-type(3), &:nth-of-type(4) {
             text-align: center;
           }
           &:nth-of-type(2) {
@@ -329,6 +327,14 @@
           }
           .fa-eye-slash {
             color: $red;
+          }
+        }
+        .trash-row-icon {
+          visibility: hidden;
+        }
+        &:hover {
+          .trash-row-icon {
+            visibility: visible;
           }
         }
       }

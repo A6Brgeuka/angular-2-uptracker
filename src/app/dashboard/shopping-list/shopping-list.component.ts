@@ -34,6 +34,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public selectAll$: ReplaySubject<any> = new ReplaySubject(1);
   public deleteChecked$: ReplaySubject<any> = new ReplaySubject(1);
+  public deleteCurrentProduct$: ReplaySubject<any> = new ReplaySubject(1);
   public updateItem$: ReplaySubject<any> = new ReplaySubject(1);
   public selectAllCollection$: Observable<any>;
   public cart: any = [];
@@ -111,6 +112,14 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       (err) => console.log(err)
     );
   
+    this.subscribers.removeCurrentProductSubscribtion = this.deleteCurrentProduct$
+    .switchMap((product: any) => this.cartService.removeItems([product]))
+    .subscribe((res:any) => {
+        // make a request again, because order_preview isn't returned
+        this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
+      },
+      (err) => console.log(err)
+    );
     
     this.subscribers.updateItemSubscription = this.updateItem$
     .switchMap(() => this.cart$.first())
@@ -254,6 +263,10 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   
   deleteCheckedProducts() {
     this.deleteChecked$.next('');
+  }
+  
+  deleteCurrentProduct(product) {
+    this.deleteCurrentProduct$.next(product);
   }
   
   updateCart(data) {
