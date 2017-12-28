@@ -537,14 +537,19 @@
   </div>
   <div id="step3">
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
-      <ul class="tabs location-tabs" materialize="tabs">
+      <perfect-scrollbar class="tabs-scroll" [config]="scrollConfig">
+      <ul class="tabs location-tabs content" materialize="tabs">
+
         <li class="tab" *ngFor="let location of newInventory.locations; let i=index;">
           <a href="#{{location.location_id}}" (click)="selectTab(location)" #locationTab>
             {{ location.name }}
           </a>
         </li>
+
       </ul>
+      </perfect-scrollbar>
     </div>
+
     <div *ngFor="let location of newInventory.locations">
       <div id="{{ location.location_id }}" [hidden]="!location.active">
         <div class="row">

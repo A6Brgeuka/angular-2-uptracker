@@ -42,6 +42,7 @@ import { EditCommentModal } from "./modals/edit-comment-modal/edit-comment-modal
 import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.component';
 import { APP_DI_CONFIG } from '../../../env';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 let modalsArr = [
   EditUserModal,
@@ -51,6 +52,9 @@ let modalsArr = [
   UniConfirmModal,
 ];
 
+const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  //suppressScrollX: true
+};
 
 @NgModule({
   imports: [
@@ -71,7 +75,8 @@ let modalsArr = [
       libraries: ["places"]
     }),
     GooglePlacesInputModule,
-    NguiAutoCompleteModule
+    NguiAutoCompleteModule,
+    PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
   ],
   declarations: [
     ...directivesArr,
@@ -94,6 +99,7 @@ let modalsArr = [
     Angular2FontawesomeModule,
     GooglePlacesInputModule,
     NguiAutoCompleteModule,
+    PerfectScrollbarModule,
 
     ...directivesArr,
     ...pipesArr,
@@ -101,7 +107,7 @@ let modalsArr = [
   ],
   providers: [
     ...MAIN_RESOLVER_PROVIDERS,
-    ...ACCOUNT_RESOLVER_PROVIDERS
+    ...ACCOUNT_RESOLVER_PROVIDERS,
   ],
   entryComponents: [
     ...modalsArr

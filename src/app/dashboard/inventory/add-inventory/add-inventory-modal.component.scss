@@ -1,4 +1,5 @@
 @import "../../../../colors";
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
 
 :host /deep/ {
   .inner {
@@ -348,6 +349,39 @@
     position: absolute;
     left: -5px;
   }
+
+  .tabs-scroll {
+    .tabs li.tab a.active {
+      font-weight: bold;
+    }
+    .ps__thumb-x {
+      background-color: $tealish;
+    }
+    .ps__rail-x {
+      opacity: 1;
+    }
+    .ps--active-x>.ps__rail-x {
+      opacity: 1;
+    }
+    &>.ps.ps--active-x>.ps__rail-x {
+      bottom: 15px !important;
+      background: $light-light-grey;
+      border-radius: 4px;
+    }
+    &>.ps.ps--active-x>.ps__rail-x:hover {
+      height: 10px;
+      opacity: 1;
+    }
+    .ps__rail-x:hover>.ps__thumb-x {
+      background-color: $tealish;
+      height: 6px;
+    }
+    &>.ps.ps--scrolling-x>.ps__rail-x, perfect-scrollbar>.ps.ps--scrolling-y>.ps__rail-y {
+      opacity: 1;
+    }
+  }
+
+
 }
 .warning {
   background: #fcc2c2;
@@ -374,7 +408,8 @@ input:focus+.error {
   border-color: $light-grey;
 }
 
-.location-tabs {
-  overflow-y: hidden;
-  padding-bottom: 45px;
-}
+//.location-tabs {
+//  overflow-y: hidden;
+//  width: fit-content;
+//  overflow-x: visible;
+//}
