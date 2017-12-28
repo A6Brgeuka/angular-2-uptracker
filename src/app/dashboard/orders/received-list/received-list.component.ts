@@ -24,6 +24,8 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   private selectAllReceivedList$:  ReplaySubject<any> = new ReplaySubject(1);
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public reorderReceivedOrder$: any = new Subject();
+  public reorderReceivedCheckedItems$: any = new Subject();
+  public editReceivedCheckedItems$: any = new Subject();
   
   public showMenuItem: boolean = true;
   
@@ -42,9 +44,9 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     
     this.subscribers.getReceivedProductSubscription = this.pastOrderService.getReceivedProducts()
     .subscribe(res => {
-      console.log(res);
       this.pastOrderService.itemsVisibilityReceivedList = new Array(res.length).fill(false);
         this.receivedOrders$.next(res);
+        this.pastOrderService.totalReceived$.next(res.length);
     });
   
     this.subscribers.selectAllListSubscription =
@@ -52,6 +54,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
       .switchMap(select => {
         return this.receivedOrders$.first()
         .map(res => {
+          this.showMenuItem = select;
           res = _.forEach(res, (item: any) => {
             item.checked = select;
             item.items.map(product => product.checked = select);
@@ -76,7 +79,39 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     .switchMap(data => this.pastOrderService.reorder(data))
     .subscribe(res =>
       this.toasterService.pop('', res.msg)
-    )
+    );
+  
+    this.subscribers.reorderCheckedItemsSubscription = this.reorderReceivedCheckedItems$
+    .switchMapTo(this.receivedOrders$)
+    .map((receivedOrders: any) => {
+      let takeItemsFromPackingSlip = _.flatMap(_.map(receivedOrders, 'items'));
+      let checkedItems = _.filter(takeItemsFromPackingSlip, 'checked');
+      let data = {
+        "orders": checkedItems.map((item: any) => {
+          item.items_ids = [item.item_id];
+          return item;
+        })
+      };
+      this.reorderReceivedOrder$.next(data);
+    })
+    .subscribe();
+    
+    //this.subscribers.editCheckedItemsSubscription = this.editReceivedCheckedItems$
+    //.switchMapTo(this.receivedOrders$)
+    //.map((receivedOrders: any) => {
+    //  let takeItemsFromPackingSlip = _.flatMap(_.map(receivedOrders, 'items'));
+    //  let checkedItems = _.filter(takeItemsFromPackingSlip, 'checked');
+    //  let sendOrders: any[] = [];
+    //  let sendItems: any[] = [];
+    //
+    //  checkedItems.map((item:any)=> {
+    //    sendOrders.push(item.order_id);
+    //    sendItems.push(item.item_id);
+    //  });
+    //  let queryParams = sendOrders.toString() + '&' + sendItems.toString();
+    //  this.pastOrderService.goToReceive(queryParams);
+    //})
+    //.subscribe();
     
   }
   
@@ -103,10 +138,33 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   
   buyAgainReceivedOrder(order) {
     let data = {
-      "order_id": order.id,
-      "items_ids":[],
+      "orders": order.items.map(item => {
+        item.items_ids = [item.item_id];
+        return item;
+      }),
     };
     this.reorderReceivedOrder$.next(data);
+  }
+  
+  buyAgainReceivedCheckedOrders() {
+    this.reorderReceivedCheckedItems$.next('');
+  }
+  
+  editReceivedPackingSlip(packingSlip) {
+    
+    let sendOrders: any[] = [];
+    let sendItems: any[] = [];
+    
+    packingSlip.items.map(item => {
+      sendOrders.push(item.order_id);
+      sendItems.push(item.item_id);
+    });
+    let queryParams = _.uniqBy(sendOrders, '').toString() + '&' + sendItems.toString();
+    this.pastOrderService.goToReceive(queryParams);
+  }
+  
+  editCheckedReceivedPackingSlips() {
+    //this.editReceivedCheckedItems$.next('');
   }
   
 }

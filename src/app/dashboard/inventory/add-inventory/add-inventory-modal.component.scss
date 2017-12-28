@@ -373,3 +373,8 @@ input:focus+.error {
 .uptracker-form.ng-invalid .search.dirty.valid input {
   border-color: $light-grey;
 }
+
+.location-tabs {
+  overflow-y: hidden;
+  padding-bottom: 45px;
+}

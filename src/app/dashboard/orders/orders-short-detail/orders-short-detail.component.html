@@ -8,7 +8,7 @@
       <div class="col s1">Received</div>
       <div class="col s1">Reconciled</div>
       <div class="col s1">Qty</div>
-      <div class="col s1">Unit Price</div>
+      <div class="col s1">Package Price</div>
       <div class="col s1">Total</div>
       <div class="col s1">
       </div>
@@ -35,7 +35,7 @@
       <div class="col s1">{{ product.received_date }}</div>
       <div class="col s1">{{ product.reconciled_date }}</div>
       <div class="col s1">{{ product.quantity }}</div>
-      <div class="col s1">{{ product.unit_price }}</div>
+      <div class="col s1">{{ product.package_price }}</div>
       <div class="col s1">
         <div>{{ product.sub_total }}</div>
       </div>
@@ -45,7 +45,7 @@
         </div>
         <ul [id]='"order_dd"+i' class='dropdown-content'>
           <li *ngIf="product.status !== 'Reconciled'">
-            <a class="tealish-text" href="#">Edit</a>
+            <a class="tealish-text" (click)="getReceiveProduct(item, product)">Edit</a>
           </li>
           <li *ngIf="product.status !== 'Received'">
             <a class="tealish-text" (click)="getReceiveProduct(item, product)">Receive</a>

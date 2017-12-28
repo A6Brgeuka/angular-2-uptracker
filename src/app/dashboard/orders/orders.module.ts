@@ -9,6 +9,9 @@ import { SelectVendorModule } from './select-vendor-modal/select-vendor.module';
 import { ReceivedListModule } from './received-list/received-list.module';
 import { ResendOrderModalModule } from './resend-order-modal/resend-order-modal.module';
 import { ConfirmVoidOrderModalModule } from './order-modals/confirm-void-order-modal/confirm-void-order-modal.module';
+import { ReconciledListModule } from './reconciled-list/reconciled-list.module';
+import { BackorderedListModule } from './backordered-list/backordered-list.module';
+import { ReconcileModule } from './reconcile/reconcile.module';
 
 @NgModule({
   declarations: [
@@ -17,10 +20,13 @@ import { ConfirmVoidOrderModalModule } from './order-modals/confirm-void-order-m
   ],
   imports: [
     AppSharedModule,
+    BackorderedListModule,
     ReceiveModule,
     OrderModule,
     SelectVendorModule,
     ReceivedListModule,
+    ReconciledListModule,
+    ReconcileModule,
     ResendOrderModalModule,
     ConfirmVoidOrderModalModule,
   ],

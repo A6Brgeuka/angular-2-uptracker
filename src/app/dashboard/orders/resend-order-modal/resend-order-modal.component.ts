@@ -10,6 +10,7 @@ import { Subject } from 'rxjs/Subject';
 import { OrderService } from '../../../core/services/order.service';
 import { UserService } from '../../../core/services/user.service';
 import { APP_DI_CONFIG } from '../../../../../env';
+import { Router } from '@angular/router';
 
 export class ResendOrderModalContext extends BSModalContext {
   public order: any;
@@ -34,6 +35,7 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
     public pastOrderService: PastOrderService,
     public orderService: OrderService,
     public userService: UserService,
+    public router: Router,
   ) {
     this.context = dialog.context;
     dialog.setCloseGuard(this);
@@ -68,6 +70,7 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
           from_fax_number: order['from_fax_number'] || '1 11111111111',
           rmFn: null,
         });
+        this.dismissModal();
       },
       (err: any) => {
       })
@@ -81,15 +84,6 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
       data.po_number = "1234567890"
     }
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          this.dismissModal();
-        },
-        (err) => {
-        }
-      );
-    });
   }
   
   dismissModal(){
@@ -100,11 +94,8 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
     this.dialog.close(data);
   }
   
-  openPrintModal() {
-  
-  }
-  
   openEmailModal() {
     this.emailModalData$.next('');
   }
+  
 }

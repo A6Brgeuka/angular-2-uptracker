@@ -30,7 +30,6 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
   @Input("item") public item: any = [];
   @Input("visible") public visible;
   @Output() public isAllCheckedChanged = new EventEmitter();
-  @Output() public updatedItem = new EventEmitter();
 
   constructor(
     public modalWindowService: ModalWindowService,
@@ -54,10 +53,7 @@ export class OrdersShortDetailComponent implements OnInit, OnDestroy {
     
     this.subscribers.voidProductFromOrderSubscription = this.voidProduct$
     .switchMap((data: any) => this.pastOrderService.onVoidOrder(data))
-    .subscribe((res:any) => {
-      this.item = res[0];
-      this.updatedItem.emit(res[0]);
-    })
+    .subscribe();
   }
   
   ngOnDestroy() {

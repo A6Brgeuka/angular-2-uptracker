@@ -121,7 +121,9 @@
                       materialize="material_select"
                       (change)="saveOrder(orderId,'order_method',order.order_method,order.vendor_id)"
                       [(ngModel)]="order.order_method">
-                      <option *ngFor="let method of order.order_methods" [value]="method">{{method}}</option>
+                      <ng-container *ngFor="let method of order.order_methods">
+                        <option  [value]="method" *ngIf="method !== 'Direct'">{{method}}</option>
+                      </ng-container>
                     </select>
                   </div>
                 </div>

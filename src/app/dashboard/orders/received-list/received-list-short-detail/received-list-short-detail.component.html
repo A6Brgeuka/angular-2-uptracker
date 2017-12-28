@@ -8,7 +8,7 @@
       <div class="col s1">Received</div>
       <div class="col s1">Reconciled</div>
       <div class="col s1">Qty</div>
-      <div class="col s1">Unit Price</div>
+      <div class="col s1">Package Price</div>
       <div class="col s1">Total</div>
       <div class="col s1">
       </div>
@@ -26,11 +26,21 @@
           <label for="subselected{{i + item.id}}"></label>
         </div>
         <div class="left flex-center">
-          <div> {{ product.item_name }}</div>
+          <div>
+            <a [routerLink]="['/products',product.product_id]">
+              {{ product.item_name }}
+            </a>
+          </div>
         </div>
       </div>
-      <div class="col s1">{{ product.location_name }}</div>
-      <div class="col s1">{{ product.po_number }}</div>
+      <div class="col s1 tealish-text">
+        <a [routerLink]="['/locations','view',product.location_id]">{{ product.location_name }}</a>
+      </div>
+      <div class="col s1">
+        <a [routerLink]="['/orders', product.order_id]">
+          {{ product.po_number }}
+        </a>
+      </div>
       <div class="col s1">{{ product.placed_date }}</div>
       <div class="col s1">{{ product.received_date }}</div>
       <div class="col s1">{{ product.reconciled_date }}</div>
@@ -45,13 +55,13 @@
         </div>
         <ul [id]='"received_order_short_dd"+i' class='dropdown-content'>
           <li>
-            <a class="tealish-text" href="#">Edit</a>
+            <a class="tealish-text" (click) = "editReceivedProduct(product)">Edit</a>
           </li>
           <li>
-            <a class="tealish-text" href="#">Reconcile</a>
+            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
           </li>
           <li>
-            <a class="tealish-text" (click)="buyAgainReceivedProduct(item, product)">Buy Again</a>
+            <a class="tealish-text" (click)="buyAgainReceivedProduct(product)">Buy Again</a>
           </li>
         </ul>
       </div>

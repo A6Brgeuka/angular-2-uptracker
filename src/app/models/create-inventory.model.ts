@@ -9,6 +9,7 @@ export class InventoryProductModel {
   club_price:string = null;
   catalog_number:string = null;
   upc:string = null;
+  edited: boolean = false;
   
   inventory_by: any[] = [];
   

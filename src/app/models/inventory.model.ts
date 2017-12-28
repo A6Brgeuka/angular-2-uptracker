@@ -53,6 +53,8 @@ export class InventorySearchResults {
   account_product_id: string = null;
   account_variant_id: string = null;
   inventory_product_id: string = null;
+  
+  edited:boolean = false;
 
   constructor(obj?:any) {
     for (let field in obj) {

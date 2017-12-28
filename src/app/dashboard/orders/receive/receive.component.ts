@@ -14,6 +14,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 import { Modal } from 'angular2-modal';
 import { AddInventoryModal } from '../../inventory/add-inventory/add-inventory-modal.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReceivedOrderService } from '../../../core/services/received-order.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -27,7 +28,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   public locationArr: any = [];
   
   public receiveProducts: any = new ReceiveProductsModel;
-  public statusList: any = this.pastOrderService.statusList;
+  public statusList: any = this.receivedOrderService.statusList;
   public packingSlipValid: boolean = true;
   public inventoryGroupValid: boolean = true;
   public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
@@ -39,6 +40,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     public inventoryService: InventoryService,
     public router: Router,
     public pastOrderService: PastOrderService,
+    public receivedOrderService: ReceivedOrderService,
     public toasterService: ToasterService,
     public modalWindowService: ModalWindowService,
     public modal: Modal,
@@ -61,17 +63,18 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.subscribers.getReceiveProductSubscription = this.getReceiveProducts$
     .switchMap(() => this.route.params)
     .switchMap(param =>
-      this.pastOrderService.getReceiveProduct(param.queryParams)
+      this.receivedOrderService.getReceiveProduct(param.queryParams)
     )
     .subscribe((res:any) => {
+     
       this.receiveProducts = new ReceiveProductsModel(res);
       this.receiveProducts.orders = this.receiveProducts.orders.map(order => {
         order = new OrderModel(order);
         order.items = order.items.map((item: any) => {
-          //debugger;
-          let quantity = item.quantity;
+
+          let quantity = (item.status_line_items) ? item.status_line_items[item.status_line_items.length -1].quantity : item.quantity;
           item.item_id = item.id;
-          
+
           if (item.inventory_group_id && item.inventory_group) {
             item.existInvGroup = true;
             item.inventory_groups = [item.inventory_group];
@@ -83,11 +86,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
                 id: 'routerLink'
               });
           };
-          if (item.status_line_items) {
-            quantity = item.status_line_items[item.status_line_items.length -1].quantity;
-          }
-          item = new ItemModel(item);
           
+          item = new ItemModel(item);
+
           item.status = [new StatusModel(item)];
           item.status[0].qty = quantity;
           item.status[0].type = 'receive';
@@ -99,7 +100,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
           item.status[1].qty = 0;
           item.status[1].type = 'pending';
           item.status[1].tmp_id = 'tmp' + Math.floor(Math.random() * 1000000);
-  
+
           item.storage_locations = [new StorageLocationModel()];
           return item;
         });
@@ -111,7 +112,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.subscribers.getProductFieldSubscription =
       this.newInventory$
     .switchMap((product:any) => {
-      return this.pastOrderService.getProductFields(product.variant_id)
+      return this.receivedOrderService.getProductFields(product.variant_id)
       .map(res => {
         this.modal
         .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': res, 'inventoryItems':[]}))
@@ -129,7 +130,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     .subscribe();
     
     this.subscribers.saveReceiveProductSubscription = this.saveReceiveProducts$
-    .switchMap(() => this.pastOrderService.onReceiveProducts(this.receiveProducts))
+    .switchMap(() => this.receivedOrderService.onReceiveProducts(this.receiveProducts))
     .subscribe(() => {
       this.toasterService.pop('', "Successfully received");
       this.router.navigate(['/orders'])
@@ -212,17 +213,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     curStatus.showStatusSelect = false;
     if (setStatus !== curStatus.type) {
       const filteredStatus = _.find(product.status, {'type': setStatus});
-      const findIncreaseStatus = _.find(product.status, {'type': 'quantity increase'});
-      const findDecreaseStatus = _.find(product.status, {'type': 'quantity decrease'});
       const findReceiveStatus = _.find(product.status, {'type': 'receive'});
       let quantityStatus: boolean = false;
       let receiveStatus: boolean = false;
-      
-      if ((findIncreaseStatus && setStatus === 'quantity decrease' && curStatus.type !== 'quantity increase')
-        || (findDecreaseStatus && setStatus === 'quantity increase' && curStatus.type !== 'quantity decrease')) {
-        this.toasterService.pop('error', `You can set either quantity decrease or quantity increase status`);
-        quantityStatus = true;
-      }
   
       if (findReceiveStatus && setStatus === 'partial receive' && curStatus.type !== 'receive'){
         this.toasterService.pop('error', `You can set either receive or partial receive status`);
@@ -305,6 +298,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   
   removePreviouslyReceivedToggle(statusLine) {
     statusLine.removed = !statusLine.removed;
+  }
+  
+  onChangeProductQuantity(product) {
+    product.updatedQuantity;
   }
   
 }
