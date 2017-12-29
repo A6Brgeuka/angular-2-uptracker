@@ -12,6 +12,7 @@ import { ConfirmVoidOrderModalModule } from './order-modals/confirm-void-order-m
 import { ReconciledListModule } from './reconciled-list/reconciled-list.module';
 import { BackorderedListModule } from './backordered-list/backordered-list.module';
 import { ReconcileModule } from './reconcile/reconcile.module';
+import { AllOrdersListModule } from './all-orders-list/all-orders-list.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ReconcileModule } from './reconcile/reconcile.module';
   ],
   imports: [
     AppSharedModule,
+    AllOrdersListModule,
     BackorderedListModule,
     ReceiveModule,
     OrderModule,

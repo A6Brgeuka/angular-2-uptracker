@@ -357,12 +357,6 @@
     .ps__thumb-x {
       background-color: $tealish;
     }
-    .ps__rail-x {
-      opacity: 1;
-    }
-    .ps--active-x>.ps__rail-x {
-      opacity: 1;
-    }
     &>.ps.ps--active-x>.ps__rail-x {
       bottom: 15px !important;
       background: $light-light-grey;
@@ -376,11 +370,11 @@
       background-color: $tealish;
       height: 6px;
     }
-    &>.ps.ps--scrolling-x>.ps__rail-x, perfect-scrollbar>.ps.ps--scrolling-y>.ps__rail-y {
+    &>.ps.ps--scrolling-x>.ps__rail-x, perfect-scrollbar>.ps.ps--scrolling-y>.ps__rail-y,
+    .ps--active-x>.ps__rail-x, .ps__rail-x {
       opacity: 1;
     }
   }
-
 
 }
 .warning {

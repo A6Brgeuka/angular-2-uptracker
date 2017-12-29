@@ -44,7 +44,7 @@ import { APP_DI_CONFIG } from '../../../env';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
-let modalsArr = [
+const modalsArr = [
   EditUserModal,
   EditLocationModal,
   ChangePasswordUserModal,
