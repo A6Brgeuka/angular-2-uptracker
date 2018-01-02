@@ -267,6 +267,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       setTimeout(()=>{ this.showSelect = true;
       },0.6);
       this.items = res;
+      console.log(this.items);
     });
     //load initial items from context
     this.loadItems$.next(this.context.inventoryItems);
@@ -644,28 +645,30 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   addNewProduct() {
     
+    let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
+    let inventory_by_arr = [
+      {
+        type: "Package",
+        label: this.newProductData.package_type,
+        value: "package",
+        qty: (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty*this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty,
+      },
+      {
+        type: "Sub Package",
+        label: this.newProductData.sub_package.properties.unit_type,
+        value: "sub_package",
+        qty: this.newProductData.consumable_unit.properties.qty,
+      },
+      {
+        type: "Consumable Unit",
+        label: this.newProductData.consumable_unit.properties.unit_type,
+        value: "consumable_unit",
+        qty: 1,
+      }
+    ];
+    
     if (!this.editCustomProduct) {
-      let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
-      let inventory_by_arr = [
-        {
-          type: "Package",
-          label: this.newProductData.package_type,
-          value: "package",
-          qty: ''
-        },
-        {
-          type: "Sub Package",
-          label: this.newProductData.sub_package.properties.unit_type,
-          value: "sub_package",
-          qty: this.newProductData.sub_package.properties.qty,
-        },
-        {
-          type: "Consumable Unit",
-          label: this.newProductData.consumable_unit.properties.unit_type,
-          value: "consumable_unit",
-          qty: this.newProductData.consumable_unit.properties.qty,
-        }
-      ];
+      
       this.addCustomToInventory([
         new InventorySearchResults(
           Object.assign(this.newProductData, {
@@ -680,7 +683,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     } else {
       if (this.context.inventoryGroup) {
         this.newProductData.edited = true;
+        //this.newProductData.consumable_unit.properties.qty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
       }
+      this.newProductData.inventory_by = inventory_by_arr;
       this.updateItems$.next(this.newProductData);
     }
     this.toggleCustomAdd();
@@ -721,8 +726,24 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   selectPackageType(packageType) {
+    
     this.newInventory.inventory_by = packageType.value;
     this.newInventory.inventory_by_qty = packageType.qty;
+  
+    //switch (packageType.value) {
+    //  case 'package' :
+    //    this.newInventory.inventory_by_qty = this.newInventory.inventory_by_array[2].qty;
+    //    break;
+    //  case 'sub_package':
+    //    this.newInventory.inventory_by_qty = this.newInventory.inventory_by_array[2].qty/packageType.qty;
+    //    break;
+    //  case 'consumable_unit' :
+    //    this.newInventory.inventory_by_qty = 1;
+    //    break;
+    //  default:
+    //    this.newInventory.inventory_by_qty = '';
+    //    break;
+    //}
     this.newInventory.inventory_by_type = packageType.type;
     this.newInventory.inventory_by_label = packageType.label;
   }
@@ -948,6 +969,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newProductData = new InventorySearchResults();
       this.newProductData.consumable_unit.properties.unit_type = productItem.consumable_unit.properties.unit_type;
     }
+  
+    //if (this.context.inventoryGroup) {
+      //this.newProductData.consumable_unit.properties.qty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
+    //}
   }
   
 }

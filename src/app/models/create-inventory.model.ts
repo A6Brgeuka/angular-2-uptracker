@@ -84,6 +84,7 @@ export class InventoryModel {
   image: string = '';
   locations: InventoryLocationModel[] =[];
   inventory_by: string = '';
+  inventory_by_label: string = '';
   hazardous: boolean = false;
   
   inventory_by_array: any[] = [];
