@@ -41,7 +41,7 @@
               {{editCustomProduct ? 'Edit' : 'Add'}} {{newProductData.custom_product ? 'Custom' : 'Global'}} Product
             </div>
             <div class="col s6 right-align">
-              <button class="uptracker-form-btn  redbtn waves-effect waves-light" (click)="toggleCustomCancel()">
+              <button class="uptracker-form-btn  redbtn waves-effect waves-light" type="button" (click)="toggleCustomCancel()">
                 Cancel
               </button>
               <button class="uptracker-form-btn tealish  white-text waves-effect waves-light" type="submit"
@@ -53,7 +53,7 @@
               <button class="uptracker-form-btn tealish  white-text waves-effect waves-light" type="submit"
                 *ngIf="newProductData.custom_product && editCustomProduct"
                 [disabled] = '!customProdForm.form.valid || !newProductData.vendors || !newProductData.consumable_unit.properties.unit_type'>
-                Edit
+                Save
               </button>
             </div>
           </div>
@@ -164,10 +164,14 @@
                 <div class="row relative">
                   <div class="col s3">
                     <div class="input">
-                      <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty"
-                        name="qty2"
-                        #qty2="ngModel"
-                        required>
+                      <!--<input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty"-->
+                        <!--name="qty2"-->
+                        <!--#qty2="ngModel"-->
+                        <!--required>-->
+                      <input [(ngModel)]="newProductData.consumableUnitQty" type="text" placeholder="Qty"
+                      name="qty2"
+                      #qty2="ngModel"
+                      required>
                     </div>
                   </div>
                   <div class="col s8">
@@ -208,7 +212,7 @@
                   <div class="col s1">=</div>
                   <div class="col s3">
                     <div class="text-center">
-                      {{(newProductData.sub_package.properties.qty) ? newProductData.sub_package.properties.qty*newProductData.consumable_unit.properties.qty : newProductData.consumable_unit.properties.qty}}
+                      {{(newProductData.sub_package.properties.unit_type && newProductData.sub_package.properties.qty) ? newProductData.sub_package.properties.qty*newProductData.consumableUnitQty : newProductData.consumableUnitQty}}
                     </div>
                     <div class="text-center">{{newProductData.consumable_unit.properties.unit_type || 'Total Units'}}</div>
                   </div>
@@ -343,7 +347,7 @@
               <div>
                 <div class="product-name tealish-text">{{ item.name }}</div>
                 <div class="vendor-name">
-                  <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor.vendor_name }}<span>,</span> </span>
+                  <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor?.vendor_name }}<span>,</span> </span>
                 </div>
                 <div class="clearfix"></div>
               </div>

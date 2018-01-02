@@ -644,20 +644,19 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addNewProduct() {
-    
     let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
     let inventory_by_arr = [
       {
         type: "Package",
         label: this.newProductData.package_type,
         value: "package",
-        qty: (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty*this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty,
+        qty: (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumableUnitQty*this.newProductData.sub_package.properties.qty : this.newProductData.consumableUnitQty,
       },
       {
         type: "Sub Package",
         label: this.newProductData.sub_package.properties.unit_type,
         value: "sub_package",
-        qty: this.newProductData.consumable_unit.properties.qty,
+        qty: (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumableUnitQty : null,
       },
       {
         type: "Consumable Unit",
@@ -970,9 +969,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newProductData.consumable_unit.properties.unit_type = productItem.consumable_unit.properties.unit_type;
     }
   
-    //if (this.context.inventoryGroup) {
-      //this.newProductData.consumable_unit.properties.qty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
-    //}
+    if (this.context.inventoryGroup && !productItem.consumableUnitQty) {
+      this.newProductData.consumableUnitQty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
+    }
   }
   
 }
