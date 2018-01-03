@@ -145,7 +145,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    console.log('for unsubscribing')
+    console.log('for unsubscribing');
   }
   
   addSubscribers() {
@@ -153,19 +153,20 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
     this.getCurrentInventory();
   
     this.subscribers.selectLocationSubscription = Observable.combineLatest(this.accountService.dashboardLocation$, this.product$)
-    .filter(([location, product]:any) => {
-      return (location && product)
+    .filter(([location, product]: any) => {
+      return (location && product);
     })
-    .switchMap(([location, product]:any) => {
+    .switchMap(([location, product]: any) => {
       return product.inventory_item_locations.map(inventoryLocation => {
-        if(location.id === inventoryLocation.location_id) {
+        if (location.id === inventoryLocation.location_id) {
           product.critical_level = inventoryLocation.critical_level;
           product.overstock_level = inventoryLocation.overstock_level;
           product.fully_stocked = inventoryLocation.fully_stocked;
           product.storage_locations = inventoryLocation.storage_locations;
           product.pending = inventoryLocation.pending;
+          product.on_hand_combined = inventoryLocation.on_hand;
         }
-      })
+      });
     }).subscribe();
   
     this.subscribers.environmentSubscription = this.configService.environment$
