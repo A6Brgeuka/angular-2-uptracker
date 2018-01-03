@@ -383,6 +383,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     
     this.autocompleteOuterPackage$.next('');
     this.autocompleteInnerPackage$.next('');
+    this.autocompleteConsPackage$.next('');
   }
   
   ngOnDestroy() {
@@ -670,7 +671,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ];
     
     if (!this.editCustomProduct) {
-      
       this.addCustomToInventory([
         new InventorySearchResults(
           Object.assign(this.newProductData, {
@@ -949,12 +949,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     if (productItem.custom_product) {
       this.newProductData = productItem;
       this.newProductData.vendor.vendor_name = productItem.vendors[0].vendor_name;
-    }
-    else {
+    } else {
       this.newProductData = new InventorySearchResults();
       this.newProductData.consumable_unit.properties.unit_type = productItem.consumable_unit.properties.unit_type;
     }
-  
     if (this.context.inventoryGroup && !productItem.consumableUnitQty) {
       this.newProductData.consumableUnitQty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
     }

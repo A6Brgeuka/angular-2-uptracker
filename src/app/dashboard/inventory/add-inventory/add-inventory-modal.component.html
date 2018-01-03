@@ -164,10 +164,6 @@
                 <div class="row relative">
                   <div class="col s3">
                     <div class="input">
-                      <!--<input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty"-->
-                        <!--name="qty2"-->
-                        <!--#qty2="ngModel"-->
-                        <!--required>-->
                       <input [(ngModel)]="newProductData.consumableUnitQty" type="text" placeholder="Qty"
                       name="qty2"
                       #qty2="ngModel"
@@ -181,7 +177,6 @@
                         placeholder="Type"
                         [source]="observableSourceConsPackage.bind(this)"
                         (input) = 'onSearchConsPackage($event)'
-                        [min-chars] = '1'
                         (ngModelChange) = 'selectedAutocompledConsPackage($event)'
                         [ngModel] = "newProductData.consumable_unit.properties.unit_type"
                         [list-formatter] = '"unit_name"'
