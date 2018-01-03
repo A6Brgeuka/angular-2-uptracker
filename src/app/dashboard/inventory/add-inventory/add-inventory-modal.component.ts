@@ -275,6 +275,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       let editedItems = this.context.inventoryGroup.inventoryGroup.inventory_products.map(product => {
         if (!product.variant_id) {
           product.variant_id = 'tmp' + Math.floor(Math.random() * 10000000);
+          product.formattedPrice = product.list_price;
+          product.formattedForumPrice = product.price.package_price;
+          product.formattedClubPrice = product.club_price;
         }
         return new InventorySearchResults(product);
       });
@@ -682,7 +685,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     } else {
       if (this.context.inventoryGroup) {
         this.newProductData.edited = true;
-        //this.newProductData.consumable_unit.properties.qty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
       }
       this.newProductData.inventory_by = inventory_by_arr;
       this.updateItems$.next(this.newProductData);
@@ -725,24 +727,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   selectPackageType(packageType) {
-    
     this.newInventory.inventory_by = packageType.value;
     this.newInventory.inventory_by_qty = packageType.qty;
-  
-    //switch (packageType.value) {
-    //  case 'package' :
-    //    this.newInventory.inventory_by_qty = this.newInventory.inventory_by_array[2].qty;
-    //    break;
-    //  case 'sub_package':
-    //    this.newInventory.inventory_by_qty = this.newInventory.inventory_by_array[2].qty/packageType.qty;
-    //    break;
-    //  case 'consumable_unit' :
-    //    this.newInventory.inventory_by_qty = 1;
-    //    break;
-    //  default:
-    //    this.newInventory.inventory_by_qty = '';
-    //    break;
-    //}
     this.newInventory.inventory_by_type = packageType.type;
     this.newInventory.inventory_by_label = packageType.label;
   }
