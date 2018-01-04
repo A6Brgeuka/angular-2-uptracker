@@ -48,7 +48,7 @@ export class InventorySearchResults {
   custom_product_id: string = null; // my prop
   custom_product: boolean = false; // my prop
   vendor_id: string = null;
-  vendor_name: string = null;
+  vendor_name: string = 'Auto';
   
   account_product_id: string = null;
   account_variant_id: string = null;

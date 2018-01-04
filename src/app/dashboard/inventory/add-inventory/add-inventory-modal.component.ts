@@ -164,6 +164,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.newInventory.products.map((product) => {
           if (product.product_id === null) {
             product.variant_id = null;
+            if (!product.vendors[0].vendor_id) {
+              product.vendors = [product.vendors[0].vendor_name];
+            }
           }
         });
         return this.inventoryService.addItemsToInventory(this.newInventory)});
@@ -172,7 +175,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
     this.updateAdded$
     .switchMap(() => {
-      return this.inventoryService.updateInventory(this.newInventory)
+      return this.inventoryService.updateInventory(this.newInventory);
     })
     .subscribe(newInventory => this.closeModal(newInventory));
   
@@ -446,10 +449,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   selectedAutocompledVendor(vendor) {
-    this.newProductData.vendors = [vendor];
+    if (!(this.newProductData.vendors.length && !vendor.vendor_id && this.newProductData.vendors[0].vendor_name === vendor)) {
+      this.newProductData.vendors = (vendor.vendor_id) ? [vendor] : [{vendor_name: vendor, vendor_id: null}];
+    }
   }
   onSearchVendor(event) {
     this.newProductData.vendors = [{vendor_name: event.target.value, vendor_id: null}];
+    this.newProductData.vendor_name = 'Auto';
+    this.newProductData.vendor_id = null;
     this.vendorDirty = true;
     this.vendorValid = !!(event.target.value);
     this.autocompleteVendors$.next(event.target.value);
@@ -648,7 +655,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   addNewProduct() {
-    let vendor = (this.newProductData.vendors.length) ? this.newProductData.vendors : [{vendor_name: this.newProductData.vendor_name, vendor_id:null}];
     let inventory_by_arr = [
       {
         type: "Package",
@@ -675,7 +681,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         new InventorySearchResults(
           Object.assign(this.newProductData, {
             variant_id: 'tmp' + Math.floor(Math.random() * 1000000),
-            vendors: vendor,
             inventory_by: inventory_by_arr,
             custom_product: true,
           })
@@ -944,16 +949,16 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   editProduct(productItem) {
     this.addCustomProduct = true;
     this.editCustomProduct = true;
-    this.innerPack = productItem.sub_package.properties.unit_type;
-    this.outerPack = productItem.package_type;
+    
     if (productItem.custom_product) {
-      this.newProductData = productItem;
+      this.innerPack = productItem.sub_package.properties.unit_type;
+      this.outerPack = productItem.package_type;
+      this.newProductData = new InventorySearchResults(productItem);
       this.newProductData.vendor.vendor_name = productItem.vendors[0].vendor_name;
     } else {
       this.newProductData = new InventorySearchResults();
-      this.newProductData.consumable_unit.properties.unit_type = productItem.consumable_unit.properties.unit_type;
     }
-    if (this.context.inventoryGroup && !productItem.consumableUnitQty) {
+    if (this.context.inventoryGroup && !this.newProductData.consumableUnitQty && productItem.custom_product) {
       this.newProductData.consumableUnitQty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
     }
   }
