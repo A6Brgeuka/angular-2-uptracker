@@ -243,6 +243,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ).publishReplay(1).refCount();
     
     this.subscribers.itemsSubscription = this.items$.subscribe(res => {
+      console.log(555555, res[0])
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {
@@ -694,6 +695,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newProductData.inventory_by = inventory_by_arr;
       this.updateItems$.next(this.newProductData);
     }
+    this.editCustomProduct = false;
     this.toggleCustomAdd();
   }
   
@@ -949,18 +951,16 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   editProduct(productItem) {
     this.addCustomProduct = true;
     this.editCustomProduct = true;
-    
     if (productItem.custom_product) {
       this.innerPack = productItem.sub_package.properties.unit_type;
       this.outerPack = productItem.package_type;
-      this.newProductData = new InventorySearchResults(productItem);
+      this.newProductData = _.cloneDeep(new InventorySearchResults(productItem));
       this.newProductData.vendor.vendor_name = productItem.vendors[0].vendor_name;
+      if (this.context.inventoryGroup && !this.newProductData.consumableUnitQty) {
+        this.newProductData.consumableUnitQty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
+      }
     } else {
       this.newProductData = new InventorySearchResults();
     }
-    if (this.context.inventoryGroup && !this.newProductData.consumableUnitQty && productItem.custom_product) {
-      this.newProductData.consumableUnitQty = (this.newProductData.sub_package.properties.unit_type) ? this.newProductData.consumable_unit.properties.qty/this.newProductData.sub_package.properties.qty : this.newProductData.consumable_unit.properties.qty;
-    }
   }
-  
 }

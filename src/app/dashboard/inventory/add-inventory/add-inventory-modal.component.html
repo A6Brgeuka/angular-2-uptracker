@@ -180,7 +180,7 @@
                         (ngModelChange) = 'selectedAutocompledConsPackage($event)'
                         [ngModel] = "newProductData.consumable_unit.properties.unit_type"
                         [list-formatter] = '"unit_name"'
-                        [disabled] = 'items.length'
+                        [disabled] = 'items.length > 1 || items.length == 1 && !editCustomProduct'
                         [tab-to-select] = 'false'
                         name="cons_package_type"
                         required
