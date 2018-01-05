@@ -175,6 +175,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
     this.updateAdded$
     .switchMap(() => {
+      this.newInventory.products.map((product) => {
+        //if (!product.vendors[0].vendor_id) {
+        //  product.vendors = [product.vendors[0].vendor_name];
+        //}
+      });
       return this.inventoryService.updateInventory(this.newInventory);
     })
     .subscribe(newInventory => this.closeModal(newInventory));
@@ -243,7 +248,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     ).publishReplay(1).refCount();
     
     this.subscribers.itemsSubscription = this.items$.subscribe(res => {
-      console.log(555555, res[0])
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {
@@ -723,7 +727,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   onChangeForumPrice(val) {
     let value = this.changePrice(val);
-    this.newProductData.price = value;
+    this.newProductData.negotiated_price = value;
     this.newProductData.formattedForumPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
   

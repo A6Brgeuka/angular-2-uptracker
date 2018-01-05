@@ -26,6 +26,7 @@ export class InventorySearchResults {
   description:string = "";
   catalog_number: string = "";
   price: number = 0;
+  negotiated_price: number = 0;
   club_price:number = 0;
   list_price:number = 0;
   images:string[] = [];
