@@ -13,18 +13,27 @@
           <label for="selectAllReceivedList"></label>
         </div>
         <div class="left">
-          Packing Slip #
+          Order #
         </div>
       </div>
-      <div class="col s2">Vendor</div>
-      <div class="col s2">Order #s</div>
-      <div class="col s2"># Products</div>
-      <div class="col s2">Date</div>
-      <div class="col s2">
+      <div class="col s2">Product Name</div>
+      <div class="col s2">Location</div>
+      <div class="col s1">Placed</div>
+      <div class="col s1">Received</div>
+      <div class="col s1">Qty</div>
+      <div class="col s1">Pkg Price</div>
+      <div class="col s1">Total</div>
+      <div class="col s1">
+        <span class="tealish-text">
+        <fa name="flag-o"></fa>
+      </span>
+        <span class="tealish-text">
+        <fa name="star-o"></fa>
+      </span>
         <div class="right edititem"
           materialize="dropdown"
           data-activates='received_order_ddm'
-          *ngIf="showMenuItem">
+          >
           <fa name="ellipsis-h"></fa>
         </div>
         <ul id='received_order_ddm' class='dropdown-content'>
@@ -38,7 +47,6 @@
             <a class="tealish-text" (click) = "buyAgainReceivedCheckedOrders()">Buy Again</a>
           </li>
         </ul>
-        <div>User</div>
       </div>
     </div>
 

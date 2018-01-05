@@ -5,9 +5,7 @@
         <input
           type="checkbox"
           class="checkbox-input"
-
           id="selectAllReceivedList"
-
         />
         <label for="selectAllReceivedList"></label>
       </div>
@@ -25,6 +23,12 @@
     <div class="col s1">Pkg Price</div>
     <div class="col s1">Total</div>
     <div class="col s1 pdg-r-0">
+      <span class="tealish-text">
+        <fa name="flag-o"></fa>
+      </span>
+      <span class="tealish-text">
+        <fa name="star-o"></fa>
+      </span>
       <div class="right edititem"
       materialize="dropdown"
       data-activates='order_all_ddm'
@@ -48,7 +52,73 @@
     </div>
   </div>
 
-  <div class="item row">
+  <div class="item row"
+    *ngFor="let item of orders;let i=index;">
+    <div class="col s1 left-align">
+      <div class="input-checkbox left checkbox">
+        <input
+          type="checkbox"
+          [(ngModel)] = 'item.checked'
+          (ngModelChange)="setCheckbox(item)"
+          class="selected-input{{i + item.id}}"
+          id="selected{{i + item.id}}"
+        />
+        <label for="selected{{i + item.id}}"></label>
+      </div>
+      <div class="left" (click) = "editReceivedPackingSlip(item)">
+        {{ item.order_number }}
+      </div>
+    </div>
+    <div class="col s2">{{item.product_name}}</div>
+    <div class="col s1">{{item.location}}</div>
+    <div class="col s1">{{item.status}}</div>
+    <div class="col s1">{{item.placed}}</div>
+    <div class="col s1">{{item.received}}</div>
+    <div class="col s1">{{item.reconciled}}</div>
+    <div class="col s1">{{item.qty}}</div>
+    <div class="col s1">{{item.pkg_price}}</div>
+    <div class="col s1">{{item.total}}</div>
+    <div class="col s1 show-hover-elem">
 
+      <span class="tealish-text">
+        <fa name="flag-o" *ngIf="item.flagged"></fa>
+        <fa name="flag" *ngIf="!item.flagged"></fa>
+      </span>
+      <span class="tealish-text">
+        <fa name="star-o" *ngIf="item.favorite"></fa>
+        <fa name="star" *ngIf="!item.favorite"></fa>
+      </span>
+
+      <div class="right edititem"
+      materialize="dropdown"
+      [attr.data-activates]='"order_dd_"+i'>
+      <fa name="ellipsis-h"></fa>
+      </div>
+      <ul [id]='"order_dd_"+i' class='dropdown-content'>
+        <li *ngIf="item.status !== 'Reconciled'">
+          <a class="tealish-text" (click)="sendToReceiveOrder(item)">Edit</a>
+        </li>
+        <li>
+          <a class="tealish-text" (click)="setFlag($event, item)">
+            {{item.flagged ? 'Unflag' : 'Flag'}}
+          </a>
+        </li>
+        <li *ngIf="item.order_method !== 'Direct'">
+          <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
+        </li>
+        <li *ngIf="item.status !== 'Received'">
+          <a class="tealish-text" (click)="sendToReceiveOrder(item)">Receive</a>
+        </li>
+        <li *ngIf="item.status === 'Received'">
+          <a class="tealish-text" href="#">Reconcile</a>
+        </li>
+        <li>
+          <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
+        </li>
+        <li *ngIf="item.status !== 'Voided'">
+          <a class="red-text" (click)="onVoidOrder(item)">Void</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

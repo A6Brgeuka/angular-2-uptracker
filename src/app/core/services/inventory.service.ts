@@ -104,8 +104,7 @@ export class InventoryService extends ModelService {
     };
     if (search_string) {
       query.query = search_string;
-    } else {
-    }
+    };
     if (sortBy && sortBy == 'Z-A') {
       query.sort = 'desc';
     }

@@ -3,12 +3,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 @Component({
-  selector: 'app-reconciled-list',
-  templateUrl: './reconciled-list.component.html',
-  styleUrls: ['./reconciled-list.component.scss']
+  selector: 'app-closed-list',
+  templateUrl: './closed-list.component.html',
+  styleUrls: ['./closed-list.component.scss']
 })
 @DestroySubscribers()
-export class ReconciledListComponent implements OnInit, OnDestroy {
+export class ClosedListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
   constructor(

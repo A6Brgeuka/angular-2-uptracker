@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 
 import { AppSharedModule } from '../../../shared/shared.module';
-import { ReconciledListComponent } from './reconciled-list.component';
+import { ClosedListComponent } from './closed-list.component';
 
 @NgModule({
   declarations: [
-    ReconciledListComponent,
+    ClosedListComponent,
   ],
-  exports: [ReconciledListComponent],
+  exports: [ClosedListComponent],
   imports: [
     AppSharedModule,
   ],
   providers: [],
 })
-export class ReconciledListModule {
+export class ClosedListModule {
 
 }

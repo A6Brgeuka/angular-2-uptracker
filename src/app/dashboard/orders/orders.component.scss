@@ -162,11 +162,11 @@
               color: $red;
             }
           }
-          .edititem {
+          .show-hover-elem {
             visibility: hidden;
           }
           &:hover {
-            .edititem {
+            .show-hover-elem {
               visibility: visible;
             }
           }
@@ -249,11 +249,11 @@
       .s3, .s1 {
         margin: 0;
       }
-      .edititem {
+      .show-hover-elem {
         visibility: hidden !important;
       }
       &:hover {
-        .edititem {
+        .show-hover-elem {
           visibility: visible !important;
         }
       }
