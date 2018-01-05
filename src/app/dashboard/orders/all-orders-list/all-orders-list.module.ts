@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 
 import { AppSharedModule } from '../../../shared/shared.module';
-import { BackorderedListComponent } from './backordered-list.component';
+import { AllOrdersListComponent } from './all-orders-list.component';
 
 @NgModule({
   declarations: [
-    BackorderedListComponent,
+    AllOrdersListComponent,
   ],
-  exports: [BackorderedListComponent],
+  exports: [AllOrdersListComponent],
   imports: [
     AppSharedModule,
   ],
   providers: [],
 })
-export class BackorderedListModule {
+export class AllOrdersListModule {
 
 }

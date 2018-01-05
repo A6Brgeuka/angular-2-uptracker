@@ -38,6 +38,9 @@ export class AddInventoryModalContext extends BSModalContext {
 @DestroySubscribers()
 export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalComponent<AddInventoryModalContext> {
   public subscribers: any = {};
+  public scrollConfig = {
+    suppressScrollY: true,
+  }
   context: AddInventoryModalContext;
   total: number = 0;
   public typeIn$: any = new Subject();
