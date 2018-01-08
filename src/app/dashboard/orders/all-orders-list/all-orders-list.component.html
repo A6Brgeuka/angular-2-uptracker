@@ -52,7 +52,7 @@
     </div>
   </div>
 
-  <div class="item row"
+  <div class="item row flex-center"
     *ngFor="let item of orders;let i=index;">
     <div class="col s1 left-align">
       <div class="input-checkbox left checkbox">
@@ -69,12 +69,12 @@
         {{ item.order_number }}
       </div>
     </div>
-    <div class="col s2">{{item.product_name}}</div>
-    <div class="col s1">{{item.location}}</div>
-    <div class="col s1">{{item.status}}</div>
-    <div class="col s1">{{item.placed}}</div>
-    <div class="col s1">{{item.received}}</div>
-    <div class="col s1">{{item.reconciled}}</div>
+    <div class="col s2"><a>{{item.product_name}}</a></div>
+    <div class="col s1"><a>{{item.location}}</a></div>
+    <div class="col s1"><a>{{item.status}}</a></div>
+    <div class="col s1"><a>{{item.placed}}</a></div>
+    <div class="col s1"><a>{{item.received}}</a></div>
+    <div class="col s1"><a>{{item.reconciled}}</a></div>
     <div class="col s1">{{item.qty}}</div>
     <div class="col s1">{{item.pkg_price}}</div>
     <div class="col s1">{{item.total}}</div>
@@ -91,10 +91,10 @@
 
       <div class="right edititem"
       materialize="dropdown"
-      [attr.data-activates]='"order_dd_"+i'>
+      [attr.data-activates]='"order_dd_all"+i'>
       <fa name="ellipsis-h"></fa>
       </div>
-      <ul [id]='"order_dd_"+i' class='dropdown-content'>
+      <ul [id]='"order_dd_all"+i' class='dropdown-content'>
         <li *ngIf="item.status !== 'Reconciled'">
           <a class="tealish-text" (click)="sendToReceiveOrder(item)">Edit</a>
         </li>

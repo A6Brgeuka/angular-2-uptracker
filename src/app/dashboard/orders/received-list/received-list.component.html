@@ -50,73 +50,122 @@
       </div>
     </div>
 
-    <div class="item row"
-      *ngFor="let item of (receivedOrders$ | async);let i=index;"
-      [class.no-border-bottom]="pastOrderService.itemsVisibilityReceivedList[i]">
-      <div>
-        <div class="col s2 left-align">
-          <div class="input-checkbox left checkbox">
-            <input
-              type="checkbox"
-              [(ngModel)] = 'item.checked'
-              (ngModelChange)="setCheckbox(item)"
-              class="selected-input{{i + item.id}}"
-              id="selected{{i + item.id}}"
-            />
-            <label for="selected{{i + item.id}}"></label>
-          </div>
-          <div class="left" (click) = "editReceivedPackingSlip(item)">
-            {{ item.packing_slip_number }}
-          </div>
+    <div class="item row flex-center"
+      *ngFor="let item of orders;let i=index;">
+      <div class="col s2 left-align">
+        <div class="input-checkbox left checkbox">
+          <input
+            type="checkbox"
+            [(ngModel)] = 'item.checked'
+            (ngModelChange)="setCheckbox(item)"
+            class="selected-input{{i + item.id}}"
+            id="selected{{i + item.id}}"
+          />
+          <label for="selected{{i + item.id}}"></label>
         </div>
-        <div (click)="changeVisibilityReceivedList(i)" class="col s2 pointer flex-center">
-          <div>
-            <a [routerLink]="['/vendors','view',item.vendor_id]">{{item.vendor_name}}</a>
-          </div>
+        <div class="left">
+          {{ item.order_number }}
         </div>
-        <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">
-          <span *ngFor="let number of item.order_numbers" class="orders-number">
-            <a [routerLink]="['/orders', number.order_id]">{{ number.po_number }}</a>
-            <span>, </span></span>
-        </div>
-        <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.product_count}}</div>
-        <div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.date}}</div>
-        <div class="col s2 pdg-r-0">
-
-          <div class="right edititem"
-            materialize="dropdown"
-            [attr.data-activates]='"received_order_dd_" +i'>
-            <fa name="ellipsis-h"></fa>
-          </div>
-
-          <ul [id]='"received_order_dd_" +i' class='dropdown-content'>
-            <li>
-              <a class="tealish-text" (click) = "editReceivedPackingSlip(item)">Edit</a>
-            </li>
-            <li>
-              <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
-            </li>
-            <li>
-              <a class="tealish-text" (click)="buyAgainReceivedOrder(item)">Buy Again</a>
-            </li>
-          </ul>
-
-          <div class="tealish-text">
-            <a [routerLink]="['/users','view',item.user_id]">
-              {{ item.user_name }}
-            </a>
-          </div>
-        </div>
-        <div class="clearfix"></div>
-
-        <app-received-list-detail
-          [visible]="pastOrderService.itemsVisibilityReceivedList[i]"
-          [item]="item"
-          (isAllCheckedChanged) = "setOrderCheckbox(item)">
-        </app-received-list-detail>
-
-        <div class="clearfix"></div>
       </div>
+      <div class="col s2"><a>{{item.product_name}}</a></div>
+      <div class="col s2"><a>{{item.location}}</a></div>
+      <div class="col s1"><a>{{item.placed}}</a></div>
+      <div class="col s1"><a>{{item.received}}</a></div>
+      <div class="col s1">{{item.qty}}</div>
+      <div class="col s1">{{item.pkg_price}}</div>
+      <div class="col s1">{{item.total}}</div>
+      <div class="col s1 show-hover-elem">
+
+        <span class="tealish-text">
+          <fa name="flag-o" *ngIf="item.flagged"></fa>
+          <fa name="flag" *ngIf="!item.flagged"></fa>
+        </span>
+          <span class="tealish-text">
+          <fa name="star-o" *ngIf="item.favorite"></fa>
+          <fa name="star" *ngIf="!item.favorite"></fa>
+        </span>
+
+        <div class="right edititem"
+          materialize="dropdown"
+          [attr.data-activates]='"order_dd_received"+i'>
+          <fa name="ellipsis-h"></fa>
+        </div>
+        <ul [id]='"order_dd_received" +i' class='dropdown-content'>
+          <li>
+            <a class="tealish-text" (click)="editReceivedPackingSlip(item)">Edit</a>
+          </li>
+          <li>
+            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+          </li>
+          <li>
+            <a class="tealish-text" (click)="buyAgainReceivedOrder(item)">Buy Again</a>
+          </li>
+        </ul>
+      </div>
+      <!--<div>-->
+        <!--<div class="col s2 left-align">-->
+          <!--<div class="input-checkbox left checkbox">-->
+            <!--<input-->
+              <!--type="checkbox"-->
+              <!--[(ngModel)] = 'item.checked'-->
+              <!--(ngModelChange)="setCheckbox(item)"-->
+              <!--class="selected-input{{i + item.id}}"-->
+              <!--id="selected{{i + item.id}}"-->
+            <!--/>-->
+            <!--<label for="selected{{i + item.id}}"></label>-->
+          <!--</div>-->
+          <!--<div class="left" (click) = "editReceivedPackingSlip(item)">-->
+            <!--{{ item.packing_slip_number }}-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div (click)="changeVisibilityReceivedList(i)" class="col s2 pointer flex-center">-->
+          <!--<div>-->
+            <!--<a [routerLink]="['/vendors','view',item.vendor_id]">{{item.vendor_name}}</a>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">-->
+          <!--<span *ngFor="let number of item.order_numbers" class="orders-number">-->
+            <!--<a [routerLink]="['/orders', number.order_id]">{{ number.po_number }}</a>-->
+            <!--<span>, </span></span>-->
+        <!--</div>-->
+        <!--<div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.product_count}}</div>-->
+        <!--<div (click)="changeVisibilityReceivedList(i)" class="col pointer s2">{{item.date}}</div>-->
+        <!--<div class="col s2 pdg-r-0">-->
+
+          <!--<div class="right edititem"-->
+            <!--materialize="dropdown"-->
+            <!--[attr.data-activates]='"received_order_dd_" +i'>-->
+            <!--<fa name="ellipsis-h"></fa>-->
+          <!--</div>-->
+
+          <!--<ul [id]='"received_order_dd_" +i' class='dropdown-content'>-->
+            <!--<li>-->
+              <!--<a class="tealish-text" (click) = "editReceivedPackingSlip(item)">Edit</a>-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<a class="tealish-text" (click)="buyAgainReceivedOrder(item)">Buy Again</a>-->
+            <!--</li>-->
+          <!--</ul>-->
+
+          <!--<div class="tealish-text">-->
+            <!--<a [routerLink]="['/users','view',item.user_id]">-->
+              <!--{{ item.user_name }}-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="clearfix"></div>-->
+
+        <!--<app-received-list-detail-->
+          <!--[visible]="pastOrderService.itemsVisibilityReceivedList[i]"-->
+          <!--[item]="item"-->
+          <!--(isAllCheckedChanged) = "setOrderCheckbox(item)">-->
+        <!--</app-received-list-detail>-->
+
+        <!--<div class="clearfix"></div>-->
+      <!--</div>-->
     </div>
   </div>
 </div>

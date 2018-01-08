@@ -136,8 +136,8 @@
           font-size: 14px;
 
           .col {
-            min-height: 40px;
-            line-height: 40px;
+            //min-height: 40px;
+            //line-height: 40px;
             color: #888;
             &.pointer {
               cursor: pointer;
@@ -148,18 +148,6 @@
             &:nth-of-type(1) {
               color: $tealish;
               cursor: pointer;
-            }
-            .fa-eye, .fa-eye-slash {
-              margin-right: 9px;
-              line-height: 35px;
-              transition: color .7s;
-              cursor: pointer;
-            }
-            .fa-eye {
-              color: $tealish;
-            }
-            .fa-eye-slash {
-              color: $red;
             }
           }
           .show-hover-elem {
@@ -267,7 +255,7 @@
         }
       }
       .edititem {
-        margin-top: 10px;
+        //margin-top: 10px;
       }
     }
 
