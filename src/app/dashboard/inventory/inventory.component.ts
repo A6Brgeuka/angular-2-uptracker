@@ -318,6 +318,8 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
+          this.inventoryService.getNextInventory(this.inventoryService.current_page, this.searchKey, this.sortBy);
+  
         },
         (err) => {
         }
