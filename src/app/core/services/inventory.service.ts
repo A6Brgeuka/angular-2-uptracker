@@ -69,6 +69,8 @@ export class InventoryService extends ModelService {
       console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
     
+    this.loadCollection$.next([]);
+    
   }
   
   getAllInventories() {
@@ -85,8 +87,8 @@ export class InventoryService extends ModelService {
     })
     .subscribe((res) => {
         res.data.map((item: any) => Object.assign(item, {status: 1}));
-        this.loadCollection$.next(res.data);
-        this.totalCount$.next(res.data.length); // change to .count when the api is ready
+        this.addCollectionToCollection$.next(res.data);
+        this.totalCount$.next(res.count);
         this.isDataLoaded$.next(true);
         return res.data;
       }
