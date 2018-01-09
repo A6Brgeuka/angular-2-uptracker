@@ -287,7 +287,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         if (!product.variant_id) {
           product.variant_id = 'tmp' + Math.floor(Math.random() * 10000000);
           product.formattedPrice = product.list_price;
-          product.formattedForumPrice = product.price.package_price;
+          product.formattedForumPrice = product.negotiated_price;
           product.formattedClubPrice = product.club_price;
         }
         return new InventorySearchResults(product);
