@@ -150,8 +150,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== 'Item(s)');
           this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : null;
           this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : null);
-          //this.autocompleteConsPackage = [this.items[0].consumable_unit.properties.unit_type];
-          //this.checkConsPackage(this.items[0].consumable_unit.properties.unit_type);
         }
         if (!this.items.length && this.checkedProduct.length) {
           this.checkedProduct = [];

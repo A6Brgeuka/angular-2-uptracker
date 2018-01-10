@@ -84,20 +84,26 @@ export class InventoryService extends ModelService {
     })
     .switchMap((queryParams) => {
       return this.restangular.all('inventory').customGET('', queryParams.query)
-    })
-    .subscribe((res) => {
+      .map(res => {
+        console.log(queryParams, 11111);
         res.data.map((item: any) => Object.assign(item, {status: 1}));
-        this.addCollectionToCollection$.next(res.data);
+        
+        if (queryParams.reset) {
+          this.updateCollection$.next(res.data);
+        } else {
+          this.addCollectionToCollection$.next(res.data);
+        }
+        
         this.totalCount$.next(res.count);
         this.isDataLoaded$.next(true);
         return res.data;
-      }
-    );
+      });
+    })
+    .subscribe();
   }
   
   getNextInventory(page?, search_string?, sortBy?) {
     if (page == 0) {
-      this.loadCollection$.next([]);
       this.current_page = 1;
     }
     let query: any = {
@@ -110,7 +116,6 @@ export class InventoryService extends ModelService {
     if (sortBy && sortBy == 'Z-A') {
       query.sort = 'desc';
     }
-    
     return this.getInventoryData(query, page ? false : true);
   }
   
