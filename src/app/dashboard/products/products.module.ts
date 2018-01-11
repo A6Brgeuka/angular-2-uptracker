@@ -7,9 +7,10 @@ import { ProductFilterModalModule } from './product-filter-modal/product-filter-
 import { RequestProductModalModule } from './request-product-modal/request-product-modal.module';
 import { BulkEditModalModule } from './bulk-edit-modal/bulk-edit-modal.module';
 import { ProductModule } from './product/product.module';
-import { HomeModule } from './home/home.module';
-import { EmbededModule } from './home/page/embeded/embeded.module';
 import { UploadCsvModalModule } from './upload-csv-modal/upload-csv-modal.module';
+import { HomeTabModule } from './home-tab/home-tab.module';
+import { MarisListTabModule } from './maris-list-tab/maris-list-tab.module';
+import { MarketplaceTabModule } from './marketplace-tab/marketplace-tab.module';
 
 @NgModule({
   declarations: [
@@ -18,11 +19,13 @@ import { UploadCsvModalModule } from './upload-csv-modal/upload-csv-modal.module
   imports: [
     AppSharedModule,
     EditProductModalModule,
+    HomeTabModule,
     ProductFilterModalModule,
     RequestProductModalModule,
     BulkEditModalModule,
     ProductModule,
-    EmbededModule,
+    MarisListTabModule,
+    MarketplaceTabModule,
     UploadCsvModalModule
   ],
   providers: []

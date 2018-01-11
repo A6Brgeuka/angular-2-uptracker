@@ -59,8 +59,6 @@
       background-image: url(/assets/img/download-icon.png);
     }
 
-
-
     .star-right {
       color: $tealish;
       position: absolute;
@@ -94,7 +92,6 @@
       }
     }
 
-
     .list {
       letter-spacing: 0;
       word-spacing: 0;
@@ -120,9 +117,6 @@
             background: #fff;
             cursor: pointer;
             border-radius: 5px;
-
-
-
 
             .hazardous {
               position: absolute;
@@ -301,22 +295,68 @@
     height:100%;
     line-height:1.25!important;
   }
+  .tabs {
+    .tab {
+      text-transform: none;
+      a {
+        font-size: 1.2rem;
+      }
+    }
+  }
+  .no_results_container {
+    opacity: 0;
+    z-index: -999;
+    text-align: center;
+    transition: opacity .3s;
+    //position: absolute;
+    left: 0;
+    top: 100px;
+    width: 100%;
 
+    &.not_hidden {
+      opacity: 1;
+      z-index: 999;
+    }
+    .img, .sub-buttons {
+      display: inline-block;
+      clear: both;
+      margin: 10px auto 0;
+    }
+    .img {
+      width: 80px;
+      background-color: #ccc;
+      border-radius: 40px;
+      height: 80px;
+      text-align: center;
+    }
+    .img i {
+      font-size: 72px;
+      color: #fff;
+      line-height: 80px;
+      margin-left: -4px;
+    }
+    button {
+      margin: 0 15px;
+
+    }
+    .text {
+      clear: both;
+      margin: 20px 10%;
+      font-size: 34px;
+      color: #bbb;
+      font-family: Ubuntu, sans-serif;
+      line-height: 1;
+      width: 80%;
+      display: inline-block;
+    }
+
+  }
 }
 
 @media all and (max-width: 768px) {
   .filter {
     .filter-right {
       float: none !important;
-
-      //
-      //&.red-helper{
-      //  float:right !important;
-      //}
-
-      button {
-        //float:left;
-      }
     }
   }
 }
@@ -328,55 +368,6 @@
       clear: both;
     }
   }
-}
-
-.no_results_container {
-  opacity: 0;
-  z-index: -999;
-  text-align: center;
-  transition: opacity .3s;
-  position: absolute;
-  left: 0;
-  top: 100px;
-  width: 100%;
-
-  &.not_hidden {
-    opacity: 1;
-    z-index: 999;
-  }
-  .img, .sub-buttons {
-    display: inline-block;
-    clear: both;
-    margin: 10px auto 0;
-  }
-  .img {
-    width: 80px;
-    background-color: #ccc;
-    border-radius: 40px;
-    height: 80px;
-    text-align: center;
-  }
-  .img i {
-    font-size: 72px;
-    color: #fff;
-    line-height: 80px;
-    margin-left: -4px;
-  }
-  button {
-    margin: 0 15px;
-
-  }
-  .text {
-    clear: both;
-    margin: 20px 10%;
-    font-size: 34px;
-    color: #bbb;
-    font-family: Ubuntu, sans-serif;
-    line-height: 1;
-    width: 80%;
-    display: inline-block;
-  }
-
 }
 
 div.top {

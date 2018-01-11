@@ -33,6 +33,11 @@ export class ProductService extends ModelService {
   public total: number = 1;
   public dashboardLocation: any;
   
+  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  
+  //public scrollActivate$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  public scrollTest = false;
+  
   constructor(
     public injector: Injector,
     public userService: UserService,

@@ -25,22 +25,22 @@ import { ToasterService } from '../../core/services/toaster.service';
 @DestroySubscribers()
 export class ProductsComponent implements OnInit {
   public nothingChecked: boolean;
-  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public sortBy: string = 'A-Z';
-  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public total: number;
-  public products$: Observable<any>;
-  public products: any = [];
-  public selectedProducts: any = [];
-  
+  //public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  //public sortBy: string = 'A-Z';
+  //public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
+  //public total: number;
+  //public products$: Observable<any>;
+  //public products: any = [];
+  //public selectedProducts: any = [];
+  //
   public dashboardLocation;
-  public infiniteScroll$: any = new BehaviorSubject(false);
-  public selectAll$: any = new BehaviorSubject(0);
-  public isRequest: boolean = false;
+  //public infiniteScroll$: any = new BehaviorSubject(false);
+  //public selectAll$: any = new BehaviorSubject(0);
+  //public isRequest: boolean = false;
   public searchKey: string;
   public searchKeyLast: string;
   public locationId: string;
-  public selectAll: boolean = false;
+  //public selectAll: boolean = false;
   private subscribers: any;
   
   constructor(
@@ -52,161 +52,161 @@ export class ProductsComponent implements OnInit {
   ) {
   }
   
-  toggleView() {
-    this.productService.isGrid = !this.productService.isGrid;
-    
-  }
-  
-  toggleSelectAll(event) {
-    // 0 = unused, 1 = selectAll, 2 = deselectAll
-    this.selectAll$.next(event ? 1 : 2);
-    this.onCheck();
-  }
+  //toggleView() {
+  //  this.productService.isGrid = !this.productService.isGrid;
+  //
+  //}
+  //
+  //toggleSelectAll(event) {
+  //  // 0 = unused, 1 = selectAll, 2 = deselectAll
+  //  this.selectAll$.next(event ? 1 : 2);
+  //  this.onCheck();
+  //}
   
   ngOnInit() {
     this.accountService.dashboardLocation$.subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
 
-    this.productService.totalCount$.subscribe(total => this.total = total);
+    //this.productService.totalCount$.subscribe(total => this.total = total);
     
-    this.productService.isDataLoaded$
-    .filter(r => r)
-    .subscribe((r) => {
-      this.isRequest = false;
-      this.getInfiniteScroll();
-    });
+    //this.productService.isDataLoaded$
+    //.filter(r => r)
+    //.subscribe((r) => {
+    //  this.isRequest = false;
+    //  this.getInfiniteScroll();
+    //});
     
-    this.searchKey$.debounceTime(1000)
-    .filter(r => (r || r === ''))
-    .subscribe(
-      (r) => {
-        this.searchKey = r;
-        this.productService.current_page = 0;
-        this.productService.getNextProducts(0, r, this.sortBy).subscribe((r) => {
-            this.getInfiniteScroll();
-          }
-        );
-      }
-    );
+    //this.searchKey$.debounceTime(1000)
+    //.filter(r => (r || r === ''))
+    //.subscribe(
+    //  (r) => {
+    //    this.searchKey = r;
+    //    this.productService.current_page = 0;
+    //    this.productService.getNextProducts(0, r, this.sortBy).subscribe((r) => {
+    //        //this.getInfiniteScroll();
+    //      }
+    //    );
+    //  }
+    //);
   
-    this.searchKey$
-    .subscribe(
-      (r) => {
-        if (r && this.sortBy=="A-Z") {
-          this.sortBy$.next("relevance");
-        } else if (!r && this.sortBy === "relevance") {
-          this.sortBy$.next("A-Z");
-        }
-      });
+    //this.searchKey$
+    //.subscribe(
+    //  (r) => {
+    //    if (r && this.sortBy=="A-Z") {
+    //      this.sortBy$.next("relevance");
+    //    } else if (!r && this.sortBy === "relevance") {
+    //      this.sortBy$.next("A-Z");
+    //    }
+    //  });
   
-    this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
+    //this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
  
-    this.sortBy$
-    .filter(r => r)
-    .subscribe(
-      (r) => {
-        this.productService.current_page = 0;
-        this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
-      }
-    );
+    //this.sortBy$
+    //.filter(r => r)
+    //.subscribe(
+    //  (r) => {
+    //    this.productService.current_page = 0;
+    //    this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
+    //  }
+    //);
     
-    this.products$ = Observable
-    .combineLatest(
-      this.productService.collection$,
-      this.sortBy$,
-      this.searchKey$,
-      this.selectAll$
-    )
-    .map(([products, sortBy, searchKey, selectAll]: [any, any, any, any]) => {
-      for (let p of products) {
-        (selectAll === 1) ? p.selected = true : p.selected = false;
-      }
-      products.map((item: any) => {
-          if (!item.image && !_.isEmpty(item.images)) {
-            item.image = item.images[0];
-          }
-          return item;
-        }
-      );
-      return products;
-    });
+    //this.products$ = Observable
+    //.combineLatest(
+    //  this.productService.collection$,
+    //  this.sortBy$,
+    //  this.searchKey$,
+    //  this.selectAll$
+    //)
+    //.map(([products, sortBy, searchKey, selectAll]: [any, any, any, any]) => {
+    //  for (let p of products) {
+    //    (selectAll === 1) ? p.selected = true : p.selected = false;
+    //  }
+    //  products.map((item: any) => {
+    //      if (!item.image && !_.isEmpty(item.images)) {
+    //        item.image = item.images[0];
+    //      }
+    //      return item;
+    //    }
+    //  );
+    //  return products;
+    //});
     
-    this.productService.collection$
-    .delay(500)
-    .subscribe(r => {
-      this.getInfiniteScroll();
-      return this.products = r;
-    });
+    //this.productService.collection$
+    //.delay(500)
+    //.subscribe(r => {
+    //  this.getInfiniteScroll();
+    //  return this.products = r;
+    //});
     
-    Observable.combineLatest(this.infiniteScroll$, this.products$)
-    //.debounceTime(100)
-    .filter(([infinite, products]) => {
-      return (infinite && !this.isRequest && products.length);
-    })
-    .switchMap(([infinite, products]) => {
-      this.isRequest = true;
-      
-      this.searchKeyLast = this.searchKey;
-      //TODO remove
-      if (this.total <= (this.productService.current_page - 1) * this.productService.pagination_limit) {
-        this.isRequest = false;
-        return Observable.of(false);
-      } else {
-        if (this.searchKey == this.searchKeyLast) {
-          ++this.productService.current_page;
-        }
-        return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
-      }
-    })
-    .subscribe(res => {
-    }, err => {
-    
-    });
+    //Observable.combineLatest(this.infiniteScroll$, this.products$)
+    ////.debounceTime(100)
+    //.filter(([infinite, products]) => {
+    //  return (infinite && !this.isRequest && products.length);
+    //})
+    //.switchMap(([infinite, products]) => {
+    //  this.isRequest = true;
+    //
+    //  this.searchKeyLast = this.searchKey;
+    //  //TODO remove
+    //  if (this.total <= (this.productService.current_page - 1) * this.productService.pagination_limit) {
+    //    this.isRequest = false;
+    //    return Observable.of(false);
+    //  } else {
+    //    if (this.searchKey == this.searchKeyLast) {
+    //      ++this.productService.current_page;
+    //    }
+    //    return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
+    //  }
+    //})
+    //.subscribe(res => {
+    //}, err => {
+    //
+    //});
   }
   
-  viewProductModal(product) {
-    product = Object.assign(product, {location_id: this.productService.dashboardLocation.id});
-    this.modal
-    .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          this.editProductModal(res);
-        },
-        (err) => {
-        }
-      );
-    });
-  }
+  //viewProductModal(product) {
+  //  product = Object.assign(product, {location_id: this.productService.dashboardLocation.id});
+  //  this.modal
+  //  .open(ViewProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}))
+  //  .then((resultPromise) => {
+  //    resultPromise.result.then(
+  //      (res) => {
+  //        this.editProductModal(res);
+  //      },
+  //      (err) => {
+  //      }
+  //    );
+  //  });
+  //}
   
-  toggleProductVisibility(product) {
-    product.status = !product.status;
-    //TODO add save to server
-  }
+  //toggleProductVisibility(product) {
+  //  product.status = !product.status;
+  //  //TODO add save to server
+  //}
   
   
-  editProductModal(product = null) {
-    this.modal
-    .open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
-  }
+  //editProductModal(product = null) {
+  //  this.modal
+  //  .open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
+  //}
   
-  bulkEditModal() {
-    if (!this.nothingChecked) {
-      
-      this.modal
-      .open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({products: this.selectedProducts}));
-    }
-  }
+  //bulkEditModal() {
+  //  if (!this.nothingChecked) {
+  //
+  //    this.modal
+  //    .open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({products: this.selectedProducts}));
+  //  }
+  //}
   
   searchFilter(event) {
-    this.searchKey$.next(event.target.value);
+    this.productService.searchKey$.next(event.target.value);
   }
   
-  itemsSort(event) {
-    let value = event.target.value;
-    this.sortBy$.next(value);
-  }
+  //itemsSort(event) {
+  //  let value = event.target.value;
+  //  this.sortBy$.next(value);
+  //}
   
   showFiltersModal() {
     this.modal
@@ -223,37 +223,37 @@ export class ProductsComponent implements OnInit {
   }
   
   
-  requestProduct() {
-    this.modal
-    .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
-      );
-    });
-  }
+  //requestProduct() {
+  //  this.modal
+  //  .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+  //  .then((resultPromise) => {
+  //    resultPromise.result.then(
+  //      (res) => {
+  //        // this.filterProducts();
+  //      },
+  //      (err) => {
+  //      }
+  //    );
+  //  });
+  //}
+  //
+  //getInfiniteScroll() {
+  //  let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  //  let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
+  //  // console.log('toBottom',toBottom);
+  //  let scrollBottom = toBottom < 285;
+  //  this.infiniteScroll$.next(scrollBottom);
+  //}
   
-  getInfiniteScroll() {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
-    // console.log('toBottom',toBottom);
-    let scrollBottom = toBottom < 285;
-    this.infiniteScroll$.next(scrollBottom);
-  }
+  //@HostListener('window:scroll', ['$event'])
+  //onScroll(event) {
+  //  this.getInfiniteScroll();
+  //}
   
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event) {
-    this.getInfiniteScroll();
-  }
-  
-  onCheck() {
-    this.selectedProducts = _.cloneDeep(this.products)
-    .filter(r => r['selected']);
-  }
+  //onCheck() {
+  //  this.selectedProducts = _.cloneDeep(this.products)
+  //  .filter(r => r['selected']);
+  //}
   
   showUploadDialog() {
     this.modal
@@ -269,40 +269,44 @@ export class ProductsComponent implements OnInit {
     });
   }
   
-  addToFavorites(e, product) {
-    e.stopPropagation();
-    this.setFavorite(product, true);
-  }
+  //addToFavorites(e, product) {
+  //  e.stopPropagation();
+  //  this.setFavorite(product, true);
+  //}
+  //
+  //removeFromFavorites(e, product) {
+  //  e.stopPropagation();
+  //  this.setFavorite(product, false);
+  //}
   
-  removeFromFavorites(e, product) {
-    e.stopPropagation();
-    this.setFavorite(product, false);
-  }
-  
-  setFavorite(product, val: boolean) {
-    product.favorite = val;
-    let updateData: any = {
-      location_id: this.locationId,
-      product: {
-        id: product.id,
-        favorite: val
-      },
-      variants: [],
-    };
-    let updateProduct$ = this.productService.updateProduct(updateData);
-    updateProduct$.subscribe((r) => {
-      console.log(r);
-      this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
-    })
-  }
+  //setFavorite(product, val: boolean) {
+  //  product.favorite = val;
+  //  let updateData: any = {
+  //    location_id: this.locationId,
+  //    product: {
+  //      id: product.id,
+  //      favorite: val
+  //    },
+  //    variants: [],
+  //  };
+  //  let updateProduct$ = this.productService.updateProduct(updateData);
+  //  updateProduct$.subscribe((r) => {
+  //    console.log(r);
+  //    this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
+  //  })
+  //}
   
   resetFilters() {
     this.searchKey = '';
-    this.sortBy = '';
-    this.productService.current_page = 0;
-    this.productService.getNextProducts(0, this.searchKey, this.sortBy).subscribe((r) => {
-        this.getInfiniteScroll();
-      }
-    );
+    //this.sortBy = '';
+    //this.productService.current_page = 0;
+    //this.productService.getNextProducts(0, this.searchKey, this.sortBy).subscribe((r) => {
+    //    this.getInfiniteScroll();
+    //  }
+    //);
+  }
+  takeMyMarketplace() {
+    this.productService.scrollTest = true;
+    //this.productService.updateCollection$.next([]);
   }
 }

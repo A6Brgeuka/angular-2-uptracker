@@ -15,7 +15,6 @@ import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
 //import { routing } from './index';
-import { HomeModule } from './products/home/home.module';
 import { OrdersPreviewModule } from './shopping-list/orders-preview/orders-preview.module';
 import { PurchaseOrderModule } from './shopping-list/orders-preview/purchase-order/purchase-order.module';
 import { ReportsModule } from './reports/reports.module';
@@ -43,7 +42,6 @@ import { AssetsModule } from './assets/assets.module';
     TranseferModule,
     ReportsModule,
     ShoppingListModule,
-    HomeModule,
   ],
   providers: []
 })
