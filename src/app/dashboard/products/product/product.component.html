@@ -18,8 +18,11 @@
     <div class="row uptracker-form">
       <div class="info-box col s12" [class.condensed]="showVariant">
         <div class="img-container left">
-          <div class="img" *ngIf="product?.image"
+          <div class="img" *ngIf="!showVariant && product?.image || showVariant && !currentVariant?.images.length"
             [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }">
+          </div>
+          <div class="img" *ngIf="showVariant && currentVariant?.images.length"
+            [ngStyle]="{ 'background-image': 'url(' + currentVariant?.images[0] + ')' }">
           </div>
         </div>
         <div class="left product-params">

@@ -105,6 +105,7 @@ export class InventoryService extends ModelService {
   getNextInventory(page?, search_string?, sortBy?) {
     if (page == 0) {
       this.current_page = 1;
+      this.updateCollection$.next([]);
     }
     let query: any = {
       page: this.current_page,
@@ -121,7 +122,7 @@ export class InventoryService extends ModelService {
   
   public getInventoryData(query: any = {}, reset: boolean = true) {
     this.getInventoryData$.next({query, reset});
-    return this.getInventoryData$.delay(500);
+    return this.getInventoryData$.delay(1000);
   }
   
   addSubscribers() {
