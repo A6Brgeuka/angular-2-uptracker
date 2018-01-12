@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
+import { observable } from 'rxjs/symbol/observable';
 
 @Injectable()
 @Subscribers({
@@ -29,14 +30,14 @@ export class ProductService extends ModelService {
   public totalCount$: any = new BehaviorSubject(1);
   public location$: any = new BehaviorSubject(false);
   public getProductsData$: any = new Subject();
+  public getMarketplaceData$: any = new Subject();
   public location: string;
   public total: number = 1;
   public dashboardLocation: any;
   
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   
-  //public scrollActivate$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  public scrollTest = false;
+  public marketplace: string;
   
   constructor(
     public injector: Injector,
@@ -61,17 +62,21 @@ export class ProductService extends ModelService {
   
   onInit() {
     this.getProductsData$
-    .withLatestFrom(this.location$)
+    .withLatestFrom(this.accountService.dashboardLocation$)
     .map(([queryParams, location]) => {
       if (location) {
         queryParams.query.location_id = location.id;
       }
       return queryParams;
     })
-    .switchMap((queryParams) => {
-      return this.restangular.all('products').customGET('', queryParams.query)
+    .withLatestFrom(this.getMarketplaceData$)
+    .switchMap(([queryParams, marketplace]) =>
+      this.getMarketPlace(marketplace, queryParams.query)
+    )
+    .catch(err => {
+      console.log(err, 11111);
+      return Observable.of([]);
     })
-    
     .subscribe((res) => {
         if (res.data.results.length > 0) {
           this.addCollectionToCollection$.next(res.data.results);
@@ -79,8 +84,13 @@ export class ProductService extends ModelService {
         this.totalCount$.next(res.data.count);
         this.isDataLoaded$.next(true);
         return res.data.results;
+      },
+      (err) => {
+          console.log(err, 11111);
+          return Observable.of([]);
       }
     );
+    
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     );
@@ -88,23 +98,18 @@ export class ProductService extends ModelService {
       this.selfData = res;
       console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
-    
-    this.accountService.dashboardLocation$
-    .switchMap(location => {
-      if (!location) {
-        location = {};
-      }
-      this.dashboardLocation = location;
-      this.location$.next(location);
-      this.location = location;
-      
-      return this.getProductsLocation(location.id)
-    })
+  
+    this.getMarketplaceData$
+    .combineLatest(this.accountService.dashboardLocation$)
+    .filter(([market, location]) => market && market !== 'home')
+    .switchMap(([marketplace, location]) =>
+      this.getProductsLocation(location && location.id, marketplace)
+    )
     .subscribe();
   }
   
-  
   getNextProducts(page?, search_string?, sortBy?) {
+    
     if (page == 0) {
       this.loadCollection$.next([]);
       this.current_page = 1;
@@ -144,17 +149,31 @@ export class ProductService extends ModelService {
     return Observable.of([]);
   }
   
-  getProductsLocation(id) {
-    return this.restangular.all('products').customGET('', {
+  getMarketPlace(marketplace: string, queryParams: {[key:string]: any}) {
+    return this.restangular.one('marketplace', marketplace).customGET('', queryParams);
+  }
+  
+  getProductsLocation(id, marketplace) {
+    return this.getMarketPlace(marketplace, {
       location_id: id,
-      limit: this.pagination_limit
+      limit: this.pagination_limit,
+      page: this.current_page,
     })
     .map((res: any) => {
       this.totalCount$.next(res.data.count);
       return res.data.results;
-    }).do(res => {
+    })
+    .catch(err => {
+      console.log(err);
+      return Observable.of([]);
+    })
+    .do(res => {
       this.updateCollection$.next(res);
     });
+  }
+  
+  updateSearchKey(value: string) {
+    this.searchKey$.next(value);
   }
   
   getProduct(id) {

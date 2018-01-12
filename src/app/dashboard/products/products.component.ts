@@ -200,7 +200,7 @@ export class ProductsComponent implements OnInit {
   //}
   
   searchFilter(event) {
-    this.productService.searchKey$.next(event.target.value);
+    this.productService.updateSearchKey(event.target.value);
   }
   
   //itemsSort(event) {
@@ -305,8 +305,10 @@ export class ProductsComponent implements OnInit {
     //  }
     //);
   }
-  takeMyMarketplace() {
-    this.productService.scrollTest = true;
-    //this.productService.updateCollection$.next([]);
+  selectTab(tabName) {
+    this.productService.getMarketplaceData$.next(tabName);
+    this.productService.current_page = 1;
+    //this.productService.searchKey$.next('');
+    //this.searchKey = '';
   }
 }

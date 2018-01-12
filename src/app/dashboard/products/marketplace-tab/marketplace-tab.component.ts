@@ -76,14 +76,15 @@ export class MarketplaceTabComponent implements OnInit {
     
     this.productService.searchKey$.debounceTime(1000)
     .filter(r => (r || r === ''))
-    .subscribe(
+    .switchMap(
       (r) => {
         this.searchKey = r;
         this.productService.current_page = 0;
-        this.productService.getNextProducts(0, r, this.sortBy).subscribe((r) => {
-            this.getInfiniteScroll();
-          }
-        );
+        return this.productService.getNextProducts(0, r, this.sortBy)
+      }
+    )
+    .subscribe((r) => {
+        this.getInfiniteScroll();
       }
     );
     
@@ -223,7 +224,7 @@ export class MarketplaceTabComponent implements OnInit {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
      //console.log('toBottom',toBottom);
-    let scrollBottom = toBottom < 285 && this.productService.scrollTest;
+    let scrollBottom = toBottom < 285;
     this.infiniteScroll$.next(scrollBottom);
   }
   

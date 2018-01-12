@@ -7,7 +7,7 @@
   <div class="top">
     <div class="row filter uptracker-form no-margin-bottom">
       <div class="title no-margin-top col l4 m4 s8">
-        <span class="main-title left">Marketplace</span>
+        <span class="main-title left">Marketplaces</span>
       </div>
       <!--<div class="col l2 s4">-->
         <!--<div (click)="showUploadDialog()" class="csv-btn btn round right upload-icon" title="Download CSV template"></div>-->
@@ -55,16 +55,16 @@
     <div class="row">
       <ul class="tabs" materialize="tabs">
         <li class="tab">
-          <a href="#homeTab" [class.active]="true" #homeTab>Home</a>
+          <a href="#homeTab" [class.active]="true" (click)="selectTab('home')">Home</a>
         </li>
         <li class="tab">
-          <a href="#marketplaceTab" (click)="takeMyMarketplace()">My Marketplace</a>
+          <a href="#marketplaceTab" (click)="selectTab('my')">My Marketplace</a>
         </li>
         <li class="tab">
-          <a href="#marketplaceTab">Global Marketplace</a>
+          <a href="#marketplaceTab" (click)="selectTab('global')">Global Marketplace</a>
         </li>
         <li class="tab">
-          <a href="#marisListTab">Mari's List</a>
+          <a href="#marisListTab" (click)="selectTab('maris')">Mari's List</a>
         </li>
       </ul>
     </div>

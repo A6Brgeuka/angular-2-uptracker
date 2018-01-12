@@ -1,3 +1,8 @@
+<ul class="debug-monitor" [class.isrequest]="isRequest">
+<li>page: {{ productService?.current_page }}</li>
+<li>count: {{ (products$ | async)?.length }}</li>
+<li>total: {{ total }}</li>
+</ul>
 <div class="row filter uptracker-form no-margin-bottom">
   <div class="title no-margin-top col m9 s8">
     <span class="sub-title mrg-l-0">{{total}} items</span>
