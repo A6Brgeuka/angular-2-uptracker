@@ -379,7 +379,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     }
 
     dismissModal() {
-        this.productService.getNextProducts(this.productService.current_page, '', '');
+        this.productService.getNextProducts(this.productService.current_page);
         this.dialog.dismiss();
     }
 

@@ -8,7 +8,6 @@ import { AccountService } from '../../../core/services/account.service';
 import { ProductService } from '../../../core/services/product.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { ProductFilterModal } from '../product-filter-modal/product-filter-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { RequestProductModal } from '../request-product-modal/request-product-modal.component';
@@ -22,15 +21,12 @@ import { RequestProductModal } from '../request-product-modal/request-product-mo
 export class MarketplaceTabComponent implements OnInit {
   public subscribers: any = {};
   public nothingChecked: boolean;
-  //public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string = 'A-Z';
-  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public total: number;
   public products$: Observable<any>;
   public products: any = [];
   public selectedProducts: any = [];
   
-  public dashboardLocation;
   public infiniteScroll$: any = new BehaviorSubject(false);
   public selectAll$: any = new BehaviorSubject(0);
   public isRequest: boolean = false;
@@ -66,57 +62,24 @@ export class MarketplaceTabComponent implements OnInit {
     });
     
     this.productService.totalCount$.subscribe(total => this.total = total);
-    
+  
     this.productService.isDataLoaded$
     .filter(r => r)
+    .do(() => this.isRequest = false)
+    .delay(1000)
     .subscribe((r) => {
-      this.isRequest = false;
       this.getInfiniteScroll();
     });
-    
-    this.productService.searchKey$.debounceTime(1000)
-    .filter(r => (r || r === ''))
-    .switchMap(
-      (r) => {
-        this.searchKey = r;
-        this.productService.current_page = 0;
-        return this.productService.getNextProducts(0, r, this.sortBy)
-      }
-    )
-    .subscribe((r) => {
-        this.getInfiniteScroll();
-      }
-    );
-    
-    this.productService.searchKey$
-    .subscribe(
-      (r) => {
-        if (r && this.sortBy == 'A-Z') {
-          this.sortBy$.next('relevance');
-        } else if (!r && this.sortBy === 'relevance') {
-          this.sortBy$.next('A-Z');
-        }
-      });
-    
-    this.sortBy$.subscribe((sb:string)=>{this.sortBy = sb;});
-    
-    this.sortBy$
-    .filter(r => r)
-    .subscribe(
-      (r) => {
-        this.productService.current_page = 0;
-        this.productService.getNextProducts(this.productService.current_page, this.searchKey, r);
-      }
-    );
     
     this.products$ = Observable
     .combineLatest(
       this.productService.collection$,
-      this.sortBy$,
+      this.productService.sortBy$,
       this.productService.searchKey$,
       this.selectAll$
     )
     .map(([products, sortBy, searchKey, selectAll]: [any, any, any, any]) => {
+      this.sortBy = sortBy;
       for (let p of products) {
         (selectAll === 1) ? p.selected = true : p.selected = false;
       }
@@ -130,36 +93,26 @@ export class MarketplaceTabComponent implements OnInit {
       return products;
     });
     
-    this.productService.collection$
-    .delay(500)
-    .subscribe(r => {
-      this.getInfiniteScroll();
-      return this.products = r;
-    });
-    
-    Observable.combineLatest(this.infiniteScroll$, this.products$)
-    //.debounceTime(100)
-    .filter(([infinite, products]) => {
-      return (infinite && !this.isRequest && products.length);
-    })
-    .switchMap(([infinite, products]) => {
+    this.infiniteScroll$
+    .filter((infinite) => infinite && !this.isRequest)
+    .switchMap((infinite) => {
       this.isRequest = true;
       
       this.searchKeyLast = this.searchKey;
-      //TODO remove
-      if (this.total <= (this.productService.current_page - 1) * this.productService.pagination_limit) {
+      
+      if (this.total <= (this.productService.current_page) * this.productService.pagination_limit) {
         this.isRequest = false;
         return Observable.of(false);
       } else {
         if (this.searchKey == this.searchKeyLast) {
           ++this.productService.current_page;
         }
-        return this.productService.getNextProducts(this.productService.current_page, this.searchKey, this.sortBy);
+        return this.productService.getNextProducts(this.productService.current_page);
       }
     })
     .subscribe(res => {
     }, err => {
-    
+    console.log(err);
     });
   }
   
@@ -168,43 +121,11 @@ export class MarketplaceTabComponent implements OnInit {
     //TODO add save to server
   }
   
-  
-  //editProductModal(product = null) {
-  //  this.modal
-  //  .open(EditProductModal, this.modalWindowService.overlayConfigFactoryWithParams({product: product}));
-  //}
-  
-  //bulkEditModal() {
-  //  if (!this.nothingChecked) {
-  //
-  //    this.modal
-  //    .open(BulkEditModal, this.modalWindowService.overlayConfigFactoryWithParams({products: this.selectedProducts}));
-  //  }
-  //}
-  
-  //searchFilter(event) {
-  //  this.productService.searchKey$.next(event.target.value);
-  //}
-  
   itemsSort(event) {
     let value = event.target.value;
-    this.sortBy$.next(value);
+    this.productService.updateSortBy(value);
+    //this.sortBy$.next(value);
   }
-  
-  showFiltersModal() {
-    this.modal
-    .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
-      );
-    });
-  }
-  
   
   requestProduct() {
     this.modal
@@ -223,7 +144,6 @@ export class MarketplaceTabComponent implements OnInit {
   getInfiniteScroll() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
-     //console.log('toBottom',toBottom);
     let scrollBottom = toBottom < 285;
     this.infiniteScroll$.next(scrollBottom);
   }
@@ -276,14 +196,14 @@ export class MarketplaceTabComponent implements OnInit {
     updateProduct$.subscribe((r) => {
       console.log(r);
       this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
-    })
-  }
+    });
+  };
   
   resetFilters() {
     this.searchKey = '';
     this.sortBy = '';
     this.productService.current_page = 0;
-    this.productService.getNextProducts(0, this.searchKey, this.sortBy).subscribe((r) => {
+    this.productService.getNextProducts(0).subscribe((r) => {
         this.getInfiniteScroll();
       }
     );

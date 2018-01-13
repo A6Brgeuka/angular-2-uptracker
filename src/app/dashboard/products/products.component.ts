@@ -298,6 +298,7 @@ export class ProductsComponent implements OnInit {
   
   resetFilters() {
     this.searchKey = '';
+    this.productService.updateSearchKey('');
     //this.sortBy = '';
     //this.productService.current_page = 0;
     //this.productService.getNextProducts(0, this.searchKey, this.sortBy).subscribe((r) => {
@@ -306,9 +307,7 @@ export class ProductsComponent implements OnInit {
     //);
   }
   selectTab(tabName) {
-    this.productService.getMarketplaceData$.next(tabName);
-    this.productService.current_page = 1;
-    //this.productService.searchKey$.next('');
-    //this.searchKey = '';
+    this.productService.updateSortBy('A-Z');
+    this.productService.updateMarketplaceData(tabName);
   }
 }
