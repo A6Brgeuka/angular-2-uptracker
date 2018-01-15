@@ -85,7 +85,6 @@ export class InventoryService extends ModelService {
     .switchMap((queryParams) => {
       return this.restangular.all('inventory').customGET('', queryParams.query)
       .map(res => {
-        console.log(queryParams, 11111);
         res.data.map((item: any) => Object.assign(item, {status: 1}));
         
         if (queryParams.reset) {

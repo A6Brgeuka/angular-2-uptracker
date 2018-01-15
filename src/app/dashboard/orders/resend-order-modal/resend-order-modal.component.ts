@@ -26,7 +26,7 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
   public subscribers: any = {};
   public context: any;
   public emailModalData$: any = new Subject();
-  public apiUrl:string;
+  public apiUrl: string;
   
   constructor(
     public dialog: DialogRef<ResendOrderModalContext>,
@@ -42,8 +42,8 @@ export class ResendOrderModal implements OnInit, CloseGuard, ModalComponent<Rese
     this.apiUrl = APP_DI_CONFIG.apiEndpoint;
   }
   
-  ngOnInit(){
-  
+  ngOnInit() {
+    console.log(this.context, 'Resend context');
   }
   
   addSubscribers() {
