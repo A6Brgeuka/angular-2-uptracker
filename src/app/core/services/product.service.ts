@@ -76,7 +76,8 @@ export class ProductService extends ModelService {
     
     this.marketplaceData$
     .filter((marketplace) => marketplace && marketplace !== 'home')
-    .map(([marketplace, location, searchkey, sortBy]) => {
+    .switchMap(([marketplace, location, searchkey, sortBy]) => {
+      
       this.loadCollection$.next([]);
       this.current_page = 1;
       this.marketplace = marketplace;
@@ -96,8 +97,11 @@ export class ProductService extends ModelService {
         this.requestParams.query = searchkey;
       }
       
-      this.getMarketPlace(marketplace, this.requestParams);
+      return this.getMarketPlace(marketplace, this.requestParams);
     })
+    //.switchMap((marketplace) => {
+    //  return this.getMarketPlace(marketplace, this.requestParams);
+    //})
     .subscribe();
     
     this.selfData$ = Observable.merge(
@@ -112,10 +116,8 @@ export class ProductService extends ModelService {
   
   getNextProducts(page?) {
     let reset: boolean = page ? false : true;
-    console.log(reset, page, 3333);
     this.requestParams.page = this.current_page;
-    this.getMarketPlace(this.marketplace, this.requestParams, reset);
-    return this.getProductsData$.delay(500);
+    return this.getMarketPlace(this.marketplace, this.requestParams, reset);
   }
   
   addSubscribers() {
@@ -144,8 +146,8 @@ export class ProductService extends ModelService {
       this.totalCount$.next(res.data.count);
       this.isDataLoaded$.next(true);
       return res.data.results;
-      })
-      .subscribe();
+    });
+    //.subscribe();
   }
   
   updateSearchKey(value: string) {
