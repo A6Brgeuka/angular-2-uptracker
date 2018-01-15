@@ -29,6 +29,37 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   
   public showMenuItem: boolean = true;
   
+  public orders: any[] = [
+    {
+      id: '7',
+      order_number: 'AMT-0001',
+      product_name: 'Some Product Name',
+      location: 'Primary Location',
+      status: 'Pending',
+      placed: '7/5/18',
+      received: '8/5/18',
+      qty: '100',
+      pkg_price: '$1.00',
+      total: '$100.00',
+      flagged: true,
+      favorite: true,
+    },
+    {
+      id: '8',
+      order_number: 'AMT-0002',
+      product_name: 'Some Product Name',
+      location: 'Primary Location',
+      status: 'Pending',
+      placed: '7/5/18',
+      received: '8/5/18',
+      qty: '10',
+      pkg_price: '$1.00',
+      total: '$10.00',
+      flagged: false,
+      favorite: false,
+    },
+  ];
+  
   constructor(
     public pastOrderService: PastOrderService,
     public toasterService: ToasterService,

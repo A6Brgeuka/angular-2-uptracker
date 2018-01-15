@@ -41,7 +41,7 @@
               {{editCustomProduct ? 'Edit' : 'Add'}} {{newProductData.custom_product ? 'Custom' : 'Global'}} Product
             </div>
             <div class="col s6 right-align">
-              <button class="uptracker-form-btn  redbtn waves-effect waves-light" (click)="toggleCustomCancel()">
+              <button class="uptracker-form-btn  redbtn waves-effect waves-light" type="button" (click)="toggleCustomCancel()">
                 Cancel
               </button>
               <button class="uptracker-form-btn tealish  white-text waves-effect waves-light" type="submit"
@@ -53,7 +53,7 @@
               <button class="uptracker-form-btn tealish  white-text waves-effect waves-light" type="submit"
                 *ngIf="newProductData.custom_product && editCustomProduct"
                 [disabled] = '!customProdForm.form.valid || !newProductData.vendors || !newProductData.consumable_unit.properties.unit_type'>
-                Edit
+                Save
               </button>
             </div>
           </div>
@@ -164,10 +164,10 @@
                 <div class="row relative">
                   <div class="col s3">
                     <div class="input">
-                      <input [(ngModel)]="newProductData.consumable_unit.properties.qty" type="text" placeholder="Qty"
-                        name="qty2"
-                        #qty2="ngModel"
-                        required>
+                      <input [(ngModel)]="newProductData.consumableUnitQty" type="text" placeholder="Qty"
+                      name="qty2"
+                      #qty2="ngModel"
+                      required>
                     </div>
                   </div>
                   <div class="col s8">
@@ -177,11 +177,10 @@
                         placeholder="Type"
                         [source]="observableSourceConsPackage.bind(this)"
                         (input) = 'onSearchConsPackage($event)'
-                        [min-chars] = '1'
                         (ngModelChange) = 'selectedAutocompledConsPackage($event)'
                         [ngModel] = "newProductData.consumable_unit.properties.unit_type"
                         [list-formatter] = '"unit_name"'
-                        [disabled] = 'items.length'
+                        [disabled] = 'items.length > 1 || items.length == 1 && !editCustomProduct'
                         [tab-to-select] = 'false'
                         name="cons_package_type"
                         required
@@ -208,7 +207,7 @@
                   <div class="col s1">=</div>
                   <div class="col s3">
                     <div class="text-center">
-                      {{(newProductData.sub_package.properties.qty) ? newProductData.sub_package.properties.qty*newProductData.consumable_unit.properties.qty : newProductData.consumable_unit.properties.qty}}
+                      {{(newProductData.sub_package.properties.unit_type && newProductData.sub_package.properties.qty) ? newProductData.sub_package.properties.qty*newProductData.consumableUnitQty : newProductData.consumableUnitQty}}
                     </div>
                     <div class="text-center">{{newProductData.consumable_unit.properties.unit_type || 'Total Units'}}</div>
                   </div>
@@ -343,7 +342,7 @@
               <div>
                 <div class="product-name tealish-text">{{ item.name }}</div>
                 <div class="vendor-name">
-                  <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor.vendor_name }}<span>,</span> </span>
+                  <span *ngFor="let vendor of item.vendors" class="vendor">{{ vendor?.vendor_name }}<span>,</span> </span>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -537,14 +536,17 @@
   </div>
   <div id="step3">
     <div *ngIf="(locations$ | async)?.length > 1" class="row">
-      <ul class="tabs location-tabs" materialize="tabs">
+      <perfect-scrollbar class="tabs-scroll" [config]="scrollConfig">
+      <ul class="tabs location-tabs content" materialize="tabs">
         <li class="tab" *ngFor="let location of newInventory.locations; let i=index;">
           <a href="#{{location.location_id}}" (click)="selectTab(location)" #locationTab>
             {{ location.name }}
           </a>
         </li>
       </ul>
+      </perfect-scrollbar>
     </div>
+
     <div *ngFor="let location of newInventory.locations">
       <div id="{{ location.location_id }}" [hidden]="!location.active">
         <div class="row">
@@ -570,19 +572,19 @@
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty."
                     [(ngModel)]="location.critical_level"
-                  [disabled]="context.inventoryGroup">
+                  >
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty."
                     [(ngModel)]="location.fully_stocked"
-                    [disabled]="context.inventoryGroup">
+                    >
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty."
                     [(ngModel)]="location.overstock_level"
-                    [disabled]="context.inventoryGroup">
+                    >
                 </div>
                 <div class="col s2 mrg-top-5 custom-pdg-l">{{ newInventory?.inventory_by_label }}</div>
               </div>
@@ -656,7 +658,7 @@
                 <div class="col s2 input">
                   <input type="text" placeholder="Qty."
                     [(ngModel)]="stock.on_hand"
-                    [disabled]="context.inventoryGroup">
+                    >
                 </div>
               </div>
             </div>
@@ -675,12 +677,12 @@
                 <div class="col s2 input" *ngIf="stock?.floor_stock">
                   <input type="text" placeholder="Qty."
                     [(ngModel)]="stock.on_hand"
-                    [disabled]="context.inventoryGroup">
+                    >
                 </div>
                 <div class="col s2 input" *ngIf="stock?.floorstock">
                   <input type="text" placeholder="Qty."
                     [(ngModel)]="stock.on_hand"
-                    [disabled]="context.inventoryGroup">
+                    >
                 </div>
               </div>
             </div>

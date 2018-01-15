@@ -64,16 +64,16 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     
     this.accountService.dashboardLocation$.subscribe((loc: any) =>
-    {
-      return this.locationId = loc ? loc['id'] : '';
-    });
+      this.locationId = loc ? loc['id'] : ''
+    );
     
     this.inventoryService.totalCount$.subscribe(total => this.total = total);
     
     this.inventoryService.isDataLoaded$
     .filter(r => r)
+    .do(() => this.isRequest = false)
+    .delay(1000)
     .subscribe((r) => {
-      this.isRequest = false;
       this.getInfiniteScroll();
     });
     
@@ -87,7 +87,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
             this.getInfiniteScroll();
           }
         );
-        
       }
     );
     
@@ -107,12 +106,10 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     
     this.sortBy$
     .filter(r => r)
-    .subscribe(
-      (r) => {
-        this.inventoryService.getNextInventory(this.inventoryService.current_page, this.searchKey, r);
-        this.inventoryService.current_page = 1;
-      }
-    );
+    .switchMap((f) => {
+      return this.inventoryService.getNextInventory(0, this.searchKey, f);
+    })
+    .subscribe();
     
     this.products$ = Observable
     .combineLatest(
@@ -149,20 +146,17 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
             product.overstock_level = productLocation.overstock_level;
             product.on_hand = productLocation.on_hand;
           }
-        })
+        });
       });
     }).subscribe();
     
-    Observable.combineLatest(this.infiniteScroll$, this.products$)
-    .filter(([infinite, products]) => {
-      return (infinite && !this.isRequest && products.length);
-    })
-    .switchMap(([infinite, products]) => {
+    this.infiniteScroll$
+    .filter((infinite) => infinite && !this.isRequest)
+    .switchMap((infinite) => {
       this.isRequest = true;
-      
       this.searchKeyLast = this.searchKey;
       //TODO remove
-      if (this.total <= (this.inventoryService.current_page - 1) * this.inventoryService.pagination_limit) {
+      if (this.total <= (this.inventoryService.current_page) * this.inventoryService.pagination_limit) {
         this.isRequest = false;
         return Observable.of(false);
       } else {
@@ -207,9 +201,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   getInfiniteScroll() {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
-    let scrollBottom = toBottom < 285;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
+    const scrollBottom = toBottom < 285;
     this.infiniteScroll$.next(scrollBottom);
   }
   
@@ -318,6 +312,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
+          this.inventoryService.getNextInventory(0, this.searchKey, this.sortBy);
         },
         (err) => {
         }

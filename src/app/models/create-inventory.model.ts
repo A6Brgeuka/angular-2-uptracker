@@ -7,6 +7,7 @@ export class InventoryProductModel {
   price:string = null;
   list_price:string = null;
   club_price:string = null;
+  negotiated_price:string = null;
   catalog_number:string = null;
   upc:string = null;
   edited: boolean = false;
@@ -84,6 +85,7 @@ export class InventoryModel {
   image: string = '';
   locations: InventoryLocationModel[] =[];
   inventory_by: string = '';
+  inventory_by_label: string = '';
   hazardous: boolean = false;
   
   inventory_by_array: any[] = [];

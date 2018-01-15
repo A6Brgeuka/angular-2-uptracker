@@ -36,6 +36,7 @@
     "materialize-css": "^0.97.8",
     "ng2-destroy-subscribers": "0.0.28",
     "ngx-cookie": "^1.0.0",
+    "ngx-perfect-scrollbar": "^4.9.6",
     "ngx-restangular": "^1.0.9",
     "qrcode-reader": "^1.0.3",
     "quagga": "^0.12.1",

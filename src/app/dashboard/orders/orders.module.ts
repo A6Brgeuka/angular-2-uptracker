@@ -9,9 +9,11 @@ import { SelectVendorModule } from './select-vendor-modal/select-vendor.module';
 import { ReceivedListModule } from './received-list/received-list.module';
 import { ResendOrderModalModule } from './resend-order-modal/resend-order-modal.module';
 import { ConfirmVoidOrderModalModule } from './order-modals/confirm-void-order-modal/confirm-void-order-modal.module';
-import { ReconciledListModule } from './reconciled-list/reconciled-list.module';
 import { BackorderedListModule } from './backordered-list/backordered-list.module';
 import { ReconcileModule } from './reconcile/reconcile.module';
+import { AllOrdersListModule } from './all-orders-list/all-orders-list.module';
+import { OpenOrdersListModule } from './open-list/open-orders-list.module';
+import { ClosedListModule } from './closed-list/closed-list.module';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { ReconcileModule } from './reconcile/reconcile.module';
   ],
   imports: [
     AppSharedModule,
+    AllOrdersListModule,
     BackorderedListModule,
     ReceiveModule,
     OrderModule,
+    OpenOrdersListModule,
     SelectVendorModule,
     ReceivedListModule,
-    ReconciledListModule,
+    ClosedListModule,
     ReconcileModule,
     ResendOrderModalModule,
     ConfirmVoidOrderModalModule,

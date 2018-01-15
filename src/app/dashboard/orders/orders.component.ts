@@ -343,4 +343,8 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   chooseTabReceived() {
     this.changeTotalQty$.next("");
   }
+  
+  chooseTabFavorited() {
+  
+  }
 }

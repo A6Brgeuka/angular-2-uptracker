@@ -26,6 +26,7 @@ export class InventorySearchResults {
   description:string = "";
   catalog_number: string = "";
   price: number = 0;
+  negotiated_price: number = 0;
   club_price:number = 0;
   list_price:number = 0;
   images:string[] = [];
@@ -48,11 +49,12 @@ export class InventorySearchResults {
   custom_product_id: string = null; // my prop
   custom_product: boolean = false; // my prop
   vendor_id: string = null;
-  vendor_name: string = null;
+  vendor_name: string = 'Auto';
   
   account_product_id: string = null;
   account_variant_id: string = null;
   inventory_product_id: string = null;
+  consumableUnitQty: string = null;
   
   edited:boolean = false;
 

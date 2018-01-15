@@ -3,23 +3,24 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 @Component({
-  selector: 'app-backordered-list',
-  templateUrl: './backordered-list.component.html',
-  styleUrls: ['./backordered-list.component.scss']
+  selector: 'app-all-orders-list',
+  templateUrl: './all-orders-list.component.html',
+  styleUrls: ['./all-orders-list.component.scss'],
 })
 @DestroySubscribers()
-export class BackorderedListComponent implements OnInit, OnDestroy {
+export class AllOrdersListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
   public orders: any[] = [
     {
-      id: '3',
+      id: '1',
       order_number: 'AMT-0001',
       product_name: 'Some Product Name',
       location: 'Primary Location',
       status: 'Pending',
       placed: '7/5/18',
-      backordered: '8/5/18',
+      received: '8/5/18',
+      reconciled: '9/5/18',
       qty: '100',
       pkg_price: '$1.00',
       total: '$100.00',
@@ -27,13 +28,14 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
       favorite: true,
     },
     {
-      id: '4',
+      id: '2',
       order_number: 'AMT-0002',
       product_name: 'Some Product Name',
       location: 'Primary Location',
       status: 'Pending',
       placed: '7/5/18',
-      backordered: '8/5/18',
+      received: '8/5/18',
+      reconciled: '9/5/18',
       qty: '10',
       pkg_price: '$1.00',
       total: '$10.00',
@@ -41,22 +43,45 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
       favorite: false,
     },
   ];
+  
   constructor(
   
   ) {
-
-  }
+  
+  };
   
   ngOnInit() {
-
-  }
+  
+  };
   
   addSubscribers() {
-    
-  }
+  
+  };
   
   ngOnDestroy() {
   
-  }
+  };
   
+  sendToReceiveOrder(item) {
+  
+  };
+  
+  setFlag(event, item) {
+  
+  };
+  
+  openResendDialog(item) {
+  
+  };
+  
+  buyAgainOrder(item) {
+  
+  };
+  onVoidOrder(item) {
+  
+  };
+  
+  setCheckbox(item) {
+  
+  };
 }
