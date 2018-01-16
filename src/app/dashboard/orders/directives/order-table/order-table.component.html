@@ -1,6 +1,6 @@
 <div class="list is-grid-view">
   <div class="heading row">
-    <div class="col" [ngClass]="headerCol.className" *ngFor="let headerCol of header">
+    <div class="col" (click)="sortByHeaderCol(headerCol)" [ngClass]="headerCol.className" *ngFor="let headerCol of header">
 
       <div class="input-checkbox left checkbox"
         *ngIf="headerCol?.alias === 'po_number'">
@@ -13,6 +13,7 @@
         />
         <label for = "{{listName}}"></label>
       </div>
+
         {{headerCol.name}}
 
       <ng-template [ngIf]="headerCol.actions">

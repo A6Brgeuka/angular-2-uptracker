@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { ModalWindowService } from '../../../../core/services/modal-window.service';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
@@ -10,6 +10,8 @@ import { Subject } from 'rxjs/Subject';
 import { ResendOrderModal } from '../../resend-order-modal/resend-order-modal.component';
 import { ConfirmVoidOrderModal } from '../../order-modals/confirm-void-order-modal/confirm-void-order-modal.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { selectedOrderModel } from '../../../../models/selected-order.model';
+import { SelectVendorModal } from '../../select-vendor-modal/select-vendor.component';
 
 @Component( {
   selector: 'app-order-table',
@@ -24,6 +26,8 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   @Input('orders') public orders: any = [];
   @Input('listName') public listName: string = '';
   
+  @Output() sortByHeaderUpdated = new EventEmitter();
+  
   public selectAll: boolean;
   public showMenuHeader: boolean = false;
   public subscribers: any = {};
@@ -32,6 +36,7 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   public updateFlagged$: any = new Subject();
   private voidOrder$:  any = new Subject<any>();
   private voidCheckedOrders$:  any = new Subject<any>();
+  public selectedOrder: any = new selectedOrderModel;
   
   constructor(
     public modal: Modal,
@@ -77,22 +82,26 @@ export class OrderTableComponent implements OnInit, OnDestroy {
     })
     .subscribe(res => this.toasterService.pop('', res.msg));
     
-    //this.subscribers.onVoidCheckedOrdersSubscription = this.voidCheckedOrders$
-    //.switchMapTo(this.orders$.first())
-    //.filter(ord => ord)
-    //.map((orders:any) => {
-    //  let filteredCheckedOrders = this.onFilterCheckedProduct(orders);
-    //  return this.onFilterCheckedItems(filteredCheckedOrders);
-    //})
-    //.switchMap((data: any) => this.pastOrderService.onVoidOrder(data))
-    //.subscribe();
+    this.subscribers.onVoidCheckedOrdersSubscription = this.voidCheckedOrders$
+      .switchMap(() => {
+        const filteredChecked = this.onFilterCheckedOrders();
+        const data = {
+          'orders': filteredChecked,
+        };
+        return this.pastOrderService.onVoidOrder(data);
+      })
+    .subscribe();
   }
   
   onFilterCheckedOrders() {
     const filteredCheckedProducts = _.filter(this.orders, 'checked')
     .map((order: any) => {
-      order.item_ids = [order.product_id];
-      return order;
+      const checkedOrder = new selectedOrderModel(
+        Object.assign(order, {
+          items_ids: [order.id],
+        })
+      );
+      return checkedOrder;
     });
     return filteredCheckedProducts;
   }
@@ -113,7 +122,7 @@ export class OrderTableComponent implements OnInit, OnDestroy {
       'orders': [
         {
           'order_id': item.order_id,
-          'items_ids': [item.product_id],
+          'items_ids': [item.id],
         }
       ]
     };
@@ -148,7 +157,7 @@ export class OrderTableComponent implements OnInit, OnDestroy {
       'orders': [
         {
           'order_id': item.order_id,
-          'items_ids': [],
+          'items_ids': [item.id],
         }
       ]
     };
@@ -164,6 +173,42 @@ export class OrderTableComponent implements OnInit, OnDestroy {
     this.pastOrderService.goToReceive(queryParams);
   }
   
+  onReceiveOrders() {
+    let filteredCheckedProducts: any[]  = _.filter(this.orders, 'checked');
+    const firstVendor: any = filteredCheckedProducts[0].vendor_name;
+    const filteredVendors: any[]  = _.filter(filteredCheckedProducts, item => firstVendor === item.vendor_name);
+    if (filteredCheckedProducts.length === filteredVendors.length) {
+      this.sendToReceiveProducts(filteredCheckedProducts);
+    } else {
+        const uniqVendors: any[] = _.uniqBy(filteredCheckedProducts, 'vendor_name');
+        this.modal
+        .open(SelectVendorModal, this.modalWindowService
+        .overlayConfigFactoryWithParams({'vendors': uniqVendors}, true, 'mid'))
+        .then((resultPromise) => {
+          resultPromise.result.then(
+            (selectedVendor) => {
+              filteredCheckedProducts = _.filter(filteredCheckedProducts, item => selectedVendor === item.vendor_name);
+              this.sendToReceiveProducts(filteredCheckedProducts);
+            },
+            (err) => {
+            }
+          );
+        });
+      }
+  }
+  
+  sendToReceiveProducts(filteredCheckedProducts, singleOrder = false) {
+    const sendOrders = filteredCheckedProducts.map((order) => {
+      return order.order_id;
+    });
+    const uniqsendOrders: any[] = _.uniq(sendOrders);
+    const sendItems: any[] = filteredCheckedProducts.map((order) => {
+      return order.id;
+    });
+    const queryParams = uniqsendOrders.toString() + '&' + sendItems.toString();
+    this.pastOrderService.goToReceive(queryParams);
+  }
+  
   openResendDialog(item) {
     this.modal
     .open(ResendOrderModal, this.modalWindowService
@@ -173,6 +218,11 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   setFlag(e, item) {
     e.stopPropagation();
     this.updateFlagged$.next(item);
+  }
+  
+  sortByHeaderCol(headerCol) {
+    this.sortByHeaderUpdated.emit(headerCol);
+    console.log(headerCol, 55555555);
   }
   
 }

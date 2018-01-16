@@ -66,10 +66,14 @@ export class PastOrderService extends ModelService {
     });
   }
   
-  getPastOrders(){
+  getPastOrders() {
     //GET /pos
     return this.restangular.all('pos').customGET()
-    .map((res:any)=>res.data);
+    .map((res: any) => {
+      this.loadCollection$.next(res.data);
+      this.total$.next(res.data.length);
+      return res.data;
+    });
   }
   
   getPastOrder(id:string){

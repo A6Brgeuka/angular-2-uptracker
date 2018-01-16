@@ -246,7 +246,8 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   //  this.sortBy$.next(value);
   //}
   //
-  showFiltersModal(){
+  showFiltersModal() {
+  
   }
   
   //toggleSelectAll(event) {
