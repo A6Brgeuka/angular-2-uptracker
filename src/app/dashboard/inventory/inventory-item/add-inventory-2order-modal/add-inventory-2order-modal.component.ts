@@ -35,10 +35,11 @@ export class AddInventory2OrderModal implements OnInit, OnDestroy, CloseGuard, M
   }
   
   ngOnInit() {
+    console.log(this.inventory, 5555555);
     let isDefaulProduct = _.find(this.inventory.inventory_products, 'default_product');
     this.defaultProduct = (isDefaulProduct) ? isDefaulProduct : this.inventory.inventory_products[0];
     this.defaultProduct.location_id = this.inventory.inventory_item_locations[0].location_id;
-    this.defaultProduct.on_hand = this.inventory.inventory_item_locations[0].on_hand ? this.inventory.inventory_item_locations[0].on_hand : 1;
+    this.defaultProduct.on_hand = (this.inventory.inventory_item_locations[0].on_hand && this.inventory.inventory_item_locations[0].fully_stocked) ? (this.inventory.inventory_item_locations[0].fully_stocked - this.inventory.inventory_item_locations[0].on_hand) : 1;
   }
   ngOnDestroy() {
     console.log('for unsubscribing')
