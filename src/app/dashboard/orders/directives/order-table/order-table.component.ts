@@ -27,6 +27,7 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   @Input('listName') public listName: string = '';
   
   @Output() sortByHeaderUpdated = new EventEmitter();
+  @Output() filterBy = new EventEmitter();
   
   public selectAll: boolean;
   public showMenuHeader: boolean = false;
@@ -222,7 +223,11 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   
   sortByHeaderCol(headerCol) {
     this.sortByHeaderUpdated.emit(headerCol);
-    console.log(headerCol, 55555555);
+  }
+  
+  onFilterBy(value) {
+    console.log(value, 66666666);
+    this.filterBy.emit(value);
   }
   
 }

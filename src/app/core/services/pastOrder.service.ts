@@ -29,6 +29,8 @@ export class PastOrderService extends ModelService {
   public updateFlaggedElementCollection$: Subject<any> = new Subject<any>();
   public total$: BehaviorSubject<any> = new BehaviorSubject(null);
   public totalReceived$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   
   constructor(
     public injector: Injector,
@@ -74,6 +76,14 @@ export class PastOrderService extends ModelService {
       this.total$.next(res.data.length);
       return res.data;
     });
+  }
+  
+  updateSortBy(param) {
+    this.sortBy$.next(param);
+  }
+  
+  updateFilterBy(value) {
+    this.filterBy$.next(value);
   }
   
   getPastOrder(id:string){

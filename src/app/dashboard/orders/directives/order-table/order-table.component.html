@@ -1,6 +1,6 @@
 <div class="list is-grid-view">
   <div class="heading row">
-    <div class="col" (click)="sortByHeaderCol(headerCol)" [ngClass]="headerCol.className" *ngFor="let headerCol of header">
+    <div class="col pointer" (click)="sortByHeaderCol(headerCol)" [ngClass]="headerCol.className" *ngFor="let headerCol of header">
 
       <div class="input-checkbox left checkbox"
         *ngIf="headerCol?.alias === 'po_number'">
@@ -54,7 +54,12 @@
 
   <div class="item row flex-center" *ngFor="let item of orders; let i=index;">
 
-    <div class="col" [ngClass]="headerCol.className" *ngFor="let headerCol of header;">
+    <div class="col" (click)="onFilterBy(item[headerCol.alias])"
+      [ngClass]="headerCol.className"
+      *ngFor="let headerCol of header;"
+      [class.tealish-text] = "headerCol?.filterBy"
+      [class.pointer] = "headerCol?.filterBy"
+    >
 
       <div class="input-checkbox left checkbox" *ngIf="headerCol?.alias === 'po_number'">
         <input
@@ -67,9 +72,12 @@
         <label for="selected{{i + item.id}}"></label>
       </div>
 
-      <ng-template [ngIf]="headerCol.alias && item[headerCol.alias]">
+      <ng-template
+        [ngIf]="headerCol.alias && item[headerCol.alias]"
+      >
         {{item[headerCol.alias]}}
       </ng-template>
+
       <ng-template [ngIf]="headerCol.actions" class="show-hover-elem">
         <span class="tealish-text" *ngIf="listName === 'received' || listName === 'all'">
           <fa name="flag-o" *ngIf="item?.flagged"></fa>

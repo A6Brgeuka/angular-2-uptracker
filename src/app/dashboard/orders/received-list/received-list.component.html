@@ -1,7 +1,8 @@
 <app-order-table
   [header]="tableHeaderReceived"
-  [orders]="(receivedOrders$ | async)"
+  [orders]="(orders$ | async)"
   [listName] = 'listName'
+  (sortByHeaderUpdated)="sortByHeaderUpdated($event)"
 ></app-order-table>
 <!--<div class="list is-grid-view">-->
   <!--<div>-->

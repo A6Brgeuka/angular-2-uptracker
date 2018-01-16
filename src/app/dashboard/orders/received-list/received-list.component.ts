@@ -9,6 +9,7 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { ToasterService } from '../../../core/services/toaster.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-received-list',
@@ -34,44 +35,15 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   public selectAllReceivedList: boolean = false;
   
   public receivedOrders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  private selectAllReceivedList$:  ReplaySubject<any> = new ReplaySubject(1);
-  private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public reorderReceivedOrder$: any = new Subject();
-  public reorderReceivedCheckedItems$: any = new Subject();
-  public editReceivedCheckedItems$: any = new Subject();
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public orders$: Observable<any> = new Observable<any>();
+  //private selectAllReceivedList$:  ReplaySubject<any> = new ReplaySubject(1);
+  //private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  //public reorderReceivedOrder$: any = new Subject();
+  //public reorderReceivedCheckedItems$: any = new Subject();
+  //public editReceivedCheckedItems$: any = new Subject();
   
-  public showMenuItem: boolean = true;
-  
-  //public orders: any[] = [
-  //  {
-  //    id: '7',
-  //    order_number: 'AMT-0001',
-  //    product_name: 'Some Product Name',
-  //    location: 'Primary Location',
-  //    status: 'Pending',
-  //    placed: '7/5/18',
-  //    received: '8/5/18',
-  //    qty: '100',
-  //    pkg_price: '$1.00',
-  //    total: '$100.00',
-  //    flagged: true,
-  //    favorite: true,
-  //  },
-  //  {
-  //    id: '8',
-  //    order_number: 'AMT-0002',
-  //    product_name: 'Some Product Name',
-  //    location: 'Primary Location',
-  //    status: 'Pending',
-  //    placed: '7/5/18',
-  //    received: '8/5/18',
-  //    qty: '10',
-  //    pkg_price: '$1.00',
-  //    total: '$10.00',
-  //    flagged: false,
-  //    favorite: false,
-  //  },
-  //];
+  //public showMenuItem: boolean = true;
   
   constructor(
     public pastOrderService: PastOrderService,
@@ -81,7 +53,14 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-
+    this.orders$ = Observable
+    .combineLatest(
+      this.receivedOrders$,
+      this.sortBy$,
+    )
+    .map(([orders, sortBy]) => {
+      return _.sortBy(orders, sortBy);
+    });
   }
   
   addSubscribers() {
@@ -89,7 +68,6 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     this.subscribers.getReceivedProductSubscription = this.pastOrderService.getReceivedProducts()
     .subscribe(res => {
         this.receivedOrders$.next(res);
-        //this.pastOrderService.totalReceived$.next(res.length);
     });
   
     //this.subscribers.selectAllListSubscription =
@@ -209,5 +187,8 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   //editCheckedReceivedPackingSlips() {
   //  //this.editReceivedCheckedItems$.next('');
   //}
+  sortByHeaderUpdated(event) {
+    this.sortBy$.next(event.alias);
+  }
   
 }
