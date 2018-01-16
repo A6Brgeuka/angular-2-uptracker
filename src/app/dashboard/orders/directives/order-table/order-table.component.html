@@ -54,7 +54,7 @@
 
   <div class="item row flex-center" *ngFor="let item of orders; let i=index;">
 
-    <div class="col" (click)="onFilterBy(item[headerCol.alias])"
+    <div class="col" (click)="headerCol?.filterBy ? onFilterBy(item[headerCol.alias]) : ''"
       [ngClass]="headerCol.className"
       *ngFor="let headerCol of header;"
       [class.tealish-text] = "headerCol?.filterBy"
