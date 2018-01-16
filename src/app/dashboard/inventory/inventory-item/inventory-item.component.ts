@@ -39,20 +39,21 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
   public canEdit:boolean = false;
   public inventory_id: string;
   public favorite: boolean;
+  public locationArr: any;
   public product$: any = new BehaviorSubject<any>(null);
   public inventory: any;
   public updateFavorite$: any = new Subject();
   public deleteInventory$: any = new Subject();
   public selectedLocation: boolean = false;
   public selectedTab: string = 'info';
-  
+
   @ViewChild('info') info: ElementRef;
   @ViewChild('locations') locations: ElementRef;
   @ViewChild('history') history: ElementRef;
   @ViewChild('tracking') tracking: ElementRef;
   @ViewChild('products') products: ElementRef;
   @ViewChild('comments') comments: ElementRef;
-  
+
   constructor(
     public userService: UserService,
     public accountService: AccountService,
@@ -67,9 +68,9 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
   ) {
     this.showEdit$.next(false);
   }
-  
+
   ngOnInit() {
-    
+
     let addToComments$ = this.addToComments$
     .switchMap(comment =>
       this.InventoryService.addInventoryItemComment(this.comment)
@@ -81,7 +82,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
         return collection;
       })
     });
-    
+
     let deleteFromComments$ = this.deleteFromComments$
     .switchMap(commentId => {
       return this.InventoryService.deleteInventoryItemComment(commentId)
@@ -98,7 +99,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
         return collection;
       })
     });
-    
+
     let editCommentComments$ = this.editCommentComments$
     .switchMap((resultPromise: Promise<string>) =>
       Observable.fromPromise(resultPromise)
@@ -117,7 +118,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
         )
       )
     );
-    
+
     this.filteredComments$ = Observable.merge(
       this.comments$,
       addToComments$,
@@ -129,29 +130,35 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
           let regKey = new RegExp('(?:\r\n|\r|\n)', 'g');
           item.body = item.body.replace(regKey, "<br/>"); // adding many lines comment
         }
-        
+
         if (item.created_at) {
           let date = new Date(item.created_at);
           item.created_at = date.toDateString();
         }
-        
+
         return item;
       });
       return _.orderBy(filteredComments, (item: any) => {
         return new Date(item.created_at)
       }, ['desc'])
     });
-    
+
+    this.subscribers.getLocationArraySubscription = this.accountService.locations$.subscribe(
+      r => {
+        this.locationArr = r;
+      }
+    );
+
   }
-  
+
   ngOnDestroy() {
     console.log('for unsubscribing');
   }
-  
+
   addSubscribers() {
-    
+
     this.getCurrentInventory();
-  
+
     this.subscribers.selectLocationSubscription = Observable.combineLatest(this.accountService.dashboardLocation$, this.product$)
     .filter(([location, product]: any) => {
       return (location && product);
@@ -168,13 +175,13 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
         }
       });
     }).subscribe();
-  
+
     this.subscribers.environmentSubscription = this.configService.environment$
     .filter((a:string)=>a=='development')
     .subscribe((a)=> {
       this.canEdit = true;
     });
-    
+
     this.subscribers.updateFavouriteSubscription = this.updateFavorite$
     .switchMap(() => {
       let inventory = {
@@ -189,7 +196,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       },
       err => console.log('error')
     );
-  
+
     this.subscribers.deleteInventorySubscription = this.deleteInventory$
     .switchMap(() => {return this.product$ })
     .switchMap(inventory => this.InventoryService.deleteInventory(inventory))
@@ -200,10 +207,12 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       err => console.log('error')
     );
   }
-  
+
   ngAfterViewInit() {
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
     .subscribe(location => {
+      this.location_id = location ? location['id'] : null;
+
       if (location && this.selectedTab === 'locations') {
         this.info.nativeElement.click();
       } else {
@@ -213,11 +222,11 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   selectInventoryTab(tab) {
     this.selectedTab = tab;
   }
-  
+
   getCurrentInventory() {
     this.subscribers.getInventorySubscription = this.route.params
     .switchMap((p:Params)=>this.InventoryService.getInventoryItem(p['id']))
@@ -229,14 +238,14 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       this.comments$.next(a.comments); // update comments
     });
   }
-  
+
   dismissModal() {
     this.InventoryService.getNextInventory(this.InventoryService.current_page, '', '');
   }
-  
+
   closeModal(data) {
   }
-  
+
   sendComment() {
     Object.assign(this.comment,
       {
@@ -247,7 +256,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
     );
     this.addToComments$.next(this.comment)
   }
-  
+
   editComment(comment) {
     let clonedComment = _.cloneDeep(comment);
     if (clonedComment.body) {
@@ -268,11 +277,11 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       this.deleteCommentFunc.bind(this, comment.id)
     );
   }
-  
+
   deleteCommentFunc(id) {
     this.deleteFromComments$.next(id);
   }
-  
+
   reformatOrderHistory(ina: any): any {
     let out: any = [];
     _.map(ina, vnt =>
@@ -287,7 +296,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
     )
     return out;
   }
-  
+
   goBack(): void {
     if (this.showVariant) {
       this.showVariant = false;
@@ -296,11 +305,11 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       this.location.back();
     }
   }
-  
+
   hideVariantDetails() {
-    
+
   }
-  
+
   defaultInfoModal() {
     this.modal
     .open(InfoModal, this.modalWindowService
@@ -312,20 +321,20 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       );
     });
   }
-  
+
   setFavorite(e) {
     e.stopPropagation();
     this.updateFavorite$.next();
   }
-  
+
   deleteInventory() {
     this.modalWindowService.confirmModal('Delete inventory?', 'Are you sure you want to delete the inventory?', this.deleteInventoryFunc.bind(this));
   }
-  
+
   deleteInventoryFunc() {
     this.deleteInventory$.next();
   }
-  
+
   openAddInventoryModal(){
     this.subscribers.getProductSubscriber = this.product$
     .take(1)
@@ -348,12 +357,22 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
     });
     });
   }
-  
+
   addToOrder() {
-    
     this.modal
-    .open(AddInventory2OrderModal, this.modalWindowService.overlayConfigFactoryWithParams({data: this.inventory}, true))
-    .then((resultPromise) => {
+    .open(
+      AddInventory2OrderModal,
+      this.modalWindowService.overlayConfigFactoryWithParams(
+        {
+          data: {
+            'inventory': this.inventory,
+            'location_id': this.location_id,
+            'locations': this.locationArr
+          }
+        },
+        true
+      )
+    ).then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
         },
@@ -362,7 +381,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
       );
     });
   }
-  
+
   printPage() {
     window.print();
   }

@@ -8,7 +8,7 @@
         <input
           type="text"
           class="quantity"
-          [(ngModel)]="defaultProduct.on_hand"
+          [(ngModel)]="defaultProduct.qty"
           id="quantity"
           required
         />
@@ -45,7 +45,7 @@
         <select
         [(ngModel)]="defaultProduct.location_id"
         materialize="material_select">
-        <option *ngFor="let location of inventory.inventory_item_locations" [value]="location.location_id">{{location.name}}</option>
+        <option *ngFor="let location of context.data.locations" [value]="location.id">{{location.name}}</option>
         </select>
       </div>
     </div>
@@ -53,7 +53,7 @@
   <div class="row mtop">
     <div class="center-align col s12">
       <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
-      <button class="uptracker-form-btn" [disabled]="defaultProduct.on_hand <= 0" (click)="saveOrder()">Add</button>
+      <button class="uptracker-form-btn" [disabled]="defaultProduct.qty <= 0" (click)="saveOrder()">Add</button>
     </div>
   </div>
 </div>
