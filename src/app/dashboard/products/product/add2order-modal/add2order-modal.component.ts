@@ -26,7 +26,7 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
   public isAuto: boolean = true;
   public unit_type: string = 'package';
   public last_unit_type: string = 'package';
-  
+
   constructor(
     public dialog: DialogRef<Add2OrderModalContext>,
     public cartService: CartService,
@@ -35,39 +35,47 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     this.context = dialog.context;
     dialog.setCloseGuard(this);
   }
-  
+
   ngOnInit() {
     // TODO
     if (_.isArray(this.context.data)) {
-      this.context.data = this.context.data[0]
+      this.context.data = this.context.data[0];
     }
     console.log('CONTEXT', this.context);
     let e = this.context.data.selectedVendor ? this.context.data.selectedVendor : '';
+    let location_id = this.context.data.location_id;
+    let all_locations = this.context.data.locationArr;
+    let selected_location = all_locations.filter(
+      function(item){
+        return item.id === location_id;
+      }
+    );
     this.vendorChange({target: {value: e}});
-    console.log(this.context.data);
     this.quantity = this.context.data['quantity'];
-    this.location = this.context.data.locationArr[0]['id'];
+
+    this.location = (selected_location.length > 0 ? selected_location : all_locations)[0]['id'];
+
     this.validateFields();
   }
-  
+
   dismissModal() {
     this.dialog.dismiss();
   }
-  
+
   closeModal(data) {
     this.dialog.close(data);
   }
-  
+
   validateFields() {
     // there's nothing to check now
     this.valid = true;
     return this.valid;
   }
-  
+
   parseInt(a) {
     return parseInt(a)
   }
-  
+
   changeUnitType() {
     let perPackage = this.context.data.units_per_package ? this.context.data.units_per_package : 1;
     let perSleeve = this.context.data.sub_unit_per_package ? this.context.data.sub_unit_per_package : 1;
@@ -105,7 +113,7 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     }
     this.last_unit_type = this.unit_type;
   }
-  
+
   saveOrder() {
     if (this.validateFields()) {
       let data = {
@@ -123,7 +131,7 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
           }
         ]
       };
-      
+
       this.cartService.addToCart(data)
       .subscribe(() => {
         this.toasterService.pop("", this.vendor.name + " successfully added to the shopping list");
@@ -131,7 +139,7 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
       }, (e) => console.log(e));
     }
   }
-  
+
   vendorChange($event) {
     if (this.context.data && this.context.data.vendorArr && this.context.data.vendorArr.length > 0) {
       if ($event.target.value == '') {
