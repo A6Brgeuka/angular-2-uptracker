@@ -13,6 +13,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class AllOrdersListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
+  public listName: string = 'all';
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number' },
     {name: 'Product Name', className: 's2', alias: 'item_name'},
@@ -24,7 +25,7 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Qty', className: 's1', alias: 'quantity'},
     {name: 'Pkg Price', className: 's1', alias: 'package_price'},
     {name: 'Total', className: 's1', alias: 'total'},
-    {name: '', className: 's1', actions: true},
+    {name: '', className: 's1 show-hover-elem', actions: true},
   ];
   
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);

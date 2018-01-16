@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { PastOrderService } from '../../../core/services/pastOrder.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-open-orders-list',
@@ -11,6 +13,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 export class OpenOrdersListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
+  public listName: string = 'open';
   public tableHeaderOpen: any = [
     {name: 'Order #', className: 's2', alias: 'po_number' },
     {name: 'Product Name', className: 's2', alias: 'product_name'},
@@ -19,10 +22,10 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Qty', className: 's1', alias: 'qty'},
     {name: 'Pkg Price', className: 's1', alias: 'pkg_price'},
     {name: 'Total', className: 's1', alias: 'total'},
-    {name: '', className: 's1', actions: true},
+    {name: '', className: 's1 show-hover-elem', actions: true},
   ];
   
-  public orders: any[] = [
+  public openOrders: any[] = [
     {
       id: '5',
       po_number: 'AMT-0001',
@@ -49,8 +52,10 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
     },
   ];
   
-  constructor(
+  public openedOrders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   
+  constructor(
+    public pastOrderService: PastOrderService,
   ) {
   
   }
@@ -60,7 +65,11 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
   }
   
   addSubscribers() {
-  
+    //this.subscribers.getOpenedProductSubscription = this.pastOrderService.getOpenedProducts()
+    //.subscribe(res => {
+    //  this.openedOrders$.next(res);
+    //  //this.pastOrderService.totalReceived$.next(res.length);
+    //});
   }
   
   ngOnDestroy() {

@@ -2,59 +2,58 @@
   <div class="heading row">
     <div class="col" [ngClass]="headerCol.className" *ngFor="let headerCol of header">
 
-      <div class="input-checkbox left checkbox" *ngIf="headerCol?.alias === 'po_number'">
+      <div class="input-checkbox left checkbox"
+        *ngIf="headerCol?.alias === 'po_number'">
         <input
           type="checkbox"
           class="checkbox-input"
-          id="selectAll"
+          id="{{listName}}"
           [(ngModel)]="selectAll"
           (click)="toggleSelectAll(!selectAll)"
         />
-        <label for="selectAll"></label>
+        <label for = "{{listName}}"></label>
       </div>
         {{headerCol.name}}
+
+      <ng-template [ngIf]="headerCol.actions">
+        <!--<span class="tealish-text">-->
+        <!--<fa name="flag-o"></fa>-->
+        <!--</span>-->
+        <!--<span class="tealish-text">-->
+        <!--<fa name="star-o"></fa>-->
+        <!--</span>-->
+        <div class="right edititem"
+          materialize="dropdown"
+          [attr.data-activates]='listName + 1'
+          *ngIf = "showMenuHeader"
+        >
+          <fa name="ellipsis-h"></fa>
+        </div>
+        <ul [id]='listName + 1' class='dropdown-content'>
+          <li>
+            <a class="tealish-text" (click)="onReceiveOrders()">Edit</a>
+          </li>
+          <li *ngIf="listName !== 'received'">
+            <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
+          </li>
+          <li *ngIf="listName === 'received'">
+            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+          </li>
+          <li>
+            <a class="tealish-text" (click)=buyAgainOrders()>Buy Again</a>
+          </li>
+          <li *ngIf="listName !== 'received'">
+            <a class="red-text" (click)="onVoidOrder('', true)">Void</a>
+          </li>
+        </ul>
+      </ng-template>
     </div>
 
-    <!--<div class="col s1 pdg-r-0">-->
-      <!--<span class="tealish-text">-->
-        <!--<fa name="flag-o"></fa>-->
-      <!--</span>-->
-      <!--<span class="tealish-text">-->
-        <!--<fa name="star-o"></fa>-->
-      <!--</span>-->
-      <!--<div class="right edititem"-->
-        <!--materialize="dropdown"-->
-        <!--data-activates='order_all_ddm'-->
-      <!--&gt;-->
-        <!--<fa name="ellipsis-h"></fa>-->
-      <!--</div>-->
-      <!--<ul id='order_all_ddm' class='dropdown-content'>-->
-        <!--<li>-->
-          <!--<a class="tealish-text">Edit</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a class="tealish-text">Receive</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a class="tealish-text">Buy Again</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a class="red-text">Void</a>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
   </div>
-
-
-  <!--<ng-template ngFor let-order [ngForOf]="orders" let-i="index">-->
-    <!--<ng-template ngFor let-headerCol [ngForOf]="header" let-ii="index">-->
-      <!--<div class="item row flex-center"></div>-->
-    <!--</ng-template>-->
-  <!--</ng-template>-->
 
   <div class="item row flex-center" *ngFor="let item of orders; let i=index;">
 
-    <div class="col" [ngClass]="headerCol.className" *ngFor="let headerCol of header; let ii=index;">
+    <div class="col" [ngClass]="headerCol.className" *ngFor="let headerCol of header;">
 
       <div class="input-checkbox left checkbox" *ngIf="headerCol?.alias === 'po_number'">
         <input
@@ -71,21 +70,21 @@
         {{item[headerCol.alias]}}
       </ng-template>
       <ng-template [ngIf]="headerCol.actions" class="show-hover-elem">
-        <span class="tealish-text">
+        <span class="tealish-text" *ngIf="listName === 'received' || listName === 'all'">
           <fa name="flag-o" *ngIf="item?.flagged"></fa>
           <fa name="flag" *ngIf="!item?.flagged"></fa>
         </span>
-        <span class="tealish-text">
+        <span class="tealish-text" *ngIf="listName === 'received' || listName === 'all'">
           <fa name="star-o" *ngIf="item?.favorite"></fa>
           <fa name="star" *ngIf="!item?.favorite"></fa>
         </span>
 
         <div class="right edititem"
           materialize="dropdown"
-          [attr.data-activates]='"order_dd_all"+i'>
+          [attr.data-activates]='item.id + i'>
           <fa name="ellipsis-h"></fa>
         </div>
-        <ul [id]='"order_dd_all"+i' class='dropdown-content'>
+        <ul [id]='item.id + i' class='dropdown-content'>
           <li *ngIf="item.status !== 'Reconciled'">
             <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
           </li>
@@ -94,10 +93,13 @@
               {{item.flagged ? 'Unflag' : 'Flag'}}
             </a>
           </li>
-          <li *ngIf="item.order_method !== 'Direct'">
+          <li *ngIf="item.order_method !== 'Direct' && listName !== 'received'">
             <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
           </li>
-          <li *ngIf="item.status !== 'Received'">
+          <li *ngIf="listName === 'received'">
+            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+          </li>
+          <li *ngIf="item.status !== 'Received' && listName !== 'received'">
             <a class="tealish-text" (click)="sendToReceiveProduct(item)">Receive</a>
           </li>
           <li *ngIf="item.status === 'Received'">
@@ -106,7 +108,7 @@
           <li>
             <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
           </li>
-          <li *ngIf="item.status !== 'Voided'">
+          <li *ngIf="item.status !== 'Voided' && listName !== 'received'">
             <a class="red-text" (click)="onVoidOrder(item)">Void</a>
           </li>
         </ul>
@@ -115,72 +117,6 @@
       </ng-template>
     </div>
 
-    <!--<div class="col s1 left-align">-->
-      <!--<div class="input-checkbox left checkbox">-->
-        <!--<input-->
-          <!--type="checkbox"-->
-          <!--[(ngModel)] = 'item.checked'-->
-          <!--(ngModelChange)="setCheckbox(item)"-->
-          <!--class="selected-input{{i + item.id}}"-->
-          <!--id="selected{{i + item.id}}"-->
-        <!--/>-->
-        <!--<label for="selected{{i + item.id}}"></label>-->
-      <!--</div>-->
-      <!--<div class="left" (click) = "editReceivedPackingSlip(item)">-->
-        <!--{{ item.order_number }}-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div class="col s2"><a>{{item.product_name}}</a></div>-->
-    <!--<div class="col s1"><a>{{item.location}}</a></div>-->
-    <!--<div class="col s1"><a>{{item.status}}</a></div>-->
-    <!--<div class="col s1"><a>{{item.placed}}</a></div>-->
-    <!--<div class="col s1"><a>{{item.received}}</a></div>-->
-    <!--<div class="col s1"><a>{{item.reconciled}}</a></div>-->
-    <!--<div class="col s1">{{item.qty}}</div>-->
-    <!--<div class="col s1">{{item.pkg_price}}</div>-->
-    <!--<div class="col s1">{{item.total}}</div>-->
-    <!--<div class="col s1 show-hover-elem">-->
-
-      <!--<span class="tealish-text">-->
-        <!--<fa name="flag-o" *ngIf="item.flagged"></fa>-->
-        <!--<fa name="flag" *ngIf="!item.flagged"></fa>-->
-      <!--</span>-->
-      <!--<span class="tealish-text">-->
-        <!--<fa name="star-o" *ngIf="item.favorite"></fa>-->
-        <!--<fa name="star" *ngIf="!item.favorite"></fa>-->
-      <!--</span>-->
-
-      <!--<div class="right edititem"-->
-        <!--materialize="dropdown"-->
-        <!--[attr.data-activates]='"order_dd_all"+i'>-->
-        <!--<fa name="ellipsis-h"></fa>-->
-      <!--</div>-->
-      <!--<ul [id]='"order_dd_all"+i' class='dropdown-content'>-->
-        <!--<li *ngIf="item.status !== 'Reconciled'">-->
-          <!--<a class="tealish-text" (click)="sendToReceiveOrder(item)">Edit</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a class="tealish-text" (click)="setFlag($event, item)">-->
-            <!--{{item.flagged ? 'Unflag' : 'Flag'}}-->
-          <!--</a>-->
-        <!--</li>-->
-        <!--<li *ngIf="item.order_method !== 'Direct'">-->
-          <!--<a class="tealish-text" (click)="openResendDialog(item)">Resend</a>-->
-        <!--</li>-->
-        <!--<li *ngIf="item.status !== 'Received'">-->
-          <!--<a class="tealish-text" (click)="sendToReceiveOrder(item)">Receive</a>-->
-        <!--</li>-->
-        <!--<li *ngIf="item.status === 'Received'">-->
-          <!--<a class="tealish-text" href="#">Reconcile</a>-->
-        <!--</li>-->
-        <!--<li>-->
-          <!--<a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>-->
-        <!--</li>-->
-        <!--<li *ngIf="item.status !== 'Voided'">-->
-          <!--<a class="red-text" (click)="onVoidOrder(item)">Void</a>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
   </div>
 </div>
 

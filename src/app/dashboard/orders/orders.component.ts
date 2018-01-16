@@ -35,13 +35,13 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   private selectAll$:  BehaviorSubject<any> = new BehaviorSubject(false);
   private ordersToReceive$:  any = new Subject<any>();
   private reorder$:  any = new Subject<any>();
-  private voidOrder$:  any = new Subject<any>();
-  private voidCheckedOrders$:  any = new Subject<any>();
-  public reorderOrders$:  any = new Subject<any>();
+  //private voidOrder$:  any = new Subject<any>();
+  //private voidCheckedOrders$:  any = new Subject<any>();
+  //public reorderOrders$:  any = new Subject<any>();
   public changeTotalQty$:  any = new Subject<any>();
   
   private ordersChecked$:  BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public showMenuItem: boolean = true;
+  //public showMenuItem: boolean = true;
   
   //public updateFlagged$: any = new Subject();
   
@@ -62,11 +62,11 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   ngAfterViewInit() {
-    this.allTab.nativeElement.click();
+    //this.allTab.nativeElement.click();
   }
   
   ngOnDestroy() {
-    console.log('for unsubscribing')
+    console.log('for unsubscribing');
   }
   
   addSubscribers() {
@@ -198,85 +198,85 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
     
   }
   
-  onFilterCheckedProduct(orders) {
-    let filteredCheckedProducts: any[] = _.filter(orders,
-      (order: any) => _.find(order.order_items, 'checked')
-    );
-    return filteredCheckedProducts;
-  }
+  //onFilterCheckedProduct(orders) {
+  //  let filteredCheckedProducts: any[] = _.filter(orders,
+  //    (order: any) => _.find(order.order_items, 'checked')
+  //  );
+  //  return filteredCheckedProducts;
+  //}
+  //
+  //onFilterCheckedItems(filteredCheckedOrders) {
+  //  filteredCheckedOrders.map(item => {
+  //    item.items_ids = [];
+  //    item.order_items = _.filter(item.order_items, 'checked');
+  //    item.items_ids = item.items_ids.concat(item.order_items.map((item) => item.id));
+  //  });
+  //  let data = {
+  //    "orders": filteredCheckedOrders
+  //  };
+  //  return data;
+  //}
   
-  onFilterCheckedItems(filteredCheckedOrders) {
-    filteredCheckedOrders.map(item => {
-      item.items_ids = [];
-      item.order_items = _.filter(item.order_items, 'checked');
-      item.items_ids = item.items_ids.concat(item.order_items.map((item) => item.id));
-    });
-    let data = {
-      "orders": filteredCheckedOrders
-    };
-    return data;
-  }
-  
-  sendToReceiveProducts(filteredCheckedProducts, singleOrder = false) {
-    let sendItems: any[] = [];
-    let sendOrders = filteredCheckedProducts.map((order) => {
-      if (!singleOrder) {
-        order.order_items = _.filter(order.order_items, 'checked');
-      }
-      sendItems = sendItems.concat(order.order_items.map((item) => item.id));
-      return order.order_id;
-    });
-    let queryParams = sendOrders.toString() + '&' + sendItems.toString();
-    this.pastOrderService.goToReceive(queryParams);
-  }
-  
-  sendToReceiveOrder(order) {
-    let singleOrder = true;
-    this.sendToReceiveProducts([order], singleOrder);
-  }
-  
+  //sendToReceiveProducts(filteredCheckedProducts, singleOrder = false) {
+  //  let sendItems: any[] = [];
+  //  let sendOrders = filteredCheckedProducts.map((order) => {
+  //    if (!singleOrder) {
+  //      order.order_items = _.filter(order.order_items, 'checked');
+  //    }
+  //    sendItems = sendItems.concat(order.order_items.map((item) => item.id));
+  //    return order.order_id;
+  //  });
+  //  let queryParams = sendOrders.toString() + '&' + sendItems.toString();
+  //  this.pastOrderService.goToReceive(queryParams);
+  //}
+  //
+  //sendToReceiveOrder(order) {
+  //  let singleOrder = true;
+  //  this.sendToReceiveProducts([order], singleOrder);
+  //}
+  //
   searchFilter(event){
     // replace forbidden characters
     let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
-  }
+  };
 
-  itemsSort(event) {
-    let value = event.target.value;
-    this.sortBy$.next(value);
-  }
-  
+  //itemsSort(event) {
+  //  let value = event.target.value;
+  //  this.sortBy$.next(value);
+  //}
+  //
   showFiltersModal(){
   }
   
-  toggleSelectAll(event) {
-    this.selectAll$.next(event);
-    this.ordersChecked$.next([]);
-  }
+  //toggleSelectAll(event) {
+  //  this.selectAll$.next(event);
+  //  this.ordersChecked$.next([]);
+  //}
   
-  chooseTab(a){
-    this.setFilter(a);
-  }
+  //chooseTab(a) {
+  //  this.setFilter(a);
+  //}
   
-  setFilter(filter:any){
-    this.filterTabBy$.next(filter);
-  }
-  changeVisibility(i){
-    this.pastOrderService.itemsVisibility[i] = !this.pastOrderService.itemsVisibility[i];
-  }
+  //setFilter(filter: any) {
+  //  this.filterTabBy$.next(filter);
+  //}
+  //changeVisibility(i) {
+  //  this.pastOrderService.itemsVisibility[i] = !this.pastOrderService.itemsVisibility[i];
+  //}
   
-  onReceiveOrders() {
-    this.ordersToReceive$.next([]);
-  }
+  //onReceiveOrders() {
+  //  this.ordersToReceive$.next([]);
+  //}
   
-  setCheckbox(item) {
-    item.order_items.map(order_item => order_item.checked = item.checked);
-    this.ordersChecked$.next([]);
-  }
+  //setCheckbox(item) {
+  //  item.order_items.map(order_item => order_item.checked = item.checked);
+  //  this.ordersChecked$.next([]);
+  //}
   
-  setOrderCheckbox(item) {
-    this.ordersChecked$.next([]);
-  }
+  //setOrderCheckbox(item) {
+  //  this.ordersChecked$.next([]);
+  //}
   
   //setFlag(e, order) {
   //  e.stopPropagation();
@@ -305,44 +305,44 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   //  .overlayConfigFactoryWithParams(item, true, 'mid'))
   //};
   
-  onVoidOrder(order, checkedOrders = false) {
-    this.modal
-    .open(ConfirmVoidOrderModal, this.modalWindowService
-    .overlayConfigFactoryWithParams('', true, 'mid'))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-          if (checkedOrders) {
-            this.onVoidCheckedOrdersFunc()
-          } else {
-            this.onVoidOrderFunc(order);
-          }
-        },
-        (err) => {
-        }
-      );
-    });
-  }
+  //onVoidOrder(order, checkedOrders = false) {
+  //  this.modal
+  //  .open(ConfirmVoidOrderModal, this.modalWindowService
+  //  .overlayConfigFactoryWithParams('', true, 'mid'))
+  //  .then((resultPromise) => {
+  //    resultPromise.result.then(
+  //      (res) => {
+  //        if (checkedOrders) {
+  //          this.onVoidCheckedOrdersFunc()
+  //        } else {
+  //          this.onVoidOrderFunc(order);
+  //        }
+  //      },
+  //      (err) => {
+  //      }
+  //    );
+  //  });
+  //}
+  //
+  //onVoidOrderFunc(order) {
+  //  let data = {
+  //    "orders": [
+  //      {
+  //        "order_id": order.order_id,
+  //        "items_ids":[],
+  //      }
+  //    ]
+  //  };
+  //  this.voidOrder$.next(data);
+  //}
   
-  onVoidOrderFunc(order) {
-    let data = {
-      "orders": [
-        {
-          "order_id": order.order_id,
-          "items_ids":[],
-        }
-      ]
-    };
-    this.voidOrder$.next(data);
-  }
+  //onVoidCheckedOrdersFunc() {
+  //  this.voidCheckedOrders$.next('');
+  //}
   
-  onVoidCheckedOrdersFunc() {
-    this.voidCheckedOrders$.next('');
-  }
-  
-  chooseTabReceived() {
-    this.changeTotalQty$.next("");
-  }
+  //chooseTabReceived() {
+  //  this.changeTotalQty$.next("");
+  //}
   
   chooseTabFavorited() {
   

@@ -40,17 +40,17 @@
 
     <div class="row">
       <ul class="tabs location-tabs" materialize="tabs">
-        <li class="tab" (click)="chooseTab('All')">
+        <li class="tab">
           <a href="#allTab" [class.active]="true" #allTab>All</a>
         </li>
-        <li class="tab" (click)="chooseTab('Open')">
+        <li class="tab">
           <a [class.active]="false" href="#openTab">Open</a>
         </li>
         <li class="tab">
-          <a href="#receivedTab" (click)="chooseTabReceived()">Received</a>
+          <a href="#receivedTab">Received</a>
         </li>
         <li class="tab">
-          <a href="#favoritedTab" (click)="chooseTabFavorited()">Favorited</a>
+          <a href="#favoritedTab">Favorited</a>
         </li>
         <li class="tab">
           <a href="#backorderedTab">Backordered</a>
@@ -58,7 +58,7 @@
         <li class="tab">
           <a href="#flaggedTab">Flagged</a>
         </li>
-        <li class="tab" (click)="chooseTab('Closed')">
+        <li class="tab">
           <a href="#closedTab">Closed</a>
         </li>
       </ul>
