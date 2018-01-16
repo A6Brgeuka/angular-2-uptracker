@@ -1,45 +1,31 @@
-<ul class="debug-monitor" [class.isrequest]="isRequest">
-  <li>page: {{ productService?.current_page }}</li>
-  <li>count: {{ (products$ | async)?.length }}</li>
-  <li>total: {{ total }}</li>
-</ul>
 <div class="products content">
   <div class="top">
     <div class="row filter uptracker-form no-margin-bottom">
-      <div class="title no-margin-top col l4 s8">
-        <span class="main-title left">Marketplace</span>
-        <span class="sub-title">{{total}} items</span>
+      <div class="title no-margin-top col l4 m4 s8">
+        <span class="main-title left">Marketplaces</span>
       </div>
-      <div class="col l2 s4">
-        <div (click)="showUploadDialog()" class="csv-btn btn round right upload-icon" title="Download CSV template"></div>
-        <a href="some-pdf.pdf" class="no-decoration right" title="Download CSV template">
-          <div class="csv-btn btn round  download-icon"></div>
-        </a>
-      </div>
+      <!--<div class="col l2 s4">-->
+        <!--<div (click)="showUploadDialog()" class="csv-btn btn round right upload-icon" title="Download CSV template"></div>-->
+        <!--<a href="some-pdf.pdf" class="no-decoration right" title="Download CSV template">-->
+          <!--<div class="csv-btn btn round  download-icon"></div>-->
+        <!--</a>-->
+      <!--</div>-->
 
-      <div class="col l3 m6 s12 input">
+      <div class="col l4 m4 s12 input">
         <input type="text"
           class="wide"
           placeholder="Keyword search"
           [(ngModel)]="searchKey"
           (input)="searchFilter($event)"/>
       </div>
-      <div class="col l1 m2 s3 filter-btn nowrap">
+      <div class="col l2 m2 s3 filter-btn nowrap">
         <a (click)="showFiltersModal()">
           <fa [name]="'filter'"></fa>
           <span>Filters</span>
         </a>
       </div>
-      <div class="col l1 m2 s6 select low-height sortby">
-        <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
-          <option disabled value="">Sort by</option>
-          <option value="relevance">Relevance</option>
-          <option value="A-Z">A-Z</option>
-          <option value="Z-A">Z-A</option>
-        </select>
-      </div>
-      <div class="col l1 m2 s3 uptracker-toggle-view right" (click)="toggleView()">
-        <i class="fa" [class.fa-table]="!productService.isGrid" [class.fa-th-large]="productService.isGrid"></i>
+      <div class="col l2 m2 text-right">
+        <button class="uptracker-form-btn waves-light waves-effect"><fa name="search"></fa>Search</button>
       </div>
       <div class="clearfix"></div>
     </div>
@@ -48,144 +34,29 @@
         <a (click)="resetFilters()" class="">Reset Filters</a>
       </div>
     </div>
-    <div class="list" [class.is-grid-view]="productService.isGrid" [class.is-tiles-view]="!productService.isGrid">
-      <div *ngIf="!productService.isGrid">
-        <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
-          <div class="inner" [routerLink]="['/', 'products', product.id]">
-            <div class="hazardous" *ngIf="product.hazardous">
-              <i class="material-icons">warning</i>
-            </div>
-            <div class="star-right" [class.favorite]="product.favorite" *ngIf="true">
-              <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-              <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
-            </div>
-            <div *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
-              <div class="trackable" *ngIf="product.trackable">
-                <fa [name]="'barcode'"></fa>
-              </div>
-            </div>
-            <div *ngIf="!product.image" class="img">
-              <div class="trackable" *ngIf="product.trackable">
-                <fa [name]="'barcode'"></fa>
-              </div>
-            </div>
-            <div class="info">
-              <div class="ttl">{{product.name}}</div>
-              <div class="bottom">
-                <div class="variations left">{{product.variant_count}} Variations</div>
-                <div class="price right">{{product.price_range}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="productService.isGrid">
 
-        <div class="heading row">
-          <div class="col s1 right-align">
-            <div class="input-checkbox checkbox">
-              <input
-                type="checkbox"
-                class="checkbox-input"
-                [(ngModel)]="selectAll"
-                id="selectAll"
-                (click)="toggleSelectAll(!selectAll)"
-              />
-              <label for="selectAll"></label>
-            </div>
-          </div>
-          <div class="col  s4">Product name</div>
-          <div class="col s1">#Variations</div>
-          <div class="col s1">Favorite</div>
-          <div class="col s1">Hazardous</div>
-          <div class="col s1">Trackable</div>
-          <div class="col s2">Price range</div>
-          <div class="col s1">
-            <button (click)="bulkEditModal()"
-              [disabled]="selectedProducts.length==0"
-              class="right bulk-edit uptracker-form-btn">
-              <i class="fa fa-pencil"></i>
-            </button>
-          </div>
-        </div>
 
-        <div class="item row" *ngFor="let product of products$ | async; let i=index">
-          <div class="col s1 right-align">
-            <div class="input-checkbox checkbox">
-              <input
-                type="checkbox"
-                class="selected-input{{i}}"
-                [(ngModel)]="product.selected"
-                id="selected{{i}}"
-                (change)="onCheck()"
-              />
-              <label for="selected{{i}}"></label>
-            </div>
-          </div>
-          <div class="col product-name s4 flex-middle" [routerLink]="[product.id]">{{product.name}}</div>
-          <div class="col s1">{{product.variant_count}}</div>
-          <div class="col s1 star-container">
-            <div class="star-right" [class.favorite]="product.favorite">
-              <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-              <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
-            </div>
-          </div>
-          <div class="col s1">
-            <div class="input-checkbox checkbox readonly">
-              <input
-                type="checkbox"
-                class="hazardous-input{{i}}"
-                [(ngModel)]="product.hazardous"
-                id="hazardous{{i}}"
-                disabled
-              />
-              <label for="hazardous{{i}}"></label>
-            </div>
-          </div>
-          <div class="col s1 center-align">
-            <div class="input-checkbox checkbox readonly">
-              <input
-                type="checkbox"
-                class="trackable-input{{i}}"
-                [(ngModel)]="product.trackable"
-                id="trackable{{i}}"
-                disabled
-              />
-              <label for="trackable{{i}}"></label>
-            </div>
-          </div>
-          <div class="col s2">{{product.price_range}}</div>
-          <div class="col s1">
-            <i class="fa right variant-func"
-              [class.fa-eye]="product.status"
-              [class.fa-eye-slash]="!product.status"
-              (click)="toggleProductVisibility(product)"
-              aria-hidden="true"></i>
-          </div>
-        </div>
-
-      </div>
-
-      <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="productService.isGrid">
-        <div class="cssload-loader">
-          <div class="cssload-inner cssload-one"></div>
-          <div class="cssload-inner cssload-two"></div>
-          <div class="cssload-inner cssload-three"></div>
-        </div>
-      </div>
-
-      <div class="clearfix"></div>
+    <div class="row">
+      <ul class="tabs" materialize="tabs">
+        <li class="tab">
+          <a href="#homeTab" [class.active]="true" (click)="selectTab('home')">Home</a>
+        </li>
+        <li class="tab">
+          <a href="#marketplaceTab" (click)="selectTab('my')">My Marketplace</a>
+        </li>
+        <li class="tab">
+          <a href="#marketplaceTab" (click)="selectTab('global')">Global Marketplace</a>
+        </li>
+        <li class="tab">
+          <a href="#marketplaceTab" (click)="selectTab('maris')">Mari's List</a>
+        </li>
+      </ul>
     </div>
 
-    <div class="no_results_container" [class.not_hidden]="!total">
-      <div class="img">
-        <i class="fa fa-question" aria-hidden="true"></i>
-      </div>
-      <div class="text">We could not find any products, matching the search criteria.</div>
-      <div class="sub-buttons">
-        <button class="uptracker-form-btn">Broaden Search</button>
-        <button (click)="requestProduct()" class="uptracker-form-btn">Request Product</button>
-      </div>
-    </div>
+    <app-home-tab id="homeTab"></app-home-tab>
+    <app-marketplace-tab id="marketplaceTab"></app-marketplace-tab>
+
+    <!--<app-maris-list-tab id="marisListTab"></app-maris-list-tab>-->
+
   </div>
 </div>

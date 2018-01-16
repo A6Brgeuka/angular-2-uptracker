@@ -506,6 +506,7 @@ button {
 .tabs {
   border-bottom: 1px solid #d6d6d6;
   overflow-x: hidden;
+  background-color: transparent;
 
   li.tab {
     a {
@@ -1374,6 +1375,9 @@ input[type=range] {
 }
 .mrg-btm-0 {
   margin-bottom: 0;
+}
+.mrg-l-0 {
+  margin-left: 0;
 }
 .pdg-btm-5 {
   padding-bottom: 5px;

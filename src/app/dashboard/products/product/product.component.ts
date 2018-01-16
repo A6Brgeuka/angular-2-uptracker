@@ -448,7 +448,7 @@ ngOnDestroy() {
   }
   
   dismissModal() {
-    this.productService.getNextProducts(this.productService.current_page, '', '');
+    this.productService.getNextProducts(this.productService.current_page);
   }
   
   closeModal(data) {

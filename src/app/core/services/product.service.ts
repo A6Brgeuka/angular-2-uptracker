@@ -28,10 +28,21 @@ export class ProductService extends ModelService {
   public isDataLoaded$: any = new BehaviorSubject(false);
   public totalCount$: any = new BehaviorSubject(1);
   public location$: any = new BehaviorSubject(false);
-  public getProductsData$: any = new Subject();
+  public getProductsData$: any = new BehaviorSubject({});
+  public getMarketplaceData$: any = new Subject();
   public location: string;
   public total: number = 1;
   public dashboardLocation: any;
+  
+  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public searchKey: string;
+  
+  public marketplace: string;
+  
+  marketplaceData$: Observable<any>;
+  
+  public requestParams: any;
   
   constructor(
     public injector: Injector,
@@ -55,27 +66,44 @@ export class ProductService extends ModelService {
   }
   
   onInit() {
-    this.getProductsData$
-    .withLatestFrom(this.location$)
-    .map(([queryParams, location]) => {
-      if (location) {
-        queryParams.query.location_id = location.id;
-      }
-      return queryParams;
-    })
-    .switchMap((queryParams) => {
-      return this.restangular.all('products').customGET('', queryParams.query)
-    })
     
-    .subscribe((res) => {
-        if (res.data.results.length > 0) {
-          this.addCollectionToCollection$.next(res.data.results);
-        }
-        this.totalCount$.next(res.data.count);
-        this.isDataLoaded$.next(true);
-        return res.data.results;
+    this.marketplaceData$ = Observable.combineLatest(
+      this.getMarketplaceData$,
+      this.accountService.dashboardLocation$,
+      this.searchKey$,
+      this.sortBy$,
+    ).publishReplay(1).refCount();
+    
+    this.marketplaceData$
+    .filter((marketplace) => marketplace && marketplace !== 'home')
+    .switchMap(([marketplace, location, searchkey, sortBy]) => {
+      
+      this.loadCollection$.next([]);
+      this.current_page = 1;
+      this.marketplace = marketplace;
+      
+      this.requestParams = {
+        page: this.current_page,
+        limit: this.pagination_limit,
+      };
+      
+      if (sortBy && sortBy === 'Z-A') {
+        this.requestParams.sort = 'desc';
       }
-    );
+      if (location) {
+        this.requestParams.location_id = location.id;
+      }
+      if (searchkey) {
+        this.requestParams.query = searchkey;
+      }
+      
+      return this.getMarketPlace(marketplace, this.requestParams);
+    })
+    //.switchMap((marketplace) => {
+    //  return this.getMarketPlace(marketplace, this.requestParams);
+    //})
+    .subscribe();
+    
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     );
@@ -84,44 +112,12 @@ export class ProductService extends ModelService {
       console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
     
-    this.accountService.dashboardLocation$
-    .switchMap(location => {
-      if (!location) {
-        location = {};
-      }
-      this.dashboardLocation = location;
-      this.location$.next(location);
-      this.location = location;
-      
-      return this.getProductsLocation(location.id)
-    })
-    .subscribe();
   }
   
-  
-  getNextProducts(page?, search_string?, sortBy?) {
-    if (page == 0) {
-      this.loadCollection$.next([]);
-      this.current_page = 1;
-    }
-    let query: any = {
-      page: this.current_page,
-      limit: this.pagination_limit,
-    };
-    if (search_string) {
-      // replace forbidden characters
-      query.query = search_string.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-    }
-    if (sortBy && sortBy == 'Z-A') {
-      query.sort = 'desc';
-    }
-    
-    return this.getProductsData(query, page ? false : true);
-  }
-  
-  public getProductsData(query: any = {}, reset: boolean = true) {
-    this.getProductsData$.next({query, reset});
-    return this.getProductsData$.delay(500);
+  getNextProducts(page?) {
+    let reset: boolean = page ? false : true;
+    this.requestParams.page = this.current_page;
+    return this.getMarketPlace(this.marketplace, this.requestParams, reset);
   }
   
   addSubscribers() {
@@ -139,17 +135,30 @@ export class ProductService extends ModelService {
     return Observable.of([]);
   }
   
-  getProductsLocation(id) {
-    return this.restangular.all('products').customGET('', {
-      location_id: id,
-      limit: this.pagination_limit
-    })
-    .map((res: any) => {
+  getMarketPlace(marketplace: string, queryParams: {[key:string]: any}, reset: boolean = true) {
+    return this.restangular.one('marketplace', marketplace).customGET('', queryParams)
+    .map(res => {
+      if (!reset) {
+        this.addCollectionToCollection$.next(res.data.results);
+      } else {
+        this.updateCollection$.next(res.data.results);
+      }
       this.totalCount$.next(res.data.count);
+      this.isDataLoaded$.next(true);
       return res.data.results;
-    }).do(res => {
-      this.updateCollection$.next(res);
     });
+    //.subscribe();
+  }
+  
+  updateSearchKey(value: string) {
+    this.searchKey$.next(value);
+  }
+  updateSortBy(value: string) {
+    this.sortBy$.next(value);
+  };
+  
+  updateMarketplaceData(tabName: string) {
+    this.getMarketplaceData$.next(tabName);
   }
   
   getProduct(id) {

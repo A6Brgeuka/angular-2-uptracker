@@ -17,7 +17,6 @@ import { ProductsRoutes } from './products/products.routing';
 import { InventoryRoutes } from "./inventory/inventory.routing";
 import { TransferRoutes } from "./transfer/transfer.routing";
 import { ShoppingListRoutes } from "./shopping-list/shopping-list.routing";
-import { homeRoutes } from './products/home/home.routing';
 import { AuthGuard } from '../auth-guard.service';
 import { OrdersPreviewRoutes } from './shopping-list/orders-preview/orders-preview.routing';
 import { PurchaseOrderRoutes } from './shopping-list/orders-preview/purchase-order/purchase-order.routing';
@@ -43,7 +42,6 @@ export const DashboardRoutes = [
       ...TransferRoutes,
       ...ReportsRoutes,
       ...ShoppingListRoutes,
-      ...homeRoutes,
       ...OrdersPreviewRoutes,
       ...PurchaseOrderRoutes
     ],
