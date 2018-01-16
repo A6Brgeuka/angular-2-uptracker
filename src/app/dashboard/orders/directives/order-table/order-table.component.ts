@@ -228,6 +228,9 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   onFilterBy(value) {
     console.log(value, 66666666);
     this.filterBy.emit(value);
+    
+    //this.orders = _.filter(this.orders, value);
+    
   }
   
 }
