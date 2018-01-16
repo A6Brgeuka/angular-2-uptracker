@@ -11,10 +11,23 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 export class BackorderedListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
+  public listName: string = 'backordered';
+  public tableHeader: any = [
+    {name: 'Order #', className: 's2', alias: 'po_number' },
+    {name: 'Product Name', className: 's2', alias: 'product_name'},
+    {name: 'Location', className: 's2', alias: 'location'},
+    {name: 'Placed', className: 's1', alias: 'placed'},
+    {name: 'Backordered', className: 's1', alias: 'backordered'},
+    {name: 'Qty', className: 's1', alias: 'qty'},
+    {name: 'Pkg Price', className: 's1', alias: 'pkg_price'},
+    {name: 'Total', className: 's1', alias: 'total'},
+    {name: '', className: 's1 show-hover-elem', actions: true},
+  ];
+  
   public orders: any[] = [
     {
       id: '3',
-      order_number: 'AMT-0001',
+      po_number: 'AMT-0001',
       product_name: 'Some Product Name',
       location: 'Primary Location',
       status: 'Pending',
@@ -28,7 +41,7 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
     },
     {
       id: '4',
-      order_number: 'AMT-0002',
+      po_number: 'AMT-0002',
       product_name: 'Some Product Name',
       location: 'Primary Location',
       status: 'Pending',

@@ -29,6 +29,8 @@ export class PastOrderService extends ModelService {
   public updateFlaggedElementCollection$: Subject<any> = new Subject<any>();
   public total$: BehaviorSubject<any> = new BehaviorSubject(null);
   public totalReceived$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   
   constructor(
     public injector: Injector,
@@ -66,10 +68,22 @@ export class PastOrderService extends ModelService {
     });
   }
   
-  getPastOrders(){
+  getPastOrders() {
     //GET /pos
     return this.restangular.all('pos').customGET()
-    .map((res:any)=>res.data);
+    .map((res: any) => {
+      this.loadCollection$.next(res.data);
+      this.total$.next(res.data.length);
+      return res.data;
+    });
+  }
+  
+  updateSortBy(param) {
+    this.sortBy$.next(param);
+  }
+  
+  updateFilterBy(value) {
+    this.filterBy$.next(value);
   }
   
   getPastOrder(id:string){
@@ -84,16 +98,16 @@ export class PastOrderService extends ModelService {
   
   getReceivedProducts() {
     return this.restangular.one('pos', '6').customGET()
-    .map((res:any)=>res.data);
+    .map((res: any) => res.data);
   }
   
   getOpenedProducts() {
     return this.restangular.one('pos', '5').customGET()
-    .map((res:any)=>res.data);
+    .map((res: any) => res.data);
   }
   
-  setFlag(order) {
-    return this.restangular.one('pos', order.order_id).one('flag').customPUT({'flagged' : !order.flagged})
+  setFlag(item) {
+    return this.restangular.one('pos', item.order_id).one('flag').customPUT({'flagged' : !item.flagged})
       .map(res => {
         this.updateFlaggedElementCollection$.next(res.data);
         return res.data;

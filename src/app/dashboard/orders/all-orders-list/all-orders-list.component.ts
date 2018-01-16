@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
+import * as _ from 'lodash';
+
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { PastOrderService } from '../../../core/services/pastOrder.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-all-orders-list',
@@ -11,77 +16,67 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 export class AllOrdersListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
-  public orders: any[] = [
-    {
-      id: '1',
-      order_number: 'AMT-0001',
-      product_name: 'Some Product Name',
-      location: 'Primary Location',
-      status: 'Pending',
-      placed: '7/5/18',
-      received: '8/5/18',
-      reconciled: '9/5/18',
-      qty: '100',
-      pkg_price: '$1.00',
-      total: '$100.00',
-      flagged: true,
-      favorite: true,
-    },
-    {
-      id: '2',
-      order_number: 'AMT-0002',
-      product_name: 'Some Product Name',
-      location: 'Primary Location',
-      status: 'Pending',
-      placed: '7/5/18',
-      received: '8/5/18',
-      reconciled: '9/5/18',
-      qty: '10',
-      pkg_price: '$1.00',
-      total: '$10.00',
-      flagged: false,
-      favorite: false,
-    },
+  public listName: string = 'all';
+  public tableHeader: any = [
+    {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
+    {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
+    {name: 'Location', className: 's1', alias: 'location', filterBy: true, },
+    {name: 'Status', className: 's1', alias: 'status', filterBy: true, },
+    {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
+    {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
+    {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
+    {name: 'Qty', className: 's1', alias: 'quantity'},
+    {name: 'Pkg Price', className: 's1', alias: 'package_price'},
+    {name: 'Total', className: 's1', alias: 'total'},
+    {name: '', className: 's1 show-hover-elem', actions: true},
   ];
   
-  constructor(
+  //public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public orders$: Observable<any> = new Observable<any>();
   
+  constructor(
+    public pastOrderService: PastOrderService,
   ) {
   
   };
   
   ngOnInit() {
-  
+    
+    this.orders$ = Observable
+    .combineLatest(
+      this.pastOrderService.collection$,
+      this.pastOrderService.sortBy$,
+      //this.pastOrderService.filterBy$,
+    )
+    .map(([orders, sortBy]) => {
+      return _.sortBy(orders, sortBy);
+    });
   };
   
   addSubscribers() {
-  
+    this.subscribers.getCollectionSubscription = this.pastOrderService.getPastOrders()
+    .subscribe(orders => {
+      //this.orders$.next(orders);
+    });
+    
+    //this.subscribers.filterBySubscription = this.pastOrderService.filterBy$
+    //.switchMap((value: any) => {
+    // return this.orders$.map(orders => _.filter(orders, value));
+    //})
+    //.subscribe();
+    
   };
   
   ngOnDestroy() {
   
   };
   
-  sendToReceiveOrder(item) {
+  sortByHeaderUpdated(event) {
+    this.pastOrderService.updateSortBy(event.alias);
+  }
   
-  };
+  onFilterBy(value) {
+    this.pastOrderService.updateFilterBy(value);
+  }
   
-  setFlag(event, item) {
-  
-  };
-  
-  openResendDialog(item) {
-  
-  };
-  
-  buyAgainOrder(item) {
-  
-  };
-  onVoidOrder(item) {
-  
-  };
-  
-  setCheckbox(item) {
-  
-  };
 }

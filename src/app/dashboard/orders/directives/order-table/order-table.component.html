@@ -1,0 +1,131 @@
+<div class="list is-grid-view">
+  <div class="heading row">
+    <div class="col pointer" (click)="sortByHeaderCol(headerCol)" [ngClass]="headerCol.className" *ngFor="let headerCol of header">
+
+      <div class="input-checkbox left checkbox"
+        *ngIf="headerCol?.alias === 'po_number'">
+        <input
+          type="checkbox"
+          class="checkbox-input"
+          id="{{listName}}"
+          [(ngModel)]="selectAll"
+          (click)="toggleSelectAll(!selectAll)"
+        />
+        <label for = "{{listName}}"></label>
+      </div>
+
+        {{headerCol.name}}
+
+      <ng-template [ngIf]="headerCol.actions">
+        <!--<span class="tealish-text">-->
+        <!--<fa name="flag-o"></fa>-->
+        <!--</span>-->
+        <!--<span class="tealish-text">-->
+        <!--<fa name="star-o"></fa>-->
+        <!--</span>-->
+        <div class="right edititem"
+          materialize="dropdown"
+          [attr.data-activates]='listName + 1'
+          *ngIf = "showMenuHeader"
+        >
+          <fa name="ellipsis-h"></fa>
+        </div>
+        <ul [id]='listName + 1' class='dropdown-content'>
+          <li>
+            <a class="tealish-text" (click)="onReceiveOrders()">Edit</a>
+          </li>
+          <li *ngIf="listName !== 'received'">
+            <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
+          </li>
+          <li *ngIf="listName === 'received'">
+            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+          </li>
+          <li>
+            <a class="tealish-text" (click)=buyAgainOrders()>Buy Again</a>
+          </li>
+          <li *ngIf="listName !== 'received'">
+            <a class="red-text" (click)="onVoidOrder('', true)">Void</a>
+          </li>
+        </ul>
+      </ng-template>
+    </div>
+
+  </div>
+
+  <div class="item row flex-center" *ngFor="let item of orders; let i=index;">
+
+    <div class="col" (click)="onFilterBy(item[headerCol.alias])"
+      [ngClass]="headerCol.className"
+      *ngFor="let headerCol of header;"
+      [class.tealish-text] = "headerCol?.filterBy"
+      [class.pointer] = "headerCol?.filterBy"
+    >
+
+      <div class="input-checkbox left checkbox" *ngIf="headerCol?.alias === 'po_number'">
+        <input
+          type="checkbox"
+          [(ngModel)]='item.checked'
+          (ngModelChange)="setCheckbox(item)"
+          class="selected-input{{i + item.id}}"
+          id="selected{{i + item.id}}"
+        />
+        <label for="selected{{i + item.id}}"></label>
+      </div>
+
+      <ng-template
+        [ngIf]="headerCol.alias && item[headerCol.alias]"
+      >
+        {{item[headerCol.alias]}}
+      </ng-template>
+
+      <ng-template [ngIf]="headerCol.actions" class="show-hover-elem">
+        <span class="tealish-text" *ngIf="listName === 'received' || listName === 'all'">
+          <fa name="flag-o" *ngIf="item?.flagged"></fa>
+          <fa name="flag" *ngIf="!item?.flagged"></fa>
+        </span>
+        <span class="tealish-text" *ngIf="listName === 'received' || listName === 'all'">
+          <fa name="star-o" *ngIf="item?.favorite"></fa>
+          <fa name="star" *ngIf="!item?.favorite"></fa>
+        </span>
+
+        <div class="right edititem"
+          materialize="dropdown"
+          [attr.data-activates]='item.id + i'>
+          <fa name="ellipsis-h"></fa>
+        </div>
+        <ul [id]='item.id + i' class='dropdown-content'>
+          <li *ngIf="item.status !== 'Reconciled'">
+            <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
+          </li>
+          <li>
+            <a class="tealish-text" (click)="setFlag($event, item)">
+              {{item.flagged ? 'Unflag' : 'Flag'}}
+            </a>
+          </li>
+          <li *ngIf="item.order_method !== 'Direct' && listName !== 'received'">
+            <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
+          </li>
+          <li *ngIf="listName === 'received'">
+            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+          </li>
+          <li *ngIf="item.status !== 'Received' && listName !== 'received'">
+            <a class="tealish-text" (click)="sendToReceiveProduct(item)">Receive</a>
+          </li>
+          <li *ngIf="item.status === 'Received'">
+            <a class="tealish-text" href="#">Reconcile</a>
+          </li>
+          <li>
+            <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
+          </li>
+          <li *ngIf="item.status !== 'Voided' && listName !== 'received'">
+            <a class="red-text" (click)="onVoidOrder(item)">Void</a>
+          </li>
+        </ul>
+
+        <!--<app-all-orders-action [item]="item"></app-all-orders-action>-->
+      </ng-template>
+    </div>
+
+  </div>
+</div>
+

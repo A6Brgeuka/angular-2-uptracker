@@ -10,6 +10,7 @@
           class="quantity"
           [(ngModel)]="defaultProduct.on_hand"
           id="quantity"
+          required
         />
         <label for="quantity"></label>
       </div>
@@ -52,7 +53,7 @@
   <div class="row mtop">
     <div class="center-align col s12">
       <button class="uptracker-form-btn" (click)="dismissModal()">Cancel</button>
-      <button class="uptracker-form-btn " (click)="saveOrder()">Add</button>
+      <button class="uptracker-form-btn" [disabled]="defaultProduct.on_hand <= 0" (click)="saveOrder()">Add</button>
     </div>
   </div>
 </div>

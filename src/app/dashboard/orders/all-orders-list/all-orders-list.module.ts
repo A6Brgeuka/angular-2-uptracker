@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { AppSharedModule } from '../../../shared/shared.module';
 import { AllOrdersListComponent } from './all-orders-list.component';
+import { OrderTableModule } from '../directives/order-table/order-table.module';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { AllOrdersListComponent } from './all-orders-list.component';
   exports: [AllOrdersListComponent],
   imports: [
     AppSharedModule,
+    OrderTableModule,
   ],
   providers: [],
 })

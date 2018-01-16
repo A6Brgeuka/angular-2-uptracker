@@ -36,10 +36,10 @@ export class ReceivedOrderService extends ModelService {
     
     if(itemsIds) {
       return this.restangular.all('receive').customGET('', {'order_ids': orderIds, 'items_ids' : itemsIds})
-      .map(res => res.data)
+      .map(res => res.data);
     } else {
       return this.restangular.all('receive').customGET('', { 'item_ids' : queryParams })
-      .map(res => res.data)
+      .map(res => res.data);
     }
     
   }
