@@ -9,26 +9,35 @@ import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { ResendOrderModal } from '../../resend-order-modal/resend-order-modal.component';
 import { ConfirmVoidOrderModal } from '../../order-modals/confirm-void-order-modal/confirm-void-order-modal.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { selectedOrderModel } from '../../../../models/selected-order.model';
 import { SelectVendorModal } from '../../select-vendor-modal/select-vendor.component';
+import { Observable } from 'rxjs/Observable';
+import { OrderTableSortService } from './order-table-sort.service';
 
 @Component( {
   selector: 'app-order-table',
   templateUrl: './order-table.component.html',
-  styleUrls: ['./order-table.component.scss']
+  styleUrls: ['./order-table.component.scss'],
+  providers: [
+    OrderTableSortService
+  ]
 })
 
 @DestroySubscribers()
 
 export class OrderTableComponent implements OnInit, OnDestroy {
   @Input('header') public header: any = [];
-  @Input('orders') public orders: any = [];
   @Input('listName') public listName: string = '';
+  @Input()
+  set orders(value){
+    this.orders$.next(value);
+  }
+  
   
   @Output() sortByHeaderUpdated = new EventEmitter();
   @Output() filterBy = new EventEmitter();
   
+  public componentId: string = _.uniqueId();
   public selectAll: boolean;
   public showMenuHeader: boolean = false;
   public subscribers: any = {};
@@ -39,17 +48,31 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   private voidCheckedOrders$:  any = new Subject<any>();
   public selectedOrder: any = new selectedOrderModel;
   
+  private orders$:  any = new Subject<any>();
+  private filteredOrders$:  Observable<any>
+  
   constructor(
     public modal: Modal,
     public router: Router,
     public pastOrderService: PastOrderService,
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
+    public orderTableSortService: OrderTableSortService,
   ) {
   
   }
   
   ngOnInit() {
+    this.filteredOrders$ = Observable.combineLatest(
+      this.orders$,
+      this.orderTableSortService.sort$.startWith(null),
+    )
+    .map(([orders, sort]: [any, any])=>{
+      if(!sort){
+        return orders;
+      }
+      return _.orderBy(orders, [sort.alias], [sort.order]);
+    })
   }
   
   ngOnDestroy() {
@@ -222,7 +245,7 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   }
   
   sortByHeaderCol(headerCol) {
-    this.sortByHeaderUpdated.emit(headerCol);
+    this.orderTableSortService.sortByAlias(headerCol.alias)
   }
   
   onFilterBy(value) {

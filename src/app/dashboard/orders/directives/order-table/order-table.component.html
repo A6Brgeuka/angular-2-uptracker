@@ -1,28 +1,22 @@
 <div class="list is-grid-view">
   <div class="heading row">
-    <div class="col pointer" (click)="sortByHeaderCol(headerCol)" [ngClass]="headerCol.className" *ngFor="let headerCol of header">
-
+    <div class="col pointer" (click)="sortByHeaderCol(headerCol)" [ngClass]="headerCol.className" *ngFor="let headerCol of header; first as isFirst">
       <div class="input-checkbox left checkbox"
-        *ngIf="headerCol?.alias === 'po_number'">
+        *ngIf="isFirst">
         <input
           type="checkbox"
           class="checkbox-input"
-          id="{{listName}}"
+          [id]="componentId + '-checkbox'"
           [(ngModel)]="selectAll"
           (click)="toggleSelectAll(!selectAll)"
         />
-        <label for = "{{listName}}"></label>
+        <label [for]="componentId + '-checkbox'"></label>
       </div>
 
-        {{headerCol.name}}
+      {{headerCol.name}}
 
       <ng-template [ngIf]="headerCol.actions">
-        <!--<span class="tealish-text">-->
-        <!--<fa name="flag-o"></fa>-->
-        <!--</span>-->
-        <!--<span class="tealish-text">-->
-        <!--<fa name="star-o"></fa>-->
-        <!--</span>-->
+
         <div class="right edititem"
           materialize="dropdown"
           [attr.data-activates]='listName + 1'
@@ -30,6 +24,7 @@
         >
           <fa name="ellipsis-h"></fa>
         </div>
+
         <ul [id]='listName + 1' class='dropdown-content'>
           <li>
             <a class="tealish-text" (click)="onReceiveOrders()">Edit</a>
@@ -52,16 +47,17 @@
 
   </div>
 
-  <div class="item row flex-center" *ngFor="let item of orders; let i=index;">
+  <div class="item row flex-center" *ngFor="let item of filteredOrders$ | async; index as i;">
 
-    <div class="col" (click)="headerCol?.filterBy ? onFilterBy(item[headerCol.alias]) : ''"
+    <div class="col"
+      *ngFor="let headerCol of header; first as isFirst"
+      (click)="headerCol?.filterBy ? onFilterBy(item[headerCol.alias]) : ''"
       [ngClass]="headerCol.className"
-      *ngFor="let headerCol of header;"
       [class.tealish-text] = "headerCol?.filterBy"
       [class.pointer] = "headerCol?.filterBy"
     >
 
-      <div class="input-checkbox left checkbox" *ngIf="headerCol?.alias === 'po_number'">
+      <div class="input-checkbox left checkbox" *ngIf="isFirst">
         <input
           type="checkbox"
           [(ngModel)]='item.checked'
