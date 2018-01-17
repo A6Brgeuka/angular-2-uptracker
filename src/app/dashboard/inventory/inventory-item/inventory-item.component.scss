@@ -192,6 +192,15 @@ $normal: 14px;
       .grey {
         font-style: italic;
       }
+      .vendors {
+        .list-comma::before {
+          content: ', ';
+        }
+
+        .list-comma:first-child::before {
+          content: '';
+        }
+      }
     }
 
     .img-container {

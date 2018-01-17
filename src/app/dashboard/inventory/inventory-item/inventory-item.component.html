@@ -429,7 +429,10 @@
                     <div class="ttl bigger tealish-text prod-name" [title]="item.name">
                       <a [routerLink]="['/', 'products', item.account_product_id]">{{item.name}}</a>
                     </div>
-                    <div class="small">{{item.vendor_name}}</div>
+                    <div class="small bold">{{item.vendor_name}}</div>
+                    <div class="vendors">
+                      <span class="list-comma" *ngFor="let vendor of item.vendors">{{ vendor.vendor_name }}</span>
+                    </div>
                     <div class="row mrg-btm-0">
                       <div class="col s12 m5">
                         <span class="grey-text small">CAT# </span>
@@ -492,7 +495,10 @@
             <div class="tealish-text prod-name" [title]="item.name">
               <a [routerLink]="['/', 'products', item.account_product_id]">{{ item.name }}</a>
             </div>
-            <div>{{ item.vendor_name }}</div>
+            <div class="small bold">{{ item.vendor_name }}</div>
+            <div class="vendors">
+              <span class="list-comma" *ngFor="let vendor of item.vendors">{{ vendor.vendor_name }}</span>
+            </div>
           </div>
           <div class="col s2">
             {{ item?.price?.package_price }}
