@@ -91,13 +91,12 @@ export class MarketplaceTabComponent implements OnInit {
         }
       );
       return products;
-    }).do(res => {
-      console.log(res)
     });
     
     this.infiniteScroll$
     .filter((infinite) => infinite && !this.isRequest)
     .switchMap((infinite) => {
+      
       this.isRequest = true;
 
       this.searchKeyLast = this.searchKey;

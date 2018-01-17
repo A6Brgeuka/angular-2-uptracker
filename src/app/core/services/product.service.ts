@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 @Subscribers({
@@ -29,7 +30,8 @@ export class ProductService extends ModelService {
   public totalCount$: any = new BehaviorSubject(1);
   public location$: any = new BehaviorSubject(false);
   public getProductsData$: any = new BehaviorSubject({});
-  public getMarketplaceData$: any = new Subject();
+  public getMarketplaceData$: ReplaySubject<any> = new ReplaySubject(1);
+  //public getMarketplaceData$: Subject<any> = new Subject<any>();
   public location: string;
   public total: number = 1;
   public dashboardLocation: any;
@@ -117,6 +119,7 @@ export class ProductService extends ModelService {
   getNextProducts(page?) {
     let reset: boolean = page ? false : true;
     this.requestParams.page = this.current_page;
+    console.log(reset, 1111111111);
     return this.getMarketPlace(this.marketplace, this.requestParams, reset);
   }
   

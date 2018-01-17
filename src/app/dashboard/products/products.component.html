@@ -1,3 +1,18 @@
+<!--<div class="row">-->
+  <!--<div class="col s12">-->
+    <!--<ul class="tabs">-->
+      <!--<li class="tab col s3"><a href="#test1">Test 1</a></li>-->
+      <!--<li class="tab col s3"><a href="#test2">Test 2</a></li>-->
+      <!--<li class="tab col s3 disabled"><a href="#test3">Disabled Tab</a></li>-->
+      <!--<li class="tab col s3"><a href="#test4">Test 4</a></li>-->
+    <!--</ul>-->
+  <!--</div>-->
+  <!--<div id="test1" class="col s12">Test 1</div>-->
+  <!--<div id="test2" class="col s12">Test 2</div>-->
+  <!--<div id="test3" class="col s12">Test 3</div>-->
+  <!--<div id="test4" class="col s12">Test 4</div>-->
+<!--</div>-->
+
 <div class="products content">
   <div class="top">
     <div class="row filter uptracker-form no-margin-bottom">
@@ -35,20 +50,20 @@
       </div>
     </div>
 
-
     <div class="row">
       <ul class="tabs" materialize="tabs">
         <li class="tab">
-          <a href="#homeTab" [class.active]="true" (click)="selectTab('home')">Home</a>
+          <a #home href="#homeTab" [class.active]="(productService.getMarketplaceData$ | async) ==='home'" (click)="selectTab('home')">Home</a>
         </li>
         <li class="tab">
-          <a href="#marketplaceTab" (click)="selectTab('my')">My Marketplace</a>
+          <a #my href="#marketplaceTab" [class.active]="(productService.getMarketplaceData$ | async) ==='my'" (click)="selectTab('my')">My Marketplace</a>
+          <!--<a #qqq href="#marketplaceTab" [class.active]="true" (click)="selectTab('my')">My Marketplace</a>-->
         </li>
         <li class="tab">
-          <a href="#marketplaceTab" (click)="selectTab('global')">Global Marketplace</a>
+          <a #global href="#marketplaceTab" [class.active]="(productService.getMarketplaceData$ | async) ==='global'" (click)="selectTab('global')">Global Marketplace</a>
         </li>
         <li class="tab">
-          <a href="#marketplaceTab" (click)="selectTab('maris')">Mari's List</a>
+          <a #maris href="#marketplaceTab" [class.active]="(productService.getMarketplaceData$ | async) ==='maris'" (click)="selectTab('maris')">Mari's List</a>
         </li>
       </ul>
     </div>
