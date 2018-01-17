@@ -427,8 +427,8 @@
                   </div>
                   <div class="pdg-l-10">
                     <div class="ttl bigger tealish-text prod-name" [title]="item.name">
-                      <a *ngIf="item.custom_product" [routerLink]="['/', 'products', item.variant_id]">{{item.name}}</a>
-                      <a *ngIf="!item.custom_product" [routerLink]="['/', 'products', item.account_variant_id]">{{item.name}}</a>
+                      <a *ngIf="!item.custom_product" [routerLink]="['/', 'products', item.product_id]">{{item.name}}</a>
+                      <a *ngIf="item.custom_product" [routerLink]="['/', 'products', item.account_product_id]">{{item.name}}</a>
                     </div>
                     <div class="small bold">{{item.vendor_name}}</div>
                     <div class="vendors">
@@ -494,8 +494,8 @@
         <div class="row border-btm mrg-btm-0 flex-middle" *ngIf="!item.default_product && (product$ | async)?.inventory_products[0].id !== item.id">
           <div class="col s5">
             <div class="tealish-text prod-name" [title]="item.name">
-              <a *ngIf="item.custom_product" [routerLink]="['/', 'products', item.variant_id]">{{item.name}}</a>
-              <a *ngIf="!item.custom_product" [routerLink]="['/', 'products', item.account_variant_id]">{{item.name}}</a>
+              <a *ngIf="!item.custom_product" [routerLink]="['/', 'products', item.product_id]">{{item.name}}</a>
+              <a *ngIf="item.custom_product" [routerLink]="['/', 'products', item.account_product_id]">{{item.name}}</a>
             </div>
             <div class="small bold">{{ item.vendor_name }}</div>
             <div class="vendors">

@@ -41,15 +41,15 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   public selectAll: boolean;
   public showMenuHeader: boolean = false;
   public subscribers: any = {};
-  private reorderProduct$:  any = new Subject<any>();
   public reorderOrders$:  any = new Subject<any>();
   public updateFlagged$: any = new Subject();
-  private voidOrder$:  any = new Subject<any>();
-  private voidCheckedOrders$:  any = new Subject<any>();
+  public filteredOrders$:  Observable<any>
   public selectedOrder: any = new selectedOrderModel;
   
+  private voidOrder$:  any = new Subject<any>();
+  private voidCheckedOrders$:  any = new Subject<any>();
+  private reorderProduct$:  any = new Subject<any>();
   private orders$:  any = new Subject<any>();
-  private filteredOrders$:  Observable<any>
   
   constructor(
     public modal: Modal,
