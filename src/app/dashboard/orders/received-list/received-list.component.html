@@ -1,4 +1,5 @@
 <app-order-table
+  [uniqueField]="'item_id'"
   [header]="tableHeaderReceived"
   [orders]="(orders$ | async)"
   [listName] = 'listName'

@@ -53,14 +53,21 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-    this.orders$ = Observable
-    .combineLatest(
-      this.receivedOrders$,
-      this.sortBy$,
-    )
-    .map(([orders, sortBy]) => {
-      return _.sortBy(orders, sortBy);
+    //this.orders$ = Observable
+    //.combineLatest(
+    //  this.receivedOrders$,
+    //  this.sortBy$,
+    //)
+    //.map(([orders, sortBy]) => {
+    //  return _.sortBy(orders, sortBy);
+    //});
+  
+    this.orders$ = this.receivedOrders$
+    .map((orders) => {
+      return _.uniqBy(orders, 'item_id');
     });
+  
+    
   }
   
   addSubscribers() {

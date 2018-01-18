@@ -1,48 +1,26 @@
 <div class="list is-grid-view">
   <div class="heading row">
     <div class="col pointer" (click)="sortByHeaderCol(headerCol)" [ngClass]="headerCol.className" *ngFor="let headerCol of header; first as isFirst">
+
       <div class="input-checkbox left checkbox"
         *ngIf="isFirst">
         <input
           type="checkbox"
           class="checkbox-input"
           [id]="componentId + '-checkbox'"
-          [(ngModel)]="selectAll"
-          (click)="toggleSelectAll(!selectAll)"
+          [ngModel]="orderTableService.batchSelect$ | async"
+          (click)="toggleSelectAll()"
         />
         <label [for]="componentId + '-checkbox'"></label>
       </div>
 
       {{headerCol.name}}
 
-      <ng-template [ngIf]="headerCol.actions">
-
-        <div class="right edititem"
-          materialize="dropdown"
-          [attr.data-activates]='listName + 1'
-          *ngIf = "showMenuHeader"
-        >
-          <fa name="ellipsis-h"></fa>
-        </div>
-
-        <ul [id]='listName + 1' class='dropdown-content'>
-          <li>
-            <a class="tealish-text" (click)="onReceiveOrders()">Edit</a>
-          </li>
-          <li *ngIf="listName !== 'received'">
-            <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
-          </li>
-          <li *ngIf="listName === 'received'">
-            <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
-          </li>
-          <li>
-            <a class="tealish-text" (click)=buyAgainOrders()>Buy Again</a>
-          </li>
-          <li *ngIf="listName !== 'received'">
-            <a class="red-text" (click)="onVoidOrder('', true)">Void</a>
-          </li>
-        </ul>
-      </ng-template>
+      <app-order-table-header-action
+        [orders]="checkedOrders$ | async"
+        [isShow]="headerCol.actions && showHeaderMenu$ | async"
+        [listName]="listName"
+      ></app-order-table-header-action>
     </div>
 
   </div>
@@ -60,12 +38,12 @@
       <div class="input-checkbox left checkbox" *ngIf="isFirst">
         <input
           type="checkbox"
-          [(ngModel)]='item.checked'
+          [ngModel]='item.checked'
           (ngModelChange)="setCheckbox(item)"
-          class="selected-input{{i + item.id}}"
-          id="selected{{i + item.id}}"
+          class="selected-input{{i + item[uniqueField]}}"
+          id="selected{{i + item[uniqueField] + componentId}}"
         />
-        <label for="selected{{i + item.id}}"></label>
+        <label for="selected{{i + item[uniqueField] + componentId}}"></label>
       </div>
 
       <ng-template
@@ -86,10 +64,10 @@
 
         <div class="right edititem"
           materialize="dropdown"
-          [attr.data-activates]='item.id + i'>
+          [attr.data-activates]='item[uniqueField] + i'>
           <fa name="ellipsis-h"></fa>
         </div>
-        <ul [id]='item.id + i' class='dropdown-content'>
+        <ul [id]='item[uniqueField] + i' class='dropdown-content'>
           <li *ngIf="item.status !== 'Reconciled'">
             <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
           </li>
@@ -117,8 +95,6 @@
             <a class="red-text" (click)="onVoidOrder(item)">Void</a>
           </li>
         </ul>
-
-        <!--<app-all-orders-action [item]="item"></app-all-orders-action>-->
       </ng-template>
     </div>
 
