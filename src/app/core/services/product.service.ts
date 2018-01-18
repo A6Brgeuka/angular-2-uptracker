@@ -74,7 +74,9 @@ export class ProductService extends ModelService {
       this.accountService.dashboardLocation$,
       this.searchKey$,
       this.sortBy$,
-    ).publishReplay(1).refCount();
+    )
+    .debounceTime(50)
+    .publishReplay(1).refCount();
     
     this.marketplaceData$
     .filter((marketplace) => marketplace && marketplace !== 'home')
