@@ -63,9 +63,9 @@
           [(ngModel)]='item.checked'
           (ngModelChange)="setCheckbox(item)"
           class="selected-input{{i + item.id}}"
-          id="selected{{i + item.id}}"
+          [id]="(listName === 'received') ? listName + item.item_id + i : listName + item.id + i"
         />
-        <label for="selected{{i + item.id}}"></label>
+        <label [for]="(listName === 'received') ? listName + item.item_id + i : listName + item.id + i"></label>
       </div>
 
       <ng-template
@@ -86,10 +86,10 @@
 
         <div class="right edititem"
           materialize="dropdown"
-          [attr.data-activates]='item.id + i'>
+          [attr.data-activates]="(listName === 'received') ?  + item.item_id + i : item.id + i">
           <fa name="ellipsis-h"></fa>
         </div>
-        <ul [id]='item.id + i' class='dropdown-content'>
+        <ul [id]="(listName === 'received') ?  + item.item_id + i : item.id + i" class='dropdown-content'>
           <li *ngIf="item.status !== 'Reconciled'">
             <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
           </li>

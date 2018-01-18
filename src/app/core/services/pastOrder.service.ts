@@ -106,8 +106,8 @@ export class PastOrderService extends ModelService {
     .map((res: any) => res.data);
   }
   
-  setFlag(item) {
-    return this.restangular.one('pos', item.id).one('flag').customPUT({'flagged' : !item.flagged})
+  setFlag(item, id) {
+    return this.restangular.one('pos', id).one('flag').customPUT({'flagged' : !item.flagged})
       .map(res => {
         this.updateFlaggedElementCollection$.next(res.data);
         return res.data;
