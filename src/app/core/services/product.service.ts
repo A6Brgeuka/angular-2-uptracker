@@ -103,9 +103,6 @@ export class ProductService extends ModelService {
       
       return this.getMarketPlace(marketplace, this.requestParams);
     })
-    //.switchMap((marketplace) => {
-    //  return this.getMarketPlace(marketplace, this.requestParams);
-    //})
     .subscribe();
     
     this.selfData$ = Observable.merge(
@@ -121,7 +118,6 @@ export class ProductService extends ModelService {
   getNextProducts(page?) {
     let reset: boolean = page ? false : true;
     this.requestParams.page = this.current_page;
-    console.log(reset, 1111111111);
     return this.getMarketPlace(this.marketplace, this.requestParams, reset);
   }
   

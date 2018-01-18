@@ -57,19 +57,7 @@ export class MarketplaceTabComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.accountService.dashboardLocation$.subscribe((loc: any) => {
-      this.locationId = loc ? loc['id'] : '';
-    });
     
-    this.productService.totalCount$.subscribe(total => this.total = total);
-  
-    this.productService.isDataLoaded$
-    .filter(r => r)
-    .do(() => this.isRequest = false)
-    .delay(1000)
-    .subscribe((r) => {
-      this.getInfiniteScroll();
-    });
     
     this.products$ = Observable
     .combineLatest(
@@ -93,14 +81,19 @@ export class MarketplaceTabComponent implements OnInit {
       return products;
     });
     
-    this.infiniteScroll$
+    
+  }
+  
+  addSubscribers() {
+    
+    this.subscribers.infiniteSccrollSubscription = this.infiniteScroll$
     .filter((infinite) => infinite && !this.isRequest)
     .switchMap((infinite) => {
-      
+  
       this.isRequest = true;
-
+  
       this.searchKeyLast = this.searchKey;
-
+  
       if (this.total <= (this.productService.current_page) * this.productService.pagination_limit) {
         this.isRequest = false;
         return Observable.of(false);
@@ -113,7 +106,23 @@ export class MarketplaceTabComponent implements OnInit {
     })
     .subscribe(res => {
     }, err => {
-    console.log(err);
+      console.log(err);
+    });
+    
+    this.subscribers.isDataLoadedSubscription = this.productService.isDataLoaded$
+    .filter(r => r)
+    .do(() => this.isRequest = false)
+    .delay(1000)
+    .subscribe((r) => {
+      this.getInfiniteScroll();
+    });
+    
+    this.subscribers.totalCountSubscription = this.productService.totalCount$
+    .subscribe(total => this.total = total);
+    
+    this.subscribers.locationSubscription = this.accountService.dashboardLocation$
+    .subscribe((loc: any) => {
+      this.locationId = loc ? loc['id'] : '';
     });
   }
   
@@ -125,7 +134,6 @@ export class MarketplaceTabComponent implements OnInit {
   itemsSort(event) {
     let value = event.target.value;
     this.productService.updateSortBy(value);
-    //this.sortBy$.next(value);
   }
   
   requestProduct() {
@@ -195,8 +203,7 @@ export class MarketplaceTabComponent implements OnInit {
     };
     let updateProduct$ = this.productService.updateProduct(updateData);
     updateProduct$.subscribe((r) => {
-      console.log(r);
-      this.toasterService.pop('', val ? 'Added to favorites' : "Removed from favorites");
+      this.toasterService.pop('', val ? 'Added to favorites' : 'Removed from favorites');
     });
   };
   
@@ -204,10 +211,7 @@ export class MarketplaceTabComponent implements OnInit {
     this.searchKey = '';
     this.sortBy = '';
     this.productService.current_page = 0;
-    this.productService.getNextProducts(0).subscribe((r) => {
-        this.getInfiniteScroll();
-      }
-    );
+    this.productService.getNextProducts(0);
   }
 }
 
