@@ -8,7 +8,7 @@ import { UserService, AccountService } from '../../../core/services/index';
 import { ModalWindowService } from "../../../core/services/modal-window.service";
 import { ToasterService } from "../../../core/services/toaster.service";
 import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit-comment-modal.component";
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ConfigService } from '../../../core/services/config.service';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { InfoModal } from './default-info-modal/info-modal-component';
@@ -62,6 +62,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService,
     public location: Location,
     public route: ActivatedRoute,
+    public router: Router,
     public zone: NgZone,
     public modalWindowService: ModalWindowService,
     public modal: Modal
@@ -385,4 +386,5 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
   printPage() {
     window.print();
   }
+  
 }

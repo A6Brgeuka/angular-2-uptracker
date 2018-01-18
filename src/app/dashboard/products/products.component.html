@@ -35,28 +35,27 @@
       </div>
     </div>
 
-
     <div class="row">
       <ul class="tabs" materialize="tabs">
         <li class="tab">
-          <a href="#homeTab" [class.active]="true" (click)="selectTab('home')">Home</a>
+          <a href="#homeTab" [class.active]="(productService.getMarketplaceData$ | async) ==='home'" (click)="selectTab('home')">Home</a>
         </li>
         <li class="tab">
-          <a href="#marketplaceTab" (click)="selectTab('my')">My Marketplace</a>
+          <a href="#marketplaceTabMy" [class.active]="(productService.getMarketplaceData$ | async) ==='my'" (click)="selectTab('my')">My Marketplace</a>
         </li>
         <li class="tab">
-          <a href="#marketplaceTab" (click)="selectTab('global')">Global Marketplace</a>
+          <a href="#marketplaceTabGlobal" [class.active]="(productService.getMarketplaceData$ | async) ==='global'" (click)="selectTab('global')">Global Marketplace</a>
         </li>
         <li class="tab">
-          <a href="#marketplaceTab" (click)="selectTab('maris')">Mari's List</a>
+          <a  href="#marketplaceTabMaris" [class.active]="(productService.getMarketplaceData$ | async) ==='maris'" (click)="selectTab('maris')">Mari's List</a>
         </li>
       </ul>
     </div>
 
     <app-home-tab id="homeTab"></app-home-tab>
-    <app-marketplace-tab id="marketplaceTab"></app-marketplace-tab>
-
-    <!--<app-maris-list-tab id="marisListTab"></app-maris-list-tab>-->
+    <app-marketplace-tab *ngIf="(productService.getMarketplaceData$ | async) ==='my'" id="marketplaceTabMy"></app-marketplace-tab>
+    <app-marketplace-tab *ngIf="(productService.getMarketplaceData$ | async) ==='global'" id="marketplaceTabGlobal"></app-marketplace-tab>
+    <app-marketplace-tab *ngIf="(productService.getMarketplaceData$ | async) ==='maris'" id="marketplaceTabMaris"></app-marketplace-tab>
 
   </div>
 </div>

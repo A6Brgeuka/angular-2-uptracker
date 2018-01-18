@@ -9,35 +9,47 @@ import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import { ResendOrderModal } from '../../resend-order-modal/resend-order-modal.component';
 import { ConfirmVoidOrderModal } from '../../order-modals/confirm-void-order-modal/confirm-void-order-modal.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { selectedOrderModel } from '../../../../models/selected-order.model';
 import { SelectVendorModal } from '../../select-vendor-modal/select-vendor.component';
+import { Observable } from 'rxjs/Observable';
+import { OrderTableSortService } from './order-table-sort.service';
 
 @Component( {
   selector: 'app-order-table',
   templateUrl: './order-table.component.html',
-  styleUrls: ['./order-table.component.scss']
+  styleUrls: ['./order-table.component.scss'],
+  providers: [
+    OrderTableSortService
+  ]
 })
 
 @DestroySubscribers()
 
 export class OrderTableComponent implements OnInit, OnDestroy {
   @Input('header') public header: any = [];
-  @Input('orders') public orders: any = [];
   @Input('listName') public listName: string = '';
+  @Input()
+  set orders(value){
+    this.orders$.next(value);
+  }
   
   @Output() sortByHeaderUpdated = new EventEmitter();
   @Output() filterBy = new EventEmitter();
   
+  public componentId: string = _.uniqueId();
   public selectAll: boolean;
   public showMenuHeader: boolean = false;
   public subscribers: any = {};
-  private reorderProduct$:  any = new Subject<any>();
   public reorderOrders$:  any = new Subject<any>();
   public updateFlagged$: any = new Subject();
+  public filteredOrders$:  Observable<any>
+  public selectedOrder: any = new selectedOrderModel;
+  
   private voidOrder$:  any = new Subject<any>();
   private voidCheckedOrders$:  any = new Subject<any>();
-  public selectedOrder: any = new selectedOrderModel;
+  private reorderProduct$:  any = new Subject<any>();
+  private orders$:  any = new Subject<any>();
+  private test$:  any = new Subject<any>();
   
   constructor(
     public modal: Modal,
@@ -45,11 +57,23 @@ export class OrderTableComponent implements OnInit, OnDestroy {
     public pastOrderService: PastOrderService,
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
+    public orderTableSortService: OrderTableSortService,
   ) {
   
   }
   
   ngOnInit() {
+    this.filteredOrders$ = Observable.combineLatest(
+      this.orders$,
+      this.orderTableSortService.sort$.startWith(null),
+    )
+    .map(([orders, sort]: [any, any]) => {
+      if (!sort) {
+        return orders;
+      }
+      return _.orderBy(orders, [sort.alias], [sort.order]);
+    });
+    
   }
   
   ngOnDestroy() {
@@ -63,7 +87,8 @@ export class OrderTableComponent implements OnInit, OnDestroy {
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
   
     this.subscribers.updateFlaggedSubscription = this.updateFlagged$
-    .switchMap(item => this.pastOrderService.setFlag(item))
+    .switchMap(item =>
+      this.pastOrderService.setFlag(item, (this.listName === 'received') ? [item.item_id] : [item.id]))
     .subscribe(res => {
         this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged');
       },
@@ -109,7 +134,7 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   
   setCheckbox(item) {
     const filteredOrders = _.filter(this.orders, 'checked');
-    this.showMenuHeader = (filteredOrders.length) ? true : false;
+    this.showMenuHeader = !!(filteredOrders.length);
     this.selectAll = (filteredOrders.length && filteredOrders.length === this.orders.length);
   }
   
@@ -123,7 +148,7 @@ export class OrderTableComponent implements OnInit, OnDestroy {
       'orders': [
         {
           'order_id': item.order_id,
-          'items_ids': [item.id],
+          'items_ids': (this.listName === 'received') ? [item.item_id] : [item.id],
         }
       ]
     };
@@ -170,7 +195,8 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   }
   
   sendToReceiveProduct(item) {
-    const queryParams = item.order_id.toString() + '&' + item.id.toString();
+    const id = (this.listName === 'received') ? [item.item_id] : [item.id];
+    const queryParams = item.order_id.toString() + '&' + id.toString();
     this.pastOrderService.goToReceive(queryParams);
   }
   
@@ -222,15 +248,12 @@ export class OrderTableComponent implements OnInit, OnDestroy {
   }
   
   sortByHeaderCol(headerCol) {
-    this.sortByHeaderUpdated.emit(headerCol);
+    this.orderTableSortService.sortByAlias(headerCol.alias);
   }
   
   onFilterBy(value) {
     console.log(value, 66666666);
     this.filterBy.emit(value);
-    
-    //this.orders = _.filter(this.orders, value);
-    
   }
   
 }

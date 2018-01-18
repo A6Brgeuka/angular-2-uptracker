@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 @Subscribers({
@@ -29,7 +30,8 @@ export class ProductService extends ModelService {
   public totalCount$: any = new BehaviorSubject(1);
   public location$: any = new BehaviorSubject(false);
   public getProductsData$: any = new BehaviorSubject({});
-  public getMarketplaceData$: any = new Subject();
+  public getMarketplaceData$: ReplaySubject<any> = new ReplaySubject(1);
+  //public getMarketplaceData$: Subject<any> = new Subject<any>();
   public location: string;
   public total: number = 1;
   public dashboardLocation: any;
@@ -72,7 +74,9 @@ export class ProductService extends ModelService {
       this.accountService.dashboardLocation$,
       this.searchKey$,
       this.sortBy$,
-    ).publishReplay(1).refCount();
+    )
+    .debounceTime(50)
+    .publishReplay(1).refCount();
     
     this.marketplaceData$
     .filter((marketplace) => marketplace && marketplace !== 'home')
@@ -99,9 +103,6 @@ export class ProductService extends ModelService {
       
       return this.getMarketPlace(marketplace, this.requestParams);
     })
-    //.switchMap((marketplace) => {
-    //  return this.getMarketPlace(marketplace, this.requestParams);
-    //})
     .subscribe();
     
     this.selfData$ = Observable.merge(
