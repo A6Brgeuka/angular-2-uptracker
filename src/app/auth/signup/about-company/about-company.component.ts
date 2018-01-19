@@ -48,7 +48,8 @@ export class AboutCompanyComponent implements OnInit {
         .subscribe((res: any) => {
           let user = this.userService.transformAccountInfo(res.data);
           this.userService.updateSelfData(user);
-          this.router.navigate(['/signup/payment-info']);
+          // this.router.navigate(['/signup/payment-info']);  // TODO: put this back when payment is required
+          this.router.navigate(['/signup/congrats']);
         });
   }
 
