@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
@@ -10,15 +10,13 @@ import { AccountService } from '../../core/services/account.service';
 import { UploadCsvModal } from './upload-csv-modal/upload-csv-modal.component';
 import { ToasterService } from '../../core/services/toaster.service';
 
-declare var $: any;
-
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
 @DestroySubscribers()
-export class ProductsComponent implements OnInit, AfterViewInit {
+export class ProductsComponent implements OnInit {
   public nothingChecked: boolean;
   
   public dashboardLocation;
@@ -37,30 +35,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   ) {
   }
   
-  @ViewChild('my') my;
-  
-  ngAfterViewInit(){
-    //this.productService.getMarketplaceData$
-    //.subscribe(product => {
-    //  debugger;
-    //  console.log(111);
-    //  setTimeout(()=>{
-    //    this[product].nativeElement.click();
-    //  },1000)
-    //
-    //
-    //})
-    
-    //this.qqq.nativeElement.click();
-    
-    //this.selectTab('my')
-    //console.log($(this.qqq.nativeElement).tabs)
-  }
-  
   ngOnInit() {
-    this.accountService.dashboardLocation$.subscribe((loc: any) => {
-      this.locationId = loc ? loc['id'] : '';
-    });
   }
   
   searchFilter(event) {

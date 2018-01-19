@@ -21,6 +21,7 @@ import { Subject } from 'rxjs/Subject';
 export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input('inputRange') inputRange;
   
+  public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string = 'A-Z';
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject('A-Z');
@@ -38,7 +39,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectAll: boolean = false;
   public rangeFields: any[] = [];
   public quantity: number = 3;
-  public thumbColor: string = "#000000";
+  public thumbColor: string = '#000000';
   public updateFavorite$: any = new Subject();
   
   constructor(
@@ -63,54 +64,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   
   ngOnInit() {
     
-    this.accountService.dashboardLocation$.subscribe((loc: any) =>
-      this.locationId = loc ? loc['id'] : ''
-    );
-    
-    this.inventoryService.totalCount$.subscribe(total => this.total = total);
-    
-    this.inventoryService.isDataLoaded$
-    .filter(r => r)
-    .do(() => this.isRequest = false)
-    .delay(1000)
-    .subscribe((r) => {
-      this.getInfiniteScroll();
-    });
-    
-    this.searchKey$.debounceTime(1000)
-    .filter(r => (r || r === ''))
-    .subscribe(
-      (r) => {
-        this.searchKey = r;
-        this.inventoryService.current_page = 0;
-        this.inventoryService.getNextInventory(0, r, this.sortBy).subscribe((r) => {
-            this.getInfiniteScroll();
-          }
-        );
-      }
-    );
-    
-    this.searchKey$
-    .subscribe(
-      (r) => {
-        if (r && this.sortBy == "A-Z") {
-          this.sortBy$.next("relevance");
-        } else if (!r && this.sortBy === "relevance") {
-          this.sortBy$.next("A-Z");
-        }
-      });
-    
-    this.sortBy$.subscribe((sb: string) =>
-      this.sortBy = sb
-    );
-    
-    this.sortBy$
-    .filter(r => r)
-    .switchMap((f) => {
-      return this.inventoryService.getNextInventory(0, this.searchKey, f);
-    })
-    .subscribe();
-    
     this.products$ = Observable
     .combineLatest(
       this.inventoryService.collection$,
@@ -134,23 +87,10 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
       return products;
     });
     
-    Observable.combineLatest(this.accountService.dashboardLocation$, this.products$)
-    .filter(([location, products]) => {
-      return (location && products.length);
-    })
-    .switchMap(([location, products]) => {
-      return products.map(product => {
-        product.inventory_item_locations.map(productLocation => {
-          if(location.id === productLocation.location_id) {
-            product.critical_level = productLocation.critical_level;
-            product.overstock_level = productLocation.overstock_level;
-            product.on_hand = productLocation.on_hand;
-          }
-        });
-      });
-    }).subscribe();
-    
-    this.infiniteScroll$
+  }
+  
+  addSubscribers() {
+    this.subscribers.infniteScrollSubscription = this.infiniteScroll$
     .filter((infinite) => infinite && !this.isRequest)
     .switchMap((infinite) => {
       this.isRequest = true;
@@ -168,13 +108,68 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     })
     .subscribe();
     
-    this.updateFavorite$
+    this.subscribers.totalCountSubscription = this.inventoryService.totalCount$
+    .subscribe(total => this.total = total);
+    
+    this.subscribers.isDataLoadedSubscription = this.inventoryService.isDataLoaded$
+    .filter(r => r)
+    .do(() => this.isRequest = false)
+    .delay(1000)
+    .subscribe((r) => {
+      this.getInfiniteScroll();
+    });
+    
+    this.subscribers.locationSubscription = this.accountService.dashboardLocation$.subscribe((loc: any) =>
+      this.locationId = loc ? loc['id'] : ''
+    );
+    
+    this.subscribers.showLocationSliderSubscription = Observable.combineLatest(this.accountService.dashboardLocation$, this.products$)
+    .filter(([location, products]) => {
+      return (location && products.length);
+    })
+    .switchMap(([location, products]) => {
+      return products.map(product => {
+        product.inventory_item_locations.map(productLocation => {
+          if (location.id === productLocation.location_id) {
+            product.critical_level = productLocation.critical_level;
+            product.overstock_level = productLocation.overstock_level;
+            product.on_hand = productLocation.on_hand;
+          }
+        });
+      });
+    }).subscribe();
+    
+    this.subscribers.updateFavoriteSubscription = this.updateFavorite$
     .switchMap(inventory => this.inventoryService.setFavorite(inventory))
     .subscribe(res => {
-      this.inventoryService.updateInventoryCollection(res);
-      this.toasterService.pop('', res.favorite ? 'Added to favorites' : "Removed from favorites");
-    },
-    err => console.log('error'));
+        this.inventoryService.updateInventoryCollection(res);
+        this.toasterService.pop('', res.favorite ? 'Added to favorites' : 'Removed from favorites');
+      },
+      err => console.log('error'));
+    
+    this.subscribers.sortBySubscription = this.sortBy$
+    .filter(r => r)
+    .switchMap((f) => {
+      this.sortBy = f;
+      return this.inventoryService.getNextInventory(0, this.searchKey, f);
+    })
+    .subscribe();
+    
+    this.subscribers.searchKeySubscription = this.searchKey$.debounceTime(1000)
+    .filter(r => (r || r === ''))
+    .subscribe(
+      (r) => {
+        if (r && this.sortBy === 'A-Z') {
+          this.sortBy$.next('relevance');
+        } else if (!r && this.sortBy === 'relevance') {
+          this.sortBy$.next('A-Z');
+        }
+        this.searchKey = r;
+        this.inventoryService.current_page = 0;
+        this.inventoryService.getNextInventory(0, r, this.sortBy);
+      }
+    );
+    
   }
   
   ngOnDestroy() {
@@ -285,7 +280,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   private calcThumbColor(number: number) {
-    let value = Math.min(Math.max(0,number), 1) * 510;
+    let value = Math.min(Math.max(0, number), 1) * 510;
     let redValue;
     let greenValue;
     if (value < 255) {

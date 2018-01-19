@@ -64,7 +64,7 @@ ngOnInit() {
   addSubscribers() {
     this.subscribers.updateOrderFlaggedSubscription = this.updateFlagged$
     .switchMapTo(this.order$.first())
-    .switchMap(order => this.pastOrderService.setFlag(order))
+    .switchMap(order => this.pastOrderService.setFlag(order, order.id))
     .subscribe(res => {
         this.order$.next(res);
         this.toasterService.pop('', res.flagged ? 'Flagged' : "Unflagged");
@@ -73,7 +73,7 @@ ngOnInit() {
   }
   
   ngOnDestroy() {
-    console.log('for unsubscribing')
+    console.log('for unsubscribing');
   }
   
   goBack(): void {

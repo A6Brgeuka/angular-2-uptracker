@@ -74,8 +74,8 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
       this.orderTableSortService.sort$.startWith(null),
       this.orderTableService.toggleSelect$.startWith(null)
     )
-    .map(([orders, sort]: [any, any])=>{
-      if(!sort){
+    .map(([orders, sort]: [any, any]) => {
+      if (!sort) {
         return orders;
       }
       return _.orderBy(orders, [sort.alias], [sort.order]);
@@ -110,7 +110,8 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
   
     this.subscribers.updateFlaggedSubscription = this.updateFlagged$
-    .switchMap(item => this.pastOrderService.setFlag(item))
+    .switchMap(item =>
+      this.pastOrderService.setFlag(item, (this.listName === 'received') ? [item.item_id] : [item.id]))
     .subscribe(res => {
         this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged');
       },
@@ -130,7 +131,7 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
       'orders': [
         {
           'order_id': item.order_id,
-          'items_ids': [item.id],
+          'items_ids': (this.listName === 'received') ? [item.item_id] : [item.id],
         }
       ]
     };
@@ -138,7 +139,8 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   }
   
   sendToReceiveProduct(item) {
-    const queryParams = item.order_id.toString() + '&' + item.id.toString();
+    const id = (this.listName === 'received') ? [item.item_id] : [item.id];
+    const queryParams = item.order_id.toString() + '&' + id.toString();
     this.pastOrderService.goToReceive(queryParams);
   }
   
