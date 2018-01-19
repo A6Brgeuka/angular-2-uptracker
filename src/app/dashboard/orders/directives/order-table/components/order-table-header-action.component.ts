@@ -17,7 +17,6 @@ import { OrderTableOnVoidService } from '../order-table-on-void.service';
 @Component({
   selector: 'app-order-table-header-action',
   templateUrl: './order-table-header-action.component.html',
-  styleUrls: ['./order-table-header-action.component.scss'],
 })
 @DestroySubscribers()
 export class OrderTableHeaderActionComponent implements OnInit {
@@ -104,7 +103,7 @@ export class OrderTableHeaderActionComponent implements OnInit {
     this.reorderOrders$.next('');
   }
   
-  onVoidOrder(){
+  onVoidOrder() {
     this.orderTableOnVoidService.onVoidOrder(this.orders);
   }
 }
