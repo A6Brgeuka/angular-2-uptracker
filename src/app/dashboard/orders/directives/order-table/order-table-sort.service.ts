@@ -35,7 +35,7 @@ export class OrderTableSortService {
     .withLatestFrom(this.orederBy$, this.isNewAlias$, this.isToggleSort$)
     .map(([alias, order, isNewAlias, isToggleSort]) => {
       if (isNewAlias) {
-        return {alias, order: OrderTableSortService.ASC}
+        return {alias, order: OrderTableSortService.ASC};
       }
       
       if (isToggleSort) {
@@ -44,7 +44,7 @@ export class OrderTableSortService {
           order: order === OrderTableSortService.ASC ? OrderTableSortService.DESC : OrderTableSortService.ASC
         };
       }
-      return {alias, order}
+      return {alias, order};
     })
     .do(res => {
       this.orederBy$.next(res.order);
@@ -52,6 +52,6 @@ export class OrderTableSortService {
   }
   
   sortByAlias(alias) {
-    this.alias$.next(alias)
+    this.alias$.next(alias);
   }
 }

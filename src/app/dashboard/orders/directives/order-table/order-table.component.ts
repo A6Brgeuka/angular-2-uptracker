@@ -57,7 +57,6 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     public toasterService: ToasterService,
     public orderTableSortService: OrderTableSortService,
     public orderTableService: OrderTableService,
-    public orderTableOnVoidService: OrderTableOnVoidService,
   ) {
   
   }
@@ -66,24 +65,25 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     this.filteredOrders$ = Observable.combineLatest(
       this.orderTableService.orders$,
       this.orderTableSortService.sort$.startWith(null),
-      this.orderTableService.toggleSelect$.startWith(null)
+      this.orderTableService.toggleSelect$.startWith(null),
     )
     .map(([orders, sort]: [any, any]) => {
       if (!sort) {
         return orders;
       }
-      return _.orderBy(orders, [sort.alias], [sort.order]);
+        return _.orderBy(orders, [sort.alias], [sort.order]);
     });
     
     this.checkedOrders$ = this.filteredOrders$
     .map(orders => {
-      return orders.filter(order => order.checked)
+      return orders.filter(order => order.checked);
     });
     
     this.showHeaderMenu$ = this.filteredOrders$
     .map((orders) => {
       return _.findIndex(orders, {checked: true}) >= 0;
     });
+    
   }
   
   ngOnDestroy() {
@@ -109,10 +109,13 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     if (!headerCol.alias) {
       return;
     }
-    this.orderTableSortService.sortByAlias(headerCol.alias)
+    this.orderTableSortService.sortByAlias(headerCol.alias);
   }
   
-  onFilterBy(value) {
+  onFilterBy(value, headerCol) {
+    
+    this.orderTableService.onFilterByAlias(value, headerCol);
+    
     this.filterBy.emit(value);
   }
   

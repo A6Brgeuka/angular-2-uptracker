@@ -118,6 +118,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public showAddCustomBtn: boolean;
   public outerPack: string = '';
   public innerPack: string = '';
+  public  wildcardConsumableUnit: string = 'Item';
   
   constructor(
     public zone: NgZone,
@@ -147,7 +148,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.searchResults = data.results;
         if (this.items.length) {
           this.checkedProduct = [];
-          const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== 'Item(s)');
+          const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
           this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : null;
           this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : null);
         }
@@ -262,13 +263,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.newInventory.department = (res[0].department) ? res[0].department : this.newInventory.department;
         this.newInventory.category = (findedCategory && searchedCategory !== -1) ? findedCategory.category : null;
         this.newInventory.description = (res[0].description) ? res[0].description : this.newInventory.description;
-        const findedConsumableUnit = _.find(res, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== 'Item(s)');
+        const findedConsumableUnit = _.find(res, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
         this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : null;
         this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : null);
       }
       if (res.length && this.context.inventoryGroup) {
         this.newInventory.inventory_by_array = res[0].inventory_by;
-        const findedConsumableUnit = _.find(res, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== 'Item(s)');
+        const findedConsumableUnit = _.find(res, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
         this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : null;
         this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : null);
       }
@@ -576,7 +577,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.showSelect = false;
     item.checked = !item.checked;
   
-    const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== 'Item(s)');
+    const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
   
     if (!this.checkedProduct.length && (!this.items.length || !findedConsumableUnit)) {
       let packageType = {
@@ -621,7 +622,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.checkedProduct$.next(this.checkedProduct);
     }
   
-    const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== 'Item(s)');
+    const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
   
     if (!this.checkBoxCandidates && (!this.items.length || !findedConsumableUnit)) {
       this.packageType$.next({});
@@ -776,7 +777,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   nextPackage(value) {
     let formValue = {};
-    formValue = (value.consumable_unit_type && value.consumable_unit_type !== 'Item(s)') ? {
+    formValue = (value.consumable_unit_type && value.consumable_unit_type !== this.wildcardConsumableUnit) ? {
       ...formValue,
       consumable_unit: {properties: {unit_type: value.consumable_unit_type}}
     } : formValue;
@@ -784,8 +785,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   checkConsPackage(e) {
-    this.newInventory.consumable_unit_type = (e !== 'Item(s)') ? e : null;
-    this.newProductData.consumable_unit.properties.unit_type = (e !== 'Item(s)') ? e : null;
+    this.newInventory.consumable_unit_type = (e !== this.wildcardConsumableUnit) ? e : null;
+    this.newProductData.consumable_unit.properties.unit_type = (e !== this.wildcardConsumableUnit) ? e : null;
     this.nextPackage(this.newInventory);
     if (e !== null) {this.classDirty = true;}
   }

@@ -58,4 +58,8 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   
   }
   
+  resetFilters() {
+    console.log('resetFilters');
+  }
+  
 }
