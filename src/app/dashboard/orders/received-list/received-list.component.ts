@@ -8,6 +8,7 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
 import * as _ from 'lodash';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { Observable } from 'rxjs/Observable';
+import { ReceivedOrderListService } from '../../../core/services/received-order-list.service';
 
 @Component({
   selector: 'app-received-list',
@@ -30,14 +31,13 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1 show-hover-elem', actions: true},
   ];
   
-  public selectAllReceivedList: boolean = false;
-  
   public receivedOrders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orders$: Observable<any> = new Observable<any>();
   
   constructor(
     public pastOrderService: PastOrderService,
+    public receivedOrderListService: ReceivedOrderListService,
     public toasterService: ToasterService,
   ) {
 
@@ -49,13 +49,12 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     .map((orders) => {
       return _.uniqBy(orders, 'item_id');
     });
-  
     
   }
   
   addSubscribers() {
     
-    this.subscribers.getReceivedProductSubscription = this.pastOrderService.getReceivedProducts()
+    this.subscribers.getReceivedProductSubscription = this.receivedOrderListService.getReceivedProducts()
     .subscribe(res => {
         this.receivedOrders$.next(res);
     });

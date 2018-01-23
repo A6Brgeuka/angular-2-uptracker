@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { OrderTableResetService } from './order-table-reset.service';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Injectable()
@@ -17,9 +18,10 @@ export class OrderTableService {
   toggleBatchSelect$: Subject<any>;
   toggleSelect$: Subject<any>;
   batchSelect$: Observable<any>;
+  filterByObject$: Observable<any>;
   
   private filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  filterByObject$: Observable<any>;
+  private resetSubscription: Subscription;
   
   constructor(
     private orderTableResetService: OrderTableResetService,
@@ -28,7 +30,6 @@ export class OrderTableService {
     this.toggleSelect$ = new Subject();
     this.setOrders$ = new Subject();
     this.filterByObject$ = this.filterBy$
-    .do(res => console.log(res))
     .scan((acc, value) => {
       return value ? {...acc, ...value} : {};
     });
@@ -82,8 +83,8 @@ export class OrderTableService {
       if (_.isUndefined(newValue)) {return !acc; }
       return newValue;
     }).publishReplay(1).refCount();
-   
-    this.orderTableResetService.resetFilters$
+    
+    this.resetSubscription = this.orderTableResetService.resetFilters$
     .subscribe(res => this.filterBy$.next(null));
     
   }
@@ -100,9 +101,10 @@ export class OrderTableService {
     this.filterBy$.next({[headerCol.alias]: value });
   }
   
-  //resetFilters() {
-  //  console.log('reset', 333333);
-  //  this.filterBy$.next(null);
-  //}
+  destroySubscription() {
+    if (this.resetSubscription && this.resetSubscription.unsubscribe) {
+      this.resetSubscription.unsubscribe();
+    }
+  }
   
 }

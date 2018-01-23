@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -20,7 +20,6 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public selectAll: boolean;
   public searchKey: string;
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { OrderTableResetService } from './order-table-reset.service';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Injectable()
@@ -17,7 +18,7 @@ export class OrderTableSortService {
   private orederBy$ = new BehaviorSubject(OrderTableSortService.ASC);
   private isNewAlias$: Observable<boolean>;
   private isToggleSort$: Observable<boolean>;
-  
+  private resetSubscription: Subscription;
   
   constructor(
     private orderTableResetService: OrderTableResetService,
@@ -52,12 +53,19 @@ export class OrderTableSortService {
     .do(res => {
       this.orederBy$.next(res.order);
     });
-    
-    this.orderTableResetService.resetFilters$
+  
+    this.resetSubscription = this.orderTableResetService.resetFilters$
     .subscribe(res => this.alias$.next(null));
   }
   
   sortByAlias(alias) {
     this.alias$.next(alias);
   }
+  
+  destroySubscription() {
+    if (this.resetSubscription && this.resetSubscription.unsubscribe) {
+      this.resetSubscription.unsubscribe();
+    }
+  }
+  
 }

@@ -87,7 +87,8 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   }
   
   ngOnDestroy() {
-    console.log('for unsubscribing');
+    this.orderTableService.destroySubscription();
+    this.orderTableSortService.destroySubscription();
   }
   
   ngOnChanges(changes: SimpleChanges) {
