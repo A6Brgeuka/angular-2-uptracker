@@ -31,7 +31,6 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1 show-hover-elem', actions: true},
   ];
   
-  //public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orders$: Observable<any> = new Observable<any>();
   
   constructor(

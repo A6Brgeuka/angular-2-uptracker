@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { OrderTableResetService } from './order-table-reset.service';
 
 
 @Injectable()
@@ -19,10 +19,11 @@ export class OrderTableService {
   batchSelect$: Observable<any>;
   
   private filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  resetFilters$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   filterByObject$: Observable<any>;
   
-  constructor() {
+  constructor(
+    private orderTableResetService: OrderTableResetService,
+  ) {
     this.toggleBatchSelect$ = new Subject();
     this.toggleSelect$ = new Subject();
     this.setOrders$ = new Subject();
@@ -31,11 +32,6 @@ export class OrderTableService {
     .scan((acc, value) => {
       return value ? {...acc, ...value} : {};
     });
-    
-    //this.filterByObject$.subscribe(res => {
-    //  debugger;
-    //  console.log(res);
-    //});
   
     this.orders$ = Observable.combineLatest(
       this.setOrders$
@@ -86,6 +82,9 @@ export class OrderTableService {
       if (_.isUndefined(newValue)) {return !acc; }
       return newValue;
     }).publishReplay(1).refCount();
+   
+    this.orderTableResetService.resetFilters$
+    .subscribe(res => this.filterBy$.next(null));
     
   }
   
@@ -101,9 +100,9 @@ export class OrderTableService {
     this.filterBy$.next({[headerCol.alias]: value });
   }
   
-  resetFilters() {
-    console.log('reset', 333333);
-    this.filterBy$.next(null);
-  }
+  //resetFilters() {
+  //  console.log('reset', 333333);
+  //  this.filterBy$.next(null);
+  //}
   
 }

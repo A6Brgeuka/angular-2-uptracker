@@ -8,6 +8,7 @@ import { PastOrderService } from '../../core/services/pastOrder.service';
 import { Router } from '@angular/router';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { ToasterService } from '../../core/services/toaster.service';
+import { OrderTableResetService } from './directives/order-table/order-table-reset.service';
 
 @Component({
   selector: 'app-orders',
@@ -23,9 +24,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   public searchKey: string;
   public sortBy: string;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public visible:boolean[] = [];
-  
-  @ViewChild('allTab') allTab: ElementRef;
+  public visible: boolean[] = [];
   
   constructor(
       public modal: Modal,
@@ -33,6 +32,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
       public pastOrderService: PastOrderService,
       public modalWindowService: ModalWindowService,
       public toasterService: ToasterService,
+      public orderTableResetService: OrderTableResetService,
   ) {
   
   }
@@ -59,7 +59,7 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
   resetFilters() {
-    console.log('resetFilters');
+    this.orderTableResetService.resetFilters();
   }
   
 }

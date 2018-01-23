@@ -10,10 +10,10 @@
 
   <div class="right edititem"
     materialize="dropdown"
-    [attr.data-activates]='item[uniqueField] + i'>
+    [attr.data-activates]='item[uniqueField] + listName'>
     <fa name="ellipsis-h"></fa>
   </div>
-  <ul [id]='item[uniqueField] + i' class='dropdown-content'>
+  <ul [id]='item[uniqueField] + listName' class='dropdown-content'>
     <li *ngIf="item.status !== 'Reconciled'">
       <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
     </li>

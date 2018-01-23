@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { OrderTableResetService } from './order-table-reset.service';
 
 
 @Injectable()
@@ -18,7 +19,9 @@ export class OrderTableSortService {
   private isToggleSort$: Observable<boolean>;
   
   
-  constructor() {
+  constructor(
+    private orderTableResetService: OrderTableResetService,
+  ) {
     
     this.isNewAlias$ = this.alias$
     .pairwise()
@@ -49,6 +52,9 @@ export class OrderTableSortService {
     .do(res => {
       this.orederBy$.next(res.order);
     });
+    
+    this.orderTableResetService.resetFilters$
+    .subscribe(res => this.alias$.next(null));
   }
   
   sortByAlias(alias) {

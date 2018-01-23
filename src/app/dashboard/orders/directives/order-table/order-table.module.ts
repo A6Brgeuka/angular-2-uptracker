@@ -4,7 +4,7 @@ import { AppSharedModule } from '../../../../shared/shared.module';
 import { OrderTableComponent } from './order-table.component';
 import { OrderTableHeaderActionComponent } from './components/order-table-header-action.component';
 import { OrderTableItemActionComponent } from './components/order-table-item-action/order-table-item-action.component';
-import { OrderTableService } from './order-table.service';
+import { OrderTableResetService } from './order-table-reset.service';
 
 
 @NgModule({
@@ -18,6 +18,7 @@ import { OrderTableService } from './order-table.service';
     AppSharedModule,
   ],
   providers: [
+    OrderTableResetService,
   ],
 })
 export class OrderTableModule {
