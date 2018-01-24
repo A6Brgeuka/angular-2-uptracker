@@ -4,7 +4,14 @@
 <li>total: {{ total }}</li>
 </ul>
 <div class="row filter uptracker-form no-margin-bottom">
-  <div class="title no-margin-top col m9 s8">
+  <div class="col m6 s4">
+    <button *ngIf="(productService.getMarketplaceData$ | async) ==='my'"
+    class="uptracker-form-btn white-text waves-effect waves-light"
+    (click)="openAddCustomProductModal()">
+      <fa name="plus"></fa> Add Product
+    </button>
+  </div>
+  <div class="title no-margin-top col m3 s4">
     <span class="sub-title mrg-l-0">{{total}} items</span>
   </div>
   <div class="col m2 s3 select low-height sortby">

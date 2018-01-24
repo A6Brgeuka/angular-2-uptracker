@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { RequestProductModal } from '../request-product-modal/request-product-modal.component';
+import { AddCustomProductModalComponent } from '../../../shared/modals/add-custom-product-modal/add-custom-product-modal.component';
 
 @Component({
   selector: 'app-marketplace-tab',
@@ -212,6 +213,20 @@ export class MarketplaceTabComponent implements OnInit {
     this.sortBy = '';
     this.productService.current_page = 0;
     this.productService.getNextProducts(0);
+  }
+  
+  openAddCustomProductModal() {
+      this.modal
+      .open(AddCustomProductModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (res) => {
+            // this.filterProducts();
+          },
+          (err) => {
+          }
+        );
+      });
   }
 }
 
