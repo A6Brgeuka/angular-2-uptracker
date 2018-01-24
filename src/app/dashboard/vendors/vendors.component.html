@@ -34,6 +34,18 @@
     </div>
   </div>
 
+  <div class="row">
+    <ul class="tabs" materialize="tabs">
+      <li class="tab">
+        <a href="#myVendors" [class.active]="(vendorService.getVendorsData$ | async) ==='myVendors'" (click)="selectTab('myVendors')">My Vendors</a>
+      </li>
+      <li class="tab">
+        <a href="#allVendors" [class.active]="(vendorService.getVendorsData$ | async) ==='allVendors'" (click)="selectTab('allVendors')">All Vendors</a>
+      </li>
+
+    </ul>
+  </div>
+
   <div class="list">
     <div class="item center-align" *ngFor="let vendor of vendors$ | async; let i=index">
       <div class="inner" [routerLink]="'view/'+[vendor.id]" >

@@ -32,6 +32,7 @@ export class VendorService extends ModelService {
   public isDataLoaded$: any = new BehaviorSubject(false);
   public selectedTab:any = null;
   globalVendor$: BehaviorSubject<any> = new BehaviorSubject(1);
+  public getVendorsData$: ReplaySubject<any> = new ReplaySubject(1);
   
   constructor(
     public injector: Injector,

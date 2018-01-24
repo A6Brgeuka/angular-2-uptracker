@@ -193,4 +193,8 @@ export class VendorsComponent implements OnInit {
         this.vendorService.current_page = 1;
       })
   }
+  
+  selectTab(currentTab) {
+  
+  }
 }
