@@ -14,6 +14,7 @@ export class OrderTableService {
   
   orders$: Observable<any>;
   setOrders$: Subject<any>;
+  countOrders$: BehaviorSubject<any>;
   
   toggleBatchSelect$: Subject<any>;
   toggleSelect$: Subject<any>;
@@ -29,6 +30,7 @@ export class OrderTableService {
     this.toggleBatchSelect$ = new Subject();
     this.toggleSelect$ = new Subject();
     this.setOrders$ = new Subject();
+    this.countOrders$ = new BehaviorSubject<any>(null);
     this.filterByObject$ = this.filterBy$
     .scan((acc, value) => {
       return value ? {...acc, ...value} : {};
@@ -38,6 +40,7 @@ export class OrderTableService {
       this.setOrders$
       .filter((orders) => !!orders)
       .map((orders) => {
+        this.countOrders$.next(orders.length);
         return orders.map(order => ({checked: false, ...order}));
       })
       .switchMap((orders) => {

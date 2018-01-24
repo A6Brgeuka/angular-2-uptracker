@@ -1,3 +1,6 @@
+<div class="sub-title tealish-text">
+  {{(orderTableService.countOrders$ | async) ? (orderTableService.countOrders$ | async) : '0'}} items
+</div>
 <div class="list is-grid-view">
   <div class="heading row flex-center">
     <div class="input-checkbox left checkbox"

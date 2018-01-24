@@ -60,11 +60,6 @@ export class PastOrderService extends ModelService {
     this.router.navigate(['orders/receive', queryParams]);
   }
   
-  //getReceivedProducts() {
-  //  return this.restangular.one('pos', '6').customGET()
-  //  .map((res: any) => res.data);
-  //}
-  //
   getOpenedProducts() {
     return this.restangular.one('pos', '5').customGET()
     .map((res: any) => res.data);
