@@ -148,7 +148,6 @@ export class ProductService extends ModelService {
       this.isDataLoaded$.next(true);
       return res.data.results;
     });
-    //.subscribe();
   }
   
   updateSearchKey(value: string) {

@@ -10,8 +10,7 @@ import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { VendorModel, AccountVendorModel } from '../../models/index';
-import { BehaviorSubject } from "rxjs";
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 @Subscribers({
@@ -20,19 +19,25 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 })
 export class VendorService extends ModelService {
   pagination_limit: number = 10;
-  total: number = 0;
   current_page: number = 1;
   selfData: any;
   selfData$: Observable<any>;
   updateSelfData$: Subject<any> = new Subject<any>();
-  totalCount$: Subject<any> = new Subject<any>();
+  totalCount$: BehaviorSubject<any> = new BehaviorSubject(0);
   combinedVendors$: Observable<any>;
   accountVendors$: Observable<any> = Observable.empty();
   vendors$: Observable<any> = Observable.empty();
   public isDataLoaded$: any = new BehaviorSubject(false);
   public selectedTab:any = null;
   globalVendor$: BehaviorSubject<any> = new BehaviorSubject(1);
-  public getVendorsData$: ReplaySubject<any> = new ReplaySubject(1);
+  
+  public getVendorsData$: BehaviorSubject<any> = new BehaviorSubject('myVendors');
+  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  
+  public vendorsData$: Observable<any>;
+  public requestParams: any;
+  public vendorsList: string;
   
   constructor(
     public injector: Injector,
@@ -85,6 +90,39 @@ export class VendorService extends ModelService {
       //update user after update account
       this.userService.updateSelfDataField('account', this.selfData);
     });
+  
+    this.vendorsData$ = Observable.combineLatest(
+      this.getVendorsData$,
+      this.searchKey$,
+      this.sortBy$,
+    )
+    .debounceTime(50)
+    .publishReplay(1).refCount();
+  
+    this.vendorsData$
+    .filter((vendors) => vendors)
+    .switchMap(([vendors, searchkey, sortBy]) => {
+    
+      this.loadCollection$.next([]);
+      this.current_page = 1;
+      this.vendorsList = (vendors === 'myVendors') ? 'my' : '';
+    
+      this.requestParams = {
+        page: this.current_page,
+        limit: this.pagination_limit,
+      };
+    
+      if (sortBy && sortBy === 'Z-A') {
+        this.requestParams.sort = 'desc';
+      }
+      if (searchkey) {
+        this.requestParams.query = searchkey;
+      }
+    
+      return this.getVendorsData(this.vendorsList, this.requestParams);
+    })
+    .subscribe();
+    
   }
   
   addSubscribers() {
@@ -97,30 +135,40 @@ export class VendorService extends ModelService {
     this.updateSelfData$.next(data);
   }
   
+  updateSearchKey(value: string) {
+    this.searchKey$.next(value);
+  }
+  updateSortBy(value: string) {
+    this.sortBy$.next(value);
+  };
+  
+  updateVendorsData(tabName: string) {
+    this.getVendorsData$.next(tabName);
+  }
+  
   public cleanSearch(ins: string) {
     return ins.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
   }
   
-  public getVendorsData(query: any = {}, reset: boolean = true) {
-    return this.restangular.all('vendors').customGET('', query)
+  public getVendorsData(vendorsList, query: any = {}, reset: boolean = true) {
+    const requestUrl = (vendorsList && vendorsList === 'my') ? this.restangular.one('my', 'vendors').customGET('', query) : this.restangular.all('vendors').customGET('', query);
+    return requestUrl
     .map((res: any) => {
-        console.log('vnd', res.data.vendors);
-        if (reset) {
-          this.updateCollection$.next(res.data.vendors);
-        } else {
+        if (!reset) {
           this.addCollectionToCollection$.next(res.data.vendors);
+        } else {
+          this.updateCollection$.next(res.data.vendors);
         }
         this.totalCount$.next(res.data.count);
-        this.total = res.data.count;
+        this.totalCount$.next(res.data.count);
         this.isDataLoaded$.next(true);
-        // this.updateCollection$.next(res.data.vendors);
         return res.data.vendors;
       }
     ).catch(r => console.error(r));
   }
   
   getVendors() {
-    //
+
     //let query: any = {
     //  page: 1,
     //  limit: this.pagination_limit,
@@ -133,22 +181,10 @@ export class VendorService extends ModelService {
     return this.vendors$;
   }
   
-  getNextVendors(page?, search_string?, sortBy?) {
-    search_string = search_string ? this.cleanSearch(search_string) : '';
-    if (!page) {
-      this.current_page = 1;
-    }
-    let query: any = {
-      page: this.current_page,
-      limit: this.pagination_limit,
-    };
-    if (search_string) {
-      query.query = search_string;
-    }
-    if (sortBy && sortBy == 'Z-A') {
-      query.sort = 'desc';
-    }
-    return this.getVendorsData(query, page ? false : true);
+  getNextVendors(page?) {
+    const reset: boolean = page ? false : true;
+    this.requestParams.page = this.current_page;
+    return this.getVendorsData(this.vendorsList, this.requestParams, reset);
   }
   
   getVendor(id) {
