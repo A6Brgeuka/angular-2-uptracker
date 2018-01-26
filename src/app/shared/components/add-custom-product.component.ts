@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
@@ -20,9 +20,8 @@ import { Modal } from 'angular2-modal';
 export class AddCustomProductComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
-  public newProductData: any = new InventorySearchResults();
+  //public newProductData: any = new InventorySearchResults();
   
-  editCustomProduct: boolean = false;
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
   public autocompleteOuterPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -30,12 +29,18 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   public autocompleteInnerPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteInnerPackage: any = [];
   public autocompleteConsPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteConsPackage: any = [];
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
   public packDirty: boolean = false;
-  outerPack: string = '';
-  innerPack: string = '';
+  
+  @Input('editCustomProduct') public editCustomProduct:  boolean;
+  @Input('newProductData') public newProductData: InventorySearchResults;
+  @Input('items') public items: Array<{}> = [];
+  @Input('innerPack') public innerPack: string = '';
+  @Input('outerPack') public outerPack: string = '';
+  @Input('autocompleteConsPackage') public autocompleteConsPackage: any = [];
+  @Output() cancelEvent = new EventEmitter();
+  @Output() addEvent = new EventEmitter();
   
   constructor(
     public inventoryService: InventoryService,
@@ -46,8 +51,6 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-    this.newProductData.custom_product = true;
-    console.log(this.newProductData);
     this.autocompleteOuterPackage$.next('');
     this.autocompleteInnerPackage$.next('');
     this.autocompleteConsPackage$.next('');
@@ -137,11 +140,11 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   }
   
   addNewProduct() {
-    console.log(this.newProductData);
+    this.addEvent.emit();
   }
   
   toggleCustomCancel() {
-  
+    this.cancelEvent.emit();
   }
   
   onUpcUpdated(upc) {

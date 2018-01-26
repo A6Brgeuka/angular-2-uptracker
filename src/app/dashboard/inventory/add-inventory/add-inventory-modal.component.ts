@@ -1,6 +1,5 @@
 import {
   Component, OnInit, ViewChild, ElementRef, OnDestroy, NgZone, ViewChildren, QueryList,
-  Input
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
@@ -21,7 +20,6 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { FileUploadService } from '../../../core/services/file-upload.service';
 import { InventoryLocationModel, InventoryModel, InventoryProductModel, InventoryStorageLocationModel } from '../../../models/create-inventory.model';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
-import { HelpTextModal } from './help-text-modal/help-text-modal-component';
 
 export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
@@ -74,13 +72,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   public searchText: string = '';
   public autocompleteProducts: any =  [];
   public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteVendors: any = [];
-  public autocompleteOuterPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteOuterPackage: any = [];
-  public autocompleteInnerPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteInnerPackage: any = [];
-  public autocompleteConsPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteConsPackage: any = [];
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
@@ -398,9 +389,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       })
     }
     
-    this.autocompleteOuterPackage$.next('');
-    this.autocompleteInnerPackage$.next('');
-    this.autocompleteConsPackage$.next('');
   }
   
   ngOnDestroy() {
@@ -418,23 +406,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .subscribe(res => {
       this.autocompleteProducts = res['suggestions'];
     });
-    
-    this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
-    .subscribe((vendors:any) => this.autocompleteVendors = vendors);
-    
-    this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack:any) => this.autocompleteOuterPackage = _.sortBy(pack, ['unit_name']));
-    
-    this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack:any) => this.autocompleteInnerPackage = _.sortBy(pack, ['plural_unit_name']));
-    
-    this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack:any) => this.autocompleteConsPackage = pack);
-    
+   
     this.subscribers.departmentCollectionSubscription = this.accountService.getDepartments().take(1)
     .subscribe(departments => this.departmentCollection = departments);
     
@@ -462,67 +434,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     return Observable.of(this.autocompleteProducts).take(1);
   }
   
-  selectedAutocompledVendor(vendor) {
-    if (!(this.newProductData.vendors.length && !vendor.vendor_id && this.newProductData.vendors[0].vendor_name === vendor)) {
-      this.newProductData.vendors = (vendor.vendor_id) ? [vendor] : [{vendor_name: vendor, vendor_id: null}];
-    }
-  }
-  onSearchVendor(event) {
-    this.newProductData.vendors = [{vendor_name: event.target.value, vendor_id: null}];
-    this.newProductData.vendor_name = 'Auto';
-    this.newProductData.vendor_id = null;
-    this.vendorDirty = true;
-    this.vendorValid = !!(event.target.value);
-    this.autocompleteVendors$.next(event.target.value);
-  }
-  observableSourceVendor(keyword: any) {
-    return Observable.of(this.autocompleteVendors).take(1);
-  }
-  
-  selectedAutocompledOuterPackage(outerPackage) {
-    this.newProductData.package_type = outerPackage.unit_name;
-  }
-  onSearchOuterPackage(event) {
-    this.autocompleteOuterPackage$.next(event.target.value);
-  }
-  observableSourceOuterPackage(keyword: any) {
-    return Observable.of(this.autocompleteOuterPackage).take(1);
-  }
-  
-  updateOuterPackege(event) {
-    this.outerPack = (this.newProductData.package_type === event.target.value) ? this.newProductData.package_type : null;
-    if (!this.outerPack) {
-      this.autocompleteOuterPackage$.next('');
-    }
-  }
-  
-  selectedAutocompledInnerPackage(innerPackage) {
-    this.newProductData.sub_package.properties.unit_type = innerPackage.plural_unit_name;
-  }
-  onSearchInnerPackage(event) {
-    this.autocompleteInnerPackage$.next(event.target.value);
-  }
-  observableSourceInnerPackage(keyword: any) {
-    return Observable.of(this.autocompleteInnerPackage).take(1);
-  }
-  updateInnerPackege(event) {
-    this.innerPack = (this.newProductData.sub_package.properties.unit_type === event.target.value) ? this.newProductData.sub_package.properties.unit_type : null;
-    if (!this.innerPack) {
-      this.autocompleteInnerPackage$.next('');
-    }
-  }
-  selectedAutocompledConsPackage(consPackage) {
-    this.newProductData.consumable_unit.properties.unit_type = consPackage.unit_name ? consPackage.unit_name : consPackage;
-  }
-  onSearchConsPackage(event) {
-    this.packDirty = true;
-    this.newProductData.consumable_unit.properties.unit_type = event.target.value;
-    this.autocompleteConsPackage$.next(event.target.value);
-  }
-  observableSourceConsPackage(keyword: any) {
-    return Observable.of(this.autocompleteConsPackage).take(1);
-  }
-
   compareVendor(v1, v2) {
       return v1 && v2 ? v1.vendor_id === v2.vendor_id : v1 === v2;
   }
@@ -717,50 +628,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.toggleCustomAdd();
   }
   
-  changePrice(val) {
-    const regex = /[\d\.]*/g;
-    let m: any = regex.exec(val);
-    regex.lastIndex++;
-    let m1: any = regex.exec(val);
-    if (m && m[0]) {
-      val = parseFloat(m[0] ? m[0] : '0');
-    } else if (m1 && m1[0]) {
-      val = parseFloat(m1[0] ? m1[0] : '0');
-    }
-    if (!val) {
-      val = 0;
-    }
-    return val;
-  }
-  
-  onChangeListPrice(val) {
-    let value = this.changePrice(val);
-    this.newProductData.list_price = value;
-    this.newProductData.formattedPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  }
-  
-  onChangeForumPrice(val) {
-    let value = this.changePrice(val);
-    this.newProductData.negotiated_price = value;
-    this.newProductData.formattedForumPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  }
-  
-  onChangeClubPrice(val) {
-    let value = this.changePrice(val);
-    this.newProductData.club_price = value;
-    this.newProductData.formattedClubPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-  }
-  
   selectPackageType(packageType) {
     this.newInventory.inventory_by = packageType.value;
     this.newInventory.inventory_by_qty = packageType.qty;
     this.newInventory.inventory_by_type = packageType.type;
     this.newInventory.inventory_by_label = packageType.label;
-  }
-  
-  openHelperModal() {
-    this.modal.open(HelpTextModal, this.modalWindowService
-    .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
   }
   
   saveAdded() {
@@ -960,13 +832,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.typeIn$.next(searchText);
   }
   
-  onUpcUpdated(upc) {
-    this.newProductData.upc = upc;
-  }
-  
   editProduct(productItem) {
-    this.addCustomProduct = true;
     this.editCustomProduct = true;
+    this.addCustomProduct = true;
     if (productItem.custom_product) {
       this.innerPack = productItem.sub_package.properties.unit_type;
       this.outerPack = productItem.package_type;

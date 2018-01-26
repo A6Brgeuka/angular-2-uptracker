@@ -144,12 +144,11 @@
                   (ngModelChange) = 'selectedAutocompledConsPackage($event)'
                   [ngModel] = "newProductData.consumable_unit.properties.unit_type"
                   [list-formatter] = '"unit_name"'
-
+                  [disabled] = 'newProductData.consumable_unit.properties.unit_type !== "Item" && newProductData.consumable_unit.properties.unit_type !== "null" && (items.length > 1 || items.length == 1 && !editCustomProduct)'
                   [tab-to-select] = 'false'
                   name="cons_package_type"
                   required
                 >
-                <!--[disabled] = 'items.length > 1 || items.length == 1 && !editCustomProduct'-->
               </div>
             </div>
             <a class="helper" (click)="openHelperModal()"></a>
