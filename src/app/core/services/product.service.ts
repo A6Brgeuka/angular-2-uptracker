@@ -258,4 +258,8 @@ export class ProductService extends ModelService {
     return false;
   }
   
+  addCustomProduct(data) {
+    return this.restangular.all('products').all('custom').post(data).map(res => res.data);
+  }
+  
 }

@@ -12,6 +12,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 import { Modal } from 'angular2-modal';
 import { RequestProductModal } from '../request-product-modal/request-product-modal.component';
 import { AddCustomProductModalComponent } from '../../../shared/modals/add-custom-product-modal/add-custom-product-modal.component';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-marketplace-tab',
@@ -29,6 +30,7 @@ export class MarketplaceTabComponent implements OnInit {
   public selectedProducts: any = [];
   
   public infiniteScroll$: any = new BehaviorSubject(false);
+  public updateCollectionCustomProduct$: any = new ReplaySubject(1);
   public selectAll$: any = new BehaviorSubject(0);
   public isRequest: boolean = false;
   public searchKey: string;
@@ -125,6 +127,12 @@ export class MarketplaceTabComponent implements OnInit {
     .subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
+    
+    this.subscribers.updateCollectionCustomProductSubscription = this.updateCollectionCustomProduct$
+    .switchMap(() => {
+      this.productService.current_page = 1;
+      return this.productService.getNextProducts(0);
+    }).subscribe();
   }
   
   toggleProductVisibility(product) {
@@ -221,7 +229,7 @@ export class MarketplaceTabComponent implements OnInit {
       .then((resultPromise) => {
         resultPromise.result.then(
           (res) => {
-            // this.filterProducts();
+            this.updateCollectionCustomProduct$.next(true);
           },
           (err) => {
           }
