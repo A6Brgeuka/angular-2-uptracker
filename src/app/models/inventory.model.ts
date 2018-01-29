@@ -30,7 +30,7 @@ export class InventorySearchResults {
   club_price:number = 0;
   list_price:number = 0;
   images:string[] = [];
-  mfg_number:string|number = "";
+  mfg_number: string|number = '';
   name:string = "";
   package_type:string = "";
   product_id:string  = null;
@@ -55,6 +55,7 @@ export class InventorySearchResults {
   account_variant_id: string = null;
   inventory_product_id: string = null;
   consumableUnitQty: string = null;
+  manufacturer: string = null;
   
   edited:boolean = false;
 

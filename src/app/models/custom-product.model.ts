@@ -8,6 +8,8 @@ export class CustomProductModel {
   negotiated_price: number = null;
   vendors: any[] = [];
   custom_product: boolean = true;
+  manufacturer: string = null;
+  mfg_number: string|number = '';
   
   
   constructor(obj?:any) {

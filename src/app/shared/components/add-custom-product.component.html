@@ -256,6 +256,26 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="ttl">Manufacturer Name</div>
+          <div class="input">
+            <input [(ngModel)]="newProductData.manufacturer" type="text" placeholder="Manufacturer Name"
+              name="manufacturer"
+              #manufacturer="ngModel">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="ttl">Manufacturer #</div>
+          <div class="input">
+            <input [(ngModel)]="newProductData.mfg_number" type="text" placeholder="Manufacturer #"
+              name="mfg_number"
+              #mfg_number="ngModel">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </form>

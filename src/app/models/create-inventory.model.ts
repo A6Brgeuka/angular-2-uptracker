@@ -22,6 +22,9 @@ export class InventoryProductModel {
   account_variant_id: string = null;
   inventory_product_id: string = null;
   
+  manufacturer: string = null;
+  mfg_number: string|number = '';
+  
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {

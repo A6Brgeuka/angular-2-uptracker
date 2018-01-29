@@ -4,7 +4,7 @@ import { CloseGuard, DialogRef } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { InventorySearchResults } from '../../../models/inventory.model';
 import { ProductService } from '../../../core/services/product.service';
-import { CustomProductModel } from '../../../models/customProduct.model';
+import { CustomProductModel } from '../../../models/custom-product.model';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 
