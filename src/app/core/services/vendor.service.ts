@@ -31,7 +31,7 @@ export class VendorService extends ModelService {
   public selectedTab:any = null;
   globalVendor$: BehaviorSubject<any> = new BehaviorSubject(1);
   
-  public getVendorsData$: BehaviorSubject<any> = new BehaviorSubject('myVendors');
+  public getVendorsData$: BehaviorSubject<any> = new BehaviorSubject('my');
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   
@@ -94,6 +94,7 @@ export class VendorService extends ModelService {
     this.vendorsData$ = Observable.combineLatest(
       this.getVendorsData$,
       this.searchKey$,
+      this.accountService.dashboardLocation$,
       this.sortBy$,
     )
     .debounceTime(50)
@@ -101,11 +102,11 @@ export class VendorService extends ModelService {
   
     this.vendorsData$
     .filter((vendors) => vendors)
-    .switchMap(([vendors, searchkey, sortBy]) => {
+    .switchMap(([vendors, searchkey, location, sortBy]) => {
     
       this.loadCollection$.next([]);
       this.current_page = 1;
-      this.vendorsList = (vendors === 'myVendors') ? 'my' : '';
+      this.vendorsList = (vendors !== 'allVendors') ? vendors : '';
     
       this.requestParams = {
         page: this.current_page,
@@ -114,6 +115,9 @@ export class VendorService extends ModelService {
     
       if (sortBy && sortBy === 'Z-A') {
         this.requestParams.sort = 'desc';
+      }
+      if (location) {
+        this.requestParams.location_id = location.id;
       }
       if (searchkey) {
         this.requestParams.query = searchkey;
@@ -151,7 +155,7 @@ export class VendorService extends ModelService {
   }
   
   public getVendorsData(vendorsList, query: any = {}, reset: boolean = true) {
-    const requestUrl = (vendorsList && vendorsList === 'my') ? this.restangular.one('my', 'vendors').customGET('', query) : this.restangular.all('vendors').customGET('', query);
+    const requestUrl = (vendorsList) ? this.restangular.one(vendorsList, 'vendors').customGET('', query) : this.restangular.all('vendors').customGET('', query);
     return requestUrl
     .map((res: any) => {
         if (!reset) {

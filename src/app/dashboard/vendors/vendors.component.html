@@ -29,18 +29,18 @@
   <div class="row">
     <ul class="tabs" materialize="tabs">
       <li class="tab">
-        <a href="#myVendors" [class.active]="(vendorService.getVendorsData$ | async) ==='myVendors'" (click)="selectTab('myVendors')">My Vendors</a>
+        <a href="#myVendors" [class.active]="(vendorService.getVendorsData$ | async) ==='my'" (click)="selectTab('my')">My Vendors</a>
       </li>
       <li class="tab">
         <a href="#allVendors" [class.active]="(vendorService.getVendorsData$ | async) ==='allVendors'" (click)="selectTab('allVendors')">All Vendors</a>
       </li>
       <li class="tab">
-        <a href="#allVendors" [class.active]="(vendorService.getVendorsData$ | async) ==='marisVendors'" (click)="selectTab('marisVendors')">Mari's List</a>
+        <a href="#allVendors" [class.active]="(vendorService.getVendorsData$ | async) ==='maris'" (click)="selectTab('maris')">Mari's List</a>
       </li>
     </ul>
   </div>
 
-  <app-vendors-tab id="myVendors" *ngIf="(vendorService.getVendorsData$ | async) ==='myVendors'"></app-vendors-tab>
+  <app-vendors-tab id="myVendors" *ngIf="(vendorService.getVendorsData$ | async) ==='my'"></app-vendors-tab>
   <app-vendors-tab id="allVendors" *ngIf="(vendorService.getVendorsData$ | async) ==='allVendors'"></app-vendors-tab>
-  <app-vendors-tab id="marisVendors" *ngIf="(vendorService.getVendorsData$ | async) ==='marisVendors'"></app-vendors-tab>
+  <app-vendors-tab id="marisVendors" *ngIf="(vendorService.getVendorsData$ | async) ==='maris'"></app-vendors-tab>
 </div>
