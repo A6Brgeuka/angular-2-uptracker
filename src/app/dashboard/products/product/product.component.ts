@@ -656,7 +656,7 @@ ngOnDestroy() {
 
 
   deleteComment(comment) {
-    this.modalWindowService.confirmModal('Delete Comment?', 'Are you sure you want to delete this comment?', this.deleteCommentFunc.bind(this, comment.id));
+    this.modalWindowService.confirmModal('Delete Comment?', {text: 'Are you sure you want to delete this comment?', btn: 'Delete'}, this.deleteCommentFunc.bind(this, comment.id));
 
   }
 

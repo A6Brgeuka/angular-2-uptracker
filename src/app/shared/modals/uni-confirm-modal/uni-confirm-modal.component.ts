@@ -7,7 +7,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 export class UniConfirmModalContext extends BSModalContext {
   public title:string;
-  public content:string;
+  public content:any;
   public fn:any;
   constructor(t,c,f){
    super();

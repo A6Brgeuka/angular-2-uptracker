@@ -274,7 +274,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
   }
   deleteComment(comment) {
     this.modalWindowService.confirmModal(
-      'Delete Comment?', 'Are you sure you want to delete this comment?',
+      'Delete Comment?', {text: 'Are you sure you want to delete this comment?', btn: 'Delete'},
       this.deleteCommentFunc.bind(this, comment.id)
     );
   }
@@ -329,7 +329,7 @@ export class InventoryItemComponent implements OnInit, OnDestroy {
   }
 
   deleteInventory() {
-    this.modalWindowService.confirmModal('Delete inventory?', 'Are you sure you want to delete the inventory?', this.deleteInventoryFunc.bind(this));
+    this.modalWindowService.confirmModal('Delete inventory?', {text: 'Are you sure you want to delete the inventory?', btn: 'Delete'}, this.deleteInventoryFunc.bind(this));
   }
 
   deleteInventoryFunc() {

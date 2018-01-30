@@ -340,7 +340,7 @@ export class EditUserModal implements OnInit, CloseGuard, ModalComponent<EditUse
   }
 
   deleteUser(user) {
-    this.modalWindowService.confirmModal('Delete user?', 'Are you sure you want to delete the user?', this.deleteUserFunc.bind(this));
+    this.modalWindowService.confirmModal('Delete user?', {text: 'Are you sure you want to delete the user?', btn: 'Delete'}, this.deleteUserFunc.bind(this));
   }
 
   deleteUserFunc() {

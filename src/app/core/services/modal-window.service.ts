@@ -33,7 +33,7 @@ export class ModalWindowService {
   ) {
   }
   
-  confirmModal(title, content = '', fn = () => {
+  confirmModal(title, content: any = '', fn = () => {
   }) {
     let data: UniConfirmModalContext = new UniConfirmModalContext(title, content, fn);
     this.modal

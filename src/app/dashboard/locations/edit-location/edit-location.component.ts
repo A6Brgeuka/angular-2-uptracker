@@ -280,7 +280,7 @@ export class EditLocationComponent implements OnInit, OnDestroy {
   }
 
   deleteLocation(data) {
-    this.modalWindowService.confirmModal('Delete Location?', 'Are you sure you want to delete the location?', this.deleteLocationFunc.bind(this));
+    this.modalWindowService.confirmModal('Delete Location?', {text: 'Are you sure you want to delete the location?', btn: 'Delete'}, this.deleteLocationFunc.bind(this));
   }
 
   deleteLocationFunc() {
@@ -355,7 +355,7 @@ export class EditLocationComponent implements OnInit, OnDestroy {
 
   deleteStorageLocation(storageLocation) {
     if (!storageLocation.default_location) {
-      this.modalWindowService.confirmModal('Delete Storage Location?', 'Are you sure you want to delete the storage location?', this.deleteStorageLocationFunc.bind(this,storageLocation._id))
+      this.modalWindowService.confirmModal('Delete Storage Location?', {text: 'Are you sure you want to delete the storage location?', btn: 'Delete'}, this.deleteStorageLocationFunc.bind(this,storageLocation._id))
     }
   }
 

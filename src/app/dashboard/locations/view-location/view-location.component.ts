@@ -65,7 +65,7 @@ export class ViewLocationComponent implements OnInit, OnDestroy {
   }
   
   deleteLocation(location) {
-    this.modalWindowService.confirmModal('Delete location?', 'Are you sure you want to delete the location?', this.deleteLocationFunc.bind(this));
+    this.modalWindowService.confirmModal('Delete location?', {text: 'Are you sure you want to delete the location?', btn: 'Delete'}, this.deleteLocationFunc.bind(this));
   }
   
   deleteLocationFunc() {
