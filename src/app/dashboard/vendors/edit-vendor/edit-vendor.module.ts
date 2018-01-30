@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { EditVendorComponent } from './edit-vendor.component';
 import { AppSharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmModalModule } from '../../../shared/modals/confirm-modal/confirm-modal.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     AppSharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ConfirmModalModule,
   ],
   providers: [],
   // IMPORTANT:

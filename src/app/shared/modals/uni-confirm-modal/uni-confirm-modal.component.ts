@@ -40,7 +40,7 @@ export class UniConfirmModal implements OnInit, CloseGuard, ModalComponent<UniCo
     this.dialog.dismiss();
   }
   
-  closeModal(data) {
+  closeModal(data = true) {
     this.dialog.close(data);
   }
 

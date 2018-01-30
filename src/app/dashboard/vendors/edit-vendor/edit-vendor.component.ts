@@ -15,6 +15,10 @@ import {
 import { AccountVendorModel } from '../../../models/index';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VendorModel } from '../../../models/vendor.model';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { ConfirmModalService } from '../../../shared/modals/confirm-modal/confirm-modal.service';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -87,28 +91,29 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public inited: boolean = false;
   public allVendor$: Observable<any>;
   private noAV:  boolean = false;
+
+  public openConfirmModal$: Subject<any>;
   
   constructor(
     public userService: UserService,
     public accountService: AccountService,
     public location: Location,
     public vendorService: VendorService,
-    public router:Router,
+    public router: Router,
     public route: ActivatedRoute,
-    public phoneMaskService: PhoneMaskService
+    public phoneMaskService: PhoneMaskService,
+    public modalWindowService: ModalWindowService,
+    public confirmModalService: ConfirmModalService,
   ) {
     this.vendor = new AccountVendorModel();
-    
-    
+
+    this.openConfirmModal$ = new Subject();
   }
   
   ngOnInit() {
     this.currentVendor$ = this.vendorService.globalVendor$;
     
     this.currency$ = this.accountService.getCurrencies();
-    // .map((res: any) => {
-    //  this.currencyArr = res;
-    //});
     
     this.files$ = Observable.combineLatest(
       this.newFiles$,
@@ -150,6 +155,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.accountVendors = vendors;
     
       this.vendorLoaded$.next(true);
+      
     });
   
     this.subscribers.viewInitAndVendorLoadedSubscriber = Observable
@@ -161,7 +167,16 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     this.subscribers.currencySubscription = this.currency$
     .subscribe(currency => this.currencyArr = currency);
-    
+
+    this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
+    .switchMap(() => this.confirmModalService.confirmModal(
+      'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
+    )).subscribe(res => {
+      if (res.success) {
+        this.onSubmit();
+      }
+      return this.chooseTabLocation();
+    });
   }
   
   initTabs() {
@@ -181,7 +196,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       let observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation: any) => {
           if (this.vendorData && mutation.attributeName === "class" && mutation.oldValue == 'active' && mutation.target.className == '') {
-            this.chooseTabLocation(this.secondaryLocation);
+            this.selectTabLocation(this.secondaryLocation);
           }
         });
       });
@@ -210,6 +225,18 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   
   ngAfterViewInit() {
     this.viewInit$.next(true)
+  }
+
+  openConfirmModal() {
+    this.openConfirmModal$.next('');
+  }
+
+  selectTabLocation(location = null) {
+    if (this.vendor.id) {
+      this.openConfirmModal();
+    } else {
+      this.chooseTabLocation(location);
+    }
   }
   
   chooseTabLocation(location = null) {
@@ -277,6 +304,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendorFormPhone2 = null;
     this.vendorFormFax = null;
     this.vendor = new AccountVendorModel(vendor);
+    console.log(this.vendor, 2222222);
     
     this.calcPriorityMargin(this.vendor.priority || 1);
     
@@ -391,6 +419,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         }
       );
     }
+    
+    console.log(this.vendor, 3333333);
     
   }
   

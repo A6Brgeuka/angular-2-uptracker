@@ -18,19 +18,19 @@
 <div class="row">
   <ul class="tabs location-tabs" materialize="tabs">
     <li class="tab col" [class.s12]="(accountService.locations$ | async)?.length < 2"
-      (click)="chooseTabLocation()"
+      (click)="selectTabLocation()"
       [class.s4]="(accountService.locations$ | async)?.length > 1">
       <a #all [class.active]="!currentLocation?.id && inited">All Locations</a>
     </li>
     <li class="tab col s4">
       <a href="#general" #primary *ngIf="(accountService.locations$ | async)?.length > 1"
-        (click)="chooseTabLocation(primaryLocation)"
+        (click)="selectTabLocation(primaryLocation)"
         [class.active]="(primaryLocation?.id == currentLocation?.id) && inited">
         {{primaryLocation?.name}}
       </a>
     </li>
     <li class="tab col s4 uptracker-dropdown" *ngIf="(accountService.locations$ | async)?.length > 1">
-      <a (click)="chooseTabLocation(secondaryLocation)"
+      <a (click)="selectTabLocation(secondaryLocation)"
         *ngIf="(accountService.locations$ | async)?.length == 2"
         href="#general"
         data-activates="location_dropdown5"
@@ -49,7 +49,7 @@
         <i class="caret"></i>
       </a>
       <ul id="location_dropdown5" class="dropdown-content">
-        <li *ngFor="let location of locations$ | async" (click)="chooseTabLocation(location)"
+        <li *ngFor="let location of locations$ | async" (click)="selectTabLocation(location)"
           [class.active]="location.id == currentLocation?.id">
           {{location.name}}
         </li>
