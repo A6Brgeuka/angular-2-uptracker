@@ -240,7 +240,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   chooseTabLocation(location = null) {
-    
+
+    console.log(this.vendor, 1111111);
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': null}) || {};
@@ -421,7 +422,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     }
     
     console.log(this.vendor, 3333333);
-    
+    console.log(this.formData, 44444);
+
   }
   
   goBack(): void {

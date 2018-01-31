@@ -38,8 +38,8 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
   }
   
-  searchFilter(event) {
-    this.productService.updateSearchKey(event.target.value);
+  searchProducts(event) {
+    this.productService.updateSearchKey(event);
   }
    
   showFiltersModal() {

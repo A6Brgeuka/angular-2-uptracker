@@ -11,6 +11,7 @@ import { UploadCsvModalModule } from './upload-csv-modal/upload-csv-modal.module
 import { HomeTabModule } from './home-tab/home-tab.module';
 import { MarisListTabModule } from './maris-list-tab/maris-list-tab.module';
 import { MarketplaceTabModule } from './marketplace-tab/marketplace-tab.module';
+import { SearchFilterHeaderModule } from '../../shared/components/search-filter-header/search-filter-header.module';
 
 @NgModule({
   declarations: [
@@ -22,11 +23,12 @@ import { MarketplaceTabModule } from './marketplace-tab/marketplace-tab.module';
     HomeTabModule,
     ProductFilterModalModule,
     RequestProductModalModule,
+    SearchFilterHeaderModule,
     BulkEditModalModule,
     ProductModule,
     MarisListTabModule,
     MarketplaceTabModule,
-    UploadCsvModalModule
+    UploadCsvModalModule,
   ],
   providers: []
 })

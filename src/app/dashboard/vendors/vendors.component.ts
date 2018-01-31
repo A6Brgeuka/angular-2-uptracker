@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { VendorService } from '../../core/services/index';
+import { ProductFilterModal } from '../products/product-filter-modal/product-filter-modal.component';
+import { Modal } from 'angular2-modal';
+import { ModalWindowService } from '../../core/services/modal-window.service';
 
 @Component({
   selector: 'app-vendors',
@@ -14,6 +17,8 @@ export class VendorsComponent implements OnInit {
   
   constructor(
     public vendorService: VendorService,
+    public modal: Modal,
+    public modalWindowService: ModalWindowService,
   ) {
   }
   
@@ -21,14 +26,11 @@ export class VendorsComponent implements OnInit {
   
   }
   
-  vendorsFilter(event) {
-    this.vendorService.updateSearchKey(event.target.value);
+  vendorsSearch(event) {
+    this.vendorService.updateSearchKey(event);
   }
   
-  requestVendor() {
-  }
-  
-  resetFilters() {
+  resetSearch() {
     this.searchKey = '';
     this.vendorService.updateSearchKey('');
   }
@@ -37,4 +39,19 @@ export class VendorsComponent implements OnInit {
     this.vendorService.updateSortBy('A-Z');
     this.vendorService.updateVendorsData(currentTab);
   }
+
+  showFiltersModal() {
+    this.modal
+    .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          // this.filterProducts();
+        },
+        (err) => {
+        }
+      );
+    });
+  }
+
 }

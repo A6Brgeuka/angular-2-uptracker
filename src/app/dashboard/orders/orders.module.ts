@@ -13,6 +13,7 @@ import { ReconcileModule } from './reconcile/reconcile.module';
 import { AllOrdersListModule } from './all-orders-list/all-orders-list.module';
 import { OpenOrdersListModule } from './open-list/open-orders-list.module';
 import { ClosedListModule } from './closed-list/closed-list.module';
+import { SearchFilterHeaderModule } from '../../shared/components/search-filter-header/search-filter-header.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ClosedListModule } from './closed-list/closed-list.module';
     OrderModule,
     OpenOrdersListModule,
     SelectVendorModule,
+    SearchFilterHeaderModule,
     ReceivedListModule,
     ClosedListModule,
     ReconcileModule,

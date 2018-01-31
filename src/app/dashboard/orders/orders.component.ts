@@ -46,10 +46,10 @@ export class OrdersComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     console.log('for unsubscribing');
   }
-  
-  searchFilter(event) {
+
+  searchOrders(event) {
     // replace forbidden characters
-    const value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+    const value = event.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   };
   
