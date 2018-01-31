@@ -51,7 +51,7 @@
     <div class="row-half">
       <h3>Ship To</h3>
       <p>{{ (convertedOrder$ | async).order?.ship_to_co_name }}</p>
-      <p>{{ (convertedOrder$ | async).order?.ship_to_address.formattedAddress }}</p>
+      <p>{{ (convertedOrder$ | async).order?.ship_to_address?.formattedAddress }}</p>
       <p>{{ (convertedOrder$ | async).order?.ship_to_address?.postal_code}}</p>
       <p>Phone: {{ (convertedOrder$ | async).order?.ship_to_phone_number}}</p>
       <p>Fax: {{ (convertedOrder$ | async).order?.ship_to_fax_number}}</p>
@@ -60,7 +60,7 @@
     <div class="row-half">
       <h3>To</h3>
       <p>{{ (convertedOrder$ | async).order?.vendor_name }}</p>
-      <p>{{ (convertedOrder$ | async).order?.vendor_address.formattedAddress }}</p>
+      <p>{{ (convertedOrder$ | async).order?.vendor_address?.formattedAddress }}</p>
       <p>{{ (convertedOrder$ | async).order?.vendor_address?.postal_code}}</p>
       <p>Phone: {{ (convertedOrder$ | async).order?.vendor_phone_number}}</p>
       <p>Fax: {{ (convertedOrder$ | async).order?.vendor_fax_number}}</p>
