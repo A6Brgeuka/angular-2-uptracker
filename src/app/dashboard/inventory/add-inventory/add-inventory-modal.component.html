@@ -43,6 +43,7 @@
           (cancelEvent)="toggleCustomCancel()"
           (addEvent)="addNewProduct()"
           [autocompleteConsPackage] ="autocompleteConsPackage"
+          [packageType] = "packageType$ | async"
         ></app-add-custom-product>
       </div>
       <div *ngIf="!addCustomProduct">

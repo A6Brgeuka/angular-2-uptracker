@@ -20,8 +20,6 @@ import { Modal } from 'angular2-modal';
 export class AddCustomProductComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
-  //public newProductData: any = new InventorySearchResults();
-  
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
   public autocompleteOuterPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -38,6 +36,7 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   @Input('items') public items: Array<{}> = [];
   @Input('innerPack') public innerPack: string = '';
   @Input('outerPack') public outerPack: string = '';
+  @Input('packageType') public packageType: any = null;
   @Input('autocompleteConsPackage') public autocompleteConsPackage: any = [];
   @Output() cancelEvent = new EventEmitter();
   @Output() addEvent = new EventEmitter();
@@ -54,6 +53,8 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
     this.autocompleteOuterPackage$.next('');
     this.autocompleteInnerPackage$.next('');
     this.autocompleteConsPackage$.next('');
+
+    this.newProductData.consumable_unit.properties.unit_type = (!this.editCustomProduct && !this.editCustomProduct && this.packageType && this.packageType.consumable_unit) ? this.packageType.consumable_unit.properties.unit_type : this.newProductData.consumable_unit.properties.unit_type;
   }
   
   addSubscribers() {

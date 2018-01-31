@@ -141,7 +141,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           this.checkedProduct = [];
           const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
           this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : null;
-          this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : null);
+          this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : '');
         }
         if (!this.items.length && this.checkedProduct.length) {
           this.checkedProduct = [];
@@ -170,14 +170,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     .subscribe(newInventory => this.closeModal(newInventory));
   
     this.updateAdded$
-    .switchMap(() => {
-      this.newInventory.products.map((product) => {
-        //if (!product.vendors[0].vendor_id) {
-        //  product.vendors = [product.vendors[0].vendor_name];
-        //}
-      });
-      return this.inventoryService.updateInventory(this.newInventory);
-    })
+    .switchMap(() =>
+      this.inventoryService.updateInventory(this.newInventory)
+    )
     .subscribe(newInventory => this.closeModal(newInventory));
   
     this.fileActions();
@@ -255,17 +250,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.newInventory.category = (findedCategory && searchedCategory !== -1) ? findedCategory.category : null;
         this.newInventory.description = (res[0].description) ? res[0].description : this.newInventory.description;
         const findedConsumableUnit = _.find(res, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
-        this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : null;
-        this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : null);
+        this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : [];
+        this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : '');
       }
       if (res.length && this.context.inventoryGroup) {
         this.newInventory.inventory_by_array = res[0].inventory_by;
         const findedConsumableUnit = _.find(res, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
-        this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : null;
-        this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : null);
+        this.autocompleteConsPackage = (findedConsumableUnit) ? [findedConsumableUnit.consumable_unit.properties.unit_type] : [];
+        this.checkConsPackage((findedConsumableUnit) ? findedConsumableUnit.consumable_unit.properties.unit_type : '');
       }
       if (!res.length) {
         this.newInventory.consumable_unit_qty = null;
+        this.newInventory.consumable_unit_type = '';
       }
       if (!res.length && !this.checkedProduct.length) {
         this.autocompleteConsPackage = this.inventoryService.consumablePackageList;
@@ -565,10 +561,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   
   toggleCustomAdd() {
     this.addCustomProduct = !this.addCustomProduct;
-    let pkgType = this.newProductData.consumable_unit.properties.unit_type;
+    // let pkgType = this.newProductData.consumable_unit.properties.unit_type;
+    let pkgType = this.newInventory.consumable_unit_type;
     this.newProductData = new InventorySearchResults();
    
     this.newProductData.custom_product = true;
+    // this.newProductData.consumable_unit.properties.unit_type = this.newInventory.consumable_unit_type;
+
     this.newProductData.consumable_unit.properties.unit_type = pkgType;
     this.innerPack = '';
     this.outerPack = '';
@@ -605,7 +604,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         qty: 1,
       }
     ];
-    
     if (!this.editCustomProduct) {
       this.addCustomToInventory([
         new InventorySearchResults(
@@ -657,8 +655,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   }
   
   checkConsPackage(e) {
-    this.newInventory.consumable_unit_type = (e !== this.wildcardConsumableUnit) ? e : null;
-    this.newProductData.consumable_unit.properties.unit_type = (e !== this.wildcardConsumableUnit) ? e : null;
+    this.newInventory.consumable_unit_type = (e) ? e : null;
+    // this.newProductData.consumable_unit.properties.unit_type = (e !== this.wildcardConsumableUnit) ? e : null;
     this.nextPackage(this.newInventory);
     if (e !== null) {this.classDirty = true;}
   }
