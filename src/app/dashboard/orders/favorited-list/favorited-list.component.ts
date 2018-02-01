@@ -1,20 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import * as _ from 'lodash';
+
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { Observable } from 'rxjs/Observable';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'app-closed-list',
-  templateUrl: './closed-list.component.html',
-  styleUrls: ['./closed-list.component.scss']
+  selector: 'app-favorited-list',
+  templateUrl: './favorited-list.component.html',
+  styleUrls: ['./favorited-list.component.scss'],
 })
 @DestroySubscribers()
-export class ClosedListComponent implements OnInit, OnDestroy {
+export class FavoritedListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
-
-  public listName: string = 'closed';
+  
+  public listName: string = 'favorited';
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
@@ -28,17 +29,17 @@ export class ClosedListComponent implements OnInit, OnDestroy {
     {name: 'Total', className: 's1', alias: 'total'},
     {name: '', className: 's1 show-hover-elem', actions: true},
   ];
-
+  
   public orders$: Observable<any> = new Observable<any>();
-
+  
   constructor(
     public pastOrderService: PastOrderService,
   ) {
-
+  
   };
-
+  
   ngOnInit() {
-
+    
     this.orders$ = Observable
     .combineLatest(
       this.pastOrderService.collection$,
@@ -49,29 +50,29 @@ export class ClosedListComponent implements OnInit, OnDestroy {
       return _.sortBy(orders, sortBy);
     });
   };
-
+  
   addSubscribers() {
     this.subscribers.getCollectionSubscription = this.pastOrderService.getPastOrders()
     .subscribe(orders => {
       //this.orders$.next(orders);
     });
-
+    
     //this.subscribers.filterBySubscription = this.pastOrderService.filterBy$
     //.switchMap((value: any) => {
     // return this.orders$.map(orders => _.filter(orders, value));
     //})
     //.subscribe();
-
+    
   };
-
+  
   ngOnDestroy() {
-
+  
   };
-
+  
   sortByHeaderUpdated(event) {
     this.pastOrderService.updateSortBy(event.alias);
   }
-
+  
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
   }

@@ -14,6 +14,8 @@ import { AllOrdersListModule } from './all-orders-list/all-orders-list.module';
 import { OpenOrdersListModule } from './open-list/open-orders-list.module';
 import { ClosedListModule } from './closed-list/closed-list.module';
 import { SearchFilterHeaderModule } from '../../shared/components/search-filter-header/search-filter-header.module';
+import { FavoritedListModule } from './favorited-list/favorited-list.module';
+import { FlaggedListModule } from './flagged-list/flagged-list.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { SearchFilterHeaderModule } from '../../shared/components/search-filter-
     ReceiveModule,
     OrderModule,
     OpenOrdersListModule,
+    FavoritedListModule,
+    FlaggedListModule,
     SelectVendorModule,
     SearchFilterHeaderModule,
     ReceivedListModule,
