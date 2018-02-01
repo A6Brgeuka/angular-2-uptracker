@@ -13,7 +13,7 @@ export class ConfirmModalService {
   ) {
   }
   
-  confirmModal(title, content: any = '') {
+  confirmModal(title, content: any = ''): Observable<{success?: boolean, canceled?: boolean}> {
     const data: ConfirmModalContext = new ConfirmModalContext(title, content);
     
     return Observable.fromPromise(
