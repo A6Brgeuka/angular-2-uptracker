@@ -17,7 +17,6 @@ import { Router } from '@angular/router';
 export class PastOrderService extends ModelService {
   public appConfig: AppConfig;
   public total$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public totalReceived$: BehaviorSubject<any> = new BehaviorSubject(null);
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   

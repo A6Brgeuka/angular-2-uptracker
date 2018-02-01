@@ -9,6 +9,7 @@ import { ToasterService } from '../../../../../../core/services/toaster.service'
 import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-modal.component';
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
+import { AddCommentModalComponent } from '../../../../../../shared/modals/add-comment-modal/add-comment-modal.component';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -90,5 +91,11 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   onVoidOrder(item) {
     this.orderTableOnVoidService.onVoidOrder(item);
   }
-  
+
+  openAddCommentModal(item) {
+    this.modal
+    .open(AddCommentModalComponent, this.modalWindowService
+    .overlayConfigFactoryWithParams(item, true, 'mid'));
+  }
+
 }

@@ -1,9 +1,10 @@
 <ng-template [ngIf]="isShow" class="show-hover-elem">
-  <span class="tealish-text" *ngIf="listName === 'received' || listName === 'all'">
+  <span class="tealish-text pointer" *ngIf="listName === 'received' || listName === 'all'"
+  (click) = "openAddCommentModal(item)">
     <fa name="flag-o" *ngIf="!item?.flagged"></fa>
     <fa name="flag" *ngIf="item?.flagged"></fa>
   </span>
-  <span class="tealish-text" *ngIf="listName === 'received' || listName === 'all'">
+  <span class="tealish-text pointer" *ngIf="listName === 'received' || listName === 'all'">
     <fa name="star-o" *ngIf="!item?.favorite"></fa>
     <fa name="star" *ngIf="item?.favorite"></fa>
   </span>

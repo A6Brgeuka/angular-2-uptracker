@@ -5,6 +5,7 @@ import { OrderTableComponent } from './order-table.component';
 import { OrderTableHeaderActionComponent } from './components/order-table-header-action.component';
 import { OrderTableItemActionComponent } from './components/order-table-item-action/order-table-item-action.component';
 import { OrderTableResetService } from './order-table-reset.service';
+import { AddCommentModalModule } from '../../../../shared/modals/add-comment-modal/add-comment-modal.module';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { OrderTableResetService } from './order-table-reset.service';
   exports: [OrderTableComponent],
   imports: [
     AppSharedModule,
+    AddCommentModalModule,
   ],
   providers: [
     OrderTableResetService,
