@@ -84,16 +84,16 @@ export class PastOrderService extends ModelService {
       return this.collection$.first()
       .map(orders => {
         return orders.reduce((acc: any[], item) => {
-          let findedItem = _.find(voidedOrders, ['id', item.id]);
-          if (findedItem) {
-            item = findedItem;
+          const foundedItem = _.find(voidedOrders, ['id', item.id]);
+          if (foundedItem) {
+            item = foundedItem;
           }
           return [...acc, item];
         }, []);
-      })
+      });
     })
-    .map(res => {
-      return this.updateCollection$.next(res);
-    });
+    .map(res =>
+      this.updateCollection$.next(res)
+    );
   }
 }

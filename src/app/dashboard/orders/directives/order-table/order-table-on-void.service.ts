@@ -30,20 +30,6 @@ export class OrderTableOnVoidService {
     this.voidCheckedOrders$ = new Subject<any>();
     this.openConfirmVoidModal$ = new Subject();
 
-    this.voidOrder$
-    .switchMap((data: any) => this.pastOrderService.onVoidOrder(data))
-    .subscribe();
-  
-    this.voidCheckedOrders$
-    .switchMap((orders) => {
-      const filteredChecked = this.onFilterCheckedOrders(orders);
-      const data = {
-        'orders': filteredChecked,
-      };
-      return this.pastOrderService.onVoidOrder(data);
-    })
-    .subscribe();
-
     this.openConfirmVoidModal$
     .switchMap((data) =>
       this.confirmModalService.confirmModal(
@@ -52,9 +38,27 @@ export class OrderTableOnVoidService {
       .filter(({success}) => success)
       .mapTo(data)
     )
-    .subscribe((data: any) => {
-        (_.isArray(data)) ? this.onVoidCheckedOrdersFunc(data) : this.onVoidOrderFunc(data);
-    });
+    .switchMap((data: any) => {
+      let orders;
+      if (_.isArray(data)) {
+        const filteredChecked = this.onFilterCheckedOrders(data);
+        orders = {
+          'orders': filteredChecked,
+        };
+
+      } else {
+        orders = {
+          'orders': [
+            {
+              'order_id': data.order_id,
+              'items_ids': [data.id],
+            }
+          ]
+        };
+      }
+      return this.pastOrderService.onVoidOrder(orders);
+    })
+    .subscribe();
 
   }
   
@@ -72,21 +76,5 @@ export class OrderTableOnVoidService {
       );
     });
   }
-  
-  
-  onVoidOrderFunc(item) {
-    const data = {
-      'orders': [
-        {
-          'order_id': item.order_id,
-          'items_ids': [item.id],
-        }
-      ]
-    };
-    this.voidOrder$.next(data);
-  }
-  
-  onVoidCheckedOrdersFunc(orders) {
-    this.voidCheckedOrders$.next(orders);
-  }
+
 }
