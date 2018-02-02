@@ -16,10 +16,16 @@ import { Router } from '@angular/router';
 })
 export class PastOrderService extends ModelService {
   public appConfig: AppConfig;
-  public total$: BehaviorSubject<any> = new BehaviorSubject(null);
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  
+
+  public openListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public receivedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public favoritedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public backorderedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public flaggedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public closedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+
   constructor(
     public injector: Injector,
     public restangular: Restangular,
@@ -36,7 +42,6 @@ export class PastOrderService extends ModelService {
     return this.restangular.all('pos').customGET()
     .map((res: any) => {
       this.loadCollection$.next(res.data);
-      this.total$.next(res.data.length);
       return res.data;
     });
   }
@@ -61,7 +66,50 @@ export class PastOrderService extends ModelService {
   
   getOpenedProducts() {
     return this.restangular.one('pos', '5').customGET()
-    .map((res: any) => res.data);
+    .map((res: any) => {
+      this.openListCollection$.next(res.data);
+      return res.data;
+    });
+  }
+
+  getReceivedProducts() {
+    return this.restangular.one('pos', '6').customGET()
+    .map((res: any) => {
+      this.receivedListCollection$.next(res.data);
+      return res.data;
+    });
+  }
+
+  getFavoritedProducts() {
+    return this.restangular.one('pos', 'favorites').customGET()
+    .map((res: any) => {
+      this.favoritedListCollection$.next(res.data);
+      return res.data;
+    });
+  }
+
+  getBackorderedProducts() {
+    return this.restangular.one('pos', '10').customGET()
+    .map((res: any) => {
+      this.backorderedListCollection$.next(res.data);
+      return res.data;
+    });
+  }
+
+  getFlaggedProducts() {
+    return this.restangular.one('pos', 'flagged').customGET()
+    .map((res: any) => {
+      this.flaggedListCollection$.next(res.data);
+      return res.data;
+    });
+  }
+
+  getClosedProducts() {
+    return this.restangular.one('pos', '8').customGET()
+    .map((res: any) => {
+      this.closedListCollection$.next(res.data);
+      return res.data;
+    });
   }
   
   setFlag(item, id) {

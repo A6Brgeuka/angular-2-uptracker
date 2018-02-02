@@ -1,7 +1,7 @@
 <app-order-table
   [uniqueField]="'id'"
   [header] = 'tableHeader'
-  [orders] = 'orders'
+  [orders] = 'orders$ | async'
   [listName] = 'listName'
 >
 </app-order-table>

@@ -24,24 +24,22 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Total', className: 's1', alias: 'total'},
     {name: '', className: 's1 show-hover-elem', actions: true},
   ];
-  
-  public openedOrders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  
+
+  public orders$: BehaviorSubject<any>;
+
   constructor(
     public pastOrderService: PastOrderService,
   ) {
-  
-  }
+
+  };
   
   ngOnInit() {
-  
+    this.orders$ = this.pastOrderService.openListCollection$;
   }
   
   addSubscribers() {
     this.subscribers.getOpenedProductSubscription = this.pastOrderService.getOpenedProducts()
-    .subscribe(res => {
-      this.openedOrders$.next(res);
-    });
+    .subscribe();
   }
   
   ngOnDestroy() {

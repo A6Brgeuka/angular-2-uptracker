@@ -5,11 +5,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 
-import * as _ from 'lodash';
-import { ToasterService } from '../../../core/services/toaster.service';
-import { Observable } from 'rxjs/Observable';
-import { ReceivedOrderListService } from '../../../core/services/received-order-list.service';
-
 @Component({
   selector: 'app-received-list',
   templateUrl: './received-list.component.html',
@@ -31,33 +26,23 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1 show-hover-elem', actions: true},
   ];
   
-  public receivedOrders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public orders$: Observable<any> = new Observable<any>();
+  public orders$: BehaviorSubject<any>;
   
   constructor(
     public pastOrderService: PastOrderService,
-    public receivedOrderListService: ReceivedOrderListService,
-    public toasterService: ToasterService,
   ) {
 
   }
   
   ngOnInit() {
-    
-    this.orders$ = this.receivedOrders$
-    .map((orders) => {
-      return _.uniqBy(orders, 'item_id');
-    });
-    
+    this.orders$ = this.pastOrderService.receivedListCollection$;
   }
   
   addSubscribers() {
     
-    this.subscribers.getReceivedProductSubscription = this.receivedOrderListService.getReceivedProducts()
-    .subscribe(res => {
-        this.receivedOrders$.next(res);
-    });
+    this.subscribers.getReceivedProductSubscription = this.pastOrderService.getReceivedProducts()
+    .subscribe();
     
   }
   

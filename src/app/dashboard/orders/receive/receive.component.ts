@@ -72,7 +72,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
         order = new OrderModel(order);
         order.items = order.items.map((item: any) => {
 
-          let quantity = (item.status_line_items) ? item.status_line_items[item.status_line_items.length -1].quantity : item.quantity;
+          let quantity = (item.status_line_items) ? item.status_line_items[item.status_line_items.length - 1].quantity : item.quantity;
           item.item_id = item.id;
 
           if (item.inventory_group_id && item.inventory_group) {
@@ -245,7 +245,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   
   onchangeStatusQty(product, status, newValue) {
     status.qty = newValue;
-    
+    debugger;
+    console.log(newValue, 11111);
+    console.log(product, 22222);
     const pendingSum  = product.status.reduce((sum, currentStatus) => {
       if (currentStatus.type === 'pending') {
         return +sum;

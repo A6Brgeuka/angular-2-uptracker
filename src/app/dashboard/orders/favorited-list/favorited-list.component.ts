@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-favorited-list',
@@ -29,40 +30,23 @@ export class FavoritedListComponent implements OnInit, OnDestroy {
     {name: 'Total', className: 's1', alias: 'total'},
     {name: '', className: 's1 show-hover-elem', actions: true},
   ];
-  
-  public orders$: Observable<any> = new Observable<any>();
-  
+
+
+  public orders$: BehaviorSubject<any>;
+
   constructor(
     public pastOrderService: PastOrderService,
   ) {
-  
+
   };
   
   ngOnInit() {
-    
-    this.orders$ = Observable
-    .combineLatest(
-      this.pastOrderService.collection$,
-      this.pastOrderService.sortBy$,
-      //this.pastOrderService.filterBy$,
-    )
-    .map(([orders, sortBy]) => {
-      return _.sortBy(orders, sortBy);
-    });
+    this.orders$ = this.pastOrderService.favoritedListCollection$;
   };
   
   addSubscribers() {
-    this.subscribers.getCollectionSubscription = this.pastOrderService.getPastOrders()
-    .subscribe(orders => {
-      //this.orders$.next(orders);
-    });
-    
-    //this.subscribers.filterBySubscription = this.pastOrderService.filterBy$
-    //.switchMap((value: any) => {
-    // return this.orders$.map(orders => _.filter(orders, value));
-    //})
-    //.subscribe();
-    
+    this.subscribers.getFavoritedCollectionSubscription = this.pastOrderService.getFavoritedProducts()
+    .subscribe();
   };
   
   ngOnDestroy() {

@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { PastOrderService } from '../../../core/services/pastOrder.service';
 
 @Component({
   selector: 'app-backordered-list',
@@ -23,50 +25,23 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
     {name: 'Total', className: 's1', alias: 'total'},
     {name: '', className: 's1 show-hover-elem', actions: true},
   ];
-  
-  public orders: any[] = [
-    {
-      id: '3',
-      po_number: 'AMT-0001',
-      product_name: 'Some Product Name',
-      location: 'Primary Location',
-      status: 'Pending',
-      placed: '7/5/18',
-      backordered: '8/5/18',
-      qty: '100',
-      pkg_price: '$1.00',
-      total: '$100.00',
-      flagged: true,
-      favorite: true,
-    },
-    {
-      id: '4',
-      po_number: 'AMT-0002',
-      product_name: 'Some Product Name',
-      location: 'Primary Location',
-      status: 'Pending',
-      placed: '7/5/18',
-      backordered: '8/5/18',
-      qty: '10',
-      pkg_price: '$1.00',
-      total: '$10.00',
-      flagged: false,
-      favorite: false,
-    },
-  ];
+
+  public orders$: BehaviorSubject<any>;
+
   constructor(
-  
+    public pastOrderService: PastOrderService,
   ) {
 
-  }
+  };
   
   ngOnInit() {
+    this.orders$ = this.pastOrderService.backorderedListCollection$;
+  }
 
-  }
-  
   addSubscribers() {
-    
-  }
+    this.subscribers.getBackorderedCollectionSubscription = this.pastOrderService.getBackorderedProducts()
+    .subscribe();
+  };
   
   ngOnDestroy() {
   
