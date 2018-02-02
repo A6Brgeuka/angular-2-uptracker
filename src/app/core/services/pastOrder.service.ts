@@ -119,6 +119,10 @@ export class PastOrderService extends ModelService {
         return res.data;
       });
   }
+
+  setFavorite(item, id) {
+
+  }
   
   reorder(data) {
     return this.restangular.all('reorder').customPOST(data);

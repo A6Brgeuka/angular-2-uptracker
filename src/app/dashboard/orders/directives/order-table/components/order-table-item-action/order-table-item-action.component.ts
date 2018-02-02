@@ -10,6 +10,7 @@ import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-mo
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { AddCommentModalComponent } from '../../../../../../shared/modals/add-comment-modal/add-comment-modal.component';
+import { ConfirmModalService } from '../../../../../../shared/modals/confirm-modal/confirm-modal.service';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -20,11 +21,14 @@ import { AddCommentModalComponent } from '../../../../../../shared/modals/add-co
 export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   
   private updateFlagged$: any = new Subject<any>();
-  
+  private updateFavorite$: any = new Subject<any>();
+
   private subscribers: any = {};
   
   private reorderProduct$:  any = new Subject<any>();
-  
+  private openShowCommentModal$:  any = new Subject<any>();
+
+  @Input() i: any;
   @Input() item: any;
   @Input() isShow: boolean;
   @Input() listName: string;
@@ -36,6 +40,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
+    public confirmModalService: ConfirmModalService,
   ) {
   }
   ngOnInit() {
@@ -53,16 +58,36 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     .subscribe( res => this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged'),
       err => console.log('error')
     );
-   
+
+    this.subscribers.updateFavoriteSubscription = this.updateFavorite$
+    .switchMap((item: any) => this.pastOrderService.setFavorite(item, [item[this.uniqueField]]))
+    .subscribe( res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
+      err => console.log('error')
+    );
+
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
+
+    this.subscribers.openShowCommentModalSubscription = this.openShowCommentModal$
+    .switchMap((data) =>
+      this.confirmModalService.confirmModal(
+        'Unflag?', {text: data.flagged_comment, btn: 'Unflag'}
+      )
+      .filter(({success}) => success)
+      .mapTo(data)
+    )
+    .switchMap((data) => this.setFlag(data))
+    .subscribe();
     
   }
   
-  setFlag(e, item) {
-    e.stopPropagation();
+  setFlag(item) {
     this.updateFlagged$.next(item);
+  }
+
+  setFavorite(item) {
+    this.updateFavorite$.next(item);
   }
   
   buyAgainOrder(item) {
@@ -95,7 +120,17 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   openAddCommentModal(item) {
     this.modal
     .open(AddCommentModalComponent, this.modalWindowService
-    .overlayConfigFactoryWithParams(item, true, 'mid'));
+    .overlayConfigFactoryWithParams(item, true, 'mid'))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (comment) => console.log(comment.body),
+        (err) => {}
+      );
+    });
+  }
+
+  openShowCommentModal(item) {
+    this.openShowCommentModal$.next(item);
   }
 
 }

@@ -1,44 +1,47 @@
-<ng-template [ngIf]="isShow" class="show-hover-elem">
-  <span class="tealish-text pointer" *ngIf="listName === 'received' || listName === 'all'"
-  (click) = "openAddCommentModal(item)">
+<ng-template [ngIf]="isShow">
+  <span class="tealish-text pointer" [class.show-hover-elem] = "!item.flagged"
+  (click) = "item.flagged ? openShowCommentModal(item) : openAddCommentModal(item)">
     <fa name="flag-o" *ngIf="!item?.flagged"></fa>
     <fa name="flag" *ngIf="item?.flagged"></fa>
   </span>
-  <span class="tealish-text pointer" *ngIf="listName === 'received' || listName === 'all'">
+  <span class="tealish-text pointer show-hover-elem"
+  (click)="setFavorite($event, item)">
     <fa name="star-o" *ngIf="!item?.favorite"></fa>
     <fa name="star" *ngIf="item?.favorite"></fa>
   </span>
 
-  <div class="right edititem"
+  <div class="right edititem show-hover-elem"
     materialize="dropdown"
-    [attr.data-activates]='item[uniqueField] + listName'>
+    [attr.data-activates]='item[uniqueField] + listName + i'>
     <fa name="ellipsis-h"></fa>
   </div>
-  <ul [id]='item[uniqueField] + listName' class='dropdown-content'>
+  <ul [id]='item[uniqueField] + listName + i' class='dropdown-content'>
     <li *ngIf="item.status !== 'Reconciled'">
       <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
     </li>
     <li>
-      <a class="tealish-text" (click)="setFlag($event, item)">
+      <a class="tealish-text" (click)="item.flagged ? openShowCommentModal(item) : openAddCommentModal(item)">
         {{item.flagged ? 'Unflag' : 'Flag'}}
+      </a>
+    </li>
+    <li>
+      <a class="tealish-text" (click)="setFavorite($event, item)">
+        {{item.favorite ? 'Unfavorite' : 'Favorite'}}
       </a>
     </li>
     <li *ngIf="item.order_method !== 'Direct' && listName !== 'received'">
       <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
     </li>
-    <li *ngIf="listName === 'received'">
+    <li *ngIf="listName === 'received' || item.status === 'Received'">
       <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
     </li>
     <li *ngIf="item.status !== 'Received' && listName !== 'received'">
       <a class="tealish-text" (click)="sendToReceiveProduct(item)">Receive</a>
     </li>
-    <li *ngIf="item.status === 'Received'">
-      <a class="tealish-text" href="#">Reconcile</a>
-    </li>
     <li>
       <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
     </li>
-    <li *ngIf="item.status !== 'Voided' && listName !== 'received'">
+    <li *ngIf="item.status !== 'Voided' && item.status !== 'Received' &&  listName !== 'received'">
       <a class="red-text" (click)="onVoidOrder(item)">Void</a>
     </li>
   </ul>

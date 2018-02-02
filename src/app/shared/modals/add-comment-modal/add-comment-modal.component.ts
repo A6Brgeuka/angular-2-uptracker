@@ -33,7 +33,6 @@ export class AddCommentModalComponent implements OnInit, CloseGuard, ModalCompon
   }
 
   onSubmit() {
-    console.log(this.comment);
     this.dialog.close(this.comment);
   }
 }

@@ -245,9 +245,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   
   onchangeStatusQty(product, status, newValue) {
     status.qty = newValue;
-    debugger;
-    console.log(newValue, 11111);
-    console.log(product, 22222);
+    // debugger;
+    // console.log(newValue, 11111);
+    // console.log(product, 22222);
     const pendingSum  = product.status.reduce((sum, currentStatus) => {
       if (currentStatus.type === 'pending') {
         return +sum;

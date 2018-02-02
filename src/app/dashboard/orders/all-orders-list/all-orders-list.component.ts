@@ -26,7 +26,7 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Qty', className: 's1', alias: 'quantity'},
     {name: 'Pkg Price', className: 's1', alias: 'package_price'},
     {name: 'Total', className: 's1', alias: 'total'},
-    {name: '', className: 's1 show-hover-elem', actions: true},
+    {name: '', className: 's1', actions: true},
   ];
 
   public orders$: Observable<any>;
@@ -47,7 +47,7 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
   };
   
   ngOnDestroy() {
-  
+    console.log('for unsubscribing');
   };
   
   sortByHeaderUpdated(event) {
