@@ -70,20 +70,18 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
 
     this.subscribers.openShowCommentModalSubscription = this.openShowCommentModal$
-    .switchMap((data) =>
+    .switchMap((item) =>
       this.confirmModalService.confirmModal(
-        'Unflag?', {text: data.flagged_comment, btn: 'Unflag'}
+        'Unflag?', {text: item.flagged_comment, btn: 'Unflag'}
       )
       .filter(({success}) => success)
-      .mapTo(data)
+      .mapTo(item)
     )
-    .switchMap((data) => this.setFlag(data))
-    .subscribe();
+    .switchMap((item) => this.pastOrderService.setFlag(item, [item[this.uniqueField]]))
+    .subscribe(res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
+      err => console.log('error')
+    );
     
-  }
-  
-  setFlag(item) {
-    this.updateFlagged$.next(item);
   }
 
   setFavorite(item) {
@@ -123,7 +121,10 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     .overlayConfigFactoryWithParams(item, true, 'mid'))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (comment) => console.log(comment.body),
+        (comment) => {
+          item.flagged_comment = comment.body;
+          this.updateFlagged$.next(item);
+      },
         (err) => {}
       );
     });

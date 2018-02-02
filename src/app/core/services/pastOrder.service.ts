@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 import { UserService } from './user.service';
 import { AccountService } from './account.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 @Subscribers({
@@ -16,6 +18,7 @@ import { Router } from '@angular/router';
 })
 export class PastOrderService extends ModelService {
   public appConfig: AppConfig;
+  public updateFlaggedElementCollection$: Subject<any> = new Subject<any>();
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
@@ -35,8 +38,35 @@ export class PastOrderService extends ModelService {
   ) {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
+    this.updateFlaggedCollection();
   }
-  
+
+  updateFlaggedCollection() {
+    const updateFlaggedElementCollection$ = this.updateFlaggedElementCollection$
+    .switchMap((entity) => {
+      return this.collection$.first()
+      .map((collection: any) => {
+        return collection.map((el: any) => {
+          if (el.id === entity.id) {
+            el.flagged_comment = entity.flagged_comment;
+            el.flagged = entity.flagged;
+            return entity;
+          }
+          return el;
+        });
+      });
+    });
+
+    this.collection$ = Observable.merge(
+      this.loadCollection$,
+      this.updateCollection$,
+      updateFlaggedElementCollection$,
+    ).publishReplay(1).refCount();
+    this.collection$.subscribe(res => {
+      this.collection = res;
+    });
+  }
+
   getPastOrders() {
     //GET /pos
     return this.restangular.all('pos').customGET()
@@ -113,9 +143,14 @@ export class PastOrderService extends ModelService {
   }
   
   setFlag(item, id) {
-    return this.restangular.one('pos', id).one('flag').customPUT({'flagged' : !item.flagged})
+    const data = {
+      'flagged' : !item.flagged,
+      'flagged_comment' : !item.flagged ? item.flagged_comment : '',
+    };
+    return this.restangular.one('pos', item.order_id).one('flag', id).customPUT(data)
       .map(res => {
-        this.updateElementCollection$.next(res.data);
+        // this.updateElementCollection$.next(res.data);
+        this.updateFlaggedElementCollection$.next(res.data);
         return res.data;
       });
   }
