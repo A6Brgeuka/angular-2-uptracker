@@ -29,6 +29,8 @@ export class PastOrderService extends ModelService {
   public flaggedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public closedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
+  receivedCollection$: Observable<any> = new Observable<any>();
+
   constructor(
     public injector: Injector,
     public restangular: Restangular,
@@ -50,7 +52,6 @@ export class PastOrderService extends ModelService {
           if (el.id === entity.id) {
             el.flagged_comment = entity.flagged_comment;
             el.flagged = entity.flagged;
-            return entity;
           }
           return el;
         });
@@ -59,12 +60,21 @@ export class PastOrderService extends ModelService {
 
     this.collection$ = Observable.merge(
       this.loadCollection$,
-      this.updateCollection$,
       updateFlaggedElementCollection$,
     ).publishReplay(1).refCount();
     this.collection$.subscribe(res => {
       this.collection = res;
     });
+
+
+    // this.receivedCollection$ = Observable.merge(
+    //   this.receivedListCollection$,
+    //   updateFlaggedElementCollection$,
+    // ).publishReplay(1).refCount();
+    // this.receivedCollection$.subscribe(res => {
+    //   // this.collection = res;
+    // });
+
   }
 
   getPastOrders() {

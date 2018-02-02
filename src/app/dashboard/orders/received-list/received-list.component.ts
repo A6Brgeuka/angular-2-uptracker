@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-received-list',
@@ -28,7 +29,8 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orders$: BehaviorSubject<any>;
-  
+  // public orders$: Observable<any>;
+
   constructor(
     public pastOrderService: PastOrderService,
   ) {
@@ -37,6 +39,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.orders$ = this.pastOrderService.receivedListCollection$;
+    // this.orders$ = this.pastOrderService.receivedCollection$;
   }
   
   addSubscribers() {
