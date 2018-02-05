@@ -17,7 +17,8 @@
         <ul id='drdnPO' class='dropdown-content'>
           <li>
             <a class="tealish-text" (click) = "setFlag($event)">
-              <fa name="flag"></fa>
+              <fa name="flag-o" *ngIf="!(order$ | async)?.favorite"></fa>
+              <fa name="flag" *ngIf="(order$ | async)?.favorite"></fa>
               {{(order$ | async).flagged ? 'Unflag' : 'Flag'}}
             </a>
           </li>

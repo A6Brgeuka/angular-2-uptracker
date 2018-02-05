@@ -28,10 +28,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   public locationArr: any = [];
   
   public receiveProducts: any = new ReceiveProductsModel;
-  public statusList: any = this.receivedOrderService.statusList;
+  // public statusList: any = this.receivedOrderService.statusList;
   public packingSlipValid: boolean = true;
   public inventoryGroupValid: boolean = true;
-  public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
+  // public newInventory$: ReplaySubject<any> = new ReplaySubject(1);
   public getReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
   public saveReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
   
@@ -80,8 +80,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
             item.existInvGroup = true;
             item.inventory_groups = [item.inventory_group];
             this.transformStorageLocations(item);
-          }
-          else {
+          } else {
             item.inventory_groups.unshift({
                 name: 'Create New Inventory Group',
                 id: 'routerLink'
@@ -110,25 +109,25 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       
     });
   
-    this.subscribers.getProductFieldSubscription =
-      this.newInventory$
-    .switchMap((product:any) => {
-      return this.receivedOrderService.getProductFields(product.variant_id)
-      .map(res => {
-        this.modal
-        .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': res, 'inventoryItems':[]}))
-        .then((resultPromise) => {
-          resultPromise.result.then(
-            (res) => {
-              this.getReceiveProducts$.next('success');
-              
-            },
-            (err) => {}
-          );
-        });
-      })
-    })
-    .subscribe();
+    // this.subscribers.getProductFieldSubscription =
+    //   this.newInventory$
+    // .switchMap((product:any) => {
+    //   return this.receivedOrderService.getProductFields(product.variant_id)
+    //   .map(res => {
+    //     this.modal
+    //     .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': res, 'inventoryItems':[]}))
+    //     .then((resultPromise) => {
+    //       resultPromise.result.then(
+    //         (res) => {
+    //           this.getReceiveProducts$.next('success');
+    //
+    //         },
+    //         (err) => {}
+    //       );
+    //     });
+    //   })
+    // })
+    // .subscribe();
     
     this.subscribers.saveReceiveProductSubscription = this.saveReceiveProducts$
     .switchMap(() => this.receivedOrderService.onReceiveProducts(this.receiveProducts))
@@ -139,37 +138,37 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     
   }
   
-  selectedAutocompledInventoryGroup(item, product) {
-    this.inventoryGroupValid = true;
-    if(item.id) {
-      if (item.id === 'routerLink') {
-        this.openAddInventoryModal(product);
-      } else {
-        product.inventory_group = item;
-        product.inventory_group_id = product.inventory_group.id;
-        this.transformStorageLocations(product);
-      }
-    }
-  }
+  // selectedAutocompledInventoryGroup(item, product) {
+  //   this.inventoryGroupValid = true;
+  //   if(item.id) {
+  //     if (item.id === 'routerLink') {
+  //       this.openAddInventoryModal(product);
+  //     } else {
+  //       product.inventory_group = item;
+  //       product.inventory_group_id = product.inventory_group.id;
+  //       this.transformStorageLocations(product);
+  //     }
+  //   }
+  // }
   
   transformStorageLocations(item) {
     let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
-    
+
       const array = location.storage_locations.map(storage_location => ({
         location_id: location.location_id,
         location_name: location.name,
         ...storage_location
       }));
-    
+
       return [...acc, array];
     }, []);
     item.locations = _.flatten(locations);
   }
-  
-  remove(product, status) {
-    let removedStatus = _.remove(product.status, status);
-    this.onchangeStatusQty(product, status, status.qty);
-  }
+
+  // remove(product, status) {
+  //   let removedStatus = _.remove(product.status, status);
+  //   this.onchangeStatusQty(product, status, status.qty);
+  // }
  
   save() {
     if (this.receiveProducts.packing_slip_number) {
@@ -185,8 +184,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
               }
               return status;
             });
-          }
-          else {
+          } else {
             this.inventoryGroupValid = false;
           }
         });
@@ -205,106 +203,116 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   
   }
   
-  changeLocation(location, status) {
-    status.storage_location_id = location.id;
-    status.location_id = location.location_id;
+  // changeLocation(location, status) {
+  //   status.storage_location_id = location.id;
+  //   status.location_id = location.location_id;
+  // }
+  
+  // changeStatus(setStatus, product, curStatus) {
+  //   curStatus.showStatusSelect = false;
+  //   if (setStatus !== curStatus.type) {
+  //     const filteredStatus = _.find(product.status, {'type': setStatus});
+  //     const findReceiveStatus = _.find(product.status, {'type': 'receive'});
+  //     let quantityStatus: boolean = false;
+  //     let receiveStatus: boolean = false;
+  //
+  //     if (findReceiveStatus && setStatus === 'partial receive' && curStatus.type !== 'receive'){
+  //       this.toasterService.pop('error', `You can set either receive or partial receive status`);
+  //       receiveStatus = true;
+  //     }
+  //
+  //     if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
+  //       product.status.push(new StatusModel({
+  //         type: 'pending',
+  //         qty: '0',
+  //         location_id: product.location_id,
+  //         tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)
+  //       }));
+  //       curStatus.type = setStatus;
+  //     } else if (filteredStatus && (filteredStatus.type !== 'partial receive') && !quantityStatus && !receiveStatus) {
+  //       this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
+  //     } else if ((!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
+  //       curStatus.type = setStatus;
+  //     }
+  //
+  //   }
+  //   // used setTimeout because materialize-select doesn't change the text
+  //   setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
+  //   console.log(product.status);
+  //   this.onchangeStatusQty(product, curStatus, curStatus.qty);
+  // }
+  //
+  // onchangeStatusQty(product, status, newValue) {
+  //   status.qty = newValue;
+  //
+  //   const alreadyReceived = product.status_line_items.reduce((sum, currentStatus) => {
+  //     return +sum + Number(currentStatus.qty);
+  //   }, 0);
+  //
+  //   const pendingSum  = product.status.reduce((sum, currentStatus) => {
+  //     if (currentStatus.type === 'pending') {
+  //       return +sum;
+  //     } else {
+  //       return +sum + Number(currentStatus.qty);
+  //     }
+  //   }, 0);
+  //
+  //   product.status.map(currentStatus => {
+  //
+  //     if (currentStatus.type === 'pending') {
+  //       currentStatus.qty = product.quantity - +pendingSum - +alreadyReceived;
+  //       if (currentStatus.qty < 0) {
+  //           this.toasterService.pop('error', `The full amount should not be more than ${product.quantity}`);
+  //           status.qty = Number(status.qty) + Number(currentStatus.qty);
+  //           currentStatus.qty = 0;
+  //       }
+  //     }
+  //
+  //     if (currentStatus.type === 'receive' && Number(currentStatus.qty) < Number(product.quantity)) {
+  //       currentStatus.type = 'partial receive';
+  //     }
+  //
+  //     if (currentStatus.type === 'partial receive'
+  //       && Number(currentStatus.qty) === Number(pendingSum)
+  //       && Number(currentStatus.qty) === Number(product.quantity)) {
+  //       currentStatus.type = 'receive';
+  //       _.remove(product.status, {'type': 'partial receive'});
+  //       product.status[product.status.length-1].qty = 0;
+  //     }
+  //
+  //     const filterPartReceiveStatus:any[] = _.filter(product.status, {'type': 'partial receive'});
+  //     if (filterPartReceiveStatus.length && currentStatus.type === 'partial receive' && currentStatus.tmp_id === filterPartReceiveStatus[0].tmp_id) {
+  //       currentStatus.inventoryHide = true;
+  //     } else if (filterPartReceiveStatus.length && currentStatus.type === 'partial receive' && currentStatus.tmp_id !== filterPartReceiveStatus[0].tmp_id) {
+  //       currentStatus.inventoryHide = false;
+  //     }
+  //
+  //     return currentStatus;
+  //   });
+  // }
+  
+  // openAddInventoryModal(product) {
+  //   this.newInventory$.next(product);
+  // }
+  //
+  // editQuantityToggle(product) {
+  //   debugger;
+  //
+  //   product.edit = !product.edit;
+  // }
+  //
+  // removePreviouslyReceivedToggle(statusLine) {
+  //   debugger;
+  //
+  //   statusLine.removed = !statusLine.removed;
+  // }
+  //
+  // onChangeProductQuantity(product) {
+  //   product.updatedQuantity;
+  // }
+  //
+
+  addNewInventory(event) {
+    this.getReceiveProducts$.next('success');
   }
-  
-  changeStatus(setStatus, product, curStatus) {
-    curStatus.showStatusSelect = false;
-    if (setStatus !== curStatus.type) {
-      const filteredStatus = _.find(product.status, {'type': setStatus});
-      const findReceiveStatus = _.find(product.status, {'type': 'receive'});
-      let quantityStatus: boolean = false;
-      let receiveStatus: boolean = false;
-  
-      if (findReceiveStatus && setStatus === 'partial receive' && curStatus.type !== 'receive'){
-        this.toasterService.pop('error', `You can set either receive or partial receive status`);
-        receiveStatus = true;
-      }
-      
-      if (curStatus.type === 'pending' && (!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
-        product.status.push(new StatusModel({
-          type: 'pending',
-          qty: '0',
-          location_id: product.location_id,
-          tmp_id: 'tmp' + Math.floor(Math.random() * 1000000)
-        }));
-        curStatus.type = setStatus;
-      } else if (filteredStatus && (filteredStatus.type !== 'partial receive') && !quantityStatus && !receiveStatus) {
-        this.toasterService.pop('error', `Status ${setStatus} exists for this product`);
-      } else if ((!filteredStatus || filteredStatus.type === 'partial receive') && !quantityStatus && !receiveStatus) {
-        curStatus.type = setStatus;
-      }
-      
-    }
-    // used setTimeout because materialize-select doesn't change the text
-    setTimeout(() => { curStatus.showStatusSelect = true; }, 0.1);
-    console.log(product.status);
-    this.onchangeStatusQty(product, curStatus, curStatus.qty);
-  }
-  
-  onchangeStatusQty(product, status, newValue) {
-    status.qty = newValue;
-    // debugger;
-    // console.log(newValue, 11111);
-    // console.log(product, 22222);
-    const pendingSum  = product.status.reduce((sum, currentStatus) => {
-      if (currentStatus.type === 'pending') {
-        return +sum;
-      } else {
-        return +sum + Number(currentStatus.qty);
-      }
-    }, 0);
-    
-    product.status.map(currentStatus => {
-      
-      if (currentStatus.type === 'pending') {
-        currentStatus.qty = product.quantity - +pendingSum;
-        if (currentStatus.qty < 0) {
-            this.toasterService.pop('error', `The full amount should not be more than ${product.quantity}`);
-            status.qty = Number(status.qty) + Number(currentStatus.qty);
-            currentStatus.qty = 0;
-        }
-      }
-      
-      if (currentStatus.type === 'receive' && Number(currentStatus.qty) < Number(product.quantity)) {
-        currentStatus.type = 'partial receive';
-      }
-      
-      if (currentStatus.type === 'partial receive'
-        && Number(currentStatus.qty) === Number(pendingSum)
-        && Number(currentStatus.qty) === Number(product.quantity)) {
-        currentStatus.type = 'receive';
-        _.remove(product.status, {'type': 'partial receive'});
-        product.status[product.status.length-1].qty = 0;
-      }
-      
-      const filterPartReceiveStatus:any[] = _.filter(product.status, {'type': 'partial receive'});
-      if (filterPartReceiveStatus.length && currentStatus.type === 'partial receive' && currentStatus.tmp_id === filterPartReceiveStatus[0].tmp_id) {
-        currentStatus.inventoryHide = true;
-      } else if (filterPartReceiveStatus.length && currentStatus.type === 'partial receive' && currentStatus.tmp_id !== filterPartReceiveStatus[0].tmp_id) {
-        currentStatus.inventoryHide = false;
-      }
-      
-      return currentStatus;
-    });
-  }
-  
-  openAddInventoryModal(product) {
-    this.newInventory$.next(product);
-  }
-  
-  editQuantityToggle(product) {
-    product.edit = !product.edit;
-  }
-  
-  removePreviouslyReceivedToggle(statusLine) {
-    statusLine.removed = !statusLine.removed;
-  }
-  
-  onChangeProductQuantity(product) {
-    product.updatedQuantity;
-  }
-  
 }

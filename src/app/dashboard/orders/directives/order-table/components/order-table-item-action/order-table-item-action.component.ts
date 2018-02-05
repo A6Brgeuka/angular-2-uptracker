@@ -78,7 +78,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
       .mapTo(item)
     )
     .switchMap((item) => this.pastOrderService.setFlag(item, [item[this.uniqueField]]))
-    .subscribe(res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
+    .subscribe(res => this.toasterService.pop('', res.favorite ? 'Flagged' : 'Unflagged'),
       err => console.log('error')
     );
     

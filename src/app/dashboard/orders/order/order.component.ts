@@ -33,7 +33,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   order$: BehaviorSubject<any> = new BehaviorSubject({});
   public updateFlagged$: any = new Subject();
   public apiUrl:string;
-  
+
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
@@ -116,7 +116,7 @@ ngOnInit() {
     }
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"));
   }
-  
+
   setFlag(e) {
     e.stopPropagation();
     this.updateFlagged$.next(this.order$);
