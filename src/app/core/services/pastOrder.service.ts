@@ -3,7 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { Restangular } from 'ngx-restangular';
 import { APP_CONFIG, AppConfig } from '../../app.config';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ConnectableObservable } from 'rxjs';
 import * as _ from 'lodash';
 import { UserService } from './user.service';
 import { AccountService } from './account.service';
@@ -17,20 +17,44 @@ import { Subject } from 'rxjs/Subject';
   destroyFunc: null,
 })
 export class PastOrderService extends ModelService {
+
+  public entities$: Observable<{[id: string]: any}>;
+
   public appConfig: AppConfig;
-  public updateFlaggedElementCollection$: Subject<any> = new Subject<any>();
-  public updateFavoriteElementCollection$: Subject<any> = new Subject<any>();
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-  public openListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public receivedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public favoritedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public backorderedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public flaggedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public closedListCollection$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public allCollectionGetRequest$: Observable<any>;
+  public openCollectionGetRequest$: Observable<any>;
+  public receivedCollectionGetRequest$: Observable<any>;
+  public favoritedCollectionGetRequest$: Observable<any>;
+  public backorderedCollectionGetRequest$: Observable<any>;
+  public flaggedCollectionGetRequest$: Observable<any>;
+  public closedCollectionGetRequest$: Observable<any>;
 
-  receivedCollection$: Observable<any> = new Observable<any>();
+  public allCollectionGet$: Subject<any> = new Subject();
+  public openCollectionGet$: Subject<any> = new Subject();
+  public receivedCollectionGet$: Subject<any> = new Subject();
+  public favoritedCollectionGet$: Subject<any> = new Subject();
+  public backorderedCollectionGet$: Subject<any> = new Subject();
+  public flaggedCollectionGet$: Subject<any> = new Subject();
+  public closedCollectionGet$: Subject<any> = new Subject();
+
+  public allListCollection$: Observable<any>;
+  public openListCollection$: Observable<any>;
+  public receivedListCollection$: Observable<any>;
+  public favoritedListCollection$: Observable<any>;
+  public backorderedListCollection$: Observable<any>;
+  public flaggedListCollection$: Observable<any>;
+  public closedListCollection$: Observable<any>;
+
+  public allCollectionIds$: ConnectableObservable<any>;
+  public openCollectionIds$: ConnectableObservable<any>;
+  public receivedCollectionIds$: ConnectableObservable<any>;
+  public favoritedCollectionIds$: ConnectableObservable<any>;
+  public backorderedCollectionIds$: ConnectableObservable<any>;
+  public flaggedCollectionIds$: ConnectableObservable<any>;
+  public closedCollectionIds$: ConnectableObservable<any>;
 
   constructor(
     public injector: Injector,
@@ -41,120 +65,199 @@ export class PastOrderService extends ModelService {
   ) {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
-    this.updateFlaggedCollection();
-  }
 
-  updateFlaggedCollection() {
-    const updateFlaggedElementCollection$ = this.updateFlaggedElementCollection$
-    .switchMap((entity) => {
-      return this.collection$.first()
-      .map((collection: any) => {
-        return collection.map((el: any) => {
-          if (el.id === entity.id) {
-            el.flagged_comment = entity.flagged_comment;
-            el.flagged = entity.flagged;
-            el.favorite = entity.favorite;
-          }
-          return el;
-        });
-      });
-    });
+    this.allCollectionGetRequest$ = this.allCollectionGet$
+    .switchMap(() =>
+      this.restangular.all('pos').customGET()
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
 
+    this.allCollectionIds$ = this.allCollectionGetRequest$
+    .map((items) => _.map(items, 'id'))
+    .publishBehavior([]);
+    this.allCollectionIds$.connect();
 
-    this.collection$ = Observable.merge(
-      this.loadCollection$,
-      updateFlaggedElementCollection$,
-    ).publishReplay(1).refCount();
-    this.collection$.subscribe(res => {
-      this.collection = res;
-    });
+    this.openCollectionGetRequest$ = this.openCollectionGet$
+    .switchMap(() =>
+    this.restangular.one('pos', '5').customGET()
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
 
+    this.openCollectionIds$ = this.openCollectionGetRequest$
+    .map((items) => _.map(items, 'id'))
+    .publishBehavior([]);
+    this.openCollectionIds$.connect();
 
-    // this.receivedCollection$ = Observable.merge(
-    //   this.receivedListCollection$,
-    //   updateFlaggedElementCollection$,
-    // ).publishReplay(1).refCount();
-    // this.receivedCollection$.subscribe(res => {
-    //   // this.collection = res;
-    // });
+    this.receivedCollectionGetRequest$ = this.receivedCollectionGet$
+    .switchMap(() =>
+      this.restangular.one('pos', '6').customGET()
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
+
+    this.receivedCollectionIds$ = this.receivedCollectionGetRequest$
+    .map((items) => _.map(items, 'id'))
+    .publishBehavior([]);
+    this.receivedCollectionIds$.connect();
+
+    this.favoritedCollectionGetRequest$ = this.favoritedCollectionGet$
+    .switchMap(() =>
+      this.restangular.one('pos', 'favorites').customGET()
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
+
+    this.favoritedCollectionIds$ = this.favoritedCollectionGetRequest$
+    .map((items) => _.map(items, 'id'))
+    .publishBehavior([]);
+    this.favoritedCollectionIds$.connect();
+
+    this.backorderedCollectionGetRequest$ = this.backorderedCollectionGet$
+    .switchMap(() =>
+      this.restangular.one('pos', '10').customGET()
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
+
+    this.backorderedCollectionIds$ = this.backorderedCollectionGetRequest$
+    .map((items) => _.map(items, 'id'))
+    .publishBehavior([]);
+    this.backorderedCollectionIds$.connect();
+
+    this.flaggedCollectionGetRequest$ = this.flaggedCollectionGet$
+    .switchMap(() =>
+      this.restangular.one('pos', 'flagged').customGET()
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
+
+    this.flaggedCollectionIds$ = this.flaggedCollectionGetRequest$
+    .map((items) => _.map(items, 'id'))
+    .publishBehavior([]);
+    this.flaggedCollectionIds$.connect();
+
+    this.closedCollectionGetRequest$ = this.closedCollectionGet$
+    .switchMap(() =>
+      this.restangular.one('pos', '8').customGET()
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
+
+    this.closedCollectionIds$ = this.closedCollectionGetRequest$
+    .map((items) => _.map(items, 'id'))
+    .publishBehavior([]);
+    this.closedCollectionIds$.connect();
+
+    this.entities$ = Observable.merge(
+      this.allCollectionGetRequest$,
+      this.openCollectionGetRequest$,
+      this.receivedCollectionGetRequest$,
+      this.favoritedCollectionGetRequest$,
+      this.backorderedCollectionGetRequest$,
+      this.flaggedCollectionGetRequest$,
+      this.closedCollectionGetRequest$,
+    )
+    .scan((acc, items: any[]) => {
+      const newEntities = items.reduce((itemEntities, item) => {
+        const oldEntity = acc[item.id];
+        const entityToSet = oldEntity ? {...oldEntity, ...item} : item;
+        return {
+          ...itemEntities,
+          [item.id]: entityToSet,
+        };
+      }, {});
+
+      return {...acc, ...newEntities};
+    }, {})
+
+    this.allListCollection$ = Observable.combineLatest(
+      this.entities$,
+      this.allCollectionIds$,
+    )
+    .map(([entities, ids]) => ids.map((id) => entities[id]));
+
+    this.openListCollection$ = Observable.combineLatest(
+      this.entities$,
+      this.openCollectionIds$,
+    )
+    .map(([entities, ids]) => ids.map((id) => entities[id]));
+
+    this.receivedListCollection$ = Observable.combineLatest(
+      this.entities$,
+      this.receivedCollectionIds$,
+    )
+    .map(([entities, ids]) => ids.map((id) => entities[id]));
+
+    this.favoritedListCollection$ = Observable.combineLatest(
+      this.entities$,
+      this.favoritedCollectionIds$,
+    )
+    .map(([entities, ids]) => ids.map((id) => entities[id]));
+
+    this.backorderedListCollection$ = Observable.combineLatest(
+      this.entities$,
+      this.backorderedCollectionIds$,
+    )
+    .map(([entities, ids]) => ids.map((id) => entities[id]));
+
+    this.flaggedListCollection$ = Observable.combineLatest(
+      this.entities$,
+      this.flaggedCollectionIds$,
+    )
+    .map(([entities, ids]) => ids.map((id) => entities[id]));
+
+    this.closedListCollection$ = Observable.combineLatest(
+      this.entities$,
+      this.closedCollectionIds$,
+    )
+    .map(([entities, ids]) => ids.map((id) => entities[id]));
 
   }
 
   getPastOrders() {
-    //GET /pos
-    return this.restangular.all('pos').customGET()
-    .map((res: any) => {
-      this.loadCollection$.next(res.data);
-      return res.data;
-    });
-  }
-  
-  updateSortBy(param) {
-    this.sortBy$.next(param);
-  }
-  
-  updateFilterBy(value) {
-    this.filterBy$.next(value);
-  }
-  
-  getPastOrder(id:string) {
-    //GET /po/{order_id} - the order_id, not po_number
-    return this.restangular.one('po', id).customGET()
-    .map((res: any) => res.data);
-  }
-  
-  goToReceive(queryParams) {
-    this.router.navigate(['orders/receive', queryParams]);
+    this.allCollectionGet$.next(null);
+    return this.allCollectionGetRequest$;
   }
   
   getOpenedProducts() {
-    return this.restangular.one('pos', '5').customGET()
-    .map((res: any) => {
-      this.openListCollection$.next(res.data);
-      return res.data;
-    });
+    this.openCollectionGet$.next(null);
+    return this.openCollectionGetRequest$;
   }
 
   getReceivedProducts() {
-    return this.restangular.one('pos', '6').customGET()
-    .map((res: any) => {
-      this.receivedListCollection$.next(res.data);
-      return res.data;
-    });
+    this.receivedCollectionGet$.next(null);
+    return this.receivedCollectionGetRequest$;
   }
 
   getFavoritedProducts() {
-    return this.restangular.one('pos', 'favorites').customGET()
-    .map((res: any) => {
-      this.favoritedListCollection$.next(res.data);
-      return res.data;
-    });
+    this.favoritedCollectionGet$.next(null);
+    return this.favoritedCollectionGetRequest$;
   }
 
   getBackorderedProducts() {
-    return this.restangular.one('pos', '10').customGET()
-    .map((res: any) => {
-      this.backorderedListCollection$.next(res.data);
-      return res.data;
-    });
+    this.backorderedCollectionGet$.next(null);
+    return this.backorderedCollectionGetRequest$;
   }
 
   getFlaggedProducts() {
-    return this.restangular.one('pos', 'flagged').customGET()
-    .map((res: any) => {
-      this.flaggedListCollection$.next(res.data);
-      return res.data;
-    });
+    this.flaggedCollectionGet$.next(null);
+    return this.flaggedCollectionGetRequest$;
   }
 
   getClosedProducts() {
-    return this.restangular.one('pos', '8').customGET()
-    .map((res: any) => {
-      this.closedListCollection$.next(res.data);
-      return res.data;
-    });
+    this.closedCollectionGet$.next(null);
+    return this.closedCollectionGetRequest$;
   }
-  
+
   setFlag(item, id) {
     const data = {
       'flagged' : !item.flagged,
@@ -162,8 +265,8 @@ export class PastOrderService extends ModelService {
     };
     return this.restangular.one('pos', item.order_id).one('flag', id).customPUT(data)
       .map(res => {
-        // this.updateElementCollection$.next(res.data);
-        this.updateFlaggedElementCollection$.next(res.data);
+        this.updateElementCollection$.next(res.data);
+        // this.updateFlaggedFavoriteElementCollection$.next(res.data);
         return res.data;
       });
   }
@@ -171,7 +274,8 @@ export class PastOrderService extends ModelService {
   setFavorite(item, id) {
     return this.restangular.one('pos', item.order_id).one('favorite', id).customPUT({'favorite': !item.favorite})
     .map(res => {
-      this.updateFlaggedElementCollection$.next(res.data);
+      // this.allCollectionGet$.next(null);
+      // this.updateFlaggedFavoriteElementCollection$.next(res.data);
       return res.data;
     });
   }
@@ -199,4 +303,23 @@ export class PastOrderService extends ModelService {
       this.updateCollection$.next(res)
     );
   }
+
+  updateSortBy(param) {
+    this.sortBy$.next(param);
+  }
+
+  updateFilterBy(value) {
+    this.filterBy$.next(value);
+  }
+
+  getPastOrder(id:string) {
+    //GET /po/{order_id} - the order_id, not po_number
+    return this.restangular.one('po', id).customGET()
+    .map((res: any) => res.data);
+  }
+
+  goToReceive(queryParams) {
+    this.router.navigate(['orders/receive', queryParams]);
+  }
+
 }

@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-open-orders-list',
@@ -25,7 +26,7 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
-  public orders$: BehaviorSubject<any>;
+  public orders$: Observable<any>;
 
   constructor(
     public pastOrderService: PastOrderService,

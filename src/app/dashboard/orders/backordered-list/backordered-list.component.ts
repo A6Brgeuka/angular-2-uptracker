@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-backordered-list',
@@ -18,15 +19,15 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
     {name: 'Order #', className: 's2', alias: 'po_number' },
     {name: 'Product Name', className: 's2', alias: 'product_name'},
     {name: 'Location', className: 's2', alias: 'location'},
-    {name: 'Placed', className: 's1', alias: 'placed'},
-    {name: 'Backordered', className: 's1', alias: 'backordered'},
+    {name: 'Placed', className: 's1', alias: 'placed_date'},
+    {name: 'Backordered', className: 's1', alias: 'backordered_date'},
     {name: 'Qty', className: 's1', alias: 'qty'},
-    {name: 'Pkg Price', className: 's1', alias: 'pkg_price'},
+    {name: 'Pkg Price', className: 's1', alias: 'package_price'},
     {name: 'Total', className: 's1', alias: 'total'},
     {name: '', className: 's1', actions: true},
   ];
 
-  public orders$: BehaviorSubject<any>;
+  public orders$: Observable<any>;
 
   constructor(
     public pastOrderService: PastOrderService,

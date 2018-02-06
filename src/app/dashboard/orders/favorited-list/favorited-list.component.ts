@@ -32,7 +32,7 @@ export class FavoritedListComponent implements OnInit, OnDestroy {
   ];
 
 
-  public orders$: BehaviorSubject<any>;
+  public orders$: Observable<any>;
 
   constructor(
     public pastOrderService: PastOrderService,

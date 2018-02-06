@@ -38,7 +38,7 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
   };
   
   ngOnInit() {
-    this.orders$ = this.pastOrderService.collection$;
+    this.orders$ = this.pastOrderService.allListCollection$;
   };
   
   addSubscribers() {

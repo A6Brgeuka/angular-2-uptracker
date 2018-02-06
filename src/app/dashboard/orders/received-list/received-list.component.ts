@@ -28,7 +28,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   ];
   
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public orders$: BehaviorSubject<any>;
+  public orders$: Observable<any>;
   // public orders$: Observable<any>;
 
   constructor(
