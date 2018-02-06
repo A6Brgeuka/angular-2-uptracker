@@ -19,6 +19,7 @@ import { Subject } from 'rxjs/Subject';
 export class PastOrderService extends ModelService {
   public appConfig: AppConfig;
   public updateFlaggedElementCollection$: Subject<any> = new Subject<any>();
+  public updateFavoriteElementCollection$: Subject<any> = new Subject<any>();
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
@@ -52,11 +53,13 @@ export class PastOrderService extends ModelService {
           if (el.id === entity.id) {
             el.flagged_comment = entity.flagged_comment;
             el.flagged = entity.flagged;
+            el.favorite = entity.favorite;
           }
           return el;
         });
       });
     });
+
 
     this.collection$ = Observable.merge(
       this.loadCollection$,
@@ -166,7 +169,11 @@ export class PastOrderService extends ModelService {
   }
 
   setFavorite(item, id) {
-
+    return this.restangular.one('pos', item.order_id).one('favorite', id).customPUT({'favorite': !item.favorite})
+    .map(res => {
+      this.updateFlaggedElementCollection$.next(res.data);
+      return res.data;
+    });
   }
   
   reorder(data) {

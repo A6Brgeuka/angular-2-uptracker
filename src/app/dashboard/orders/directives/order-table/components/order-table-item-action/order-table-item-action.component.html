@@ -4,8 +4,8 @@
     <fa name="flag-o" *ngIf="!item?.flagged"></fa>
     <fa name="flag" *ngIf="item?.flagged"></fa>
   </span>
-  <span class="tealish-text pointer show-hover-elem"
-  (click)="setFavorite($event, item)">
+  <span class="tealish-text pointer" [class.show-hover-elem] = "!item.favorite"
+  (click)="setFavorite(item)">
     <fa name="star-o" *ngIf="!item?.favorite"></fa>
     <fa name="star" *ngIf="item?.favorite"></fa>
   </span>
@@ -25,7 +25,7 @@
       </a>
     </li>
     <li>
-      <a class="tealish-text" (click)="setFavorite($event, item)">
+      <a class="tealish-text" (click)="setFavorite(item)">
         {{item.favorite ? 'Unfavorite' : 'Favorite'}}
       </a>
     </li>
