@@ -119,5 +119,9 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     
     this.filterBy.emit(value);
   }
-  
+
+  toggleStatusHistoryDetail(item) {
+    item.statusHistoryVisibility = !item.statusHistoryVisibility;
+  }
+
 }
