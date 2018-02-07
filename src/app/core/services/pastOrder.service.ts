@@ -31,6 +31,8 @@ export class PastOrderService extends ModelService {
   public backorderedCollectionGetRequest$: Observable<any>;
   public flaggedCollectionGetRequest$: Observable<any>;
   public closedCollectionGetRequest$: Observable<any>;
+  public favoriteCollectionPostRequest$: Observable<any>;
+  public flaggedCollectionPutRequest$: Observable<any>;
 
   public allCollectionGet$: Subject<any> = new Subject();
   public openCollectionGet$: Subject<any> = new Subject();
@@ -39,6 +41,8 @@ export class PastOrderService extends ModelService {
   public backorderedCollectionGet$: Subject<any> = new Subject();
   public flaggedCollectionGet$: Subject<any> = new Subject();
   public closedCollectionGet$: Subject<any> = new Subject();
+  public favoriteCollectionPost$: Subject<any> = new Subject();
+  public flaggedCollectionPut$: Subject<any> = new Subject();
 
   public allListCollection$: Observable<any>;
   public openListCollection$: Observable<any>;
@@ -113,9 +117,42 @@ export class PastOrderService extends ModelService {
     )
     .share();
 
-    this.favoritedCollectionIds$ = this.favoritedCollectionGetRequest$
-    .map((items) => _.map(items, 'id'))
-    .publishBehavior([]);
+    this.favoriteCollectionPostRequest$ = this.favoriteCollectionPost$
+    .switchMap((item) =>
+      this.restangular.one('pos', item.order_id).one('favorite', item.id).customPUT({'favorite': !item.favorite})
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never())
+    )
+    .share();
+
+    const favoritedCollectionIdsGetRequest$ = this.favoritedCollectionGetRequest$
+    .map((items) => ({type: 'replace', value: _.map(items, 'id')}));
+
+    const favoriteCollectionUpdateIds$ = this.favoriteCollectionPostRequest$
+    .map((item) =>
+      item.favorite ? {type: 'add', value: item.id} : {type: 'remove', value: item.id});
+
+    this.favoritedCollectionIds$ = Observable.merge(
+      favoritedCollectionIdsGetRequest$,
+      favoriteCollectionUpdateIds$
+    )
+    .scan((ids: string[], event: any) => {
+      switch (event.type) {
+        case 'replace': {
+          return event.value;
+        }
+        case 'add': {
+          return _.union(ids, [event.value]);
+        }
+        case 'remove': {
+          return _.without(ids, event.value);
+        }
+        default: {
+          return ids;
+        }
+      }
+    }, [])
+    .publish();
     this.favoritedCollectionIds$.connect();
 
     this.backorderedCollectionGetRequest$ = this.backorderedCollectionGet$
@@ -131,6 +168,8 @@ export class PastOrderService extends ModelService {
     .publishBehavior([]);
     this.backorderedCollectionIds$.connect();
 
+
+
     this.flaggedCollectionGetRequest$ = this.flaggedCollectionGet$
     .switchMap(() =>
       this.restangular.one('pos', 'flagged').customGET()
@@ -139,9 +178,47 @@ export class PastOrderService extends ModelService {
     )
     .share();
 
-    this.flaggedCollectionIds$ = this.flaggedCollectionGetRequest$
-    .map((items) => _.map(items, 'id'))
-    .publishBehavior([]);
+    this.flaggedCollectionPutRequest$ = this.flaggedCollectionPut$
+    .switchMap((item) => {
+      const data = {
+        'flagged' : !item.flagged,
+        'flagged_comment' : !item.flagged ? item.flagged_comment : '',
+      };
+      return this.restangular.one('pos', item.order_id).one('flag', item.id).customPUT(data)
+      .map((res: any) => res.data)
+      .catch((error) => Observable.never());
+    })
+    .share();
+
+    const flaggedCollectionIdsGetRequest$ = this.flaggedCollectionGetRequest$
+    .map((items) => ({type: 'replace', value: _.map(items, 'id')}));
+
+    const flaggedCollectionUpdateIds$ = this.flaggedCollectionPutRequest$
+    .map((item) =>
+      item.flagged ? {type: 'add', value: item.id} : {type: 'remove', value: item.id});
+
+    this.flaggedCollectionIds$ = Observable.merge(
+      flaggedCollectionIdsGetRequest$,
+      flaggedCollectionUpdateIds$
+    )
+    .scan((ids: string[], event: any) => {
+      switch (event.type) {
+        case 'replace': {
+          return event.value;
+        }
+        case 'add': {
+          return _.union(ids, [event.value]);
+        }
+        case 'remove': {
+          return _.without(ids, event.value);
+        }
+        default: {
+          return ids;
+        }
+      }
+    }, [])
+    .publish();
+
     this.flaggedCollectionIds$.connect();
 
     this.closedCollectionGetRequest$ = this.closedCollectionGet$
@@ -165,6 +242,10 @@ export class PastOrderService extends ModelService {
       this.backorderedCollectionGetRequest$,
       this.flaggedCollectionGetRequest$,
       this.closedCollectionGetRequest$,
+      this.favoriteCollectionPostRequest$
+      .map((item: any) => [item]),
+      this.flaggedCollectionPutRequest$
+      .map((item: any) => [item]),
     )
     .scan((acc, items: any[]) => {
       const newEntities = items.reduce((itemEntities, item) => {
@@ -201,7 +282,9 @@ export class PastOrderService extends ModelService {
       this.entities$,
       this.favoritedCollectionIds$,
     )
-    .map(([entities, ids]) => ids.map((id) => entities[id]));
+    .map(([entities, ids]) =>
+      ids.map((id) => entities[id])
+    );
 
     this.backorderedListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -213,7 +296,9 @@ export class PastOrderService extends ModelService {
       this.entities$,
       this.flaggedCollectionIds$,
     )
-    .map(([entities, ids]) => ids.map((id) => entities[id]));
+    .map(([entities, ids]) =>
+      ids.map((id) => entities[id])
+    );
 
     this.closedListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -259,25 +344,13 @@ export class PastOrderService extends ModelService {
   }
 
   setFlag(item, id) {
-    const data = {
-      'flagged' : !item.flagged,
-      'flagged_comment' : !item.flagged ? item.flagged_comment : '',
-    };
-    return this.restangular.one('pos', item.order_id).one('flag', id).customPUT(data)
-      .map(res => {
-        this.updateElementCollection$.next(res.data);
-        // this.updateFlaggedFavoriteElementCollection$.next(res.data);
-        return res.data;
-      });
+    this.flaggedCollectionPut$.next(item);
+    return this.flaggedCollectionPutRequest$;
   }
 
   setFavorite(item, id) {
-    return this.restangular.one('pos', item.order_id).one('favorite', id).customPUT({'favorite': !item.favorite})
-    .map(res => {
-      // this.allCollectionGet$.next(null);
-      // this.updateFlaggedFavoriteElementCollection$.next(res.data);
-      return res.data;
-    });
+    this.favoriteCollectionPost$.next(item);
+    return this.favoriteCollectionPostRequest$;
   }
   
   reorder(data) {

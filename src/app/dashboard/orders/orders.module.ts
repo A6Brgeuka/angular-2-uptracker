@@ -15,6 +15,7 @@ import { ClosedListModule } from './closed-list/closed-list.module';
 import { SearchFilterHeaderModule } from '../../shared/components/search-filter-header/search-filter-header.module';
 import { FavoritedListModule } from './favorited-list/favorited-list.module';
 import { FlaggedListModule } from './flagged-list/flagged-list.module';
+import { ReconciledListModule } from './reconciled-list/reconciled-list.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { FlaggedListModule } from './flagged-list/flagged-list.module';
     AllOrdersListModule,
     BackorderedListModule,
     ReceiveModule,
+    ReconciledListModule,
     OrderModule,
     OpenOrdersListModule,
     FavoritedListModule,

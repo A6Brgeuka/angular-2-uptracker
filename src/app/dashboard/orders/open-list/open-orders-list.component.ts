@@ -15,14 +15,18 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
   public listName: string = 'open';
+
   public tableHeaderOpen: any = [
-    {name: 'Order #', className: 's2', alias: 'po_number', filterBy: true, },
+    {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
-    {name: 'Location', className: 's2', alias: 'location', filterBy: true, },
-    {name: 'Placed', className: 's2', alias: 'placed_date', filterBy: true, },
-    {name: 'Qty', className: 's1', alias: 'quantity'},
+    {name: 'Location', className: 's1', alias: 'location', filterBy: true, },
+    {name: 'Status', className: 's1', alias: 'status', filterBy: true, },
+    {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
+    {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
+    {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
+    {name: 'Qty', className: 's1 bold underline-text', alias: 'quantity'},
     {name: 'Pkg Price', className: 's1', alias: 'package_price'},
-    {name: 'Total', className: 's1', alias: 'total'},
+    {name: 'Total', className: 's1 bold underline-text', alias: 'total'},
     {name: '', className: 's1', actions: true},
   ];
 

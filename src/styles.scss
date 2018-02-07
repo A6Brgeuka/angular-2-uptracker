@@ -1394,6 +1394,7 @@ input[type=range] {
 .text-right {
   text-align: right;
 }
+
 [type="checkbox"]:not(:checked):disabled + label:before {
   background: transparent;
 }

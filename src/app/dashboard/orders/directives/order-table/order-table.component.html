@@ -29,7 +29,7 @@
   </div>
 
   <div class="item" *ngFor="let item of filteredOrders$ | async; index as i;">
-    <div class="row flex-center mrg-btm-0" [class.pointer] = "item.status_line_items" (click)="toggleStatusHistoryDetail(item)">
+    <div class="row flex-center mrg-btm-0 main-row" [class.pointer] = "item.status_line_items" (click)="toggleStatusHistoryDetail(item)">
       <div class="input-checkbox left checkbox">
         <input
           type="checkbox"

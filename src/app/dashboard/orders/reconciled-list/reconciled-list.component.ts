@@ -2,19 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
-  selector: 'app-all-orders-list',
-  templateUrl: './all-orders-list.component.html',
-  styleUrls: ['./all-orders-list.component.scss'],
+  selector: 'app-reconciled-list',
+  templateUrl: './reconciled-list.component.html',
+  styleUrls: ['./reconciled-list.component.scss'],
 })
 @DestroySubscribers()
-export class AllOrdersListComponent implements OnInit, OnDestroy {
+export class ReconciledListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   
-  public listName: string = 'all';
+  public listName: string = 'reconciled';
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
@@ -29,8 +28,9 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
+
   public orders$: Observable<any>;
-  
+
   constructor(
     public pastOrderService: PastOrderService,
   ) {
@@ -38,11 +38,11 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
   };
   
   ngOnInit() {
-    this.orders$ = this.pastOrderService.allListCollection$;
+    this.orders$ = this.pastOrderService.favoritedListCollection$;
   };
   
   addSubscribers() {
-    this.subscribers.getAllCollectionSubscription = this.pastOrderService.getPastOrders()
+    this.subscribers.getFavoritedCollectionSubscription = this.pastOrderService.getFavoritedProducts()
     .subscribe();
   };
   

@@ -21,9 +21,9 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
     {name: 'Location', className: 's2', alias: 'location'},
     {name: 'Placed', className: 's1', alias: 'placed_date'},
     {name: 'Backordered', className: 's1', alias: 'backordered_date'},
-    {name: 'Qty', className: 's1', alias: 'qty'},
+    {name: 'Qty', className: 's1 bold underline-text', alias: 'qty'},
     {name: 'Pkg Price', className: 's1', alias: 'package_price'},
-    {name: 'Total', className: 's1', alias: 'total'},
+    {name: 'Total', className: 's1 bold underline-text', alias: 'total'},
     {name: '', className: 's1', actions: true},
   ];
 
