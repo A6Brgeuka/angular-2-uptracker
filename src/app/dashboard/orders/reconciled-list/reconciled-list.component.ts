@@ -38,7 +38,7 @@ export class ReconciledListComponent implements OnInit, OnDestroy {
   };
   
   ngOnInit() {
-    this.orders$ = this.pastOrderService.favoritedListCollection$;
+    // this.orders$ = this.pastOrderService.favoritedListCollection$;
   };
   
   addSubscribers() {
