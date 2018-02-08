@@ -1,0 +1,19 @@
+<div class="col s3">
+  {{ status }}
+</div>
+<div class="col s1">
+  {{qty}}
+</div>
+<div class="col s4 tealish-text pointer" [routerLink]="['/', 'inventory','item', inventoryGroupId]">
+  {{inventory_group_name}}
+</div>
+<div class="col s3">
+  {{location_name}}: {{storage_location_name}}
+</div>
+<div class="col s1 flex-center justify-center">
+  <a (click)="removePreviouslyReceivedToggle()">
+    <fa name="trash" *ngIf="!removed" class="tealish-text"></fa>
+    <fa name="undo" *ngIf="removed" class="tealish-text"></fa>
+  </a>
+</div>
+<div class="col s11" [class.strikethrough-line]="removed"></div>
