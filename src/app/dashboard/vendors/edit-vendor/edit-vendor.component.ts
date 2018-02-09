@@ -28,6 +28,7 @@ import { Subject } from 'rxjs/Subject';
 })
 @DestroySubscribers()
 export class EditVendorComponent implements OnInit, AfterViewInit {
+  originalVendorValue: AccountVendorModel;
   public options: any;
   public subscribers: any = {};
   public currentVendor$;
@@ -231,8 +232,61 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.openConfirmModal$.next('');
   }
 
+
+  compareVendors(left: AccountVendorModel, right: AccountVendorModel): boolean {
+    let isSame = true;
+    if (left.currency !== right.currency) {
+      isSame = false;
+    }
+    if (left.default_order_type !== right.default_order_type) {
+      isSame = false;
+    }
+    if (left.payment_method !== right.payment_method) {
+      isSame = false;
+    }
+    if (left.discount_percentage !== right.discount_percentage) {
+      isSame = false;
+    }
+    if (left.shipping_handling !== right.shipping_handling) {
+      isSame = false;
+    }
+    if (left.avg_lead_time !== right.avg_lead_time) {
+      isSame = false;
+    }
+    if (left.default_order_type !== right.default_order_type) {
+      isSame = false;
+    }
+    if (left.priority !== right.priority) {
+      isSame = false;
+    }
+    if (left.documents !== right.documents) {
+      isSame = false;
+    }
+    if (left.account_id !== right.account_id) {
+      isSame = false;
+    }
+    if (left.rep_name !== right.rep_name) {
+      isSame = false;
+    }
+    if (left.email !== right.email) {
+      isSame = false;
+    }
+    if (left.rep_office_phone !== right.rep_office_phone) {
+      isSame = false;
+    }
+    if (left.rep_mobile_phone !== right.rep_mobile_phone) {
+      isSame = false;
+    }
+    if (left.rep_fax !== right.rep_fax) {
+      isSame = false;
+    }
+    return isSame;
+  }
+
   selectTabLocation(location = null) {
-    if (this.vendor.id) {
+    if (this.inited && this.compareVendors(this.vendor, this.originalVendorValue)) {
+      this.goBackOneStep();
+    } else if (this.vendor.id) {
       this.openConfirmModal();
     } else {
       this.chooseTabLocation(location);
@@ -305,6 +359,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendorFormPhone2 = null;
     this.vendorFormFax = null;
     this.vendor = new AccountVendorModel(vendor);
+    this.originalVendorValue = _.cloneDeep(this.vendor);
     console.log(this.vendor, 2222222);
     
     this.calcPriorityMargin(this.vendor.priority || 1);
@@ -321,6 +376,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
     }
+    
   }
   
   changeCurrency(event) {
