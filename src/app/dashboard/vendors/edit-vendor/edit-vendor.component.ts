@@ -234,59 +234,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
 
 
   compareVendors(left: AccountVendorModel, right: AccountVendorModel): boolean {
-    let isSame = true;
-    if (left.currency !== right.currency) {
-      isSame = false;
+    if (_.isEqual(left, right)) {
+      return true;
     }
-    if (left.default_order_type !== right.default_order_type) {
-      isSame = false;
-    }
-    if (left.payment_method !== right.payment_method) {
-      isSame = false;
-    }
-    if (left.discount_percentage !== right.discount_percentage) {
-      isSame = false;
-    }
-    if (left.shipping_handling !== right.shipping_handling) {
-      isSame = false;
-    }
-    if (left.avg_lead_time !== right.avg_lead_time) {
-      isSame = false;
-    }
-    if (left.default_order_type !== right.default_order_type) {
-      isSame = false;
-    }
-    if (left.priority !== right.priority) {
-      isSame = false;
-    }
-    if (left.documents !== right.documents) {
-      isSame = false;
-    }
-    if (left.account_id !== right.account_id) {
-      isSame = false;
-    }
-    if (left.rep_name !== right.rep_name) {
-      isSame = false;
-    }
-    if (left.email !== right.email) {
-      isSame = false;
-    }
-    if (left.rep_office_phone !== right.rep_office_phone) {
-      isSame = false;
-    }
-    if (left.rep_mobile_phone !== right.rep_mobile_phone) {
-      isSame = false;
-    }
-    if (left.rep_fax !== right.rep_fax) {
-      isSame = false;
-    }
-    return isSame;
+    
+    return false;
   }
 
   selectTabLocation(location = null) {
-    if (this.inited && this.compareVendors(this.vendor, this.originalVendorValue)) {
-      this.goBackOneStep();
-    } else if (this.vendor.id) {
+    if (this.vendor.id && !this.compareVendors(this.vendor, this.originalVendorValue)) {
       this.openConfirmModal();
     } else {
       this.chooseTabLocation(location);
