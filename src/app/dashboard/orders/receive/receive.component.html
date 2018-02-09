@@ -1,46 +1,49 @@
-<form class="uptracker-form" materialize #receiveProductForm="ngForm" autocomplete="off" novalidate>
-<div class="products content uptracker-form receive-orders">
-  <div class="top">
-    <div class="row filter clearfix">
-      <div class="col m12 l3 title">
-        <span class="main-title">Receive Products</span>
-      </div>
-      <div class="col l3 m12 s12">
-        <div class="select">
-          <select
-            [disabled]="true"
-            class="wide"
-            materialize="material_select"
-            [materializeSelectOptions]="[receiveProducts.vendor.vendor_name]"
-            name="vendor"
-          >
-            <option value="" disabled selected >{{ receiveProducts.vendor.vendor_name }}</option>
-          </select>
+<form
+  *ngIf="invoice$ | async"
+  class="uptracker-form"
+  materialize
+  #receiveProductForm="ngForm"
+  autocomplete="off"
+  novalidate>
+  <div class="products content uptracker-form receive-orders">
+    <div class="top">
+      <div class="row filter clearfix">
+        <div class="col m12 l3 title">
+          <span class="main-title">Receive Products</span>
         </div>
-      </div>
-      <div class="col l2 m6 s6 input wide-input">
-        <input type="text"
-          placeholder="Packing Slip #"
-          [(ngModel)]="receiveProducts.packing_slip_number"
-          required minlength="1"
-          class="validate col s12 minlength-validation"
-          name="packing_slip_number"
-          #packing_slip="ngModel"
-          id="packing_slip_number"
-          [class.ng-touched]="!packingSlipValid"
-        />
-        <div [hidden]="packingSlipValid || packing_slip.valid" class="error red-text left-align">
-          Packing slip is required
+        <div class="col l3 m12 s12">
+          <div class="select">
+            <!--TODO make select for vendor as div-->
+            <select
+              [disabled]="true"
+              class="wide"
+              materialize="material_select"
+              [materializeSelectOptions]="[vendorName]"
+              name="vendor"
+            >
+              <option selected>{{ vendorName }}</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="col m6 l2 s6 input wide-input">
-        <input type="text"
-          placeholder="Invoice #"
-          [(ngModel)]="receiveProducts.invoice_number"
-          class="col s12"
-          name="invoice_number"
-        />
-      </div>
+        <div class="col l2 m6 s6 input wide-input">
+          <input type="text"
+            placeholder="Packing Slip #"
+            class="validate col s12 minlength-validation"
+            id="packing_slip_number"
+            [formControl]="packingSlipNumberControl"
+          />
+          <div [hidden]="packingSlipNumberControl.hasError('required') && packingSlipNumberControl.pristine"
+            class="error red-text left-align">
+            Packing slip is required
+          </div>
+        </div>
+        <div class="col m6 l2 s6 input wide-input">
+          <input type="text"
+            placeholder="Invoice #"
+            class="col s12"
+            [formControl]="invoiceNumberControl"
+          />
+        </div>
         <div class="col m3 l2 s12 right-align">
           <button
             (click)="save()"
@@ -51,8 +54,8 @@
             Save
           </button>
         </div>
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+      </div>
       <div class="list is-grid-view">
         <div>
           <div class="heading row">
@@ -62,28 +65,28 @@
             <div class="col s3">Location</div>
             <div class="col s1"></div>
           </div>
-          <div class="item row" *ngFor="let item of receiveProducts.orders">
-            <div class="col s12 product-row" *ngFor="let product of item.items">
+          <div class="item row" *ngFor="let order of receiveOrdersForm?.get('orders')?.controls">
+            <div class="col s12 product-row" *ngFor="let item of order?.get('items')?.controls">
               <app-receive-item
-                [product]="product"
-                [item]="item"
-                (createInventoryEvent) = "addNewInventory($event)"
+                [orderId]="order.get('order_id')?.value"
+                [itemId]="item.get('id')?.value"
+                [orderItemForm]="item"
               ></app-receive-item>
             </div>
           </div>
-        <div class="row product-row">
-          <div class="col s12">
-            <button
-              (click)="addProduct()"
-              class="right mtop uptracker-form-btn white-text waves-effect waves-light"
-            >
-              <fa name="plus"></fa>
-              Add Product
-            </button>
+          <div class="row product-row">
+            <div class="col s12">
+              <button
+                (click)="addProduct()"
+                class="right mtop uptracker-form-btn white-text waves-effect waves-light"
+              >
+                <fa name="plus"></fa>
+                Add Product
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </form>
