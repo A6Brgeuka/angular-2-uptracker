@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { OrdersPreviewComponent } from './orders-preview.component';
 import { AppSharedModule } from '../../../shared/shared.module';
+import { HttpClient } from '../../../core/services/http.service';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,9 @@ import { AppSharedModule } from '../../../shared/shared.module';
   imports: [
     AppSharedModule,
   ],
-  providers: []
+  providers: [
+    HttpClient
+  ]
 })
 export class OrdersPreviewModule {
 }

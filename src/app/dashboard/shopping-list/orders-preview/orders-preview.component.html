@@ -47,8 +47,10 @@
             <div class="col s6">
               <div class="right dd-bt">
                 <button
-                  class="uptracker-form-btn tealish white-text waves-effect waves-light" (click)="prefillDataForConvertion([ order ])">Convert
+                  class="uptracker-form-btn tealish white-text waves-effect waves-light" (click)="prefillDataForConvertion([ order ])">
+                  {{getButtonText(order)}}
                 </button>
+                <iframe *ngIf="loadPdf" style="display: none" [src]="pdfUrl" (load)="startPrint($event)"></iframe>
                 <button materialize="dropdown"
                   class='dropdown-button  uptracker-form-btn square tealish white-text waves-effect waves-light'
                   data-activates='convertall23'>
