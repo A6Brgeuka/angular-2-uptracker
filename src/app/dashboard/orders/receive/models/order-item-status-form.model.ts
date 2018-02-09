@@ -8,7 +8,7 @@ export interface OrderReceivingStatus {
 export interface OrderItemStatusFormModel {
   type: string;
   qty: number;
-  primary_status: boolean;
+  primary_status?: boolean;
   location_id: string;
   storage_location_id: string;
   status?: string;
