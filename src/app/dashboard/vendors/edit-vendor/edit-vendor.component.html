@@ -318,6 +318,83 @@
       </div>
     </div>
 
+    <div class="input row">
+      <div class="col s12 m4">
+        <div class="label left-align">Secondary Account #</div>
+        <input
+          id="secondary_ext_account_number"
+          placeholder="{{placeholder.ext_account_number}}"
+          class="validate col s12"
+          name="secondary_ext_account_number"
+          type="text">
+      </div>
+      <div class="col s12 m4">
+        <div class="label left-align">Secondary Rep Name</div>
+        <input
+          id="secondaryname"
+          placeholder="{{placeholder.rep_name}}"
+          class="validate col s12"
+          name="secondaryname"
+          type="text">
+      </div>
+      <div class="col s12 m4">
+        <div class="label left-align">Secondary Rep Email</div>
+        <input
+          id="email"
+          class="validate col s12"
+          placeholder="{{placeholder.rep_email}}"
+          name="secondaryemail"
+          minlength="6" maxlength="254"
+          type="text">
+      </div>
+    </div>
+    <div class="input row">
+      <div class="col s12 m4">
+        <div class="label left-align">Secondary Rep Office Phone</div>
+        <phone-input
+          (onCountryChange)="onCountryChange($event)"
+          [selectedCountry]="selectedCountry">
+          <input
+            [textMask]="phoneMask"
+            id="secondaryphone"
+            placeholder="{{placeholder.vendorFormPhone}}"
+            class="validate col s12"
+            name="secondaryphone"
+            minlength="11"
+            type="text">
+        </phone-input>
+      </div>
+      <div class="col s12 m4">
+        <div class="label left-align">Secondary Rep Mobile Phone</div>
+        <phone-input
+          (onCountryChange)="onCountryChange2($event)"
+          [selectedCountry]="selectedCountry2">
+          <input
+            [textMask]="phoneMask"
+            id="secondaryphone2"
+            placeholder="{{placeholder.vendorFormPhone2}}"
+            class="validate col s12"
+            name="secondaryphone2"
+            minlength="11"
+            type="text">
+        </phone-input>
+      </div>
+      <div class="col s12 m4">
+        <div class="label left-align">Secondary Rep Fax</div>
+        <phone-input
+          (onCountryChange)="onFaxCountryChange($event)"
+          [selectedCountry]="selectedFaxCountry">
+          <input
+            [textMask]="phoneMask"
+            id="secondaryfax"
+            placeholder="{{placeholder.vendorFormFax}}"
+            class="validate col s12"
+            name="secondaryfax"
+            type="text">
+        </phone-input>
+      </div>
+    </div>
+
     <div class="input row textarea-row">
       <div class="col s12">
         <div class="label left-align">Notes</div>
