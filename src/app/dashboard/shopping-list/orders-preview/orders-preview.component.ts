@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, ViewChild, ElementRef
+  Component, OnInit
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { Location }                 from '@angular/common';
@@ -13,8 +13,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { OrderOptions, OrderService } from '../../../core/services/order.service';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { APP_DI_CONFIG } from '../../../../../env';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HttpClient } from '../../../core/services/http.service';
+import { ResponseContentType } from '@angular/http';
+import { EditFaxDataModal } from './edit-fax-data-modal/edit-fax-data-modal.component';
 
 
 @Component({
@@ -30,10 +31,6 @@ export class OrdersPreviewComponent implements OnInit {
   public location_id: string;
   private first_order: any;
   public apiUrl: string;
-  public loadPdf = false;
-  public orderPdfId: string;
-  public pdfUrl: SafeResourceUrl;
-  
 
   constructor(
     public modal: Modal,
@@ -45,8 +42,7 @@ export class OrdersPreviewComponent implements OnInit {
     public orderService: OrderService,
     public toasterService: ToasterService,
     public router: Router,
-    public sanitizer: DomSanitizer,
-    public httpClient: HttpClient
+    public httpClient: HttpClient,
   ) {
     this.apiUrl = APP_DI_CONFIG.apiEndpoint;
   }
@@ -101,10 +97,6 @@ export class OrdersPreviewComponent implements OnInit {
       })
   }
   
-  getPdfUrl(): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(this.apiUrl + '/po/' + this.orderPdfId + '/download');
-  }
-  
   goBack(): void {
     this.windowLocation.back();
   }
@@ -127,39 +119,51 @@ export class OrdersPreviewComponent implements OnInit {
               });
               break;
             case 'Fax':
+            this.orderService.convertOrders(this.orderId, this.orderService.convertData)
+              .map(res => res.data.order)
+              .subscribe(order => {
+                this.orderService.sendOrderRequest(order.id)
+                .subscribe(status => {
+                  this.modal.open(
+                    EditFaxDataModal, 
+                    this.modalWindowService.overlayConfigFactoryWithParams({
+                      order_method: order['order_method'],
+                      attachments: order['attachments'],
+                      fax_text: status.email_text.replace('(vendor name)', order['vendor_name']),
+                      po_number: order['po_number'],
+                      preview_id: order['preview_id'],
+                      order_id: order['id'],
+                      vendor_name: order['vendor_name'],
+                      user_name: this.userService.selfData.name,
+                      from_fax_number: order['from_fax_number'] || '1 11111111111',
+                      rmFn: null
+                    }, true, 'oldschool')
+                  )
+                });
+              })
+              
+              
               break;
             case 'Online':
               break;
             case 'Phone':
               break;
             case 'Mail':
-              this.orderService.convertOrders(this.orderId, this.orderService.convertData).subscribe((res: any) => {
-                this.orderPdfId = res.data.order.id;
-                this.orderService.sendOrderRequest(this.orderPdfId).subscribe((res: any) => {
-                  this.httpClient.get(this.apiUrl + '/po/' + this.orderPdfId + '/download').subscribe((res) => { 
-                    this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;charset=utf-8,' + res.text);
-                    this.loadPdf = true;
-                  }, (res: any) => { 
-
-                  })
-                  
-                }, (res: any) => {
-                  this.httpClient.get(this.apiUrl + '/po/' + this.orderPdfId + '/download').subscribe((res) => { 
-                    this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:text/html;charset=utf-8,' + res.text());
-                    this.loadPdf = true;
-                  }, (res: any) => { 
-
-                  })
-                  
-                  this.pdfUrl = this.getPdfUrl();
-                  this.toasterService.pop('error', res.statusText);
-                  console.error(res);
-                })
-                
-               }, (res: any) => {
-                this.toasterService.pop('error', res.statusText);
-                console.error(res);
-              });
+              this.orderService.convertOrders(this.orderId, this.orderService.convertData)
+              .map(res => res.data.order)
+              .switchMap(order => {
+                return this.orderService.sendOrderRequest(order.id)
+                .switchMap(res => {
+                  return this.httpClient.get(this.apiUrl + '/po/' + order.id + '/download', {
+                    responseType: ResponseContentType.ArrayBuffer
+                  });
+                });
+              })
+              .subscribe((res) => { 
+                let file = new Blob([res.arrayBuffer()], {type: 'application/pdf'});
+                let w = window.open(window.URL.createObjectURL(file));
+                w.print();
+              }, (res: any) => { })
               break;
             default:
               break;
@@ -170,12 +174,6 @@ export class OrdersPreviewComponent implements OnInit {
           this.toasterService.pop('error', res.statusText);
           console.error(res);
         });
-    }
-
-    startPrint(e: any) {
-      let iframe = e.target;
-      iframe.focus();
-      iframe.contentWindow.print();
     }
 
     getButtonText(order: any) {
