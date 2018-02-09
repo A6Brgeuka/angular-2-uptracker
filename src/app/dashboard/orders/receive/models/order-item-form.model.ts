@@ -23,7 +23,7 @@ export class OrderItemFormGroup extends FormGroup {
         status_line_items.map(item => new OrderItemStatusFormGroup(item)) : [];
 
     super({
-      item_id: new FormControl(id, Validators.required),
+      id: new FormControl(id, Validators.required),
       inventory_group_id: new FormControl(inventory_group_id, Validators.required),
       status: new FormArray([]),
       status_line_items: new FormArray(statusLineItemsFormGroups),
