@@ -1,11 +1,16 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { OrderFormGroup, OrderFormModel } from './order-form.model';
+import { OrderFormGroup, ReceiveOrderModel } from './order-form.model';
+
+export interface ReceiveVendor {
+  vendor_name: string;
+  vendor_id: string;
+}
 
 export interface ReceiveFormModel {
   invoice_number?: string;
   packing_slip_number?: string;
-  orders: OrderFormModel[];
-  vendor: {vendor_name: string, vendor_id: string};
+  orders: ReceiveOrderModel[];
+  vendor: ReceiveVendor;
 }
 
 export class ReceiveFormGroup extends FormGroup {
