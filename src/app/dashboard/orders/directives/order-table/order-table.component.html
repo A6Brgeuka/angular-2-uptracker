@@ -57,7 +57,7 @@
             {{item[headerCol.alias]}}
           </span>
           <fa
-            *ngIf="headerCol.showChevron && item.status_line_items?.length > 1"
+            *ngIf="headerCol.showChevron && item.status_int === orderStatus.Multiple"
             (click)="toggleStatusHistoryDetail(item); $event.stopPropagation()"
             class="expand-chevron"
             [name]="item.statusHistoryVisibility ? 'chevron-up' : 'chevron-down'"
