@@ -23,7 +23,7 @@ import * as _ from 'lodash';
 
 export class ReceiveNewStatusItemComponent implements OnInit {
 
-  public statusList: any = this.receivedOrderService.statusList;
+  public statusList: any = this.receivedOrderService.statusList.filter((status) => status.value !== 'pending');
 
   public inventoryGroup$: Observable<ReceivedInventoryGroupModel>;
   public inventoryGroups$: Observable<ReceivedInventoryGroupModel[]>;
