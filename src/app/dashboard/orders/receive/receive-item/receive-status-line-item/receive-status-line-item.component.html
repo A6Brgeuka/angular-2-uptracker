@@ -5,10 +5,10 @@
   {{qty}}
 </div>
 <div class="col s4 tealish-text pointer" [routerLink]="['/', 'inventory','item', inventoryGroupId]">
-  {{inventory_group_name}}
+  {{(inventoryGroup$ | async)?.name}}
 </div>
 <div class="col s3">
-  {{location_name}}: {{storage_location_name}}
+  {{(location$ | async)?.name}}: {{(storageLocation$ | async)?.name}}
 </div>
 <div class="col s1 flex-center justify-center">
   <a (click)="removePreviouslyReceivedToggle()">

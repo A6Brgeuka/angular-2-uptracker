@@ -1,8 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
+import * as _ from 'lodash';
+
 import { OrderItemStatusFormGroup } from '../../models/order-item-status-form.model';
+import { ReceiveService } from '../../receive.service';
+import { Observable } from 'rxjs/Observable';
+import {
+  ReceivedInventoryGroupLocationModel,
+  ReceivedInventoryGroupModel, ReceivedInventoryGroupStorageLocationModel
+} from '../../models/received-inventory-group.model';
 
 @Component({
   selector: 'app-receive-status-line-item',
@@ -10,12 +18,23 @@ import { OrderItemStatusFormGroup } from '../../models/order-item-status-form.mo
 })
 @DestroySubscribers()
 
-export class ReceiveStatusLineItemComponent {
+export class ReceiveStatusLineItemComponent implements OnInit {
   public removed = false;
+
+  public inventoryGroup$: Observable<ReceivedInventoryGroupModel>;
+
+  public location$: Observable<ReceivedInventoryGroupLocationModel>;
+  public storageLocation$: Observable<ReceivedInventoryGroupStorageLocationModel>;
 
   @Input() public statusFormGroup: OrderItemStatusFormGroup;
 
   @Input() public inventoryGroupId: string;
+
+  constructor(
+    private receiveService: ReceiveService,
+  ) {
+
+  }
 
   get status(): string {
     return this.getControlValue('status');
@@ -25,16 +44,23 @@ export class ReceiveStatusLineItemComponent {
     return this.getControlValue('qty');
   }
 
-  get inventory_group_name(): string {
-    return this.getControlValue('inventory_group_name');
+  get location_id(): string {
+    return this.getControlValue('location_id');
   }
 
-  get location_name(): string {
-    return this.getControlValue('location_name');
+  get storage_location_id(): string {
+    return this.getControlValue('storage_location_id');
   }
 
-  get storage_location_name(): string {
-    return this.getControlValue('storage_location_name');
+  ngOnInit() {
+    this.inventoryGroup$ = this.receiveService.getInventoryGroup(this.inventoryGroupId);
+
+    this.location$ = this.inventoryGroup$
+    .map((inventoryGroup) => _.find(inventoryGroup.locations, ['location_id', this.location_id]));
+
+    this.storageLocation$ = this.location$
+    .filter((location) => !!location)
+    .map((location) => _.find(location.storage_locations, ['id', this.storage_location_id]));
   }
 
   removePreviouslyReceivedToggle() {
