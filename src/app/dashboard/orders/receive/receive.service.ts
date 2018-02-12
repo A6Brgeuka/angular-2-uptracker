@@ -8,6 +8,7 @@ import { ReceivedOrderService } from '../../../core/services/received-order.serv
 import { ReceiveOrderItemModel } from './models/order-item-form.model';
 import { ReceiveOrderModel } from './models/order-form.model';
 import { ReceiveFormModel } from './models/receive-form.model';
+import { ReceivedInventoryGroupModel } from './models/received-inventory-group.model';
 
 @Injectable()
 export class ReceiveService {
@@ -15,8 +16,10 @@ export class ReceiveService {
   public invoice$: Observable<ReceiveFormModel>;
   public invoiceOrders$: Observable<ReceiveOrderModel[]>;
   public invoiceItems$: Observable<ReceiveOrderItemModel[]>;
+  public inventoryGroups$: Observable<ReceivedInventoryGroupModel[]>;
   public orderEntities$: Observable<{[order_id: string]: ReceiveOrderModel}>;
   public itemEntities$: Observable<{[item_id: string]: ReceiveOrderItemModel}>;
+  public inventoryGroupEntities$: Observable<{[inventory_group_id: string]: ReceivedInventoryGroupModel}>;
   public takeInvoiceData$: Subject<any> = new Subject();
 
   constructor(
@@ -33,12 +36,10 @@ export class ReceiveService {
     .map((invoice) => invoice.orders);
 
     this.orderEntities$ = this.invoiceOrders$
-    .map((invoiceOrders) =>
-      invoiceOrders.reduce((entities, order) => ({
-        ...entities,
-        [order.order_id]: order,
-      }), {})
-    );
+    .map((collection) => collection.reduce((entities, item) => ({
+      ...entities,
+      [item.order_id]: item,
+    }), {}));
 
     this.invoiceItems$ = this.invoiceOrders$
     .map((invoiceOrders) =>
@@ -48,12 +49,19 @@ export class ReceiveService {
     );
 
     this.itemEntities$ = this.invoiceItems$
+    .map(this.createEntities);
+
+    this.inventoryGroups$ = this.invoiceItems$
     .map((invoiceItems) =>
-      invoiceItems.reduce((entities, item) => ({
-        ...entities,
-        [item.id]: item,
-      }), {})
+      invoiceItems.reduce((inventoryGroups: any[], item) => {
+        const itemInventoryGroup = (item.inventory_group) ? [item.inventory_group] : item.inventory_groups;
+        return  [...inventoryGroups, ...itemInventoryGroup];
+        }, []
+      )
     );
+
+    this.inventoryGroupEntities$ = this.inventoryGroups$
+    .map(this.createEntities);
 
   }
 
@@ -66,6 +74,18 @@ export class ReceiveService {
     return this.itemEntities$
     .map((entities) => entities[id]);
   };
+
+  getInventoryGroup(id: string) {
+    return this.inventoryGroupEntities$
+    .map((entities) => entities[id]);
+  };
+
+  createEntities(collection) {
+    return collection.reduce((entities, item) => ({
+      ...entities,
+      [item.id]: item,
+    }), {});
+  }
 
   takeInvoiceData(param) {
     this.takeInvoiceData$.next(param);
