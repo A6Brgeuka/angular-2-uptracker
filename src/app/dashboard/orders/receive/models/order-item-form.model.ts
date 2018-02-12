@@ -2,6 +2,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderItemStatusFormGroup, OrderItemStatusFormModel } from './order-item-status-form.model';
 
 import * as _ from 'lodash';
+import { ReceivedInventoryGroupModel } from './received-inventory-group.model';
 
 export interface ReceiveOrderItemModel {
   id: string;
@@ -12,6 +13,8 @@ export interface ReceiveOrderItemModel {
   item_name?: string;
   location_name?: string;
   location_id?: string;
+  inventory_group: ReceivedInventoryGroupModel;
+  inventory_groups: ReceivedInventoryGroupModel[];
 }
 
 export class OrderItemFormGroup extends FormGroup {
