@@ -27,6 +27,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public editQty = false;
   public statusList: OrderReceivingStatus[] = this.receivedOrderService.statusList;
+  public statusList$: Observable<OrderReceivingStatus[]> = this.receivedOrderService.statusList$;
 
   public order$: Observable<any>;
   public item$: Observable<ReceiveOrderItemModel>;
@@ -37,6 +38,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   public statusLineItems$: Observable<OrderItemStatusFormModel[]>;
   public statusItems$: Observable<OrderItemStatusFormModel[]>;
   public inventoryGroupIds$: Observable<any[]>;
+  public statusItemStatuses$: Observable<OrderReceivingStatus[]>;
 
   @Input() orderItemForm: OrderItemFormGroup;
   @Input() orderId: string;
@@ -78,10 +80,20 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     this.statusLineTotal$ = this.statusLineItems$
     .map(this.getOrderStatusTotal);
 
-    this.statusItems$ = this.getFormStatus();
+    this.statusItems$ = this.getFormStatusItems();
 
     this.statusTotal$ = this.statusItems$
     .map(this.getOrderStatusTotal);
+
+
+    this.statusItemStatuses$ = Observable.combineLatest(
+      this.statusItems$,
+      this.statusList$
+    )
+    .map(([statusLineItems, statusList]) => {
+      const statusLineItemsStatus = statusLineItems.map((item) => ({value: item.type}));
+      return _.intersectionBy(statusList, statusLineItemsStatus, 'value');
+    });
 
     this.pendingQty$ = Observable.combineLatest(
       this.itemTotal$,
@@ -108,7 +120,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
         qty,
       };
 
-      this.statusControl.push(new OrderItemStatusFormGroup(data));
+      this.addStatusControl(data);
     });
 
 
@@ -127,14 +139,26 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     this.statusControl.removeAt(index);
   }
 
-  private getFormStatusLineItems() {
-    return this.statusLineItemsControl.valueChanges
-    .startWith(this.statusLineItemsControl.value);
+  onStatusAdd({type, qty}) {
+    this.addStatusControl({
+      type,
+      qty,
+      primary_status: type === 'receive',
+      location_id: null,
+      storage_location_id: null,
+    });
   }
 
-  private getFormStatus() {
+  private getFormStatusLineItems() {
+    return this.statusLineItemsControl.valueChanges
+    .startWith(this.statusLineItemsControl.value)
+    .shareReplay(1);
+  }
+
+  private getFormStatusItems() {
     return this.statusControl.valueChanges
-    .startWith(this.statusControl);
+    .startWith(this.statusControl.value)
+    .shareReplay(1);
   }
 
   private getOrderStatusTotal(statusLineItems: OrderItemStatusFormModel[]) {
@@ -142,6 +166,10 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
       return 0;
     }
     return statusLineItems.reduce((sum, status) => sum + status.qty, 0);
+  }
+
+  private addStatusControl(data) {
+    this.statusControl.push(new OrderItemStatusFormGroup(data));
   }
 
   // addSubscribers() {
