@@ -1,0 +1,38 @@
+<div class="col s3">
+  <div class="select custom-select select-light flex-center">
+    <select
+      materialize="material_select"
+      [materializeSelectOptions]="statusList"
+    >
+      <ng-template let-statusItem ngFor [ngForOf]="statusList">
+        <option [value]="statusItem.value">{{ statusItem.text }}</option>
+      </ng-template>
+    </select>
+  </div>
+</div>
+<div class="col s1">
+  <div class="input flex-center">
+    <input type="text"
+    >
+  </div>
+</div>
+<div class="col s4">
+  <div class="select select-light flex-center">
+    <select
+      materialize="material_select"
+      [disabled]="true"
+    >
+      <option value="null">N/A</option>
+    </select>
+  </div>
+</div>
+<div class="col s3">
+  <div class="select select-light flex-center">
+    <select
+      materialize="material_select"
+      [disabled]="true"
+    >
+      <option value="null">N/A</option>
+    </select>
+  </div>
+</div>
