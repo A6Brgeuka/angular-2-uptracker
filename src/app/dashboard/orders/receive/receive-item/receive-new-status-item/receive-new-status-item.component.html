@@ -18,61 +18,59 @@
     >
   </div>
 </div>
-<!--<div class="col s4">-->
-  <!--<div class="select select-light flex-center input relative"-->
-    <!--*ngIf="status.type === 'receive' || (status.type === 'partial receive' && status.inventoryHide)">-->
-    <!--<input auto-complete-->
-      <!--placeholder="Select one"-->
-      <!--[source]="product.inventory_groups"-->
-      <!--[disabled]="product.existInvGroup"-->
-      <!--[(ngModel)]='product.inventory_group'-->
-      <!--(ngModelChange)='selectedAutocompledInventoryGroup($event, product)'-->
-      <!--[list-formatter]='"name"'-->
-      <!--[tab-to-select]='false'-->
-      <!--name="inventoryGroup"-->
-      <!--#inventoryGroup="ngModel"-->
-      <!--required minlength="1"-->
-      <!--[class.invalid]="!inventoryGroupValid && !product.existInvGroup"-->
-    <!--/>-->
-    <!--<div [hidden]="inventoryGroup.untouched || product.inventory_group_id"-->
-      <!--class="error red-text left-align error-absolute">-->
-      <!--Inventory group is required-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<div class="select select-light flex-center"-->
-    <!--*ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || status.type === 'quantity increase' || status.type === 'quantity decrease'|| (status.type === 'partial receive' && !status.inventoryHide)">-->
-    <!--<select-->
-      <!--materialize="material_select"-->
-      <!--[disabled]="true"-->
-      <!--name="inventory{{i}}"-->
-      <!--required-->
-    <!--&gt;-->
-      <!--<option value="null">N/A</option>-->
-    <!--</select>-->
-  <!--</div>-->
-<!--</div>-->
-<!--<div class="col s3">-->
-  <!--<div class="select select-light flex-center">-->
-    <!--<select materialize="material_select"-->
-      <!--[materializeSelectOptions]="product.locations"-->
-      <!--(ngModelChange)="changeLocation($event, status)"-->
-      <!--[ngModel]='status.location'-->
+<div class="col s4">
+  <div class="select select-light flex-center input relative"
+    *ngIf="typeControl.value === 'receive'">
+    <input auto-complete
+      placeholder="Select one"
+      [source]="inventoryGroups$ | async"
+      [ngModel]="selectedInventoryGroup$ | async"
+      (ngModelChange)="selectInventoryGroup($event)"
+      display-property-name="name"
+      value-property-name="id"
+      [list-formatter]='"name"'
+      [tab-to-select]='false'
+    />
+    <div [hidden]="inventoryGroupIdControl.valid || inventoryGroupIdControl.pristine"
+      class="error red-text left-align error-absolute">
+      Inventory group is required
+    </div>
+  </div>
+  <div
+    class="select select-light flex-center"
+    *ngIf="typeControl.value === 'return' || typeControl.value === 'backorder'">
+    <select
+      materialize="material_select"
+      [disabled]="true"
+    >
+      <option value="null">N/A</option>
+    </select>
+  </div>
+</div>
+<div class="col s3">
+  <div class="select select-light flex-center">
+    <select
+      materialize="material_select"
+      [materializeSelectOptions]="locations$ | async"
+      (ngModelChange)="selectLocation($event)"
+      [ngModel]="selectedLocation$ | async"
+    >
       <!--[disabled]="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'"-->
-      <!--name="location{{i}}"-->
-    <!--&gt;-->
-      <!--<ng-container *ngIf="status.type === 'pending' || status.type === 'return' || status.type === 'backorder' || !product.inventory_group_id">-->
-        <!--<option value="null">N/A</option>-->
-      <!--</ng-container>-->
-      <!--<ng-container *ngIf="status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease'">-->
-        <!--<option *ngFor="let location of product.locations" [ngValue]="location">{{location.location_name}}: {{-->
-          <!--location.name }}-->
-        <!--</option>-->
-      <!--</ng-container>-->
-    <!--</select>-->
-  <!--</div>-->
-<!--</div>-->
-<!--<div class="col s1 flex-center justify-center trash-icon">-->
-  <!--<a (click)="remove(product, status)" *ngIf="status.type !== 'pending'">-->
-    <!--<fa name="trash" class="tealish-text"></fa>-->
-  <!--</a>-->
-<!--</div>-->
+      <ng-template [ngIf]="typeControl.value !== 'receive'">
+        <option value="null">N/A</option>
+      </ng-template>
+      <ng-template [ngIf]="typeControl.value === 'receive'">
+        <option [value]="null">Select Location</option>
+        <option
+          *ngFor="let location of locations$ | async"
+          [ngValue]="location">{{ location.label }}
+        </option>
+      </ng-template>
+    </select>
+  </div>
+</div>
+<div class="col s1 flex-center justify-center trash-icon">
+  <a (click)="removeStatus()">
+    <fa name="trash" class="tealish-text"></fa>
+  </a>
+</div>
