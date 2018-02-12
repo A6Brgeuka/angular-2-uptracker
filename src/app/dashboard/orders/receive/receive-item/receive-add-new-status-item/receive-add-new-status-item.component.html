@@ -2,9 +2,11 @@
   <div class="select custom-select select-light flex-center">
     <select
       materialize="material_select"
-      [materializeSelectOptions]="statusList"
+      [materializeSelectOptions]="remainingStatusList$ | async"
+      [ngModel]="'pending'"
+      (ngModelChange)="onListSelect($event)"
     >
-      <ng-template let-statusItem ngFor [ngForOf]="statusList">
+      <ng-template let-statusItem ngFor [ngForOf]="remainingStatusList$ | async">
         <option [value]="statusItem.value">{{ statusItem.text }}</option>
       </ng-template>
     </select>
@@ -12,7 +14,10 @@
 </div>
 <div class="col s1">
   <div class="input flex-center">
-    <input type="text"
+    <input
+      type="number"
+      disabled="true"
+      [ngModel]="qty"
     >
   </div>
 </div>
