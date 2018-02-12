@@ -80,6 +80,12 @@ export class ReceiveService {
     .map((entities) => entities[id]);
   };
 
+  getInventoryGroups(ids: string[]) {
+    return this.inventoryGroupEntities$
+    .map((entities) => ids.map((id) => entities[id]));
+  }
+
+
   createEntities(collection) {
     return collection.reduce((entities, item) => ({
       ...entities,
