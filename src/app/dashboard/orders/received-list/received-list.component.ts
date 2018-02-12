@@ -18,8 +18,8 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   public tableHeaderReceived: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
-    {name: 'Location', className: 's1', alias: 'location', filterBy: true, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, },
+    {name: 'Location', className: 's1', alias: 'location', filterBy: true, },
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
     {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
@@ -28,7 +28,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
     {name: 'Total', className: 's1 bold underline-text', alias: 'total'},
     {name: '', className: 's1', actions: true},
   ];
-  
+
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public orders$: Observable<any>;
 
@@ -37,25 +37,25 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   ) {
 
   }
-  
+
   ngOnInit() {
     this.orders$ = this.pastOrderService.receivedListCollection$;
     // this.orders$ = this.pastOrderService.receivedCollection$;
   }
-  
+
   addSubscribers() {
-    
+
     this.subscribers.getReceivedProductSubscription = this.pastOrderService.getReceivedProducts()
     .subscribe();
-    
+
   }
-  
+
   ngOnDestroy() {
     console.log('for unsubscribing');
   }
-  
+
   sortByHeaderUpdated(event) {
     this.sortBy$.next(event.alias);
   }
-  
+
 }

@@ -18,8 +18,8 @@ export class ClosedListComponent implements OnInit, OnDestroy {
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
-    {name: 'Location', className: 's1', alias: 'location', filterBy: true, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, },
+    {name: 'Location', className: 's1', alias: 'location', filterBy: true, },
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
     {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
@@ -57,5 +57,5 @@ export class ClosedListComponent implements OnInit, OnDestroy {
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
   }
-  
+
 }
