@@ -29,9 +29,7 @@
   </div>
 
   <div class="item" *ngFor="let item of filteredOrders$ | async; index as i;">
-    <div class="row flex-center mrg-btm-0 main-row"
-      [class.pointer] = "listName !== 'backordered' && item.status_line_items"
-      (click)="(listName !== 'backordered') ? toggleStatusHistoryDetail(item) : ''">
+    <div class="row flex-center mrg-btm-0 main-row">
       <div class="input-checkbox left checkbox">
         <input
           type="checkbox"
@@ -50,11 +48,20 @@
         [class.tealish-text]="headerCol?.filterBy"
         [class.pointer]="headerCol?.filterBy"
       >
-        <ng-template
-          [ngIf]="headerCol.alias && item[headerCol.alias]"
-        >
-          {{item[headerCol.alias]}}
-        </ng-template>
+        <div [ngClass]="{'col-flex-content': headerCol.showChevron}">
+          <span
+            *ngIf="headerCol.alias && item[headerCol.alias]"
+          >
+            {{item[headerCol.alias]}}
+          </span>
+          <fa
+            *ngIf="headerCol.showChevron && item.status_line_items?.length > 1"
+            (click)="toggleStatusHistoryDetail(item); $event.stopPropagation()"
+            class="expand-chevron"
+            [name]="item.statusHistoryVisibility ? 'chevron-up' : 'chevron-down'"
+          ></fa>
+        </div>
+
 
         <app-order-table-item-action
           [item]="item"
