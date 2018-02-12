@@ -2,14 +2,20 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Modal } from 'angular2-modal';
+import * as _ from 'lodash';
+
 import { ModalWindowService } from '../../../../core/services/modal-window.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { InventoryService } from '../../../../core/services/inventory.service';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { ReceivedOrderService } from '../../../../core/services/received-order.service';
-import { OrderItemStatusFormGroup, OrderReceivingStatus } from '../models/order-item-status-form.model';
+import {
+  OrderItemStatusFormGroup, OrderItemStatusFormModel,
+  OrderReceivingStatus
+} from '../models/order-item-status-form.model';
 import { ReceiveService } from '../receive.service';
 import { Observable } from 'rxjs/Observable';
+import { OrderItemFormGroup, ReceiveOrderItemModel } from '../models/order-item-form.model';
+import { FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-receive-item',
@@ -23,9 +29,16 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   public statusList: OrderReceivingStatus[] = this.receivedOrderService.statusList;
 
   public order$: Observable<any>;
-  public item$: Observable<any>;
+  public item$: Observable<ReceiveOrderItemModel>;
+  public itemTotal$: Observable<number>;
+  public statusLineTotal$: Observable<number>;
+  public statusTotal$: Observable<number>;
+  public pendingQty$: Observable<number>;
+  public statusLineItems$: Observable<OrderItemStatusFormModel[]>;
+  public statusItems$: Observable<OrderItemStatusFormModel[]>;
+  public inventoryGroupIds$: Observable<any[]>;
 
-  @Input() orderItemForm;
+  @Input() orderItemForm: OrderItemFormGroup;
   @Input() orderId: string;
   @Input() itemId: string;
 
@@ -41,28 +54,63 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   }
 
   get statusControl() {
-    return this.orderItemForm.get('status');
+    return this.orderItemForm.get('status') as FormArray;
+  }
+
+  get statusLineItemsControl() {
+    return this.orderItemForm.get('status_line_items') as FormArray;
+  }
+
+  get inventoryGroupIdControl() {
+    return this.orderItemForm.get('inventory_group_id');
   }
 
   ngOnInit() {
-    // this.countPendingQty();
-    // this.product.status[0].qty = this.pendingQty;
-
-    const type = this.statusList && this.statusList.length &&  this.statusList[0].value;
-
-    const data = {
-      type: type,
-      qty: 5,
-      primary_status: false,
-      location_id: '111',
-      storage_location_id: '111',
-    };
 
     this.order$ = this.receiveService.getOrder(this.orderId);
 
     this.item$ = this.receiveService.getItem(this.itemId);
 
-    this.statusControl.push(new OrderItemStatusFormGroup(data));
+    this.itemTotal$ = this.item$.map((item) => item.quantity);
+
+    this.statusLineItems$ = this.getFormStatusLineItems();
+
+    this.statusLineTotal$ = this.statusLineItems$
+    .map(this.getOrderStatusTotal);
+
+    this.statusItems$ = this.getFormStatus();
+
+    this.statusTotal$ = this.statusItems$
+    .map(this.getOrderStatusTotal);
+
+    this.pendingQty$ = Observable.combineLatest(
+      this.itemTotal$,
+      this.statusLineTotal$,
+      this.statusTotal$,
+    )
+    .map(([orderTotal, statusLineTotal, statusTotal]) =>
+      orderTotal - statusLineTotal - statusTotal
+    );
+
+    this.inventoryGroupIds$ = this.item$
+    .map((item) => _.map(item.inventory_groups, 'id'));
+
+    this.pendingQty$
+    .take(1)
+    .subscribe((qty) => {
+      const type = this.statusList && this.statusList.length &&  this.statusList[0].value;
+
+      const data: OrderItemStatusFormModel = {
+        type: type,
+        primary_status: type === 'receive',
+        location_id: null,
+        storage_location_id: null,
+        qty,
+      };
+
+      this.statusControl.push(new OrderItemStatusFormGroup(data));
+    });
+
 
   }
 
@@ -73,6 +121,27 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
   editQtyToggle() {
     this.editQty = !this.editQty;
+  }
+
+  removeStatus(index) {
+    this.statusControl.removeAt(index);
+  }
+
+  private getFormStatusLineItems() {
+    return this.statusLineItemsControl.valueChanges
+    .startWith(this.statusLineItemsControl.value);
+  }
+
+  private getFormStatus() {
+    return this.statusControl.valueChanges
+    .startWith(this.statusControl);
+  }
+
+  private getOrderStatusTotal(statusLineItems: OrderItemStatusFormModel[]) {
+    if (!_.isArray(statusLineItems)) {
+      return 0;
+    }
+    return statusLineItems.reduce((sum, status) => sum + status.qty, 0);
   }
 
   // addSubscribers() {

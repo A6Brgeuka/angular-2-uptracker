@@ -3,7 +3,7 @@
     {{ (order$ | async)?.po_number }}
   </div>
   <div class="col s1" [class.strikethrough]="editQty">
-    {{ (item$ | async)?.quantity }}
+    {{ (itemTotal$ | async) }}
     <a (click)="editQtyToggle()" *ngIf="!editQty">
       <fa name="pencil" class="tealish-text"></fa>
     </a>
@@ -41,13 +41,17 @@
 </div>
 <app-receive-status-line-item
   class="row relative status-line"
-  *ngFor="let statusFormGroup of orderItemForm?.get('status_line_items').controls"
+  *ngFor="let statusFormGroup of statusLineItemsControl?.controls"
   [statusFormGroup]="statusFormGroup"
-  [inventoryGroupId]="orderItemForm?.get('inventory_group_id')"
+  [inventoryGroupId]="inventoryGroupIdControl?.value"
 ></app-receive-status-line-item>
 
 <app-receive-new-status-item
   class="row"
-  *ngFor="let statusFormGroup of statusControl?.controls"
+  *ngFor="let statusFormGroup of statusControl?.controls; index as i"
   [statusFormGroup]="statusFormGroup"
+  [inventoryGroupIdControl]="inventoryGroupIdControl"
+  [inventoryGroupIds]="inventoryGroupIds$ | async"
+  (remove)="removeStatus(i)"
 ></app-receive-new-status-item>
+
