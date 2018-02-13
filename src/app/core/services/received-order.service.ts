@@ -10,6 +10,48 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { OrderReceivingStatus } from '../../dashboard/orders/receive/models/order-item-status-form.model';
+import { ReceiveFormModel } from '../../dashboard/orders/receive/models/receive-form.model';
+
+// TODO remove temprorary data
+// const testData: ReceiveFormModel = {
+//   invoice_number: '',
+//   packing_slip_number: '',
+//   orders: [{
+//     order_id: '111',
+//     po_number: 'PO NUM',
+//     items: [{
+//       id: 'item_id',
+//       quantity: 5,
+//       item_name: 'item name',
+//       location_name: 'location name',
+//       location_id: 'locationId',
+//       status: [{
+//         type: 'Received',
+//         qty: 5,
+//         location_id: '1111',
+//         storage_location_id: '111',
+//         status: 'Received',
+//         inventory_group_name: 'invGroup',
+//         location_name: 'Location name',
+//         storage_location_name: 'Storage Location',
+//         primary_status: false,
+//       }],
+//       status_line_items: [{
+//         type: 'Received',
+//         qty: 5,
+//         location_id: '1111',
+//         storage_location_id: '111',
+//         status: 'Received',
+//         inventory_group_name: 'invGroup',
+//         location_name: 'Location name',
+//         storage_location_name: 'Storage Location',
+//         primary_status: false,
+//       }],
+//       inventory_group_id: 'inv_group_id',
+//     }],
+//   }],
+//   vendor: {vendor_name: 'vendor', vendor_id: '11111111'},
+// };
 
 @Injectable()
 @Subscribers({
@@ -55,7 +97,7 @@ export class ReceivedOrderService extends ModelService {
       return this.restangular.all('receive').customGET('', { 'item_ids' : queryParams })
       .map(res => res.data);
     }
-
+    // return Observable.of(testData);
   }
 
   getStatusList() {
