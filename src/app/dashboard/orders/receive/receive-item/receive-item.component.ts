@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Modal } from 'angular2-modal';
@@ -39,11 +39,14 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   public statusLineItems$: Observable<OrderItemStatusFormModel[]>;
   public statusItems$: Observable<OrderItemStatusFormModel[]>;
   public inventoryGroupIds$: Observable<any[]>;
+  public itemProductVariantId$: Observable<any>;
   public statusItemStatuses$: Observable<OrderReceivingStatus[]>;
 
   @Input() orderItemForm: OrderItemFormGroup;
   @Input() orderId: string;
   @Input() itemId: string;
+
+  @Output() createInventoryEvent = new EventEmitter();
 
   constructor(
     public inventoryService: InventoryService,
@@ -109,6 +112,9 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
     this.inventoryGroupIds$ = this.item$
     .map((item) => _.map(item.inventory_groups, 'id'));
+
+    this.itemProductVariantId$ = this.item$
+    .map((item) => item.variant_id);
 
     this.pendingQty$
     .take(1)
@@ -181,6 +187,10 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
       .map((qty) => qty >= 0 ? null : {max: true})
       .take(1);
   };
+
+  createNewInventoryEvent(e) {
+    this.createInventoryEvent.emit(e);
+  }
 
   // addSubscribers() {
   //   this.subscribers.getProductFieldSubscription =

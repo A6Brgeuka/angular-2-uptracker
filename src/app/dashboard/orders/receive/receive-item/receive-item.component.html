@@ -52,8 +52,10 @@
   [statusFormGroup]="statusFormGroup"
   [inventoryGroupIdControl]="inventoryGroupIdControl"
   [inventoryGroupIds]="inventoryGroupIds$ | async"
+  [itemProductVariantId]="itemProductVariantId$ | async"
   [pendingQty]="pendingQty$ | async"
   (remove)="removeStatus(i)"
+  (createInventoryEvent)="createNewInventoryEvent($event)"
 ></app-receive-new-status-item>
 
 <app-receive-add-new-status-item
