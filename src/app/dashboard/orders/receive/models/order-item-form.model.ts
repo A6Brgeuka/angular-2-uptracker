@@ -15,6 +15,7 @@ export interface ReceiveOrderItemModel {
   location_id?: string;
   inventory_group: ReceivedInventoryGroupModel;
   inventory_groups: ReceivedInventoryGroupModel[];
+  variant_id: string;
 }
 
 export class OrderItemFormGroup extends FormGroup {
