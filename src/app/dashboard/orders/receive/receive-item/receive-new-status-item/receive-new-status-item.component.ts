@@ -2,18 +2,16 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { OrderItemStatusFormGroup } from '../../models/order-item-status-form.model';
-import { ReceivedOrderService } from '../../../../../core/services/received-order.service';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import {
-  ReceivedInventoryGroupLocationModel,
-  ReceivedInventoryGroupModel
-} from '../../models/received-inventory-group.model';
-import { ReceiveService } from '../../receive.service';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
-import * as _ from 'lodash';
+import { ReceivedOrderService } from '../../../../../core/services/received-order.service';
+
+import { OrderStatusValues } from '../../../order-status';
+import { OrderItemStatusFormGroup } from '../../models/order-item-status-form.model';
+import { ReceivedInventoryGroupModel } from '../../models/received-inventory-group.model';
+import { ReceiveService } from '../../receive.service';
 
 @Component({
   selector: 'app-receive-new-status-item',
@@ -23,7 +21,8 @@ import * as _ from 'lodash';
 
 export class ReceiveNewStatusItemComponent implements OnInit {
 
-  public statusList: any = this.receivedOrderService.statusList.filter((status) => status.value !== 'pending');
+  public statusList: any = this.receivedOrderService.statusList
+  .filter((status) => status.value !== OrderStatusValues.pending);
 
   public inventoryGroup$: Observable<ReceivedInventoryGroupModel>;
   public inventoryGroups$: Observable<ReceivedInventoryGroupModel[]>;
