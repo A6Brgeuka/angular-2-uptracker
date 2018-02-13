@@ -16,6 +16,7 @@ import { ReceiveService } from '../receive.service';
 import { Observable } from 'rxjs/Observable';
 import { OrderItemFormGroup, ReceiveOrderItemModel } from '../models/order-item-form.model';
 import { FormArray } from '@angular/forms';
+import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-receive-item',
@@ -34,7 +35,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   public itemTotal$: Observable<number>;
   public statusLineTotal$: Observable<number>;
   public statusTotal$: Observable<number>;
-  public pendingQty$: Observable<number>;
+  public pendingQty$: ConnectableObservable<number>;
   public statusLineItems$: Observable<OrderItemStatusFormModel[]>;
   public statusItems$: Observable<OrderItemStatusFormModel[]>;
   public inventoryGroupIds$: Observable<any[]>;
@@ -102,7 +103,9 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     )
     .map(([orderTotal, statusLineTotal, statusTotal]) =>
       orderTotal - statusLineTotal - statusTotal
-    );
+    )
+    .publishReplay(1);
+    this.pendingQty$.connect();
 
     this.inventoryGroupIds$ = this.item$
     .map((item) => _.map(item.inventory_groups, 'id'));
