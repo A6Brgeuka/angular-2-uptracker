@@ -1,4 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
 
 export interface OrderReceivingStatus {
   value: string;
@@ -29,11 +30,12 @@ export class OrderItemStatusFormGroup extends FormGroup {
       inventory_group_name,
       location_name,
       storage_location_name,
-    }: OrderItemStatusFormModel
+    }: OrderItemStatusFormModel,
+    qtyValidator?: (ctrl: FormGroup) => Observable<null | { [key: string]: any }>
   ) {
     super({
       type: new FormControl(type, Validators.required),
-      qty: new FormControl(qty, Validators.required),
+      qty: new FormControl(qty, [Validators.required, Validators.min(0)], qtyValidator),
       primary_status: new FormControl(primary_status, Validators.required),
       location_id: new FormControl(location_id, Validators.required),
       storage_location_id: new FormControl(storage_location_id, Validators.required),

@@ -15,8 +15,14 @@
   <div class="input flex-center">
     <input
       type="number"
+      min="0"
+      [max]="pendingQty + qtyControl.value"
       [formControl]="qtyControl"
     >
+  </div>
+  <div [hidden]="!qtyControl.hasError('max')"
+    class="error red-text left-align">
+    Could not be more than {{pendingQty + qtyControl.value}}
   </div>
 </div>
 <div class="col s4">
