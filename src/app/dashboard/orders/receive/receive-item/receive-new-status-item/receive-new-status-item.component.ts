@@ -21,6 +21,9 @@ import { ReceiveService } from '../../receive.service';
 
 export class ReceiveNewStatusItemComponent implements OnInit {
 
+  public receiveStatus = OrderStatusValues.receive;
+
+
   public statusList: any = this.receivedOrderService.statusList
   .filter((status) => status.value !== OrderStatusValues.pending);
 
