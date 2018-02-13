@@ -130,24 +130,24 @@ export class ReceiveNewStatusItemComponent implements OnInit {
       this.selectedLocationSubject$,
     );
 
-    this.inventoryGroupIdControl.valueChanges
+  }
+
+  addSubscribers() {
+
+    this.subscribers.inventoryGroupIdControlSubscription = this.inventoryGroupIdControl.valueChanges
     .subscribe((id) => {
       this.locationIdControl.patchValue(null);
       this.storageLocationIdControl.patchValue(null);
     });
 
-    this.selectedLocation$
+    this.subscribers.selectedLocationSubscription = this.selectedLocation$
     .filter((location) => !!location)
     .subscribe((location) => {
       this.locationIdControl.patchValue(location.location_id);
       this.storageLocationIdControl.patchValue(location.storage_location_id);
     });
 
-  }
-
-  addSubscribers() {
-    this.subscribers.getProductFieldSubscription =
-      this.createInventoryGroupSubject$
+    this.subscribers.getProductFieldSubscription = this.createInventoryGroupSubject$
       .switchMap(() => {
         return this.receivedOrderService.getProductFields(this.itemProductVariantId)
         .map(res => {
