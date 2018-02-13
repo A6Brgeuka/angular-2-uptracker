@@ -21,7 +21,7 @@
 </div>
 <div class="col s4">
   <div class="select select-light flex-center input relative"
-    *ngIf="typeControl.value === 'receive'">
+    *ngIf="typeControl.value === receiveStatus">
     <input auto-complete
       placeholder="Select one"
       [source]="inventoryGroups$ | async"
@@ -39,7 +39,7 @@
   </div>
   <div
     class="select select-light flex-center"
-    *ngIf="typeControl.value === 'return' || typeControl.value === 'backorder'">
+    *ngIf="typeControl.value !== receiveStatus">
     <select
       materialize="material_select"
       [disabled]="true"
@@ -53,14 +53,14 @@
     <select
       materialize="material_select"
       [materializeSelectOptions]="locations$ | async"
+      [disabled]="typeControl.value !== receiveStatus"
       (ngModelChange)="selectLocation($event)"
       [ngModel]="selectedLocation$ | async"
     >
-      <!--[disabled]="status.type === 'pending' || status.type === 'return' || status.type === 'backorder'"-->
-      <ng-template [ngIf]="typeControl.value !== 'receive'">
+      <ng-template [ngIf]="typeControl.value !== receiveStatus">
         <option value="null">N/A</option>
       </ng-template>
-      <ng-template [ngIf]="typeControl.value === 'receive'">
+      <ng-template [ngIf]="typeControl.value === receiveStatus">
         <option [value]="null">Select Location</option>
         <option
           *ngFor="let location of locations$ | async"

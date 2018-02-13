@@ -110,7 +110,7 @@ body {
     }
   }
 }
-.uptracker-form.ng-valid .select .select-wrapper.ng-valid input.select-dropdown {
+.uptracker-form.ng-valid .select .select-wrapper.ng-valid input.select-dropdown:not([disabled]) {
   border-color: #4caf50;
 }
 
