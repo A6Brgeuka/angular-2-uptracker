@@ -77,7 +77,9 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
     this.item$ = this.receiveService.getItem(this.itemId);
 
-    this.itemTotal$ = this.item$.map((item) => item.quantity);
+    this.itemTotal$ = this.item$
+    .filter((r) => !!r)
+    .map((item) => item.quantity);
 
     this.statusLineItems$ = this.getFormStatusLineItems();
 
@@ -111,12 +113,17 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     this.pendingQty$.connect();
 
     this.inventoryGroupIds$ = this.item$
+    .filter((r) => !!r)
     .map((item) => _.map(item.inventory_groups, 'id'));
 
     this.itemProductVariantId$ = this.item$
+    .filter((r) => !!r)
     .map((item) => item.variant_id);
 
-    this.pendingQty$
+  }
+
+  addSubscribers() {
+    this.subscribers.pendingQtySubscription = this.pendingQty$
     .take(1)
     .subscribe((qty) => {
       const type = this.statusList && this.statusList.length &&  this.statusList[0].value;
@@ -131,10 +138,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
       this.addStatusControl(data);
     });
-
-
   }
-
 
   ngOnDestroy() {
     console.log('for unsubscribing');
