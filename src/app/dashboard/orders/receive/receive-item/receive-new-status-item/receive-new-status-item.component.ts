@@ -12,6 +12,10 @@ import { OrderStatusValues } from '../../../order-status';
 import { OrderItemStatusFormGroup } from '../../models/order-item-status-form.model';
 import { ReceivedInventoryGroupModel } from '../../models/received-inventory-group.model';
 import { ReceiveService } from '../../receive.service';
+import { AddInventoryModal } from '../../../../inventory/add-inventory/add-inventory-modal.component';
+import { ModalWindowService } from '../../../../../core/services/modal-window.service';
+import { Modal } from 'angular2-modal';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-receive-new-status-item',
@@ -20,7 +24,7 @@ import { ReceiveService } from '../../receive.service';
 @DestroySubscribers()
 
 export class ReceiveNewStatusItemComponent implements OnInit {
-
+  public subscribers: any = {};
   public receiveStatus = OrderStatusValues.receive;
 
 
@@ -38,18 +42,25 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   selectedLocation$: Observable<any>;
   selectedLocationSubject$: Subject<any> = new Subject();
 
+  createInventoryGroupSubject$: Subject<any> = new Subject();
+
   @Input() public statusFormGroup: OrderItemStatusFormGroup;
 
   @Input() public inventoryGroupIdControl: FormControl;
   @Input() public inventoryGroupIds: string[] = [];
+  @Input() public itemProductVariantId: string = '';
 
   @Input() pendingQty = 0;
 
   @Output() remove = new EventEmitter();
+  @Output() createInventoryEvent = new EventEmitter();
 
   constructor(
     public receivedOrderService: ReceivedOrderService,
     private receiveService: ReceiveService,
+    public modalWindowService: ModalWindowService,
+    public modal: Modal,
+    public route: ActivatedRoute,
   ) {
 
   }
@@ -73,9 +84,18 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   ngOnInit() {
     const inventoryGroupId = this.inventoryGroupIdControl.value
     this.inventoryGroup$ = this.receiveService.getInventoryGroup(inventoryGroupId);
+
+    const createNewInventoryGroup: ReceivedInventoryGroupModel  = {id: 'create', locations: [], name: 'Create Inventory Group'};
+
+    const inventoryGroupsByIds$: Observable<ReceivedInventoryGroupModel[]> =
+      this.receiveService.getInventoryGroups(this.inventoryGroupIds)
+      .map((inventoryGroups) => {
+        return [createNewInventoryGroup, ...inventoryGroups];
+      });
+
     this.inventoryGroups$ = inventoryGroupId ?
       this.inventoryGroup$.map((group) => [group]) :
-      this.receiveService.getInventoryGroups(this.inventoryGroupIds);
+      inventoryGroupsByIds$;
     this.isSelectDisabled$ = this.inventoryGroup$
     .map((inventoryGroup) => !!inventoryGroup);
 
@@ -125,10 +145,35 @@ export class ReceiveNewStatusItemComponent implements OnInit {
 
   }
 
+  addSubscribers() {
+    this.subscribers.getProductFieldSubscription =
+      this.createInventoryGroupSubject$
+      .switchMap(() => {
+        return this.receivedOrderService.getProductFields(this.itemProductVariantId)
+        .map(res => {
+          this.modal
+          .open(AddInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({'selectedProduct': res, 'inventoryItems': []}))
+          .then((resultPromise) => {
+            resultPromise.result.then(
+              (res) => {
+                this.createInventoryEvent.emit('success');
+              },
+              (err) => {}
+            );
+          });
+        });
+      })
+      .subscribe();
+  }
+
   selectInventoryGroup(event: ReceivedInventoryGroupModel) {
-    this.selectedInventoryGroupSubject$.next(event);
-    this.inventoryGroupIdControl.patchValue(event && event.id);
-    this.inventoryGroupIdControl.markAsDirty();
+    if (event.id === 'create') {
+      this.createInventoryGroupSubject$.next(event);
+    } else {
+      this.selectedInventoryGroupSubject$.next(event);
+      this.inventoryGroupIdControl.patchValue(event && event.id);
+      this.inventoryGroupIdControl.markAsDirty();
+    }
   }
 
   selectLocation(location) {
