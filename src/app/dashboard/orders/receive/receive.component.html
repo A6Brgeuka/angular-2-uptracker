@@ -33,7 +33,7 @@
             id="packing_slip_number"
             [formControl]="packingSlipNumberControl"
           />
-          <div [hidden]="packingSlipNumberControl.hasError('required') && packingSlipNumberControl.pristine"
+          <div [hidden]="packingSlipNumberControl.hasError('required') || packingSlipNumberControl.pristine"
             class="error red-text left-align">
             Packing slip is required
           </div>

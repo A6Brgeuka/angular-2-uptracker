@@ -161,10 +161,10 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     });
     
     this.subscribers.saveReceiveProductSubscription = this.saveReceiveProducts$
-    .switchMap(() => this.receivedOrderService.onReceiveProducts(this.receiveProducts))
+    .switchMap((data) => this.receivedOrderService.onReceiveProducts(data))
     .subscribe(() => {
-      this.toasterService.pop('', "Successfully received");
-      this.router.navigate(['/orders'])
+      this.toasterService.pop('', 'Successfully received');
+      this.location.back();
     });
 
     this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
@@ -188,23 +188,32 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.openConfirmModal$.next('');
   }
 
-  transformStorageLocations(item) {
-    let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
-
-      const array = location.storage_locations.map(storage_location => ({
-        location_id: location.location_id,
-        location_name: location.name,
-        ...storage_location
-      }));
-
-      return [...acc, array];
-    }, []);
-    item.locations = _.flatten(locations);
-  }
+  // transformStorageLocations(item) {
+  //   let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
+  //
+  //     const array = location.storage_locations.map(storage_location => ({
+  //       location_id: location.location_id,
+  //       location_name: location.name,
+  //       ...storage_location
+  //     }));
+  //
+  //     return [...acc, array];
+  //   }, []);
+  //   item.locations = _.flatten(locations);
+  // }
  
   save() {
     console.log('Save will be implemented later');
     console.log(this.receiveOrdersForm.value);
+    console.log(this.receiveOrdersForm);
+    if (this.receiveOrdersForm.valid) {
+      this.saveReceiveProducts$.next(this.receiveOrdersForm.value);
+    } else {
+      for (const field in this.receiveOrdersForm.controls) {
+        this.receiveOrdersForm.get(field).markAsTouched();
+        this.receiveOrdersForm.get(field).markAsDirty();
+      }
+    }
 
     // if (this.receiveProducts.packing_slip_number) {
     //   this.receiveProducts.orders.map((order) => {
@@ -238,7 +247,4 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   
   }
 
-  addNewInventory(event) {
-    this.getReceiveProducts$.next('success');
-  }
 }
