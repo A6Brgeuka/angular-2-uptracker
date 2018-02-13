@@ -3,7 +3,7 @@
     <select
       materialize="material_select"
       [materializeSelectOptions]="remainingStatusList$ | async"
-      [ngModel]="'pending'"
+      [ngModel]="pendingStatus"
       (ngModelChange)="onListSelect($event)"
     >
       <ng-template let-statusItem ngFor [ngForOf]="remainingStatusList$ | async">

@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { ReceivedOrderService } from '../../../../../core/services';
 
 import { OrderReceivingStatus } from '../../models/order-item-status-form.model';
+import { OrderStatusValues } from '../../../order-status';
 
 @Component({
   selector: 'app-receive-add-new-status-item',
@@ -18,6 +19,8 @@ import { OrderReceivingStatus } from '../../models/order-item-status-form.model'
 @DestroySubscribers()
 
 export class ReceiveAddNewStatusItemComponent implements OnInit {
+
+  public pendingStatus = OrderStatusValues.pending;
 
   public statusList$: Observable<OrderReceivingStatus[]> = this.receivedOrderService.statusList$;
   public newStatusList$: ReplaySubject<OrderReceivingStatus[]> = new ReplaySubject<OrderReceivingStatus[]>(1);
@@ -46,7 +49,7 @@ export class ReceiveAddNewStatusItemComponent implements OnInit {
   }
 
   onListSelect(type) {
-    if (type !== 'pending') {
+    if (type !== this.pendingStatus) {
       this.statusAdd.emit({
         type,
         qty: this.qty,
