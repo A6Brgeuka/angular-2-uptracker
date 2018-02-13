@@ -8,3 +8,14 @@ export const OrderStatus = {
   'archived': 10,
   'multiple': 100,
 };
+
+export const OrderStatusValues = {
+  'pending': 'pending',
+  'partial receive': 'partial receive',
+  'received': 'received',
+  'backordered': 'backordered',
+  'reconciled': 'reconciled',
+  'voided': 'voided',
+  'archived': 'archived',
+  'multiple': 'multiple',
+};
