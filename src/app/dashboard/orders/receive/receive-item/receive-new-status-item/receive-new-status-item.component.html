@@ -31,6 +31,7 @@
       value-property-name="id"
       [list-formatter]='"name"'
       [tab-to-select]='false'
+      [disabled]="(inventoryGroup$ | async)"
     />
     <div [hidden]="inventoryGroupIdControl.valid || inventoryGroupIdControl.pristine"
       class="error red-text left-align error-absolute">
