@@ -1395,6 +1395,22 @@ input[type=range] {
   text-align: right;
 }
 
+.round-back-btn {
+  transition: opacity .3s;
+  width: 40px;
+  height: 40px;
+  left: 10px;
+  top: 10px;
+  background-color: #33c6d9;
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: #fff;
+  line-height: 40px;
+  padding-right: 3px;
+}
+
 [type="checkbox"]:not(:checked):disabled + label:before {
   background: transparent;
 }
