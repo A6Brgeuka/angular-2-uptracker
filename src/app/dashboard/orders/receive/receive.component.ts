@@ -179,6 +179,11 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   }
 
+  updateInvoice() {
+    this.invoice$ = this.route.params
+    .switchMap((params) => this.receiveService.takeInvoiceData(params));
+  }
+
   goBack() {
     this.openConfirmModal$.next('');
   }
