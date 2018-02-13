@@ -40,6 +40,8 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   @Input() public inventoryGroupIdControl: FormControl;
   @Input() public inventoryGroupIds: string[] = [];
 
+  @Input() pendingQty = 0;
+
   @Output() remove = new EventEmitter();
 
   constructor(
