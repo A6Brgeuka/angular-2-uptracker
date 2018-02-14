@@ -5,6 +5,16 @@
     .top {
       .title {
         margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+
+        .round-back-btn {
+          min-width: 40px;
+        }
+
+        .main-title {
+          white-space: normal;
+        }
       }
 
       .filter {
