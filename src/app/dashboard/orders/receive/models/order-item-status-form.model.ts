@@ -18,6 +18,7 @@ export interface OrderItemStatusFormModel {
   location_name?: string;
   storage_location_name?: string;
   status_int?: string;
+  id?: string;
 }
 
 export class OrderItemStatusFormGroup extends FormGroup {
@@ -32,10 +33,12 @@ export class OrderItemStatusFormGroup extends FormGroup {
       inventory_group_name,
       location_name,
       storage_location_name,
+      id,
     }: OrderItemStatusFormModel,
     qtyValidator?: (ctrl: FormGroup) => Observable<null | { [key: string]: any }>
   ) {
     super({
+      id: new FormControl(id),
       type: new FormControl(type, Validators.required),
       qty: new FormControl(qty, [Validators.required, Validators.min(0)], qtyValidator),
       primary_status: new FormControl(primary_status),
