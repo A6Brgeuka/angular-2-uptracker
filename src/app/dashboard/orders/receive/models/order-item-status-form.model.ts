@@ -48,6 +48,7 @@ export class OrderItemStatusFormGroup extends FormGroup {
       inventory_group_name: new FormControl(inventory_group_name),
       location_name: new FormControl(location_name),
       storage_location_name: new FormControl(storage_location_name),
+      delete: new FormControl(false),
     }, orderItemStatusFormGroupValidator);
   }
 }

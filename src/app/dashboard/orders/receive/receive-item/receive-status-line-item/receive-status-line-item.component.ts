@@ -52,6 +52,10 @@ export class ReceiveStatusLineItemComponent implements OnInit {
     return this.getControlValue('storage_location_id');
   }
 
+  get deleteControl() {
+    return this.statusFormGroup.get('delete');
+  }
+
   ngOnInit() {
     this.inventoryGroup$ = this.receiveService.getInventoryGroup(this.inventoryGroupId);
 
@@ -65,7 +69,7 @@ export class ReceiveStatusLineItemComponent implements OnInit {
   }
 
   removePreviouslyReceivedToggle() {
-    this.removed = !this.removed;
+    this.deleteControl.patchValue(!this.deleteControl.value);
   }
 
   private getControlValue(controlName: string) {

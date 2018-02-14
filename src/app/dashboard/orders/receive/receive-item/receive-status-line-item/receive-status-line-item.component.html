@@ -12,8 +12,7 @@
 </div>
 <div class="col s1 flex-center justify-center">
   <a (click)="removePreviouslyReceivedToggle()">
-    <fa name="trash" *ngIf="!removed" class="tealish-text"></fa>
-    <fa name="undo" *ngIf="removed" class="tealish-text"></fa>
+    <fa [name]="deleteControl.value ? 'undo' : 'trash'" class="tealish-text"></fa>
   </a>
 </div>
-<div class="col s11" [class.strikethrough-line]="removed"></div>
+<div class="col s11" [class.strikethrough-line]="deleteControl.value"></div>
