@@ -49,6 +49,11 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public vendorFormPhone: string = null;
   public vendorFormPhone2: string = null;
   public vendorFormFax: string = null;
+
+  public secondaryFormPhone: string = null;
+  public secondaryFormPhone2: string = null;
+  public secondaryFormFax: string = null;
+
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
   // default country for phone input
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
@@ -381,16 +386,26 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   onSubmit() {
     
     this.vendor.account_id = this.userService.selfData.account_id;
-    this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
-    this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
-    this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
+    this.vendor.rep_office_phone[0] = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
+    this.vendor.rep_mobile_phone[0] = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
+    this.vendor.rep_fax[0] = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
+    this.vendor.rep_office_phone[1] = this.secondaryFormPhone ? this.selectedCountry[2] + ' ' + this.secondaryFormPhone : null;
+    this.vendor.rep_mobile_phone[1] = this.secondaryFormPhone2 ? this.selectedCountry2[2] + ' ' + this.secondaryFormPhone2 : null;
+    this.vendor.rep_fax[1] = this.secondaryFormFax ? this.selectedFaxCountry[2] + ' ' + this.secondaryFormFax : null;
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
     this.vendor.vendor_id = this.vendorId || this.vendor.id;
     
     _.each(this.vendor, (value, key) => {
-      if (value != null || key == 'location_id')
-        this.formData.append(key, value);
+      if (value != null || key == 'location_id') {
+        if (typeof value === 'string') {
+          this.formData.append(key, value);
+        } else if (Array.isArray(value)) {
+          for (let i = 0; i < value.length; i++) {
+            this.formData.append(key + '[' + i + ']', value[i]);
+          }
+        }
+      }
     });
     
     // append new files

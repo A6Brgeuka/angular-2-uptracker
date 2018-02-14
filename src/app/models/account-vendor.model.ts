@@ -19,11 +19,11 @@ export class AccountVendorModel {
   phone: string = null;
   priority: string = '1';
   product_count: number = null;
-  rep_email: string = null;
-  rep_fax: string = null;
-  rep_mobile_phone: string = null;
-  rep_name: string =  null;
-  rep_office_phone: string = null;
+  rep_email: string[] = [];
+  rep_fax: string[] = [];
+  rep_mobile_phone: string[] = [];
+  rep_name: string[] =  [];
+  rep_office_phone: string[] = [];
   shipping_handling: any = null;
   updated_at: string = null;
   vendor_id: string = null;
