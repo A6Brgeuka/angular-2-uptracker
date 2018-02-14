@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import { OrderItemFormGroup, ReceiveOrderItemModel } from '../models/order-item-form.model';
 import { FormArray } from '@angular/forms';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
+import { OrderStatusValues } from '../../order-status';
 
 @Component({
   selector: 'app-receive-item',
@@ -156,7 +157,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     this.addStatusControl({
       type,
       qty,
-      primary_status: type === 'receive',
+      primary_status: type === OrderStatusValues.receive,
       location_id: null,
       storage_location_id: null,
     });

@@ -93,6 +93,10 @@ export class ReceiveNewStatusItemComponent implements OnInit {
     return this.statusFormGroup.get('storage_location_id');
   }
 
+  get primaryStatusControl() {
+    return this.statusFormGroup.get('primary_status');
+  }
+
   ngOnInit() {
     const selectedWithoutCurrent$ = this.selectedStatusList$.asObservable()
     .map((list) => list.filter((item) => item.value !== this.typeControl.value));
@@ -157,6 +161,11 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   }
 
   addSubscribers() {
+
+    this.subscribers.primaryStatusSubscribtion = this.typeControl.valueChanges
+    .subscribe((status) => {
+      this.primaryStatusControl.patchValue(status === OrderStatusValues.receive)
+    });
 
     this.subscribers.inventoryGroupIdControlSubscription = this.inventoryGroupIdControl.valueChanges
     .subscribe((id) => {
