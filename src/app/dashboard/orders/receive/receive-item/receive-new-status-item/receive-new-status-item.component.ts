@@ -44,6 +44,8 @@ export class ReceiveNewStatusItemComponent implements OnInit {
 
   createInventoryGroupSubject$: Subject<any> = new Subject();
 
+  formSubmitted$: Observable<boolean>;
+
   @Input() public statusFormGroup: OrderItemStatusFormGroup;
 
   @Input() public inventoryGroupIdControl: FormControl;
@@ -130,21 +132,21 @@ export class ReceiveNewStatusItemComponent implements OnInit {
       this.selectedLocationSubject$,
     );
 
+    this.formSubmitted$ = this.receiveService.formSubmitted$
+
   }
 
   addSubscribers() {
 
     this.subscribers.inventoryGroupIdControlSubscription = this.inventoryGroupIdControl.valueChanges
     .subscribe((id) => {
-      this.locationIdControl.patchValue(null);
-      this.storageLocationIdControl.patchValue(null);
+      this.locationPatchValue();
     });
 
     this.subscribers.selectedLocationSubscription = this.selectedLocation$
     .filter((location) => !!location)
     .subscribe((location) => {
-      this.locationIdControl.patchValue(location.location_id);
-      this.storageLocationIdControl.patchValue(location.storage_location_id);
+      this.locationPatchValue(location.location_id, location.storage_location_id);
     });
 
     this.subscribers.getProductFieldSubscription = this.createInventoryGroupSubject$
@@ -182,6 +184,16 @@ export class ReceiveNewStatusItemComponent implements OnInit {
 
   removeStatus() {
     this.remove.emit();
+  }
+
+  locationPatchValue(locationId = null, storageLocationId = null) {
+    this.locationIdControl.patchValue(locationId);
+    this.locationIdControl.markAsDirty();
+    this.locationIdControl.markAsTouched();
+    this.storageLocationIdControl.patchValue(storageLocationId);
+    this.storageLocationIdControl.markAsDirty();
+    this.storageLocationIdControl.markAsTouched();
+
   }
 
 }

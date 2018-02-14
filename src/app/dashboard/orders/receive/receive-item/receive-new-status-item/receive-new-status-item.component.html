@@ -39,7 +39,7 @@
       [tab-to-select]='false'
       [disabled]="(inventoryGroup$ | async)"
     />
-    <div [hidden]="inventoryGroupIdControl.valid || inventoryGroupIdControl.pristine"
+    <div [hidden]="inventoryGroupIdControl.valid || (inventoryGroupIdControl.pristine && !(formSubmitted$ | async))"
       class="error red-text left-align error-absolute">
       Inventory group is required
     </div>
@@ -75,6 +75,10 @@
         </option>
       </ng-template>
     </select>
+  </div>
+  <div [hidden]="!statusFormGroup.hasError('locationRequired') || (locationIdControl.pristine && !(formSubmitted$ | async))"
+    class="error red-text left-align">
+    Location Is Required
   </div>
 </div>
 <div class="col s1 flex-center justify-center trash-icon">

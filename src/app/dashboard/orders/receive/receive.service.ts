@@ -9,6 +9,7 @@ import { ReceiveOrderItemModel } from './models/order-item-form.model';
 import { ReceiveOrderModel } from './models/order-form.model';
 import { ReceiveFormModel } from './models/receive-form.model';
 import { ReceivedInventoryGroupModel } from './models/received-inventory-group.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ReceiveService {
@@ -21,6 +22,9 @@ export class ReceiveService {
   public itemEntities$: Observable<{[item_id: string]: ReceiveOrderItemModel}>;
   public inventoryGroupEntities$: Observable<{[inventory_group_id: string]: ReceivedInventoryGroupModel}>;
   public takeInvoiceData$: Subject<any> = new Subject();
+
+  public formSubmitted$: Observable<boolean>;
+  private formSubmittedSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     public receivedOrderService: ReceivedOrderService,
@@ -63,6 +67,7 @@ export class ReceiveService {
     this.inventoryGroupEntities$ = this.inventoryGroups$
     .map(this.createEntities);
 
+    this.formSubmitted$ = this.formSubmittedSubject$.asObservable();
   }
 
   getOrder(id: string) {
@@ -96,6 +101,10 @@ export class ReceiveService {
   takeInvoiceData(param) {
     this.takeInvoiceData$.next(param);
     return this.invoice$;
+  }
+
+  formSubmitted() {
+    this.formSubmittedSubject$.next(true);
   }
 
 }

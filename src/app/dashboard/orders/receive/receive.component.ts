@@ -36,7 +36,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public searchKey:string= "";
   public locationArr: any = [];
-  
+
   public receiveProducts: any = new ReceiveProductsModel;
   public packingSlipValid: boolean = true;
   public inventoryGroupValid: boolean = true;
@@ -48,6 +48,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   public receiveOrdersForm: FormGroup;
 
   public invoice$: Observable<any>;
+
+  public formSubmitted$: Observable<boolean>;
 
   public invoiceVendor$: Observable<ReceiveVendor>;
 
@@ -85,6 +87,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.invoice$ = this.route.params
     .switchMap((params) => this.receiveService.takeInvoiceData(params));
 
+    this.formSubmitted$ = this.receiveService.formSubmitted$;
+
     // this.receiveService.takeInvoiceData(this.route.params);
 
     // this.invoice$ = this.route.params
@@ -104,7 +108,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     //   }), {})
     // );
   }
-  
+
   ngOnDestroy() {
     console.log('for unsubscribing');
   }
@@ -114,7 +118,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   }
 
   addSubscribers() {
-    
+
     this.subscribers.getReceiveProductSubscription = this.invoice$
     .subscribe((res: any) => {
       this.createForm(res);
@@ -159,7 +163,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       // });
       //
     });
-    
+
     this.subscribers.saveReceiveProductSubscription = this.saveReceiveProducts$
     .switchMap((data) => this.receivedOrderService.onReceiveProducts(data))
     .subscribe(() => {
@@ -201,20 +205,15 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   //   }, []);
   //   item.locations = _.flatten(locations);
   // }
- 
+
   save() {
+    this.receiveService.formSubmitted();
     console.log('Save will be implemented later');
     console.log(this.receiveOrdersForm.value);
     console.log(this.receiveOrdersForm);
     if (this.receiveOrdersForm.valid) {
       this.saveReceiveProducts$.next(this.receiveOrdersForm.value);
-    } else {
-      for (const field in this.receiveOrdersForm.controls) {
-        this.receiveOrdersForm.get(field).markAsTouched();
-        this.receiveOrdersForm.get(field).markAsDirty();
-      }
     }
-
     // if (this.receiveProducts.packing_slip_number) {
     //   this.receiveProducts.orders.map((order) => {
     //     order.items.map(item => {
@@ -242,9 +241,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     //   this.inventoryGroupValid = false;
     // }
   }
-  
+
   addProduct() {
-  
+
   }
 
 }
