@@ -19,7 +19,7 @@ export class ReceiveFormGroup extends FormGroup {
     const ordersGroups = orders.map((order) => new OrderFormGroup(order));
     super({
       invoice_number: new FormControl(),
-      packing_slip_number: new FormControl('', Validators.required),
+      packing_slip_number: new FormControl(''),
       orders: new FormArray(ordersGroups),
       vendor: new FormGroup({
         vendor_id: new FormControl(vendor.vendor_id, Validators.required),
