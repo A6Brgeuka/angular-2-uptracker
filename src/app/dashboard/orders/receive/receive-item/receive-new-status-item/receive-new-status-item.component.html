@@ -2,10 +2,10 @@
   <div class="select custom-select select-light flex-center">
     <select
       materialize="material_select"
-      [materializeSelectOptions]="statusList"
+      [materializeSelectOptions]="statusList$ | async"
       [formControl]="typeControl"
     >
-      <ng-template let-statusItem ngFor [ngForOf]="statusList">
+      <ng-template let-statusItem ngFor [ngForOf]="statusList$ | async">
         <option [value]="statusItem.value">{{ statusItem.text }}</option>
       </ng-template>
     </select>

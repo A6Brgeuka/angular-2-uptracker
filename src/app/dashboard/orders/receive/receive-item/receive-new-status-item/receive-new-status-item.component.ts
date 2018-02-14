@@ -1,21 +1,25 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+
+import { Modal } from 'angular2-modal';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
-import { FormControl } from '@angular/forms';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+
+import * as _ from 'lodash';
 
 import { ReceivedOrderService } from '../../../../../core/services/received-order.service';
 
 import { OrderStatusValues } from '../../../order-status';
-import { OrderItemStatusFormGroup } from '../../models/order-item-status-form.model';
+import { OrderItemStatusFormGroup, OrderReceivingStatus } from '../../models/order-item-status-form.model';
 import { ReceivedInventoryGroupModel } from '../../models/received-inventory-group.model';
 import { ReceiveService } from '../../receive.service';
 import { AddInventoryModal } from '../../../../inventory/add-inventory/add-inventory-modal.component';
 import { ModalWindowService } from '../../../../../core/services/modal-window.service';
-import { Modal } from 'angular2-modal';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-receive-new-status-item',
@@ -28,8 +32,7 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   public receiveStatus = OrderStatusValues.receive;
 
 
-  public statusList: any = this.receivedOrderService.statusList
-  .filter((status) => status.value !== OrderStatusValues.pending);
+  public statusList$: Observable<OrderReceivingStatus[]>;
 
   public inventoryGroup$: Observable<ReceivedInventoryGroupModel>;
   public inventoryGroups$: Observable<ReceivedInventoryGroupModel[]>;
@@ -46,6 +49,8 @@ export class ReceiveNewStatusItemComponent implements OnInit {
 
   formSubmitted$: Observable<boolean>;
 
+  selectedStatusList$: ReplaySubject<OrderReceivingStatus[]> = new ReplaySubject(1);
+
   @Input() public statusFormGroup: OrderItemStatusFormGroup;
 
   @Input() public inventoryGroupIdControl: FormControl;
@@ -53,6 +58,11 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   @Input() public itemProductVariantId: string = '';
 
   @Input() pendingQty = 0;
+
+  @Input()
+  set selected(list) {
+    this.selectedStatusList$.next(list);
+  }
 
   @Output() remove = new EventEmitter();
   @Output() createInventoryEvent = new EventEmitter();
@@ -84,6 +94,16 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    const selectedWithoutCurrent$ = this.selectedStatusList$.asObservable()
+    .map((list) => list.filter((item) => item.value !== this.typeControl.value));
+
+    this.statusList$ = Observable.combineLatest(
+      this.receivedOrderService.statusList$,
+      selectedWithoutCurrent$,
+    )
+    .map(([statusList, selectedList]) => _.differenceWith(statusList, selectedList, _.isEqual))
+    .map((statusList) => statusList.filter((status) => status.value !== OrderStatusValues.pending));
+
     const inventoryGroupId = this.inventoryGroupIdControl.value
     this.inventoryGroup$ = this.receiveService.getInventoryGroup(inventoryGroupId);
 

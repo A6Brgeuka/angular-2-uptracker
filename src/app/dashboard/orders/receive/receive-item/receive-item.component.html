@@ -54,6 +54,7 @@
   [inventoryGroupIds]="inventoryGroupIds$ | async"
   [itemProductVariantId]="itemProductVariantId$ | async"
   [pendingQty]="pendingQty$ | async"
+  [selected]="statusItemStatuses$ | async"
   (remove)="removeStatus(i)"
   (createInventoryEvent)="createNewInventoryEvent($event)"
 ></app-receive-new-status-item>
