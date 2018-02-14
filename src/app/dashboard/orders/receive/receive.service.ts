@@ -103,8 +103,8 @@ export class ReceiveService {
     return this.invoice$;
   }
 
-  formSubmitted() {
-    this.formSubmittedSubject$.next(true);
+  formSubmitted(value = true) {
+    this.formSubmittedSubject$.next(value);
   }
 
 }

@@ -19,11 +19,12 @@ import {
 import { ToasterService } from '../../../core/services/toaster.service';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { ReceivedOrderService } from '../../../core/services/received-order.service';
-import { ReceiveFormGroup, ReceiveVendor } from './models/receive-form.model';
+import { ReceiveFormGroup, ReceiveFormModel, ReceiveVendor } from './models/receive-form.model';
 import { Observable } from 'rxjs/Observable';
 import { ReceiveService } from './receive.service';
 import { Subject } from 'rxjs/Subject';
 import { ConfirmModalService } from '../../../shared/modals/confirm-modal/confirm-modal.service';
+import { OrderStatusValues } from '../order-status';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   public packingSlipValid: boolean = true;
   public inventoryGroupValid: boolean = true;
   public getReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
-  public saveReceiveProducts$: ReplaySubject<any> = new ReplaySubject(1);
+  public saveReceiveProducts$: ReplaySubject<ReceiveFormModel> = new ReplaySubject(1);
 
   public openConfirmModal$: Subject<any> = new Subject();
 
@@ -110,6 +111,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.receiveService.formSubmitted(false);
     console.log('for unsubscribing');
   }
 
