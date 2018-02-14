@@ -384,7 +384,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   onSubmit() {
-    
+    this.formData = new FormData();
     this.vendor.account_id = this.userService.selfData.account_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
@@ -395,13 +395,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     _.each(this.vendor, (value, key) => {
       if (value != null || key == 'location_id')
-        this.formData.set(key, value);
+        this.formData.append(key, value);
     });
     
     // append new files
     let i = 0;
     _.each(this.fileArr, (value, key) => {
-      this.formData.set('new_documents[' + i + ']', this.fileArr[i]);
+      this.formData.append('new_documents[' + i + ']', this.fileArr[i]);
       i++;
     });
     
@@ -409,7 +409,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     // append old files
     let j = 0;
     _.each(this.fileArr, (value, key) => {
-      this.formData.set('documents[' + j + ']', this.oldFileArr[j]);
+      this.formData.append('documents[' + j + ']', this.oldFileArr[j]);
       j++;
     });
     if (this.noAV) {
