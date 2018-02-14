@@ -92,8 +92,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public inited: boolean = false;
   public allVendor$: Observable<any>;
   private noAV:  boolean = false;
-
-  public openConfirmModal$: Subject<any>;
   
   constructor(
     public userService: UserService,
@@ -107,8 +105,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     public confirmModalService: ConfirmModalService,
   ) {
     this.vendor = new AccountVendorModel();
-
-    this.openConfirmModal$ = new Subject();
   }
   
   ngOnInit() {
@@ -168,16 +164,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     this.subscribers.currencySubscription = this.currency$
     .subscribe(currency => this.currencyArr = currency);
-
-    this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
-    .switchMap(() => this.confirmModalService.confirmModal(
-      'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
-    )).subscribe(res => {
-      if (res.success) {
-        this.onSubmit();
-      }
-      return this.chooseTabLocation();
-    });
   }
   
   initTabs() {
@@ -225,11 +211,18 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
-    this.viewInit$.next(true)
+    this.viewInit$.next(true);
   }
 
-  openConfirmModal() {
-    this.openConfirmModal$.next('');
+  openConfirmModal(location = null) {
+    this.subscribers.openConfirmModalSubscription = this.confirmModalService.confirmModal(
+      'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
+    ).subscribe(res => {
+      if (res.success) {
+        this.onSubmit();
+      }
+      return this.chooseTabLocation(location);
+    });
   }
 
 
@@ -243,7 +236,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
 
   selectTabLocation(location = null) {
     if (this.vendor.id && !this.compareVendors(this.vendor, this.originalVendorValue)) {
-      this.openConfirmModal();
+      this.openConfirmModal(location);
     } else {
       this.chooseTabLocation(location);
     }
@@ -402,13 +395,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     _.each(this.vendor, (value, key) => {
       if (value != null || key == 'location_id')
-        this.formData.append(key, value);
+        this.formData.set(key, value);
     });
     
     // append new files
     let i = 0;
     _.each(this.fileArr, (value, key) => {
-      this.formData.append('new_documents[' + i + ']', this.fileArr[i]);
+      this.formData.set('new_documents[' + i + ']', this.fileArr[i]);
       i++;
     });
     
@@ -416,7 +409,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     // append old files
     let j = 0;
     _.each(this.fileArr, (value, key) => {
-      this.formData.append('documents[' + j + ']', this.oldFileArr[j]);
+      this.formData.set('documents[' + j + ']', this.oldFileArr[j]);
       j++;
     });
     if (this.noAV) {
