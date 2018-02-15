@@ -28,13 +28,14 @@ import { OrderStatusValues } from '../../order-status';
 export class ReceiveItemComponent implements OnInit, OnDestroy {
 
   public minItemQuantity: number;
+  public itemTotal: number;
 
   public statusList: OrderReceivingStatus[] = this.receivedOrderService.statusList;
   public statusList$: Observable<OrderReceivingStatus[]> = this.receivedOrderService.statusList$;
 
   public order$: Observable<any>;
   public item$: Observable<ReceiveOrderItemModel>;
-  public itemTotal$: Observable<number>;
+  public itemQuantity$: Observable<number>;
   public statusLineTotal$: Observable<number>;
   public statusTotal$: Observable<number>;
   public pendingQty$: ConnectableObservable<number>;
@@ -97,9 +98,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
     this.item$ = this.receiveService.getItem(this.itemId);
 
-    this.itemTotal$ = this.item$
-    .filter((r) => !!r)
-    .map((item) => item.quantity);
+    this.itemQuantity$ = this.getFormQuantity();
 
     this.statusLineItems$ = this.getFormStatusLineItems();
 
@@ -122,7 +121,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     });
 
     this.pendingQty$ = Observable.combineLatest(
-      this.itemTotal$,
+      this.itemQuantity$,
       this.statusLineTotal$,
       this.statusTotal$,
     )
@@ -175,6 +174,13 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     .subscribe(qty => {
       this.minItemQuantity = qty;
     });
+
+    this.subscribers.itemTotalSubscribtion = this.item$
+    .filter((r) => !!r)
+    .map((item) => item.quantity)
+    .subscribe((total) => {
+      this.itemTotal = total;
+    });
   }
 
   ngOnDestroy() {
@@ -185,6 +191,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     if (this.editQty) {
       this.quantityControl.disable();
       this.noteControl.disable();
+      this.quantityControl.reset(this.itemTotal);
     } else {
       this.quantityControl.enable();
       this.noteControl.enable();
@@ -214,6 +221,12 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   private getFormStatusItems() {
     return this.statusControl.valueChanges
     .startWith(this.statusControl.value)
+    .shareReplay(1);
+  }
+
+  private getFormQuantity() {
+    return this.quantityControl.valueChanges
+    .startWith(this.quantityControl.value)
     .shareReplay(1);
   }
 

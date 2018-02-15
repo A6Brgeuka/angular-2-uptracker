@@ -3,7 +3,7 @@
     {{ (order$ | async)?.po_number }}
   </div>
   <div class="col s1" [class.strikethrough]="editQty">
-    {{ (itemTotal$ | async) }}
+    {{ itemTotal }}
     <a (click)="editQtyToggle()" *ngIf="!editQty">
       <fa name="pencil" class="tealish-text"></fa>
     </a>
