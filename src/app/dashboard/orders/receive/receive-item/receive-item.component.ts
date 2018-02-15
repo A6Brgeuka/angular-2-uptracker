@@ -15,7 +15,7 @@ import {
 import { ReceiveService } from '../receive.service';
 import { Observable } from 'rxjs/Observable';
 import { OrderItemFormGroup, ReceiveOrderItemModel } from '../models/order-item-form.model';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { OrderStatusValues } from '../../order-status';
 
@@ -26,8 +26,9 @@ import { OrderStatusValues } from '../../order-status';
 @DestroySubscribers()
 
 export class ReceiveItemComponent implements OnInit, OnDestroy {
-  public subscribers: any = {};
-  public editQty = false;
+
+  public minItemQuantity: number;
+
   public statusList: OrderReceivingStatus[] = this.receivedOrderService.statusList;
   public statusList$: Observable<OrderReceivingStatus[]> = this.receivedOrderService.statusList$;
 
@@ -43,11 +44,15 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   public itemProductVariantId$: Observable<any>;
   public statusItemStatuses$: Observable<OrderReceivingStatus[]>;
 
+  public formSubmitted$: Observable<boolean>;
+
   @Input() orderItemForm: OrderItemFormGroup;
   @Input() orderId: string;
   @Input() itemId: string;
 
   @Output() createInventoryEvent = new EventEmitter();
+
+  private subscribers: any = {};
 
   constructor(
     public inventoryService: InventoryService,
@@ -72,7 +77,21 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     return this.orderItemForm.get('inventory_group_id');
   }
 
+  get quantityControl() {
+    return this.orderItemForm.get('quantity');
+  }
+
+  get noteControl() {
+    return this.orderItemForm.get('note');
+  }
+
+  get editQty() {
+    return this.noteControl.enabled && this.quantityControl.enabled;
+  }
+
   ngOnInit() {
+
+    this.formSubmitted$ = this.receiveService.formSubmitted$;
 
     this.order$ = this.receiveService.getOrder(this.orderId);
 
@@ -121,6 +140,9 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     .filter((r) => !!r)
     .map((item) => item.variant_id);
 
+    // Adding Quantity validator
+    this.orderItemForm.setValidators(this.getItemQuantityMinValueValidator());
+
   }
 
   addSubscribers() {
@@ -139,6 +161,20 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
       this.addStatusControl(data);
     });
+
+    this.subscribers.minQtySubscriber = Observable.combineLatest(
+      this.statusItems$,
+      this.statusLineItems$,
+      (statusItems, statusLineItems) => {
+        const receiveList = [...statusItems, ...statusLineItems].filter((item) =>
+          item.type === OrderStatusValues.receive
+        );
+        return receiveList.reduce((sum, item) => sum + item.qty, 0);
+      }
+    )
+    .subscribe(qty => {
+      this.minItemQuantity = qty;
+    });
   }
 
   ngOnDestroy() {
@@ -146,7 +182,13 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   }
 
   editQtyToggle() {
-    this.editQty = !this.editQty;
+    if (this.editQty) {
+      this.quantityControl.disable();
+      this.noteControl.disable();
+    } else {
+      this.quantityControl.enable();
+      this.noteControl.enable();
+    }
   }
 
   removeStatus(index) {
@@ -192,6 +234,17 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
       .map((qty) => qty >= 0 ? null : {max: true})
       .take(1);
   };
+
+  private getItemQuantityMinValueValidator() {
+    return (ctrl: FormControl) => {
+      const quantityCtrl = ctrl.get('quantity');
+      const noteCtrl = ctrl.get('note');
+      if (quantityCtrl.enabled && noteCtrl.enabled) {
+        return quantityCtrl.value >= this.minItemQuantity ? null : {minItemQty: true};
+      }
+      return null;
+    };
+  }
 
   createNewInventoryEvent(e) {
     this.createInventoryEvent.emit(e);

@@ -20,7 +20,7 @@ export interface ReceiveOrderItemModel {
 
 export class OrderItemFormGroup extends FormGroup {
 
-  constructor({ id, inventory_group_id, status_line_items}: ReceiveOrderItemModel) {
+  constructor({ id, inventory_group_id, status_line_items, quantity }: ReceiveOrderItemModel) {
     const isStatusLineItemsArray = status_line_items && _.isArray(status_line_items);
     const statusLineItemsFormGroups =
       isStatusLineItemsArray ?
@@ -31,6 +31,8 @@ export class OrderItemFormGroup extends FormGroup {
       inventory_group_id: new FormControl(inventory_group_id, Validators.required),
       status: new FormArray([]),
       status_line_items: new FormArray(statusLineItemsFormGroups),
+      quantity: new FormControl({value: quantity, disabled: true}, Validators.required),
+      note: new FormControl({value: '', disabled: true}, Validators.required),
     });
   }
 }

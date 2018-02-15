@@ -15,7 +15,7 @@
     {{ (item$ | async)?.location_name }}
   </div>
 </div>
-<div class="row" *ngIf="editQty">
+<div class="row" *ngIf="quantityControl.enabled && noteControl.enabled">
   <div class="col s3">
     <div class="input flex-center">
       <input type="text" value="New Order Quantity"
@@ -25,12 +25,28 @@
   </div>
   <div class="col s1">
     <div class="input flex-center">
-      <input type="text">
+      <input
+        type="number"
+        [min]="minItemQuantity"
+        [formControl]="quantityControl"
+      >
+    </div>
+    <div [hidden]="!orderItemForm.hasError('minItemQty') || (quantityControl.pristine && !(formSubmitted$ | async))"
+      class="error red-text left-align">
+      Quantity couldn't be less than received
     </div>
   </div>
   <div class="col s7">
     <div class="input flex-center">
-      <input type="text" placeholder="Custom Note">
+      <input
+        type="text"
+        placeholder="Custom Note"
+        [formControl]="noteControl"
+      >
+    </div>
+    <div [hidden]="noteControl.valid || (noteControl.pristine && !(formSubmitted$ | async))"
+      class="error red-text left-align">
+      Note is required
     </div>
   </div>
   <div class="col s1 flex-center justify-center trash-icon">
