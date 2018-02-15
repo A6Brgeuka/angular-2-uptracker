@@ -59,6 +59,10 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public selectedCountry: any = this.phoneMaskService.defaultCountry;
   public selectedCountry2: any = this.phoneMaskService.defaultCountry;
   public selectedFaxCountry: any = this.phoneMaskService.defaultCountry;
+
+  public selectedSecondaryCountry: any = this.phoneMaskService.defaultCountry;
+  public selectedSecondaryCountry2: any = this.phoneMaskService.defaultCountry;
+  public selectedSecondaryFaxCountry: any = this.phoneMaskService.defaultCountry;
   
   fileIsOver: boolean = false;
   public files$: Observable<any>;
@@ -309,6 +313,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendorFormPhone = null;
     this.vendorFormPhone2 = null;
     this.vendorFormFax = null;
+    this.secondaryFormPhone = null;
+    this.secondaryFormPhone2 = null;
+    this.secondaryFormFax = null;
     this.vendor = new AccountVendorModel(vendor);
     console.log(this.vendor, 2222222);
     
@@ -319,12 +326,19 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.oldFileArr = this.vendor.documents;
       this.oldFiles$.next(this.oldFileArr);
       
-      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
-      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
-      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone);
-      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
-      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
+      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone[0]);
+      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone[0]);
+      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone[0]);
+      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone[0]);
+      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax[0]);
+      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax[0]);
+
+      this.secondaryFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone[1]);
+      this.selectedSecondaryCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone[1]);
+      this.secondaryFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone[1]);
+      this.selectedSecondaryCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone[1]);
+      this.secondaryFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax[1]);
+      this.selectedSecondaryFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax[1]);
     }
   }
   
@@ -355,6 +369,18 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   
   onFaxCountryChange($event) {
     this.selectedFaxCountry = $event;
+  }
+
+  onSecondaryCountryChange($event) {
+    this.selectedSecondaryCountry = $event;
+  }
+  
+  onSecondaryCountryChange2($event) {
+    this.selectedSecondaryCountry2 = $event;
+  }
+  
+  onSecondaryFaxCountryChange($event) {
+    this.selectedSecondaryFaxCountry = $event;
   }
   
   // upload by input type=file
@@ -389,9 +415,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendor.rep_office_phone[0] = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
     this.vendor.rep_mobile_phone[0] = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax[0] = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
-    this.vendor.rep_office_phone[1] = this.secondaryFormPhone ? this.selectedCountry[2] + ' ' + this.secondaryFormPhone : null;
-    this.vendor.rep_mobile_phone[1] = this.secondaryFormPhone2 ? this.selectedCountry2[2] + ' ' + this.secondaryFormPhone2 : null;
-    this.vendor.rep_fax[1] = this.secondaryFormFax ? this.selectedFaxCountry[2] + ' ' + this.secondaryFormFax : null;
+    this.vendor.rep_office_phone[1] = this.secondaryFormPhone ? this.selectedSecondaryCountry[2] + ' ' + this.secondaryFormPhone : null;
+    this.vendor.rep_mobile_phone[1] = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : null;
+    this.vendor.rep_fax[1] = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : null;
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
     this.vendor.vendor_id = this.vendorId || this.vendor.id;
