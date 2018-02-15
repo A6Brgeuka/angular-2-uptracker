@@ -168,7 +168,13 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     });
 
     this.subscribers.saveReceiveProductSubscription = this.saveReceiveProducts$
-    .switchMap((data) => this.receivedOrderService.onReceiveProducts(data))
+    .switchMap((data) =>
+      this.receivedOrderService.onReceiveProducts(data)
+      .catch((error) => {
+        console.error(error);
+        return Observable.never();
+      })
+    )
     .subscribe(() => {
       this.toasterService.pop('', 'Successfully received');
       this.location.back();
