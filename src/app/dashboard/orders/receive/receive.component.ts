@@ -112,6 +112,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.receiveService.formSubmitted(false);
+    this.receiveOrdersForm = null;
     console.log('for unsubscribing');
   }
 
@@ -179,8 +180,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     )).subscribe(res => {
       if (res.success) {
         this.save();
+      } else {
+        this.location.back();
       }
-      this.location.back();
     });
 
   }
@@ -215,6 +217,8 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     console.log(this.receiveOrdersForm);
     if (this.receiveOrdersForm.valid) {
       this.saveReceiveProducts$.next(this.receiveOrdersForm.value);
+    } else {
+      this.toasterService.pop('error', 'Form is invalid. Couldn\'t save');
     }
     // if (this.receiveProducts.packing_slip_number) {
     //   this.receiveProducts.orders.map((order) => {
