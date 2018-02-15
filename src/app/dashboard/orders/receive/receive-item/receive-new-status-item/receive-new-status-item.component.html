@@ -20,9 +20,9 @@
       [formControl]="qtyControl"
     >
   </div>
-  <div [hidden]="!qtyControl.hasError('max')"
+  <div [hidden]="!qtyControl.hasError('min') || (qtyControl.pristine && !(formSubmitted$ | async))"
     class="error red-text left-align">
-    Could not be more than {{pendingQty + qtyControl.value}}
+    Could not be less than 1
   </div>
 </div>
 <div class="col s4">

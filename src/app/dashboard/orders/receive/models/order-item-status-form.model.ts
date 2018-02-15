@@ -40,7 +40,7 @@ export class OrderItemStatusFormGroup extends FormGroup {
     super({
       id: new FormControl(id),
       type: new FormControl(type, Validators.required),
-      qty: new FormControl(qty, [Validators.required, Validators.min(0)], qtyValidator),
+      qty: new FormControl(qty, [Validators.required, Validators.min(1)], qtyValidator),
       primary_status: new FormControl(primary_status),
       location_id: new FormControl(location_id),
       storage_location_id: new FormControl(storage_location_id),
