@@ -61,7 +61,7 @@ export class ReceiveStatusLineItemComponent implements OnInit {
 
     this.location$ = this.inventoryGroup$
     .filter((r) => !!r)
-    .map((inventoryGroup) => _.find(inventoryGroup.locations, ['location_id', this.location_id]));
+    .map((inventoryGroup) => _.find(inventoryGroup.locations, ['id', this.location_id]));
 
     this.storageLocation$ = this.location$
     .filter((location) => !!location)
