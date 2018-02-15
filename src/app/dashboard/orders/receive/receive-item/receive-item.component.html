@@ -74,7 +74,10 @@
   (remove)="removeStatus(i)"
   (createInventoryEvent)="createNewInventoryEvent($event)"
 ></app-receive-new-status-item>
-
+<div [hidden]="!orderItemForm.hasError('maxItemsQty')"
+  class="error red-text left-align">
+  Items quantity couldn`t be more than {{ quantityControl.value }}
+</div>
 <app-receive-add-new-status-item
   [qty]="(pendingQty$ | async) >= 0 ? (pendingQty$ | async) : 0"
   [selected]="statusItemStatuses$ | async"

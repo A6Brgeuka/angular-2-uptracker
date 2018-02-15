@@ -15,7 +15,7 @@ import {
 import { ReceiveService } from '../receive.service';
 import { Observable } from 'rxjs/Observable';
 import { OrderItemFormGroup, ReceiveOrderItemModel } from '../models/order-item-form.model';
-import { FormArray, FormControl } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { OrderStatusValues } from '../../order-status';
 
@@ -53,6 +53,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
   @Output() createInventoryEvent = new EventEmitter();
 
+  private pendingQty: number;
   private subscribers: any = {};
 
   constructor(
@@ -139,8 +140,8 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     .filter((r) => !!r)
     .map((item) => item.variant_id);
 
-    // Adding Quantity validator
-    this.orderItemForm.setValidators(this.getItemQuantityMinValueValidator());
+    // Adding Quantity validators
+    this.orderItemForm.setValidators([this.getItemQuantityMinValueValidator(), this.statusMaxValueValidator()]);
 
   }
 
@@ -180,6 +181,11 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     .map((item) => item.quantity)
     .subscribe((total) => {
       this.itemTotal = total;
+    });
+
+    this.subscribers.pendingQtySubscribtion = this.pendingQty$
+    .subscribe((qty) => {
+      this.pendingQty = qty;
     });
   }
 
@@ -238,14 +244,12 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   }
 
   private addStatusControl(data) {
-    this.statusControl.push(new OrderItemStatusFormGroup(data, this.statusMaxValueValidator()));
+    this.statusControl.push(new OrderItemStatusFormGroup(data));
   }
 
   private statusMaxValueValidator() {
-    return () =>
-      this.pendingQty$
-      .map((qty) => qty >= 0 ? null : {max: true})
-      .take(1);
+    return (ctrl: FormGroup) =>
+      this.pendingQty >= 0 ? null : {maxItemsQty: true};
   };
 
   private getItemQuantityMinValueValidator() {
