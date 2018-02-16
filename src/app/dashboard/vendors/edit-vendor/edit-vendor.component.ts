@@ -46,13 +46,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public discountMask: any = this.amountMask; //[/\d/, /\d/, /\d/];
   public priorityMargin: string = '0';
   
-  public vendorFormPhone: string = null;
-  public vendorFormPhone2: string = null;
-  public vendorFormFax: string = null;
+  public vendorFormPhone: string = '';
+  public vendorFormPhone2: string = '';
+  public vendorFormFax: string = '';
 
-  public secondaryFormPhone: string = null;
-  public secondaryFormPhone2: string = null;
-  public secondaryFormFax: string = null;
+  public secondaryFormPhone: string = '';
+  public secondaryFormPhone2: string = '';
+  public secondaryFormFax: string = '';
 
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
   // default country for phone input
@@ -310,12 +310,12 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     this.oldFiles$.next(null);
     this.newFiles$.next(null);
-    this.vendorFormPhone = null;
-    this.vendorFormPhone2 = null;
-    this.vendorFormFax = null;
-    this.secondaryFormPhone = null;
-    this.secondaryFormPhone2 = null;
-    this.secondaryFormFax = null;
+    this.vendorFormPhone = '';
+    this.vendorFormPhone2 = '';
+    this.vendorFormFax = '';
+    this.secondaryFormPhone = '';
+    this.secondaryFormPhone2 = '';
+    this.secondaryFormFax = '';
     this.vendor = new AccountVendorModel(vendor);
     console.log(this.vendor, 2222222);
     
@@ -326,19 +326,19 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.oldFileArr = this.vendor.documents;
       this.oldFiles$.next(this.oldFileArr);
       
-      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone[0]);
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone[0]);
-      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone[0]);
-      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone[0]);
-      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax[0]);
-      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax[0]);
+      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
+      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
+      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
+      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone);
+      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
+      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
 
-      this.secondaryFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone[1]);
-      this.selectedSecondaryCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone[1]);
-      this.secondaryFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone[1]);
-      this.selectedSecondaryCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone[1]);
-      this.secondaryFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax[1]);
-      this.selectedSecondaryFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax[1]);
+      this.secondaryFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_office_phone);
+      this.selectedSecondaryCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_office_phone);
+      this.secondaryFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_mobile_phone);
+      this.selectedSecondaryCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_mobile_phone);
+      this.secondaryFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_fax);
+      this.selectedSecondaryFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_fax);
     }
   }
   
@@ -412,25 +412,19 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   onSubmit() {
     
     this.vendor.account_id = this.userService.selfData.account_id;
-    this.vendor.rep_office_phone[0] = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
-    this.vendor.rep_mobile_phone[0] = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
-    this.vendor.rep_fax[0] = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
-    this.vendor.rep_office_phone[1] = this.secondaryFormPhone ? this.selectedSecondaryCountry[2] + ' ' + this.secondaryFormPhone : null;
-    this.vendor.rep_mobile_phone[1] = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : null;
-    this.vendor.rep_fax[1] = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : null;
+    this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : '';
+    this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : '';
+    this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : '';
+    this.vendor.secondary_rep_office_phone = this.secondaryFormPhone ? this.selectedSecondaryCountry[2] + ' ' + this.secondaryFormPhone : '';
+    this.vendor.secondary_rep_mobile_phone = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : '';
+    this.vendor.secondary_rep_fax = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : '';
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
     this.vendor.vendor_id = this.vendorId || this.vendor.id;
-    
+
     _.each(this.vendor, (value, key) => {
-      if (value != null || key == 'location_id') {
-        if (typeof value === 'string') {
-          this.formData.append(key, value);
-        } else if (Array.isArray(value)) {
-          for (let i = 0; i < value.length; i++) {
-            this.formData.append(key + '[' + i + ']', value[i]);
-          }
-        }
+      if (value != null) {
+        this.formData.append(key, value);
       }
     });
     
