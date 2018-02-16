@@ -1,0 +1,26 @@
+export class NewVendorModel {
+  id: string = '';
+  created_at: string = null;
+  updated_at: string = null;
+  vendor_id: string = null;
+  fax: string = '';
+  phone: string = '';
+  state: string = '';
+  city: string = '';
+  address1: string = '';
+  address2: string = '';
+  country: string = '';
+  postCode: string = '';
+  email: string = '';
+  name: string = '';
+  website: string = '';
+  logo: string = '';
+
+  constructor(obj?:any) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+      }
+    }
+  }
+}
