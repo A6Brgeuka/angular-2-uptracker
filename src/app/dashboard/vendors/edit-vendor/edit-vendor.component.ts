@@ -390,7 +390,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
     this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     this.vendor.documents = null;
-    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
+    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
     this.vendor.vendor_id = this.vendorId || this.vendor.id;
     
     _.each(this.vendor, (value, key) => {
