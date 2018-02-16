@@ -254,8 +254,4 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     // }
   }
 
-  addProduct() {
-
-  }
-
 }
