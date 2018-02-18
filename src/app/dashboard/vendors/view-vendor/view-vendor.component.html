@@ -56,10 +56,16 @@
     <div class="info">
       <div class="row">
         <div class="col s6 label">Address</div>
-        <div class="col s6"  *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2 || vendor?.address?.country || vendor?.address?.city || vendor?.address?.state">
+        <div class="col s6" *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2 || vendor?.address?.country || vendor?.address?.city || vendor?.address?.state">
           <div>{{vendor?.address?.street_1}}, {{vendor?.address?.street_2}}
           </div>
           {{vendor?.address?.city}}, {{vendor?.address?.state}} {{vendor?.address?.postal_code}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6 label">Country</div>
+        <div class="col s6">
+          {{vendor?.address?.country}}
         </div>
       </div>
       <div class="row">
@@ -69,21 +75,27 @@
         </div>
       </div>
       <div class="row">
-        <div class="col s6 label">Phone</div>
+        <div class="col s6 label">Email</div>
         <div class="col s6">
-          {{vendor.rep_office_phone || vendor.phone}}
+          <a [href]="'mailto:' + vendor.email">{{vendor.email}}</a>
         </div>
       </div>
       <div class="row">
-        <div class="col s6 label">Mobile Phone</div>
+        <div class="col s6 label">Phone</div>
         <div class="col s6">
-          {{vendor.rep_mobile_phone}}
+          {{vendor.phone}}
         </div>
       </div>
       <div class="row">
         <div class="col s6 label">Fax</div>
         <div class="col s6">
-          {{vendor.rep_fax || vendor.fax}}
+          {{vendor.fax}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6 label">Website</div>
+        <div class="col s6">
+          <a [href]="'http://' + vendor.website">{{vendor.website}}</a>
         </div>
       </div>
 
