@@ -108,9 +108,9 @@ export class ViewVendorComponent implements OnInit, OnDestroy {
     this.subscribers.globalVendorSubscription = this.globalVendor$
     .subscribe(vendor => {
   
-      this.vendor = new VendorModel(vendor);
+      this.vendor = new AccountVendorModel(vendor);
   
-      this.basicnfo = _.cloneDeep(new VendorModel(vendor));
+      this.basicnfo = _.cloneDeep(new AccountVendorModel(vendor));
   
       this.vendorId = this.vendor.id;
     });
@@ -198,7 +198,7 @@ export class ViewVendorComponent implements OnInit, OnDestroy {
     // account vendor general info
     let generalAccountVendor: any = _.cloneDeep(_.find(this.accountVendors, {'location_id': null}));
 
-    this.vendor = new VendorModel(this.basicnfo);
+    this.vendor = new AccountVendorModel(this.basicnfo);
 
     // account vendor info for specific location
 
