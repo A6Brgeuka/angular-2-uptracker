@@ -15,7 +15,14 @@
     {{ (item$ | async)?.location_name }}
   </div>
 </div>
-<div class="row" *ngIf="quantityControl.enabled && noteControl.enabled">
+
+<app-receive-status-line-qty-item
+  class="row relative status-line"
+  *ngFor="let item of statusLineQtyItems$ | async"
+  [item]="item"
+></app-receive-status-line-qty-item>
+
+<div class="row" *ngIf="editQty">
   <div class="col s3">
     <div class="input flex-center">
       <input type="text" value="New Order Quantity"

@@ -44,6 +44,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   public inventoryGroupIds$: Observable<any[]>;
   public itemProductVariantId$: Observable<any>;
   public statusItemStatuses$: Observable<OrderReceivingStatus[]>;
+  public statusLineQtyItems$: Observable<OrderItemStatusFormModel[]>;
 
   public formSubmitted$: Observable<boolean>;
 
@@ -100,6 +101,8 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     this.item$ = this.receiveService.getItem(this.itemId);
 
     this.itemQuantity$ = this.getFormQuantity();
+
+    this.statusLineQtyItems$ = this.getFormStatusLineQtyItems();
 
     this.statusLineItems$ = this.getFormStatusLineItems();
 
@@ -216,6 +219,13 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
       location_id: null,
       storage_location_id: null,
     });
+  }
+
+  private getFormStatusLineQtyItems() {
+    return this.item$
+    .map((item) =>
+      item.status_line_items && item.status_line_items.filter((statusItem) => statusItem.qty_change)
+    );
   }
 
   private getFormStatusLineItems() {
