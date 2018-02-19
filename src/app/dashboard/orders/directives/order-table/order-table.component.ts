@@ -35,7 +35,10 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
 
   public orderStatus = OrderStatus;
 
+  public asc = OrderTableSortService.ASC;
+
   public filterByObj$: Observable<any>;
+  public sort$: Observable<any>;
 
   @Input('uniqueField') public uniqueField: string;
   @Input('header') public header: any = [];
@@ -68,9 +71,11 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
+    this.sort$ = this.orderTableSortService.sort$;
+
     this.filteredOrders$ = Observable.combineLatest(
       this.orderTableService.orders$,
-      this.orderTableSortService.sort$.startWith(null),
+      this.sort$.startWith(null),
       this.orderTableService.toggleSelect$.startWith(null),
     )
     .map(([orders, sort]: [any, any]) => {

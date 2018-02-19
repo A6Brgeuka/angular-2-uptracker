@@ -17,8 +17,13 @@
     <div class="col pointer"
       (click)="sortByHeaderCol(headerCol)"
       [ngClass]="headerCol.className"
+      [class.red-text]="(sort$ | async)?.alias === headerCol.alias"
       *ngFor="let headerCol of header;">
       {{headerCol.name}}
+      <fa
+        *ngIf="(sort$ | async)?.alias === headerCol.alias"
+        [name]="(sort$ | async)?.order === asc ? 'chevron-up' : 'chevron-down'"
+      ></fa>
       <app-order-table-header-action
         [orders]="checkedOrders$ | async"
         [isShow]="headerCol.actions && showHeaderMenu$ | async"
