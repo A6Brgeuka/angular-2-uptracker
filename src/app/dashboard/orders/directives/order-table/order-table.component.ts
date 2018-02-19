@@ -35,6 +35,8 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
 
   public orderStatus = OrderStatus;
 
+  public filterByObj$: Observable<any>;
+
   @Input('uniqueField') public uniqueField: string;
   @Input('header') public header: any = [];
   @Input('listName') public listName: string = '';
@@ -87,6 +89,10 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     .map((orders) => {
       return _.findIndex(orders, {checked: true}) >= 0;
     });
+
+    this.filterByObj$ = this.orderTableService.filterByObject$
+    .filter((obj) => !!obj)
+    .startWith({});
 
   }
 
