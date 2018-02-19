@@ -28,6 +28,7 @@ import { Subject } from 'rxjs/Subject';
 })
 @DestroySubscribers()
 export class EditVendorComponent implements OnInit, AfterViewInit {
+  originalVendorValue: AccountVendorModel;
   public options: any;
   public subscribers: any = {};
   public currentVendor$;
@@ -231,8 +232,17 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.openConfirmModal$.next('');
   }
 
+
+  compareVendors(left: AccountVendorModel, right: AccountVendorModel): boolean {
+    if (_.isEqual(left, right)) {
+      return true;
+    }
+    
+    return false;
+  }
+
   selectTabLocation(location = null) {
-    if (this.vendor.id) {
+    if (this.vendor.id && !this.compareVendors(this.vendor, this.originalVendorValue)) {
       this.openConfirmModal();
     } else {
       this.chooseTabLocation(location);
@@ -305,6 +315,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendorFormPhone2 = null;
     this.vendorFormFax = null;
     this.vendor = new AccountVendorModel(vendor);
+    this.originalVendorValue = _.cloneDeep(this.vendor);
     console.log(this.vendor, 2222222);
     
     this.calcPriorityMargin(this.vendor.priority || 1);
@@ -321,6 +332,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
       this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
     }
+    
   }
   
   changeCurrency(event) {
