@@ -19,6 +19,8 @@ export interface OrderItemStatusFormModel {
   storage_location_name?: string;
   status_int?: string;
   id?: string;
+  qty_change?: boolean;
+  message?: string  ;
 }
 
 export class OrderItemStatusFormGroup extends FormGroup {
