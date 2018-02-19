@@ -71,7 +71,8 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.sort$ = this.orderTableSortService.sort$;
+    this.sort$ = this.orderTableSortService.sort$
+    .shareReplay(1);
 
     this.filteredOrders$ = Observable.combineLatest(
       this.orderTableService.orders$,
