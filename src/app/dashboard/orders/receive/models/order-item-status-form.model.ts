@@ -20,7 +20,7 @@ export interface OrderItemStatusFormModel {
   status_int?: string;
   id?: string;
   qty_change?: boolean;
-  message?: string  ;
+  note?: string  ;
 }
 
 export class OrderItemStatusFormGroup extends FormGroup {
