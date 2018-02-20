@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { PastOrderService } from '../../../core/services/pastOrder.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { Observable } from 'rxjs/Observable';
+
+import { ClosedListService } from './closed-list.service';
+import { PastOrderService } from '../../../core/services';
 
 @Component({
   selector: 'app-closed-list',
@@ -32,17 +34,18 @@ export class ClosedListComponent implements OnInit, OnDestroy {
   public orders$: Observable<any>;
 
   constructor(
+    public closedListService: ClosedListService,
     public pastOrderService: PastOrderService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.pastOrderService.closedListCollection$;
+    this.orders$ = this.closedListService.collection$;
   };
 
   addSubscribers() {
-    this.subscribers.getClosedCollectionSubscription = this.pastOrderService.getClosedProducts()
+    this.subscribers.getClosedCollectionSubscription = this.closedListService.getCollection()
     .subscribe();
   };
 

@@ -28,7 +28,6 @@ export class PastOrderService extends ModelService {
   public receivedCollectionGetRequest$: Observable<any>;
   public favoritedCollectionGetRequest$: Observable<any>;
   public flaggedCollectionGetRequest$: Observable<any>;
-  public closedCollectionGetRequest$: Observable<any>;
   public favoriteCollectionPostRequest$: Observable<any>;
   public flaggedCollectionPutRequest$: Observable<any>;
 
@@ -36,7 +35,6 @@ export class PastOrderService extends ModelService {
   public receivedCollectionGet$: Subject<any> = new Subject();
   public favoritedCollectionGet$: Subject<any> = new Subject();
   public flaggedCollectionGet$: Subject<any> = new Subject();
-  public closedCollectionGet$: Subject<any> = new Subject();
   public favoriteCollectionPost$: Subject<any> = new Subject();
   public flaggedCollectionPut$: Subject<any> = new Subject();
 
@@ -44,13 +42,11 @@ export class PastOrderService extends ModelService {
   public receivedListCollection$: Observable<any>;
   public favoritedListCollection$: Observable<any>;
   public flaggedListCollection$: Observable<any>;
-  public closedListCollection$: Observable<any>;
 
   public openCollectionIds$: ConnectableObservable<any>;
   public receivedCollectionIds$: ConnectableObservable<any>;
   public favoritedCollectionIds$: ConnectableObservable<any>;
   public flaggedCollectionIds$: ConnectableObservable<any>;
-  public closedCollectionIds$: ConnectableObservable<any>;
   private addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
 
   constructor(
@@ -186,19 +182,6 @@ export class PastOrderService extends ModelService {
 
     this.flaggedCollectionIds$.connect();
 
-    this.closedCollectionGetRequest$ = this.closedCollectionGet$
-    .switchMap(() =>
-      this.restangular.one('pos', '8').customGET()
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
-    .share();
-
-    this.closedCollectionIds$ = this.closedCollectionGetRequest$
-    .map((items) => _.map(items, 'id'))
-    .publishBehavior([]);
-    this.closedCollectionIds$.connect();
-
     this.entities$ = this.addCollectionToEntittesStream$
     .mergeAll()
     .scan((acc, items: any[]) => {
@@ -220,8 +203,6 @@ export class PastOrderService extends ModelService {
     this.addCollectionStreamToEntittesStream(this.receivedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.favoritedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.flaggedCollectionGetRequest$);
-    this.addCollectionStreamToEntittesStream(this.closedCollectionGetRequest$);
-    this.addCollectionStreamToEntittesStream(this.closedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.favoriteCollectionPostRequest$.map((item: any) => [item]));
     this.addCollectionStreamToEntittesStream(this.flaggedCollectionPutRequest$.map((item: any) => [item]));
 
@@ -253,12 +234,6 @@ export class PastOrderService extends ModelService {
       ids.map((id) => entities[id])
     );
 
-    this.closedListCollection$ = Observable.combineLatest(
-      this.entities$,
-      this.closedCollectionIds$,
-    )
-    .map(([entities, ids]) => ids.map((id) => entities[id]));
-
   }
 
   getOpenedProducts() {
@@ -279,11 +254,6 @@ export class PastOrderService extends ModelService {
   getFlaggedProducts() {
     this.flaggedCollectionGet$.next(null);
     return this.flaggedCollectionGetRequest$;
-  }
-
-  getClosedProducts() {
-    this.closedCollectionGet$.next(null);
-    return this.closedCollectionGetRequest$;
   }
 
   setFlag(item, id) {

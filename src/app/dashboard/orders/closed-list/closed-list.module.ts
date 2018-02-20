@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppSharedModule } from '../../../shared/shared.module';
 import { ClosedListComponent } from './closed-list.component';
 import { OrderTableModule } from '../directives/order-table/order-table.module';
+import { ClosedListService } from './closed-list.service';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,9 @@ import { OrderTableModule } from '../directives/order-table/order-table.module';
     AppSharedModule,
     OrderTableModule,
   ],
-  providers: [],
+  providers: [
+    ClosedListService,
+  ],
 })
 export class ClosedListModule {
 
