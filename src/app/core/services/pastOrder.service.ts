@@ -18,7 +18,7 @@ import { AccountService } from './account.service';
 @Injectable()
 export class PastOrderService extends ModelService {
 
-  public entities$: ConnectableObservable<{[id: string]: any}>;
+  public entities$: ConnectableObservable<{ [id: string]: any }>;
 
   public appConfig: AppConfig;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
@@ -71,22 +71,9 @@ export class PastOrderService extends ModelService {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
 
-    this.allCollectionGetRequest$ = this.allCollectionGet$
-    .switchMap(() =>
-      this.restangular.all('pos').customGET()
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
-    .share();
-
-    this.allCollectionIds$ = this.allCollectionGetRequest$
-    .map((items) => _.map(items, 'id'))
-    .publishBehavior([]);
-    this.allCollectionIds$.connect();
-
     this.openCollectionGetRequest$ = this.openCollectionGet$
     .switchMap(() =>
-    this.restangular.one('pos', '5').customGET()
+      this.restangular.one('pos', '5').customGET()
       .map((res: any) => res.data)
       .catch((error) => Observable.never())
     )
@@ -169,8 +156,6 @@ export class PastOrderService extends ModelService {
     .publishBehavior([]);
     this.backorderedCollectionIds$.connect();
 
-
-
     this.flaggedCollectionGetRequest$ = this.flaggedCollectionGet$
     .switchMap(() =>
       this.restangular.one('pos', 'flagged').customGET()
@@ -182,8 +167,8 @@ export class PastOrderService extends ModelService {
     this.flaggedCollectionPutRequest$ = this.flaggedCollectionPut$
     .switchMap((item) => {
       const data = {
-        'flagged' : !item.flagged,
-        'flagged_comment' : !item.flagged ? item.flagged_comment : '',
+        'flagged': !item.flagged,
+        'flagged_comment': !item.flagged ? item.flagged_comment : '',
       };
       return this.restangular.one('pos', item.order_id).one('flag', item.id).customPUT(data)
       .map((res: any) => res.data)
@@ -235,21 +220,6 @@ export class PastOrderService extends ModelService {
     .publishBehavior([]);
     this.closedCollectionIds$.connect();
 
-    // this.entities$ = Observable.merge(
-    //   this.allCollectionGetRequest$,
-    //   this.openCollectionGetRequest$,
-    //   this.receivedCollectionGetRequest$,
-    //   this.favoritedCollectionGetRequest$,
-    //   this.backorderedCollectionGetRequest$,
-    //   this.flaggedCollectionGetRequest$,
-    //   this.closedCollectionGetRequest$,
-    //   this.favoriteCollectionPostRequest$
-    //   .map((item: any) => [item]),
-    //   this.flaggedCollectionPutRequest$
-    //   .map((item: any) => [item]),
-    // )
-    //
-
     this.entities$ = this.addCollectionToEntittesStream$
     .mergeAll()
     .scan((acc, items: any[]) => {
@@ -267,11 +237,6 @@ export class PastOrderService extends ModelService {
     .publishReplay(1);
     this.entities$.connect();
 
-    // this.entities$.subscribe(res => {
-    //   debugger
-    // })
-
-    this.addCollectionStreamToEntittesStream(this.allCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.openCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.receivedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.favoritedCollectionGetRequest$);
@@ -281,13 +246,6 @@ export class PastOrderService extends ModelService {
     this.addCollectionStreamToEntittesStream(this.closedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.favoriteCollectionPostRequest$.map((item: any) => [item]));
     this.addCollectionStreamToEntittesStream(this.flaggedCollectionPutRequest$.map((item: any) => [item]));
-
-
-    this.allListCollection$ = Observable.combineLatest(
-      this.entities$,
-      this.allCollectionIds$,
-    )
-    .map(([entities, ids]) => ids.map((id) => entities[id]));
 
     this.openListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -329,11 +287,6 @@ export class PastOrderService extends ModelService {
     )
     .map(([entities, ids]) => ids.map((id) => entities[id]));
 
-  }
-
-  getPastOrders() {
-    this.allCollectionGet$.next(null);
-    return this.allCollectionGetRequest$;
   }
 
   getOpenedProducts() {
@@ -408,7 +361,7 @@ export class PastOrderService extends ModelService {
     this.filterBy$.next(value);
   }
 
-  getPastOrder(id:string) {
+  getPastOrder(id: string) {
     //GET /po/{order_id} - the order_id, not po_number
     return this.restangular.one('po', id).customGET()
     .map((res: any) => res.data);
