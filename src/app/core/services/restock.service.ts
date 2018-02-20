@@ -27,7 +27,6 @@ export class RestockService extends ModelService {
 
   onInit() {
     this.selfData$ = this.restangular.all('restock').customGET()
-      .filter((data: any) => data.data && data.data.html)
-      .map((data: any) => data.data.html)
+      .map((res: any) => res.data.locations)
   }
 }
