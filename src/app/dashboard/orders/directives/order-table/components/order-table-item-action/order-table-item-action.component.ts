@@ -12,6 +12,7 @@ import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { AddCommentModalComponent } from '../../../../../../shared/modals/add-comment-modal/add-comment-modal.component';
 import { ConfirmModalService } from '../../../../../../shared/modals/confirm-modal/confirm-modal.service';
 import { FavoritedListService } from '../../../../favorited-list/favorited-list.service';
+import { FlaggedListService } from '../../../../flagged-list/flagged-list.service';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -43,6 +44,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public orderTableOnVoidService: OrderTableOnVoidService,
     public confirmModalService: ConfirmModalService,
     private favoritedListService: FavoritedListService,
+    private flaggedListService: FlaggedListService,
   ) {
   }
   ngOnInit() {
@@ -56,7 +58,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   addSubscribers() {
 
     this.subscribers.updateFlaggedSubscription = this.updateFlagged$
-    .switchMap((item: any) => this.pastOrderService.setFlag(item, [item[this.uniqueField]]))
+    .switchMap((item: any) => this.flaggedListService.putItem(item))
     .subscribe( res => this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged'),
       err => console.log('error')
     );
@@ -79,7 +81,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
       .filter(({success}) => success)
       .mapTo(item)
     )
-    .switchMap((item) => this.pastOrderService.setFlag(item, [item[this.uniqueField]]))
+    .switchMap((item) => this.flaggedListService.putItem(item))
     .subscribe(res => this.toasterService.pop('', res.favorite ? 'Flagged' : 'Unflagged'),
       err => console.log('error')
     );
