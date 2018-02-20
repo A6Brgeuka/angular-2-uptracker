@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { PastOrderService } from '../../../core/services/pastOrder.service';
+
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+
+import { ReceivedListService } from './received-list.service';
 
 @Component({
   selector: 'app-received-list',
@@ -33,21 +34,18 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   public orders$: Observable<any>;
 
   constructor(
-    public pastOrderService: PastOrderService,
+    public pastOrderService: ReceivedListService,
   ) {
 
   }
 
   ngOnInit() {
-    this.orders$ = this.pastOrderService.receivedListCollection$;
-    // this.orders$ = this.pastOrderService.receivedCollection$;
+    this.orders$ = this.pastOrderService.collection$;
   }
 
   addSubscribers() {
-
-    this.subscribers.getReceivedProductSubscription = this.pastOrderService.getReceivedProducts()
+    this.subscribers.getReceivedProductSubscription = this.pastOrderService.getCollection()
     .subscribe();
-
   }
 
   ngOnDestroy() {
