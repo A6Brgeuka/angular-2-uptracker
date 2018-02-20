@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { PastOrderService } from '../../../core/services/pastOrder.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { Observable } from 'rxjs/Observable';
+
+import { PastOrderService } from '../../../core/services/pastOrder.service';
+
+import { FlaggedListService } from './flagged-list.service';
 
 @Component({
   selector: 'app-flagged-list',
@@ -32,17 +35,18 @@ export class FlaggedListComponent implements OnInit, OnDestroy {
   public orders$: Observable<any>;
 
   constructor(
-    public pastOrderService: PastOrderService,
+    private pastOrderService: PastOrderService,
+    private flaggedListService: FlaggedListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.pastOrderService.flaggedListCollection$;
+    this.orders$ = this.flaggedListService.collection$;
   };
 
   addSubscribers() {
-    this.subscribers.getFlaggedCollectionSubscription = this.pastOrderService.getFlaggedProducts()
+    this.subscribers.getFlaggedCollectionSubscription = this.flaggedListService.getCollection()
     .subscribe();
   };
 

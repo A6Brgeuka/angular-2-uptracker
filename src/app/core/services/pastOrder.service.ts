@@ -81,57 +81,6 @@ export class PastOrderService extends ModelService {
     .publishBehavior([]);
     this.receivedCollectionIds$.connect();
 
-    this.flaggedCollectionGetRequest$ = this.flaggedCollectionGet$
-    .switchMap(() =>
-      this.restangular.one('pos', 'flagged').customGET()
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
-    .share();
-
-    this.flaggedCollectionPutRequest$ = this.flaggedCollectionPut$
-    .switchMap((item) => {
-      const data = {
-        'flagged': !item.flagged,
-        'flagged_comment': !item.flagged ? item.flagged_comment : '',
-      };
-      return this.restangular.one('pos', item.order_id).one('flag', item.id).customPUT(data)
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never());
-    })
-    .share();
-
-    const flaggedCollectionIdsGetRequest$ = this.flaggedCollectionGetRequest$
-    .map((items) => ({type: 'replace', value: _.map(items, 'id')}));
-
-    const flaggedCollectionUpdateIds$ = this.flaggedCollectionPutRequest$
-    .map((item) =>
-      item.flagged ? {type: 'add', value: item.id} : {type: 'remove', value: item.id});
-
-    this.flaggedCollectionIds$ = Observable.merge(
-      flaggedCollectionIdsGetRequest$,
-      flaggedCollectionUpdateIds$
-    )
-    .scan((ids: string[], event: any) => {
-      switch (event.type) {
-        case 'replace': {
-          return event.value;
-        }
-        case 'add': {
-          return _.union(ids, [event.value]);
-        }
-        case 'remove': {
-          return _.without(ids, event.value);
-        }
-        default: {
-          return ids;
-        }
-      }
-    }, [])
-    .publish();
-
-    this.flaggedCollectionIds$.connect();
-
     this.entities$ = this.addCollectionToEntittesStream$
     .mergeAll()
     .scan((acc, items: any[]) => {
@@ -151,8 +100,6 @@ export class PastOrderService extends ModelService {
 
     this.addCollectionStreamToEntittesStream(this.openCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.receivedCollectionGetRequest$);
-    this.addCollectionStreamToEntittesStream(this.flaggedCollectionGetRequest$);
-    this.addCollectionStreamToEntittesStream(this.flaggedCollectionPutRequest$.map((item: any) => [item]));
 
     this.openListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -166,14 +113,6 @@ export class PastOrderService extends ModelService {
     )
     .map(([entities, ids]) => ids.map((id) => entities[id]));
 
-    this.flaggedListCollection$ = Observable.combineLatest(
-      this.entities$,
-      this.flaggedCollectionIds$,
-    )
-    .map(([entities, ids]) =>
-      ids.map((id) => entities[id])
-    );
-
   }
 
   getOpenedProducts() {
@@ -184,16 +123,6 @@ export class PastOrderService extends ModelService {
   getReceivedProducts() {
     this.receivedCollectionGet$.next(null);
     return this.receivedCollectionGetRequest$;
-  }
-
-  getFlaggedProducts() {
-    this.flaggedCollectionGet$.next(null);
-    return this.flaggedCollectionGetRequest$;
-  }
-
-  setFlag(item, id) {
-    this.flaggedCollectionPut$.next(item);
-    return this.flaggedCollectionPutRequest$;
   }
 
   reorder(data) {
