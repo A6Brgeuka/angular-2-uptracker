@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { Restangular } from 'ngx-restangular';
 
-import { PastOrderService } from '../../../core/services';
-import { OrderListBaseService } from '../classes/order-list-base.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+
 import * as _ from 'lodash';
+
+import { PastOrderService } from '../../../core/services';
+import { OrderListBaseService } from '../classes/order-list-base.service';
 
 @Injectable()
 export class FavoritedListService extends OrderListBaseService {
