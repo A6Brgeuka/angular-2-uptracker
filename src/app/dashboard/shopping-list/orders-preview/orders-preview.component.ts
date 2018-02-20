@@ -112,6 +112,14 @@ export class OrdersPreviewComponent implements OnInit {
       data.ship_to = order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id;
       data.order_method = order[0].order_method;
       data['vendor_id'] = order[0].vendor_id;
+
+      let ua = navigator.userAgent.toLowerCase(); 
+      let isSafari = ua.indexOf('safari') != -1;
+      let w: Window;
+      if (order[0].order_method === 'Mail' && isSafari) {
+        w = window.open();
+      }
+
       this.orderService.updateOrder(this.orderId, data).subscribe((res: any) => {
           this.calcTT(res);
           switch (order[0].order_method) {
@@ -181,8 +189,17 @@ export class OrdersPreviewComponent implements OnInit {
               })
               .subscribe((res) => { 
                 let file = new Blob([res.arrayBuffer()], {type: 'application/pdf'});
-                let w = window.open(window.URL.createObjectURL(file));
-                w.print();
+                let pdfUrl = window.URL.createObjectURL(file);
+
+                if (isSafari) {
+                  setTimeout(() => {
+                    w.print();
+                  }, 500);
+                  w.location.assign(pdfUrl);
+                } else {
+                  w = window.open(pdfUrl);
+                  w.print();
+                }
               }, (res: any) => { })
               break;
             default:

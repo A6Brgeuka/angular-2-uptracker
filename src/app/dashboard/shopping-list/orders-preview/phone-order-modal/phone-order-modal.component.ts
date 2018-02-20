@@ -24,7 +24,7 @@ export class PhoneOrderModalContext extends BSModalContext {
 @DestroySubscribers()
 export class PhoneOrderModalComponent implements OnInit, CloseGuard, ModalComponent<PhoneOrderModalContext> {
   context: PhoneOrderModalContext;
-  
+
   constructor(
     public dialog: DialogRef<PhoneOrderModalContext>,
     public httpClient: HttpClient,
@@ -44,14 +44,30 @@ export class PhoneOrderModalComponent implements OnInit, CloseGuard, ModalCompon
   }
   
   closeModal() {
+    let ua = navigator.userAgent.toLowerCase(); 
+    let isSafari = ua.indexOf('safari') != -1;
+    let w: Window;
+    if (isSafari) {
+      w = window.open();
+    }
+    
     this.spinner.show();
     return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + this.context.order_id + '/download', {
       responseType: ResponseContentType.ArrayBuffer
     })
     .subscribe(res => {
       let file = new Blob([res.arrayBuffer()], {type: 'application/pdf'});
-      let w = window.open(window.URL.createObjectURL(file));
-      w.print();
+      let pdfUrl = window.URL.createObjectURL(file);
+      if (isSafari) {
+        setTimeout(() => {
+          w.print();
+        }, 500);
+        w.location.assign(pdfUrl);
+      } else {
+        w = window.open(pdfUrl);
+        w.print();
+      }
+      
       this.spinner.hide();
       this.dialog.close();
     });

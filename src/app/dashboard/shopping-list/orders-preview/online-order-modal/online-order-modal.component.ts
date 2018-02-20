@@ -61,6 +61,13 @@ export class OnlineOrderModalComponent implements OnInit, CloseGuard, ModalCompo
         break;
       case "Print":
         this.spinner.show();
+        let ua = navigator.userAgent.toLowerCase(); 
+        let isSafari = ua.indexOf('safari') != -1;
+        let w: Window;
+        if (isSafari) {
+          w = window.open();
+        }
+
         this.orderService.convertOrders(this.context.order_id, this.orderService.convertData)
         .map(res => res.data.order)
         .switchMap(order => {
@@ -73,8 +80,17 @@ export class OnlineOrderModalComponent implements OnInit, CloseGuard, ModalCompo
         })
         .subscribe((res) => { 
           let file = new Blob([res.arrayBuffer()], {type: 'application/pdf'});
-          let w = window.open(window.URL.createObjectURL(file));
-          w.print();
+          let pdfUrl = window.URL.createObjectURL(file);
+
+          if (isSafari) {
+            setTimeout(() => {
+              w.print();
+            }, 500);
+            w.location.assign(pdfUrl);
+          } else {
+            w = window.open(pdfUrl);
+            w.print();
+          }
           this.spinner.hide();
           this.dialog.close();
         }, (res: any) => { })
