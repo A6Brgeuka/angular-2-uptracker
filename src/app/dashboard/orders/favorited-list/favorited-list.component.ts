@@ -6,6 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { FavoritedListService } from './favorited-list.service';
 
 @Component({
   selector: 'app-favorited-list',
@@ -35,17 +36,18 @@ export class FavoritedListComponent implements OnInit, OnDestroy {
   public orders$: Observable<any>;
 
   constructor(
-    public pastOrderService: PastOrderService,
+    private pastOrderService: PastOrderService,
+    private favoritedListService: FavoritedListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.pastOrderService.favoritedListCollection$;
+    this.orders$ = this.favoritedListService.collection$;
   };
 
   addSubscribers() {
-    this.subscribers.getFavoritedCollectionSubscription = this.pastOrderService.getFavoritedProducts()
+    this.subscribers.getFavoritedCollectionSubscription = this.favoritedListService.getCollection()
     .subscribe();
   };
 

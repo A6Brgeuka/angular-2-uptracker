@@ -11,6 +11,7 @@ import { ModalWindowService } from '../../../../../../core/services/modal-window
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { AddCommentModalComponent } from '../../../../../../shared/modals/add-comment-modal/add-comment-modal.component';
 import { ConfirmModalService } from '../../../../../../shared/modals/confirm-modal/confirm-modal.service';
+import { FavoritedListService } from '../../../../favorited-list/favorited-list.service';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -19,12 +20,12 @@ import { ConfirmModalService } from '../../../../../../shared/modals/confirm-mod
 @DestroySubscribers()
 
 export class OrderTableItemActionComponent implements OnInit, OnDestroy {
-  
+
   private updateFlagged$: any = new Subject<any>();
   private updateFavorite$: any = new Subject<any>();
 
   private subscribers: any = {};
-  
+
   private reorderProduct$:  any = new Subject<any>();
   private openShowCommentModal$:  any = new Subject<any>();
 
@@ -33,7 +34,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   @Input() isShow: boolean;
   @Input() listName: string;
   @Input() uniqueField: string;
-  
+
   constructor(
     public modal: Modal,
     public pastOrderService: PastOrderService,
@@ -41,18 +42,19 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
     public confirmModalService: ConfirmModalService,
+    private favoritedListService: FavoritedListService,
   ) {
   }
   ngOnInit() {
-  
+
   }
-  
+
   ngOnDestroy() {
     console.log('for unsubscribing');
   }
-  
+
   addSubscribers() {
-  
+
     this.subscribers.updateFlaggedSubscription = this.updateFlagged$
     .switchMap((item: any) => this.pastOrderService.setFlag(item, [item[this.uniqueField]]))
     .subscribe( res => this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged'),
@@ -60,7 +62,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     );
 
     this.subscribers.updateFavoriteSubscription = this.updateFavorite$
-    .switchMap((item: any) => this.pastOrderService.setFavorite(item, [item[this.uniqueField]]))
+    .switchMap((item: any) => this.favoritedListService.postItem(item))
     .subscribe( res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
       err => console.log('error')
     );
@@ -81,13 +83,13 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     .subscribe(res => this.toasterService.pop('', res.favorite ? 'Flagged' : 'Unflagged'),
       err => console.log('error')
     );
-    
+
   }
 
   setFavorite(item) {
     this.updateFavorite$.next(item);
   }
-  
+
   buyAgainOrder(item) {
     const data = {
       'orders': [
@@ -99,18 +101,18 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     };
     this.reorderProduct$.next(data);
   }
-  
+
   sendToReceiveProduct(item) {
     const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
     this.pastOrderService.goToReceive(queryParams);
   }
-  
+
   openResendDialog(item) {
     this.modal
     .open(ResendOrderModal, this.modalWindowService
     .overlayConfigFactoryWithParams(item, true, 'mid'));
   };
-  
+
   onVoidOrder(item) {
     this.orderTableOnVoidService.onVoidOrder(item);
   }

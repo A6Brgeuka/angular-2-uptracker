@@ -28,24 +28,20 @@ export class PastOrderService extends ModelService {
   public receivedCollectionGetRequest$: Observable<any>;
   public favoritedCollectionGetRequest$: Observable<any>;
   public flaggedCollectionGetRequest$: Observable<any>;
-  public favoriteCollectionPostRequest$: Observable<any>;
   public flaggedCollectionPutRequest$: Observable<any>;
 
   public openCollectionGet$: Subject<any> = new Subject();
   public receivedCollectionGet$: Subject<any> = new Subject();
   public favoritedCollectionGet$: Subject<any> = new Subject();
   public flaggedCollectionGet$: Subject<any> = new Subject();
-  public favoriteCollectionPost$: Subject<any> = new Subject();
   public flaggedCollectionPut$: Subject<any> = new Subject();
 
   public openListCollection$: Observable<any>;
   public receivedListCollection$: Observable<any>;
-  public favoritedListCollection$: Observable<any>;
   public flaggedListCollection$: Observable<any>;
 
   public openCollectionIds$: ConnectableObservable<any>;
   public receivedCollectionIds$: ConnectableObservable<any>;
-  public favoritedCollectionIds$: ConnectableObservable<any>;
   public flaggedCollectionIds$: ConnectableObservable<any>;
   private addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
 
@@ -84,52 +80,6 @@ export class PastOrderService extends ModelService {
     .map((items) => _.map(items, 'id'))
     .publishBehavior([]);
     this.receivedCollectionIds$.connect();
-
-    this.favoritedCollectionGetRequest$ = this.favoritedCollectionGet$
-    .switchMap(() =>
-      this.restangular.one('pos', 'favorites').customGET()
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
-    .share();
-
-    this.favoriteCollectionPostRequest$ = this.favoriteCollectionPost$
-    .switchMap((item) =>
-      this.restangular.one('pos', item.order_id).one('favorite', item.id).customPUT({'favorite': !item.favorite})
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
-    .share();
-
-    const favoritedCollectionIdsGetRequest$ = this.favoritedCollectionGetRequest$
-    .map((items) => ({type: 'replace', value: _.map(items, 'id')}));
-
-    const favoriteCollectionUpdateIds$ = this.favoriteCollectionPostRequest$
-    .map((item) =>
-      item.favorite ? {type: 'add', value: item.id} : {type: 'remove', value: item.id});
-
-    this.favoritedCollectionIds$ = Observable.merge(
-      favoritedCollectionIdsGetRequest$,
-      favoriteCollectionUpdateIds$
-    )
-    .scan((ids: string[], event: any) => {
-      switch (event.type) {
-        case 'replace': {
-          return event.value;
-        }
-        case 'add': {
-          return _.union(ids, [event.value]);
-        }
-        case 'remove': {
-          return _.without(ids, event.value);
-        }
-        default: {
-          return ids;
-        }
-      }
-    }, [])
-    .publish();
-    this.favoritedCollectionIds$.connect();
 
     this.flaggedCollectionGetRequest$ = this.flaggedCollectionGet$
     .switchMap(() =>
@@ -201,9 +151,7 @@ export class PastOrderService extends ModelService {
 
     this.addCollectionStreamToEntittesStream(this.openCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.receivedCollectionGetRequest$);
-    this.addCollectionStreamToEntittesStream(this.favoritedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.flaggedCollectionGetRequest$);
-    this.addCollectionStreamToEntittesStream(this.favoriteCollectionPostRequest$.map((item: any) => [item]));
     this.addCollectionStreamToEntittesStream(this.flaggedCollectionPutRequest$.map((item: any) => [item]));
 
     this.openListCollection$ = Observable.combineLatest(
@@ -217,14 +165,6 @@ export class PastOrderService extends ModelService {
       this.receivedCollectionIds$,
     )
     .map(([entities, ids]) => ids.map((id) => entities[id]));
-
-    this.favoritedListCollection$ = Observable.combineLatest(
-      this.entities$,
-      this.favoritedCollectionIds$,
-    )
-    .map(([entities, ids]) =>
-      ids.map((id) => entities[id])
-    );
 
     this.flaggedListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -259,11 +199,6 @@ export class PastOrderService extends ModelService {
   setFlag(item, id) {
     this.flaggedCollectionPut$.next(item);
     return this.flaggedCollectionPutRequest$;
-  }
-
-  setFavorite(item, id) {
-    this.favoriteCollectionPost$.next(item);
-    return this.favoriteCollectionPostRequest$;
   }
 
   reorder(data) {
