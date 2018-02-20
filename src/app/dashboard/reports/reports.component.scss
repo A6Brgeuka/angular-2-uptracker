@@ -1,0 +1,24 @@
+@import "../../../colors.scss";
+@import "../../../spinner.scss";
+
+:host /deep/ {
+  .reports {
+    .price-header {
+      font-family: 'Roboto';
+      font-weight: bold;
+    }
+    .price-content {
+      color: #9a9c9e;
+      font-family: 'Roboto';
+      [type="checkbox"].filled-in:not(:checked) + label:after {
+        top: 2px;
+      }
+      [type="checkbox"].filled-in:checked + label:after {
+        top: 2px;
+      }
+      [type="checkbox"].filled-in:checked + label:before {
+        top: 2px;
+      }
+    }
+  }
+}
