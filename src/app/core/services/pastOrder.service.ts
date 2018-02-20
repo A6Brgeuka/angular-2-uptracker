@@ -55,19 +55,6 @@ export class PastOrderService extends ModelService {
     super(restangular);
     this.appConfig = injector.get(APP_CONFIG);
 
-    this.openCollectionGetRequest$ = this.openCollectionGet$
-    .switchMap(() =>
-      this.restangular.one('pos', '5').customGET()
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
-    .share();
-
-    this.openCollectionIds$ = this.openCollectionGetRequest$
-    .map((items) => _.map(items, 'id'))
-    .publishBehavior([]);
-    this.openCollectionIds$.connect();
-
     this.receivedCollectionGetRequest$ = this.receivedCollectionGet$
     .switchMap(() =>
       this.restangular.one('pos', '6').customGET()
@@ -98,14 +85,7 @@ export class PastOrderService extends ModelService {
     .publishReplay(1);
     this.entities$.connect();
 
-    this.addCollectionStreamToEntittesStream(this.openCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.receivedCollectionGetRequest$);
-
-    this.openListCollection$ = Observable.combineLatest(
-      this.entities$,
-      this.openCollectionIds$,
-    )
-    .map(([entities, ids]) => ids.map((id) => entities[id]));
 
     this.receivedListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -113,11 +93,6 @@ export class PastOrderService extends ModelService {
     )
     .map(([entities, ids]) => ids.map((id) => entities[id]));
 
-  }
-
-  getOpenedProducts() {
-    this.openCollectionGet$.next(null);
-    return this.openCollectionGetRequest$;
   }
 
   getReceivedProducts() {

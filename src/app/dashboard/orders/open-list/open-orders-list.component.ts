@@ -4,6 +4,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { OpenOrdersListService } from './open-orders-list.service';
 
 @Component({
   selector: 'app-open-orders-list',
@@ -33,17 +34,17 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
   public orders$: Observable<any>;
 
   constructor(
-    public pastOrderService: PastOrderService,
+    public openOrdersListService: OpenOrdersListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.pastOrderService.openListCollection$;
+    this.orders$ = this.openOrdersListService.collection$;
   }
 
   addSubscribers() {
-    this.subscribers.getOpenedProductSubscription = this.pastOrderService.getOpenedProducts()
+    this.subscribers.getOpenedProductSubscription = this.openOrdersListService.getCollection()
     .subscribe();
   }
 
