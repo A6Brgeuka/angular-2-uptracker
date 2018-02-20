@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppSharedModule } from '../../../shared/shared.module';
 import { ReceivedListComponent } from './received-list.component';
 import { OrderTableModule } from '../directives/order-table/order-table.module';
+import { ReceivedListService } from './received-list.service';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,9 @@ import { OrderTableModule } from '../directives/order-table/order-table.module';
     AppSharedModule,
     OrderTableModule
   ],
-  providers: [],
+  providers: [
+    ReceivedListService,
+  ],
 })
 export class ReceivedListModule {
 
