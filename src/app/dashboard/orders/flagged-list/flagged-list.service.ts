@@ -40,7 +40,7 @@ export class FlaggedListService extends OrderListBaseService {
 
     const collectionUpdateIds$ = this.putItemRequest$
     .map((item) =>
-      item.favorite ? {type: 'add', value: item.id} : {type: 'remove', value: item.id});
+      item.flagged ? {type: 'add', value: item.id} : {type: 'remove', value: item.id});
 
     this.ids$ = Observable.merge(
       collectionIdsGetRequest$,
