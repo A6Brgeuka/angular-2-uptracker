@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { AllOrdersListService } from './all-orders-list.service';
 
@@ -40,11 +39,11 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
-    this.orders$ = this.allOrdersListService.allListCollection$;
+    this.orders$ = this.allOrdersListService.collection$;
   };
 
   addSubscribers() {
-    this.subscribers.getAllCollectionSubscription = this.allOrdersListService.getPastOrders()
+    this.subscribers.getAllCollectionSubscription = this.allOrdersListService.getCollection()
     .subscribe();
   };
 
