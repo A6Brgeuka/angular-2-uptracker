@@ -24,7 +24,11 @@
     Line Chart Here
   </div>
   <div class="row">
-    Filters here
+    <app-search-filter
+      [searchKey]="searchKey"
+      (searchEvent)="searchOrders($event)"
+      (openModalEvent)="showFiltersModal()"
+    ></app-search-filter>
   </div>
   <div class="row">
     <table class="bordered">
