@@ -13,12 +13,12 @@ import { Observable } from 'rxjs/Observable';
 export class ReconciledListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = 'reconciled';
+  public listName = 'reconciled';
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
-    {name: 'Location', className: 's1', alias: 'location', filterBy: true, },
+    {name: 'Location', className: 's1', alias: 'location_name', filterBy: true, },
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
     {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
