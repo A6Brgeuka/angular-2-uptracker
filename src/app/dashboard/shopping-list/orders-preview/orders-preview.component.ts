@@ -16,6 +16,8 @@ import { APP_DI_CONFIG } from '../../../../../env';
 import { HttpClient } from '../../../core/services/http.service';
 import { ResponseContentType } from '@angular/http';
 import { EditFaxDataModal } from './edit-fax-data-modal/edit-fax-data-modal.component';
+import { PhoneOrderModalComponent } from './phone-order-modal/phone-order-modal.component';
+import { OnlineOrderModalComponent } from './online-order-modal/online-order-modal.component';
 
 
 @Component({
@@ -141,12 +143,30 @@ export class OrdersPreviewComponent implements OnInit {
                   )
                 });
               })
-              
-              
               break;
             case 'Online':
+              this.modal.open(
+                OnlineOrderModalComponent, 
+                this.modalWindowService.overlayConfigFactoryWithParams({ 
+                  order_id: this.orderId, 
+                  vendor_id: order[0].vendor_id 
+                }, true, 'oldschool')
+              );
               break;
             case 'Phone':
+            this.orderService.convertOrders(this.orderId, this.orderService.convertData)
+              .map(res => res.data.order)
+              .switchMap(order => {
+                return this.orderService.sendOrderRequest(order.id)
+                .map(() => order.id)
+              })
+              .subscribe(id => {
+                this.modal.open(
+                  PhoneOrderModalComponent, 
+                  this.modalWindowService.overlayConfigFactoryWithParams({ order_id: id }, true, 'oldschool')
+                );
+              });
+            
               break;
             case 'Mail':
               this.orderService.convertOrders(this.orderId, this.orderService.convertData)
@@ -183,9 +203,9 @@ export class OrdersPreviewComponent implements OnInit {
         case 'Fax':
           return 'Fax';
         case 'Online':
-          return 'Placed';
+          return 'Finalize';
         case 'Phone':
-          return 'Placed';
+          return 'Finalize';
         case 'Mail':
           return 'Print';
         default:
