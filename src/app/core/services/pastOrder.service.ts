@@ -24,39 +24,31 @@ export class PastOrderService extends ModelService {
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-  public allCollectionGetRequest$: Observable<any>;
   public openCollectionGetRequest$: Observable<any>;
   public receivedCollectionGetRequest$: Observable<any>;
   public favoritedCollectionGetRequest$: Observable<any>;
-  public backorderedCollectionGetRequest$: Observable<any>;
   public flaggedCollectionGetRequest$: Observable<any>;
   public closedCollectionGetRequest$: Observable<any>;
   public favoriteCollectionPostRequest$: Observable<any>;
   public flaggedCollectionPutRequest$: Observable<any>;
 
-  public allCollectionGet$: Subject<any> = new Subject();
   public openCollectionGet$: Subject<any> = new Subject();
   public receivedCollectionGet$: Subject<any> = new Subject();
   public favoritedCollectionGet$: Subject<any> = new Subject();
-  public backorderedCollectionGet$: Subject<any> = new Subject();
   public flaggedCollectionGet$: Subject<any> = new Subject();
   public closedCollectionGet$: Subject<any> = new Subject();
   public favoriteCollectionPost$: Subject<any> = new Subject();
   public flaggedCollectionPut$: Subject<any> = new Subject();
 
-  public allListCollection$: Observable<any>;
   public openListCollection$: Observable<any>;
   public receivedListCollection$: Observable<any>;
   public favoritedListCollection$: Observable<any>;
-  public backorderedListCollection$: Observable<any>;
   public flaggedListCollection$: Observable<any>;
   public closedListCollection$: Observable<any>;
 
-  public allCollectionIds$: ConnectableObservable<any>;
   public openCollectionIds$: ConnectableObservable<any>;
   public receivedCollectionIds$: ConnectableObservable<any>;
   public favoritedCollectionIds$: ConnectableObservable<any>;
-  public backorderedCollectionIds$: ConnectableObservable<any>;
   public flaggedCollectionIds$: ConnectableObservable<any>;
   public closedCollectionIds$: ConnectableObservable<any>;
   private addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
@@ -143,19 +135,6 @@ export class PastOrderService extends ModelService {
     .publish();
     this.favoritedCollectionIds$.connect();
 
-    this.backorderedCollectionGetRequest$ = this.backorderedCollectionGet$
-    .switchMap(() =>
-      this.restangular.one('pos', '10').customGET()
-      .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
-    .share();
-
-    this.backorderedCollectionIds$ = this.backorderedCollectionGetRequest$
-    .map((items) => _.map(items, 'id'))
-    .publishBehavior([]);
-    this.backorderedCollectionIds$.connect();
-
     this.flaggedCollectionGetRequest$ = this.flaggedCollectionGet$
     .switchMap(() =>
       this.restangular.one('pos', 'flagged').customGET()
@@ -240,7 +219,6 @@ export class PastOrderService extends ModelService {
     this.addCollectionStreamToEntittesStream(this.openCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.receivedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.favoritedCollectionGetRequest$);
-    this.addCollectionStreamToEntittesStream(this.backorderedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.flaggedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.closedCollectionGetRequest$);
     this.addCollectionStreamToEntittesStream(this.closedCollectionGetRequest$);
@@ -266,12 +244,6 @@ export class PastOrderService extends ModelService {
     .map(([entities, ids]) =>
       ids.map((id) => entities[id])
     );
-
-    this.backorderedListCollection$ = Observable.combineLatest(
-      this.entities$,
-      this.backorderedCollectionIds$,
-    )
-    .map(([entities, ids]) => ids.map((id) => entities[id]));
 
     this.flaggedListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -302,11 +274,6 @@ export class PastOrderService extends ModelService {
   getFavoritedProducts() {
     this.favoritedCollectionGet$.next(null);
     return this.favoritedCollectionGetRequest$;
-  }
-
-  getBackorderedProducts() {
-    this.backorderedCollectionGet$.next(null);
-    return this.backorderedCollectionGetRequest$;
   }
 
   getFlaggedProducts() {
@@ -371,6 +338,10 @@ export class PastOrderService extends ModelService {
     this.router.navigate(['orders/receive', queryParams]);
   }
 
+  /**
+   * Used to add stream as source for entities
+   * @param {Observable<any>} stream$
+   */
   public addCollectionStreamToEntittesStream(stream$: Observable<any>) {
     this.addCollectionToEntittesStream$.next(stream$);
   }

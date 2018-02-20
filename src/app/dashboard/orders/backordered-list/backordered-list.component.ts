@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
+import { BackorderedListService } from './backordered-list.service';
 
 @Component({
   selector: 'app-backordered-list',
@@ -31,17 +31,17 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
   public orders$: Observable<any>;
 
   constructor(
-    public pastOrderService: PastOrderService,
+    public backorderedListService: BackorderedListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.pastOrderService.backorderedListCollection$;
+    this.orders$ = this.backorderedListService.collection$;
   }
 
   addSubscribers() {
-    this.subscribers.getBackorderedCollectionSubscription = this.pastOrderService.getBackorderedProducts()
+    this.subscribers.getBackorderedCollectionSubscription = this.backorderedListService.getCollection()
     .subscribe();
   };
 
