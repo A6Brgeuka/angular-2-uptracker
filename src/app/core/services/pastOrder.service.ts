@@ -1,24 +1,24 @@
-import { ModelService } from '../../overrides/model.service';
 import { Injectable, Injector } from '@angular/core';
-import { Subscribers } from '../../decorators/subscribers.decorator';
+import { Router } from '@angular/router';
+
 import { Restangular } from 'ngx-restangular';
-import { APP_CONFIG, AppConfig } from '../../app.config';
-import { BehaviorSubject, ConnectableObservable } from 'rxjs';
+
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
+
 import * as _ from 'lodash';
+
+import { APP_CONFIG, AppConfig } from '../../app.config';
+import { ModelService } from '../../overrides/model.service';
 import { UserService } from './user.service';
 import { AccountService } from './account.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-@Subscribers({
-  initFunc: 'onInit',
-  destroyFunc: null,
-})
 export class PastOrderService extends ModelService {
 
-  public entities$: Observable<{[id: string]: any}>;
+  public entities$: ConnectableObservable<{[id: string]: any}>;
 
   public appConfig: AppConfig;
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
@@ -59,6 +59,7 @@ export class PastOrderService extends ModelService {
   public backorderedCollectionIds$: ConnectableObservable<any>;
   public flaggedCollectionIds$: ConnectableObservable<any>;
   public closedCollectionIds$: ConnectableObservable<any>;
+  private addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
 
   constructor(
     public injector: Injector,
@@ -234,19 +235,23 @@ export class PastOrderService extends ModelService {
     .publishBehavior([]);
     this.closedCollectionIds$.connect();
 
-    this.entities$ = Observable.merge(
-      this.allCollectionGetRequest$,
-      this.openCollectionGetRequest$,
-      this.receivedCollectionGetRequest$,
-      this.favoritedCollectionGetRequest$,
-      this.backorderedCollectionGetRequest$,
-      this.flaggedCollectionGetRequest$,
-      this.closedCollectionGetRequest$,
-      this.favoriteCollectionPostRequest$
-      .map((item: any) => [item]),
-      this.flaggedCollectionPutRequest$
-      .map((item: any) => [item]),
-    )
+    // this.entities$ = Observable.merge(
+    //   this.allCollectionGetRequest$,
+    //   this.openCollectionGetRequest$,
+    //   this.receivedCollectionGetRequest$,
+    //   this.favoritedCollectionGetRequest$,
+    //   this.backorderedCollectionGetRequest$,
+    //   this.flaggedCollectionGetRequest$,
+    //   this.closedCollectionGetRequest$,
+    //   this.favoriteCollectionPostRequest$
+    //   .map((item: any) => [item]),
+    //   this.flaggedCollectionPutRequest$
+    //   .map((item: any) => [item]),
+    // )
+    //
+
+    this.entities$ = this.addCollectionToEntittesStream$
+    .mergeAll()
     .scan((acc, items: any[]) => {
       const newEntities = items.reduce((itemEntities, item) => {
         const oldEntity = acc[item.id];
@@ -259,6 +264,24 @@ export class PastOrderService extends ModelService {
 
       return {...acc, ...newEntities};
     }, {})
+    .publishReplay(1);
+    this.entities$.connect();
+
+    // this.entities$.subscribe(res => {
+    //   debugger
+    // })
+
+    this.addCollectionStreamToEntittesStream(this.allCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.openCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.receivedCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.favoritedCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.backorderedCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.flaggedCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.closedCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.closedCollectionGetRequest$);
+    this.addCollectionStreamToEntittesStream(this.favoriteCollectionPostRequest$.map((item: any) => [item]));
+    this.addCollectionStreamToEntittesStream(this.flaggedCollectionPutRequest$.map((item: any) => [item]));
+
 
     this.allListCollection$ = Observable.combineLatest(
       this.entities$,
@@ -312,7 +335,7 @@ export class PastOrderService extends ModelService {
     this.allCollectionGet$.next(null);
     return this.allCollectionGetRequest$;
   }
-  
+
   getOpenedProducts() {
     this.openCollectionGet$.next(null);
     return this.openCollectionGetRequest$;
@@ -352,11 +375,11 @@ export class PastOrderService extends ModelService {
     this.favoriteCollectionPost$.next(item);
     return this.favoriteCollectionPostRequest$;
   }
-  
+
   reorder(data) {
     return this.restangular.all('reorder').customPOST(data);
   }
-  
+
   onVoidOrder(data) {
     return this.restangular.one('pos', 'void').customPOST(data)
     .map(res => res.data)
@@ -393,6 +416,10 @@ export class PastOrderService extends ModelService {
 
   goToReceive(queryParams) {
     this.router.navigate(['orders/receive', queryParams]);
+  }
+
+  public addCollectionStreamToEntittesStream(stream$: Observable<any>) {
+    this.addCollectionToEntittesStream$.next(stream$);
   }
 
 }
