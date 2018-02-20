@@ -186,11 +186,6 @@ export class PastOrderService extends ModelService {
     return this.receivedCollectionGetRequest$;
   }
 
-  getFavoritedProducts() {
-    this.favoritedCollectionGet$.next(null);
-    return this.favoritedCollectionGetRequest$;
-  }
-
   getFlaggedProducts() {
     this.flaggedCollectionGet$.next(null);
     return this.flaggedCollectionGetRequest$;
