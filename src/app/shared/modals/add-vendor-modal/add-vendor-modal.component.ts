@@ -90,19 +90,16 @@ export class AddVendorModalComponent implements OnInit {
 
   nextStep() {
     if (this.vendor.vendor_id) {
-      // return this.vendorService.addAccountVendor({vendor_id: this.vendor.vendor_id, location_id: this.locationId})
-      //   .subscribe(res => {
-      //     console.log(res);
-      //       this.router.navigate(['/vendors/edit/' + res.vendor_id]);
-      //       return this.dismissModal();
-      //   });
-      // TODO: will be finished after API fixing
-      this.router.navigate(['/vendors/edit/' + this.vendor.vendor_id]);
-      return this.dismissModal();
+      return this.vendorService.addAccountVendor({vendor_id: this.vendor.vendor_id, location_id: this.locationId})
+        .subscribe(res => {
+          this.router.navigate(['/vendors/edit/' + res.vendor_id]);
+          return this.dismissModal();
+        });
     }
     if (this.vendor && this.vendor.vendor_name) {
+      this.vendorModel.name = this.vendor.vendor_name;
       this.stepOne = false;
-      this.showWarnings = true;
+      this.stepTwo = true;
     }
   }
 
@@ -127,14 +124,11 @@ export class AddVendorModalComponent implements OnInit {
   }
 
   onSubmit() {
-    // return this.vendorService.addAccountVendor(this.vendorModel)
-    //   .subscribe(res => {
-    //     console.log(res);
-    //       this.router.navigate(['/vendors/edit/' + res.vendor_id]);
-    //       return this.dismissModal();
-    //   });
-    // TODO: will be finished after API fixing
-    this.dismissModal();
+    return this.vendorService.addAccountVendor(this.vendorModel)
+      .subscribe(res => {
+        this.router.navigate(['/vendors/edit/' + res.vendor_id]);
+        return this.dismissModal();
+      });
   }
 
   uploadLogo(e) {

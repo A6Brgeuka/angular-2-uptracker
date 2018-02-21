@@ -2,7 +2,7 @@
 <div class="inner">
   <div class="step1" *ngIf="stepOne && !showWarnings">
     <div class="row">
-      <div class="col s8">
+      <div class="col s12">
         <div class="input search" [class.dirty]="vendorDirty" [class.valid]="vendorValid">
           <input auto-complete
                  placeholder="Vendor Name"
@@ -18,15 +18,32 @@
           />
         </div>
       </div>
-      <div class="col s4">
-        <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light" (click)="nextStep()">
+      <div class="col s12">
+        <p *ngIf="vendor.vendor_id" class="left-align">
+          The general information for a global vendor can not be changed.
+          You can change account and location specific information on the next screen.
+        </p>
+        <p *ngIf="!vendor.vendor_id && vendor.vendor_name" class="left-align">
+          A Custom Vendor should be a smaller provider who is local to you.
+          There will be no product price comparing for this vendor.
+          If you feel this Vendor should be in the Global Marketplace please
+          email the vendor name and website or address to upinc4u@gmail.com
+          and it will be added to the global list within 24 hours.
+        </p>
+        <button class="uptracker-form-btn  redbtn waves-effect waves-light" type="button"
+                (click)="dismissModal()">
+          Cancel
+        </button>
+        <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light"
+                (click)="nextStep()"
+                [disabled]='!vendor.vendor_name'>
           {{vendor.vendor_id ? 'continue' : 'next'}}
           <fa name="chevron-right "></fa>
         </button>
       </div>
     </div>
   </div>
-  <div class="step2" *ngIf="stepTwo && !showWarnings">
+  <div class="step2" *ngIf="stepTwo">
     <div class="inner">
       <div class="title center-align">Add Vendor</div>
     </div>
