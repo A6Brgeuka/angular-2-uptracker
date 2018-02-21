@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { DestroySubscribers } from "ng2-destroy-subscribers";
+import { DestroySubscribers } from "ngx-destroy-subscribers";
 import { CloseGuard, ModalComponent, DialogRef } from "angular2-modal";
 import { BSModalContext } from "angular2-modal/plugins/bootstrap";
 import { HttpClient } from "app/core/services/http.service";
