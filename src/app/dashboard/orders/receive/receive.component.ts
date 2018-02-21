@@ -67,7 +67,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.invoice$ = Observable.merge(
       this.route.params,
       this.createInventorySubject$
-      .startWith(null)
       .switchMapTo(
         this.route.params
         .take(1)
