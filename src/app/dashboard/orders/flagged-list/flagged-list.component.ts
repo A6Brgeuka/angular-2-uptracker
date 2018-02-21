@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 
 import { FlaggedListService } from '../services/flagged-list.service';
+import { OrderItem } from '../models/order-item';
 
 @Component({
   selector: 'app-flagged-list',
@@ -32,7 +33,7 @@ export class FlaggedListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
-  public orders$: Observable<any>;
+  public orders$: Observable<OrderItem[]>;
 
   constructor(
     private pastOrderService: PastOrderService,

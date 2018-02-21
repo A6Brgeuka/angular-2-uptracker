@@ -2,14 +2,14 @@ import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { PastOrderService } from '../../../core/services';
+import { OrderItem } from '../models/order-item';
 
 export abstract class OrderListBaseService {
 
   public getCollectionRequest$: Observable<any>;
   public getCollection$: Subject<any> = new Subject();
-  public collection$: Observable<any>;
-  public ids$: ConnectableObservable<any>;
+  public collection$: Observable<OrderItem[]>;
+  public ids$: ConnectableObservable<string[]>;
 
 
   constructor(

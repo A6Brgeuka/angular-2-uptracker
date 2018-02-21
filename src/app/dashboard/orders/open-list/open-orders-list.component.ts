@@ -5,6 +5,7 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { OpenOrdersListService } from '../services/open-orders-list.service';
+import { OrderItem } from '../models/order-item';
 
 @Component({
   selector: 'app-open-orders-list',
@@ -31,7 +32,7 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
-  public orders$: Observable<any>;
+  public orders$: Observable<OrderItem[]>;
 
   constructor(
     public openOrdersListService: OpenOrdersListService,

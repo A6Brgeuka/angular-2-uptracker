@@ -7,6 +7,7 @@ import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { FavoritedListService } from '../services/favorited-list.service';
+import { OrderItem } from '../models/order-item';
 
 @Component({
   selector: 'app-favorited-list',
@@ -33,7 +34,7 @@ export class FavoritedListComponent implements OnInit, OnDestroy {
   ];
 
 
-  public orders$: Observable<any>;
+  public orders$: Observable<OrderItem[]>;
 
   constructor(
     private pastOrderService: PastOrderService,

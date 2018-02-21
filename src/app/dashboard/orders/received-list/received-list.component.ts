@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 import { ReceivedListService } from '../services/received-list.service';
+import { OrderItem } from '../models/order-item';
 
 @Component({
   selector: 'app-received-list',
@@ -31,7 +32,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   ];
 
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public orders$: Observable<any>;
+  public orders$: Observable<OrderItem[]>;
 
   constructor(
     public pastOrderService: ReceivedListService,

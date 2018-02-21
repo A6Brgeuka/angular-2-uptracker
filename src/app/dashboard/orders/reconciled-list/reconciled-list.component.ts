@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
+import { OrderItem } from '../models/order-item';
 
 @Component({
   selector: 'app-reconciled-list',
@@ -29,7 +30,7 @@ export class ReconciledListComponent implements OnInit, OnDestroy {
   ];
 
 
-  public orders$: Observable<any>;
+  public orders$: Observable<OrderItem[]>;
 
   constructor(
     public pastOrderService: PastOrderService,

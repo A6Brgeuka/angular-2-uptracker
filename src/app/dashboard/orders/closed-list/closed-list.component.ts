@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ClosedListService } from '../services/closed-list.service';
 import { PastOrderService } from '../../../core/services';
+import { OrderItem } from '../models/order-item';
 
 @Component({
   selector: 'app-closed-list',
@@ -31,7 +32,7 @@ export class ClosedListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
-  public orders$: Observable<any>;
+  public orders$: Observable<OrderItem[]>;
 
   constructor(
     public closedListService: ClosedListService,
