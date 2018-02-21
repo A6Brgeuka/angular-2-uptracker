@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';

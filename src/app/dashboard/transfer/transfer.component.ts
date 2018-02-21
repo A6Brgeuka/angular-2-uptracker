@@ -3,7 +3,7 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
 
 // import { ViewProductModal } from './view-product-modal/view-product-modal.component';
@@ -40,7 +40,7 @@ export class TransferComponent implements OnInit {
     //         this.sortBy$,
     //         this.searchKey$
     //     )
-    //     .map(([vendors, sortBy, searchKey]) => {  
+    //     .map(([vendors, sortBy, searchKey]) => {
     //       this.total = vendors.length;
     //       let filteredVendors = vendors;
     //       if (searchKey && searchKey!='') {
@@ -57,7 +57,7 @@ export class TransferComponent implements OnInit {
     //       if (sortBy == 'Z-A') {
     //         sortBy = 'name';
     //       }
-    //      
+    //
     //       let sortedVendors = _.orderBy(filteredVendors, [sortBy], [order]);
     //       return sortedVendors;
     //     });

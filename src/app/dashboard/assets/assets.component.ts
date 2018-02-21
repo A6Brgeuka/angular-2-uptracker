@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 
 @Component({
@@ -10,12 +10,12 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 })
 @DestroySubscribers()
 export class AssetsComponent implements OnInit {
-  
-  
+
+
   constructor() {
   }
-  
+
   ngOnInit() {
-  
+
   }
 }

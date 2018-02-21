@@ -9,7 +9,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { AttachmentFiles, InventorySearchResults, searchData, Vendor } from '../../../models/inventory.model';

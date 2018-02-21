@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';

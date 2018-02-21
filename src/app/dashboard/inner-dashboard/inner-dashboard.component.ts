@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { NewsModal } from './news-modal/news-modal.component';

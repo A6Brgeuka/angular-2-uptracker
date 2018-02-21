@@ -7,7 +7,7 @@ export interface OrderReceivingStatus {
   text: string;
 }
 
-export interface OrderItemStatusFormModel {
+export class OrderItemStatusFormModel {
   type: string;
   qty: number;
   primary_status?: boolean;

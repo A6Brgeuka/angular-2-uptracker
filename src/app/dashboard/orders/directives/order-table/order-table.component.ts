@@ -5,7 +5,7 @@ import {
 
 import { Router } from '@angular/router';
 import { Modal } from 'angular2-modal';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 

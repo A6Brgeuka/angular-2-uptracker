@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
 import { OrderItem } from '../models/order-item';

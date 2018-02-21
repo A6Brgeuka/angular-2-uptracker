@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Modal } from 'angular2-modal';
 
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';

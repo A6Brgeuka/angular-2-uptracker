@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { UserService } from '../../../core/services/user.service';
 import { ToasterService } from '../../../core/services/toaster.service';
 

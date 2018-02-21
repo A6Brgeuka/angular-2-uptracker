@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { ProductFilterModal } from './product-filter-modal/product-filter-modal.component';
 import { ProductService } from '../../core/services/index';
