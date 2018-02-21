@@ -13,16 +13,17 @@ import { DashboardService } from '../../core/services/dashboard.service';
 })
 @DestroySubscribers()
 export class InnerDashboardComponent implements AfterViewInit {
-  
+  private subscribers: any = {};
+
   constructor(
     public modalWindowService: ModalWindowService,
     public modal: Modal,
     public dashboardService: DashboardService
   ) {
   }
-  
+
   ngAfterViewInit() {
-    this.dashboardService.selfData$
+    this.subscribers.selfDataSubscribtion = this.dashboardService.selfData$
     .subscribe(() => {
         if (this.dashboardService.hasInfo) {
           this.showInfo();
@@ -30,7 +31,7 @@ export class InnerDashboardComponent implements AfterViewInit {
       }
     );
   }
-  
+
   showInfo() {
     this.dashboardService.hasInfo = false;
     this.modal.open(NewsModal, this.modalWindowService.overlayConfigFactoryWithParams({text: this.dashboardService.dashboardText}, false, 'big'));

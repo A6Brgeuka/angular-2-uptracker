@@ -3,7 +3,6 @@ import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
 
 // import { ViewProductModal } from './view-product-modal/view-product-modal.component';
@@ -15,7 +14,6 @@ import { UserService, AccountService } from '../../core/services/index';
   templateUrl: './transfer.component.html',
   styleUrls: ['./transfer.component.scss']
 })
-@DestroySubscribers()
 export class TransferComponent implements OnInit {
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy: string;

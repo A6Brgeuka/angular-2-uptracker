@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -16,7 +15,6 @@ import { OrderStatusValues } from '../../../order-status';
   selector: 'app-receive-add-new-status-item',
   templateUrl: './receive-add-new-status-item.component.html',
 })
-@DestroySubscribers()
 
 export class ReceiveAddNewStatusItemComponent implements OnInit {
 

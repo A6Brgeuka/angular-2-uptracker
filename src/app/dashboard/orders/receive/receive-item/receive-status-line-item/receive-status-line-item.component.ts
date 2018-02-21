@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { DestroySubscribers } from 'ngx-destroy-subscribers';
-
 import * as _ from 'lodash';
 
 import { OrderItemStatusFormGroup } from '../../models/order-item-status-form.model';
@@ -16,7 +14,6 @@ import {
   selector: 'app-receive-status-line-item',
   templateUrl: './receive-status-line-item.component.html',
 })
-@DestroySubscribers()
 
 export class ReceiveStatusLineItemComponent implements OnInit {
   public removed = false;
