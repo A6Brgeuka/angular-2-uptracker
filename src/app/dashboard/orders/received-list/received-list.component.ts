@@ -5,7 +5,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
-import { ReceivedListService } from './received-list.service';
+import { ReceivedListService } from '../services/received-list.service';
 
 @Component({
   selector: 'app-received-list',

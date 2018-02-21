@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Restangular } from 'ngx-restangular';
 
-import { PastOrderService } from '../../../core/services';
+import { PastOrderService } from '../../../core/services/index';
 import { OrderListBaseService } from '../classes/order-list-base.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';

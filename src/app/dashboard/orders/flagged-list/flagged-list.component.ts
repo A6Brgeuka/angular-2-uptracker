@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 
-import { FlaggedListService } from './flagged-list.service';
+import { FlaggedListService } from '../services/flagged-list.service';
 
 @Component({
   selector: 'app-flagged-list',

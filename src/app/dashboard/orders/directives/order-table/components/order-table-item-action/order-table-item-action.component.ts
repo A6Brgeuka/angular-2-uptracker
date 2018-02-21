@@ -11,8 +11,8 @@ import { ModalWindowService } from '../../../../../../core/services/modal-window
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { AddCommentModalComponent } from '../../../../../../shared/modals/add-comment-modal/add-comment-modal.component';
 import { ConfirmModalService } from '../../../../../../shared/modals/confirm-modal/confirm-modal.service';
-import { FavoritedListService } from '../../../../favorited-list/favorited-list.service';
-import { FlaggedListService } from '../../../../flagged-list/flagged-list.service';
+import { FavoritedListService } from '../../../../services/favorited-list.service';
+import { FlaggedListService } from '../../../../services/flagged-list.service';
 
 @Component({
   selector: 'app-order-table-item-action',

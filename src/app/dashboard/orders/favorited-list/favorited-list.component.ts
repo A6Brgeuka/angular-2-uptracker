@@ -6,7 +6,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { FavoritedListService } from './favorited-list.service';
+import { FavoritedListService } from '../services/favorited-list.service';
 
 @Component({
   selector: 'app-favorited-list',

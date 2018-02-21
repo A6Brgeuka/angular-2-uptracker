@@ -4,7 +4,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { OpenOrdersListService } from './open-orders-list.service';
+import { OpenOrdersListService } from '../services/open-orders-list.service';
 
 @Component({
   selector: 'app-open-orders-list',

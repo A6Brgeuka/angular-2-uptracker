@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Restangular } from 'ngx-restangular';
 
 import { OrderListBaseService } from '../classes/order-list-base.service';
-import { PastOrderService } from '../../../core/services';
+import { PastOrderService } from '../../../core/services/index';
 
 @Injectable()
 export class AllOrdersListService extends OrderListBaseService {

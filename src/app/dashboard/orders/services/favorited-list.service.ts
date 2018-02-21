@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 
 import * as _ from 'lodash';
 
-import { PastOrderService } from '../../../core/services';
+import { PastOrderService } from '../../../core/services/index';
 import { OrderListBaseService } from '../classes/order-list-base.service';
 
 @Injectable()

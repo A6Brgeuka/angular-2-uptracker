@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
-import { AllOrdersListService } from './all-orders-list.service';
+import { AllOrdersListService } from '../services/all-orders-list.service';
 
 @Component({
   selector: 'app-all-orders-list',

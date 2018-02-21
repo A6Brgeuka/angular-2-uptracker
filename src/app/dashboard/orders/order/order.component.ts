@@ -18,7 +18,7 @@ import { EditEmailDataModal } from '../../shopping-list/orders-preview/purchase-
 import { OrderService } from '../../../core/services/order.service';
 import { Subject } from 'rxjs/Subject';
 import { APP_DI_CONFIG } from '../../../../../env';
-import { FlaggedListService } from '../flagged-list/flagged-list.service';
+import { FlaggedListService } from '../services/flagged-list.service';
 
 
 @Component({

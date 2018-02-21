@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
-import { BackorderedListService } from './backordered-list.service';
+import { BackorderedListService } from '../services/backordered-list.service';
 
 @Component({
   selector: 'app-backordered-list',

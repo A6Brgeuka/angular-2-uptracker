@@ -4,7 +4,7 @@ import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 import { Observable } from 'rxjs/Observable';
 
-import { ClosedListService } from './closed-list.service';
+import { ClosedListService } from '../services/closed-list.service';
 import { PastOrderService } from '../../../core/services';
 
 @Component({
