@@ -27,6 +27,7 @@ export class OnlineOrderModalContext extends BSModalContext {
 export class OnlineOrderModalComponent implements OnInit, CloseGuard, ModalComponent<OnlineOrderModalContext> {
   context: OnlineOrderModalContext;
   action: "Go to website" | "Email" | "Print" = "Email";
+  website: string;
 
   constructor(
     public dialog: DialogRef<OnlineOrderModalContext>,
@@ -42,16 +43,19 @@ export class OnlineOrderModalComponent implements OnInit, CloseGuard, ModalCompo
   }
   
   ngOnInit() {
+    this.vendorService.getVendor(this.context.vendor_id).subscribe(vendor => {
+      this.website = vendor.website;
+    });
   }
   
   
   closeModal() {
     switch (this.action) {
       case "Go to website":
-        this.vendorService.getVendor(this.context.vendor_id).subscribe(vendor => {
-          window.open(vendor.website);
-          this.dialog.close();
-        });
+        if (this.website) {
+          window.open(this.website);
+        }
+        this.dialog.close();
         break;
       case "Email": 
         this.route.params.subscribe((p: Params)=>{

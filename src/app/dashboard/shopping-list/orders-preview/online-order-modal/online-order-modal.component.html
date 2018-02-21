@@ -20,4 +20,9 @@
       <button class="uptracker-form-btn" (click)="closeModal()">Finalize</button>
     </div>
   </div>
+  <div class="row mtop mbot">
+    <div class="center-align col s12">
+      <strong *ngIf="action == 'Go to website' && !website">*No website is registered for this vendor</strong>
+    </div>
+  </div>
 </div>
