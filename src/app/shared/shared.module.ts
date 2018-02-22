@@ -17,7 +17,7 @@ import { InputValueSearch } from "./pipes/input-value-search/input-value-search.
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
-import { GooglePlacesInputModule } from "./directives";
+import { GooglePlacesInputModule, HasClassModule } from "./directives";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -102,6 +102,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GooglePlacesInputModule,
     NguiAutoCompleteModule,
     PerfectScrollbarModule,
+
+    HasClassModule,
 
     ...directivesArr,
     ...pipesArr,
