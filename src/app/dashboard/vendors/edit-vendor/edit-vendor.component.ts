@@ -101,8 +101,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public inited: boolean = false;
   public allVendor$: Observable<any>;
   private noAV:  boolean = false;
-
-  public openConfirmModal$: Subject<any>;
   
   constructor(
     public userService: UserService,
@@ -116,8 +114,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     public confirmModalService: ConfirmModalService,
   ) {
     this.vendor = new AccountVendorModel();
-
-    this.openConfirmModal$ = new Subject();
   }
   
   ngOnInit() {
@@ -177,16 +173,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     
     this.subscribers.currencySubscription = this.currency$
     .subscribe(currency => this.currencyArr = currency);
-
-    this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
-    .switchMap(() => this.confirmModalService.confirmModal(
-      'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
-    )).subscribe(res => {
-      if (res.success) {
-        this.onSubmit();
-      }
-      return this.chooseTabLocation();
-    });
   }
   
   initTabs() {
@@ -234,11 +220,18 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   ngAfterViewInit() {
-    this.viewInit$.next(true)
+    this.viewInit$.next(true);
   }
 
-  openConfirmModal() {
-    this.openConfirmModal$.next('');
+  openConfirmModal(location = null) {
+    this.subscribers.openConfirmModalSubscription = this.confirmModalService.confirmModal(
+      'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
+    ).subscribe(res => {
+      if (res.success) {
+        this.onSubmit();
+      }
+      return this.chooseTabLocation(location);
+    });
   }
 
 
@@ -252,7 +245,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
 
   selectTabLocation(location = null) {
     if (this.vendor.id && !this.compareVendors(this.vendor, this.originalVendorValue)) {
-      this.openConfirmModal();
+      this.openConfirmModal(location);
     } else {
       this.chooseTabLocation(location);
     }
@@ -422,7 +415,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
   
   onSubmit() {
-    
+    this.formData = new FormData();
     this.vendor.account_id = this.userService.selfData.account_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : '';
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : '';
@@ -431,7 +424,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendor.secondary_rep_mobile_phone = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : '';
     this.vendor.secondary_rep_fax = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : '';
     this.vendor.documents = null;
-    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
+    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
     this.vendor.vendor_id = this.vendorId || this.vendor.id;
 
     _.each(this.vendor, (value, key) => {
