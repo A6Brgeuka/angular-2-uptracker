@@ -13,6 +13,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 // import { CoreModule } from "../core/core.module";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
+import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
@@ -26,6 +27,7 @@ let directivesArr = [
 
 let pipesArr = [
   IterablePipe,
+  InputValueSearch,
 ];
 
 // resolvers
@@ -60,7 +62,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   imports: [
     BootstrapModalModule,
     ModalModule,
-    
+
     CommonModule,
     RouterModule,
     FormsModule,
@@ -86,9 +88,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   exports: [
     BootstrapModalModule,
     ModalModule,
-    
+
     RouterModule,
-    
+
     FormsModule,
     CommonModule,
     ReactiveFormsModule,

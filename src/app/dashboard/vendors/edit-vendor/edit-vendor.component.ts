@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { Location }                 from '@angular/common';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
@@ -28,6 +28,7 @@ import { Subject } from 'rxjs/Subject';
 })
 @DestroySubscribers()
 export class EditVendorComponent implements OnInit, AfterViewInit {
+  originalVendorValue: AccountVendorModel;
   public options: any;
   public subscribers: any = {};
   public currentVendor$;
@@ -72,14 +73,14 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public vendorLoaded$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public fileArr: any = [];
   public oldFileArr: any = [];
-  
+
   public locations$: Observable<any>;
   public currentLocation: any;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
   public secondaryLocation: any;
   public secondaryLocationArr: any = [];
-  
+
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
   @ViewChild('all') allLocationLink: ElementRef;
   @ViewChild('primary') primaryLocationLink: ElementRef;
@@ -99,10 +100,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public vendorId: string;
   public inited: boolean = false;
   public allVendor$: Observable<any>;
-  private noAV:  boolean = false;
-
   public openConfirmModal$: Subject<any>;
-  
+  private noAV:  boolean = false;  
+
   constructor(
     public userService: UserService,
     public accountService: AccountService,
@@ -115,15 +115,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     public confirmModalService: ConfirmModalService,
   ) {
     this.vendor = new AccountVendorModel();
-
-    this.openConfirmModal$ = new Subject();
   }
-  
+
   ngOnInit() {
     this.currentVendor$ = this.vendorService.globalVendor$;
-    
+
     this.currency$ = this.accountService.getCurrencies();
-    
+
     this.files$ = Observable.combineLatest(
       this.newFiles$,
       this.oldFiles$,
@@ -132,7 +130,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         return files;
       }
     );
-    
+
     this.locations$ = this.accountService.locations$
     .map((res: any) => {
       this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
@@ -143,10 +141,10 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         this.secondaryLocation = this.secondaryLocationArr[0];
       return this.secondaryLocationArr;
     });
-    
-    
+
+
   }
-  
+
   addSubscribers() {
     this.subscribers.AccountVendorsSubscribtion = Observable.combineLatest(
       this.route.params,
@@ -154,44 +152,34 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     )
     .map(([route, vendors]: any) => _.filter(vendors, {'vendor_id': route['id']}))
     .subscribe((vendors: any[]) => {
-    
+
       if (!_.isEmpty(vendors)) {
         this.vendorData = vendors[0];
         this.vendorData['vendor_id'] = vendors[0]['vendor_id'];
         this.vendorId = vendors[0]['vendor_id'];
       }
-      
+
       this.accountVendors = vendors;
-    
+
       this.vendorLoaded$.next(true);
-      
+
     });
-  
+
     this.subscribers.viewInitAndVendorLoadedSubscriber = Observable
     .combineLatest(this.viewInit$, this.vendorLoaded$)
     .filter(([a, b]) => (a && b))
     .subscribe(()=>{
       this.initTabs()
     });
-    
+
     this.subscribers.currencySubscription = this.currency$
     .subscribe(currency => this.currencyArr = currency);
-
-    this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
-    .switchMap(() => this.confirmModalService.confirmModal(
-      'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
-    )).subscribe(res => {
-      if (res.success) {
-        this.onSubmit();
-      }
-      return this.chooseTabLocation();
-    });
   }
-  
+
   initTabs() {
-    
+
      //this.secondaryLocationLink.nativeElement.click();
-    
+
     //this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
     //  //this.chooseTabLocation(res);
     //  if (this.secondaryLocationArr.length == 1) return;
@@ -199,7 +187,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     //    this.secondaryLocationLink.nativeElement.click();
     //  }
     //});
- 
+
     // observer to detect class change
     if (this.secondaryLocationLink) {
       let observer = new MutationObserver((mutations) => {
@@ -216,38 +204,54 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     }
 
     this.currentLocation = this.vendorService.selectedTab;
-    
+
     if (!this.currentLocation){
       this.allLocationLink.nativeElement.click();
     } else {
-      
+
       if (this.primaryLocation == this.currentLocation) {
         this.primaryLocationLink.nativeElement.click();
       } else {
         this.secondaryLocationLink.nativeElement.click();
       }
     }
-  
+
     this.inited = true;
-    
-  }
-  
-  ngAfterViewInit() {
-    this.viewInit$.next(true)
+
   }
 
-  openConfirmModal() {
-    this.openConfirmModal$.next('');
+  ngAfterViewInit() {
+    this.viewInit$.next(true);
+  }
+
+  openConfirmModal(location = null) {
+    this.subscribers.openConfirmModalSubscription = this.confirmModalService.confirmModal(
+      'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
+    ).subscribe(res => {
+      if (res.success) {
+        this.onSubmit();
+      }
+      return this.chooseTabLocation(location);
+    });
+  }
+
+
+  compareVendors(left: AccountVendorModel, right: AccountVendorModel): boolean {
+    if (_.isEqual(left, right)) {
+      return true;
+    }
+
+    return false;
   }
 
   selectTabLocation(location = null) {
-    if (this.vendor.id) {
-      this.openConfirmModal();
+    if (this.vendor.id && !this.compareVendors(this.vendor, this.originalVendorValue)) {
+      this.openConfirmModal(location);
     } else {
       this.chooseTabLocation(location);
     }
   }
-  
+
   chooseTabLocation(location = null) {
 
     console.log(this.vendor, 1111111);
@@ -274,40 +278,40 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     } else {
       this.placeholder = this.defaultPlaceholder;
     }
-    
+
     // check if secondary location was chosen
 
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
-      
+
       this.secondaryLocation = location;
     } else {
       this.sateliteLocationActive = false;
-  
+
     }
-    
+
     this.currentLocation = location;
-    
+
     //location have been choosen
-    
+
     let currentVendor = _.find(_.cloneDeep(this.accountVendors), {'location_id': this.currentLocation ? this.currentLocation.id : null});
-    
+
     let subscriber = this.currentVendor$
     .first()
     .subscribe((vendor:VendorModel)=>{
-      
+
       if (!currentVendor || _.isEmpty(currentVendor)) {
         this.noAV = true;
       }
-      
+
       this.fillForm(Object.assign(vendor,currentVendor || {}));
       //subscriber.unsubscribe();
     });
-    
+
   }
-  
+
   fillForm(vendor = {}) {
-    
+
     this.oldFiles$.next(null);
     this.newFiles$.next(null);
     this.vendorFormPhone = '';
@@ -317,15 +321,16 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.secondaryFormPhone2 = '';
     this.secondaryFormFax = '';
     this.vendor = new AccountVendorModel(vendor);
+    this.originalVendorValue = _.cloneDeep(this.vendor);
     console.log(this.vendor, 2222222);
-    
+
     this.calcPriorityMargin(this.vendor.priority || 1);
-    
+
     if (this.vendor.id) {
       this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
       this.oldFileArr = this.vendor.documents;
       this.oldFiles$.next(this.oldFileArr);
-      
+
       this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
       this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
       this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
@@ -340,33 +345,34 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.secondaryFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_fax);
       this.selectedSecondaryFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_fax);
     }
+
   }
-  
+
   changeCurrency(event) {
     let value = event.target.value;
     let currency = _.find(this.currencyArr, {'iso_code': value});
     this.currencyDirty = true;
     this.currencySign = currency ? currency['html_entity'] : '$';
   }
-  
+
   changePriority(event) {
     let value = event.target.value;
     this.calcPriorityMargin(value);
   }
-  
+
   calcPriorityMargin(value) {
     let fixer: number = -16;
     this.priorityMargin = 'calc(' + (value - 1) * 100 / 9 + '% + ' + fixer + 'px)';
   }
-  
+
   onCountryChange($event) {
     this.selectedCountry = $event;
   }
-  
+
   onCountryChange2($event) {
     this.selectedCountry2 = $event;
   }
-  
+
   onFaxCountryChange($event) {
     this.selectedFaxCountry = $event;
   }
@@ -387,30 +393,30 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   changeListener($event): void {
     this.readThis($event.target);
   }
-  
+
   readThis(inputValue: any): void {
     let file: File = inputValue.files[0];
     this.onFileDrop(file);
   }
-  
+
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
   }
-  
+
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
     this.addFile(file);
   }
-  
+
   addFile(file) {
     this.fileArr.push(file);
     this.newFiles$.next(this.fileArr);
   }
-  
+
   onSubmit() {
-    
+    this.formData = new FormData();
     this.vendor.account_id = this.userService.selfData.account_id;
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : '';
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : '';
@@ -419,7 +425,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendor.secondary_rep_mobile_phone = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : '';
     this.vendor.secondary_rep_fax = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : '';
     this.vendor.documents = null;
-    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : null;
+    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
     this.vendor.vendor_id = this.vendorId || this.vendor.id;
 
     _.each(this.vendor, (value, key) => {
@@ -427,15 +433,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         this.formData.append(key, value);
       }
     });
-    
+
     // append new files
     let i = 0;
     _.each(this.fileArr, (value, key) => {
       this.formData.append('new_documents[' + i + ']', this.fileArr[i]);
       i++;
     });
-    
-    
+
+
     // append old files
     let j = 0;
     _.each(this.fileArr, (value, key) => {
@@ -455,17 +461,17 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         }
       );
     }
-    
+
     console.log(this.vendor, 3333333);
     console.log(this.formData, 44444);
 
   }
-  
+
   goBack(): void {
     this.router.navigate(['/vendors']);
   }
   goBackOneStep(): void {
     this.location.back();
   }
-  
+
 }

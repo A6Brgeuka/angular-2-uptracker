@@ -1,0 +1,183 @@
+@import "../../../colors.scss";
+
+.restock-floor {
+  .input {
+    input {
+      background-color: #fff;
+      margin: 0;
+    }
+  }
+
+  .back-btn {
+    width: 40px;
+    height: 40px;
+    background-color: $tealish;
+    border-radius: 20px;
+    text-align: center;
+    border: none;
+    color: #fff;
+    font-size: 21px;
+
+    &:hover {
+      background-color: lighten($tealish, 10%);
+    }
+
+    i {
+      margin-right: 3px;
+    }
+  }
+
+  .main-title {
+    margin-bottom: 40px;
+  }
+
+  .floors-list-sidebar {
+    h3 {
+      font-size: 25px;
+      margin-bottom: 20px;
+    }
+
+    .location {
+      margin-bottom: 20px;
+
+      h5 {
+        color: $grey;
+        font-size: 20px;
+      }
+
+      ul {
+        margin: 0;
+
+        li {
+          color: $tealish;
+          font-size: 20px;
+          cursor: pointer;
+
+          &::after {
+            font: normal normal normal 23px/28px FontAwesome;
+            display: none;
+            content: '\F105';
+            float: right;
+          }
+
+          &.current {
+            color: $red;
+          }
+
+          &:hover {
+            &::after {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .location-details {
+    .details-header {
+      h3 {
+        font-size: 22px;
+      }
+
+      .keywords-search {
+        position: relative;
+        margin-top: 1.46rem;
+
+        input {
+          padding-right: 30px;
+        }
+
+        i {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          color: $grey;
+        }
+      }
+    }
+
+    table {
+      font-size: 14px;
+
+      td {
+        line-height: 1;
+        padding: 5px 10px;
+      }
+
+      tbody {
+        color: $tealish;
+
+        tr {
+          border-bottom: 1px solid #d0d0d0;
+
+          td {
+            &.on-floor {
+              width: 1px;
+
+              .input {
+                position: relative;
+                display: inline-block;
+
+                input {
+                  width: 80px;
+                  text-align: right;
+                  padding-right: 40px;
+                }
+
+                .restock-suggested-qty {
+                  position: absolute;
+                  top: 9px;
+                  right: 8px;
+                  font-size: 15px;
+                }
+              }
+            }
+
+            &.restock-qty {
+              width: 140px;
+
+              .input {
+                display: inline-block;
+                margin-right: 48px;
+
+                input {
+                  width: 60px;
+                  text-align: right;
+                  padding-right: 10px;
+                }
+              }
+
+              button {
+                background-color: white;
+                padding: 5px 7px 6px;
+                margin: 0 0 0 10px;
+                vertical-align: top;
+                border-radius: 5px;
+                font-size: 18px;
+                border-color: $tealish;
+                display: none;
+
+                &:hover {
+                  border-color: lighten($tealish, 20%);
+                }
+              }
+            }
+          }
+
+          &:hover {
+            .restock-qty {
+              .input {
+                margin: 0;
+              }
+
+              button {
+                display: inline-block;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
