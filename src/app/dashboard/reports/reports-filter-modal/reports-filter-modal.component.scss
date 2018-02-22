@@ -65,6 +65,37 @@
   }
 
   .no-padding {
-    padding: 0;
+    padding-left: 0;
+    padding-right: 20px !important;
+  }
+
+  .check-margin {
+    margin-bottom: 15px;
+  }
+
+  [type="checkbox"] + label {
+    line-height: 20px;
+    height: 20px;;
+  }
+
+  [type="checkbox"].filled-in:not(:checked) + label:after {
+    border: 1px solid #000000;
+    border-radius: 3px;
+  }
+
+  .btn {
+    background-color: #33c6d9;
+    box-shadow: none;
+    font-family: 'Roboto';
+    font-size: 18px;
+    height: 42px;
+    line-height: 42px;
+    text-transform: none;
+
+    &.cancel {
+      background-color: white;
+      border: 2px solid #33c6d9;
+      color: #33c6d9;
+    }
   }
 }
