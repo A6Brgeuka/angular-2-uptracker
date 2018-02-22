@@ -13,10 +13,12 @@ import { AppSharedModule } from './shared/shared.module';
 import { ModalModule } from 'angular2-modal';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { OnboardModule } from './onboard/onboard.module';
+import { RestockFloorComponent } from './dashboard/restock-floor/restock-floor.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RestockFloorComponent
   ],
   imports: [
     ModalModule.forRoot(),
