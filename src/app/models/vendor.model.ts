@@ -1,6 +1,9 @@
+import { AccountVendorModel } from "./account-vendor.model";
+
 export class VendorModel {
   id: string = null;
   active: boolean = null;
+  account_id: string;
   address: any = null;
   created_at: string = null;
   email: string = null;
@@ -9,11 +12,15 @@ export class VendorModel {
   name: string = null;
   phone: string = null;
   updated_at: string = null;
+  vendor_id: string = null;
+  po_number_prefix: any = null;
   website: string = null;
 
   priority: number = 0;
   account_vendor: any = [];
   
+  locations: AccountVendorModel[] = [];
+
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {
