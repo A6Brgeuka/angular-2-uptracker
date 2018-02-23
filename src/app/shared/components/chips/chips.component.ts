@@ -1,14 +1,12 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, ContentChild, EventEmitter, forwardRef, HostListener, Input, Renderer2,
+  AfterViewInit, Component, EventEmitter, forwardRef, Input, Renderer2,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isArray, reject, map } from 'lodash';
+import { isArray, reject, map, unionBy } from 'lodash';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { bootstrapItem } from '@angular/cli/lib/ast-tools';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import { MaterializeDirective } from 'angular2-materialize';
 
 export const CHIP_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -99,8 +97,9 @@ export class ChipsInputComponent implements ControlValueAccessor, AfterViewInit 
 
   public onAdd({detail}: {detail: Chip}) {
     if (!this.isDisabled) {
-      this.chips = [...this.chips, detail];
+      this.chips = unionBy(this.chips, [detail], 'tag');
       this.onChange(this.rawChips);
+      console.log(this.chips, detail);
     }
   }
 
