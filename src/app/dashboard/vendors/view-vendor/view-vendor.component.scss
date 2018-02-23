@@ -69,7 +69,12 @@ $tealish: #33c6d9;
       margin:0 -15px;
 
       .row {
-        margin-bottom: 12px;
+        margin-bottom: 0;
+
+        .col {
+          min-height: 1.5em;
+          margin: 6px 0;
+        }
 
         .label {
           padding-right: 5px;

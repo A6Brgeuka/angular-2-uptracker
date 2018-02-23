@@ -6,6 +6,7 @@ export class VendorModel {
   account_id: string;
   address: any = null;
   created_at: string = null;
+  currency: string = '';
   email: string = null;
   fax: string = null;
   logo: string = null;
