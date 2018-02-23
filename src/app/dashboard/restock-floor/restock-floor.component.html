@@ -28,38 +28,40 @@
           <i class="fa fa-times-circle" aria-hidden="true" (click)="clearKeywordSearchValue()" *ngIf="keywordSearchValue"></i>
         </div>
       </div>
-      <table>
-        <thead>
-        <tr>
-          <th>Inventory group</th>
-          <th>Last Restock</th>
-          <th>On Hand</th>
-          <th>On Floor</th>
-          <th>Restock Qty</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let inventoryGroup of currentFloorstockLocation.inventory_groups | inputValueSearch:keywordSearchValue:'name'">
-          <td>{{inventoryGroup.name}}</td>
-          <td>{{inventoryGroup.last_restock_qty}} Item{{inventoryGroup.last_restock_qty === 1 ? '' : 's'}} on {{inventoryGroup.last_restock_date}}</td>
-          <td>{{inventoryGroup.on_hand}} Item{{inventoryGroup.on_hand === 1 ? '' : 's'}}</td>
-          <td class="on-floor">
-            <div class="input">
-              <input type="text" [(value)]="inventoryGroup.suggested_on_floor - inventoryGroup.restock_qty" (keyup)="onChange($event, inventoryGroup, true)">
-              <div class="restock-suggested-qty"> / {{inventoryGroup.suggested_on_floor}}</div>
-            </div>
-          </td>
-          <td class="restock-qty">
-            <div class="input">
-              <input type="text" [(value)]="inventoryGroup.restock_qty" (keyup)="onChange($event, inventoryGroup)">
-            </div>
-            <button>
-              <i class="fa fa-barcode" aria-hidden="true"></i>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Inventory Group</th>
+              <th>Last Restock</th>
+              <th>On Hand</th>
+              <th>On Floor</th>
+              <th>Restock Qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let inventoryGroup of currentFloorstockLocation.inventory_groups | inputValueSearch:keywordSearchValue:'name'">
+              <td>{{inventoryGroup.name}}</td>
+              <td>{{inventoryGroup.last_restock_qty}} Item{{inventoryGroup.last_restock_qty === 1 ? '' : 's'}} on {{inventoryGroup.last_restock_date}}</td>
+              <td>{{inventoryGroup.on_hand}} Item{{inventoryGroup.on_hand === 1 ? '' : 's'}}</td>
+              <td class="on-floor">
+                <span class="input">
+                  <input type="text" [(value)]="inventoryGroup.on_floor_qty" (keyup)="calculateRestockQty($event, inventoryGroup)">
+                  <div class="restock-suggested-qty"> / {{inventoryGroup.suggested_on_floor}}</div>
+                </span>
+              </td>
+              <td class="restock-qty">
+                <span class="input">
+                  <input type="text" [(value)]="inventoryGroup.restock_qty" (keyup)="calculateOnFloorQty($event, inventoryGroup)">
+                </span>
+                <button>
+                  <i class="fa fa-barcode" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
