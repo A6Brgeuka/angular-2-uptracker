@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, EventEmitter, forwardRef, Input, Renderer2,
+  AfterViewInit, Component, EventEmitter, forwardRef, Input, NgZone, Renderer2,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -70,6 +70,7 @@ export class ChipsInputComponent implements ControlValueAccessor, AfterViewInit 
 
   constructor(
     private renderer: Renderer2,
+    private ngZone: NgZone
   ) {
   }
 
@@ -88,6 +89,7 @@ export class ChipsInputComponent implements ControlValueAccessor, AfterViewInit 
   ngAfterViewInit() {
     this.subscribers.isDisabledSubscribtion = this.isDisabled$
     .filter(() => this.chipsInput)
+    .delayWhen(() => this.ngZone.onMicrotaskEmpty.take(1))
     .subscribe((isDisabled) => {
       this.setnputDisability(isDisabled);
     });
@@ -104,7 +106,6 @@ export class ChipsInputComponent implements ControlValueAccessor, AfterViewInit 
     if (!this.isDisabled) {
       this.chips = unionBy(this.chips, [detail], 'tag');
       this.onChange(this.rawChips);
-      console.log(this.chips, detail);
     }
   }
 
@@ -117,6 +118,7 @@ export class ChipsInputComponent implements ControlValueAccessor, AfterViewInit 
   public writeValue( value: string[] ): void {
     this.chips = this.chipsTransform(value);
     this.updateMaterializeParams({data: this.chips});
+    this.setDisabledState(this.isDisabled);
   }
 
   public registerOnChange(fn: any): void {
