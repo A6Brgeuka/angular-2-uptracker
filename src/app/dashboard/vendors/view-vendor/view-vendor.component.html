@@ -52,115 +52,102 @@
   </ul>
 </div>
 <div id="general" [class.active]="!locVendorChosen" class="tab-content">
-  <div class="inner">
-    <div class="info">
-      <div class="row">
-        <div class="col s6 label">Address</div>
-        <div class="col s6" *ngIf="vendor?.address?.street_1 || vendor?.address?.street_2 || vendor?.address?.country || vendor?.address?.city || vendor?.address?.state">
-          <div>{{vendor?.address?.street_1}}, {{vendor?.address?.street_2}}
-          </div>
-          {{vendor?.address?.city}}, {{vendor?.address?.state}} {{vendor?.address?.postal_code}}
-        </div>
+  <div class="info">
+    <div class="row">
+      <div class="col s1 label">Address</div>
+      <div class="col">
+        {{vendor?.address?.street_1}}, {{vendor?.address?.street_2}} {{vendor?.address?.city}}, {{vendor?.address?.state}} {{vendor?.address?.postal_code}}
       </div>
-      <div class="row">
-        <div class="col s6 label">Country</div>
-        <div class="col s6">
-          {{vendor?.address?.country}}
-        </div>
+    </div>
+    <div class="row">
+      <div class="col s1 label">Country</div>
+      <div class="col s3">
+        {{vendor?.address?.country}}
       </div>
-      <div class="row">
-        <div class="col s6 label">Account #</div>
-        <div class="col s6">
-          {{vendor.ext_account_number}}
-        </div>
+      <div class="col s1 label">Account #</div>
+      <div class="col s3">
+        {{vendor.ext_account_number}}
       </div>
-      <div class="row">
-        <div class="col s6 label">Email</div>
-        <div class="col s6">
-          <a [href]="'mailto:' + vendor.email">{{vendor.email}}</a>
-        </div>
+      <div class="col s1 label">Email</div>
+      <div class="col s3">
+        <a [href]="'mailto:' + vendor.email">{{vendor.email}}</a>
       </div>
-      <div class="row">
-        <div class="col s6 label">Phone</div>
-        <div class="col s6">
-          {{vendor.phone}}
-        </div>
+    </div>
+    <div class="row">
+      <div class="col s1 label">Phone</div>
+      <div class="col s3">
+        {{vendor.phone}}
       </div>
-      <div class="row">
-        <div class="col s6 label">Fax</div>
-        <div class="col s6">
-          {{vendor.fax}}
-        </div>
+      <div class="col s1 label">Fax</div>
+      <div class="col s3">
+        {{vendor.fax}}
       </div>
-      <div class="row">
-        <div class="col s6 label">Website</div>
-        <div class="col s6">
-          <a [href]="'http://' + vendor.website">{{vendor.website}}</a>
+      <div class="col s1 label">Website</div>
+      <div class="col s3">
+        <a [href]="'http://' + vendor.website">{{vendor.website}}</a>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="(!this.secondaryLocationArr.length)">
+    <div class="row">
+      <div class="col s6 label">Rep Name</div>
+      <div class="col s6">
+        {{vendor.rep_name}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 label">Rep Email</div>
+      <div class="col s6">
+        {{vendor.rep_email}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 label">Default Order Type</div>
+      <div class="col s6 capitalize">
+        {{vendor.default_order_type}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 label">Payment Method</div>
+      <div class="col s6 capitalize">
+        {{vendor.payment_method}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 label">Discount</div>
+      <div class="col s6">
+        {{vendor.discount_percentage | percent }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 label">Shipping & Handling Fee</div>
+      <div class="col s6">
+        {{currencySign}}{{vendor.shipping_handling}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 label">Average Lead Time</div>
+      <div class="col s6">
+        {{vendor.avg_lead_time}} days
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s6 label">Notes</div>
+      <div class="col s6">
+        {{vendor.notes}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 label">Documents:</div>
+      <div class="col s12">
+        <div class="document" *ngFor="let document of vendor.documents">
+          <a [href]="document.uri" target="_blank">
+            <img src="/assets/img/icon-info.svg" alt="" /> {{document.name}}
+          </a>
         </div>
       </div>
     </div>
-
-    <div *ngIf="(!this.secondaryLocationArr.length)">
-      <div class="row">
-        <div class="col s6 label">Rep Name</div>
-        <div class="col s6">
-          {{vendor.rep_name}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 label">Rep Email</div>
-        <div class="col s6">
-          {{vendor.rep_email}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 label">Default Order Type</div>
-        <div class="col s6 capitalize">
-          {{vendor.default_order_type}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 label">Payment Method</div>
-        <div class="col s6 capitalize">
-          {{vendor.payment_method}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 label">Discount</div>
-        <div class="col s6">
-          {{vendor.discount_percentage | percent }}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 label">Shipping & Handling Fee</div>
-        <div class="col s6">
-          {{currencySign}}{{vendor.shipping_handling}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 label">Average Lead Time</div>
-        <div class="col s6">
-          {{vendor.avg_lead_time}} days
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s6 label">Notes</div>
-        <div class="col s6">
-          {{vendor.notes}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s12 label">Documents:</div>
-        <div class="col s12">
-          <div class="document" *ngFor="let document of vendor.documents">
-            <a [href]="document.uri" target="_blank">
-              <img src="/assets/img/icon-info.svg" alt="" /> {{document.name}}
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
