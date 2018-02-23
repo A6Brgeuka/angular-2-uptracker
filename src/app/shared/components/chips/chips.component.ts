@@ -44,6 +44,11 @@ export class ChipsInputComponent implements ControlValueAccessor, AfterViewInit 
 
   public chips: Chip[] = [];
 
+  public chipActions = new EventEmitter();
+
+  public onChange;
+  public onTouched;
+
   @Input()
   set placeholder(placeholder: string) {
     this.updateMaterializeParams({placeholder});
@@ -54,10 +59,10 @@ export class ChipsInputComponent implements ControlValueAccessor, AfterViewInit 
     this.updateMaterializeParams({secondaryPlaceholder});
   }
 
-  public chipActions = new EventEmitter();
-
-  public onChange;
-  public onTouched;
+  @Input()
+  set disabled(value) {
+    this.setDisabledState(value);
+  }
 
   @ViewChild('chips') chipsEl;
 
