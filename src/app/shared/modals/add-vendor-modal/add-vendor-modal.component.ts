@@ -27,14 +27,11 @@ export class AddVendorModalComponent implements OnInit {
 
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
-  public vendor: Vendor = {vendor_name: null, vendor_id : null};
+  public vendor: Vendor = new Vendor();
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
-  public stepOne: boolean = true;
-  public showWarnings: boolean = false;
-  public stepTwo: boolean = false;
   public vendorModel: NewVendorModel;
-  public locationId: string = 'all';
+  public step: number = 1;
   public uploadName: string = '';
 
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
@@ -58,7 +55,7 @@ export class AddVendorModalComponent implements OnInit {
   dismissModal() {
     this.uploadName = '';
     this.vendorModel = new NewVendorModel();
-    this.vendor = {vendor_name: null, vendor_id : null};
+    this.vendor = new Vendor();
     this.dialog.dismiss();
   }
 
@@ -90,29 +87,21 @@ export class AddVendorModalComponent implements OnInit {
 
   nextStep() {
     if (this.vendor.vendor_id) {
-      return this.vendorService.addAccountVendor({vendor_id: this.vendor.vendor_id, location_id: this.locationId})
-        .subscribe(res => {
-          this.router.navigate(['/vendors/edit/' + res.vendor_id]);
-          return this.dismissModal();
-        });
+      this.router.navigate(['/vendors/edit/' + this.vendor.vendor_id]);
+      return this.dismissModal();
     }
     if (this.vendor && this.vendor.vendor_name) {
       this.vendorModel.name = this.vendor.vendor_name;
-      this.stepOne = false;
-      this.stepTwo = true;
+      this.step++;
     }
   }
 
   cancel() {
-    this.stepOne = true;
-    this.stepTwo = false;
-    this.showWarnings = false;
+    this.step = 1;
   }
 
-  agree() {
-    this.stepOne = false;
-    this.stepTwo = true;
-    this.showWarnings = false;
+  prevStep() {
+    this.step--;
   }
 
   onCountryChange($event) {
@@ -126,14 +115,17 @@ export class AddVendorModalComponent implements OnInit {
   onSubmit() {
     return this.vendorService.addAccountVendor(this.vendorModel)
       .subscribe(res => {
-        this.router.navigate(['/vendors/edit/' + res.vendor_id]);
-        return this.dismissModal();
+        console.log(res);
+          this.router.navigate(['/vendors/edit/' + res.vendor_id]);
+          return this.dismissModal();
       });
   }
 
-  uploadLogo(e) {
-    // console.log(e.target.files[0]);
-    // TODO: will be finished after API fixing
-    this.uploadName = e.target.files[0].name;
+  uploadLogo(file: any) {
+    this.uploadName = file.target.files[0].name;
+    let reader = new FileReader();
+
+    reader.onload = (e: any) => this.vendorModel.logo = e.target.result;
+    reader.readAsDataURL(file.target.files[0]);
   }
 }

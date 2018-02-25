@@ -3,6 +3,7 @@ export class NewVendorModel {
   created_at: string = null;
   updated_at: string = null;
   vendor_id: string = null;
+  location_id: string = 'all';
   fax: string = '';
   phone: string = '';
   state: string = '';
