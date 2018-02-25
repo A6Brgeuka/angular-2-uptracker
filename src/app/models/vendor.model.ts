@@ -8,6 +8,7 @@ export class VendorModel {
   logo: string = null;
   name: string = null;
   phone: string = null;
+  custom: boolean = null;
   updated_at: string = null;
   website: string = null;
 
