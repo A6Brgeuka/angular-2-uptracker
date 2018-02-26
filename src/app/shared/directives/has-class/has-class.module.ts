@@ -9,7 +9,10 @@ import { HasClassDirective } from './has-class.directive';
   ],
   declarations: [
     HasClassDirective,
-  ]
+  ],
+  exports: [
+    HasClassDirective,
+  ],
 })
 export class HasClassModule {
 }
