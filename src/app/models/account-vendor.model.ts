@@ -33,6 +33,7 @@ export class AccountVendorModel {
   updated_at: string = null;
   vendor_id: string = null;
   website: string = null;
+  address: any = null;
   
   constructor(obj?:any) {
     for (let field in obj) {
