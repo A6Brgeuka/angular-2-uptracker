@@ -35,18 +35,26 @@
       color: white;
       line-height: 21px;
       height: 21px;
-      padding: 0 6px;
+      padding: 0 26px 0 6px;
       border-radius: 5px;
+      position: relative;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 100%;
 
       &.selected {
         background-color: #33c6d9;
       }
 
       i {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
         line-height: 12px;
         padding-left: 1px;
-        margin-left: 8px;
-        margin-top: 5px;
+        margin: 0;
         height: 12px;
         width: 12px;
         border-radius: 50%;
