@@ -36,6 +36,16 @@ export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<Re
     {label: 'ITC', value: 'itc'},
     {label: 'JJES Systems', value: 'jjes'}
   ]
+  catetories: Array<IOption> = [
+    {label: 'Cat1', value: 'cat1'},
+    {label: 'Cat2', value: 'cat2'},
+    {label: 'Cat3', value: 'cat3'},
+    {label: 'Cat4', value: 'cat4'},
+    {label: 'Cat5', value: 'cat5'},
+    {label: 'Cat6', value: 'cat6'},
+    {label: 'Cat7', value: 'cat7'},
+    {label: 'Cat8', value: 'cat8'},
+  ]
 
   constructor(
       public dialog: DialogRef<ReportsFilterModalContext>,

@@ -92,6 +92,7 @@
     height: 42px;
     line-height: 42px;
     text-transform: none;
+    z-index: 0;
 
     &.cancel {
       background-color: white;
@@ -100,7 +101,12 @@
     }
   }
 
+  .waves-effect {
+    overflow: visible;
+  }
+
   .below .multiple {
+    padding: 10px;
     .option {
       display: flex;
       align-items: center;
@@ -116,6 +122,9 @@
         position: absolute;
         right: 5px;
       }
+    }
+    > select-dropdown > div {
+      z-index: 999 !important;
     }
   }
 }
