@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { Location } from '@angular/common';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import * as _ from 'lodash';
 
@@ -73,14 +73,14 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public vendorLoaded$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public fileArr: any = [];
   public oldFileArr: any = [];
-  
+
   public locations$: Observable<any>;
   public currentLocation: any = null;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
   public secondaryLocation: any;
   public secondaryLocationArr: any = [];
-  
+
   @ViewChild('secondary') secondaryLocationLink: ElementRef;
   @ViewChild('all') allLocationLink: ElementRef;
   @ViewChild('primary') primaryLocationLink: ElementRef;
@@ -115,16 +115,16 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   ) {
     this.vendor = new AccountVendorModel();
   }
-  
+
   ngOnInit() {
   }
-  
+
   addSubscribers() {
     this.currency$ = this.accountService.getCurrencies();
     this.subscribers.currencySubscription = this.currency$
     .subscribe(currency => this.currencyArr = currency);
   }
-  
+
   initTabs() {
     if (this.secondaryLocationLink) {
       let observer = new MutationObserver((mutations) => {
@@ -141,21 +141,21 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     }
 
     this.currentLocation = this.vendorService.selectedTab;
-    
+
     if (!this.currentLocation){
       this.allLocationLink.nativeElement.click();
     } else {
-      
+
       if (this.primaryLocation == this.currentLocation) {
         this.primaryLocationLink.nativeElement.click();
       } else {
         this.secondaryLocationLink.nativeElement.click();
       }
     }
-  
+
     this.inited = true;
   }
-  
+
   ngAfterViewInit() {
     
     this.files$ = Observable.combineLatest(
@@ -235,7 +235,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.chooseTabLocation(location);
     }
   }
-  
+
   chooseTabLocation(location = null) {
 
     console.log(this.vendor, 1111111);
@@ -262,20 +262,20 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     } else {
       this.placeholder = this.defaultPlaceholder;
     }
-    
+
     // check if secondary location was chosen
 
     if (location && location != this.primaryLocation) {
       this.sateliteLocationActive = true;
-      
+
       this.secondaryLocation = location;
     } else {
       this.sateliteLocationActive = false;
-  
+
     }
-    
+
     this.currentLocation = location;
-    
+
     //location have been choosen
     this.vendor = null;
     if (this.currentLocation && this.currentLocation.id) {
@@ -302,7 +302,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.secondaryFormPhone2 = '';
     this.secondaryFormFax = '';
     console.log(this.vendor, 2222222);
-    
+
     this.calcPriorityMargin(this.vendor.priority || 1);
     
     this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
@@ -322,32 +322,32 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.secondaryFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_fax);
     this.selectedSecondaryFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_fax);
   }
-  
+
   changeCurrency(event) {
     let value = event.target.value;
     let currency = _.find(this.currencyArr, {'iso_code': value});
     this.currencyDirty = true;
     this.currencySign = currency ? currency['html_entity'] : '$';
   }
-  
+
   changePriority(event) {
     let value = event.target.value;
     this.calcPriorityMargin(value);
   }
-  
+
   calcPriorityMargin(value) {
     let fixer: number = -16;
     this.priorityMargin = 'calc(' + (value - 1) * 100 / 9 + '% + ' + fixer + 'px)';
   }
-  
+
   onCountryChange($event) {
     this.selectedCountry = $event;
   }
-  
+
   onCountryChange2($event) {
     this.selectedCountry2 = $event;
   }
-  
+
   onFaxCountryChange($event) {
     this.selectedFaxCountry = $event;
   }
@@ -368,28 +368,28 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   changeListener($event): void {
     this.readThis($event.target);
   }
-  
+
   readThis(inputValue: any): void {
     let file: File = inputValue.files[0];
     this.onFileDrop(file);
   }
-  
+
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
   }
-  
+
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
     this.addFile(file);
   }
-  
+
   addFile(file) {
     this.fileArr.push(file);
     this.newFiles$.next(this.fileArr);
   }
-  
+
   onSubmit() {
     this.formData = new FormData();
     this.generalVendor.account_id = this.userService.selfData.account_id;
@@ -412,15 +412,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     if (value != null && typeof value === 'string')
       this.formData.append(key, value);
     });
-    
+
     // append new files
     let i = 0;
     _.each(this.fileArr, (value, key) => {
       this.formData.append('new_documents[' + i + ']', this.fileArr[i]);
       i++;
     });
-    
-    
+
+
     // append old files
     let j = 0;
     _.each(this.fileArr, (value, key) => {
@@ -440,17 +440,17 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         }
       );
     }
-    
+
     console.log(this.vendor, 3333333);
     console.log(this.formData, 44444);
 
   }
-  
+
   goBack(): void {
     this.router.navigate(['/vendors']);
   }
   goBackOneStep(): void {
     this.location.back();
   }
-  
+
 }
