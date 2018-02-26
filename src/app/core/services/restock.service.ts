@@ -21,8 +21,8 @@ export class RestockService extends ModelService {
 
   ) {
     super(restangular);
-    this.appConfig = injector.get(APP_CONFIG)
-    this.onInit()
+    this.appConfig = injector.get(APP_CONFIG);
+    this.onInit();
   }
 
   onInit() {
@@ -47,6 +47,6 @@ export class RestockService extends ModelService {
             )
           })
         )
-      )
+      );
   }
 }
