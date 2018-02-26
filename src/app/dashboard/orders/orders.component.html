@@ -5,7 +5,6 @@
       [searchKey]="searchKey"
       searchType="chips"
       [chips]="chips$ | async"
-      (chipsChange)="onChipsChange($event)"
       (searchEvent)="searchOrders($event)"
       (resetEvent)="resetFilters()"
       (openModalEvent)="showFiltersModal()"
