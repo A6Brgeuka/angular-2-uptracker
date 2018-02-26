@@ -15,7 +15,6 @@ export class NewVendorModel {
   email: string = '';
   name: string = '';
   website: string = '';
-  logo: string = '';
 
   constructor(obj?:any) {
     for (let field in obj) {

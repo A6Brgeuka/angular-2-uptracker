@@ -11,6 +11,7 @@ import {NewVendorModel} from '../../../models/new-vendor.model';
 import {VendorService} from '../../../core/services/vendor.service';
 import {Router} from '@angular/router';
 import {PhoneMaskService} from '../../../core/services/phone-mask.service';
+import * as _ from 'lodash';
 
 export class AddVendorModalContext extends BSModalContext {
 
@@ -33,6 +34,9 @@ export class AddVendorModalComponent implements OnInit {
   public vendorModel: NewVendorModel;
   public step: number = 1;
   public uploadName: string = '';
+  public formData: FormData = new FormData();
+  public logo: File;
+  public logoPreview: string = '';
 
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
   public selectedPhoneCountry: any = this.phoneMaskService.defaultCountry;
@@ -113,19 +117,35 @@ export class AddVendorModalComponent implements OnInit {
   }
 
   onSubmit() {
-    return this.vendorService.addAccountVendor(this.vendorModel)
-      .subscribe(res => {
-        console.log(res);
-          this.router.navigate(['/vendors/edit/' + res.vendor_id]);
-          return this.dismissModal();
-      });
+
+    _.each(this.vendorModel, (value, key) => {
+      if (value != null && value) {
+        this.formData.append(key, value);
+      }
+    });
+
+    // append logo
+    if (this.logo) {
+      this.formData.append('logo', this.logo);
+    }
+
+    this.vendorService.addAccountVendor(this.formData).subscribe(
+      (res: any) => {
+        return this.dismissModal();
+      }
+    );
+
   }
 
   uploadLogo(file: any) {
     this.uploadName = file.target.files[0].name;
     let reader = new FileReader();
 
-    reader.onload = (e: any) => this.vendorModel.logo = e.target.result;
+    reader.onload = ($event: any) => {
+      this.logo = file.target.files[0];
+      this.logoPreview = $event.target.result;
+    };
+
     reader.readAsDataURL(file.target.files[0]);
   }
 }
