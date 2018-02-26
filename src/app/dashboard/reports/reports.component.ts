@@ -60,6 +60,7 @@ export class ReportsComponent implements OnInit {
         bullet: "round",
         bulletBorderAlpha: 1,
         bulletBorderColor: "#ffffff",
+        dashLength: 10,
         hideBulletsCount: 50,
         lineThickness: 2,
         lineColor: "#9a9c9e",
