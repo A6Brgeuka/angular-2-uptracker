@@ -27,7 +27,7 @@
       <app-order-table-header-action
         [orders]="checkedOrders$ | async"
         [isShow]="headerCol.actions && showHeaderMenu$ | async"
-        [listName]="listName"
+        [listName]="_listName"
       ></app-order-table-header-action>
     </div>
 
@@ -72,7 +72,7 @@
         <app-order-table-item-action
           [item]="item"
           [isShow]="headerCol.actions"
-          [listName]="listName"
+          [listName]="_listName"
           [uniqueField]="uniqueField"
           [i]="i"
         ></app-order-table-item-action>
