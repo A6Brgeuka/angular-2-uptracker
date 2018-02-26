@@ -7,8 +7,10 @@
 
     .chip {
       pointer-events: none;
+      padding: 0 6px;
 
       i {
+        display: none;
         pointer-events: none;
       }
     }
