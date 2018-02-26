@@ -13,5 +13,5 @@ import { RestockFloorComponent } from './restock-floor.component';
   providers: []
 })
 
-export class AppliancesModule {
+export class RestockFloorModule {
 }
