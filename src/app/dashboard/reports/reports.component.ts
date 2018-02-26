@@ -37,7 +37,7 @@ export class ReportsComponent implements OnInit {
       dataProvider: this.chartData,
       valueAxes: [{
         id: "v1",
-        axisAlpha: 0.1,
+        axisAlpha: 0.1
       }, {
         id: "v2",
         axisAlpha: 0.1,
@@ -52,8 +52,6 @@ export class ReportsComponent implements OnInit {
         hideBulletsCount: 50,
         lineThickness: 2,
         lineColor: "#32da81",
-        // showBalloon: true,
-        // showBalloonAt: "top",
         valueField: "visits"
       }, {
         id: "g2",
@@ -84,6 +82,9 @@ export class ReportsComponent implements OnInit {
         parseDates: true,
         axisAlpha: 0,
         minHorizontalGap: 60
+      },
+      balloon: {
+        fillColor: "#32da81"
       },
       export: {
         enabled: true
