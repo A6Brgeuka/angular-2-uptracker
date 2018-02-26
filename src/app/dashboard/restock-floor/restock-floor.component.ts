@@ -34,9 +34,14 @@ export class RestockFloorComponent implements OnInit {
     this.currentFloorstockLocation = location
   }
 
-  onChange(e, inventoryGroupObj, byOnFloor ) {
-    const inputValue = e.target.value
-    inventoryGroupObj.restock_qty = byOnFloor ? inventoryGroupObj.suggested_on_floor - inputValue : inputValue
+  calculateRestockQty(e, inventoryGroupObj) {
+    const on_floor_qty = parseInt(e.target.value)
+    inventoryGroupObj.restock_qty = isNaN(on_floor_qty) ? "" : inventoryGroupObj.suggested_on_floor - on_floor_qty
+  }
+
+  calculateOnFloorQty(e, inventoryGroupObj) {
+    const restock_qty = parseInt(e.target.value)
+    inventoryGroupObj.on_floor_qty = isNaN(restock_qty) ? "" : inventoryGroupObj.suggested_on_floor - restock_qty
   }
 
   clearKeywordSearchValue() {
