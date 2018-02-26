@@ -2,6 +2,18 @@
   display: block;
   width: 100%;
 
+  .disabled .chips {
+    cursor: default;
+
+    .chip {
+      pointer-events: none;
+
+      i {
+        pointer-events: none;
+      }
+    }
+  }
+
   .chips {
     border: 1px solid #d6d6d6;
     border-radius: 5px;
@@ -16,18 +28,6 @@
 
     &.focus {
       border-color: #33c6d9;
-    }
-
-    &.disabled {
-      cursor: default;
-
-      .chip {
-        pointer-events: none;
-
-        i {
-          pointer-events: none;
-        }
-      }
     }
 
     .chip {

@@ -1,12 +1,15 @@
 <div
-  class="chips"
-  #chips
   [ngClass]="{'disabled': isDisabled}"
-  materialize="material_chip"
-  [materializeParams]="[materializeParams]"
-  [materializeActions]="chipActions"
-  appHasClass="focus"
-  (hasClassChange)="onFocus($event)"
-  (chip.delete)="onDelete($event)"
-  (chip.add)="onAdd($event)"
-></div>
+>
+  <div
+    class="chips asda"
+    #chips
+    materialize="material_chip"
+    [materializeParams]="[materializeParams]"
+    [materializeActions]="chipActions"
+    appHasClass="focus"
+    (hasClassChange)="onFocus($event)"
+    (chip.delete)="onDelete($event)"
+    (chip.add)="onAdd($event)"
+  ></div>
+</div>
