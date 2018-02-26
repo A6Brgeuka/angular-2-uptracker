@@ -5,6 +5,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import { IOption } from 'ng-select';
+import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { VendorModel } from '../../../models/index';
@@ -25,8 +26,8 @@ export class ReportsFilterModalContext extends BSModalContext {
 @DestroySubscribers()
 export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<ReportsFilterModalContext> {
   public subscribers: any = {};
-  context: ReportsFilterModalContext;
-  vendors: Array<IOption> = [
+  public context: ReportsFilterModalContext;
+  public vendors: Array<IOption> = [
     {label: 'Acme LLC', value: 'acme'},
     {label: 'Bay Suppliers', value: 'bay'},
     {label: 'Cataman Incdustries', value: 'castaman'},
@@ -36,7 +37,7 @@ export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<Re
     {label: 'ITC', value: 'itc'},
     {label: 'JJES Systems', value: 'jjes'}
   ]
-  catetories: Array<IOption> = [
+  public catetories: Array<IOption> = [
     {label: 'Cat1', value: 'cat1'},
     {label: 'Cat2', value: 'cat2'},
     {label: 'Cat3', value: 'cat3'},
@@ -46,6 +47,19 @@ export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<Re
     {label: 'Cat7', value: 'cat7'},
     {label: 'Cat8', value: 'cat8'},
   ]
+  public daterange: any = {}
+  public dateOptions: any = {
+    locale: { format: 'YYYY-MM-DD' },
+    alwaysShowCalendars: false,
+    ranges: {
+      'Today': [moment(), moment()],
+      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+      'This Month': [moment().startOf('month'), moment().endOf('month')],
+      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }
+  }
 
   constructor(
       public dialog: DialogRef<ReportsFilterModalContext>,
@@ -73,5 +87,9 @@ export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<Re
 
   closeModal(data){
     this.dialog.close(data);
+  }
+
+  selectedDate(value: any, datepicker?: any) {
+    console.log('----------------->   ', value);
   }
 }

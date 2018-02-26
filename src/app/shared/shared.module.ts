@@ -6,7 +6,7 @@ import { MaterializeModule } from "angular2-materialize";
 import { FileDropModule } from 'angular2-file-drop';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { SelectModule } from 'ng-select';
-
+import { Daterangepicker } from 'ng2-daterangepicker';
 
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
@@ -78,7 +78,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GooglePlacesInputModule,
     NguiAutoCompleteModule,
     PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
-    SelectModule
+    SelectModule,
+    Daterangepicker
   ],
   declarations: [
     ...directivesArr,
@@ -95,6 +96,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CommonModule,
     ReactiveFormsModule,
     SelectModule,
+    Daterangepicker,
 
     MaterializeModule,
     FileDropModule,
