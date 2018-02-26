@@ -17,7 +17,7 @@ import { InputValueSearch } from "./pipes/input-value-search/input-value-search.
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
-import { GooglePlacesInputModule } from "./directives";
+import { GooglePlacesInputModule, HasClassModule } from "./directives";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -45,6 +45,7 @@ import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.co
 import { APP_DI_CONFIG } from '../../../env';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { ChipsModule } from './components/chips/chips.module';
 
 const modalsArr = [
   EditUserModal,
@@ -102,6 +103,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GooglePlacesInputModule,
     NguiAutoCompleteModule,
     PerfectScrollbarModule,
+
+    HasClassModule,
+    ChipsModule,
 
     ...directivesArr,
     ...pipesArr,
