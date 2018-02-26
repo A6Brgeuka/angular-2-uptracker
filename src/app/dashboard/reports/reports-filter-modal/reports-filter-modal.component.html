@@ -20,6 +20,9 @@
         <input type="text" placeholder="Min" class="col s5 text" name="min">
         <input type="text" placeholder="Max" class="col s5 offset-s1 text" name="max">
       </div>
+      <div class="col s12 no-padding">
+        <input type="text" name="daterangeInput" daterangepicker [options]="dateOptions" (selected)="selectedDate($event, daterange)" />
+      </div>
     </div>
     <div class="col s4 no-padding">
       <div class="col s12 bordered">Discount</div>
