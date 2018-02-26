@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { MaterializeModule } from "angular2-materialize";
 import { FileDropModule } from 'angular2-file-drop';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
+import { SelectModule } from 'ng-select';
 
 
 import { ModalModule } from 'angular2-modal';
@@ -60,7 +61,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   imports: [
     BootstrapModalModule,
     ModalModule,
-    
+
     CommonModule,
     RouterModule,
     FormsModule,
@@ -77,6 +78,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GooglePlacesInputModule,
     NguiAutoCompleteModule,
     PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
+    SelectModule
   ],
   declarations: [
     ...directivesArr,
@@ -86,12 +88,13 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   exports: [
     BootstrapModalModule,
     ModalModule,
-    
+
     RouterModule,
-    
+
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
+    SelectModule,
 
     MaterializeModule,
     FileDropModule,

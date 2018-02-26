@@ -45,6 +45,9 @@ export class ReportsComponent implements OnInit {
       graphs: [{
         id: "g1",
         useNegativeColorIfDown: false,
+        // balloon: {
+        //   drop: true
+        // },
         balloonText: "[[category]]<br><b>value: [[value]]</b>",
         bullet: "round",
         bulletBorderAlpha: 1,

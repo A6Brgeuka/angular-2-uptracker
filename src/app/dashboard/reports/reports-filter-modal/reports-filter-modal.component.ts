@@ -4,6 +4,7 @@ import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
+import { IOption } from 'ng-select';
 import * as _ from 'lodash';
 
 import { VendorModel } from '../../../models/index';
@@ -25,6 +26,16 @@ export class ReportsFilterModalContext extends BSModalContext {
 export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<ReportsFilterModalContext> {
   public subscribers: any = {};
   context: ReportsFilterModalContext;
+  vendors: Array<IOption> = [
+    {label: 'Acme LLC', value: 'acme'},
+    {label: 'Bay Suppliers', value: 'bay'},
+    {label: 'Cataman Incdustries', value: 'castaman'},
+    {label: 'Dearborn Systems', value: 'dearborn'},
+    {label: 'Frankies Inc', value: 'frankies'},
+    {label: 'Harry\'s Mechanical', value: 'harry'},
+    {label: 'ITC', value: 'itc'},
+    {label: 'JJES Systems', value: 'jjes'}
+  ]
 
   constructor(
       public dialog: DialogRef<ReportsFilterModalContext>,

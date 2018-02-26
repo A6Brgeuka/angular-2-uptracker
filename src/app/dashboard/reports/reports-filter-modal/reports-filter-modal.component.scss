@@ -1,5 +1,5 @@
 :host /deep/ {
-  .inner{
+  .inner {
     width:280px;
     margin:0 auto;
     padding-bottom: 20px;
@@ -97,6 +97,25 @@
       background-color: white;
       border: 2px solid #33c6d9;
       color: #33c6d9;
+    }
+  }
+
+  .below .multiple {
+    .option {
+      display: flex;
+      align-items: center;
+      background-color: #33c6d9;
+      border-color: #33c6d9;
+      color: #ffffff;
+      justify-content: center;
+      padding-right: 25px;
+      position: relative;
+      height: 35px;
+      .deselect-option {
+        color: #ffffff;
+        position: absolute;
+        right: 5px;
+      }
     }
   }
 }
