@@ -1,16 +1,15 @@
 :host /deep/ {
-  .title {
-    margin-bottom: 15px;
-  }
-
   .filter {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
 
     .filter-btn {
+      width: 100px;
       a {
-        line-height: 30px;
-        cursor: pointer;
-        min-width: 65px;
         display: block;
+        cursor: pointer;
+        line-height: 30px;
         i {
           margin-right: 3px;
           font-size: 22px;
@@ -22,6 +21,8 @@
       }
     }
     .wide-input {
+      margin-left: 20px;
+      width: 100%;
       .filter-input {
         background-color: white;
         padding-left: 15px;

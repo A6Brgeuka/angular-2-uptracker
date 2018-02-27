@@ -1,18 +1,15 @@
 <div class="row filter uptracker-form clearfix">
-  <div class="ptop5 filter-right">
-    <div class="col s4 l1 m2 filter-btn text-left">
-      <a (click)="showFiltersModal()">
-        <fa [name]="'filter'"></fa>
-        <span>Filters</span>
-      </a>
-    </div>
-    <div class="col s4 l3 m2 input wide-input">
-      <input type="text"
-        placeholder="Search"
-        [(ngModel)]="searchKey"
-        class="col s12 no-margin filter-input"
-        (input)="searchFilter($event)"/>
-    </div>
+  <div class="filter-btn text-left">
+    <a (click)="showFiltersModal()">
+      <fa [name]="'filter'"></fa>
+      <span>Filters</span>
+    </a>
   </div>
-  <div class="clearfix"></div>
+  <div class="input wide-input">
+    <input type="text"
+      placeholder="Search"
+      [(ngModel)]="searchKey"
+      class="col s12 no-margin filter-input"
+      (input)="searchFilter($event)"/>
+  </div>
 </div>

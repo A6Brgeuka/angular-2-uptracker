@@ -24,11 +24,13 @@
     <div id="chartdiv" class="chart"></div>
   </div>
   <div class="row">
-    <app-search-filter
-      [searchKey]="searchKey"
-      (searchEvent)="searchOrders($event)"
-      (openModalEvent)="showFiltersModal()"
-    ></app-search-filter>
+    <div class="search-filter">
+      <app-search-filter
+        [searchKey]="searchKey"
+        (searchEvent)="searchOrders($event)"
+        (openModalEvent)="showFiltersModal()"
+      ></app-search-filter>
+    </div>
   </div>
   <div class="row">
     <table class="bordered">
