@@ -2,7 +2,16 @@ import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import * as _ from 'lodash';
+
 import { OrderItem } from '../models/order-item';
+import { PastOrderService } from '../../../core/services';
+
+export enum IdsActions {
+  add,
+  remove,
+  set,
+}
 
 export abstract class OrderListBaseService {
 
@@ -13,7 +22,7 @@ export abstract class OrderListBaseService {
 
 
   constructor(
-    entities$: Observable<{[id: string]: any}>
+    pastOrderService: PastOrderService
   ) {
     this.getCollectionRequest$ = this.getCollection$
     .switchMap(() =>
@@ -23,13 +32,22 @@ export abstract class OrderListBaseService {
     )
     .share();
 
-    this.ids$ = this.getCollectionRequest$
-    .map((items) => items.map((item) => item.id))
+    this.ids$ = Observable.merge(
+      this.getCollectionRequest$
+      .map((items) => _.map(items, 'id'))
+      .let(this.getSetAction),
+      pastOrderService.removeIds$
+      .let(this.getRemoveAction),
+    )
+    .scan(
+      this.reducer
+      , []
+    )
     .publishBehavior([]);
     this.ids$.connect();
 
     this.collection$ = Observable.combineLatest(
-      entities$,
+      pastOrderService.entities$,
       this.ids$,
     )
     .map(([entities, ids]) => ids.map((id) => entities[id]));
@@ -41,4 +59,48 @@ export abstract class OrderListBaseService {
   }
 
   protected abstract getRequest(): Observable<any>;
+
+  protected reducer(state, {type, items}: {type: IdsActions, items: string[]}): string[] {
+      switch (type) {
+        case IdsActions.set: {
+          return items;
+        }
+        case IdsActions.remove: {
+          return _.without(state, ...items);
+        }
+        case IdsActions.add: {
+          return _.union(state, items);
+        }
+        default: {
+          return state;
+        }
+      }
+    }
+
+    protected getRemoveAction(obs: Observable<string[]>) {
+      return obs.map((items) =>
+        ({
+          type: IdsActions.remove,
+          items,
+        })
+      );
+    }
+
+    protected getSetAction(obs: Observable<string[]>) {
+      return obs.map((items) =>
+        ({
+          type: IdsActions.set,
+          items,
+        })
+      );
+    }
+
+    protected getAddAction(obs: Observable<string[]>) {
+      return obs.map((items) =>
+        ({
+          type: IdsActions.add,
+          items,
+        })
+      );
+    }
 }

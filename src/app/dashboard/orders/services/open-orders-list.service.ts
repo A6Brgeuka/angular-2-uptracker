@@ -12,7 +12,7 @@ export class OpenOrdersListService extends OrderListBaseService {
     private restangular: Restangular,
     private pastOrderService: PastOrderService,
   ) {
-    super(pastOrderService.entities$);
+    super(pastOrderService);
     this.pastOrderService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
   }
 

@@ -18,7 +18,7 @@ export class FlaggedListService extends OrderListBaseService {
     private restangular: Restangular,
     private pastOrderService: PastOrderService,
   ) {
-    super(pastOrderService.entities$);
+    super(pastOrderService);
 
     this.putItemRequest$ = this.putItem$
     .switchMap((item) => {
@@ -36,32 +36,29 @@ export class FlaggedListService extends OrderListBaseService {
     this.pastOrderService.addCollectionStreamToEntittesStream(this.putItemRequest$.map(item => [item]));
 
     const collectionIdsGetRequest$ = this.getCollectionRequest$
-    .map((items) => ({type: 'replace', value: _.map(items, 'id')}));
+    .map((items) => _.map(items, 'id'))
+    .let(this.getSetAction);
 
-    const collectionUpdateIds$ = this.putItemRequest$
-    .map((item) =>
-      item.flagged ? {type: 'add', value: item.id} : {type: 'remove', value: item.id});
+    const collectionAddIds$ = this.putItemRequest$
+    .filter((item) => item.flagged)
+    .map((item) => [item.id])
+    .let(this.getAddAction);
+
+    const collectionRemoveIds$ = this.putItemRequest$
+    .filter((item) => !item.flagged)
+    .map((item) => [item.id])
+    .let(this.getRemoveAction);
+
+    const collectionVoidedIds$ = this.pastOrderService.removeIds$
+    .let(this.getRemoveAction);
 
     this.ids$ = Observable.merge(
       collectionIdsGetRequest$,
-      collectionUpdateIds$,
+      collectionAddIds$,
+      collectionRemoveIds$,
+      collectionVoidedIds$,
     )
-    .scan((ids: string[], event: any) => {
-      switch (event.type) {
-        case 'replace': {
-          return event.value;
-        }
-        case 'add': {
-          return _.union(ids, [event.value]);
-        }
-        case 'remove': {
-          return _.without(ids, event.value);
-        }
-        default: {
-          return ids;
-        }
-      }
-    }, [])
+    .scan(this.reducer, [])
     .publish();
     this.ids$.connect();
 
