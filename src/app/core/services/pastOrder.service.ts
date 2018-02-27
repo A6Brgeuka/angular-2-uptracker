@@ -43,6 +43,7 @@ export class PastOrderService extends ModelService {
   public openCollectionIds$: ConnectableObservable<any>;
   public receivedCollectionIds$: ConnectableObservable<any>;
   public flaggedCollectionIds$: ConnectableObservable<any>;
+  public removeIds$ = new Subject<string[]>();
   private addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
 
   constructor(
@@ -80,21 +81,9 @@ export class PastOrderService extends ModelService {
   onVoidOrder(data) {
     return this.restangular.one('pos', 'void').customPOST(data)
     .map(res => res.data)
-    .switchMap((voidedOrders: any[]) => {
-      return this.collection$.first()
-      .map(orders => {
-        return orders.reduce((acc: any[], item) => {
-          const foundedItem = _.find(voidedOrders, ['id', item.id]);
-          if (foundedItem) {
-            item = foundedItem;
-          }
-          return [...acc, item];
-        }, []);
-      });
-    })
-    .map(res =>
-      this.updateCollection$.next(res)
-    );
+    .do((voidedOrders: any[]) => {
+      this.removeIds$.next(voidedOrders.map((order) => order.id));
+    });
   }
 
   updateSortBy(param) {
