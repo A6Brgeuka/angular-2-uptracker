@@ -28,7 +28,7 @@ export class AddVendorModalComponent implements OnInit {
 
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
-  public vendor: Vendor = new Vendor();
+  public vendor: Vendor = {vendor_name:null, vendor_id:null};
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
   public vendorModel: NewVendorModel;
@@ -91,8 +91,9 @@ export class AddVendorModalComponent implements OnInit {
 
   nextStep() {
     if (this.vendor.vendor_id) {
-      this.router.navigate(['/vendors/edit/' + this.vendor.vendor_id]);
-      return this.dismissModal();
+      this.vendor.location_id = 'all';
+      this.onSubmit(this.vendor);
+      return;
     }
     if (this.vendor && this.vendor.vendor_name) {
       this.vendorModel.name = this.vendor.vendor_name;
@@ -116,9 +117,9 @@ export class AddVendorModalComponent implements OnInit {
     this.selectedFaxCountry = $event;
   }
 
-  onSubmit() {
+  onSubmit(vendor) {
 
-    _.each(this.vendorModel, (value, key) => {
+    _.each(vendor, (value, key) => {
       if (value != null && value) {
         this.formData.append(key, value);
       }
