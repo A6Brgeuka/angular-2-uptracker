@@ -131,6 +131,7 @@ export class AddVendorModalComponent implements OnInit {
 
     this.vendorService.addAccountVendor(this.formData).subscribe(
       (res: any) => {
+        this.router.navigate(['/vendors/edit/' + res.id]);
         return this.dismissModal();
       }
     );
