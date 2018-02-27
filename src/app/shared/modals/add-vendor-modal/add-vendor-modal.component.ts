@@ -28,7 +28,7 @@ export class AddVendorModalComponent implements OnInit {
 
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
-  public vendor: Vendor = {vendor_name:null, vendor_id:null};
+  public vendor = {vendor_name:null, vendor_id:null, location_id: 'all'};
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
   public vendorModel: NewVendorModel;
@@ -59,7 +59,7 @@ export class AddVendorModalComponent implements OnInit {
   dismissModal() {
     this.uploadName = '';
     this.vendorModel = new NewVendorModel();
-    this.vendor = new Vendor();
+    this.vendor = {vendor_name:null, vendor_id:null, location_id: 'all'};
     this.dialog.dismiss();
   }
 
