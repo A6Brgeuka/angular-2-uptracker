@@ -389,20 +389,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.fileArr.push(file);
     this.newFiles$.next(this.fileArr);
   }
-
-  onSubmit() {
+  
+  public prepareFormData():void {
     this.formData = new FormData();
-    this.generalVendor.account_id = this.userService.selfData.account_id;
-    this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
-    this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
-    this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
-    this.vendor.secondary_rep_office_phone = this.secondaryFormPhone ? this.selectedSecondaryCountry[2] + ' ' + this.secondaryFormPhone : '';
-    this.vendor.secondary_rep_mobile_phone = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : '';
-    this.vendor.secondary_rep_fax = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : '';
-    this.vendor.documents = null;
-    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
-    this.generalVendor.vendor_id = this.vendorId || this.generalVendor.id;
-    
     _.each(this.vendor, (value, key) => {
       if (value != null && typeof value === 'string')
         this.formData.append(key, value);
@@ -412,34 +401,69 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     if (value != null && typeof value === 'string')
       this.formData.append(key, value);
     });
-
-    // append new files
+    
     let i = 0;
     _.each(this.fileArr, (value, key) => {
       this.formData.append('new_documents[' + i + ']', this.fileArr[i]);
       i++;
     });
 
-
-    // append old files
     let j = 0;
     _.each(this.fileArr, (value, key) => {
       this.formData.append('documents[' + j + ']', this.oldFileArr[j]);
       j++;
     });
+  }
+
+  onSubmit() {
+    
+    this.generalVendor.account_id = this.userService.selfData.account_id;
+    this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : '';
+    this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : '';
+    this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : '';
+    this.vendor.secondary_rep_office_phone = this.secondaryFormPhone ? this.selectedSecondaryCountry[2] + ' ' + this.secondaryFormPhone : '';
+    this.vendor.secondary_rep_mobile_phone = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : '';
+    this.vendor.secondary_rep_fax = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : '';
+    this.vendor.documents = null;
+    this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
+    this.generalVendor.vendor_id = this.vendorId || this.generalVendor.id;
+    
+    let requests = [];
+    this.prepareFormData();
+
     if (!this.vendor._id || (this.currentLocation && this.currentLocation.id && this.vendor.is_all)) {
-      this.vendorService.addAccountVendor(this.formData).subscribe(
-        (res: any) => {
-          this.goBackOneStep();
-        }
-      );
+      requests.push(this.vendorService.addAccountVendor(this.formData));
     } else {
-      this.vendorService.editAccountVendor(this.vendor, this.formData).subscribe(
-        (res: any) => {
-          this.goBackOneStep();
-        }
-      );
+      requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
     }
+
+    if (!this.currentLocation || !this.currentLocation.id) {
+      if (this.primaryLocation) {
+        let foundVendor = this.locationVendors.find(v => v.location_id === this.primaryLocation.id);
+        this.vendor.location_id = this.primaryLocation.id;
+        this.prepareFormData();
+        if (foundVendor) {
+          requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
+        } else {
+          requests.push(this.vendorService.addAccountVendor(this.formData));
+        }
+      }
+
+      if (this.secondaryLocation) {
+        let foundVendor = this.locationVendors.find(v => v.location_id === this.secondaryLocation.id);
+        this.vendor.location_id = this.secondaryLocation.id;
+        this.prepareFormData();
+        if (foundVendor) {
+          requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
+        } else {
+          requests.push(this.vendorService.addAccountVendor(this.formData));
+        }
+      }
+    }
+    
+    Observable.combineLatest(requests).subscribe(res => {
+      this.goBackOneStep();
+    })
 
     console.log(this.vendor, 3333333);
     console.log(this.formData, 44444);
