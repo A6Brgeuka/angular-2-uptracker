@@ -13,10 +13,11 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 // import { CoreModule } from "../core/core.module";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
+import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
-import { GooglePlacesInputModule } from "./directives";
+import { GooglePlacesInputModule, HasClassModule } from "./directives";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -26,6 +27,7 @@ let directivesArr = [
 
 let pipesArr = [
   IterablePipe,
+  InputValueSearch,
 ];
 
 // resolvers
@@ -43,6 +45,7 @@ import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.co
 import { APP_DI_CONFIG } from '../../../env';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { ChipsModule } from './components/chips/chips.module';
 
 const modalsArr = [
   EditUserModal,
@@ -60,7 +63,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   imports: [
     BootstrapModalModule,
     ModalModule,
-    
+
     CommonModule,
     RouterModule,
     FormsModule,
@@ -86,9 +89,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   exports: [
     BootstrapModalModule,
     ModalModule,
-    
+
     RouterModule,
-    
+
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
@@ -100,6 +103,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     GooglePlacesInputModule,
     NguiAutoCompleteModule,
     PerfectScrollbarModule,
+
+    HasClassModule,
+    ChipsModule,
 
     ...directivesArr,
     ...pipesArr,
