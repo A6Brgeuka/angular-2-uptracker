@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { Location }                 from '@angular/common';
+import { Location } from '@angular/common';
 
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
@@ -28,12 +28,12 @@ import { Subject } from 'rxjs/Subject';
 })
 @DestroySubscribers()
 export class EditVendorComponent implements OnInit, AfterViewInit {
-  originalVendorValue: AccountVendorModel;
+  public generalVendor: VendorModel = new VendorModel();
+  public locationVendors: AccountVendorModel[] = [];
   public options: any;
   public subscribers: any = {};
   public currentVendor$;
   public vendor: AccountVendorModel;
-  public accountVendors: AccountVendorModel[];
   public vendorData: any;
   public formData: FormData = new FormData();
   public currency$: Observable<any>;
@@ -75,7 +75,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public oldFileArr: any = [];
 
   public locations$: Observable<any>;
-  public currentLocation: any;
+  public currentLocation: any = null;
   public sateliteLocationActive: boolean = false;
   public primaryLocation: any;
   public secondaryLocation: any;
@@ -99,10 +99,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   public placeholder: any = {};
   public vendorId: string;
   public inited: boolean = false;
-  public allVendor$: Observable<any>;
-  public openConfirmModal$: Subject<any>;
-  private noAV:  boolean = false;  
+  private noAV:  boolean = true;
 
+  
   constructor(
     public userService: UserService,
     public accountService: AccountService,
@@ -118,77 +117,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.currentVendor$ = this.vendorService.globalVendor$;
-
-    this.currency$ = this.accountService.getCurrencies();
-
-    this.files$ = Observable.combineLatest(
-      this.newFiles$,
-      this.oldFiles$,
-      (newFiles, oldFiles) => {
-        let files = _.union(oldFiles, newFiles);
-        return files;
-      }
-    );
-
-    this.locations$ = this.accountService.locations$
-    .map((res: any) => {
-      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-      this.secondaryLocationArr = _.filter(res, (loc) => {
-        return this.primaryLocation != loc;
-      });
-      if (this.secondaryLocationArr.length > 0)
-        this.secondaryLocation = this.secondaryLocationArr[0];
-      return this.secondaryLocationArr;
-    });
-
-
   }
 
   addSubscribers() {
-    this.subscribers.AccountVendorsSubscribtion = Observable.combineLatest(
-      this.route.params,
-      this.vendorService.getAccountVendors(),
-    )
-    .map(([route, vendors]: any) => _.filter(vendors, {'vendor_id': route['id']}))
-    .subscribe((vendors: any[]) => {
-
-      if (!_.isEmpty(vendors)) {
-        this.vendorData = vendors[0];
-        this.vendorData['vendor_id'] = vendors[0]['vendor_id'];
-        this.vendorId = vendors[0]['vendor_id'];
-      }
-
-      this.accountVendors = vendors;
-
-      this.vendorLoaded$.next(true);
-
-    });
-
-    this.subscribers.viewInitAndVendorLoadedSubscriber = Observable
-    .combineLatest(this.viewInit$, this.vendorLoaded$)
-    .filter(([a, b]) => (a && b))
-    .subscribe(()=>{
-      this.initTabs()
-    });
-
+    this.currency$ = this.accountService.getCurrencies();
     this.subscribers.currencySubscription = this.currency$
     .subscribe(currency => this.currencyArr = currency);
   }
 
   initTabs() {
-
-     //this.secondaryLocationLink.nativeElement.click();
-
-    //this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$.subscribe((res: any) => {
-    //  //this.chooseTabLocation(res);
-    //  if (this.secondaryLocationArr.length == 1) return;
-    //  if (res && res.id != this.primaryLocation.id ) {
-    //    this.secondaryLocationLink.nativeElement.click();
-    //  }
-    //});
-
-    // observer to detect class change
     if (this.secondaryLocationLink) {
       let observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation: any) => {
@@ -217,35 +154,82 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     }
 
     this.inited = true;
-
   }
 
   ngAfterViewInit() {
-    this.viewInit$.next(true);
+    
+    this.files$ = Observable.combineLatest(
+      this.newFiles$,
+      this.oldFiles$,
+      (newFiles, oldFiles) => {
+        let files = _.union(oldFiles, newFiles);
+        return files;
+      }
+    );
+    
+    this.locations$ = this.accountService.locations$
+    .map((res: any) => {
+      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+      this.secondaryLocationArr = _.filter(res, (loc) => {
+        return this.primaryLocation != loc;
+      });
+      if (this.secondaryLocationArr.length > 0)
+        this.secondaryLocation = this.secondaryLocationArr[0];
+      return this.secondaryLocationArr;
+    });
+
+    this.currentVendor$ = this.vendorService.globalVendor$;
+    
+    this.vendorService.globalVendor$.subscribe(value => {
+      this.generalVendor = new VendorModel(value);
+      this.generalVendor.locations.forEach(v => {
+        this.locationVendors.push(new AccountVendorModel(v));
+      });
+      this.initTabs();
+    })
   }
 
-  openConfirmModal(location = null) {
-    this.subscribers.openConfirmModalSubscription = this.confirmModalService.confirmModal(
+  openConfirmModal(location) {
+    this.confirmModalService.confirmModal(
       'Save?', {text: 'Do you want to save the applied changes?', btn: 'Save'}
     ).subscribe(res => {
       if (res.success) {
         this.onSubmit();
+        return;
       }
       return this.chooseTabLocation(location);
     });
   }
 
 
-  compareVendors(left: AccountVendorModel, right: AccountVendorModel): boolean {
-    if (_.isEqual(left, right)) {
+  compareVendors(): boolean {
+    if (!this.inited) {
       return true;
     }
-
-    return false;
+    if (this.currentLocation && this.currentLocation.id) {
+      let locationVendor = _.cloneDeep(this.locationVendors.find(v => v.location_id == this.currentLocation.id));
+      if (!locationVendor) {
+        locationVendor = _.cloneDeep(this.locationVendors.find(v => v.is_all));
+      }
+      if (locationVendor && locationVendor.discount_percentage) {
+        locationVendor.discount_percentage *= 100;
+      }
+      if (locationVendor) {
+        return _.isEqual(locationVendor, this.vendor);
+      } else {
+        return false;
+      }
+    } else {
+      let locationVendor = _.cloneDeep(this.locationVendors.find(v => v.is_all));
+      if (locationVendor && locationVendor.discount_percentage) {
+        locationVendor.discount_percentage *= 100;
+      }
+      return _.isEqual(locationVendor, this.vendor);
+    }
   }
 
   selectTabLocation(location = null) {
-    if (this.vendor.id && !this.compareVendors(this.vendor, this.originalVendorValue)) {
+    if (!this.compareVendors()) {
       this.openConfirmModal(location);
     } else {
       this.chooseTabLocation(location);
@@ -293,25 +277,22 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.currentLocation = location;
 
     //location have been choosen
+    this.vendor = null;
+    if (this.currentLocation && this.currentLocation.id) {
+      this.vendor = _.cloneDeep(this.locationVendors.find(v => v.location_id === this.currentLocation.id));
+    } 
+    if (!this.vendor) {
+      this.vendor = _.cloneDeep(this.locationVendors.find(v => v.is_all));
+    } 
+    if (!this.vendor) {
+      this.vendor = new AccountVendorModel();
+    }
 
-    let currentVendor = _.find(_.cloneDeep(this.accountVendors), {'location_id': this.currentLocation ? this.currentLocation.id : null});
-
-    let subscriber = this.currentVendor$
-    .first()
-    .subscribe((vendor:VendorModel)=>{
-
-      if (!currentVendor || _.isEmpty(currentVendor)) {
-        this.noAV = true;
-      }
-
-      this.fillForm(Object.assign(vendor,currentVendor || {}));
-      //subscriber.unsubscribe();
-    });
-
+    this.fillForm();
   }
-
-  fillForm(vendor = {}) {
-
+  
+  fillForm() {
+    
     this.oldFiles$.next(null);
     this.newFiles$.next(null);
     this.vendorFormPhone = '';
@@ -320,32 +301,26 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.secondaryFormPhone = '';
     this.secondaryFormPhone2 = '';
     this.secondaryFormFax = '';
-    this.vendor = new AccountVendorModel(vendor);
-    this.originalVendorValue = _.cloneDeep(this.vendor);
     console.log(this.vendor, 2222222);
 
     this.calcPriorityMargin(this.vendor.priority || 1);
-
-    if (this.vendor.id) {
-      this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
-      this.oldFileArr = this.vendor.documents;
-      this.oldFiles$.next(this.oldFileArr);
-
-      this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
-      this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
-      this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
-      this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone);
-      this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
-      this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
-
-      this.secondaryFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_office_phone);
-      this.selectedSecondaryCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_office_phone);
-      this.secondaryFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_mobile_phone);
-      this.selectedSecondaryCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_mobile_phone);
-      this.secondaryFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_fax);
-      this.selectedSecondaryFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_fax);
-    }
-
+    
+    this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
+    this.oldFileArr = this.vendor.documents;
+    this.oldFiles$.next(this.oldFileArr);
+    
+    this.vendorFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_office_phone);
+    this.selectedCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_office_phone);
+    this.vendorFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_mobile_phone);
+    this.selectedCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_mobile_phone);
+    this.vendorFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.rep_fax);
+    this.selectedFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.rep_fax);
+    this.secondaryFormPhone = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_office_phone);
+    this.selectedSecondaryCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_office_phone);
+    this.secondaryFormPhone2 = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_mobile_phone);
+    this.selectedSecondaryCountry2 = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_mobile_phone);
+    this.secondaryFormFax = this.phoneMaskService.getPhoneByIntlPhone(this.vendor.secondary_rep_fax);
+    this.selectedSecondaryFaxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.vendor.secondary_rep_fax);
   }
 
   changeCurrency(event) {
@@ -417,21 +392,25 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.formData = new FormData();
-    this.vendor.account_id = this.userService.selfData.account_id;
-    this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : '';
-    this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : '';
-    this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : '';
+    this.generalVendor.account_id = this.userService.selfData.account_id;
+    this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : null;
+    this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : null;
+    this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : null;
     this.vendor.secondary_rep_office_phone = this.secondaryFormPhone ? this.selectedSecondaryCountry[2] + ' ' + this.secondaryFormPhone : '';
     this.vendor.secondary_rep_mobile_phone = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : '';
     this.vendor.secondary_rep_fax = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : '';
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
-    this.vendor.vendor_id = this.vendorId || this.vendor.id;
-
+    this.generalVendor.vendor_id = this.vendorId || this.generalVendor.id;
+    
     _.each(this.vendor, (value, key) => {
-      if (value != null) {
+      if (value != null && typeof value === 'string')
         this.formData.append(key, value);
-      }
+    });
+
+    _.each(this.generalVendor, (value, key) => {
+    if (value != null && typeof value === 'string')
+      this.formData.append(key, value);
     });
 
     // append new files
@@ -448,7 +427,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.formData.append('documents[' + j + ']', this.oldFileArr[j]);
       j++;
     });
-    if (this.noAV) {
+    if (!this.vendor._id || (this.currentLocation && this.currentLocation.id && this.vendor.is_all)) {
       this.vendorService.addAccountVendor(this.formData).subscribe(
         (res: any) => {
           this.goBackOneStep();

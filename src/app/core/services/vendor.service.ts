@@ -62,12 +62,11 @@ export class VendorService extends ModelService {
       // find and combine vendors
       let commonVendors = _.map(vendors, (globalVendor: any) => {
         globalVendor = new VendorModel(globalVendor);
-        _.each(accountVendors, (accountVendor: AccountVendorModel) => {
+        _.each(accountVendors, (accountVendor: VendorModel) => {
           if (accountVendor.vendor_id == globalVendor.id) {
             // globalVendor.account_vendor = accountVendor;
             globalVendor.account_vendor.push(accountVendor);
-            if (!accountVendor.location_id)
-              globalVendor.priority = accountVendor.priority;
+            globalVendor.priority = accountVendor.priority;
           }
         });
         return globalVendor;
