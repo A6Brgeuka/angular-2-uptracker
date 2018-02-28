@@ -206,6 +206,9 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     if (!this.inited) {
       return true;
     }
+
+    this.fillVendor();
+
     if (this.currentLocation && this.currentLocation.id) {
       let locationVendor = _.cloneDeep(this.locationVendors.find(v => v.location_id == this.currentLocation.id));
       if (!locationVendor) {
@@ -213,7 +216,10 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       }
       if (locationVendor && locationVendor.discount_percentage) {
         locationVendor.discount_percentage *= 100;
+      } else {
+        locationVendor.discount_percentage = 0;
       }
+
       if (locationVendor) {
         return _.isEqual(locationVendor, this.vendor);
       } else {
@@ -223,6 +229,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       let locationVendor = _.cloneDeep(this.locationVendors.find(v => v.is_all));
       if (locationVendor && locationVendor.discount_percentage) {
         locationVendor.discount_percentage *= 100;
+      } else {
+        locationVendor.discount_percentage = 0;
       }
       return _.isEqual(locationVendor, this.vendor);
     }
@@ -305,7 +313,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
 
     this.calcPriorityMargin(this.vendor.priority || 1);
     
-    this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : null;
+    this.vendor.discount_percentage = this.vendor.discount_percentage ? this.vendor.discount_percentage * 100 : 0;
     this.oldFileArr = this.vendor.documents;
     this.oldFiles$.next(this.oldFileArr);
     
@@ -415,15 +423,18 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onSubmit() {
-    
-    this.generalVendor.account_id = this.userService.selfData.account_id;
+  fillVendor() {
     this.vendor.rep_office_phone = this.vendorFormPhone ? this.selectedCountry[2] + ' ' + this.vendorFormPhone : '';
     this.vendor.rep_mobile_phone = this.vendorFormPhone2 ? this.selectedCountry2[2] + ' ' + this.vendorFormPhone2 : '';
     this.vendor.rep_fax = this.vendorFormFax ? this.selectedFaxCountry[2] + ' ' + this.vendorFormFax : '';
     this.vendor.secondary_rep_office_phone = this.secondaryFormPhone ? this.selectedSecondaryCountry[2] + ' ' + this.secondaryFormPhone : '';
     this.vendor.secondary_rep_mobile_phone = this.secondaryFormPhone2 ? this.selectedSecondaryCountry2[2] + ' ' + this.secondaryFormPhone2 : '';
     this.vendor.secondary_rep_fax = this.secondaryFormFax ? this.selectedSecondaryFaxCountry[2] + ' ' + this.secondaryFormFax : '';
+  }
+
+  onSubmit() {
+    this.generalVendor.account_id = this.userService.selfData.account_id;
+    this.fillVendor();
     this.vendor.documents = null;
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
     this.generalVendor.vendor_id = this.vendorId || this.generalVendor.id;
