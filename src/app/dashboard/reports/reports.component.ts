@@ -102,7 +102,7 @@ export class ReportsComponent implements OnInit {
         shadowColor: "#ffffff"
       },
       export: {
-        enabled: true
+        enabled: false
       }
     });
 
