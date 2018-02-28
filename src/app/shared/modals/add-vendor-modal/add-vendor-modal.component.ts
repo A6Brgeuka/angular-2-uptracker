@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Vendor} from '../../../models/inventory.model';
 import {InventoryService} from '../../../core/services/inventory.service';
-import {DestroySubscribers} from 'ng2-destroy-subscribers';
+import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {AccountVendorModel} from '../../../models/account-vendor.model';
 import {NewVendorModel} from '../../../models/new-vendor.model';
 import {VendorService} from '../../../core/services/vendor.service';
