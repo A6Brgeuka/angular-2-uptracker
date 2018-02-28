@@ -45,6 +45,7 @@ import { UniConfirmModal } from './modals/uni-confirm-modal/uni-confirm-modal.co
 import { APP_DI_CONFIG } from '../../../env';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { AddVendorModalComponent } from './modals/add-vendor-modal/add-vendor-modal.component';
 import { ChipsModule } from './components/chips/chips.module';
 
 const modalsArr = [
@@ -53,6 +54,7 @@ const modalsArr = [
   ChangePasswordUserModal,
   EditCommentModal,
   UniConfirmModal,
+  AddVendorModalComponent,
 ];
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -84,7 +86,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [
     ...directivesArr,
     ...pipesArr,
-    ...modalsArr
+    ...modalsArr,
   ],
   exports: [
     BootstrapModalModule,

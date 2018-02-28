@@ -5,7 +5,15 @@
 </ul>
 
 <div class="row filter uptracker-form no-margin-bottom">
-  <div class="title no-margin-top col m9 s8">
+  <div class="col m5 s4">
+    <button
+            class="uptracker-form-btn white-text waves-effect waves-light test"
+            (click)="openAddVendorsModal()"
+            *ngIf="(vendorService.getVendorsData$ | async) ==='my'">
+      <fa name="plus"></fa> Add Vendor
+    </button>
+  </div>
+  <div class="title no-margin-top col m5 s5">
     <span class="sub-title mrg-l-0">{{vendorService.totalCount$ | async}} total</span>
   </div>
   <div class="col m2 s3 select low-height sortby">
