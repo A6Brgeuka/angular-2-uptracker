@@ -45,10 +45,21 @@ export class ReportsComponent implements OnInit {
       graphs: [{
         id: "g1",
         useNegativeColorIfDown: false,
-        // balloon: {
-        //   drop: true
-        // },
-        balloonText: "[[category]]<br><b>value: [[value]]</b>",
+        balloonText: "[[category]]<br><b>change: [[value]]</b>",
+        balloonFunction: function(graphDataItem, graph) {
+          var value = graphDataItem.values.value;
+          var origin = graphDataItem.values.value;
+          var offset = '';
+          if (graphDataItem.index > 0) {
+            value = value - graph.data[graphDataItem.index - 1].dataContext.visits
+            if (value > 0) {
+              offset = '$' + value;
+            } else {
+              offset = '-$' + (-value);
+            }
+          }
+          return "<div style='padding-left:20px;padding-right:20px;'><span style='color:white;font-family:Roboto;font-size:22px;font-weight:bold;'>$" + origin + "</span>" + "<br><span style='color:white;font-family:Roboto;font-size:14px;'>Change " + offset + "</span></div>";
+        },
         bullet: "round",
         bulletBorderAlpha: 1,
         bulletBorderColor: "#ffffff",
@@ -59,7 +70,7 @@ export class ReportsComponent implements OnInit {
       }, {
         id: "g2",
         useNegativeColorIfDown: false,
-        balloonText: "[[category]]<br><b>value: [[value]]</b>",
+        balloonText: "[[category]]<br><b>change: [[value]]</b>",
         bullet: "round",
         bulletBorderAlpha: 1,
         bulletBorderColor: "#ffffff",
@@ -77,10 +88,6 @@ export class ReportsComponent implements OnInit {
         selectedBackgroundColor: "#67b7dc",
         selectedBackgroundAlpha: 1
       },
-      chartCursor: {
-        valueLineEnabled: true,
-        valueLineBalloonEnabled: true
-      },
       categoryField: "date",
       categoryAxis: {
         parseDates: true,
@@ -88,7 +95,11 @@ export class ReportsComponent implements OnInit {
         minHorizontalGap: 60
       },
       balloon: {
-        fillColor: "#32da81"
+        borderThickness: 0,
+        cornerRadius: 3,
+        fillAlpha: 1,
+        fillColor: "#404851",
+        shadowColor: "#ffffff"
       },
       export: {
         enabled: true
