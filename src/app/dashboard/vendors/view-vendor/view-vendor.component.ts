@@ -118,7 +118,8 @@ export class ViewVendorComponent implements OnInit, OnDestroy {
     }
     this.currentLocation = location;
     if (this.currentLocation && this.currentLocation.id) {
-      this.locationData = this.vendor.locations.find(v => v.location_id === this.currentLocation.id);
+      let location = this.vendor.locations.find(v => v.location_id === this.currentLocation.id);
+      this.locationData = location ? location : new AccountVendorModel();
     }
     
     if (this.currencyArr.length) {
