@@ -62,7 +62,7 @@ export class ReportsComponent implements OnInit {
         },
         bullet: "round",
         bulletBorderAlpha: 1,
-        bulletBorderColor: "#ffffff",
+        bulletBorderColor: "#32da81",
         hideBulletsCount: 50,
         lineThickness: 2,
         lineColor: "#32da81",
