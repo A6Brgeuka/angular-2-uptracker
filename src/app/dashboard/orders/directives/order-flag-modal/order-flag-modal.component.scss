@@ -22,6 +22,15 @@
             margin: 10px 0;
             p {
               margin: 0;
+
+              span {
+                color: grey;
+                font-size: 12px;
+              }
+
+              &.comment-text {
+                font-size: 12px;
+              }
             }
           }
         }
