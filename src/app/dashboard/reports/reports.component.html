@@ -7,91 +7,100 @@
   <div class="row">
     <ul class="tabs location-tabs mrg-btm-0" materialize="tabs">
       <li class="tab">
-        <a href="#allTab">Overview</a>
+        <a href="#overview">Overview</a>
       </li>
       <li class="tab">
-        <a href="#openTab">Budgets</a>
+        <a href="#budgets">Budgets</a>
       </li>
       <li class="tab">
-        <a href="#receivedTab">Spending</a>
+        <a href="#spending">Spending</a>
       </li>
       <li class="tab">
-        <a href="#backorderedTab">Price History</a>
+        <a href="#price">Price History</a>
+      </li>
+      <li class="tab">
+        <a href="#settings">Settings</a>
       </li>
     </ul>
   </div>
-  <div class="row">
-    <div id="chartdiv" class="chart"></div>
-  </div>
-  <div class="row">
-    <div class="search-filter">
-      <app-search-filter
-        [searchKey]="searchKey"
-        (searchEvent)="searchOrders($event)"
-        (openModalEvent)="showFiltersModal()"
-      ></app-search-filter>
+  <div id="overview"></div>
+  <div id="budgets"></div>
+  <div id="spending"></div>
+  <div id="price">
+    <div class="row">
+      <div id="chartdiv" class="chart"></div>
+    </div>
+    <div class="row">
+      <div class="search-filter">
+        <app-search-filter
+          [searchKey]="searchKey"
+          (searchEvent)="searchOrders($event)"
+          (openModalEvent)="showFiltersModal()"
+        ></app-search-filter>
+      </div>
+    </div>
+    <div class="row">
+      <table class="bordered">
+        <thead class="price-header">
+          <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Avg Price</th>
+            <th>Discount</th>
+            <th>Vendor</th>
+            <th>Department</th>
+            <th>Category</th>
+            <th>Account</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+  
+        <tbody class="price-content">
+          <tr>
+            <td><div>
+              <input type="checkbox" class="filled-in" id="scalpel" />
+              <label for="scalpel">Scalpel</label>
+            </div></td>
+            <td>$117</td>
+            <td>$87</td>
+            <td>Bogo</td>
+            <td>Acme Inc</td>
+            <td>Surgical</td>
+            <td>Tools</td>
+            <td>Misc</td>
+            <td>Miami, FL</td>
+          </tr>
+          <tr>
+            <td><div>
+              <input type="checkbox" class="filled-in" id="ballcalsp" />
+              <label for="ballcalsp">Ball Clasp</label>
+            </div></td>
+            <td>$120</td>
+            <td>$110</td>
+            <td>Bogo</td>
+            <td>Acme Inc</td>
+            <td>Surgical</td>
+            <td>Tools</td>
+            <td>Misc</td>
+            <td>Miami, FL</td>
+          </tr>
+          <tr>
+            <td><div>
+              <input type="checkbox" class="filled-in" id="nunchucks" />
+              <label for="nunchucks">Nunchucks</label>
+            </div></td>
+            <td>$80</td>
+            <td>$88</td>
+            <td>Bogo</td>
+            <td>Ninja Inc</td>
+            <td>Stealth</td>
+            <td>Tools</td>
+            <td>Misc</td>
+            <td>Miami, FL</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  <div class="row">
-    <table class="bordered">
-      <thead class="price-header">
-        <tr>
-          <th>Product Name</th>
-          <th>Price</th>
-          <th>Avg Price</th>
-          <th>Discount</th>
-          <th>Vendor</th>
-          <th>Department</th>
-          <th>Category</th>
-          <th>Account</th>
-          <th>Location</th>
-        </tr>
-      </thead>
-
-      <tbody class="price-content">
-        <tr>
-          <td><div>
-            <input type="checkbox" class="filled-in" id="scalpel" />
-            <label for="scalpel">Scalpel</label>
-          </div></td>
-          <td>$117</td>
-          <td>$87</td>
-          <td>Bogo</td>
-          <td>Acme Inc</td>
-          <td>Surgical</td>
-          <td>Tools</td>
-          <td>Misc</td>
-          <td>Miami, FL</td>
-        </tr>
-        <tr>
-          <td><div>
-            <input type="checkbox" class="filled-in" id="ballcalsp" />
-            <label for="ballcalsp">Ball Clasp</label>
-          </div></td>
-          <td>$120</td>
-          <td>$110</td>
-          <td>Bogo</td>
-          <td>Acme Inc</td>
-          <td>Surgical</td>
-          <td>Tools</td>
-          <td>Misc</td>
-          <td>Miami, FL</td>
-        </tr>
-        <tr>
-          <td><div>
-            <input type="checkbox" class="filled-in" id="nunchucks" />
-            <label for="nunchucks">Nunchucks</label>
-          </div></td>
-          <td>$80</td>
-          <td>$88</td>
-          <td>Bogo</td>
-          <td>Ninja Inc</td>
-          <td>Stealth</td>
-          <td>Tools</td>
-          <td>Misc</td>
-          <td>Miami, FL</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <div id="settings"></div>
 </div>
