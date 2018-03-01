@@ -9,7 +9,7 @@ import { ToasterService } from '../../../../../../core/services/toaster.service'
 import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-modal.component';
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
-import { AddCommentModalComponent } from '../../../../../../shared/modals/add-comment-modal/add-comment-modal.component';
+import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
 import { ConfirmModalService } from '../../../../../../shared/modals/confirm-modal/confirm-modal.service';
 import { FavoritedListService } from '../../../../services/favorited-list.service';
 import { FlaggedListService } from '../../../../services/flagged-list.service';
@@ -121,17 +121,16 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   openAddCommentModal(item) {
     this.modal
-    .open(AddCommentModalComponent, this.modalWindowService
-    .overlayConfigFactoryWithParams(item, true, 'mid'))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (comment) => {
-          item.flagged_comment = comment.body;
-          this.updateFlagged$.next(item);
+    .open(OrderFlagModalComponent, this.modalWindowService
+    .overlayConfigFactoryWithParams(item, true, 'big'))
+    .then((resultPromise) => resultPromise.result)
+    .then(
+      (response) => {
+        this.updateFlagged$.next({...item, flagged_comment: response.comment});
       },
-        (err) => {}
-      );
-    });
+      (err) => {
+      }
+    );
   }
 
   openShowCommentModal(item) {
