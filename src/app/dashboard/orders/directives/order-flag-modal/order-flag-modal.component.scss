@@ -2,6 +2,42 @@
 
 :host /deep/ {
   .inner {
+    form {
+      max-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .textarea-row {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-between;
+
+        .comments-wrapper {
+          overflow: auto;
+          flex-grow: 1;
+
+          .comment {
+            margin: 10px 0;
+            p {
+              margin: 0;
+            }
+          }
+        }
+
+        div:not(.comments-wrapper) {
+          flex-shrink: 0;
+        }
+
+      }
+
+      .buttons-row {
+        flex-shrink: 0;
+        margin: 0;
+      }
+    }
+
     button.uptracker-form-btn {
       height: 36px;
       font-size: 14px;
@@ -31,10 +67,4 @@
     }
   }
 
-  .mtop {
-    margin-top: 20px;
-  }
-  .mbot {
-    margin-bottom: 10px;
-  }
 }

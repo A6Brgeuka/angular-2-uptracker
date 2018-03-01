@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { CloseGuard, DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { isArray } from 'lodash';
 
 export class OrderFlagModalContext extends BSModalContext {
   public flagged_comment: FlaggedComment[];
@@ -29,6 +31,7 @@ export class OrderFlagModalComponent implements CloseGuard, ModalComponent<Order
     public dialog: DialogRef<OrderFlagModalContext>,
   ) {
     this.context = dialog.context;
+    this.comments = isArray(this.context.flagged_comment) ? this.context.flagged_comment : [];
     this.form = new FormGroup({
       comment: new FormControl('', Validators.required)
     });

@@ -4,6 +4,14 @@
       <div class="col s12 title center-align">
         Add Comment
       </div>
+      <div class="col s12 comments-wrapper" *ngIf="comments.length">
+        <div class="row">
+          <div class="col s12 comment" *ngFor="let comment of comments">
+            <p><b>{{comment.user_name}}</b> {{comment.date}}</p>
+            <p>{{comment.comment}}</p>
+          </div>
+        </div>
+      </div>
       <div class="col s12">
         <div class="textarea">
           <textarea
@@ -17,9 +25,9 @@
         </div>
       </div>
     </div>
-    <div class="row mtop mbot">
+    <div class="row mtop buttons-row">
       <div class="center-align col s12">
-        <button class="uptracker-form-btn red-btn" (click)="dismissModal()">Cancel</button>
+        <button class="uptracker-form-btn red-btn" type="reset" (click)="dismissModal()">Cancel</button>
         <button class="uptracker-form-btn teal-btn">Save</button>
       </div>
     </div>
