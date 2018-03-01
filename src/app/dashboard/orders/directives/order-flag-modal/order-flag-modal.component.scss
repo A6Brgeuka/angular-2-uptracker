@@ -1,0 +1,40 @@
+@import "../../../../../colors.scss";
+
+:host /deep/ {
+  .inner {
+    button.uptracker-form-btn {
+      height: 36px;
+      font-size: 14px;
+      border: 1px solid #fff;
+      width: 100px;
+      margin: 0 10px;
+      font-weight: normal;
+      min-width: 80px;
+      &.red-btn {
+        border-color: red;
+        background-color: #fff !important;
+        color: red;
+      }
+      &.teal-btn {
+        border-color: $tealish;
+        background-color: $tealish;
+        color: #fff;
+      }
+      &[disabled] {
+        background-color: $grey !important;
+        border-color: $grey !important;
+      }
+    }
+
+    textarea {
+      min-height: 150px;
+    }
+  }
+
+  .mtop {
+    margin-top: 20px;
+  }
+  .mbot {
+    margin-bottom: 10px;
+  }
+}
