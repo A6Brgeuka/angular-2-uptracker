@@ -35,7 +35,6 @@ export class OrderFlagModalComponent implements CloseGuard, ModalComponent<Order
     this.form = new FormGroup({
       comment: new FormControl('', Validators.required)
     });
-    console.log(this.context);
   }
 
   get commentControl() {
