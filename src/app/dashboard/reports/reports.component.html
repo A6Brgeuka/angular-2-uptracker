@@ -50,53 +50,23 @@
             <th>Vendor</th>
             <th>Department</th>
             <th>Category</th>
-            <th>Account</th>
             <th>Location</th>
           </tr>
         </thead>
   
         <tbody class="price-content">
-          <tr>
+          <tr *ngFor="let product of productTable">
             <td><div>
               <input type="checkbox" class="filled-in" id="scalpel" />
-              <label for="scalpel">Scalpel</label>
+              <label for="scalpel">{{product?.name}}</label>
             </div></td>
-            <td>$117</td>
-            <td>$87</td>
-            <td>Bogo</td>
-            <td>Acme Inc</td>
-            <td>Surgical</td>
-            <td>Tools</td>
-            <td>Misc</td>
-            <td>Miami, FL</td>
-          </tr>
-          <tr>
-            <td><div>
-              <input type="checkbox" class="filled-in" id="ballcalsp" />
-              <label for="ballcalsp">Ball Clasp</label>
-            </div></td>
-            <td>$120</td>
-            <td>$110</td>
-            <td>Bogo</td>
-            <td>Acme Inc</td>
-            <td>Surgical</td>
-            <td>Tools</td>
-            <td>Misc</td>
-            <td>Miami, FL</td>
-          </tr>
-          <tr>
-            <td><div>
-              <input type="checkbox" class="filled-in" id="nunchucks" />
-              <label for="nunchucks">Nunchucks</label>
-            </div></td>
-            <td>$80</td>
-            <td>$88</td>
-            <td>Bogo</td>
-            <td>Ninja Inc</td>
-            <td>Stealth</td>
-            <td>Tools</td>
-            <td>Misc</td>
-            <td>Miami, FL</td>
+            <td>{{product?.price}}</td>
+            <td>{{product?.avgPrice}}</td>
+            <td>{{product?.discount}}</td>
+            <td>{{product?.vendor}}</td>
+            <td>{{product?.department}}</td>
+            <td>{{product?.category}}</td>
+            <td>{{product?.location}}</td>
           </tr>
         </tbody>
       </table>

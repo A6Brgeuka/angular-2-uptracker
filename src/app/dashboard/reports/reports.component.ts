@@ -16,8 +16,10 @@ declare var AmCharts: any;
 @DestroySubscribers()
 export class ReportsComponent implements OnInit {
 
-  chart: any
+  chart: any;
   chartData: Array<any>;
+  productTable: Array<any>;
+  productHistory: Array<any>;
 
   constructor(
     public modal: Modal,
@@ -108,6 +110,18 @@ export class ReportsComponent implements OnInit {
         enabled: false
       }
     });
+
+    this.productTable = [
+      {name: 'Scalpel Group', price: '$117', avgPrice: '$87', discount: 'Bogo', vendor: 'Multiple', department: 'Surgical', category: 'Tools', location: 'Miami, FL'},
+      {name: 'Ball Clasp', price: '$120', avgPrice: '$110', discount: 'Bogo', vendor: 'Acme Inc', department: 'Surgical', category: 'Tools', location: 'Miami, FL'},
+      {name: 'Nunchucks', price: '$80', avgPrice: '$88', discount: 'Bogo', vendor: 'Ninja Inc', department: 'Stealth', category: 'Tools', location: 'Miami, FL'}
+    ]
+    this.productHistory = [
+      {vendor: 'ABC Inc', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '12', consumablePrice: '$1.00', consumableAvg: '$1.15'},
+      {vendor: 'Anvil Corp', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '12', consumablePrice: '$1.00', consumableAvg: '$1.15'},
+      {vendor: 'Bamboo Systems', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '24', consumablePrice: '$1.00', consumableAvg: '$1.15'},
+      {vendor: 'Cosco', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '9', consumablePrice: '$1.00', consumableAvg: '$1.15'}
+    ]
 
     this.chart.addListener("dataUpdated", this.zoomChart);
   }
