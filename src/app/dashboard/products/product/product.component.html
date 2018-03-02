@@ -29,15 +29,8 @@
         </div>
       </div>
       <div class="ttl-box row input" *ngIf="product?.name != product?.proper_name">
-        <div *ngIf="!showEdit" [class.variant-show-name]="product?.name == null" class="ttl col s12">
+        <div [class.variant-show-name]="product?.name == null" class="ttl col s12">
           {{ showVariant ? currentVariant.proper_name : product?.proper_name}}
-        </div>
-        <div class="col s12">
-          <input (click)="$event.stopPropagation();"
-                 class="ttl col s12 name-field"
-                 *ngIf="showEdit"
-                 [(ngModel)]="productCopy.proper_name"
-                 type="text">
         </div>
       </div>
       <div class="info-box col s12" [class.condensed]="showVariant">
