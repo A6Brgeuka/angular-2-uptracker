@@ -250,7 +250,7 @@ export class ReportsComponent implements OnInit {
           return "<div style='padding-left:25px;padding-right:25px;padding-top:10px;padding-bottom:10px;'><span style='color:white;font-family:Roboto;font-size:20px;font-weight:bold;'>$" +
             origin + "</span>" + "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Change " +
             offset + "</span><br><br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Discount: 30%</span>" +
-            "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Vendor: Acme Inc</span></div>";
+            "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Vendor: " + row.vendor + "</span></div>";
         },
         bullet: "round",
         bulletBorderAlpha: 1,
