@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
 
-import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
+import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { CartService } from '../../../../core/services/cart.service';
@@ -21,7 +21,7 @@ export class BulkAdd2OrderModalContext extends BSModalContext {
   styleUrls: ['./bulkAdd2order-modal.component.scss']
 })
 @DestroySubscribers()
-export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<BulkAdd2OrderModalContext> {
+export class BulkAdd2OrderModal implements OnInit, ModalComponent<BulkAdd2OrderModalContext> {
   context: BulkAdd2OrderModalContext;
   public quantity: string = '1';
   public vendor: any = {id: "", vendor_id: ""};
@@ -37,34 +37,31 @@ export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<Bu
     public toasterService: ToasterService,
   ) {
     this.items = dialog.context.data;
-    
-    dialog.setCloseGuard(this);
   }
-  
+
   ngOnInit() {
     // TODO
-    
     console.log('CONTEXT', this.items);
   }
-  
+
   dismissModal() {
     this.dialog.dismiss();
   }
-  
+
   closeModal(data) {
     this.dialog.close(data);
   }
-  
+
   validateFields() {
     // there's nothing to check now
     this.valid = true;
     return this.valid;
   }
-  
+
   parseInt(a) {
     return parseInt(a)
   }
-  
+
   changeUnitType() {
     this.items.map((item: AddToOrderData) => {
       if (!item.selected_unit_type) {
@@ -106,9 +103,8 @@ export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<Bu
       }
       item.last_unit_type = item.selected_unit_type;
     })
-    
   }
-  
+
   vendorChange($event, item, vendors) {
     item.vendor = vendors.find((item: any) => {
       return ($event.target.value == item.vendor_id);
@@ -119,7 +115,7 @@ export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<Bu
       item.isAuto = false;
     }
   }
-  
+
   saveOrder() {
     let data = {
       "location_id": null,
@@ -136,12 +132,11 @@ export class BulkAdd2OrderModal implements OnInit, CloseGuard, ModalComponent<Bu
         }
       })
     };
-    
+
     this.cartService.addToCart(data)
     .subscribe(() => {
       this.toasterService.pop("",  "Some products had been successfully added to the shopping list");
       this.dismissModal();
     }, (e) => console.log(e));
   }
-  
 }

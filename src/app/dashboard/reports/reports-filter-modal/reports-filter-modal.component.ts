@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
@@ -24,7 +24,7 @@ export class ReportsFilterModalContext extends BSModalContext {
   styleUrls: ['./reports-filter-modal.component.scss']
 })
 @DestroySubscribers()
-export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<ReportsFilterModalContext> {
+export class ReportsFilterModal implements OnInit, ModalComponent<ReportsFilterModalContext> {
   public subscribers: any = {};
   public context: ReportsFilterModalContext;
   public vendors: Array<IOption> = [
@@ -67,7 +67,6 @@ export class ReportsFilterModal implements OnInit, CloseGuard, ModalComponent<Re
       public accountService: AccountService
   ) {
     this.context = dialog.context;
-    dialog.setCloseGuard(this);
   }
 
   ngOnInit(){

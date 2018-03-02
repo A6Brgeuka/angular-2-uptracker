@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone} from '@angular/core';
 
-import {DialogRef, ModalComponent, CloseGuard, Modal} from 'angular2-modal';
+import {DialogRef, ModalComponent, Modal} from 'angular2-modal';
 import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
 import {DestroySubscribers} from 'ng2-destroy-subscribers';
 import {Observable, BehaviorSubject, Subject} from 'rxjs/Rx';
@@ -27,7 +27,7 @@ export class ViewProductModalContext extends BSModalContext {
     styleUrls: ['./view-product-modal.component.scss']
 })
 @DestroySubscribers()
-export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<ViewProductModalContext> {
+export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<ViewProductModalContext> {
     public subscribers: any = {};
     context: ViewProductModalContext;
     // public product$: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -89,20 +89,18 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     public addFileToFile$: Subject<any> = new Subject<any>();
     public deleteFromFile$: Subject<any> = new Subject<any>();
     public updateFile$: Subject<any> = new Subject<any>();
-    
-    
+
     public doc$: Observable<any>;
     public doc;
     public loadDoc$: Subject<any> = new Subject<any>();
     public addDocToDoc$: Subject<any> = new Subject<any>();
     public deleteFromDoc$: Subject<any> = new Subject<any>();
     public updateDoc$: Subject<any> = new Subject<any>();
-    
+
     public formData: FormData = new FormData();
-    
+
     public hasInfoTab:boolean = false;
-    
-    
+
     constructor(public dialog: DialogRef<ViewProductModalContext>,
                 public userService: UserService,
                 public accountService: AccountService,
@@ -113,16 +111,15 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
                 public zone: NgZone,
                 public modal: Modal) {
         this.context = dialog.context;
-        dialog.setCloseGuard(this);
         this.fileActions();
         this.docActions();
         this.showEdit$.next(false);
     }
-    
+
     changeSelected(loc_id,var_id){
         this.currentLocation[var_id] = loc_id;
     }
-    
+
     showEditFields() {
         this.departmentCollection$ = this.accountService.getDepartments().take(1);
         this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
@@ -153,9 +150,8 @@ export class ViewProductModal implements OnInit, AfterViewInit, CloseGuard, Moda
     ngOnInit() {
         console.clear();
         this.product = this.context.product;
-    
+
         this.loadFile$.next([]);
-        
         this.resetText();
         this.product.comments = [];
         this.location_id = this.product.location_id;

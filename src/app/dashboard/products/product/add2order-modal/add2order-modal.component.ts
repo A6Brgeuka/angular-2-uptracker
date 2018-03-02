@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { CartService } from '../../../../core/services/cart.service';
@@ -17,7 +17,7 @@ export class Add2OrderModalContext extends BSModalContext {
   styleUrls: ['./add2order-modal.component.scss']
 })
 @DestroySubscribers()
-export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2OrderModalContext> {
+export class Add2OrderModal implements OnInit, ModalComponent<Add2OrderModalContext> {
   context: Add2OrderModalContext;
   public quantity: string = '1';
   public vendor: any = {id: "", vendor_id: ""};
@@ -33,7 +33,6 @@ export class Add2OrderModal implements OnInit, CloseGuard, ModalComponent<Add2Or
     public toasterService: ToasterService,
   ) {
     this.context = dialog.context;
-    dialog.setCloseGuard(this);
   }
 
   ngOnInit() {

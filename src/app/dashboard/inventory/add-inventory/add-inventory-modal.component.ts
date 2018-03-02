@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-import { DialogRef, ModalComponent, CloseGuard, Modal } from 'angular2-modal';
+import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
@@ -34,7 +34,7 @@ export class AddInventoryModalContext extends BSModalContext {
 })
 
 @DestroySubscribers()
-export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalComponent<AddInventoryModalContext> {
+export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddInventoryModalContext> {
   public subscribers: any = {};
   public scrollConfig = {
     suppressScrollY: true,
@@ -123,9 +123,8 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     public modal: Modal,
   ) {
     this.context = dialog.context;
-    dialog.setCloseGuard(this);
   }
-  
+
   ngOnInit() {
     this.typeIn$
     .debounceTime(500)
@@ -174,13 +173,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.inventoryService.updateInventory(this.newInventory)
     )
     .subscribe(newInventory => this.closeModal(newInventory));
-  
+
     this.fileActions();
     this.msdsActions();
-    
+
     this.loadFile$.next([]);
     this.loadMsds$.next([]);
-    
+
     let addItemsToItems$ = this.addItemsToItems$
     .switchMap((itemsToCheck: any[]) =>
       this.inventoryService.checkIfNotExist(itemsToCheck)
@@ -204,21 +203,21 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       })
     
     );
-    
+
     let deleteFromItems$ = this.deleteFromItems$
     .switchMap((deleteItems) =>
       this.items$.first()
       .map((items: any) => items.filter((el: any) => el.variant_id !== deleteItems.variant_id)
       )
     );
-    
+
     let addCustomItemToItems$ = this.addCustomItemToItems$.switchMap((customItem) =>
       this.items$.first().map((items:any) => {
         items =_.concat(items, [customItem[0]]);
         return items;
       })
     );
-    
+
     let updateItems$ = this.updateItems$.switchMap((editedCustomItem) =>
       this.items$.first().map((items:any) => {
         return items.map((el: any) => {
@@ -228,7 +227,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
           return el;
         });
       }));
-    
+
     this.items$ = Observable.merge(
       this.loadItems$,
       this.editAddItemToItems$,
@@ -237,7 +236,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       deleteFromItems$,
       updateItems$
     ).publishReplay(1).refCount();
-    
+
     this.subscribers.itemsSubscription = this.items$.subscribe(res => {
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
@@ -306,23 +305,21 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.compareVendor(item.selectedVendor, item.selectedVendor);
       });
     }
-  
+
     if (this.context.selectedProduct) {
       let editedItems: any[] = [new InventorySearchResults(this.context.selectedProduct)];
       this.editAddItemToItems$.next(editedItems);
     }
-    
+
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
     .map(([packageType,searchResults,checkedProduct,matchingAll]: any) => {
-      
       let filteredResults = _.filter(searchResults, packageType);
-      
       let checkedResults = searchResults.reduce((acc: any[], item) => {
         let foundedItem = _.find(
           filteredResults,
           { variant_id: item.variant_id, product_id: item.product_id}
         );
-        
+
         return [...acc,{
           ...item,
           notActive: !foundedItem
@@ -349,7 +346,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
               checkedProduct,
               {notActive}
             );
-            
+
             return [
               ...acc,
               {
@@ -363,13 +360,13 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.checkedProduct = _.filter(checkboxResult, 'checked');
       return checkboxResult;
     });
-    
+
     this.productImg$
     .switchMap((img: any) => this.inventoryService.uploadAttachment(img))
     .subscribe((image: any) => {
       this.newInventory.image = image.public_url;
     });
-    
+
     if (!this.context.inventoryGroup) {
       this.locations$.subscribe(location => {
         this.locations = location;
@@ -384,32 +381,31 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         });
       })
     }
-    
   }
-  
+
   ngOnDestroy() {
     this.saveAdded$.unsubscribe();
     this.productImg$.unsubscribe();
     this.updateAdded$.unsubscribe();
   }
-  
+
   addSubscribers() {
     this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories().take(1)
     .subscribe(res => this.productCategoriesCollection = res);
-    
+
     this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
     .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
     .subscribe(res => {
       this.autocompleteProducts = res['suggestions'];
     });
-   
+
     this.subscribers.departmentCollectionSubscription = this.accountService.getDepartments().take(1)
     .subscribe(departments => this.departmentCollection = departments);
-    
+
     this.subscribers.productAccountingCollectionSubscription = this.accountService.getProductAccounting().take(1)
     .subscribe(productAccountingCol => this.productAccountingCollection = productAccountingCol);
   }
-  
+
   onSearchTypeIn(event) {
     this.autocompleteProducts$.next(event.target.value);
     if (event.target.value.length > 2) {
@@ -418,7 +414,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.typeIn$.next(null);
     }
   }
-  
+
   selectedAutocompled(keyword) {
     if (keyword && keyword.length > 2) {
       this.typeIn$.next(keyword);
@@ -426,10 +422,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.typeIn$.next(null);
     }
   }
+
   observableSource(keyword: any) {
     return Observable.of(this.autocompleteProducts).take(1);
   }
-  
+
   compareVendor(v1, v2) {
       return v1 && v2 ? v1.vendor_id === v2.vendor_id : v1 === v2;
   }
@@ -457,35 +454,34 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         return newNotExistedItems;
       })
   }
-  
+
   dismissModal() {
     this.dialog.dismiss();
   }
-  
+
   closeModal(data) {
     this.dialog.close(data);
   }
-  
+
   addToInventory(items: InventorySearchResults[]) {
     this.addItemsToItems$.next(items);
   }
-  
+
   addCustomToInventory(items: InventorySearchResults[]) {
     this.addCustomItemToItems$.next(items);
   }
-  
+
   deleteFromInventory(items: InventorySearchResults[]) {
     items.map((i) => this.deleteFromItems$.next(i));
     this.checkBoxItems = false;
   }
-  
+
   putCheckbox(item) {
-    
     this.showSelect = false;
     item.checked = !item.checked;
-  
+
     const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
-  
+
     if (!this.checkedProduct.length && (!this.items.length || !findedConsumableUnit)) {
       let packageType = {
         consumable_unit: {properties: {unit_type: item.consumable_unit.properties.unit_type}}
@@ -494,25 +490,25 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.checkConsPackage(item.consumable_unit.properties.unit_type);
       this.packageType$.next(packageType);
     }
-    
+
     let result = _.find(this.checkedProduct,  { variant_id: item.variant_id, product_id: item.product_id});
-    
+
     if(!result && item.checked) {
       this.checkedProduct.push(item);
     }
     if (result && !item.checked) {
       _.remove(this.checkedProduct, result);
     }
-    
+
     this.checkedProduct$.next(this.checkedProduct);
     this.matchingAll$.next(false);
-    
+
     this.matchingProductDisabled = !!this.checkedProduct.length;
-    
+
     if (!item.checked) {
       this.checkBoxCandidates = false;
     }
-    
+
     if(!this.checkedProduct.length && (!this.items.length || !findedConsumableUnit)) {
       this.autocompleteConsPackage = this.inventoryService.consumablePackageList;
       this.checkConsPackage(null);
@@ -520,7 +516,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     }
     setTimeout(() => { this.showSelect = true },0.6);
   }
-  
+
   selectAllCandidates() {
     this.matchingProductDisabled = !!this.checkBoxCandidates;
     this.matchingAll$.next(this.checkBoxCandidates);
@@ -528,14 +524,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.checkedProduct = [];
       this.checkedProduct$.next(this.checkedProduct);
     }
-  
+
     const findedConsumableUnit = _.find(this.items, (i:any) => i.consumable_unit.properties.unit_type && i.consumable_unit.properties.unit_type !== this.wildcardConsumableUnit);
-  
+
     if (!this.checkBoxCandidates && (!this.items.length || !findedConsumableUnit)) {
       this.packageType$.next({});
     }
   }
-  
+
   selectAllItems() {
     this.loadItems$.next(
       this.items.map((item: InventorySearchResults) => {
@@ -544,7 +540,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       })
     );
   }
-  
+
   bulkAdd() {
     this.resultItems$
     .take(1)
@@ -553,18 +549,18 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.addToInventory(checkedItems);
     });
   }
-  
+
   bulkDelete() {
     const checkedItems = this.items.filter((item: InventorySearchResults) => item.checked);
     this.deleteFromInventory(checkedItems);
   }
-  
+
   toggleCustomAdd() {
     this.addCustomProduct = !this.addCustomProduct;
     // let pkgType = this.newProductData.consumable_unit.properties.unit_type;
     let pkgType = this.newInventory.consumable_unit_type;
     this.newProductData = new InventorySearchResults();
-   
+
     this.newProductData.custom_product = true;
     // this.newProductData.consumable_unit.properties.unit_type = this.newInventory.consumable_unit_type;
 
@@ -573,7 +569,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.outerPack = '';
     this.vendorDirty = false;
   }
-  
+
   toggleCustomCancel() {
     this.addCustomProduct = !this.addCustomProduct;
     this.editCustomProduct = false;
@@ -582,7 +578,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.nextPackage({});
     }
   }
-  
+
   addNewProduct() {
     let inventory_by_arr = [
       {
@@ -625,14 +621,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     this.editCustomProduct = false;
     this.toggleCustomAdd();
   }
-  
+
   selectPackageType(packageType) {
     this.newInventory.inventory_by = packageType.value;
     this.newInventory.inventory_by_qty = packageType.qty;
     this.newInventory.inventory_by_type = packageType.type;
     this.newInventory.inventory_by_label = packageType.label;
   }
-  
+
   saveAdded() {
     if (!this.newInventory.category) {
       this.categoryValid = false;
@@ -644,7 +640,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       }
     }
   }
-  
+
   nextPackage(value) {
     let formValue = {};
     formValue = (value.consumable_unit_type && value.consumable_unit_type !== this.wildcardConsumableUnit) ? {
@@ -653,14 +649,14 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     } : formValue;
     this.packageType$.next(formValue);
   }
-  
+
   checkConsPackage(e) {
     this.newInventory.consumable_unit_type = (e) ? e : null;
     // this.newProductData.consumable_unit.properties.unit_type = (e !== this.wildcardConsumableUnit) ? e : null;
     this.nextPackage(this.newInventory);
     if (e !== null) {this.classDirty = true;}
   }
-  
+
   nextTab() {
     if (this.step1.nativeElement.className == 'active')
       this.step2.nativeElement.click();
@@ -675,7 +671,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     }
     else this.step4.nativeElement.click();
   }
-  
+
   prevTab() {
     if (this.step4.nativeElement.className == 'active')
       this.step3.nativeElement.click();
@@ -683,7 +679,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.step2.nativeElement.click();
     else this.step1.nativeElement.click();
   }
-  
+
   selectTab(location) {
     this.newInventory.locations.forEach((location) => {
       location.active = false;
@@ -707,7 +703,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         return msds;
       });
     });
-    
+
     let deleteFromMsds$ = this.deleteFromMsds$
     .switchMap((deleteMsds) =>
       this.msds$.first()
@@ -715,7 +711,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         msds.filter((el: any) => el.id !== deleteMsds.id)
       )
     );
-    
+
     this.msds$ = Observable.merge(
       this.loadMsds$,
       addMsdsToMsds$,
@@ -736,7 +732,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         return file;
       });
     });
-    
+
     let deleteFromFile$ = this.deleteFromFile$
     .switchMap((deleteFiles) =>
       this.file$.first()
@@ -744,7 +740,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         files.filter((el: any) => el.id !== deleteFiles.id)
       )
     );
-    
+
     this.file$ = Observable.merge(
       this.loadFile$,
       this.updateFile$,
@@ -759,23 +755,23 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
   changeListener($event): void {
     this.readThis($event.target);
   }
-  
+
   readThis(inputValue: any): void {
     let file: File = inputValue.files[0];
     let myReader: FileReader = new FileReader();
-    
+
     myReader.onloadend = (e) => {
       this.onImgDrop(myReader.result);
     };
     myReader.readAsDataURL(file);
     this.productImg$.next(file);
   }
-  
+
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
   }
-  
+
   onImgDrop(imgBase64: string): void {
     let img = new Image();
     img.onload = () => {
@@ -789,47 +785,52 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
     };
     img.src = imgBase64;
   }
+
   onMSDCFileUpload(event) {
     this.onMsdsDrop(event.target.files[0]);
-    }
+  }
+
   onMsdsDrop(msds: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = msds.name;
     this.addMsds(msds);
   }
+
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
     this.addFile(file);
   }
-  
+
   onAttachmentUpload(event) {
     this.onFileDrop(event.target.files[0]);
   }
-  
+
   addFile(file) {
     this.addFileToFile$.next([file]);
   }
+
   addMsds(msds) {
     this.addMsdsToMsds$.next([msds]);
   }
-  
+
   removeFile(file) {
     this.deleteFromFile$.next(file);
   }
+
   removeMsds(msds) {
     this.deleteFromMsds$.next(msds);
   }
-  
+
   getType(mime){
     return mime.split('/')[0];
   }
-  
+
   onSearchTextUpdated(searchText){
     this.searchText = searchText;
     this.typeIn$.next(searchText);
   }
-  
+
   editProduct(productItem) {
     this.editCustomProduct = true;
     this.addCustomProduct = true;

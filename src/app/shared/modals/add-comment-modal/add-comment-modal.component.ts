@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 export class AddCommentModalContext extends BSModalContext {
@@ -13,7 +13,7 @@ export class AddCommentModalContext extends BSModalContext {
   templateUrl: './add-comment-modal.component.html',
   styleUrls: ['./add-comment-modal.component.scss']
 })
-export class AddCommentModalComponent implements OnInit, CloseGuard, ModalComponent<AddCommentModalContext> {
+export class AddCommentModalComponent implements OnInit, ModalComponent<AddCommentModalContext> {
   context;
   public comment: any;
 
@@ -21,13 +21,11 @@ export class AddCommentModalComponent implements OnInit, CloseGuard, ModalCompon
     public dialog: DialogRef<AddCommentModalContext>,
   ) {
     this.context = dialog.context;
-    dialog.setCloseGuard(this);
     this.comment = {};
   }
-  ngOnInit() {
   
-  }
-  
+  ngOnInit() {}
+
   dismissModal() {
     this.dialog.dismiss();
   }
