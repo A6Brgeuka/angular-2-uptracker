@@ -33,7 +33,7 @@ export class OrderFlagModalComponent implements CloseGuard, ModalComponent<Order
     this.context = dialog.context;
     this.comments = isArray(this.context.flagged_comment) ? this.context.flagged_comment : [];
     this.form = new FormGroup({
-      comment: new FormControl('', Validators.required)
+      comment: new FormControl('', [Validators.required, Validators.maxLength(280)])
     });
   }
 

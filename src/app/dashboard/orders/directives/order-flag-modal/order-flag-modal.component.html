@@ -19,8 +19,11 @@
             placeholder="Please, type your comment here."
             [formControl]="commentControl"
           ></textarea>
-          <div class="red-text" [hidden]="commentControl.valid || (commentControl.untouched && !formEl.submitted)">
+          <div class="red-text" [hidden]="!commentControl.hasError('required') || (commentControl.pristine && !formEl.submitted)">
             Comment is required
+          </div>
+          <div class="red-text" [hidden]="!commentControl.hasError('maxlength') || (commentControl.pristine && !formEl.submitted)">
+            Max length is {{commentControl.getError('maxlength')?.requiredLength}} symbols
           </div>
         </div>
       </div>
