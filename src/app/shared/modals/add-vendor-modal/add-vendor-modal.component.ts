@@ -5,12 +5,13 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Vendor} from '../../../models/inventory.model';
 import {InventoryService} from '../../../core/services/inventory.service';
-import {DestroySubscribers} from 'ng2-destroy-subscribers';
+import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {AccountVendorModel} from '../../../models/account-vendor.model';
 import {NewVendorModel} from '../../../models/new-vendor.model';
 import {VendorService} from '../../../core/services/vendor.service';
 import {Router} from '@angular/router';
 import {PhoneMaskService} from '../../../core/services/phone-mask.service';
+import * as _ from 'lodash';
 
 export class AddVendorModalContext extends BSModalContext {
 
@@ -27,12 +28,15 @@ export class AddVendorModalComponent implements OnInit {
 
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
-  public vendor: Vendor = new Vendor();
+  public vendor = {vendor_name:null, vendor_id:null, location_id: 'all'};
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
   public vendorModel: NewVendorModel;
   public step: number = 1;
   public uploadName: string = '';
+  public formData: FormData = new FormData();
+  public logo: File;
+  public logoPreview: string = '';
 
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
   public selectedPhoneCountry: any = this.phoneMaskService.defaultCountry;
@@ -55,7 +59,7 @@ export class AddVendorModalComponent implements OnInit {
   dismissModal() {
     this.uploadName = '';
     this.vendorModel = new NewVendorModel();
-    this.vendor = new Vendor();
+    this.vendor = {vendor_name:null, vendor_id:null, location_id: 'all'};
     this.dialog.dismiss();
   }
 
@@ -87,8 +91,9 @@ export class AddVendorModalComponent implements OnInit {
 
   nextStep() {
     if (this.vendor.vendor_id) {
-      this.router.navigate(['/vendors/edit/' + this.vendor.vendor_id]);
-      return this.dismissModal();
+      this.vendor.location_id = 'all';
+      this.onSubmit(this.vendor);
+      return;
     }
     if (this.vendor && this.vendor.vendor_name) {
       this.vendorModel.name = this.vendor.vendor_name;
@@ -112,20 +117,37 @@ export class AddVendorModalComponent implements OnInit {
     this.selectedFaxCountry = $event;
   }
 
-  onSubmit() {
-    return this.vendorService.addAccountVendor(this.vendorModel)
-      .subscribe(res => {
-        console.log(res);
-          this.router.navigate(['/vendors/edit/' + res.vendor_id]);
-          return this.dismissModal();
-      });
+  onSubmit(vendor) {
+
+    _.each(vendor, (value, key) => {
+      if (value != null && value) {
+        this.formData.append(key, value);
+      }
+    });
+
+    // append logo
+    if (this.logo) {
+      this.formData.append('logo', this.logo);
+    }
+
+    this.vendorService.addAccountVendor(this.formData).subscribe(
+      (res: any) => {
+        this.router.navigate(['/vendors/edit/' + res.id]);
+        return this.dismissModal();
+      }
+    );
+
   }
 
   uploadLogo(file: any) {
     this.uploadName = file.target.files[0].name;
     let reader = new FileReader();
 
-    reader.onload = (e: any) => this.vendorModel.logo = e.target.result;
+    reader.onload = ($event: any) => {
+      this.logo = file.target.files[0];
+      this.logoPreview = $event.target.result;
+    };
+
     reader.readAsDataURL(file.target.files[0]);
   }
 }
