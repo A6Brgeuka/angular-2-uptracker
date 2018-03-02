@@ -27,6 +27,32 @@
       max-width: 300px;
     }
 
+    .chart-info {
+      position: absolute;
+      top: 40px;
+      right: 30px;
+      .bar {
+        display: flex;
+        align-items: center;
+        .forum {
+          display: flex;
+          align-items: center;
+        }
+        .color {
+          background-color: #33c6d9;
+          margin-right: 5px;
+          width: 20px;
+          height: 3px;
+        }
+        .dashed {
+          border: 0 none;
+          border-top: 3px dashed #9a9c9e;
+          margin-right: 5px;
+          width: 20px;
+          height: 0;
+        }
+      }
+    }
     .title {
       color: #9a9c9e;
       font-family: 'Roboto';

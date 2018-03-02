@@ -70,6 +70,7 @@ export class ReportsComponent implements OnInit {
         lineThickness: 2,
         lineColor: "#9a9c9e",
         showBalloon: false,
+        title: "Forum Price",
         valueField: "forum"
       }],
       chartScrollbar: {
@@ -150,10 +151,10 @@ export class ReportsComponent implements OnInit {
     var _chartData = [];
     var firstDate = new Date();
     firstDate.setDate(firstDate.getDate() - 10);
-    var y0 = 500;
-    var y1 = 300;
-    var y2 = 200;
-    var y3 = 400;
+    var y0 = 250;
+    var y1 = 250;
+    var y2 = 250;
+    var y3 = 250;
     var forum = 250;
 
     for (var i = 0; i < 10; i++) {
@@ -180,6 +181,15 @@ export class ReportsComponent implements OnInit {
     }
 
     return _chartData;
+  }
+
+  getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i< 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   zoomChart() {
@@ -210,6 +220,8 @@ export class ReportsComponent implements OnInit {
   toggleHistory(row) {
     if (row.checked) {
       const gId = row.index.toString();
+      const lineColor = this.getRandomColor();
+
       const a = {
         id: "v" + gId,
         autoGridCount: false,
@@ -228,7 +240,7 @@ export class ReportsComponent implements OnInit {
           var origin = graphDataItem.values.value;
           var offset = '';
           if (graphDataItem.index > 0) {
-            value = value - graph.data[graphDataItem.index - 1].dataContext.visits
+            value = value - graph.data[graphDataItem.index - 1].dataContext[`y${gId}`]
             if (value > 0) {
               offset = '$' + value;
             } else {
@@ -242,10 +254,11 @@ export class ReportsComponent implements OnInit {
         },
         bullet: "round",
         bulletBorderAlpha: 1,
-        bulletBorderColor: "#32da81",
+        bulletBorderColor: lineColor,
         hideBulletsCount: 50,
         lineThickness: 2,
-        lineColor: "#32da81",
+        lineColor: lineColor,
+        title: row.vendor,
         valueField: "y" + gId
       }
       this.chart.graphs.push(g);

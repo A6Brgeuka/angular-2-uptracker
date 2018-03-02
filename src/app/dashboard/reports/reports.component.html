@@ -27,8 +27,22 @@
   <div id="budgets"></div>
   <div id="spending"></div>
   <div id="price">
-    <div class="row">
+    <div class="row" style="position:relative;">
       <div id="chartdiv" class="chart"></div>
+      <div class="chart-info">
+        <div *ngFor="let graph of chart.graphs.reverse()" class="bar">
+          <div *ngIf="graph.id === 'forum'; else elseBlock">
+            <div class="forum">
+              <div class="dashed"></div>
+              <span>{{graph.title}}</span>
+            </div>
+          </div>
+          <ng-template #elseBlock>
+            <div class="color" [style.backgroundColor]="graph.lineColor"></div>
+            <span>{{graph.title}}</span>
+          </ng-template>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="search-filter">
