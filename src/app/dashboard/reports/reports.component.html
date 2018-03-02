@@ -40,37 +40,125 @@
       </div>
     </div>
     <div class="row">
-      <table class="bordered">
-        <thead class="price-header">
-          <tr>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Avg Price</th>
-            <th>Discount</th>
-            <th>Vendor</th>
-            <th>Department</th>
-            <th>Category</th>
-            <th>Location</th>
-          </tr>
-        </thead>
+        <ngx-datatable
+        #myTable
+        class='expandable'
+        [cssClasses]="customClasses"
+        [columnMode]="'flex'"
+        [headerHeight]="30"
+        [rowHeight]="60"
+        [scrollbarV]="true"
+        [rows]='productTable'
+        (page)="onPage($event)">
+        <!-- Row Detail Template -->
+        <ngx-datatable-row-detail [rowHeight]="300" #myDetailRow (toggle)="onDetailToggle($event)">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+            <div style="padding-left:35px;">
+                <div class="row">
+                  <table class="bordered" style="background-color:#ebedf0;">
+                    <thead class="price-header">
+                      <tr style="color:black;">
+                        <th></th>
+                        <th>Vendor</th>
+                        <th>Package Type</th>
+                        <th>Current Price/pkg</th>
+                        <th>Avg Price/pkg</th>
+                        <th>Consumable Unit Type</th>
+                        <th>Consumable Units/pkg</th>
+                        <th>Consumable Unit Price</th>
+                        <th>Consumable Unit Avg</th>
+                      </tr>
+                    </thead>
   
-        <tbody class="price-content">
-          <tr *ngFor="let product of productTable">
-            <td><div>
-              <input type="checkbox" class="filled-in" id="scalpel" />
-              <label for="scalpel" style="color: #33c6d9">{{product?.name}}</label>
-            </div></td>
-            <td>{{product?.price}}</td>
-            <td>{{product?.avgPrice}}</td>
-            <td>{{product?.discount}}</td>
-            <td>{{product?.vendor}}</td>
-            <td>{{product?.department}}</td>
-            <td>{{product?.category}}</td>
-            <td>{{product?.location}}</td>
-          </tr>
-        </tbody>
-      </table>
+                    <tbody class="price-content">
+                      <tr *ngFor="let historyRow of row.history">
+                        <td><div class="index-check">
+                          <input type="checkbox" class="filled-in" id="{{historyRow?.vendor}}" [(ngModel)]="historyRow.checked" (ngModelChange)="toggleHistory(historyRow)" />
+                          <label for="{{historyRow?.vendor}}" style="color: #33c6d9"></label>
+                        </div></td>
+                        <td><span style="color: #33c6d9">{{historyRow?.vendor}}</span></td>
+                        <td>{{historyRow?.pkgType}}</td>
+                        <td>{{historyRow?.currentPrice}}</td>
+                        <td>{{historyRow?.avgPrice}}</td>
+                        <td>{{historyRow?.consumableType}}</td>
+                        <td>{{historyRow?.consumablePkg}}</td>
+                        <td>{{historyRow?.consumablePrice}}</td>
+                        <td>{{historyRow?.consumableAvg}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-row-detail>
+        <!-- Column Templates -->
+        <ngx-datatable-column name="" [flexGrow]="0.5">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <div class="index-check">
+              <input type="checkbox" class="filled-in" id="{{row.name}}" [(ngModel)]="row.checked" (ngModelChange)="toggleExpandRow(row)"/>
+              <label for="{{row.name}}"></label>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Product Name" prop="name" [flexGrow]="2">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <span style="color: #33c6d9">{{row.name}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Price" prop="price" [flexGrow]="1">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <span>{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Avg Price" prop="avgPrice" [flexGrow]="1">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <span>{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Discount" prop="discount" [flexGrow]="1">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <span>{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Vendor" prop="vendor" [flexGrow]="1">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <span>{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Department" prop="department" [flexGrow]="1">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <span>{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Category" prop="category" [flexGrow]="1">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <span>{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Location" prop="location" [flexGrow]="1">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <span>{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
     </div>
   </div>
-  <div id="settings"></div>
+  <div id="settings">
+    <div class="row">
+      <span class="title">View prices based on</span><br>
+      <div class="select col s4">
+        <select title="price" [(ngModel)]="selectedPrice" materialize="material_select" (change)="onPrice($event)">
+          <option *ngFor="let price of priceList" [value]="price">{{price.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <span class="title">Run reports using</span><br>
+      <div class="select col s3">
+        <select title="report" [(ngModel)]="selectedReport" materialize="material_select" (change)="onReport($event)">
+          <option *ngFor="let report of reportList" [value]="report">{{report.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </div>
