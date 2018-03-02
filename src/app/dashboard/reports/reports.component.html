@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="row">
-        <ngx-datatable
+      <ngx-datatable
         #myTable
         class='expandable'
         [cssClasses]="customClasses"
@@ -63,7 +63,9 @@
         [rowHeight]="60"
         [scrollbarV]="true"
         [rows]='productTable'
-        (page)="onPage($event)">
+        (page)="onPage($event)"
+        (sort)="onSort($event)"
+      >
         <!-- Row Detail Template -->
         <ngx-datatable-row-detail [rowHeight]="300" #myDetailRow (toggle)="onDetailToggle($event)">
           <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>

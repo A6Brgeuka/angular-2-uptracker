@@ -289,4 +289,15 @@ export class ReportsComponent implements OnInit {
 
   onReport(event) {
   }
+
+  onSort(event) {
+    this.productTable.forEach((product) => {
+      if (product.checked) {
+        product.checked = false;
+        product.history.forEach((history) => {
+          history.checked = false;
+        })
+      }
+    })
+  }
 }
