@@ -10,7 +10,6 @@ import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-mo
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
-import { ConfirmModalService } from '../../../../../../shared/modals/confirm-modal/confirm-modal.service';
 import { FavoritedListService } from '../../../../services/favorited-list.service';
 import { FlaggedListService } from '../../../../services/flagged-list.service';
 
@@ -28,7 +27,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   private subscribers: any = {};
 
   private reorderProduct$:  any = new Subject<any>();
-  private openShowCommentModal$:  any = new Subject<any>();
 
   @Input() i: any;
   @Input() item: any;
@@ -42,7 +40,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
-    public confirmModalService: ConfirmModalService,
     private favoritedListService: FavoritedListService,
     private flaggedListService: FlaggedListService,
   ) {
@@ -72,19 +69,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
-
-    this.subscribers.openShowCommentModalSubscription = this.openShowCommentModal$
-    .switchMap((item) =>
-      this.confirmModalService.confirmModal(
-        'Unflag?', {text: item.flagged_comment, btn: 'Unflag'}
-      )
-      .filter(({success}) => success)
-      .mapTo(item)
-    )
-    .switchMap((item) => this.flaggedListService.putItem(item))
-    .subscribe(res => this.toasterService.pop('', res.favorite ? 'Flagged' : 'Unflagged'),
-      err => console.log('error')
-    );
 
   }
 
@@ -134,7 +118,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   openShowCommentModal(item) {
-    this.openShowCommentModal$.next(item);
+    this.toasterService.pop('error', 'Items that have comments cannot be unflagged');
   }
 
 }
