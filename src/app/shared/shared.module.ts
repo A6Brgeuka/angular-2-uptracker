@@ -8,6 +8,7 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { SelectModule } from 'ng-select';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { CurrencyMaskModule } from 'ng2-currency-mask'
 
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
@@ -81,7 +82,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule.forRoot(PERFECT_SCROLLBAR_CONFIG),
     SelectModule,
     Daterangepicker,
-    NgxDatatableModule
+    NgxDatatableModule,
+    CurrencyMaskModule
   ],
   declarations: [
     ...directivesArr,
@@ -100,6 +102,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SelectModule,
     Daterangepicker,
     NgxDatatableModule,
+    CurrencyMaskModule,
 
     MaterializeModule,
     FileDropModule,

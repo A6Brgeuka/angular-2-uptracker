@@ -1558,6 +1558,7 @@ ngui-auto-complete {
 
 .daterangepicker {
   display: flex;
+  font-family: 'Roboto';
   &.dropdown-menu {
     display: none;
     border: 1px solid rgba(0, 0, 0, .15);
@@ -1569,6 +1570,26 @@ ngui-auto-complete {
     }
     .ranges {
       float: right;
+      li {
+        color: #33c6d9;
+      }
+      li.active, li:hover {
+        background-color: #33c6d9;
+        border: 1px solid #33c6d9;
+        color: #fff !important;
+      }
+      .range_inputs {
+        margin-top: 20px;
+        .applyBtn {
+          background-color: #33c6d9 !important;
+        }
+        .cancelBtn {
+          background-color: transparent;
+          box-shadow: none;
+          color: black;
+          text-decoration: underline;
+        }
+      }
     }
   }
   .daterangepicker_input {

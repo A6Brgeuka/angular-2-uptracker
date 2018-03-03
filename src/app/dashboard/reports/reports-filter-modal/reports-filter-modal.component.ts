@@ -69,7 +69,7 @@ export class ReportsFilterModal implements OnInit, ModalComponent<ReportsFilterM
     this.context = dialog.context;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     // this.vendor = new VendorModel(this.context.product);
     // this.locations$ = this.accountService.locations$.map((res: any) => {
     //   this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
@@ -88,7 +88,7 @@ export class ReportsFilterModal implements OnInit, ModalComponent<ReportsFilterM
     this.dialog.close(data);
   }
 
-  selectedDate(value: any, datepicker?: any) {
-    console.log('----------------->   ', value);
+  OnDate(value: any, datepicker?: any) {
+    console.log(value);
   }
 }
