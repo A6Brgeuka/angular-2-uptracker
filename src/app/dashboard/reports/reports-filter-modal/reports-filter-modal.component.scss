@@ -127,4 +127,15 @@
       z-index: 999 !important;
     }
   }
+
+  .date-picker {
+    display: flex;
+    position: relative;
+
+    fa {
+      position: absolute;
+      right: 30px;
+      top: 10px;
+    }
+  }
 }
