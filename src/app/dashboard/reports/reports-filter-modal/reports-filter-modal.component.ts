@@ -49,7 +49,7 @@ export class ReportsFilterModal implements OnInit, ModalComponent<ReportsFilterM
   ]
   public daterange: any = {}
   public dateOptions: any = {
-    locale: { format: 'YYYY-MM-DD' },
+    locale: { format: 'MMM D, YYYY' },
     alwaysShowCalendars: false,
     ranges: {
       'Today': [moment(), moment()],
