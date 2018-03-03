@@ -7,8 +7,8 @@
     <div class="col s4 no-padding">
       <div class="col s12 bordered">Price</div>
       <div class="col s12 no-padding">
-        <input type="text" placeholder="Min" class="col s5 text" name="min" currencyMask [options]="{ align: 'left' }">
-        <input type="text" placeholder="Max" class="col s5 offset-s1 text" name="max" currencyMask [options]="{ align: 'left' }">
+        <input type="text" placeholder="Min" class="col s5 text" name="min" [(ngModel)]="minPrice" currencyMask [options]="{ align: 'left', precision: 0 }">
+        <input type="text" placeholder="Max" class="col s5 offset-s1 text" name="max" [(ngModel)]="maxPrice" currencyMask [options]="{ align: 'left', precision: 0 }">
       </div>
       <div class="col s12 no-padding date-picker">
         <input type="text" name="daterangeInput" daterangepicker [options]="dateOptions" (selected)="OnDate($event, daterange)" />
@@ -18,8 +18,8 @@
     <div class="col s4 no-padding">
       <div class="col s12 bordered">Avg Price</div>
       <div class="col s12 no-padding">
-        <input type="text" placeholder="Min" class="col s5 text" name="min" currencyMask [options]="{ align: 'left' }">
-        <input type="text" placeholder="Max" class="col s5 offset-s1 text" name="max" currencyMask [options]="{ align: 'left' }">
+        <input type="text" placeholder="Min" class="col s5 text" name="min" [(ngModel)]="minAvgPrice" currencyMask [options]="{ align: 'left' }">
+        <input type="text" placeholder="Max" class="col s5 offset-s1 text" name="max" [(ngModel)]="maxAvgPrice" currencyMask [options]="{ align: 'left' }">
       </div>
       <div class="col s12 no-padding date-picker">
         <input type="text" name="daterangeInput" daterangepicker [options]="dateOptions" (selected)="OnDate($event, daterange)" />

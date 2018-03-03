@@ -60,6 +60,10 @@ export class ReportsFilterModal implements OnInit, ModalComponent<ReportsFilterM
       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     }
   }
+  public minPrice: string;
+  public maxPrice: string;
+  public minAvgPrice: string;
+  public maxAvgPrice: string;
 
   constructor(
       public dialog: DialogRef<ReportsFilterModalContext>,
