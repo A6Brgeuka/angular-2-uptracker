@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
-
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { ReportsFilterModal } from './reports-filter-modal/reports-filter-modal.component';
+import * as moment from 'moment';
 
 declare var AmCharts: any;
 
@@ -52,7 +51,9 @@ export class ReportsComponent implements OnInit {
         axisAlpha: 0.2,
         gridAlpha: 0,
         gridCount: 5,
-        unit: '$'
+        labelFunction: function(valueText, date, categoryAxis) {
+          return '$' + valueText;
+        }
       }, {
         id: "v1",
         axisAlpha: 0.1
@@ -86,8 +87,12 @@ export class ReportsComponent implements OnInit {
       categoryAxis: {
         parseDates: true,
         axisAlpha: 0.2,
-        gridAlpha: 0
+        gridAlpha: 0,
+        labelFunction: function(valueText, date, categoryAxis) {
+          return moment(date).format('MM/DD');
+        }
       },
+      fontFamily: 'Ubuntu',
       balloon: {
         borderThickness: 0,
         cornerRadius: 3,
