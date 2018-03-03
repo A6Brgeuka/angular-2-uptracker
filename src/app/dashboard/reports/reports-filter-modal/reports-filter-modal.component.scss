@@ -138,4 +138,8 @@
       top: 10px;
     }
   }
+
+  ng-select > div:focus {
+    outline: none;
+  }
 }
