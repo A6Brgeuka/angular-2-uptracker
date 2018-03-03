@@ -162,20 +162,22 @@ export class ReportsComponent implements OnInit {
   }
 
   generatechartData() {
-    var _chartData = [];
-    var firstDate = new Date();
+    let _chartData = [];
+    let firstDate = new Date();
     firstDate.setDate(firstDate.getDate() - 10);
-    var y0 = 250;
-    var y1 = 250;
-    var y2 = 250;
-    var y3 = 250;
-    var forum = 250;
+    let y0 = 250;
+    let y1 = 250;
+    let y2 = 250;
+    let y3 = 250;
+    let yy1 = 250;
+    let yy2 = 250;
+    let forum = 250;
 
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
       // we create date objects here. In your data, you can have date strings
       // and then set format of your dates using chart.dataDateFormat property,
       // however when possible, use date objects, as this will speed up chart rendering.
-      var newDate = new Date(firstDate);
+      let newDate = new Date(firstDate);
       newDate.setDate(newDate.getDate() + i);
 
       forum += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
@@ -183,6 +185,8 @@ export class ReportsComponent implements OnInit {
       y1 += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
       y2 += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
       y3 += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+      yy1 += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
+      yy2 += Math.round((Math.random()<0.5?1:-1)*Math.random()*10);
 
       _chartData.push({
         date: newDate,
@@ -190,11 +194,49 @@ export class ReportsComponent implements OnInit {
         y0,
         y1,
         y2,
-        y3
+        y3,
+        yy1,
+        yy2
       });
     }
 
     return _chartData;
+  }
+
+  getGraph(name, row) {
+    const gId = row.index.toString();
+    const lineColor = this.getRandomColor();
+
+    const g = {
+      id: "g" + name + gId,
+      useNegativeColorIfDown: false,
+      balloonFunction: function(graphDataItem, graph) {
+        var value = graphDataItem.values.value;
+        var origin = graphDataItem.values.value;
+        var offset = '';
+        if (graphDataItem.index > 0) {
+          value = value - graph.data[graphDataItem.index - 1].dataContext[`${name}${gId}`]
+          if (value > 0) {
+            offset = '$' + value;
+          } else {
+            offset = '-$' + (-value);
+          }
+        }
+        return "<div style='padding-left:25px;padding-right:25px;padding-top:10px;padding-bottom:10px;'><span style='color:white;font-family:Roboto;font-size:20px;font-weight:bold;'>$" +
+          origin + "</span>" + "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Change " +
+          offset + "</span><br><br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Discount: 30%</span>" +
+          "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Vendor: " + row.vendor + "</span></div>";
+      },
+      bullet: "round",
+      bulletBorderAlpha: 1,
+      bulletBorderColor: lineColor,
+      hideBulletsCount: 50,
+      lineThickness: 2,
+      lineColor: lineColor,
+      title: row.vendor,
+      valueField: name + gId
+    }
+    return g;
   }
 
   getRandomColor() {
@@ -236,49 +278,34 @@ export class ReportsComponent implements OnInit {
         this.tableHeight -= (row.history.length + 1);
       }
       this.table.bodyHeight = 60 * this.tableHeight;
+    } else {
+      if (row.checked) {
+        const g = this.getGraph('yy', row);
+        this.chart.graphs.push(g);
+        this.chart.validateData();
+      } else {
+        let removeIndex = 0;
+        this.chart.graphs.forEach((graph, index) => {
+          if (graph.id === `gyy${row.index}`) {
+            removeIndex = index;
+          }
+        })
+        this.chart.graphs.splice(removeIndex, 1);
+        this.chart.valueAxes.splice(removeIndex, 1);
+        this.chart.validateData();
+      }
     }
   }
 
   toggleHistory(row) {
     if (row.checked) {
-      const gId = row.index.toString();
-      const lineColor = this.getRandomColor();
-
-      const g = {
-        id: "g" + gId,
-        useNegativeColorIfDown: false,
-        balloonFunction: function(graphDataItem, graph) {
-          var value = graphDataItem.values.value;
-          var origin = graphDataItem.values.value;
-          var offset = '';
-          if (graphDataItem.index > 0) {
-            value = value - graph.data[graphDataItem.index - 1].dataContext[`y${gId}`]
-            if (value > 0) {
-              offset = '$' + value;
-            } else {
-              offset = '-$' + (-value);
-            }
-          }
-          return "<div style='padding-left:25px;padding-right:25px;padding-top:10px;padding-bottom:10px;'><span style='color:white;font-family:Roboto;font-size:20px;font-weight:bold;'>$" +
-            origin + "</span>" + "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Change " +
-            offset + "</span><br><br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Discount: 30%</span>" +
-            "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Vendor: " + row.vendor + "</span></div>";
-        },
-        bullet: "round",
-        bulletBorderAlpha: 1,
-        bulletBorderColor: lineColor,
-        hideBulletsCount: 50,
-        lineThickness: 2,
-        lineColor: lineColor,
-        title: row.vendor,
-        valueField: "y" + gId
-      }
+      const g = this.getGraph('y', row);
       this.chart.graphs.push(g);
       this.chart.validateData();
     } else {
       let removeIndex = 0;
       this.chart.graphs.forEach((graph, index) => {
-        if (graph.id === `g${row.index}`) {
+        if (graph.id === `gy${row.index}`) {
           removeIndex = index;
         }
       })
