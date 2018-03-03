@@ -30,6 +30,7 @@ export class ReportsComponent implements OnInit {
   selectedPrice: any;
   selectedReport: any;
   filteredProducts: Array<any>;
+  tableHeight: number;
 
   constructor(
     public modal: Modal,
@@ -153,6 +154,8 @@ export class ReportsComponent implements OnInit {
       {id: 1, name: 'Inventory groups'}
     ]
     this.filteredProducts = this.productTable;
+    this.tableHeight = this.filteredProducts.length + 1;
+    this.table.bodyHeight = 60 * this.tableHeight;
 
     this.chart.addListener("dataUpdated", () => this.zoomChart);
     this.zoomChart()
@@ -226,6 +229,13 @@ export class ReportsComponent implements OnInit {
   toggleExpandRow(row) {
     if (row.vendor === 'Multiple') {
       this.table.rowDetail.toggleExpandRow(row);
+
+      if (row.checked) {
+        this.tableHeight += (row.history.length + 1);
+      } else {
+        this.tableHeight -= (row.history.length + 1);
+      }
+      this.table.bodyHeight = 60 * this.tableHeight;
     }
   }
 
