@@ -147,6 +147,7 @@ export class ReportsComponent implements OnInit {
     ]
 
     this.chart.addListener("dataUpdated", () => this.zoomChart);
+    this.zoomChart()
   }
 
   generatechartData() {
@@ -196,7 +197,7 @@ export class ReportsComponent implements OnInit {
 
   zoomChart() {
     if (this.chart.zoomToIndexes) {
-      this.chart.zoomToIndexes(130, this.chartData.length - 1);
+      this.chart.zoomToIndexes(0, 3);
     }
   }
 
