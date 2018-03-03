@@ -14,7 +14,7 @@ export class SearchFilterComponent {
   constructor() {}
 
   searchFilter(event) {
-    this.searchEvent.emit(event.data);
+    this.searchEvent.emit(this.searchKey);
   }
 
   showFiltersModal() {

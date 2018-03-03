@@ -48,7 +48,7 @@
       <div class="search-filter">
         <app-search-filter
           [searchKey]="searchKey"
-          (searchEvent)="searchOrders($event)"
+          (searchEvent)="onSearchProducts($event)"
           (openModalEvent)="showFiltersModal()"
         ></app-search-filter>
       </div>
@@ -62,7 +62,7 @@
         [headerHeight]="30"
         [rowHeight]="60"
         [scrollbarV]="true"
-        [rows]='productTable'
+        [rows]='filteredProducts'
         (page)="onPage($event)"
         (sort)="onSort($event)"
       >

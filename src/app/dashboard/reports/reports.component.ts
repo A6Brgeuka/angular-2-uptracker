@@ -3,6 +3,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { ReportsFilterModal } from './reports-filter-modal/reports-filter-modal.component';
+import { is, values, toLower } from 'ramda'
 import * as moment from 'moment';
 
 declare var AmCharts: any;
@@ -28,6 +29,7 @@ export class ReportsComponent implements OnInit {
   reportList: Array<any>;
   selectedPrice: any;
   selectedReport: any;
+  filteredProducts: Array<any>;
 
   constructor(
     public modal: Modal,
@@ -150,6 +152,7 @@ export class ReportsComponent implements OnInit {
       {id: 0, name: 'Products'},
       {id: 1, name: 'Inventory groups'}
     ]
+    this.filteredProducts = this.productTable;
 
     this.chart.addListener("dataUpdated", () => this.zoomChart);
     this.zoomChart()
@@ -296,6 +299,18 @@ export class ReportsComponent implements OnInit {
   }
 
   onReport(event) {
+  }
+
+  onSearchProducts(event) {
+    this.filteredProducts = [];
+    this.productTable.forEach((product) => {
+      values(product).forEach((value) => {
+        if(is(String, value) && toLower(value).indexOf(toLower(event)) > -1) {
+          this.filteredProducts.push(product);
+          return;
+        }
+      })
+    })
   }
 
   onSort(event) {
