@@ -77,6 +77,8 @@ export class ReportsComponent implements OnInit {
         scrollbarHeight: 5,
         backgroundAlpha: 0.1,
         backgroundColor: "#868686",
+        offset: 50,
+        oppositeAxis: false,
         selectedBackgroundColor: "#67b7dc",
         selectedBackgroundAlpha: 1
       },
