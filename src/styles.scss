@@ -1582,6 +1582,7 @@ ngui-auto-complete {
         margin-top: 20px;
         .applyBtn {
           background-color: #33c6d9 !important;
+          box-shadow: none;
         }
         .cancelBtn {
           background-color: transparent;
@@ -1679,5 +1680,8 @@ ngui-auto-complete {
   }
   td {
     padding: 5px 5px;
+    &.active, .daterangepicker td.active:hover {
+      background-color: #33c6d9 !important;
+    }
   }
 }
