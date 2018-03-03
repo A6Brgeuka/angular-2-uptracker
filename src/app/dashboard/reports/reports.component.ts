@@ -224,8 +224,9 @@ export class ReportsComponent implements OnInit {
   }
 
   toggleExpandRow(row) {
-    console.log('Toggled Expand Row!', row);
-    this.table.rowDetail.toggleExpandRow(row);
+    if (row.vendor === 'Multiple') {
+      this.table.rowDetail.toggleExpandRow(row);
+    }
   }
 
   toggleHistory(row) {
