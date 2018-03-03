@@ -244,16 +244,6 @@ export class ReportsComponent implements OnInit {
       const gId = row.index.toString();
       const lineColor = this.getRandomColor();
 
-      const a = {
-        id: "v" + gId,
-        autoGridCount: false,
-        axisAlpha: 0.2,
-        gridAlpha: 0,
-        gridCount: 5,
-        unit: '$',
-      }
-      this.chart.valueAxes.push(a);
-
       const g = {
         id: "g" + gId,
         useNegativeColorIfDown: false,
