@@ -302,14 +302,19 @@ export class ReportsComponent implements OnInit {
   }
 
   onSearchProducts(event) {
+    let isVisible = false
     this.filteredProducts = [];
     this.productTable.forEach((product) => {
+      isVisible = false
       values(product).forEach((value) => {
-        if(is(String, value) && toLower(value).indexOf(toLower(event)) > -1) {
-          this.filteredProducts.push(product);
+        if (is(String, value) && toLower(value).indexOf(toLower(event)) > -1) {
+          isVisible = true;
           return;
         }
       })
+      if (isVisible) {
+        this.filteredProducts.push(product);
+      }
     })
   }
 
