@@ -98,11 +98,14 @@ export class ReportsComponent implements OnInit {
       fontFamily: 'Ubuntu',
       balloon: {
         borderThickness: 0,
-        cornerRadius: 3,
+        // cornerRadius: 1,
         fillAlpha: 1,
         fillColor: "#404851",
+        fixedPosition: false,
+        offsetY: 10,
         shadowColor: "#ffffff"
       },
+      showHandOnHover: true,
       export: {
         enabled: false
       }
