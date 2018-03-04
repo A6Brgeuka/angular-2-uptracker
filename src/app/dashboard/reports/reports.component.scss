@@ -63,6 +63,7 @@
     .save {
       background-color: #33c6d9;
       box-shadow: none;
+      margin-left: 15px;
     }
     .select .select-wrapper.ng-valid input.select-dropdown {
       border-color: #9a9c9e;
@@ -108,7 +109,7 @@
       top: 2px;
     }
     .amcharts-chart-div {
-      z-index: 999;
+      z-index: 99;
     }
   }
 }
