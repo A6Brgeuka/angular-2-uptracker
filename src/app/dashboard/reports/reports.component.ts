@@ -225,7 +225,7 @@ export class ReportsComponent implements OnInit {
             offset = '-$' + (-value);
           }
         }
-        return "<div style='padding-left:25px;padding-right:25px;padding-top:10px;padding-bottom:10px;'><span style='color:white;font-family:Roboto;font-size:20px;font-weight:bold;'>$" +
+        return "<div style='padding-left:25px;padding-right:25px;padding-top:10px;padding-bottom:10px;z-index:99999;'><span style='color:white;font-family:Roboto;font-size:20px;font-weight:bold;'>$" +
           origin + "</span>" + "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Change " +
           offset + "</span><br><br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Discount: 30%</span>" +
           "<br><span style='color:white;font-family:Roboto;font-size:12px;font-weight:100;'>Vendor: " + row.vendor + "</span></div>";
