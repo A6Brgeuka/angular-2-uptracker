@@ -2,7 +2,6 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 
 import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import { IOption } from 'ng-select';
 import * as moment from 'moment';
@@ -23,7 +22,6 @@ export class ReportsFilterModalContext extends BSModalContext {
   templateUrl: './reports-filter-modal.component.html',
   styleUrls: ['./reports-filter-modal.component.scss']
 })
-@DestroySubscribers()
 export class ReportsFilterModal implements OnInit, ModalComponent<ReportsFilterModalContext> {
   public subscribers: any = {};
   public context: ReportsFilterModalContext;
