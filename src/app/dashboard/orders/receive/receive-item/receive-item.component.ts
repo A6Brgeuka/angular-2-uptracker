@@ -22,6 +22,7 @@ import { OrderStatusValues } from '../../order-status';
 @Component({
   selector: 'app-receive-item',
   templateUrl: './receive-item.component.html',
+  styleUrls: ['./receive-item.component.scss'],
 })
 @DestroySubscribers()
 
