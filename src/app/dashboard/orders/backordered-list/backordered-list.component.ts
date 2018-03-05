@@ -23,7 +23,7 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
     {name: 'Backordered', className: 's2', alias: 'backordered_date', filterBy: true, },
     // {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
-    {name: 'Qty', className: 's1 bold underline-text right-align', alias: 'backordered_qty'},
+    {name: 'Qty', className: 's1 bold underline-text right-align', aliasArray: ['backordered_qty', 'quantity'], join: '/'},
     {name: 'Pkg Price', className: 's1', alias: 'package_price'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
     {name: '', className: 's1', actions: true},
