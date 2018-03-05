@@ -19,7 +19,7 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   public listName: string = 'received';
   public tableHeaderReceived: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
-    {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
+    {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
     {name: 'Location', className: 's1', alias: 'location_name', filterBy: true, },
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
