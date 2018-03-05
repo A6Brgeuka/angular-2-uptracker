@@ -117,7 +117,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     );
   }
 
-  openShowCommentModal(item) {
+  openUnflagToaster(item) {
     this.toasterService.pop('error', 'Items that have comments cannot be unflagged');
   }
 
