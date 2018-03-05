@@ -26,7 +26,7 @@
       <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
     </li>
     <li>
-      <a class="tealish-text" (click)="item.flagged ? openUnflagToaster(item) : openAddCommentModal(item)">
+      <a class="tealish-text" (click)="item.flagged_comment?.length > 0 ? openUnflagToaster(item) : openAddCommentModal(item)">
         {{item.flagged ? 'Unflag' : 'Flag'}}
       </a>
     </li>
