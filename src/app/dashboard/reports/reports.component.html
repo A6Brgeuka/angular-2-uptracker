@@ -94,8 +94,8 @@
                         </div></td>
                         <td><span style="color: #33c6d9">{{historyRow?.vendor}}</span></td>
                         <td>{{historyRow?.pkgType}}</td>
-                        <td>{{historyRow?.currentPrice}}</td>
-                        <td>{{historyRow?.avgPrice}}</td>
+                        <td>${{historyRow?.currentPrice}}</td>
+                        <td>${{historyRow?.avgPrice}}</td>
                         <td>{{historyRow?.consumableType}}</td>
                         <td>{{historyRow?.consumablePkg}}</td>
                         <td>{{historyRow?.consumablePrice}}</td>
@@ -123,12 +123,12 @@
         </ngx-datatable-column>
         <ngx-datatable-column name="Price" prop="price" [flexGrow]="1">
           <ng-template let-value="value" ngx-datatable-cell-template>
-            <span>{{value}}</span>
+            <span>${{value}}</span>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Avg Price" prop="avgPrice" [flexGrow]="1">
           <ng-template let-value="value" ngx-datatable-cell-template>
-            <span>{{value}}</span>
+            <span>${{value}}</span>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Discount" prop="discount" [flexGrow]="1">

@@ -112,10 +112,10 @@ export class ReportsComponent implements OnInit {
     });
 
     this.productHistory = [
-      {index: 0, checked: false, vendor: 'ABC Inc', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '12', consumablePrice: '$1.00', consumableAvg: '$1.15'},
-      {index: 1, checked: false, vendor: 'Anvil Corp', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '12', consumablePrice: '$1.00', consumableAvg: '$1.15'},
-      {index: 2, checked: false, vendor: 'Bamboo Systems', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '24', consumablePrice: '$1.00', consumableAvg: '$1.15'},
-      {index: 3, checked: false, vendor: 'Cosco', pkgType: '12 Pack', currentPrice: '$110', avgPrice: '$100', consumableType: 'Type A', consumablePkg: '9', consumablePrice: '$1.00', consumableAvg: '$1.15'}
+      {index: 0, checked: false, vendor: 'ABC Inc', pkgType: '12 Pack', currentPrice: '110', avgPrice: '100', consumableType: 'Type A', consumablePkg: '12', consumablePrice: '$1.00', consumableAvg: '$1.15'},
+      {index: 1, checked: false, vendor: 'Anvil Corp', pkgType: '12 Pack', currentPrice: '110', avgPrice: '100', consumableType: 'Type A', consumablePkg: '12', consumablePrice: '$1.00', consumableAvg: '$1.15'},
+      {index: 2, checked: false, vendor: 'Bamboo Systems', pkgType: '12 Pack', currentPrice: '110', avgPrice: '100', consumableType: 'Type A', consumablePkg: '24', consumablePrice: '$1.00', consumableAvg: '$1.15'},
+      {index: 3, checked: false, vendor: 'Cosco', pkgType: '12 Pack', currentPrice: '110', avgPrice: '100', consumableType: 'Type A', consumablePkg: '9', consumablePrice: '$1.00', consumableAvg: '$1.15'}
     ]
     this.historyColumn = [
       {prop: 'vendor', name: 'Vendor'},
@@ -128,9 +128,9 @@ export class ReportsComponent implements OnInit {
       {prop: 'consumableAvg', name: 'Consumable Unit Avg'}
     ]
     this.productTable = [
-      {index: 0, checked: false, name: 'Scalpel Group', price: '$117', avgPrice: '$87', discount: 'Bogo', vendor: 'Multiple', department: 'Surgical', category: 'Tools', location: 'Miami, FL', history: this.productHistory},
-      {index: 1, checked: false, name: 'Ball Clasp', price: '$120', avgPrice: '$110', discount: 'Bogo', vendor: 'Acme Inc', department: 'Surgical', category: 'Tools', location: 'Miami, FL', history: this.productHistory},
-      {index: 2, checked: false, name: 'Nunchucks', price: '$80', avgPrice: '$88', discount: 'Bogo', vendor: 'Ninja Inc', department: 'Stealth', category: 'Tools', location: 'Miami, FL', history: this.productHistory}
+      {index: 0, checked: false, name: 'Scalpel Group', price: '117', avgPrice: '87', discount: 'Bogo', vendor: 'Multiple', department: 'Surgical', category: 'Tools', location: 'Miami, FL', history: this.productHistory},
+      {index: 1, checked: false, name: 'Ball Clasp', price: '120', avgPrice: '110', discount: 'Bogo', vendor: 'Acme Inc', department: 'Surgical', category: 'Tools', location: 'Miami, FL', history: null},
+      {index: 2, checked: false, name: 'Nunchucks', price: '80', avgPrice: '88', discount: 'Bogo', vendor: 'Ninja Inc', department: 'Stealth', category: 'Tools', location: 'Miami, FL', history: null}
     ]
     this.productColumn = [
       {prop: 'name', name: 'Product Name'},
@@ -350,13 +350,12 @@ export class ReportsComponent implements OnInit {
   }
 
   onSort(event) {
-    this.productTable.forEach((product) => {
-      if (product.checked) {
-        product.checked = false;
-        product.history.forEach((history) => {
-          history.checked = false;
-        })
-      }
-    })
+    setTimeout(() => {
+      this.productTable.forEach((product) => {
+        if (product.checked && product.vendor === 'Multiple') {
+          this.table.rowDetail.toggleExpandRow(product);
+        }
+      })
+    }, 50);
   }
 }
