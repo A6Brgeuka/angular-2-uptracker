@@ -9,7 +9,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { UserService, AccountService } from '../../../core/services/index';
 import { InventoryService } from '../../../core/services/inventory.service';
 import { AttachmentFiles, InventorySearchResults, searchData, Vendor } from '../../../models/inventory.model';
@@ -76,7 +76,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
   public packDirty: boolean = false;
-  
+
   public file$:Observable<any>;
   public file;
   public loadFile$: Subject<any> = new Subject<any>();
@@ -92,25 +92,25 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
   public uploadedImage;
   public fileIsOver: boolean = false;
   public categoryValid: boolean = true;
-  
+
   public departmentCollection: any;
   public productAccountingCollection:  any;
   public productCategoriesCollection: any;
-  
+
   @ViewChild('step1') step1: ElementRef;
   @ViewChild('step2') step2: ElementRef;
   @ViewChild('step3') step3: ElementRef;
   @ViewChild('step4') step4: ElementRef;
-  
+
   @ViewChildren('locationTab') locationTabsList: QueryList<any>;
-  
+
   public locations$: Observable<any> = this.accountService.locations$;
   public locations: any[];
   public showAddCustomBtn: boolean;
   public outerPack: string = '';
   public innerPack: string = '';
   public  wildcardConsumableUnit: string = 'Item';
-  
+
   constructor(
     public zone: NgZone,
     public dialog: DialogRef<AddInventoryModalContext>,
@@ -149,9 +149,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
         }
         this.checkedProduct$.next({});
       }
-    
+
     });
-  
+
     this.saveAdded$
     .switchMap(() => {
       return this.items$
@@ -167,7 +167,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
         return this.inventoryService.addItemsToInventory(this.newInventory)});
     })
     .subscribe(newInventory => this.closeModal(newInventory));
-  
+
     this.updateAdded$
     .switchMap(() =>
       this.inventoryService.updateInventory(this.newInventory)
@@ -198,10 +198,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
           }
           return !currentItem ? [...acc, item] : [...acc]
         }, []);
-        
+
         return [...items, ...newNotChosenItems];
       })
-    
+
     );
 
     let deleteFromItems$ = this.deleteFromItems$
@@ -313,7 +313,9 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
 
     this.resultItems$ = Observable.combineLatest(this.packageType$, this.searchResults$, this.checkedProduct$, this.matchingAll$)
     .map(([packageType,searchResults,checkedProduct,matchingAll]: any) => {
+
       let filteredResults = _.filter(searchResults, packageType);
+
       let checkedResults = searchResults.reduce((acc: any[], item) => {
         let foundedItem = _.find(
           filteredResults,
@@ -325,7 +327,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
           notActive: !foundedItem
         }]
       },[]);
-      
+
       let checkboxResult = checkedResults.reduce((acc: any[], item) => {
           if (!matchingAll) {
             const {variant_id, product_id} = item;
@@ -573,7 +575,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
   toggleCustomCancel() {
     this.addCustomProduct = !this.addCustomProduct;
     this.editCustomProduct = false;
-    this.showAddCustomBtn = !this.showAddCustomBtn;
+    this.showAddCustomBtn = !!this.searchText;
     if (!this.items.length) {
       this.nextPackage({});
     }
@@ -778,7 +780,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
       let resizedImg: any = this.fileUploadService.resizeImage(img, {resizeMaxHeight: 250, resizeMaxWidth: 250});
       let orientation = this.fileUploadService.getOrientation(imgBase64);
       let orientedImg = this.fileUploadService.getOrientedImageByOrientation(resizedImg, orientation);
-      
+
       this.zone.run(() => {
         this.uploadedImage = orientedImg;
       });

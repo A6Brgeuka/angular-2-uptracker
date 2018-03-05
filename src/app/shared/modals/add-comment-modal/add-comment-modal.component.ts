@@ -16,15 +16,20 @@ export class AddCommentModalContext extends BSModalContext {
 export class AddCommentModalComponent implements OnInit, ModalComponent<AddCommentModalContext> {
   context;
   public comment: any;
+  public title: string;
+  public placeholder: string;
 
   constructor(
     public dialog: DialogRef<AddCommentModalContext>,
   ) {
     this.context = dialog.context;
+    this.title = this.context.title || 'Add a comment';
+    this.placeholder = this.context.placeholder || 'Please, type your comment here.';
     this.comment = {};
   }
-  
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
   dismissModal() {
     this.dialog.dismiss();

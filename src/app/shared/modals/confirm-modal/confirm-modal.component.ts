@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 export class ConfirmModalContext extends BSModalContext {
   public title: string;
@@ -19,7 +18,6 @@ export class ConfirmModalContext extends BSModalContext {
   templateUrl: './confirm-modal.component.html',
   styleUrls: ['./confirm-modal.component.scss']
 })
-@DestroySubscribers()
 export class ConfirmModalComponent implements OnInit, ModalComponent<ConfirmModalContext> {
   context: ConfirmModalContext;
 

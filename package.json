@@ -44,6 +44,7 @@
     "ng2-daterangepicker": "^2.0.12",
     "ng2-destroy-subscribers": "0.0.28",
     "ngx-cookie": "^1.0.0",
+    "ngx-destroy-subscribers": "^1.0.1",
     "ngx-perfect-scrollbar": "^4.9.6",
     "ngx-restangular": "^1.0.9",
     "qrcode-reader": "^1.0.3",

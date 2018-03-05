@@ -2,7 +2,7 @@ import {Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone} from '@
 
 import {DialogRef, ModalComponent, Modal} from 'angular2-modal';
 import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
-import {DestroySubscribers} from 'ng2-destroy-subscribers';
+import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {Observable, BehaviorSubject, Subject} from 'rxjs/Rx';
 import * as _ from 'lodash';
 
@@ -135,7 +135,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
     closeEditFields() {
         this.showEdit = !this.showEdit;
         this.showEdit$.next(false);
-    
+
         this.productCopy = [];
         this.variants$.next(this.variantsCopy);
     }
@@ -217,7 +217,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
         )
             .map(([variants, filterSelectOption, filterName, filterPrice, variantChecked,showEdit]) => {
                 if (showEdit) {
-                    
+
                     return variants;
                 }
                 // check if at least on variant is checked to show add order button
@@ -240,7 +240,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
                     });
                 }
                 variants = _.filter(variants, filterSelectOption);
-                // 
+                //
                 return variants;
             });
         this.getProducts();
@@ -249,14 +249,14 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
     addSubscribers() {
         this.subscribers.departmenCollectiontSubscription = this.departmentCollection$
         .subscribe(departments => this.departmentCollection = departments);
-    
+
         this.subscribers.productAccountingCollection = this.productAccountingCollection$
         .subscribe(products => this.productAccountingCollection = products);
-    
+
         this.subscribers.productCategoriesCollection = this.productCategoriesCollection$
         .subscribe(productsCat => this.productCategoriesCollection = productsCat);
     }
-    
+
     getProducts (){
         this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product.id, this.location_id)
         .filter(res => res.data)
@@ -268,10 +268,10 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
             || data.product.msds == ''
             || data.product.notes == ''
             || !_.isEmpty(data.product.documents));
-            
+
             this.loadDoc$.next(data.product.documents);
             this.loadDoc$.subscribe(r=>console.log(r));
-        
+
             this.resetText();
             this.variants = _.map(data.variants, (item: any) => {
                 item.checked = false;
@@ -283,7 +283,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
             this.variants$.next(this.variants); // update variants
             this.orders$.next(this.reformatOrderHistory(this.variants)); // update order history
             this.orders$.subscribe(r=>console.log('orders',r));
-        
+
             this.comments$.next(data.comments); // update comments
             console.log(this.variants[0]);
             _.each(this.variants, (variant: any) => {
@@ -294,7 +294,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
             _.forEach(this.variationArrs, (value, key) => {
                 this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
             });
-        
+
         });
     }
     // File load, add, delete actions
@@ -361,7 +361,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
         )
         .publishReplay(1)
         .refCount();
-        
+
         this.doc$
         .subscribe(res => {
             console.log('docs',res);
@@ -463,7 +463,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
     toggleVariationVisibility() {
         this.variation.status = this.variation.status == 2 ? this.variation.status =1 : this.variation.status = 2;
         this.filterSelectOption$.next(this.variation);
-        
+
     }
 
     toggleVariantVisibility(variant) {
@@ -520,15 +520,15 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
             this.toasterService.pop("", res.message)
         })
     }
-    
-    
+
+
     showVariantDetails($event,variant){
         $event.stopPropagation();
         this.showVariant = true;
         this.currentVariant = variant;
-        
+
     }
-    
+
     hideVariantDetails(){
         this.showVariant = false;
         this.currentVariant = {};
@@ -544,7 +544,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
         myReader.fileName = file.name;
         this.addFile(file);
     }
-    
+
     onFileUpload(event){
         this.onFileDrop(event.target.files[0]);
     }
@@ -561,11 +561,11 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
         console.log(`remove ${doc.file_name}`);
         this.deleteFromDoc$.next(doc);
     }
-    
+
     inventoryDetailCollapse(v) {
         v.detailView = false;
     }
-    
+
     saveAfterEdit() {
         this.fileUploadService.uploadDocuments(this.userService.selfData.account_id, 'product', this.product.id, this.file)
         .subscribe(result => {
@@ -602,7 +602,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
                           return item;
                       });
                       this.product = data.product;
-                      
+
                       this.hasInfoTab = (data.product.description == ''
                       || data.product.hazardous_form == ''
                       || data.product.msds == ''
@@ -619,7 +619,7 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
                           this.variationArrs[key] = _.filter(this.variationArrs[key], res => res);
                       });
                       this.showEdit = false;
-          
+
                       this.showEdit$.next(false);
                       this.productCopy = [];
                       this.filterSelectOption$.next({status: 1});
@@ -629,12 +629,12 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
                       this.toasterService.pop("error", err);
                   });
                 this.loadFile$.next([]);
-                
+
             }
         },
         err => this.toasterService.pop("error", err));
-    
-        
+
+
     }
 
     reformatOrderHistory(ina: any): any {
@@ -650,5 +650,5 @@ export class ViewProductModal implements OnInit, AfterViewInit, ModalComponent<V
         )
         return out;
     }
-    
+
 }

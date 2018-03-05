@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 
 import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
 
 export class UniConfirmModalContext extends BSModalContext {
   public title:string;
@@ -22,18 +21,16 @@ export class UniConfirmModalContext extends BSModalContext {
   templateUrl: './uni-confirm-modal.component.html',
   styleUrls: ['./uni-confirm-modal.component.scss']
 })
-@DestroySubscribers()
 export class UniConfirmModal implements OnInit, ModalComponent<UniConfirmModalContext> {
   context: UniConfirmModalContext;
-  
+
   constructor(
     public dialog: DialogRef<UniConfirmModalContext>,
   ) {
     this.context = dialog.context;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   dismissModal() {
     this.dialog.dismiss();
@@ -43,7 +40,7 @@ export class UniConfirmModal implements OnInit, ModalComponent<UniConfirmModalCo
     this.dialog.close(data);
   }
 
-  confirm(){
+  confirm() {
     this.dialog.context.fn();
     this.dismissModal();
   }

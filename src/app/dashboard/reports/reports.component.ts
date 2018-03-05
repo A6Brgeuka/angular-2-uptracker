@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { ReportsFilterModal } from './reports-filter-modal/reports-filter-modal.component';
 import { is, values, toLower } from 'ramda'
@@ -13,7 +12,6 @@ declare var AmCharts: any;
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
-@DestroySubscribers()
 export class ReportsComponent implements OnInit {
 
   @ViewChild('myTable') table: any;

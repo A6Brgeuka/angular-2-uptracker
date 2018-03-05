@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 
 import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
 import { CartService } from '../../../../core/services/cart.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { AddToOrderData } from '../product.component';
@@ -20,7 +19,6 @@ export class BulkAdd2OrderModalContext extends BSModalContext {
   templateUrl: './bulkAdd2order-modal.component.html',
   styleUrls: ['./bulkAdd2order-modal.component.scss']
 })
-@DestroySubscribers()
 export class BulkAdd2OrderModal implements OnInit, ModalComponent<BulkAdd2OrderModalContext> {
   context: BulkAdd2OrderModalContext;
   public quantity: string = '1';
@@ -30,7 +28,7 @@ export class BulkAdd2OrderModal implements OnInit, ModalComponent<BulkAdd2OrderM
   public isAuto: boolean = true;
   public unit_type: string = null;
   public items: AddToOrderData[];
-  
+
   constructor(
     public dialog: DialogRef<BulkAdd2OrderModalContext>,
     public cartService: CartService,

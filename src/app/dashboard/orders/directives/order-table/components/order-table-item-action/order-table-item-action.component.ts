@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { DestroySubscribers } from 'ng2-destroy-subscribers';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { Subject } from 'rxjs/Subject';
 
@@ -9,8 +9,9 @@ import { ToasterService } from '../../../../../../core/services/toaster.service'
 import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-modal.component';
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
-import { AddCommentModalComponent } from '../../../../../../shared/modals/add-comment-modal/add-comment-modal.component';
-import { ConfirmModalService } from '../../../../../../shared/modals/confirm-modal/confirm-modal.service';
+import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
+import { FavoritedListService } from '../../../../services/favorited-list.service';
+import { FlaggedListService } from '../../../../services/flagged-list.service';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -19,48 +20,48 @@ import { ConfirmModalService } from '../../../../../../shared/modals/confirm-mod
 @DestroySubscribers()
 
 export class OrderTableItemActionComponent implements OnInit, OnDestroy {
-  
+
   private updateFlagged$: any = new Subject<any>();
   private updateFavorite$: any = new Subject<any>();
 
   private subscribers: any = {};
-  
+
   private reorderProduct$:  any = new Subject<any>();
-  private openShowCommentModal$:  any = new Subject<any>();
 
   @Input() i: any;
   @Input() item: any;
   @Input() isShow: boolean;
   @Input() listName: string;
   @Input() uniqueField: string;
-  
+
   constructor(
     public modal: Modal,
     public pastOrderService: PastOrderService,
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
-    public confirmModalService: ConfirmModalService,
+    private favoritedListService: FavoritedListService,
+    private flaggedListService: FlaggedListService,
   ) {
   }
   ngOnInit() {
-  
+
   }
-  
+
   ngOnDestroy() {
     console.log('for unsubscribing');
   }
-  
+
   addSubscribers() {
-  
+
     this.subscribers.updateFlaggedSubscription = this.updateFlagged$
-    .switchMap((item: any) => this.pastOrderService.setFlag(item, [item[this.uniqueField]]))
+    .switchMap((item: any) => this.flaggedListService.putItem(item))
     .subscribe( res => this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged'),
       err => console.log('error')
     );
 
     this.subscribers.updateFavoriteSubscription = this.updateFavorite$
-    .switchMap((item: any) => this.pastOrderService.setFavorite(item, [item[this.uniqueField]]))
+    .switchMap((item: any) => this.favoritedListService.postItem(item))
     .subscribe( res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
       err => console.log('error')
     );
@@ -69,25 +70,12 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
 
-    this.subscribers.openShowCommentModalSubscription = this.openShowCommentModal$
-    .switchMap((item) =>
-      this.confirmModalService.confirmModal(
-        'Unflag?', {text: item.flagged_comment, btn: 'Unflag'}
-      )
-      .filter(({success}) => success)
-      .mapTo(item)
-    )
-    .switchMap((item) => this.pastOrderService.setFlag(item, [item[this.uniqueField]]))
-    .subscribe(res => this.toasterService.pop('', res.favorite ? 'Flagged' : 'Unflagged'),
-      err => console.log('error')
-    );
-    
   }
 
   setFavorite(item) {
     this.updateFavorite$.next(item);
   }
-  
+
   buyAgainOrder(item) {
     const data = {
       'orders': [
@@ -99,39 +87,38 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     };
     this.reorderProduct$.next(data);
   }
-  
+
   sendToReceiveProduct(item) {
     const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
     this.pastOrderService.goToReceive(queryParams);
   }
-  
+
   openResendDialog(item) {
     this.modal
     .open(ResendOrderModal, this.modalWindowService
     .overlayConfigFactoryWithParams(item, true, 'mid'));
   };
-  
+
   onVoidOrder(item) {
     this.orderTableOnVoidService.onVoidOrder(item);
   }
 
   openAddCommentModal(item) {
     this.modal
-    .open(AddCommentModalComponent, this.modalWindowService
-    .overlayConfigFactoryWithParams(item, true, 'mid'))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (comment) => {
-          item.flagged_comment = comment.body;
-          this.updateFlagged$.next(item);
+    .open(OrderFlagModalComponent, this.modalWindowService
+    .overlayConfigFactoryWithParams(item, true, 'big'))
+    .then((resultPromise) => resultPromise.result)
+    .then(
+      (response) => {
+        this.updateFlagged$.next({...item, flagged_comment: response.comment});
       },
-        (err) => {}
-      );
-    });
+      (err) => {
+      }
+    );
   }
 
-  openShowCommentModal(item) {
-    this.openShowCommentModal$.next(item);
+  openUnflagToaster(item) {
+    this.toasterService.pop('error', 'Items that have comments cannot be unflagged');
   }
 
 }
