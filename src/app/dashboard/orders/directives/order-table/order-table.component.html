@@ -60,6 +60,13 @@
             [ngClass]="{'black-text cursor-default': headerCol.showChevron && item.statusHistoryVisibility, 'red-text':  (filterByObj$ | async)[headerCol.alias] === item[headerCol.alias]}">
             {{item[headerCol.alias]}}
           </span>
+          <span
+            *ngIf="headerCol.aliasArray && headerCol.aliasArray.length"
+          >
+            <ng-template ngFor let-alias [ngForOf]="headerCol.aliasArray" let-last="last">
+              {{ item[alias] }}{{ last ? '' : headerCol.join }}
+            </ng-template>
+          </span>
           <fa
             *ngIf="headerCol.showChevron && item.status_int === orderStatus.multiple"
             (click)="toggleStatusHistoryDetail(item); $event.stopPropagation()"
