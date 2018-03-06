@@ -96,6 +96,10 @@ export class OrderTableHeaderActionComponent implements OnInit {
     this.onReceiveOrders(OrderStatusValues.receive);
   }
 
+  backorder() {
+    this.onReceiveOrders(OrderStatusValues.backorder);
+  }
+
   private onReceiveOrders(type?) {
     const uniqOrdersByVendors = _.uniqBy(this.orders, 'vendor_id');
 
