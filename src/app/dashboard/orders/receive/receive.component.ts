@@ -111,12 +111,25 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
     this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
     .switchMap(() => this.confirmModalService.confirmModal(
-      'Save?', 'Do you want to save the applied changes?',  [{text: 'Save', value: 'save'}]
-    )).subscribe(res => {
-      if (res.success) {
-        this.save();
-      } else {
-        this.router.navigate(['/orders']);
+      'Save?',
+      'You are about to leave without saving changes. Are you sure you want to exit?',
+      [
+          {text: 'Exit', value: 'exit', red: true},
+          {text: 'Cancel', value: 'cancel', cancel: true},
+          {text: 'Save', value: 'save'},
+        ]
+    ))
+    .filter((ev) => ev.success)
+    .subscribe((ev) => {
+      switch (ev.data) {
+        case 'save': {
+          this.save();
+          break;
+        }
+        case 'exit': {
+          this.router.navigate(['/orders']);
+          break;
+        }
       }
     });
 
