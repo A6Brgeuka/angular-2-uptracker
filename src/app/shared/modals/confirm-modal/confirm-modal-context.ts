@@ -4,6 +4,7 @@ export interface ConfirmButton {
   text: string;
   value: string;
   cancel?: boolean;
+  red?: boolean;
 }
 
 export class ConfirmModalContext extends BSModalContext {

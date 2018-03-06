@@ -3,15 +3,16 @@
   <div class="row center-align high">{{ context.text }}</div>
 
   <div class="row mtop mbot">
-    <div class="center-align col s12">
+    <div class="center-align col s12 confirm-modal-btns">
       <button
-        class="uptracker-form-btn"
-        *ngIf="!hasCancel"
+        class="uptracker-form-btn danger-btn"
+        *ngIf="!context.hasCancel"
         (click)="dismissModal()"
       >Cancel</button>
       <button
         class="uptracker-form-btn"
         *ngFor="let btn of context.btns"
+        [ngClass]="{'danger-btn': btn.red}"
         (click)="btn.cancel ? dismissModal() : closeModal(btn.value)"
       >{{btn.text}}</button>
     </div>
