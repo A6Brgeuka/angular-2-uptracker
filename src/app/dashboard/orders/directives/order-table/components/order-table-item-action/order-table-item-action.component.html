@@ -44,6 +44,9 @@
     <li *ngIf="item.status !== 'Received' && listName !== 'received'">
       <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
+    <li *ngIf="item.status !== 'Backordered' && listName !== 'backordered'">
+      <a class="tealish-text" (click)="backorder()">Backorder</a>
+    </li>
     <li>
       <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
     </li>

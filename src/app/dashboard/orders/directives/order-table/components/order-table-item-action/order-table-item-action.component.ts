@@ -121,6 +121,10 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     this.sendToReceiveProduct(this.item, OrderStatusValues.receive);
   }
 
+  backorder() {
+    this.sendToReceiveProduct(this.item, OrderStatusValues.backorder);
+  }
+
   edit() {
     this.sendToReceiveProduct(this.item);
   }
