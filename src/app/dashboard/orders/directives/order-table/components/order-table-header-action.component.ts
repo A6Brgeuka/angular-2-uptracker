@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import * as _ from 'lodash';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
@@ -13,6 +13,7 @@ import { selectedOrderModel } from '../../../../../models/selected-order.model';
 import { ToasterService } from '../../../../../core/services/toaster.service';
 import { OrderTableOnVoidService } from '../order-table-on-void.service';
 import { OrderStatusValues } from '../../../order-status';
+import { OrderListType } from '../../../models/order-list-type';
 
 
 @Component({
@@ -20,9 +21,8 @@ import { OrderStatusValues } from '../../../order-status';
   templateUrl: './order-table-header-action.component.html',
 })
 @DestroySubscribers()
-export class OrderTableHeaderActionComponent implements OnInit {
+export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
 
-  public receiveStatus = OrderStatusValues.receive;
   public reorderOrders$: Subject<any>;
 
   @Input() listName: string;
@@ -41,8 +41,20 @@ export class OrderTableHeaderActionComponent implements OnInit {
   ) {
   }
 
+  get isReceiveList() {
+    return this.listName === OrderListType.received;
+  }
+
+  get isBackorderedList() {
+    return this.listName === OrderListType.backordered;
+  }
+
   ngOnInit() {
     this.reorderOrders$ = new Subject<any>();
+  }
+
+  ngOnDestroy() {
+    console.log(`${this.constructor.name} Destroys`);
   }
 
   addSubscribers() {

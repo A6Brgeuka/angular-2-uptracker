@@ -11,19 +11,19 @@
     <li>
       <a class="tealish-text" (click)="edit()">Edit</a>
     </li>
-    <li *ngIf="listName !== 'received'">
+    <li *ngIf="!isReceiveList">
       <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
-    <li *ngIf="listName !== 'backordered'">
+    <li *ngIf="!isBackorderedList">
       <a class="tealish-text" (click)="backorder()">Backorder</a>
     </li>
-    <li *ngIf="listName === 'received'">
+    <li *ngIf="isReceiveList">
       <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
     </li>
     <li>
       <a class="tealish-text" (click)=buyAgainOrders()>Buy Again</a>
     </li>
-    <li *ngIf="listName !== 'received'">
+    <li *ngIf="!isReceiveList">
       <a class="red-text" (click)="onVoidOrder()">Void</a>
     </li>
   </ul>
