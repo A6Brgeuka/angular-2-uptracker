@@ -91,8 +91,8 @@ export class PastOrderService extends ModelService {
     .map((res: any) => res.data);
   }
 
-  goToReceive(queryParams) {
-    this.router.navigate(['orders/receive', queryParams]);
+  goToReceive(params, type?) {
+    this.router.navigate(['orders/receive', params], {queryParams: {type}});
   }
 
   /**

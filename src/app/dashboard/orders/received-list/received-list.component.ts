@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ReceivedListService } from '../services/received-list.service';
 import { OrderItem } from '../models/order-item';
+import { OrderListType } from '../models/order-list-type';
 
 @Component({
   selector: 'app-received-list',
@@ -16,10 +17,10 @@ import { OrderItem } from '../models/order-item';
 @DestroySubscribers()
 export class ReceivedListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
-  public listName: string = 'received';
+  public listName: string = OrderListType.received;
   public tableHeaderReceived: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
-    {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, },
+    {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
     {name: 'Location', className: 's1', alias: 'location_name', filterBy: true, },
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
