@@ -4,6 +4,7 @@ export const OrderListType = {
   received: 'received',
   backordered: 'backordered',
   reconciled: 'reconciled',
+  closed: 'closed',
   flagged: 'flagged',
   favorited: 'favorited',
 };
