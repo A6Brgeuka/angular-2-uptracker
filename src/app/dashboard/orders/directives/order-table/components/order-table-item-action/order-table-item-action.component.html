@@ -35,22 +35,22 @@
         {{item.favorite ? 'Unfavorite' : 'Favorite'}}
       </a>
     </li>
-    <li *ngIf="item.order_method !== 'Direct' && listName !== 'received'">
+    <li *ngIf="item.order_method !== 'Direct' && !isRecieveList">
       <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
     </li>
-    <li *ngIf="listName === 'received' || item.status === 'Received'">
+    <li *ngIf="isRecieveList || isReceivedItem">
       <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
     </li>
-    <li *ngIf="item.status !== 'Received' && listName !== 'received'">
+    <li *ngIf="!isReceivedItem && !isRecieveList">
       <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
-    <li *ngIf="item.status !== 'Backordered' && listName !== 'backordered'">
+    <li *ngIf="!isBackorderedItem && isBackorderedList">
       <a class="tealish-text" (click)="backorder()">Backorder</a>
     </li>
     <li>
       <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
     </li>
-    <li *ngIf="item.status !== 'Voided' && item.status !== 'Received' &&  listName !== 'received'">
+    <li *ngIf="!isViodedItem && !isReceivedItem &&  !isRecieveList">
       <a class="red-text" (click)="onVoidOrder(item)">Void</a>
     </li>
   </ul>

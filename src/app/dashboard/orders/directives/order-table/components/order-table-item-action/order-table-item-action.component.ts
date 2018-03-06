@@ -12,7 +12,8 @@ import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
 import { FavoritedListService } from '../../../../services/favorited-list.service';
 import { FlaggedListService } from '../../../../services/flagged-list.service';
-import { OrderStatusValues } from '../../../../order-status';
+import { OrderStatus, OrderStatusValues } from '../../../../order-status';
+import { OrderListType } from '../../../../models/order-list-type';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -45,8 +46,29 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     private flaggedListService: FlaggedListService,
   ) {
   }
-  ngOnInit() {
 
+  get isRecieveList() {
+    return this.listName === OrderListType.received;
+  }
+
+  get isBackorderedList() {
+    return this.listName === OrderListType.received;
+  }
+
+  get isBackorderedItem() {
+    return this.item.status_int === OrderStatus.backorder;
+  }
+
+  get isReceivedItem() {
+    return this.item.status_int === OrderStatus.receive;
+  }
+
+  get isViodedItem() {
+    return this.item.status_int === OrderStatus.void;
+  }
+
+  ngOnInit() {
+    console.log(`${this.constructor.name} Inits`);
   }
 
   ngOnDestroy() {
