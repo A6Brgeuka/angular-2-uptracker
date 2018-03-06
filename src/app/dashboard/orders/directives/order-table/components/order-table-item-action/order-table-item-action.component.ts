@@ -114,7 +114,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   openUnflagToaster() {
-    this.toasterService.pop('error', 'Items that have comments cannot be unflagged');
+    this.toasterService.pop('error', 'You cannot unflag a product with active comments');
   }
 
   receive() {
