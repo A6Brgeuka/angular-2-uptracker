@@ -44,7 +44,7 @@
     <li *ngIf="!isReceivedItem && !isRecieveList">
       <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
-    <li *ngIf="!isBackorderedItem && isBackorderedList">
+    <li *ngIf="!isBackorderedItem && !isBackorderedList">
       <a class="tealish-text" (click)="backorder()">Backorder</a>
     </li>
     <li>
