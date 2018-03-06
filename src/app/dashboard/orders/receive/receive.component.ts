@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 
@@ -43,6 +43,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     public receivedOrderService: ReceivedOrderService,
     public toasterService: ToasterService,
     public route: ActivatedRoute,
+    public router: Router,
     public receiveService: ReceiveService,
     public location: Location,
     public confirmModalService: ConfirmModalService,
@@ -105,7 +106,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     )
     .subscribe(() => {
       this.toasterService.pop('', 'Successfully received');
-      this.location.back();
+      this.router.navigate(['/orders']);
     });
 
     this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
@@ -115,7 +116,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
       if (res.success) {
         this.save();
       } else {
-        this.location.back();
+        this.router.navigate(['/orders']);
       }
     });
 
