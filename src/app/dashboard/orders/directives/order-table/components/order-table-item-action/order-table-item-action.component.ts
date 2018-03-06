@@ -12,6 +12,7 @@ import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
 import { FavoritedListService } from '../../../../services/favorited-list.service';
 import { FlaggedListService } from '../../../../services/flagged-list.service';
+import { OrderStatusValues } from '../../../../order-status';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -88,11 +89,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     this.reorderProduct$.next(data);
   }
 
-  sendToReceiveProduct(item) {
-    const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
-    this.pastOrderService.goToReceive(queryParams);
-  }
-
   openResendDialog(item) {
     this.modal
     .open(ResendOrderModal, this.modalWindowService
@@ -117,8 +113,21 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     );
   }
 
-  openUnflagToaster(item) {
+  openUnflagToaster() {
     this.toasterService.pop('error', 'Items that have comments cannot be unflagged');
+  }
+
+  receive() {
+    this.sendToReceiveProduct(this.item, OrderStatusValues.receive);
+  }
+
+  edit() {
+    this.sendToReceiveProduct(this.item);
+  }
+
+  private sendToReceiveProduct(item, type?) {
+    const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
+    this.pastOrderService.goToReceive(queryParams, type);
   }
 
 }

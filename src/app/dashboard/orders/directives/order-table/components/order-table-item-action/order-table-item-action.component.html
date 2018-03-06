@@ -23,10 +23,10 @@
   </div>
   <ul [id]='item[uniqueField] + listName + i' class='dropdown-content'>
     <li *ngIf="item.status !== 'Reconciled'">
-      <a class="tealish-text" (click)="sendToReceiveProduct(item)">Edit</a>
+      <a class="tealish-text" (click)="edit()">Edit</a>
     </li>
     <li>
-      <a class="tealish-text" (click)="item.flagged_comment?.length > 0 ? openUnflagToaster(item) : openAddCommentModal(item)">
+      <a class="tealish-text" (click)="item.flagged_comment?.length > 0 ? openUnflagToaster() : openAddCommentModal(item)">
         {{item.flagged ? 'Unflag' : 'Flag'}}
       </a>
     </li>
@@ -42,7 +42,7 @@
       <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
     </li>
     <li *ngIf="item.status !== 'Received' && listName !== 'received'">
-      <a class="tealish-text" (click)="sendToReceiveProduct(item)">Receive</a>
+      <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
     <li>
       <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
