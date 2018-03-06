@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { FavoritedListService } from '../services/favorited-list.service';
 import { OrderItem } from '../models/order-item';
+import { OrderListType } from '../models/order-list-type';
 
 @Component({
   selector: 'app-favorited-list',
@@ -18,7 +19,7 @@ import { OrderItem } from '../models/order-item';
 export class FavoritedListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = 'favorited';
+  public listName: string = OrderListType.favorited;
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },

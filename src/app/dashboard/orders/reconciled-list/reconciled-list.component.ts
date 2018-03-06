@@ -4,6 +4,7 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { Observable } from 'rxjs/Observable';
 import { OrderItem } from '../models/order-item';
+import { OrderListType } from '../models/order-list-type';
 
 @Component({
   selector: 'app-reconciled-list',
@@ -14,7 +15,7 @@ import { OrderItem } from '../models/order-item';
 export class ReconciledListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName = 'reconciled';
+  public listName = OrderListType.reconciled;
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
