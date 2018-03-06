@@ -9,10 +9,10 @@
 
   <ul [id]='listName' class='dropdown-content'>
     <li>
-      <a class="tealish-text" (click)="onReceiveOrders()">Edit</a>
+      <a class="tealish-text" (click)="edit()">Edit</a>
     </li>
     <li *ngIf="listName !== 'received'">
-      <a class="tealish-text" (click)="onReceiveOrders()">Receive</a>
+      <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
     <li *ngIf="listName === 'received'">
       <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
