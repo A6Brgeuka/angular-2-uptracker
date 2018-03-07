@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { BackorderedListService } from '../services/backordered-list.service';
 import { OrderItem } from '../models/order-item';
 import { OrderListType } from '../models/order-list-type';
+import { OrderStatusAlreadyValues } from '../models/order-status';
 
 @Component({
   selector: 'app-backordered-list',
@@ -39,7 +40,8 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
-    this.orders$ = this.backorderedListService.collection$;
+    this.orders$ = this.backorderedListService.collection$
+    .map((orders) => orders.map((order) => ({...order, status: OrderStatusAlreadyValues.backorder})));
   }
 
   addSubscribers() {
