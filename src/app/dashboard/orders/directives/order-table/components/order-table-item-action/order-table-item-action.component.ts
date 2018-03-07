@@ -12,6 +12,8 @@ import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
 import { FavoritedListService } from '../../../../services/favorited-list.service';
 import { FlaggedListService } from '../../../../services/flagged-list.service';
+import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
+import { OrderListType } from '../../../../models/order-list-type';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -44,8 +46,29 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     private flaggedListService: FlaggedListService,
   ) {
   }
-  ngOnInit() {
 
+  get isRecieveList() {
+    return this.listName === OrderListType.received;
+  }
+
+  get isBackorderedList() {
+    return this.listName === OrderListType.received;
+  }
+
+  get isBackorderedItem() {
+    return this.item.status_int === OrderStatus.backorder;
+  }
+
+  get isReceivedItem() {
+    return this.item.status_int === OrderStatus.receive;
+  }
+
+  get isViodedItem() {
+    return this.item.status_int === OrderStatus.void;
+  }
+
+  ngOnInit() {
+    console.log(`${this.constructor.name} Inits`);
   }
 
   ngOnDestroy() {
@@ -88,11 +111,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     this.reorderProduct$.next(data);
   }
 
-  sendToReceiveProduct(item) {
-    const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
-    this.pastOrderService.goToReceive(queryParams);
-  }
-
   openResendDialog(item) {
     this.modal
     .open(ResendOrderModal, this.modalWindowService
@@ -117,8 +135,25 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     );
   }
 
-  openUnflagToaster(item) {
-    this.toasterService.pop('error', 'Items that have comments cannot be unflagged');
+  openUnflagToaster() {
+    this.toasterService.pop('error', 'You cannot unflag a product with active comments');
+  }
+
+  receive() {
+    this.sendToReceiveProduct(this.item, OrderStatusValues.receive);
+  }
+
+  backorder() {
+    this.sendToReceiveProduct(this.item, OrderStatusValues.backorder);
+  }
+
+  edit() {
+    this.sendToReceiveProduct(this.item);
+  }
+
+  private sendToReceiveProduct(item, type?) {
+    const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
+    this.pastOrderService.goToReceive(queryParams, type);
   }
 
 }

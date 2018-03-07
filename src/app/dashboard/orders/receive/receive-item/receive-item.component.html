@@ -8,10 +8,14 @@
       <fa name="pencil" class="tealish-text"></fa>
     </a>
   </div>
-  <div class="col s4 tealish-text">
+  <div class="col s4 tealish-text item-name-col">
     {{ (item$ | async)?.item_name }}
   </div>
-  <div class="col s4 tealish-text pointer" [routerLink]="['/locations','view',(item$ | async)?.location_id]">
+  <div
+    class="col s3 tealish-text pointer location-col"
+    [title]="(item$ | async)?.location_name"
+    [routerLink]="['/locations','view',(item$ | async)?.location_id]"
+  >
     {{ (item$ | async)?.location_name }}
   </div>
 </div>
@@ -20,6 +24,7 @@
   class="row relative status-line"
   *ngFor="let item of statusLineQtyItems$ | async"
   [item]="item"
+  [lineThrough]="editQty"
 ></app-receive-status-line-qty-item>
 
 <div class="row" *ngIf="editQty">
@@ -34,7 +39,7 @@
     <div class="input flex-center">
       <input
         type="number"
-        [min]="minItemQuantity"
+        min="{{minItemQuantity}}"
         [formControl]="quantityControl"
       >
     </div>

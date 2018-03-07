@@ -15,7 +15,7 @@ import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { OrderTableSortService } from './order-table-sort.service';
 import { OrderTableService } from './order-table.service';
 import { OrderTableOnVoidService } from './order-table-on-void.service';
-import { OrderStatus } from '../../order-status';
+import { OrderStatus } from '../../models/order-status';
 import { OrderTableFilterByService } from './order-table-filter-by.service';
 
 
