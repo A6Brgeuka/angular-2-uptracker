@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { ReceivedListService } from '../services/received-list.service';
 import { OrderItem } from '../models/order-item';
 import { OrderListType } from '../models/order-list-type';
+import { OrderStatusAlreadyValues } from '../models/order-status';
 
 @Component({
   selector: 'app-received-list',
@@ -42,7 +43,8 @@ export class ReceivedListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.orders$ = this.pastOrderService.collection$;
+    this.orders$ = this.pastOrderService.collection$
+    .map((orders) => orders.map((order) => ({...order, status: OrderStatusAlreadyValues.receive})));
   }
 
   addSubscribers() {
