@@ -103,7 +103,7 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
       return _.findIndex(orders, {checked: true}) >= 0;
     });
 
-    this.filterByObj$ = this.orderTableService.filterByObject$
+    this.filterByObj$ = this.orderTableFilterByService.getFilterByListName(this._listName)
     .filter((obj) => !!obj)
     .startWith({});
 
