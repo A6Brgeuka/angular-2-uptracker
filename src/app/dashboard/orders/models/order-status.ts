@@ -19,3 +19,13 @@ export const OrderStatusValues = {
   'archive': 'archive',
   'multiple': 'multiple',
 };
+
+export const OrderStatusAlreadyValues = {
+  'pending': 'Pending',
+  'receive': 'Received',
+  'backorder': 'Backordered',
+  'reconcile': 'Reconciled',
+  'void': 'Voided',
+  'archive': 'Archived',
+  'multiple': 'Multiple',
+};
