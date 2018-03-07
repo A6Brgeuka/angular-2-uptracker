@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 
 export class SearchFilterComponent {
-  @Input() public searchKey: string;
+  searchKey: string;
   @Output() searchEvent = new EventEmitter();
   @Output() openModalEvent = new EventEmitter();
 

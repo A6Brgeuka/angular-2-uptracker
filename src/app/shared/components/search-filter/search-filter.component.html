@@ -10,6 +10,6 @@
       placeholder="Search"
       [(ngModel)]="searchKey"
       class="col s12 no-margin filter-input"
-      (input)="searchFilter($event)"/>
+      (ngModelChange)="searchFilter($event)"/>
   </div>
 </div>
