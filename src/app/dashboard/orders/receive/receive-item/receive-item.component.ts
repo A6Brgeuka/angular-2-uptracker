@@ -135,6 +135,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     .map(([orderTotal, statusLineTotal, statusTotal]) =>
       orderTotal - statusLineTotal - statusTotal
     )
+    .distinctUntilChanged()
     .publishReplay(1);
     this.pendingQty$.connect();
 
@@ -175,7 +176,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
 
     this.subscribers.minQtySubscriber = Observable.combineLatest(
       this.statusItems$,
-      this.statusLineItems$,
+      this.statusLineItems$.map((items) => items.filter((item: any) => !item.delete)),
       (statusItems, statusLineItems) => {
         const receiveList = [...statusItems, ...statusLineItems].filter((item) =>
           item.type === OrderStatusValues.receive
@@ -245,6 +246,7 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
   private getFormStatusItems() {
     return this.statusControl.valueChanges
     .startWith(this.statusControl.value)
+    .distinctUntilChanged(_.isEqual)
     .shareReplay(1);
   }
 
@@ -258,7 +260,9 @@ export class ReceiveItemComponent implements OnInit, OnDestroy {
     if (!_.isArray(statusLineItems)) {
       return 0;
     }
-    return statusLineItems.reduce((sum, status) => sum + status.qty, 0);
+    return statusLineItems
+    .filter((status: any) => !status.delete)
+    .reduce((sum, status) => sum + status.qty, 0);
   }
 
   private addStatusControl(data) {
