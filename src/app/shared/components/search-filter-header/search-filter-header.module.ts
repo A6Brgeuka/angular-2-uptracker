@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome';
 
 import { SearchFilterHeaderComponent } from './search-filter-header.component';
-import { ChipsModule } from '../chips/chips.module';
+import { ChipsInputModule } from '../chips-input/chips-input.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { ChipsModule } from '../chips/chips.module';
     FormsModule,
     ReactiveFormsModule,
     Angular2FontawesomeModule,
-    ChipsModule,
+    ChipsInputModule,
   ],
   providers: [],
 })

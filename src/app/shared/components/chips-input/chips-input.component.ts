@@ -30,8 +30,8 @@ export interface Chip {
 
 @Component({
   selector: 'app-chips-input',
-  templateUrl: './chips.component.html',
-  styleUrls: ['./chips.component.scss'],
+  templateUrl: './chips-input.component.html',
+  styleUrls: ['./chips-input.component.scss'],
   providers: [CHIP_INPUT_VALUE_ACCESSOR],
 })
 @DestroySubscribers()

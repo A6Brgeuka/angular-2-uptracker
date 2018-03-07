@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MaterializeModule } from 'angular2-materialize';
 
-import { ChipsInputComponent } from './chips.component';
+import { ChipsInputComponent } from './chips-input.component';
 import { HasClassModule } from '../../directives';
 
 @NgModule({
@@ -20,6 +20,6 @@ import { HasClassModule } from '../../directives';
   ],
   providers: [],
 })
-export class ChipsModule {
+export class ChipsInputModule {
 
 }
