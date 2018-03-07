@@ -24,6 +24,7 @@
   class="row relative status-line"
   *ngFor="let item of statusLineQtyItems$ | async"
   [item]="item"
+  [lineThrough]="editQty"
 ></app-receive-status-line-qty-item>
 
 <div class="row" *ngIf="editQty">
