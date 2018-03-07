@@ -12,7 +12,7 @@ import { SelectVendorModal } from '../../../select-vendor-modal/select-vendor.co
 import { selectedOrderModel } from '../../../../../models/selected-order.model';
 import { ToasterService } from '../../../../../core/services/toaster.service';
 import { OrderTableOnVoidService } from '../order-table-on-void.service';
-import { OrderStatusValues } from '../../../order-status';
+import { OrderStatusValues } from '../../../models/order-status';
 import { OrderListType } from '../../../models/order-list-type';
 
 

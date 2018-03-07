@@ -12,7 +12,7 @@ import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
 import { FavoritedListService } from '../../../../services/favorited-list.service';
 import { FlaggedListService } from '../../../../services/flagged-list.service';
-import { OrderStatus, OrderStatusValues } from '../../../../order-status';
+import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
 
 @Component({

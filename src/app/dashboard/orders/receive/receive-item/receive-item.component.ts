@@ -17,7 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import { OrderItemFormGroup, ReceiveOrderItemModel } from '../models/order-item-form.model';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ConnectableObservable } from 'rxjs/observable/ConnectableObservable';
-import { OrderStatusValues } from '../../order-status';
+import { OrderStatusValues } from '../../models/order-status';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
