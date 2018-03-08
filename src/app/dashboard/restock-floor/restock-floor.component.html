@@ -42,7 +42,7 @@
           <tbody>
             <tr *ngFor="let inventoryGroup of currentFloorstockLocation.inventory_groups | inputValueSearch:keywordSearchValue:'name'">
               <td>{{inventoryGroup.name}}</td>
-              <td>{{inventoryGroup.last_restock_qty}} Item{{inventoryGroup.last_restock_qty === 1 ? '' : 's'}} on {{inventoryGroup.last_restock_date}}</td>
+              <td>{{lastRestockText(inventoryGroup)}}</td>
               <td>{{inventoryGroup.on_hand}} Item{{inventoryGroup.on_hand === 1 ? '' : 's'}}</td>
               <td class="on-floor">
                 <span class="input">

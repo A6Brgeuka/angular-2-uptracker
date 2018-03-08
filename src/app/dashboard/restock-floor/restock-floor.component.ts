@@ -44,6 +44,16 @@ export class RestockFloorComponent implements OnInit {
     inventoryGroupObj.on_floor_qty = isNaN(restock_qty) ? '' : inventoryGroupObj.suggested_on_floor - restock_qty;
   }
 
+  lastRestockText(inventoryGroupObj) {
+    const lastRestockQty = inventoryGroupObj.last_restock_qty;
+    const lastRestockDate = inventoryGroupObj.last_restock_date;
+    if (lastRestockQty && lastRestockDate) {
+      return `${lastRestockQty} Item${lastRestockQty === 1 ? '' : 's'} on ${lastRestockDate}`;
+    } else {
+      return 'N/A';
+    }
+  }
+
   clearKeywordSearchValue() {
     this.keywordSearchValue = '';
   }
