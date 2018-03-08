@@ -8,7 +8,7 @@ import * as _ from 'lodash';
   styleUrls: ['./chips.component.scss'],
 })
 export class ChipsComponent {
-  private _chips: string[];
+  public _chips: string[];
 
   @Input()
   set chips(value: string[]) {
