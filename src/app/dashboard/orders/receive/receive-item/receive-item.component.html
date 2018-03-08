@@ -2,7 +2,7 @@
   <div class="col s3 tealish-text pointer" [routerLink]="['/','orders', orderId]">
     {{ (order$ | async)?.po_number }}
   </div>
-  <div class="col s1" [class.strikethrough]="editQty">
+  <div class="col s1" [class.strikethrough]="(statusLineQtyItems$ | async)?.length">
     {{ itemTotal }}
     <a (click)="editQtyToggle()" *ngIf="!editQty">
       <fa name="pencil" class="tealish-text"></fa>
@@ -22,9 +22,9 @@
 
 <app-receive-status-line-qty-item
   class="row relative status-line"
-  *ngFor="let item of statusLineQtyItems$ | async"
+  *ngFor="let item of statusLineQtyItems$ | async; let isLast=last"
   [item]="item"
-  [lineThrough]="editQty"
+  [lineThrough]="!isLast || editQty"
 ></app-receive-status-line-qty-item>
 
 <div class="row" *ngIf="editQty">
