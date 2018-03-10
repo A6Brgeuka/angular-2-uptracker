@@ -1,0 +1,22 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="inner">
+  <div class="title center-align"><span>SEARCH</span></div>
+  <div class="row search">
+    <i class="fa fa-search"></i>
+    <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
+  </div>
+  <div class="info">Search by inventory group name, product name, keyword, id number, etc</div>
+  <div class="row product" *ngIf="!!searchText">
+    <div class="col s2 preview">
+      <div class="icon"></div>
+    </div>
+    <div class="col s8 description">
+      <div class="product-title">Gloves Tender Touch Nitrile</div>
+      <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
+      <div class="counts">13 Products</div>
+    </div>
+    <div class="col s2 arrow">
+      <i class="fa fa-chevron-right"></i>
+    </div>
+  </div>
+</div>
