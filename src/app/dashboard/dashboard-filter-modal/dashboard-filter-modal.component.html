@@ -1,8 +1,8 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
-  <div class="parent" [@slidePanelOne]="slideState">
+  <div class="parent" [@slidePanel]="slideState">
     <div class="left">
-      <div id="stepOne">
+      <div id="stepOne" [@visiblePanelOne]="slideState">
         <div class="title center-align"><span>SEARCH</span></div>
         <div class="row search">
           <i class="fa fa-search"></i>
@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="middle">
-      <div id="stepTwo">
+      <div id="stepTwo" [@visiblePanelTwo]="slideState">
         <div class="nav fa fa-chevron-left" (click)="toBackSearch()"></div>
         <div class="title center-align"><span>SUBTRACT FROM INVENTORY</span></div>
         <div class="row description">
@@ -88,7 +88,9 @@
       </div>
     </div>
     <div class="right">
-      <div class="title center-align"><span>SUCCESS</span></div>
+      <div id="stepThree" [@visiblePanelThree]="slideState">
+        <div class="title center-align"><span>SUCCESS</span></div>
+      </div>
     </div>
   </div>
 </div>

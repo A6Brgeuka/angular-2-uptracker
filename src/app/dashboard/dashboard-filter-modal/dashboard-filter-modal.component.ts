@@ -34,7 +34,7 @@ export class DashboardFilterModalContext extends BSModalContext {
       transition('inactive => active', animate('300ms ease-in')),
       transition('active => inactive', animate('300ms ease-out'))
     ]),
-    trigger('slidePanelOne', [
+    trigger('slidePanel', [
       state('inone', style({
         overflow: 'hidden',
         transform: 'translateX(0)'
@@ -52,6 +52,21 @@ export class DashboardFilterModalContext extends BSModalContext {
       })),
       transition('one => two', animate(300, style({transform: 'translateX(-66%)'}))),
       transition('two => one', animate(300, style({transform: 'translateX(-33%)'}))),
+    ]),
+    trigger('visiblePanelOne', [
+      state('inone', style({ display: 'block' })),
+      state('one', style({ display: 'none' })),
+      state('two', style({ display: 'none' }))
+    ]),
+    trigger('visiblePanelTwo', [
+      state('inone', style({ display: 'none' })),
+      state('one', style({ display: 'block' })),
+      state('two', style({ display: 'none' }))
+    ]),
+    trigger('visiblePanelThree', [
+      state('inone', style({ display: 'none' })),
+      state('one', style({ display: 'none' })),
+      state('two', style({ display: 'block' }))
     ])
   ]
 })
