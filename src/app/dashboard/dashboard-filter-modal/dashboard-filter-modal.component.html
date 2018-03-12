@@ -10,7 +10,7 @@
         </div>
         <div class="info">Search by inventory group name, product name, keyword, id number, etc</div>
         <div [@heightPanel]='heightState'>
-          <div class="row product" *ngIf="!!searchText">
+          <div class="row product"  (click)="toGoDetail()" *ngIf="!!searchText">
             <div class="col s2 preview">
               <div class="icon"></div>
             </div>
@@ -19,7 +19,7 @@
               <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
               <div class="counts">13 Products</div>
             </div>
-            <div class="col s2 arrow" (click)="toGoDetail()">
+            <div class="col s2 arrow">
               <i class="fa fa-chevron-right"></i>
             </div>
           </div>
