@@ -1,6 +1,6 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
-  <div class="parent" [@slidePanelOne]="slideStateOne">
+  <div class="parent" [@slidePanelOne]="slideState">
     <div class="left">
       <div id="stepOne">
         <div class="title center-align"><span>SEARCH</span></div>
@@ -19,7 +19,7 @@
               <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
               <div class="counts">13 Products</div>
             </div>
-            <div class="col s2 arrow" (click)="toggleProductDetail()">
+            <div class="col s2 arrow" (click)="toGoDetail()">
               <i class="fa fa-chevron-right"></i>
             </div>
           </div>
@@ -28,7 +28,7 @@
     </div>
     <div class="middle">
       <div id="stepTwo">
-        <div class="nav fa fa-chevron-left" (click)="goBackToFirst()"></div>
+        <div class="nav fa fa-chevron-left" (click)="toBackSearch()"></div>
         <div class="title center-align"><span>SUBTRACT FROM INVENTORY</span></div>
         <div class="row description">
           <div class="preview">
@@ -79,14 +79,16 @@
           <div class="col s3">QTY</div>
         </div>
         <div class="row submit">
-          <button
-            type="submit"
-            class="btn white-text waves-effect waves-light">
+          <div
+            class="btn white-text waves-effect waves-light"
+            (click)="toGoSuccess()">
             Submit
-          </button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="right"></div>
+    <div class="right">
+      <div class="title center-align"><span>SUCCESS</span></div>
+    </div>
   </div>
 </div>
