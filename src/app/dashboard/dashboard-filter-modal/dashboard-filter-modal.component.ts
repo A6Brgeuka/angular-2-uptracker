@@ -34,33 +34,42 @@ export class DashboardFilterModalContext extends BSModalContext {
       transition('inactive => active', animate('300ms ease-in')),
       transition('active => inactive', animate('300ms ease-out'))
     ]),
-    trigger('slideSearch', [
+    trigger('slidePanelOne', [
       state('inactive', style({
         overflow: 'hidden',
         transform: 'translateX(0)'
       })),
       state('active', style({
         overflow: 'hidden',
-        transform: 'translateX(-100%)',
-        visibility: 'hidden'
+        transform: 'translateX(-33%)',
       })),
-      transition('inactive => active', animate(300, style({transform: 'translateX(-100%)'}))),
+      transition('inactive => active', animate(300, style({transform: 'translateX(-33%)'}))),
       transition('active => inactive', animate(300, style({transform: 'translateX(0)'})))
     ]),
-    trigger('slideProduct', [
+    trigger('slidePanelTwo', [
       state('inactive', style({
-        display: 'none',
         overflow: 'hidden',
-        transform: 'translateX(100%)'
+        transform: 'translateX(-33.3%)'
       })),
       state('active', style({
-        display: 'block',
         overflow: 'hidden',
-        transform: 'translateX(0)',
+        transform: 'translateX(-66.6%)',
       })),
-      transition('inactive => active', animate(300, style({transform: 'translateX(-100%)'}))),
-      transition('active => inactive', animate(300, style({transform: 'translateX(0)'})))
-    ])
+      transition('inactive => active', animate(300, style({transform: 'translateX(-66%)'}))),
+      transition('active => inactive', animate(300, style({transform: 'translateX(-33%)'})))
+    ]),
+    trigger('slidePanelThree', [
+      state('inactive', style({
+        overflow: 'hidden',
+        transform: 'translateX(-200%)'
+      })),
+      state('active', style({
+        overflow: 'hidden',
+        transform: 'translateX(-300%)',
+      })),
+      transition('inactive => active', animate(300, style({transform: 'translateX(-300%)'}))),
+      transition('active => inactive', animate(300, style({transform: 'translateX(-200%)'})))
+    ]),
   ]
 })
 @DestroySubscribers()
@@ -69,6 +78,9 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   public searchText: string = '';
   public heightState: string = 'inactive';
   public slideSearchState: string = 'inactive';
+  public slideStateOne: string = 'inactive';
+  public slideStateTwo: string = 'inactive';
+  public slideStateThree: string = 'inactive';
 
   constructor(
       public dialog: DialogRef<DashboardFilterModalContext>,
@@ -80,6 +92,10 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
 
   ngOnInit() {}
 
+  goBackToFirst() {
+    this.slideStateOne = 'inactive';
+  }
+
   searchProducts(event) {
     if (event && this.heightState === 'inactive') {
       this.heightState = 'active';
@@ -88,11 +104,15 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     }
   }
 
+  submitProduct() {
+    this.slideStateTwo = 'active';
+  }
+
   toggleProductDetail() {
-    if (this.slideSearchState === 'inactive') {
-      this.slideSearchState = 'active';
+    if (this.slideStateOne === 'inactive') {
+      this.slideStateOne = 'active';
     } else {
-      this.slideSearchState = 'inactive';
+      this.slideStateOne = 'inactive';
     }
   }
 

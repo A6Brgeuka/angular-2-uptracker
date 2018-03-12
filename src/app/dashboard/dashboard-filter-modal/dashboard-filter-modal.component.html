@@ -1,84 +1,92 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
-  <div id="stepOne" [@slideSearch]="slideSearchState">
-    <div class="title center-align"><span>SEARCH</span></div>
-    <div class="row search">
-      <i class="fa fa-search"></i>
-      <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
-    </div>
-    <div class="info">Search by inventory group name, product name, keyword, id number, etc</div>
-    <div [@heightPanel]='heightState'>
-      <div class="row product" *ngIf="!!searchText">
-        <div class="col s2 preview">
-          <div class="icon"></div>
+  <div class="parent" [@slidePanelOne]="slideStateOne">
+    <div class="left">
+      <div id="stepOne">
+        <div class="title center-align"><span>SEARCH</span></div>
+        <div class="row search">
+          <i class="fa fa-search"></i>
+          <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
         </div>
-        <div class="col s8 description">
-          <div class="product-title">Gloves Tender Touch Nitrile</div>
-          <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
-          <div class="counts">13 Products</div>
-        </div>
-        <div class="col s2 arrow" (click)="toggleProductDetail()">
-          <i class="fa fa-chevron-right"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="stepTwo" [@slideProduct]="slideSearchState">
-    <div class="title center-align"><span>SUBTRACT FROM INVENTORY</span></div>
-    <div class="row description">
-      <div class="preview">
-        <div class="icon"></div>
-      </div>
-      <div class="content">
-        <div class="product-title">Gloves Tender Touch Nitrile</div>
-        <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
-        <div class="col s12">
-          <div class="col s4">TTT</div>
-          <div class="col s4">TTT</div>
-          <div class="col s4">TTT</div>
+        <div class="info">Search by inventory group name, product name, keyword, id number, etc</div>
+        <div [@heightPanel]='heightState'>
+          <div class="row product" *ngIf="!!searchText">
+            <div class="col s2 preview">
+              <div class="icon"></div>
+            </div>
+            <div class="col s8 description">
+              <div class="product-title">Gloves Tender Touch Nitrile</div>
+              <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
+              <div class="counts">13 Products</div>
+            </div>
+            <div class="col s2 arrow" (click)="toggleProductDetail()">
+              <i class="fa fa-chevron-right"></i>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row location select">
-      <span>Location</span>
-      <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
-          <option disabled value="">Sort by</option>
-          <option value="relevance">Relevance</option>
-          <option value="A-Z">A-Z</option>
-          <option value="Z-A">Z-A</option>
-        </select>
+    <div class="middle">
+      <div id="stepTwo">
+        <div class="nav fa fa-chevron-left" (click)="goBackToFirst()"></div>
+        <div class="title center-align"><span>SUBTRACT FROM INVENTORY</span></div>
+        <div class="row description">
+          <div class="preview">
+            <div class="icon"></div>
+          </div>
+          <div class="content">
+            <div class="product-title">Gloves Tender Touch Nitrile</div>
+            <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
+            <div class="col s12">
+              <div class="col s4">TTT</div>
+              <div class="col s4">TTT</div>
+              <div class="col s4">TTT</div>
+            </div>
+          </div>
+        </div>
+        <div class="row location select">
+          <span>Location</span>
+          <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+              <option disabled value="">Sort by</option>
+              <option value="relevance">Relevance</option>
+              <option value="A-Z">A-Z</option>
+              <option value="Z-A">Z-A</option>
+            </select>
+        </div>
+        <div class="row location select">
+          <span>Product Variant</span>
+          <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+              <option disabled value="">Sort by</option>
+              <option value="relevance">Relevance</option>
+              <option value="A-Z">A-Z</option>
+              <option value="Z-A">Z-A</option>
+            </select>
+        </div>
+        <div class="row backstock">
+          <div class="col s3">Backstock</div>
+          <div class="col s3">QTY</div>
+        </div>
+        <div class="row stockfield">
+          <div class="col s3">Mini Fridge</div>
+          <div class="col s3">QTY</div>
+        </div>
+        <div class="row stockfield">
+          <div class="col s3">Mini Fridge</div>
+          <div class="col s3">QTY</div>
+        </div>
+        <div class="row stockfield">
+          <div class="col s3">Mini Fridge</div>
+          <div class="col s3">QTY</div>
+        </div>
+        <div class="row submit">
+          <button
+            type="submit"
+            class="btn white-text waves-effect waves-light">
+            Submit
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="row location select">
-      <span>Product Variant</span>
-      <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
-          <option disabled value="">Sort by</option>
-          <option value="relevance">Relevance</option>
-          <option value="A-Z">A-Z</option>
-          <option value="Z-A">Z-A</option>
-        </select>
-    </div>
-    <div class="row backstock">
-      <div class="col s3">Backstock</div>
-      <div class="col s3">QTY</div>
-    </div>
-    <div class="row">
-      <div class="col s3">Mini Fridge</div>
-      <div class="col s3">QTY</div>
-    </div>
-    <div class="row">
-      <div class="col s3">Mini Fridge</div>
-      <div class="col s3">QTY</div>
-    </div>
-    <div class="row">
-      <div class="col s3">Mini Fridge</div>
-      <div class="col s3">QTY</div>
-    </div>
-    <div class="row">
-      <button
-        type="submit"
-        class="btn white-text waves-effect waves-light">
-        Submit
-      </button>
-    </div>
+    <div class="right"></div>
   </div>
 </div>
