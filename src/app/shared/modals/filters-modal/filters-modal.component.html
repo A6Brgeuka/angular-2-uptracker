@@ -1,0 +1,27 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="inner">
+  <div class="title center-align">Filter Settings</div>
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="ttl bold">Vendor</div>
+      <hr>
+      <app-chips-input
+        [formControl]="vendors"
+        [materializeParams]="autocompleteInit"
+      ></app-chips-input>
+    </div>
+    <div class="col s12 m6">
+      <div class="ttl bold">Location</div>
+      <hr>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="ttl bold">Category</div>
+      <app-chips-input
+        [formControl]="categories"
+        [materializeParams]="autocompleteInit"
+      ></app-chips-input>
+    </div>
+  </div>
+</div>
