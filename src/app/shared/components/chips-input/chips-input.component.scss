@@ -30,6 +30,28 @@
 
     &.focus {
       border-color: #33c6d9;
+      .autocomplete-content {
+        width: fit-content;
+        &.dropdown-content {
+          border: 1px solid #000000;
+          box-shadow: none;
+          li {
+            min-height: 20px;
+            line-height: 1rem;
+            &:hover {
+              background-color: #33c6d9;
+              span {
+                color: #ffffff;
+              }
+            }
+            & > a, & > span {
+              font-size: 14px;
+              color: #000000;
+              padding: 5px;
+            }
+          }
+        }
+      }
     }
 
     .chip {
@@ -53,6 +75,7 @@
         position: absolute;
         right: 6px;
         top: 50%;
+        left: auto;
         transform: translateY(-50%);
         line-height: 12px;
         padding-left: 1px;
@@ -60,7 +83,7 @@
         height: 12px;
         width: 12px;
         border-radius: 50%;
-        background-color: #fff;
+        background: #fff;
         color: #747474;
         font-weight: bold;
         font-size: 10px;
