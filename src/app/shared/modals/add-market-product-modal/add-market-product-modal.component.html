@@ -11,14 +11,14 @@
         </div>
     </div>
     <div class="col s6">
-      <button class="uptracker-form-btn white-text tealish waves-effect waves-light" type="button"
-              [routerLink]="['/']">
+      <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
+              (click)="openBrowseGlobalMarketModal()">
         Browse global market
       </button>
     </div>
     <div class="col s6">
       <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
-              (click)="openAddCustomProductModal()">
+              (click)="openAddNewProductModal()">
         Add custom product
       </button>
     </div>

@@ -1,13 +1,19 @@
-<div class="list" [class.is-grid-view]="productService.isGrid" [class.is-tiles-view]="!productService.isGrid">
-  <div *ngIf="!productService.isGrid">
+<div class="close" (click)="dismissModal()"></div>
+<app-search-filter-header
+  [title]="'Add Product:'">
+</app-search-filter-header>
+
+<div class="list is-tiles-view">
+  <div class="title">
+    Global Market Place
+    <br>
+    Please select which product(s) you would like to add to your marketplace
+  </div>
+  <div>
     <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
       <div class="inner" [routerLink]="['/', 'products', product.id]">
         <div class="hazardous" *ngIf="product.hazardous">
           <i class="material-icons">warning</i>
-        </div>
-        <div class="star-right" [class.favorite]="product.favorite" *ngIf="true">
-          <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-          <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
         </div>
         <div *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
           <div class="trackable" *ngIf="product.trackable">
@@ -28,92 +34,6 @@
         </div>
       </div>
     </div>
-  </div>
-  <div *ngIf="productService.isGrid">
-
-    <div class="heading row">
-      <div class="col s1 right-align">
-        <div class="input-checkbox checkbox">
-          <input
-            type="checkbox"
-            class="checkbox-input"
-            [(ngModel)]="selectAll"
-            id="selectAll"
-            (click)="toggleSelectAll(!selectAll)"
-          />
-          <label for="selectAll"></label>
-        </div>
-      </div>
-      <div class="col  s4">Product name</div>
-      <div class="col s1">#Variations</div>
-      <div class="col s1">Favorite</div>
-      <div class="col s1">Hazardous</div>
-      <div class="col s1">Trackable</div>
-      <div class="col s2">Price range</div>
-      <div class="col s1">
-        <button (click)="bulkEditModal()"
-                [disabled]="selectedProducts.length==0"
-                class="right bulk-edit uptracker-form-btn">
-          <i class="fa fa-pencil"></i>
-        </button>
-      </div>
-    </div>
-
-    <div class="item row" *ngFor="let product of products$ | async; let i=index">
-      <div class="col s1 right-align">
-        <div class="input-checkbox checkbox">
-          <input
-            type="checkbox"
-            class="selected-input{{i}}"
-            [(ngModel)]="product.selected"
-            id="selected{{i}}"
-            (change)="onCheck()"
-          />
-          <label for="selected{{i}}"></label>
-        </div>
-      </div>
-      <div class="col product-name s4 flex-middle" [routerLink]="[product.id]">{{product.name}}</div>
-      <div class="col s1">{{product.variant_count}}</div>
-      <div class="col s1 star-container">
-        <div class="star-right" [class.favorite]="product.favorite">
-          <i (click)="addToFavorites($event,product)" class="fa fa-star-o"></i>
-          <i (click)="removeFromFavorites($event,product)" class="fa fa-star"></i>
-        </div>
-      </div>
-      <div class="col s1">
-        <div class="input-checkbox checkbox readonly">
-          <input
-            type="checkbox"
-            class="hazardous-input{{i}}"
-            [(ngModel)]="product.c"
-            id="hazardous{{i}}"
-            disabled
-          />
-          <label for="hazardous{{i}}"></label>
-        </div>
-      </div>
-      <div class="col s1 center-align">
-        <div class="input-checkbox checkbox readonly">
-          <input
-            type="checkbox"
-            class="trackable-input{{i}}"
-            [(ngModel)]="product.trackable"
-            id="trackable{{i}}"
-            disabled
-          />
-          <label for="trackable{{i}}"></label>
-        </div>
-      </div>
-      <div class="col s2">{{product.price_range}}</div>
-      <div class="col s1">
-        <i class="fa right variant-func"
-           [class.fa-eye]="product.status"
-           [class.fa-eye-slash]="!product.status"
-           (click)="toggleProductVisibility(product)"
-           aria-hidden="true"></i>
-      </div>
-    </div>
-
   </div>
 
   <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="productService.isGrid">

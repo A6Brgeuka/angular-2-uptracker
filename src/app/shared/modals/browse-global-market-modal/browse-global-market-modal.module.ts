@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 
 import { AppSharedModule } from '../../shared.module';
-import {BrowseGlobalMarketModalComponent} from "./browse-global-market-modal.component";
+import { BrowseGlobalMarketModalComponent } from './browse-global-market-modal.component';
+import { SearchFilterHeaderModule } from '../../components/search-filter-header/search-filter-header.module';
 
 @NgModule({
   declarations: [
     BrowseGlobalMarketModalComponent,
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    SearchFilterHeaderModule
   ],
   providers: [],
   exports: [

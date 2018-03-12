@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ProductService } from '../../../core/services/product.service';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DialogRef } from 'angular2-modal';
 
 import * as _ from 'lodash';
+
+export class BrowseGlobalMarketModalContext extends BSModalContext {
+
+}
 
 @Component({
   selector: 'app-browse-global-market-modal',
@@ -14,9 +20,15 @@ export class BrowseGlobalMarketModalComponent implements OnInit {
   public products$: Observable<any>;
   public sortBy: string = 'A-Z';
 
-  constructor(public productService: ProductService,) { }
+  constructor(
+    public productService: ProductService,
+    public dialog: DialogRef<BrowseGlobalMarketModalContext>,
+  ) {
+
+  }
 
   ngOnInit() {
+    this.productService.updateMarketplaceData('global');
 
     this.products$ = Observable
       .combineLatest(
@@ -35,6 +47,10 @@ export class BrowseGlobalMarketModalComponent implements OnInit {
         );
         return products;
       });
+  }
+
+  dismissModal() {
+    this.dialog.dismiss();
   }
 
 }

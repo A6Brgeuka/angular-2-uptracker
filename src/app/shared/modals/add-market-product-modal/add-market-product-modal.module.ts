@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { ScannerModule } from '../../../dashboard/scanner/scanner.module';
 import { AddMarketProductModalComponent } from './add-market-product-modal.component';
 import { AppSharedModule } from '../../shared.module';
-import { AddCustomProductModalModule } from '../add-custom-product-modal/add-custom-product-modal.module';
 import { BrowseGlobalMarketModalModule } from '../browse-global-market-modal/browse-global-market-modal.module';
+import { AddNewProductModalModule } from '../add-new-product-modal/add-new-product-modal.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { BrowseGlobalMarketModalModule } from '../browse-global-market-modal/bro
   imports: [
     AppSharedModule,
     ScannerModule,
-    AddCustomProductModalModule,
+    AddNewProductModalModule,
     BrowseGlobalMarketModalModule
   ],
   providers: [],

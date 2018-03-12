@@ -1,0 +1,32 @@
+@import "../../../../colors";
+
+:host /deep/ {
+  .close {
+    display: block !important;
+  }
+
+  .img-container {
+    width: 140px;
+    height: 140px;
+    border: 1px solid $light-grey;
+
+    .img {
+      height: 100%;
+      background-position: center center;
+      background-size: cover;
+    }
+  }
+
+  .uptracker-form-btn {
+    height: 35px;
+    line-height:20px;
+    min-width: 100px;
+    background: $tealish;
+
+    &[disabled] {
+      background: $grey!important;
+      pointer-events: none;
+    }
+
+  }
+}

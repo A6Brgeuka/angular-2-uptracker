@@ -1,0 +1,202 @@
+@import "../../../../colors";
+
+:host /deep/ {
+  .close {
+    display: block !important;
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  .list {
+    border-right:1px solid $light-grey;
+    padding-right: 2%;
+    letter-spacing: 0;
+    word-spacing: 0;
+    font-size: 0;
+    padding-bottom: 15px;
+    text-align: left;
+    margin-left: -20px;
+
+      .item {
+        display: inline-block;
+        vertical-align: top;
+        width: 150px;
+        height: 150px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        max-width: 100%;
+        position: relative;
+        line-height:40px;
+
+        .inner {
+          width: 125px;
+          height: 125px;
+          border: 1px solid #d6d6d6;
+          background: #fff;
+          cursor: pointer;
+          border-radius: 3px;
+
+          .hazardous {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            color: #f1594e;
+          }
+
+          &.active {
+            border: 3px solid #000;
+          }
+        }
+
+        .img {
+          margin: 15px auto 15px;
+          height: 60px;
+          width: 60px;
+          background: #f1f2f2 no-repeat center center;
+          background-size: cover;
+          position: relative;
+
+          .trackable {
+            color: #33c6d9;
+            position: absolute;
+            right: -10px;
+            bottom: -25px;
+            font-size: 24px;
+          }
+        }
+
+        .info {
+          position: relative;
+          font-size: 12px;
+          margin: 0 15px;
+
+          .ttl {
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: bold;
+            height: 36px;
+          }
+
+          .bottom {
+            .variations {
+              color: #9d9d9d;
+            }
+
+            .price {
+              color: #33c6d9;
+            }
+          }
+
+          .edit {
+            display: none;
+            cursor: pointer;
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: url(/assets/img/icon-edit.svg) no-repeat;
+            right: 21px;
+            top: 2px;
+            left: auto;
+          }
+        }
+
+        &:hover {
+          .info {
+            .edit {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    .row {
+      .col {
+        display: block;
+        label {
+          vertical-align: middle;
+
+        }
+      }
+    }
+    .heading {
+      margin: 10px 0;
+      color: #444;
+      border-bottom: 2px solid #ddd;
+      font-size: 14px;
+      font-weight: bold;
+      .col {
+      }
+      button {
+        width: 30px;
+        i {
+          font-size: 20px;
+          line-height: 28px;
+        }
+      }
+    }
+    .item {
+      margin-bottom: 0;
+      border-bottom: 2px solid #ddd;
+      font-size: 14px;
+
+      .col {
+        min-height: 30px;
+        line-height: 30px;
+        color: #444;
+        &:nth-of-type(3), &:nth-of-type(4) {
+          text-align: center;
+        }
+        &:nth-of-type(2) {
+          color: $tealish;
+          cursor: pointer;
+        }
+        .fa-eye, .fa-eye-slash {
+          margin-right: 9px;
+          line-height: 35px;
+          transition: color .7s;
+          cursor: pointer;
+        }
+        .fa-eye {
+          color: $tealish;
+        }
+        .fa-eye-slash {
+          color: $red;
+        }
+      }
+      .trash-row-icon {
+        visibility: hidden;
+      }
+      &:hover {
+        .trash-row-icon {
+          visibility: visible;
+        }
+      }
+    }
+
+    input {
+      margin: 0;
+      height: 30px;
+      font-size: 11px;
+      background-color: #fff;
+      padding-left: 8px;
+      text-indent: 0;
+      text-overflow: ellipsis;
+      color: $grey;
+      border: 1px solid #9a9a9a!important;
+      border-radius: 5px;
+
+      &.empty {
+        color: $light-grey;
+      }
+      &:disabled {
+        background: none;
+        cursor: inherit;
+      }
+    }
+}
+
+
+
