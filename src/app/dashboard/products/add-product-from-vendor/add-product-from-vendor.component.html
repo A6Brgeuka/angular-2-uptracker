@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col s12">
+    {{product.name}}
+  </div>
+  <div class="col s12">
+    Vendors
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12">
+    <div class="title">
+      Which vendors do you get this product from?
+    </div>
+    <div class="col s8">
+      <input auto-complete
+             placeholder="Search vendors"
+             [min-chars] = '1'
+             (ngModelChange) = 'selectedAutocompletedVendor($event)'
+             [list-formatter] = '"vendor_name"'
+             [ngModel] = "vendor.vendor_name"
+             [tab-to-select] = 'false'
+             name="vendor"
+             required
+      />
+    </div>
+    <div class="col s2">
+      <button class="bluebtn">
+        <fa [name]="'plus'"></fa>
+        Add
+      </button>
+    </div>
+    <div class="col s2">
+      <button class="bluebtn">
+        <fa [name]="'plus'"></fa>
+        Custom vendor
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s1">
+    <div class="input-checkbox checkbox">
+      <input
+        type="checkbox"
+        class="checkbox-input"
+        [(ngModel)]="selectAll"
+        id="selectAll"
+      />
+      <label for="selectAll"></label>
+    </div>
+  </div>
+  <div class="col s2 select-title">
+    Select All
+  </div>
+  <div class="col s2">
+    <input (click)="$event.stopPropagation();" type="text" class="yourprice" [(ngModel)]="item.book_price" >
+  </div>
+  <div class="col s2">
+    <input (click)="$event.stopPropagation();" type="text" class="yourprice" [(ngModel)]="item.your_price" >
+  </div>
+  <div class="col s2">
+    <input (click)="$event.stopPropagation();" type="text" class="yourprice" [(ngModel)]="item.club_price" >
+  </div>
+  <button class="bluebtn">
+    Fill all selected
+  </button>
+</div>
+
+<app-product-variant
+  [selectAll]="selectAll"
+  *ngFor="let variant of variants"
+  [variant]="variant" >
+</app-product-variant>

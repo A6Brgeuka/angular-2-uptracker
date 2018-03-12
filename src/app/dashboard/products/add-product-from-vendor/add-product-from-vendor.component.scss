@@ -1,0 +1,14 @@
+@import "../../../../colors";
+
+:host /deep/ {
+  .bluebtn {
+    padding: 0 10px;
+    font-size: 12px;
+    line-height: 28px;
+    height: 30px;
+    min-width: 80px;
+    background: $tealish;
+    color: #fff;
+    border-radius: 5px;
+  }
+}

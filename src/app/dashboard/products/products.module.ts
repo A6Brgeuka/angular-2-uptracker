@@ -12,10 +12,11 @@ import { HomeTabModule } from './home-tab/home-tab.module';
 import { MarisListTabModule } from './maris-list-tab/maris-list-tab.module';
 import { MarketplaceTabModule } from './marketplace-tab/marketplace-tab.module';
 import { SearchFilterHeaderModule } from '../../shared/components/search-filter-header/search-filter-header.module';
+import {AddProductFromVendorModule} from "./add-product-from-vendor/add-product-from-vendor.module";
 
 @NgModule({
   declarations: [
-    ProductsComponent,
+    ProductsComponent
   ],
   imports: [
     AppSharedModule,
@@ -29,6 +30,7 @@ import { SearchFilterHeaderModule } from '../../shared/components/search-filter-
     MarisListTabModule,
     MarketplaceTabModule,
     UploadCsvModalModule,
+    AddProductFromVendorModule
   ],
   providers: []
 })
