@@ -1,0 +1,26 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="inner">
+  <div class="row">
+    <div class="col s12">
+      <div class="title">Add Product to your Marketplace</div>
+      <div class="input relative">
+          <input [(ngModel)]="barcode" type="text" placeholder="Search-Keyword"
+                 name="upc"
+                 #upc="ngModel">
+          <app-scanner (searchText)="onUpcUpdated($event)"></app-scanner>
+        </div>
+    </div>
+    <div class="col s6">
+      <button class="uptracker-form-btn white-text tealish waves-effect waves-light" type="button"
+              [routerLink]="['/']">
+        Browse global market
+      </button>
+    </div>
+    <div class="col s6">
+      <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
+              (click)="openAddCustomProductModal()">
+        Add custom product
+      </button>
+    </div>
+  </div>
+</div>

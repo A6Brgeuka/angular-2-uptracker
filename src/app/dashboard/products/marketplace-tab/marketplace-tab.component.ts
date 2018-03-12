@@ -13,6 +13,7 @@ import { Modal } from 'angular2-modal';
 import { RequestProductModal } from '../request-product-modal/request-product-modal.component';
 import { AddCustomProductModalComponent } from '../../../shared/modals/add-custom-product-modal/add-custom-product-modal.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { AddMarketProductModalComponent } from '../../../shared/modals/add-market-product-modal/add-market-product-modal.component';
 
 @Component({
   selector: 'app-marketplace-tab',
@@ -28,7 +29,7 @@ export class MarketplaceTabComponent implements OnInit {
   public products$: Observable<any>;
   public products: any = [];
   public selectedProducts: any = [];
-  
+
   public infiniteScroll$: any = new BehaviorSubject(false);
   public updateCollectionCustomProduct$: any = new ReplaySubject(1);
   public selectAll$: any = new BehaviorSubject(0);
@@ -37,7 +38,7 @@ export class MarketplaceTabComponent implements OnInit {
   public searchKeyLast: string;
   public locationId: string;
   public selectAll: boolean = false;
-  
+
   constructor(
     public modal: Modal,
     public productService: ProductService,
@@ -45,23 +46,23 @@ export class MarketplaceTabComponent implements OnInit {
     public accountService: AccountService,
     public toasterService: ToasterService,
   ) {
-  
+
   }
-  
+
   toggleView() {
     this.productService.isGrid = !this.productService.isGrid;
-    
+
   }
-  
+
   toggleSelectAll(event) {
     // 0 = unused, 1 = selectAll, 2 = deselectAll
     this.selectAll$.next(event ? 1 : 2);
     this.onCheck();
   }
-  
+
   ngOnInit() {
-    
-    
+
+
     this.products$ = Observable
     .combineLatest(
       this.productService.collection$,
@@ -83,20 +84,20 @@ export class MarketplaceTabComponent implements OnInit {
       );
       return products;
     });
-    
-    
+
+
   }
-  
+
   addSubscribers() {
-    
+
     this.subscribers.infiniteSccrollSubscription = this.infiniteScroll$
     .filter((infinite) => infinite && !this.isRequest)
     .switchMap((infinite) => {
-  
+
       this.isRequest = true;
-  
+
       this.searchKeyLast = this.searchKey;
-  
+
       if (this.total <= (this.productService.current_page) * this.productService.pagination_limit) {
         this.isRequest = false;
         return Observable.of(false);
@@ -111,7 +112,7 @@ export class MarketplaceTabComponent implements OnInit {
     }, err => {
       console.log(err);
     });
-    
+
     this.subscribers.isDataLoadedSubscription = this.productService.isDataLoaded$
     .filter(r => r)
     .do(() => this.isRequest = false)
@@ -119,32 +120,32 @@ export class MarketplaceTabComponent implements OnInit {
     .subscribe((r) => {
       this.getInfiniteScroll();
     });
-    
+
     this.subscribers.totalCountSubscription = this.productService.totalCount$
     .subscribe(total => this.total = total);
-    
+
     this.subscribers.locationSubscription = this.accountService.dashboardLocation$
     .subscribe((loc: any) => {
       this.locationId = loc ? loc['id'] : '';
     });
-    
+
     this.subscribers.updateCollectionCustomProductSubscription = this.updateCollectionCustomProduct$
     .switchMap(() => {
       this.productService.current_page = 1;
       return this.productService.getNextProducts(0);
     }).subscribe();
   }
-  
+
   toggleProductVisibility(product) {
     product.status = !product.status;
     //TODO add save to server
   }
-  
+
   itemsSort(event) {
     let value = event.target.value;
     this.productService.updateSortBy(value);
   }
-  
+
   requestProduct() {
     this.modal
     .open(RequestProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
@@ -158,24 +159,24 @@ export class MarketplaceTabComponent implements OnInit {
       );
     });
   }
-  
+
   getInfiniteScroll() {
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     let toBottom = document.body.scrollHeight - scrollTop - window.innerHeight;
     let scrollBottom = toBottom < 285;
     this.infiniteScroll$.next(scrollBottom);
   }
-  
+
   @HostListener('window:scroll', ['$event'])
   onScroll(event) {
     this.getInfiniteScroll();
   }
-  
+
   onCheck() {
     this.selectedProducts = _.cloneDeep(this.products)
     .filter(r => r['selected']);
   }
-  
+
   //showUploadDialog() {
   //  this.modal
   //  .open(UploadCsvModal, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
@@ -189,17 +190,17 @@ export class MarketplaceTabComponent implements OnInit {
   //    );
   //  });
   //}
-  
+
   addToFavorites(e, product) {
     e.stopPropagation();
     this.setFavorite(product, true);
   }
-  
+
   removeFromFavorites(e, product) {
     e.stopPropagation();
     this.setFavorite(product, false);
   }
-  
+
   setFavorite(product, val: boolean) {
     product.favorite = val;
     let updateData: any = {
@@ -215,15 +216,15 @@ export class MarketplaceTabComponent implements OnInit {
       this.toasterService.pop('', val ? 'Added to favorites' : 'Removed from favorites');
     });
   };
-  
+
   resetFilters() {
     this.searchKey = '';
     this.sortBy = '';
     this.productService.current_page = 0;
     this.productService.getNextProducts(0);
   }
-  
-  openAddCustomProductModal() {
+
+  /*openAddCustomProductModal() {
       this.modal
       .open(AddCustomProductModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
       .then((resultPromise) => {
@@ -235,6 +236,20 @@ export class MarketplaceTabComponent implements OnInit {
           }
         );
       });
+  }*/
+
+  openAddProductModal() {
+    this.modal
+    .open(AddMarketProductModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+          this.updateCollectionCustomProduct$.next(true);
+        },
+        (err) => {
+        }
+      );
+    });
   }
 }
 
