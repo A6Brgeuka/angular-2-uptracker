@@ -1,6 +1,6 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
-  <div class="parent" [@slidePanel]="slideState">
+  <div class="parent" [@slidePanel]="slideState" [@growPanel]="growState">
     <div class="left">
       <div id="stepOne" [@visiblePanelOne]="slideState">
         <div class="title center-align"><span>SEARCH</span></div>
@@ -9,7 +9,7 @@
           <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
         </div>
         <div class="info">Search by inventory group name, product name, keyword, id number, etc</div>
-        <div [@heightPanel]='heightState'>
+        <div>
           <div class="row product"  (click)="toGoDetail()" *ngIf="!!searchText">
             <div class="col s2 preview">
               <div class="icon"></div>

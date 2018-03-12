@@ -22,7 +22,7 @@ export class DashboardFilterModalContext extends BSModalContext {
   templateUrl: './dashboard-filter-modal.component.html',
   styleUrls: ['./dashboard-filter-modal.component.scss'],
   animations: [
-    trigger('heightPanel', [
+    trigger('productRow', [
       state('inactive', style({
         overflow: 'hidden',
         height: 0,
@@ -32,7 +32,40 @@ export class DashboardFilterModalContext extends BSModalContext {
         height: '*'
       })),
       transition('inactive => active', animate('300ms ease-in')),
-      transition('active => inactive', animate('300ms ease-out'))
+      transition('active => inactive', animate('300ms ease-out')),
+
+      state('inone', style({
+        height: '300px'
+      })),
+      state('one', style({
+        overflow: 'hidden',
+        height: '*'
+      })),
+      transition('inone => one', animate('300ms ease-in')),
+      transition('one => inone', animate('300ms ease-out')),
+    ]),
+    trigger('growPanel', [
+      state('inone', style({
+        overflow: 'hidden',
+        height: '150px',
+      })),
+      state('one', style({
+        overflow: 'hidden',
+        height: '300px'
+      })),
+      state('two', style({
+        overflow: 'hidden',
+        height: '*'
+      })),
+      state('three', style({
+        overflow: 'hidden',
+        height: '150px'
+      })),
+      transition('inone => one', animate('300ms ease-in')),
+      transition('one => inone', animate('300ms ease-out')),
+      transition('one => two', animate('300ms ease-in')),
+      transition('two => one', animate('300ms ease-out')),
+      transition('two => three', animate('300ms ease-out'))
     ]),
     trigger('slidePanel', [
       state('inone', style({
@@ -74,8 +107,8 @@ export class DashboardFilterModalContext extends BSModalContext {
 export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFilterModalContext> {
   public context: DashboardFilterModalContext;
   public searchText: string = '';
-  public heightState: string = 'inactive';
   public slideState: string = 'inone';
+  public growState: string = 'inone';
   public sortBy: string = '';
 
   constructor(
@@ -93,15 +126,16 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   }
 
   searchProducts(event) {
-    if (event && this.heightState === 'inactive') {
-      this.heightState = 'active';
-    } else if(!event && this.heightState === 'active') {
-      this.heightState = 'inactive';
+    if (event && this.growState === 'inone') {
+      this.growState = 'one';
+    } else if(!event && this.growState === 'one') {
+      this.growState = 'inone';
     }
   }
 
   toBackSearch() {
     this.slideState = 'inone';
+    this.growState = 'one';
   }
 
   toBackDetail() {
@@ -110,10 +144,12 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
 
   toGoDetail() {
     this.slideState = 'one';
+    this.growState = 'two';
   }
 
   toGoSuccess() {
-    this.slideState = 'two'
+    this.slideState = 'two';
+    this.growState = 'three';
   }
 
   dismissModal() {
