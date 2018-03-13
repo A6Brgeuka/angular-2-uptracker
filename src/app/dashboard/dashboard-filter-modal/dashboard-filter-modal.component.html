@@ -8,7 +8,7 @@
     </div>
     <div class="info"><span>Search by inventory group name, product name, keyword, id number, etc</span></div>
     <div>
-      <div class="row product" (click)="toGoDetail()" *ngIf="!!searchText">
+      <div class="row product" (click)="toGoModal(1)" *ngIf="!!searchText">
         <div class="preview">
           <div class="icon"></div>
         </div>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="middle" *ngIf="modalState === 1">
-    <div class="nav fa fa-chevron-left" (click)="toBackSearch()"></div>
+    <div class="nav fa fa-chevron-left" (click)="toGoModal(0)"></div>
     <div class="title center-align"><span>SUBTRACT FROM INVENTORY</span></div>
     <div class="row description">
       <div class="preview">
@@ -71,7 +71,7 @@
     </div>
     <div class="row location select">
       <span class="bold">Location</span>
-      <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+      <select title="sort by" [(ngModel)]="location" materialize="material_select" (change)="locationSort($event)">
           <option disabled value="">Ft. Lauderdale</option>
           <option value="relevance">Location 1</option>
           <option value="A-Z">Location 2</option>
@@ -80,7 +80,7 @@
     </div>
     <div class="row product select">
       <span class="bold">Product Variant</span>
-      <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
+      <select title="sort by" [(ngModel)]="product" materialize="material_select" (change)="productSort($event)">
           <option disabled value="">Ft. Lauderdale</option>
           <option value="relevance">Location 1</option>
           <option value="A-Z">Location 2</option>
@@ -130,7 +130,7 @@
     <div class="row submit">
       <div
         class="btn white-text waves-effect waves-light"
-        (click)="toGoSuccess()">
+        (click)="toGoModal(2)">
         Submit
       </div>
     </div>

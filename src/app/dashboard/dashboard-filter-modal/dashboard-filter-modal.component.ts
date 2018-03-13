@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
 import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
@@ -27,7 +26,8 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   public context: DashboardFilterModalContext;
   public searchText: string = '';
   public modalState: number = 0;
-  public sortBy: string = '';
+  public location: string = '';
+  public product: string = '';
 
   public stockMini: number = 30;
   public stockMiniLimit: number = 30;
@@ -50,7 +50,16 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.modalState = 0;
   }
 
-  itemsSort(event) {
+  locationSort(event) {
+    this.stockMini = Math.round(100 * Math.random());
+    this.stockMiniLimit = this.stockMini;
+    this.stockShelf = Math.round(100 * Math.random());
+    this.stockShelfLimit = this.stockShelf;
+    this.stockSterlization = Math.round(100 * Math.random());
+    this.stockSterlizationLimit = this.stockSterlization;
+  }
+
+  productSort(event) {
     this.stockMini = Math.round(100 * Math.random());
     this.stockMiniLimit = this.stockMini;
     this.stockShelf = Math.round(100 * Math.random());
@@ -78,20 +87,8 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.searchText = '';
   }
 
-  toBackSearch() {
-    this.modalState = 0;
-  }
-
-  toBackDetail() {
-    this.modalState = 1;
-  }
-
-  toGoDetail() {
-    this.modalState = 1;
-  }
-
-  toGoSuccess() {
-    this.modalState = 2;
+  toGoModal(value) {
+    this.modalState = value;
   }
 
   dismissModal() {
