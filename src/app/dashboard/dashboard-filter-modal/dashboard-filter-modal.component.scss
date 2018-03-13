@@ -91,6 +91,7 @@
           }
 
           .product {
+            display: flex;
             border-bottom: 1px solid #d6d6d6;
             cursor: pointer;
             margin-left: 0;
@@ -109,6 +110,8 @@
             }
             .description {
               color: $dark;
+              margin-left: 25px;
+              width: 100%;
             }
             .arrow {
               display: flex;
@@ -117,6 +120,7 @@
               color: #33c6d9;
               padding-right: 0;
               font-size: 26px;
+              width: 30px;
               height: 100px;
             }
           }
