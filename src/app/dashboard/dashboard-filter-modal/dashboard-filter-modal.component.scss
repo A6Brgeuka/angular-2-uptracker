@@ -8,6 +8,18 @@
       display: flex;
       width: 300%;
       height: 100%;
+      .title {
+        color: $dark;
+        font-size: 1.6rem;
+        font-weight: normal;
+        margin-bottom: 1.4rem;
+      }
+      .thin {
+        font-weight: 200;
+      }
+      .left-align {
+        text-align: left;
+      }
 
       .left {
         display: block;
@@ -16,13 +28,6 @@
         width: 100%;
 
         #stepOne {
-          .title {
-            color: $dark;
-            font-size: 1.6rem;
-            font-weight: normal;
-            margin-bottom: 1.4rem;
-          }
-      
           .search {
             display: flex;
             border: 1px solid #d6d6d6;
@@ -68,19 +73,7 @@
               }
             }
             .description {
-              .product-title {
-                color: $dark;
-                font-weight: bold;
-              }
-              .desc {
-                color: $dark;
-                font-weight: 200;
-              }
-              .counts {
-                color: $dark;
-                font-weight: 200;
-                margin-top: 10px;
-              }
+              color: $dark;
             }
             .arrow {
               display: flex;
@@ -117,23 +110,16 @@
             text-align: center;
             border-radius: 20px;
             color: #fff;
-            line-height: 35px;
+            line-height: 36px;
             padding-right: 3px;
             width: 35px;
             height: 35px;
           }
-          .title {
-            color: $dark;
-            font-size: 1.6rem;
-            font-weight: normal;
-            margin-bottom: 50px;
-          }
           .description {
             display: flex;
             border-bottom: 1px solid #d6d6d6;
-            margin: 0;
+            margin: 0 0 50px;
             padding-bottom: 40px;
-            margin-bottom: 50px;
             .preview {
               padding-left: 0;
               .icon {
@@ -149,12 +135,6 @@
               color: $dark;
               margin-left: 20px;
               width: 100%;
-              .product-title {
-                font-weight: bold;
-              }
-              .desc {
-                font-weight: 200;
-              }
               .line-header {
                 font-weight: 200;
                 margin-top: 20px;
@@ -162,8 +142,16 @@
                 .col {
                   padding: 0;
                   .row {
-                    margin-bottom: 0;
+                    margin: 0;
                   }
+                }
+                .center-align {
+                  display: flex;
+                  justify-content: center;
+                }
+                .right-align {
+                  display: flex;
+                  justify-content: flex-end;
                 }
               }
               .range-field {
@@ -200,11 +188,8 @@
             }
           }
           .location {
+            color: $dark;
             margin: 0;
-            .location-title {
-              color: $dark;
-              font-weight: bold;
-            }
             input {
               border-color: #d6d6d6;
               max-width: 300px;
@@ -212,10 +197,7 @@
           }
           .product {
             margin: 0;
-            .product-title {
-              color: $dark;
-              font-weight: bold;
-            }
+            color: $dark;
             input {
               border-color: #d6d6d6;
               max-width: 300px;
@@ -223,15 +205,14 @@
           }
           .backstock {
             display: flex;
+            color: $dark;
             margin: 0;
             .stock-row {
-              font-weight: bold;
               margin-bottom: 10px;
               min-width: 200px;
             }
             .stock-field {
               display: flex;
-              font-weight: 200;
               line-height: 30px;
               margin-bottom: 10px;
               min-width: 200px;
@@ -267,6 +248,7 @@
             margin: 0;
             .btn {
               background-color: $tealish;
+              box-shadow: none;
             }
           }
         }

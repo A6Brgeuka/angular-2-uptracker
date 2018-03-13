@@ -89,6 +89,10 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   public growState: string = 'inone';
   public sortBy: string = '';
 
+  public stockMini: number = 30;
+  public stockShelf: number = 133;
+  public stockSterlization: number = 2;
+
   constructor(
       public dialog: DialogRef<DashboardFilterModalContext>,
       public userService: UserService,
@@ -109,6 +113,18 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     } else if(!event && this.growState === 'one') {
       this.growState = 'inone';
     }
+  }
+
+  stockMiniClick(value) {
+    this.stockMini += value;
+  }
+
+  stockShelfClick(value) {
+    this.stockShelf += value;
+  }
+
+  stockSterlizationClick(value) {
+    this.stockSterlization += value;
   }
 
   toBackSearch() {
