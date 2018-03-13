@@ -132,6 +132,12 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.stockSterlization += value;
   }
 
+  toBackInitial() {
+    this.slideState = 'inone';
+    this.growState = 'one';
+    this.searchText = '';
+  }
+
   toBackSearch() {
     this.slideState = 'inone';
     this.growState = 'one';
