@@ -54,7 +54,7 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
       on_hand: 15,
       critical_level: 10,
       overstock_level: 25,
-    })
+    });
   }
 
   ngOnInit() {}

@@ -10,12 +10,15 @@
       font-weight: normal;
       margin-bottom: 40px;
     }
+
     .thin {
       font-weight: 200;
     }
+
     .left-align {
       text-align: left;
     }
+
     .range-container {
       margin: 0;
       padding: 0;
@@ -31,7 +34,6 @@
         &.grey-bg{
           background-color: $light-light-grey;
         }
-
         &.left-align {
           left:0;
           padding-left:2px;
@@ -53,6 +55,7 @@
         }
       }
     }
+
     .range-field {
       margin-top: 0;
       position: relative;
@@ -91,7 +94,6 @@
       height: 1px;
       border-radius: 5px;
     }
-
     @mixin range-thumb {
       background: transparent;
       border: 1px solid transparent;
@@ -101,7 +103,6 @@
       z-index: 12;
       position: relative;
     }
-
     @mixin range-thumb-disabled {
       background: #f5f6f7;
       border: 1px solid #d6d6d6;
@@ -170,7 +171,6 @@
           margin-top: 5px;
         }
       }
-
       .info {
         line-height: 16px;
         margin-top: 5px;
@@ -180,7 +180,6 @@
           line-height: 14px;
         }
       }
-
       .product {
         display: flex;
         border-bottom: 1px solid #d6d6d6;
