@@ -107,6 +107,8 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.slideState = 'intwo';
   }
 
+  itemsSort(event) {}
+
   searchProducts(event) {
     if (event && this.growState === 'inone') {
       this.growState = 'one';
