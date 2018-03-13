@@ -110,7 +110,14 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.slideState = 'intwo';
   }
 
-  itemsSort(event) {}
+  itemsSort(event) {
+    this.stockMini = Math.round(100 * Math.random());
+    this.stockMiniLimit = this.stockMini;
+    this.stockShelf = Math.round(100 * Math.random());
+    this.stockShelfLimit = this.stockShelf;
+    this.stockSterlization = Math.round(100 * Math.random());
+    this.stockSterlizationLimit = this.stockSterlization;
+  }
 
   searchProducts(event) {
     if (event && this.growState === 'inone') {
