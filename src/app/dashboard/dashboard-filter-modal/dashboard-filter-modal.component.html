@@ -8,7 +8,7 @@
           <i class="fa fa-search"></i>
           <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
         </div>
-        <div class="info">Search by inventory group name, product name, keyword, id number, etc</div>
+        <div class="info"><span>Search by inventory group name, product name, keyword, id number, etc</span></div>
         <div>
           <div class="row product"  (click)="toGoDetail()" *ngIf="!!searchText">
             <div class="col s2 preview">
@@ -37,46 +37,99 @@
           <div class="content">
             <div class="product-title">Gloves Tender Touch Nitrile</div>
             <div class="desc">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
+            <div class="col s12 line-header">
+              <div class="col s4">
+                <div class="row">Department</div>
+                <div class="row">Clinic</div>
+              </div>
+              <div class="col s4">
+                <div class="row">Category</div>
+                <div class="row">Gloves</div>
+              </div>
+              <div class="col s4">
+                <div class="row">Accounting</div>
+                <div class="row">Not Specified</div>
+              </div>
+            </div>
             <div class="col s12">
-              <div class="col s4">TTT</div>
-              <div class="col s4">TTT</div>
-              <div class="col s4">TTT</div>
+              <div class="range-field">
+                <input
+                  #inputRange
+                  type="range"
+                  [min]="0" [max]="30" step="1"
+                  value="0"
+                  name="priority"
+                >
+                <div class="value-container less-margin">
+                  <div class="value" [ngStyle]="{ 'left': '-13px', 'top': '-10px', 'background-color' : 'red' }">5</div>
+                </div>
+                <div class="range-value grey-bg left-align red-text bold" [ngStyle]="{'left': '-15px', 'top': '7px', 'position': 'absolute', 'right': 'inherit'}">
+                  5
+                </div>
+                <div class="range-value grey-bg right-align light-green-text bold" [ngStyle]="{'top': '7px', 'position': 'absolute', 'right': '-15px'}">
+                  30
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="row location select">
-          <span>Location</span>
+          <span class="location-title">Location</span>
           <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
-              <option disabled value="">Sort by</option>
-              <option value="relevance">Relevance</option>
-              <option value="A-Z">A-Z</option>
-              <option value="Z-A">Z-A</option>
+              <option disabled value="">Ft. Lauderdale</option>
+              <option value="relevance">Location 1</option>
+              <option value="A-Z">Location 2</option>
+              <option value="Z-A">Location 3</option>
             </select>
         </div>
-        <div class="row location select">
-          <span>Product Variant</span>
+        <div class="row product select">
+          <span class="product-title">Product Variant</span>
           <select title="sort by" [(ngModel)]="sortBy" materialize="material_select" (change)="itemsSort($event)">
-              <option disabled value="">Sort by</option>
-              <option value="relevance">Relevance</option>
-              <option value="A-Z">A-Z</option>
-              <option value="Z-A">Z-A</option>
+              <option disabled value="">Ft. Lauderdale</option>
+              <option value="relevance">Location 1</option>
+              <option value="A-Z">Location 2</option>
+              <option value="Z-A">Location 3</option>
             </select>
         </div>
         <div class="row backstock">
-          <div class="col s3">Backstock</div>
-          <div class="col s3">QTY</div>
+          <div class="stock-row">Backstock</div>
+          <div class="stock-row">QTY</div>
         </div>
-        <div class="row stockfield">
-          <div class="col s3">Mini Fridge</div>
-          <div class="col s3">QTY</div>
+        <div class="row backstock">
+          <div class="stock-field">Mini Fridge</div>
+          <div class="stock-field">
+            <input type="number">
+            <div class="action-button">
+              <fa name="plus"></fa>
+            </div>
+            <div class="action-button">
+              <fa name="minus"></fa>
+            </div>
+          </div>
         </div>
-        <div class="row stockfield">
-          <div class="col s3">Mini Fridge</div>
-          <div class="col s3">QTY</div>
+        <div class="row backstock">
+          <div class="stock-field">Mini Fridge</div>
+          <div class="stock-field">
+            <input type="number">
+            <div class="action-button">
+              <fa name="plus"></fa>
+            </div>
+            <div class="action-button">
+              <fa name="minus"></fa>
+            </div>
+          </div>
         </div>
-        <div class="row stockfield">
-          <div class="col s3">Mini Fridge</div>
-          <div class="col s3">QTY</div>
+        <div class="row backstock">
+          <div class="stock-field">Mini Fridge</div>
+          <div class="stock-field">
+            <input type="number">
+            <div class="action-button">
+              <fa name="plus"></fa>
+            </div>
+            <div class="action-button">
+              <fa name="minus"></fa>
+            </div>
+          </div>
         </div>
         <div class="row submit">
           <div
@@ -89,7 +142,30 @@
     </div>
     <div class="right">
       <div id="stepThree" [@visiblePanelThree]="slideState">
-        <div class="title center-align"><span>SUCCESS</span></div>
+        <div class="title center-align"><span>SUCCESS!</span></div>
+        <div class="center-align">Your inventory has been updated</div>
+        <div class="preview">
+          <div class="icon"></div>
+        </div>
+        <div class="center-align bold">
+          <span>Gloves Tender Touch Nitrile X-Small</span>
+        </div>
+        <div class="center-align">
+          <span>Gloves Tender Touch Nitrile Sempercare PF 200/box</span>
+        </div>
+        <div class="center-align">
+
+        </div>
+        <div class="row submit">
+          <div
+            class="btn white-text waves-effect waves-light left">
+            I'M DONE
+          </div>
+          <div
+            class="btn white-text waves-effect waves-light right">
+            WORK ON ANOTHER PRODUCT
+          </div>
+        </div>
       </div>
     </div>
   </div>

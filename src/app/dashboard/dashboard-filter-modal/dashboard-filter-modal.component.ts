@@ -22,28 +22,6 @@ export class DashboardFilterModalContext extends BSModalContext {
   templateUrl: './dashboard-filter-modal.component.html',
   styleUrls: ['./dashboard-filter-modal.component.scss'],
   animations: [
-    trigger('productRow', [
-      state('inactive', style({
-        overflow: 'hidden',
-        height: 0,
-      })),
-      state('active', style({
-        overflow: 'hidden',
-        height: '*'
-      })),
-      transition('inactive => active', animate('300ms ease-in')),
-      transition('active => inactive', animate('300ms ease-out')),
-
-      state('inone', style({
-        height: '300px'
-      })),
-      state('one', style({
-        overflow: 'hidden',
-        height: '*'
-      })),
-      transition('inone => one', animate('300ms ease-in')),
-      transition('one => inone', animate('300ms ease-out')),
-    ]),
     trigger('growPanel', [
       state('inone', style({
         overflow: 'hidden',
@@ -59,7 +37,7 @@ export class DashboardFilterModalContext extends BSModalContext {
       })),
       state('three', style({
         overflow: 'hidden',
-        height: '150px'
+        height: '*'
       })),
       transition('inone => one', animate('300ms ease-in')),
       transition('one => inone', animate('300ms ease-out')),

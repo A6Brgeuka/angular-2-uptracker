@@ -1,5 +1,7 @@
+@import "../../../colors";
+
 :host /deep/ {
-  .inner{
+  .inner {
     margin: 0 auto;
 
     .parent {
@@ -15,36 +17,41 @@
 
         #stepOne {
           .title {
-            margin-bottom: 30px;
+            color: $dark;
+            font-size: 1.6rem;
+            font-weight: normal;
+            margin-bottom: 1.4rem;
           }
       
           .search {
             display: flex;
-            border: 1px solid #9a9c9e;
-            color: #9a9c9e;
+            border: 1px solid #d6d6d6;
+            border-radius: 5px;
             font-size: 30px;
             margin: 0;
             > i {
+              color: #d6d6d6;
               line-height: 55px;
               margin-right: 20px;
               margin-left: 20px;
             }
             > input {
               border: none;
+              color: $dark;
               font-size: 18px;
               margin-bottom: 5px;
               margin-top: 5px;
             }
           }
-      
+
           .info {
-            color: #9a9c9e;
+            color: $dark;
             margin-top: 5px;
             margin-bottom: 30px;
           }
-      
+
           .product {
-            border-bottom: 1px solid #9a9c9e;
+            border-bottom: 1px solid #d6d6d6;
             cursor: pointer;
             margin-left: 0;
             margin-right: 0;
@@ -53,18 +60,25 @@
               padding-left: 0;
               .icon {
                 background-color: white;
-                border: 1px solid #9a9c9e;
+                border: 1px solid #d6d6d6;
+                border-radius: 5px;
+                cursor: pointer;
                 width: 100px;
                 height: 100px;
               }
             }
             .description {
               .product-title {
+                color: $dark;
                 font-weight: bold;
               }
-              .desc {}
+              .desc {
+                color: $dark;
+                font-weight: 200;
+              }
               .counts {
-                color: #9a9c9e;
+                color: $dark;
+                font-weight: 200;
                 margin-top: 10px;
               }
             }
@@ -77,6 +91,9 @@
               font-size: 26px;
               height: 100px;
             }
+          }
+          .product:last-child {
+            border-bottom: none;
           }
         }
       }
@@ -93,46 +110,164 @@
             transition: opacity .3s;
             position: absolute;
             left: 10px;
-            top: 10px;
+            top: 0;
             background-color: #33c6d9;
             cursor: pointer;
             font-size: 20px;
             text-align: center;
             border-radius: 20px;
             color: #fff;
-            line-height: 40px;
+            line-height: 35px;
             padding-right: 3px;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
+          }
+          .title {
+            color: $dark;
+            font-size: 1.6rem;
+            font-weight: normal;
+            margin-bottom: 50px;
           }
           .description {
             display: flex;
+            border-bottom: 1px solid #d6d6d6;
             margin: 0;
+            padding-bottom: 40px;
+            margin-bottom: 50px;
             .preview {
               padding-left: 0;
               .icon {
                 background-color: white;
-                border: 1px solid #9a9c9e;
+                border: 1px solid #d6d6d6;
+                border-radius: 5px;
+                cursor: pointer;
                 width: 150px;
                 height: 150px;
               }
             }
             .content {
+              color: $dark;
               margin-left: 20px;
               width: 100%;
+              .product-title {
+                font-weight: bold;
+              }
+              .desc {
+                font-weight: 200;
+              }
+              .line-header {
+                font-weight: 200;
+                margin-top: 20px;
+                padding: 0;
+                .col {
+                  padding: 0;
+                  .row {
+                    margin-bottom: 0;
+                  }
+                }
+              }
+              .range-field {
+                margin-top: 0;
+                position: relative;
+                .value-container {
+                  position: relative;
+                  margin: 3px 12px;
+                  &.less-margin {
+                    margin:-16px 8px 3px;
+                  }
+                  .value {
+                    border-radius: 50%;
+                    height:20px;
+                    width:20px;
+                    position: absolute;
+                    margin:-3px 0;
+                    line-height:18px;
+                    font-size: 10px;
+                    letter-spacing: -0.01em;
+                    text-align: center;
+                    color: #fff;
+                    font-weight: bold;
+                    top: -18px;
+                    z-index: 13;
+                    cursor: pointer;
+                    pointer-events: none;
+                  }
+                }
+                input {
+                  height:5px;
+                }
+              }
             }
           }
           .location {
             margin: 0;
+            .location-title {
+              color: $dark;
+              font-weight: bold;
+            }
+            input {
+              border-color: #d6d6d6;
+              max-width: 300px;
+            }
+          }
+          .product {
+            margin: 0;
+            .product-title {
+              color: $dark;
+              font-weight: bold;
+            }
+            input {
+              border-color: #d6d6d6;
+              max-width: 300px;
+            }
           }
           .backstock {
+            display: flex;
             margin: 0;
-          }
-          .stockfield {
-            margin: 0;
+            .stock-row {
+              font-weight: bold;
+              margin-bottom: 10px;
+              min-width: 200px;
+            }
+            .stock-field {
+              display: flex;
+              font-weight: 200;
+              line-height: 30px;
+              margin-bottom: 10px;
+              min-width: 200px;
+              input {
+                background-color: #fff;
+                border-radius: 5px;
+                border: 1px solid #d6d6d6;
+                box-shadow: none !important;
+                box-sizing: border-box;
+                color: #9a9c9e;
+                font-size: 12px;
+                max-width: 70px;
+                min-width: 50px;
+                margin-right: 20px;
+                line-height: 30px;
+                padding: 5px;
+                text-align: center;
+                height: 30px;
+              }
+              .action-button {
+                text-align: center;
+                cursor: pointer;
+                border-radius: 4px;
+                line-height: 30px;
+                background-color: $tealish;
+                color: $white;
+                width: 30px;
+                height: 30px;
+              }
+            }
           }
           .submit {
             margin: 0;
+            .btn {
+              background-color: $tealish;
+            }
           }
         }
       }
@@ -142,6 +277,36 @@
         padding-left: 60px;
         padding-right: 60px;
         width: 100%;
+
+        .preview {
+          display: flex;
+          justify-content: center;
+          margin: 30px;
+          .icon {
+            background-color: white;
+            border: 1px solid #d6d6d6;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 300px;
+            height: 300px;
+          }
+        }
+        .submit {
+          display: flex;
+          justify-content: center;
+          margin-top: 50px;
+          .btn {
+            background-color: $tealish;
+            box-shadow: none;
+            width: auto;
+          }
+          .left {
+            margin-right: 20px;
+          }
+          .right {
+            margin-left: 20px;
+          }
+        }
       }
     }
   }
