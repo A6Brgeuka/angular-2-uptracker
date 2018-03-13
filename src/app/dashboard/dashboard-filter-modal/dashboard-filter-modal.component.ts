@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+
+import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { VendorModel } from '../../models/index';
+import { VendorModel } from '../../models';
 import { UserService, AccountService } from '../../core/services';
 import * as _ from 'lodash';
 
@@ -24,6 +24,7 @@ export class DashboardFilterModalContext extends BSModalContext {
 @DestroySubscribers()
 export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFilterModalContext> {
   public context: DashboardFilterModalContext;
+  public subscribers: any = {};
   public searchText: string = '';
   public modalState: number = 0;
   public location: string = '';
@@ -39,9 +40,9 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   public stockSterlizationLimit: number = 2;
 
   constructor(
-      public dialog: DialogRef<DashboardFilterModalContext>,
-      public userService: UserService,
-      public accountService: AccountService,
+    public dialog: DialogRef<DashboardFilterModalContext>,
+    public userService: UserService,
+    public accountService: AccountService,
   ) {
     this.context = dialog.context;
     this.groups.push({
