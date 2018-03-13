@@ -20,73 +20,13 @@ export class DashboardFilterModalContext extends BSModalContext {
   // Remove when solved.
   /* tslint:disable */
   templateUrl: './dashboard-filter-modal.component.html',
-  styleUrls: ['./dashboard-filter-modal.component.scss'],
-  animations: [
-    trigger('growPanel', [
-      state('inone', style({
-        overflow: 'hidden',
-        height: '150px',
-      })),
-      state('one', style({
-        overflow: 'hidden',
-        height: '300px'
-      })),
-      state('two', style({
-        overflow: 'hidden',
-        height: '*'
-      })),
-      state('three', style({
-        overflow: 'hidden',
-        height: '600px'
-      })),
-      transition('inone => one', animate('300ms ease-in')),
-      transition('one => inone', animate('300ms ease-out')),
-      transition('one => two', animate('300ms ease-in')),
-      transition('two => one', animate('300ms ease-out')),
-      transition('two => three', animate('300ms ease-out'))
-    ]),
-    trigger('slidePanel', [
-      state('inone', style({
-        overflow: 'hidden',
-        transform: 'translateX(0)'
-      })),
-      state('one', style({
-        overflow: 'hidden',
-        transform: 'translateX(-33.3%)',
-      })),
-      transition('inone => one', animate(300, style({transform: 'translateX(-33%)'}))),
-      transition('one => inone', animate(300, style({transform: 'translateX(0)'}))),
-
-      state('two', style({
-        overflow: 'hidden',
-        transform: 'translateX(-66.6%)',
-      })),
-      transition('one => two', animate(300, style({transform: 'translateX(-66%)'}))),
-      transition('two => one', animate(300, style({transform: 'translateX(-33%)'}))),
-    ]),
-    trigger('visiblePanelOne', [
-      state('inone', style({ display: 'block' })),
-      state('one', style({ display: 'none' })),
-      state('two', style({ display: 'none' }))
-    ]),
-    trigger('visiblePanelTwo', [
-      state('inone', style({ display: 'none' })),
-      state('one', style({ display: 'block' })),
-      state('two', style({ display: 'none' }))
-    ]),
-    trigger('visiblePanelThree', [
-      state('inone', style({ display: 'none' })),
-      state('one', style({ display: 'none' })),
-      state('two', style({ display: 'block' }))
-    ])
-  ]
+  styleUrls: ['./dashboard-filter-modal.component.scss']
 })
 @DestroySubscribers()
 export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFilterModalContext> {
   public context: DashboardFilterModalContext;
   public searchText: string = '';
-  public slideState: string = 'inone';
-  public growState: string = 'inone';
+  public modalState: number = 0;
   public sortBy: string = '';
 
   public stockMini: number = 30;
@@ -107,7 +47,7 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   ngOnInit() {}
 
   goBackToFirst() {
-    this.slideState = 'intwo';
+    this.modalState = 0;
   }
 
   itemsSort(event) {
@@ -119,13 +59,7 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.stockSterlizationLimit = this.stockSterlization;
   }
 
-  searchProducts(event) {
-    if (event && this.growState === 'inone') {
-      this.growState = 'one';
-    } else if(!event && this.growState === 'one') {
-      this.growState = 'inone';
-    }
-  }
+  searchProducts(event) {}
 
   stockMiniClick(value) {
     this.stockMini += value;
@@ -140,28 +74,24 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   }
 
   toBackInitial() {
-    this.slideState = 'inone';
-    this.growState = 'one';
+    this.modalState = 0;
     this.searchText = '';
   }
 
   toBackSearch() {
-    this.slideState = 'inone';
-    this.growState = 'one';
+    this.modalState = 0;
   }
 
   toBackDetail() {
-    this.slideState = 'intwo';
+    this.modalState = 1;
   }
 
   toGoDetail() {
-    this.slideState = 'one';
-    this.growState = 'two';
+    this.modalState = 1;
   }
 
   toGoSuccess() {
-    this.slideState = 'two';
-    this.growState = 'three';
+    this.modalState = 2;
   }
 
   dismissModal() {
