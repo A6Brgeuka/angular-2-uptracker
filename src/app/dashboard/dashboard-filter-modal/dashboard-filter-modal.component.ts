@@ -37,7 +37,7 @@ export class DashboardFilterModalContext extends BSModalContext {
       })),
       state('three', style({
         overflow: 'hidden',
-        height: '*'
+        height: '600px'
       })),
       transition('inone => one', animate('300ms ease-in')),
       transition('one => inone', animate('300ms ease-out')),
