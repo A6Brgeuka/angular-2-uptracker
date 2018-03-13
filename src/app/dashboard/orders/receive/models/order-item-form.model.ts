@@ -32,7 +32,7 @@ export class OrderItemFormGroup extends FormGroup {
       status: new FormArray([]),
       status_line_items: new FormArray(statusLineItemsFormGroups),
       quantity: new FormControl({value: quantity, disabled: true}),
-      note: new FormControl({value: '', disabled: true}, Validators.required),
+      note: new FormControl({value: '', disabled: true}),
     });
   }
 }
