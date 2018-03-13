@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from "@angular/router";
 import { MaterializeModule } from "angular2-materialize";
 import { FileDropModule } from 'angular2-file-drop';
@@ -72,7 +71,6 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
 
     MaterializeModule,
     FileDropModule,
@@ -100,7 +98,6 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
 
     MaterializeModule,
     FileDropModule,
