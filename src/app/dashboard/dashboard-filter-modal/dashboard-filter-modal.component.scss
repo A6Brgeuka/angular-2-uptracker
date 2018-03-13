@@ -81,9 +81,13 @@
           }
 
           .info {
-            color: $dark;
+            line-height: 16px;
             margin-top: 5px;
             margin-bottom: 30px;
+            > span {
+              color: #9a9c9e;
+              line-height: 14px;
+            }
           }
 
           .product {
@@ -133,8 +137,6 @@
           .nav {
             transition: opacity .3s;
             position: absolute;
-            left: 10px;
-            top: 0;
             background-color: #33c6d9;
             cursor: pointer;
             font-size: 12px;
