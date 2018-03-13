@@ -90,8 +90,11 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   public sortBy: string = '';
 
   public stockMini: number = 30;
+  public stockMiniLimit: number = 30;
   public stockShelf: number = 133;
+  public stockShelfLimit: number = 133;
   public stockSterlization: number = 2;
+  public stockSterlizationLimit: number = 2;
 
   constructor(
       public dialog: DialogRef<DashboardFilterModalContext>,

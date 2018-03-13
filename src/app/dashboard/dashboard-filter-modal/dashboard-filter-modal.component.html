@@ -99,36 +99,36 @@
           <div class="stock-field thin">Mini Fridge</div>
           <div class="stock-field thin">
             <input type="text" [(ngModel)]="stockMini">
-            <div class="action-button" (click)="stockMiniClick(1)">
+            <button class="action-button" [disabled]="stockMini === stockMiniLimit" (click)="stockMiniClick(1)">
               <fa name="plus"></fa>
-            </div>
-            <div class="action-button right-align" (click)="stockMiniClick(-1)">
+            </button>
+            <button class="action-button right-align" (click)="stockMiniClick(-1)">
               <fa name="minus"></fa>
-            </div>
+            </button>
           </div>
         </div>
         <div class="row backstock">
           <div class="stock-field thin">Shelf A</div>
           <div class="stock-field" thin>
             <input type="text" [(ngModel)]="stockShelf">
-            <div class="action-button" (click)="stockShelfClick(1)">
+            <button class="action-button" [disabled]="stockShelf === stockShelfLimit" (click)="stockShelfClick(1)">
               <fa name="plus"></fa>
-            </div>
-            <div class="action-button right-align" (click)="stockShelfClick(-1)">
+            </button>
+            <button class="action-button right-align" (click)="stockShelfClick(-1)">
               <fa name="minus"></fa>
-            </div>
+            </button>
           </div>
         </div>
         <div class="row backstock">
           <div class="stock-field thin">Sterlization Room</div>
           <div class="stock-field thin">
             <input type="text" [(ngModel)]="stockSterlization">
-            <div class="action-button" (click)="stockSterlizationClick(1)">
+            <button class="action-button" [disabled]="stockSterlization === stockSterlizationLimit" (click)="stockSterlizationClick(1)">
               <fa name="plus"></fa>
-            </div>
-            <div class="action-button right-align" (click)="stockSterlizationClick(-1)">
+            </button>
+            <button class="action-button right-align" (click)="stockSterlizationClick(-1)">
               <fa name="minus"></fa>
-            </div>
+            </button>
           </div>
         </div>
         <div class="row submit">
