@@ -20,6 +20,37 @@
       .left-align {
         text-align: left;
       }
+      .range-field {
+        margin-top: 0;
+        position: relative;
+        .value-container {
+          position: relative;
+          margin: 3px 12px;
+          &.less-margin {
+            margin:-16px 8px 3px;
+          }
+          .value {
+            border-radius: 50%;
+            height:20px;
+            width:20px;
+            position: absolute;
+            margin:-3px 0;
+            line-height:18px;
+            font-size: 10px;
+            letter-spacing: -0.01em;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+            top: -18px;
+            z-index: 13;
+            cursor: pointer;
+            pointer-events: none;
+          }
+        }
+        input {
+          height:5px;
+        }
+      }
 
       .left {
         display: block;
@@ -154,37 +185,6 @@
                   justify-content: flex-end;
                 }
               }
-              .range-field {
-                margin-top: 0;
-                position: relative;
-                .value-container {
-                  position: relative;
-                  margin: 3px 12px;
-                  &.less-margin {
-                    margin:-16px 8px 3px;
-                  }
-                  .value {
-                    border-radius: 50%;
-                    height:20px;
-                    width:20px;
-                    position: absolute;
-                    margin:-3px 0;
-                    line-height:18px;
-                    font-size: 10px;
-                    letter-spacing: -0.01em;
-                    text-align: center;
-                    color: #fff;
-                    font-weight: bold;
-                    top: -18px;
-                    z-index: 13;
-                    cursor: pointer;
-                    pointer-events: none;
-                  }
-                }
-                input {
-                  height:5px;
-                }
-              }
             }
           }
           .location {
@@ -269,14 +269,19 @@
             border: 1px solid #d6d6d6;
             border-radius: 5px;
             cursor: pointer;
-            width: 300px;
-            height: 300px;
+            width: 200px;
+            height: 200px;
           }
+        }
+        .range-container {
+          margin-top: 50px;
+          margin-bottom: 100px;
+          margin-left: 30px;
+          margin-right: 30px;
         }
         .submit {
           display: flex;
           justify-content: center;
-          margin-top: 50px;
           .btn {
             background-color: $tealish;
             box-shadow: none;

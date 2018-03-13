@@ -153,8 +153,25 @@
         <div class="center-align">
           <span>Gloves Tender Touch Nitrile Sempercare PF 200/box</span>
         </div>
-        <div class="center-align">
-
+        <div class="range-container">
+          <div class="range-field">
+            <input
+              #inputRange
+              type="range"
+              [min]="0" [max]="30" step="1"
+              value="0"
+              name="priority"
+            >
+            <div class="value-container less-margin">
+              <div class="value" [ngStyle]="{ 'left': '-13px', 'top': '-10px', 'background-color' : 'red' }">5</div>
+            </div>
+            <div class="range-value grey-bg left-align red-text bold" [ngStyle]="{'left': '-15px', 'top': '7px', 'position': 'absolute', 'right': 'inherit'}">
+              5
+            </div>
+            <div class="range-value grey-bg right-align light-green-text bold" [ngStyle]="{'top': '7px', 'position': 'absolute', 'right': '-15px'}">
+              30
+            </div>
+          </div>
         </div>
         <div class="row submit">
           <div
