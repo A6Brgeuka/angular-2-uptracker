@@ -83,7 +83,6 @@ export class MarketplaceTabComponent implements OnInit {
       );
       return products;
     });
-    console.log('$$$$$$$$$$$$$$$$$$$$$:   ', this.products$)
     
   }
   
