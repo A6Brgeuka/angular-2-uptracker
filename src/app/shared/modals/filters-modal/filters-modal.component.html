@@ -2,26 +2,106 @@
 <div class="inner">
   <div class="title center-align">Filter Settings</div>
   <div class="row">
+    <div class="col s12 m4">
+      <div class="ttl bold">Price</div>
+      <hr>
+      <div class="row">
+        <div class="col s6">
+          <div class="input">
+            <input type="number" min="0" placeholder="Min">
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="input">
+            <input type="number" min="0" placeholder="Max">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <div class="input">
+            <input type="date">
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="input">
+            <input type="date">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="ttl bold">Avg Price</div>
+      <hr>
+      <div class="row">
+        <div class="col s6">
+          <div class="input">
+            <input type="number" min="0" placeholder="Min">
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="input">
+            <input type="number" min="0" placeholder="Max">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="ttl bold">Discount</div>
+      <hr>
+      <div *ngFor="let discount of discounts; let i = index;" class="checkboxesList col s12">
+        <div class="input-checkbox checkbox inline-block">
+          <input id={{i}} type="checkbox">
+          <label for={{i}}></label>
+        </div>
+        <div class="bold checkbox-text">{{discount}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col s12 m6">
       <div class="ttl bold">Vendor</div>
       <hr>
       <app-chips-input
         [formControl]="vendors"
-        [materializeParams]="autocompleteInit"
+        [materializeParams]="autocompleteVendors"
       ></app-chips-input>
     </div>
     <div class="col s12 m6">
       <div class="ttl bold">Location</div>
       <hr>
+      <div *ngFor="let location of (locations$ | async)" class="col s12 m6 checkboxesList">
+        <div class="input-checkbox checkbox inline-block">
+          <input id={{location.id}} type="checkbox">
+          <label for={{location.id}}></label>
+        </div>
+        <div class="bold checkbox-text">{{location.name}}</div>
+      </div>
     </div>
   </div>
   <div class="row">
     <div class="col s12 m6">
       <div class="ttl bold">Category</div>
+      <hr>
       <app-chips-input
         [formControl]="categories"
-        [materializeParams]="autocompleteInit"
+        [materializeParams]="autocompleteCategories"
       ></app-chips-input>
     </div>
+    <div class="col s12 m6">
+      <div class="ttl bold">Department</div>
+      <hr>
+      <div *ngFor="let department of (departmentCollection$ | async)" class="col s12 m6 checkboxesList">
+        <div class="input-checkbox checkbox inline-block">
+          <input id={{department}} type="checkbox">
+          <label for={{department}}></label>
+        </div>
+        <div class="bold checkbox-text">{{department}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-btn">
+    <button class="uptracker-form-btn tealish white-text waves-effect waves-light">Apply Filters</button>
+    <button class="uptracker-form-btn tealish tealish-text waves-effect waves-light back-btn">Cancel</button>
   </div>
 </div>
