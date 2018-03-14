@@ -60,7 +60,11 @@ body {
 // Input, select fields global styling
 
 .input, .select .select-wrapper, .select .select-wrapper.ng-valid  {
-  input, input.select-dropdown {
+  input,
+  input.select-dropdown,
+  input[type=number]:not(.browser-default)
+  //input[type=date]:not(.browser-default)
+  {
     border: 1px solid $grey;
     border-radius: 5px;
     box-sizing: border-box;
