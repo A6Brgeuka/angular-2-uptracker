@@ -97,7 +97,7 @@
     <div class="row backstock">
       <div class="stock-field thin">Mini Fridge</div>
       <div class="stock-field thin">
-        <input type="text" [(ngModel)]="stockMini">
+        <input type="number" [(ngModel)]="stockMini">
         <button class="action-button" [disabled]="stockMini === stockMiniLimit" (click)="stockMiniClick(1)">
           <fa name="plus"></fa>
         </button>
@@ -109,7 +109,7 @@
     <div class="row backstock">
       <div class="stock-field thin">Shelf A</div>
       <div class="stock-field" thin>
-        <input type="text" [(ngModel)]="stockShelf">
+        <input type="number" [(ngModel)]="stockShelf">
         <button class="action-button" [disabled]="stockShelf === stockShelfLimit" (click)="stockShelfClick(1)">
           <fa name="plus"></fa>
         </button>
@@ -121,7 +121,7 @@
     <div class="row backstock">
       <div class="stock-field thin">Sterlization Room</div>
       <div class="stock-field thin">
-        <input type="text" [(ngModel)]="stockSterlization">
+        <input type="number" [(ngModel)]="stockSterlization">
         <button class="action-button" [disabled]="stockSterlization === stockSterlizationLimit" (click)="stockSterlizationClick(1)">
           <fa name="plus"></fa>
         </button>
