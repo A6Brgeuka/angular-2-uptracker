@@ -75,16 +75,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.accountService.dashboardLocation$.next(_.find(this.locationArr, {'id': event.target.value}));
   }
 
-  showFiltersModal() {
+  showSubInventoryModal() {
     this.modal
     .open(SubInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
+        (res) => {},
+        (err) => {}
       );
     });
   }
