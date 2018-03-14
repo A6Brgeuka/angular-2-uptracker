@@ -60,12 +60,7 @@
   </div>
   <div class="row">
     <div class="col s12 m6">
-      <div class="ttl bold">Vendor</div>
-      <hr>
-      <app-chips-input
-        [formControl]="vendors"
-        [materializeParams]="autocompleteVendors"
-      ></app-chips-input>
+      <app-vendor-filter></app-vendor-filter>
     </div>
     <div class="col s12 m6">
       <div class="ttl bold">Location</div>
@@ -81,27 +76,22 @@
   </div>
   <div class="row">
     <div class="col s12 m6">
-      <div class="ttl bold">Category</div>
-      <hr>
-      <app-chips-input
-        [formControl]="categories"
-        [materializeParams]="autocompleteCategories"
-      ></app-chips-input>
+      <app-category-filter></app-category-filter>
     </div>
     <div class="col s12 m6">
-      <div class="ttl bold">Department</div>
-      <hr>
-      <div *ngFor="let department of (departmentCollection$ | async)" class="col s12 m6 checkboxesList">
-        <div class="input-checkbox checkbox inline-block">
-          <input id={{department}} type="checkbox">
-          <label for={{department}}></label>
-        </div>
-        <div class="bold checkbox-text">{{department}}</div>
-      </div>
+      <app-department-filter></app-department-filter>
+    </div>
+    <div class="col s12 m6">
+      <app-accounting-filter></app-accounting-filter>
+    </div>
+    <div class="col s12 m6">
+      <app-my-favorites-filter></app-my-favorites-filter>
     </div>
   </div>
   <div class="footer-btn">
-    <button class="uptracker-form-btn tealish white-text waves-effect waves-light">Apply Filters</button>
+    <button class="uptracker-form-btn tealish white-text waves-effect waves-light">
+      Apply Filters
+    </button>
     <button class="uptracker-form-btn tealish tealish-text waves-effect waves-light back-btn">Cancel</button>
   </div>
 </div>
