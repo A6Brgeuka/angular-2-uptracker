@@ -85,14 +85,23 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
 
   stockMiniClick(value) {
     this.stockMini += value;
+    if (this.stockMini > this.stockMiniLimit) {
+      this.stockMini = this.stockMiniLimit;
+    }
   }
 
   stockShelfClick(value) {
     this.stockShelf += value;
+    if (this.stockShelf > this.stockShelfLimit) {
+      this.stockShelf = this.stockShelfLimit;
+    }
   }
 
   stockSterlizationClick(value) {
     this.stockSterlization += value;
+    if (this.stockSterlization > this.stockSterlizationLimit) {
+      this.stockSterlization = this.stockSterlizationLimit;
+    }
   }
 
   toBackInitial() {
