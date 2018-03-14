@@ -1,0 +1,9 @@
+<div class="ttl bold">Department</div>
+<hr>
+<div *ngFor="let department of (departmentCollection$ | async)" class="col s12 m6 checkboxesList">
+  <div class="input-checkbox checkbox inline-block">
+    <input id={{department}} type="checkbox">
+    <label for={{department}}></label>
+  </div>
+  <div class="bold checkbox-text">{{department}}</div>
+</div>
