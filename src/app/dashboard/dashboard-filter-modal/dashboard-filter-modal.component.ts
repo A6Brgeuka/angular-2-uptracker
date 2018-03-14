@@ -84,23 +84,32 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   searchProducts(event) {}
 
   stockMiniClick(value) {
-    this.stockMini += value;
-    if (this.stockMini > this.stockMiniLimit) {
-      this.stockMini = this.stockMiniLimit;
+    if (value === this.stockMini && value > this.stockMiniLimit) {
+      setTimeout(() => {
+        this.stockMini = this.stockMiniLimit;
+      })
+    } else if (value !== this.stockMini) {
+      this.stockMini += value;
     }
   }
 
   stockShelfClick(value) {
-    this.stockShelf += value;
-    if (this.stockShelf > this.stockShelfLimit) {
-      this.stockShelf = this.stockShelfLimit;
+    if (value === this.stockShelf && value > this.stockShelfLimit) {
+      setTimeout(() => {
+        this.stockShelf = this.stockShelfLimit;
+      })
+    } else if (value !== this.stockShelf) {
+      this.stockShelf += value;
     }
   }
 
   stockSterlizationClick(value) {
-    this.stockSterlization += value;
-    if (this.stockSterlization > this.stockSterlizationLimit) {
-      this.stockSterlization = this.stockSterlizationLimit;
+    if (value === this.stockSterlization && value > this.stockSterlizationLimit) {
+      setTimeout(() => {
+        this.stockSterlization = this.stockSterlizationLimit;
+      })
+    } else if (value !== this.stockSterlization) {
+      this.stockSterlization += value;
     }
   }
 
