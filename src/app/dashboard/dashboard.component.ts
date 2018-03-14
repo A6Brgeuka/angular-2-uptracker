@@ -7,6 +7,7 @@ import { Observable } from "rxjs";
 import { DashboardService } from '../core/services/dashboard.service';
 import { ModalWindowService } from '../core/services/modal-window.service';
 import { SubInventoryModal } from './sub-inventory-modal/sub-inventory-modal.component';
+import { TransferModal } from './transfer-modal/transfer-modal.component'
 import * as _ from 'lodash';
 
 @Component({
@@ -86,5 +87,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  showTransferModal() {}
+  showTransferModal() {
+    this.modal
+    .open(TransferModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {},
+        (err) => {}
+      );
+    });
+  }
 }

@@ -23,6 +23,7 @@ import { AssetsModule } from './assets/assets.module';
 import { RestockFloorModule } from './restock-floor/restock-floor.module';
 
 import { SubInventoryModalModule } from './sub-inventory-modal/sub-inventory-modal.module';
+import { TransferModalModule } from './transfer-modal/transfer-modal.module';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { SubInventoryModalModule } from './sub-inventory-modal/sub-inventory-mod
     ShoppingListModule,
     RestockFloorModule,
     SubInventoryModalModule,
+    TransferModalModule,
   ],
   providers: []
 })
