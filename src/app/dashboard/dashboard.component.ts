@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import * as _ from 'lodash';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
@@ -7,7 +6,8 @@ import { UserService, StateService, AccountService } from '../core/services/inde
 import { Observable } from "rxjs";
 import { DashboardService } from '../core/services/dashboard.service';
 import { ModalWindowService } from '../core/services/modal-window.service';
-import { DashboardFilterModal } from './dashboard-filter-modal/dashboard-filter-modal.component';
+import { SubInventoryModal } from './sub-inventory-modal/sub-inventory-modal.component';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dashboard',
@@ -77,7 +77,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   showFiltersModal() {
     this.modal
-    .open(DashboardFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .open(SubInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {

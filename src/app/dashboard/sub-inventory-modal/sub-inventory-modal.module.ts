@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 
-import { DashboardFilterModal } from './dashboard-filter-modal.component';
+import { SubInventoryModal } from './sub-inventory-modal.component';
 import { AppSharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
-    DashboardFilterModal
+    SubInventoryModal
   ],
   imports: [
     AppSharedModule
@@ -14,7 +14,7 @@ import { AppSharedModule } from '../../shared/shared.module';
   // IMPORTANT:
   // Since 'AdditionCalculateWindow' is never explicitly used (in a template)
   // we must tell angular about it.
-  entryComponents: [ DashboardFilterModal ]
+  entryComponents: [ SubInventoryModal ]
 })
-export class DashboardFilterModalModule {
+export class SubInventoryModalModule {
 }
