@@ -145,6 +145,22 @@
       }
     }
 
+    .no-margin {
+      margin: 0;
+    }
+    .no-padding {
+      padding: 0;
+    }
+    .right-bordered {
+      border-right: 1px solid gray;
+    }
+    .left-padded {
+      padding-left: 40px !important;
+    }
+    .bottom-padded {
+      padding-bottom: 40px !important;
+    }
+
     .left {
       display: block;
       padding-left: 60px;
@@ -310,7 +326,6 @@
           display: flex;
           line-height: 30px;
           margin-bottom: 10px;
-          min-width: 200px;
           padding: 0;
           input {
             background-color: #fff;
