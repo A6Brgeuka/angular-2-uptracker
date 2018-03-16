@@ -85,6 +85,12 @@
             <option value="Z-A">Location 3</option>
           </select>
         </div>
+      </div>
+      <div class="col s6"></div>
+    </div>
+
+    <div class="row no-margin select-group">
+      <div class="col s6 no-padding right-bordered">
         <div class="row product select bottom-padded">
           <span class="bold">Product Variant</span>
           <select title="sort by" [(ngModel)]="productVariant" materialize="material_select" (change)="productSort($event)">
@@ -95,9 +101,9 @@
           </select>
         </div>
       </div>
-      <div class="col s6">
-        <div class="row location select bottom-padded">
-          <span class="bold">Location</span>
+      <div class="col s6 no-padding">
+        <div class="row location select left-padded bottom-padded">
+          <span class="bold">Transfer</span>
           <select title="sort by" [(ngModel)]="location" materialize="material_select" (change)="locationSort($event)">
             <option disabled value="">Ft. Lauderdale</option>
             <option value="relevance">Location 1</option>
