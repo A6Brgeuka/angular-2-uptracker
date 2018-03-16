@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { DepartmentFilterComponent } from './department-filter.component';
+import { SingleCheckboxFilterComponent } from './single-checkbox-filter.component';
 
 @NgModule({
   imports: [
@@ -11,12 +11,12 @@ import { DepartmentFilterComponent } from './department-filter.component';
     ReactiveFormsModule,
   ],
   declarations: [
-    DepartmentFilterComponent,
+    SingleCheckboxFilterComponent,
   ],
   exports: [
-    DepartmentFilterComponent,
+    SingleCheckboxFilterComponent,
   ]
 })
-export class DepartmentFilterModule {
+export class SingleCheckboxFilterModule {
 
 }
