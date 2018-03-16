@@ -120,98 +120,45 @@
           <div class="col s6 stock-row bold">Backstock</div>
           <div class="col s6 stock-row bold">QTY</div>
         </div>
-        <div class="row">
+
+        <div class="row" *ngFor="let inventory of inventories; let i = index">
           <div class="col s6 stock-field thin">
-            Mini Fridge
+            {{inventory.stockName}}
           </div>
           <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="stockMini" (ngModelChange)="stockMiniClick($event)">
+            <input type="number" [(ngModel)]="inventory.stockQTY" [disabled]="inventory.stockDisabled">
           </div>
           <div class="col s3 stock-field thin">
             <div
-              class="btn white-text waves-effect waves-light">
-              Move <i class="fa fa-chevron-right"></i>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s6 stock-field thin">
-            Shelf A
-          </div>
-          <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="stockShelf" (ngModelChange)="stockShelfClick($event)">
-          </div>
-          <div class="col s3 stock-field thin">
-            <div
-              class="btn white-text waves-effect waves-light">
-              Move <i class="fa fa-chevron-right"></i>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s6 stock-field thin">
-            Sterlization Room
-          </div>
-          <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="stockSterlization" (ngModelChange)="stockSterlization($event)">
-          </div>
-          <div class="col s3 stock-field thin">
-            <div
-              class="btn white-text waves-effect waves-light">
+              class="btn white-text waves-effect waves-light"
+              (click)="stockClick(i)"
+              *ngIf="!inventory.stockDisabled">
               Move <i class="fa fa-chevron-right"></i>
             </div>
           </div>
         </div>
       </div>
 
-
       <div class="col s6">
         <div class="row">
           <div class="col s6 stock-row bold left-padded">Floor location</div>
           <div class="col s4 stock-row bold">QTY</div>
         </div>
-        <div class="row">
-          <div class="col s6 stock-field thin left-padded">Front Desk</div>
+        <div class="row" *ngFor="let inventory of inventories; let i = index">
+          <div class="col s6 stock-field thin left-padded">{{inventory.floorName}}</div>
           <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="stockMini" (ngModelChange)="stockMiniClick($event)">
+            <input type="number" [(ngModel)]="inventory.floorQTY">
           </div>
           <div class="col s3 stock-field thin">
-            <button class="action-button" [disabled]="stockMini >= stockMiniLimit" (click)="stockMiniClick(1)">
+            <button class="action-button" (click)="floorChanges(1, i)" *ngIf="inventory.floorVisible">
               <fa name="plus"></fa>
             </button>
-            <button class="action-button right-align" (click)="stockMiniClick(-1)">
+            <button class="action-button right-align" (click)="floorChanges(-1, i)" *ngIf="inventory.floorVisible">
               <fa name="minus"></fa>
             </button>
           </div>
         </div>
-        <div class="row">
-          <div class="col s6 stock-field thin left-padded">Ex. Room 1</div>
-          <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="stockShelf" (ngModelChange)="stockShelfClick($event)">
-          </div>
-          <div class="col s3 stock-field thin">
-            <button class="action-button" [disabled]="stockShelf >= stockShelfLimit" (click)="stockShelfClick(1)">
-              <fa name="plus"></fa>
-            </button>
-            <button class="action-button right-align" (click)="stockShelfClick(-1)">
-              <fa name="minus"></fa>
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s6 stock-field thin left-padded">Ex. Room 2</div>
-          <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="stockSterlization" (ngModelChange)="stockSterlizationClick($event)">
-          </div>
-          <div class="col s3 stock-field thin">
-            <button class="action-button" [disabled]="stockSterlization >= stockSterlizationLimit" (click)="stockSterlizationClick(1)">
-              <fa name="plus"></fa>
-            </button>
-            <button class="action-button right-align" (click)="stockSterlizationClick(-1)">
-              <fa name="minus"></fa>
-            </button>
-          </div>
-        </div>
+
       </div>
     </div>
 

@@ -30,13 +30,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   public productVariant: string = '';
   public groups: Array<any> = [];
   public selectedGroup: any;
-
-  public stockMini: number = 30;
-  public stockMiniLimit: number = 30;
-  public stockShelf: number = 133;
-  public stockShelfLimit: number = 133;
-  public stockSterlization: number = 2;
-  public stockSterlizationLimit: number = 2;
+  public inventories: Array<any> = [];
 
   constructor(
     public dialog: DialogRef<TransferModalContext>,
@@ -44,7 +38,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     public accountService: AccountService,
   ) {
     this.context = dialog.context;
-    this.groups.push({
+    this.groups = [{
       name: 'Gloves Tender Touch Nitrile',
       info: 'Gloves Tender Touch Nitrile Sempercare PF 200/box',
       counts: 13,
@@ -53,7 +47,29 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       on_hand: 15,
       critical_level: 10,
       overstock_level: 25,
-    });
+    }];
+    this.inventories = [{
+      stockName: 'Mini Fridge',
+      stockQTY: 30,
+      stockDisabled: false,
+      floorName: 'Front Desk',
+      floorQTY: 2,
+      floorVisible: false,
+    }, {
+      stockName: 'Shelf A',
+      stockQTY: 133,
+      stockDisabled: false,
+      floorName: 'Ex. Room 1',
+      floorQTY: 0,
+      floorVisible: false,
+    }, {
+      stockName: 'Sterlization Room',
+      stockQTY: 2,
+      stockDisabled: false,
+      floorName: 'Ex. Room 2',
+      floorQTY: 10,
+      floorVisible: false,
+    }];
   }
 
   ngOnInit() {}
@@ -63,53 +79,37 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   }
 
   locationSort(event) {
-    this.stockMini = Math.round(100 * Math.random());
-    this.stockMiniLimit = this.stockMini;
-    this.stockShelf = Math.round(100 * Math.random());
-    this.stockShelfLimit = this.stockShelf;
-    this.stockSterlization = Math.round(100 * Math.random());
-    this.stockSterlizationLimit = this.stockSterlization;
+    this.inventories.forEach((inventory) => {
+      inventory.stockQTY = Math.round(100 * Math.random());
+      inventory.floorQTY = Math.round(100 * Math.random());
+    });
   }
 
   productSort(event) {
-    this.stockMini = Math.round(100 * Math.random());
-    this.stockMiniLimit = this.stockMini;
-    this.stockShelf = Math.round(100 * Math.random());
-    this.stockShelfLimit = this.stockShelf;
-    this.stockSterlization = Math.round(100 * Math.random());
-    this.stockSterlizationLimit = this.stockSterlization;
+    this.inventories.forEach((inventory) => {
+      inventory.stockQTY = Math.round(100 * Math.random());
+      inventory.floorQTY = Math.round(100 * Math.random());
+    });
   }
 
   searchProducts(event) {}
 
-  stockMiniClick(value) {
-    if (value === this.stockMini && value > this.stockMiniLimit) {
-      setTimeout(() => {
-        this.stockMini = this.stockMiniLimit;
-      })
-    } else if (value !== this.stockMini) {
-      this.stockMini += value;
+  floorChanges(event, index) {
+    if (this.inventories[index].stockQTY - event > -1 && this.inventories[index].floorQTY + event > -1) {
+      this.inventories[index].stockQTY -= event;
+      this.inventories[index].floorQTY += event;
     }
   }
 
-  stockShelfClick(value) {
-    if (value === this.stockShelf && value > this.stockShelfLimit) {
-      setTimeout(() => {
-        this.stockShelf = this.stockShelfLimit;
-      })
-    } else if (value !== this.stockShelf) {
-      this.stockShelf += value;
-    }
-  }
-
-  stockSterlizationClick(value) {
-    if (value === this.stockSterlization && value > this.stockSterlizationLimit) {
-      setTimeout(() => {
-        this.stockSterlization = this.stockSterlizationLimit;
-      })
-    } else if (value !== this.stockSterlization) {
-      this.stockSterlization += value;
-    }
+  stockClick(index) {
+    this.inventories.forEach((inventory, idx) => {
+      if (index == idx) {
+        inventory.stockDisabled = false;
+      } else {
+        inventory.stockDisabled = true;
+      }
+      inventory.floorVisible = true;
+    })
   }
 
   toBackInitial() {
