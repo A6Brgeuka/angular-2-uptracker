@@ -54,6 +54,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Front Desk',
       floorQTY: 2,
+      minusActive: false,
       floorVisible: false,
     }, {
       stockName: 'Shelf A',
@@ -61,6 +62,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Ex. Room 1',
       floorQTY: 0,
+      minusActive: false,
       floorVisible: false,
     }, {
       stockName: 'Sterlization Room',
@@ -68,6 +70,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Ex. Room 2',
       floorQTY: 10,
+      minusActive: false,
       floorVisible: false,
     }];
   }
@@ -104,6 +107,9 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     if (this.inventories[index].stockQTY - event > -1 && this.inventories[index].floorQTY + event > -1) {
       this.inventories[index].stockQTY -= event;
       this.inventories[index].floorQTY += event;
+    }
+    if (event > 0) {
+      this.inventories[index].minusActive = true;
     }
   }
 

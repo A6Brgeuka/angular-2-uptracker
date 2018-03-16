@@ -362,6 +362,9 @@
             &.gray {
               background-color: gray;
             }
+            &.active {
+              background-color: $tealish;
+            }
           }
           .action-button[disabled] {
             background-color: #d6d6d6;
