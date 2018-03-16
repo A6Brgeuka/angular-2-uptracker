@@ -1,21 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FiltersModalComponent } from './filters-modal.component';
-import { VendorFilterModule } from './vendor-filter/vendor-filter.module';
-import { DepartmentFilterModule } from './department-filter/department-filter.module';
-import { CategoryFilterModule } from './category-filter/category-filter.module';
-import { AccountingFilterModule } from './accounting-filter/accounting-filter.module';
-import { MyFavoritesFilterModule } from './my-favorites-filter/my-favorites-filter.module';
+import { PriceFilterModule } from './price-filter/price-filter.module';
+import { CheckboxesFilterModule } from './checkboxes-filter/checkboxes-filter.module';
+import { ChipsInputModule } from '../../components/chips-input/chips-input.module';
+import { DateFilterModule } from './date-filter/date-filter.module';
+import { SingleCheckboxFilterModule } from './single-checkbox-filter/single-checkbox-filter.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    AccountingFilterModule,
-    CategoryFilterModule,
-    DepartmentFilterModule,
-    VendorFilterModule,
-    MyFavoritesFilterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ChipsInputModule,
+    CheckboxesFilterModule,
+    DateFilterModule,
+    PriceFilterModule,
+    SingleCheckboxFilterModule,
   ],
   declarations: [
     FiltersModalComponent,
