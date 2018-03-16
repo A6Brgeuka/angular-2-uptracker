@@ -131,8 +131,8 @@
           <div class="col s3 stock-field thin">
             <div
               class="btn white-text waves-effect waves-light"
-              (click)="stockClick(i)"
-              *ngIf="!inventory.stockDisabled">
+              [class.inactive]="inventory.stockDisabled"
+              (click)="stockClick(i)">
               Move <i class="fa fa-chevron-right"></i>
             </div>
           </div>
