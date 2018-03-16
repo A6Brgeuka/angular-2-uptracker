@@ -1,18 +1,12 @@
-
 <div class="product-page">
   <div class="close fa fa-chevron-left" (click)="goBack()"></div>
   <div class="row right edit-buttons">
-    <button class="bt-edit-product edbtn bluebtn  waves-light waves-effect" *ngIf="!showEdit" (click)="showEditFields()">
+    <button class="bt-edit-product edbtn bluebtn  waves-light waves-effect" (click)="showEditFields()">
       <fa [name]="'plus'"></fa>
       Add
     </button>
-    <button class="bt-edit-product-save edbtn bluebtn waves-light waves-effect" (click)="saveAfterEdit()" *ngIf="showEdit">
-      <fa [name]="'check'"></fa>
-      Save
-    </button>
-
   </div>
-  <div class="inner" [ngClass]="{'edit-mode':showEdit}">
+  <div class="inner">
     <div class="title center-align">Add Product
       <p>Please select which variants<i class="fa fa-question-circle " aria-hidden="true"></i>you would like to add to your marketplace</p>
     </div>
@@ -29,14 +23,17 @@
         <div class="left product-params">
           <div class="ttl-box row input">
             <div class="col s3 add-own-product">
-              <input type="text" [(ngModel)]="nickName"/><i class="fa fa-question-circle " aria-hidden="true"></i>
+              <div class="technical-name-container">
+                <input type="text" [(ngModel)]="product.name"  placeholder="Type Name"/>
+                <i class="fa fa-question-circle " aria-hidden="true"></i>
+                <div class="clearfix"></div>
+              </div>
             </div>
           </div>
 
           <div class="ttl-box row input">
             <div class="col s3">
-              <label>Technical name</label>
-              <input type="text" [(ngModel)]="TechnicalName" />
+              <input type="text" [(ngModel)]="product.proper_name" placeholder="Technical Name" />
             </div>
           </div>
 
@@ -133,8 +130,9 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="ttl-box row input">
             <div class="col s5">
+              <p>Notes</p>
               <input type="text" />
             </div>
           </div>
@@ -149,10 +147,7 @@
       </div>
     </div>
 
-
     <div class="clearfix"></div>
-
-
 
     <div class="row table-head-filter">
       <div class="col s12">
@@ -237,15 +232,11 @@
               </div>
             </div>
 
-
-
-
             <div class="flor">
               <div class="filter-heading noselect head-item">
                 <fa [name]="'filter'"></fa>
               </div>
             </div>
-
 
             <div class="clearfix"></div>
           </div>
@@ -274,7 +265,7 @@
                     [class.reddish]="variant.status == 2"
                     class="valign"
               >{{variant.name || "Product Here"}}</span>
-                <div *ngIf="showEdit" class="input">
+                <div class="input">
                   <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
                 </div>
               </div>

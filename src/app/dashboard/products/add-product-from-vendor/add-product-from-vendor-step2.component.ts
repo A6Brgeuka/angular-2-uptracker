@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import {ProductModel} from "../../../models/product.model";
 
 
 @Component({
-  selector: 'app-add-product-from-vendor',
-  templateUrl: './add-product-from-vendor.component.html',
-  styleUrls: ['add-product-from-vendor.component.scss']
+  selector: 'app-add-product-from-vendor-step2',
+  templateUrl: 'add-product-from-vendor-step2.component.html',
+  styleUrls: ['add-product-from-vendor-step2.component.scss']
 })
-export class AddProductFromVendorComponent implements OnInit {
+export class AddProductFromVendorStep2Component implements OnInit {
 
-  public product: any = {};
+  public product: ProductModel = new ProductModel();
   public vendor: any = {};
   public vendors: any = [];
   public selectAll: boolean;

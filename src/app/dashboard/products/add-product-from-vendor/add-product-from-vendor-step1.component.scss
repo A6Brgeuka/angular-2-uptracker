@@ -1,4 +1,3 @@
-
 @import "../../../../colors";
 
 :host /deep/ {
@@ -20,7 +19,7 @@
     opacity: .8;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
   }
-  input[type="text"]{
+  input[type="text"] {
     box-sizing: border-box;
     height:25px;
     border:1px solid $light-grey;
@@ -28,21 +27,21 @@
     padding-left:5px;
     background-color: $white;
     text-transform:capitalize;
-    &:focus{
+    &:focus {
       border-color: $tealish;
     }
   }
 
-  .book-price, .club-price, .your-price{
+  .book-price, .club-price, .your-price {
     position: relative;
-    p{
+    p {
       position: absolute;
       top:-40px;
       left:50%;
       transform:translateX(-50%);
     }
   }
-  .fill-all-selected{
+  .fill-all-selected {
     margin-top:50px;
     margin-bottom:0;
     padding-top:30px;
@@ -56,20 +55,20 @@
       margin-bottom:0;
     }
   }
-  .edit-total-units{
+  .edit-total-units {
     margin-top:0px;
     padding-top:0px;
     border:1px solid $light-grey;
     border-left:none;
     border-right:none;
   }
-  .custom-vendor-btn{
+  .custom-vendor-btn {
     min-width:150px;
   }
-  .title{
+  .title {
     margin-bottom:10px;
   }
-  .fa-question-circle{
+  .fa-question-circle {
     margin-left:5px;
     color: $tealish;
     &:hover{
@@ -77,4 +76,14 @@
     }
   }
 
+  .technical-name-container {
+    position: relative;
+    .fa-question-circle {
+      position: absolute;
+      top:calc(50% + 4px);
+      right:5px;
+      transform:translateY(-50%);
+      font-size:26px;
+    }
+  }
 }

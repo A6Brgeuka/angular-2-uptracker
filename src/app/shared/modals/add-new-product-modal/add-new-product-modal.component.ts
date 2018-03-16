@@ -68,6 +68,7 @@ export class AddNewProductModalComponent implements OnInit {
 
   nextStep() {
     this.step++;
+    console.log(this.step)
   }
 
   isLastStep() {
@@ -85,6 +86,7 @@ export class AddNewProductModalComponent implements OnInit {
   }
 
   checkStep(step) {
+    console.log(step, this.step)
     return this.step == step;
   }
 

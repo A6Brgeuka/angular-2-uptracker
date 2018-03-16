@@ -6,10 +6,12 @@
       <div class="title">Add custom product</div>
     </div>
     <div class="col s2">
-      <button *ngIf="!isLastStep()" [disabled]="!canProceed()" class="uptracker-form-btn white-text waves-effect waves-light" (click)="nextStep()">
+      <button *ngIf="!isLastStep()" [disabled]="!canProceed()"
+              class="uptracker-form-btn white-text waves-effect waves-light" (click)="nextStep()">
         Next
       </button>
-      <button *ngIf="isLastStep()" class="uptracker-form-btn white-text waves-effect waves-light" (click)="save()">
+      <button *ngIf="isLastStep()"
+              class="uptracker-form-btn white-text waves-effect waves-light" (click)="save()">
         Save
       </button>
     </div>
@@ -27,97 +29,132 @@
       <div class="info-box col s12 m9">
         <div class="ttl-box row input">
           <div class="col s12">
-            <input class="ttl col s12 name-field" [(ngModel)]="product.name" type="text" placeholder="Type Name">
+            <input class="ttl col s12 name-field"
+                   [(ngModel)]="product.name" type="text" placeholder="Type Name">
           </div>
           <div class="col s12">
-            <input class="ttl col s12 name-field" [(ngModel)]="product.proper_name" type="text" placeholder="Technical Name">
-          </div>
-        </div>
-        <div class="row checks">
-
-          <div class="col s4">
-            <div class="input-checkbox checkbox">
-              <label>Hazardous</label>
-              <input
-                type="checkbox"
-                class="checkbox-input"
-                [(ngModel)]="product.hazardous"
-                id="checkbox1"
-              />
-              <label for="checkbox1"></label>
+            <div class="technical-name-container">
+              <input class="ttl col s12 name-field"
+                     [(ngModel)]="product.proper_name" type="text" placeholder="Technical Name">
+              <i class="fa fa-question-circle " aria-hidden="true"></i>
+              <div class="clearfix"></div>
+            </div>
+            <div class="checkbox-container">
             </div>
           </div>
+          <div class="row checks">
 
-          <div class="col s4">
-            <div class="input-checkbox checkbox">
-              <label>Trackable</label>
-              <input
-                type="checkbox"
-                class="checkbox-input"
-                [(ngModel)]="product.trackable"
-                id="checkbox2"
-              />
-              <label for="checkbox2"></label>
+            <div class="col s4">
+              <div class="input-checkbox checkbox">
+                <div class="checkbox-container">
+                  <label>Hazardous</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+                </div>
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  [(ngModel)]="product.hazardous"
+                  id="checkbox1"
+                />
+                <label for="checkbox1"></label>
+              </div>
+            </div>
+
+            <div class="col s4">
+              <div class="input-checkbox checkbox">
+                <div class="checkbox-container">
+                  <label>Trackable</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+                </div>
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  [(ngModel)]="product.trackable"
+                  id="checkbox2"
+                />
+                <label for="checkbox2"></label>
+              </div>
+            </div>
+
+            <div class="col s4">
+              <div class="input-checkbox checkbox">
+                <div class="checkbox-container">
+                  <label>Tax Exempt</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+                </div>
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  [(ngModel)]="product.tax_exempt"
+                  id="checkbox3"
+                />
+                <label for="checkbox3"></label>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+
+            <div class="col input s4">
+              <label>Department</label>
+              <div class="select">
+                <select
+                  [(ngModel)]="product.department"
+                  materialize="material_select"
+                  [materializeSelectOptions]="departmentCollection">
+                  <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col input s4">
+              <label>Category</label>
+              <div class="select">
+                <select
+                  [(ngModel)]="product.category"
+                  materialize="material_select"
+                  [materializeSelectOptions]="productCategoriesCollection">
+                  <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col input s4">
+              <label>Accounting</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+              <div class="select">
+                <select
+                  [(ngModel)]="product.account_category"
+                  materialize="material_select"
+                  [materializeSelectOptions]="productAccountingCollection">
+                  <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-
-          <div class="col s4">
-            <div class="input-checkbox checkbox">
-              <label>Tax Exempt</label>
-              <input
-                type="checkbox"
-                class="checkbox-input"
-                [(ngModel)]="product.tax_exempt"
-                id="checkbox3"
-              />
-              <label for="checkbox3"></label>
+          <div class="row">
+            <div class="col s6">
+              <div class="text">
+                <div class="file-field">
+                  <div class="upload-link">
+                    <input type="file" (change)="changeListener($event)" />
+                    <a>Attach File</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col s6 pricing-rule">
+              <a>Pricing Rule</a><i class="fa fa-question-circle " aria-hidden="true"></i>
             </div>
           </div>
-
-        </div>
-        <div class="row">
-
-          <div class="col input s4">
-            <label>Department</label>
-            <div class="select">
-              <select
-                [(ngModel)]="product.department"
-                materialize="material_select"
-                [materializeSelectOptions]="departmentCollection">
-                <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col input s4">
-            <label>Category</label>
-            <div class="select">
-              <select
-                [(ngModel)]="product.category"
-                materialize="material_select"
-                [materializeSelectOptions]="productCategoriesCollection">
-                <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col input s4">
-            <label>Accounting</label>
-            <div class="select">
-              <select
-                [(ngModel)]="product.account_category"
-                materialize="material_select"
-                [materializeSelectOptions]="productAccountingCollection">
-                <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
-                </option>
-              </select>
+          <div class="row">
+            <div class="col s12">
+              <p>Notes / Comments</p>
+              <textarea rows="6" cols="" name="comment" placeholder=""></textarea>
             </div>
           </div>
         </div>
       </div>
+      <div class="clearfix"></div>
     </div>
-    <div class="clearfix"></div>
   </div>
 
   <div *ngIf="checkStep(1)">
@@ -157,7 +194,7 @@
         </div>
       </div>
       <div class="col s2 select-title">
-          Length
+        Length
       </div>
       <div class="col s1">
         <div class="input-checkbox checkbox">
@@ -171,7 +208,7 @@
         </div>
       </div>
       <div class="col s2 select-title">
-          Size
+        Size
       </div>
       <div class="col s1">
         <div class="input-checkbox checkbox">
@@ -265,7 +302,7 @@
           <div *ngFor="let v of productVariants[variant.key]" class="product-variant">
             {{v | capitalizeFirst}}
           </div>
-          <button class="bluebtn">
+          <button class="bluebtn waves-light waves-effect">
             <fa [name]="'plus'"></fa>
             Add
           </button>
@@ -290,7 +327,7 @@
           Which vendors do you get this product from?
         </div>
         <div class="col s8">
-          <input auto-complete
+          <input type="text" auto-complete
                  placeholder="Search vendors"
                  [min-chars] = '1'
                  (ngModelChange) = 'selectedAutocompletedVendor($event)'
@@ -302,13 +339,13 @@
           />
         </div>
         <div class="col s2">
-          <button class="bluebtn">
+          <button class="bluebtn waves-light waves-effect">
             <fa [name]="'plus'"></fa>
             Add
           </button>
         </div>
         <div class="col s2">
-          <button class="bluebtn">
+          <button class="bluebtn waves-light waves-effect">
             <fa [name]="'plus'"></fa>
             Custom vendor
           </button>

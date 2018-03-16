@@ -1,5 +1,6 @@
 import { ProductComponent } from './product.component';
-import {AddProductFromVendorComponent} from "../add-product-from-vendor/add-product-from-vendor.component";
+import {AddProductFromVendorStep1Component} from '../add-product-from-vendor/add-product-from-vendor-step1.component';
+import {AddProductFromVendorStep2Component} from '../add-product-from-vendor/add-product-from-vendor-step2.component';
 export const ProductRoutes = [
   {
     path: 'products/:id',
@@ -10,7 +11,11 @@ export const ProductRoutes = [
     canActivate: []
   },
   {
-    path: 'product/new',
-    component: AddProductFromVendorComponent
+    path: 'product/new/step1',
+    component: AddProductFromVendorStep1Component
+  },
+  {
+    path: 'product/new/step2',
+    component: AddProductFromVendorStep2Component
   }
 ];
