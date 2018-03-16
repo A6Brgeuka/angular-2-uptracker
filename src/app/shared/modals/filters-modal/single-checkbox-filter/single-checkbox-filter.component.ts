@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-single-checkbox-filter',
@@ -6,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class SingleCheckboxFilterComponent {
   @Input() title: string;
+  @Input() control: FormControl;
 }
