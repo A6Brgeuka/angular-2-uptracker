@@ -36,7 +36,7 @@
             <div class="technical-name-container">
               <input class="ttl col s12 name-field"
                      [(ngModel)]="product.proper_name" type="text" placeholder="Technical Name">
-              <i class="fa fa-question-circle " aria-hidden="true"></i>
+              <fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
               <div class="clearfix"></div>
             </div>
             <div class="checkbox-container">
@@ -47,7 +47,7 @@
             <div class="col s4">
               <div class="input-checkbox checkbox">
                 <div class="checkbox-container">
-                  <label>Hazardous</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+                  <label>Hazardous</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
                 </div>
                 <input
                   type="checkbox"
@@ -62,7 +62,7 @@
             <div class="col s4">
               <div class="input-checkbox checkbox">
                 <div class="checkbox-container">
-                  <label>Trackable</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+                  <label>Trackable</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
                 </div>
                 <input
                   type="checkbox"
@@ -77,7 +77,7 @@
             <div class="col s4">
               <div class="input-checkbox checkbox">
                 <div class="checkbox-container">
-                  <label>Tax Exempt</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+                  <label>Tax Exempt</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
                 </div>
                 <input
                   type="checkbox"
@@ -118,7 +118,7 @@
             </div>
 
             <div class="col input s4">
-              <label>Accounting</label><i class="fa fa-question-circle " aria-hidden="true"></i>
+              <label>Accounting</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
               <div class="select">
                 <select
                   [(ngModel)]="product.account_category"
@@ -142,7 +142,7 @@
               </div>
             </div>
             <div class="col s6 pricing-rule">
-              <a>Pricing Rule</a><i class="fa fa-question-circle " aria-hidden="true"></i>
+              <a>Pricing Rule</a><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
             </div>
           </div>
           <div class="row">
@@ -312,11 +312,11 @@
   </div>
 
   <div *ngIf="checkStep(3)">
-    <div class="row flex-center">
-      <div class="col s12">
+    <div class="row center-align">
+      <div class="col s12 title">
         {{product.name}}
       </div>
-      <div class="col s12">
+      <div class="col s12 title">
         Vendors
       </div>
     </div>

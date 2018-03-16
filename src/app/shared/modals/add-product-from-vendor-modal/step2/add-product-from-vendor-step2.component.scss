@@ -1,4 +1,4 @@
-@import "../../../../colors";
+@import "../../../../../colors";
 
 :host /deep/ {
   .bluebtn {
@@ -21,21 +21,27 @@
   }
   input[type="text"] {
     box-sizing: border-box;
-    height:25px;
-    border:1px solid $light-grey;
-    border-radius:5px;
-    padding-left:5px;
+    height: 25px;
+    border: 1px solid $light-grey;
+    border-radius: 5px;
+    padding-left: 5px;
     background-color: $white;
-    text-transform:capitalize;
+
     &:focus {
       border-color: $tealish;
     }
+
+    &.vendor-search {
+      height: 30px;
+      margin: 0;
+    }
   }
 
-  .book-price, .club-price, .your-price {
+  .price-title {
     position: relative;
     p {
       position: absolute;
+      width: 100%;
       top:-40px;
       left:50%;
       transform:translateX(-50%);
@@ -46,13 +52,15 @@
     margin-bottom:0;
     padding-top:30px;
     padding-bottom:30px;
-    border:1px solid $light-grey;
-    border-left:none;
-    border-right:none;
-    border-bottom:none;
+    border: none;
+
     input{
       width:70px;
       margin-bottom:0;
+    }
+
+    .bluebtn {
+      margin-right: 0;
     }
   }
   .edit-total-units {

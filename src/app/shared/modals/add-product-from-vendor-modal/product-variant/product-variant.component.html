@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row edit-total-units">
+    <div class="col s3 offset-s1">
+      <p>{{vendor.name}}</p>
+    </div>
+    <div class="col s6 center-align">
+      <p>There will be total units</p>
+    </div>
+    <div class="col s2">
+      <button class="bluebtn waves-light waves-effect edit-vendor">
+        <fa [name]="'pencil'"></fa>
+        Edit
+      </button>
+    </div>
+  </div>
+  <div class="new-product-vendor" *ngFor='let variant of vendor.variants; let i = index'>
+    <div class="row">
+
+      <div class="col s1 input-checkbox checkbox">
+        <input type="checkbox" class="checkbox-input" id={{variant}}/>
+        <label for={{variant}}></label>
+      </div>
+
+      <div class="col s2 ">
+        <input  type="text" [(ngModel)]="variant.name">
+      </div>
+
+      <div class="col s2 row-input center-align">
+        $ <input type="text" [(ngModel)]="variant.book_price">
+      </div>
+
+      <div class="col s2 row-input center-align">
+        $ <input type="text" [(ngModel)]="variant.your_price">
+      </div>
+
+      <div class="col s2 row-input center-align">
+        $ <input type="text" [(ngModel)]="variant.club_price">
+      </div>
+
+      <div class="col s1 row-input center-align">
+        <input type="text" [(ngModel)]="variant.catalog_number">
+      </div>
+
+    </div>
+  </div>
+</div>

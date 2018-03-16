@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import { ProductModel } from '../../../../models/product.model';
+import { ProductService } from '../../../../core/services/product.service';
+import {HelpTextModal} from "../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
+import {DialogRef, Modal} from "angular2-modal";
+import {ModalWindowService} from "../../../../core/services/modal-window.service";
 
 @Component({
   selector: 'app-add-product-from-vendor-step1',
@@ -8,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddProductFromVendorStep1Component implements OnInit {
 
-  public product: any = {};
+  @Input('product') product: ProductModel;
   public vendor: any = {};
   public vendors: any = [];
   public selectAll: boolean;
@@ -34,9 +38,17 @@ export class AddProductFromVendorStep1Component implements OnInit {
   productCategoriesCollection = ['one', 'two'];
   productAccountingCollection = ['one', 'two'];
 
-  constructor() { }
+  constructor(
+    private productService: ProductService,
+    public modal: Modal,
+    public modalWindowService: ModalWindowService) {
+  }
 
   ngOnInit() {
   }
 
+  openHelperModal() {
+    this.modal.open(HelpTextModal, this.modalWindowService
+      .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
+  }
 }

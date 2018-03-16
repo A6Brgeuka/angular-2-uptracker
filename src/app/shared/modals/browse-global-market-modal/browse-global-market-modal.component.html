@@ -3,15 +3,15 @@
   [title]="'Add Product:'">
 </app-search-filter-header>
 
-<div class="list is-tiles-view">
+<div class="list">
   <div class="title">
     Global Market Place
     <br>
     Please select which product(s) you would like to add to your marketplace
   </div>
-  <div>
+  <perfect-scrollbar >
     <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
-      <div class="inner" [routerLink]="['/', 'products', product.id]">
+      <div class="inner" (click)="openAddNewProductFromVendorModal(product)">
         <div class="hazardous" *ngIf="product.hazardous">
           <i class="material-icons">warning</i>
         </div>
@@ -26,15 +26,15 @@
           </div>
         </div>
         <div class="info">
-          <div class="ttl">{{product.name}}</div>
+          <div class="ttl" title="{{product.name}}">{{product.name}}</div>
           <div class="bottom">
-            <div class="variations left">{{product.variant_count}} Variations</div>
+            <div class="variations left">{{product.variant_count}} Variation(s)</div>
             <div class="price right">{{product.price_range}}</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </perfect-scrollbar>
 
   <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="productService.isGrid">
     <div class="cssload-loader">

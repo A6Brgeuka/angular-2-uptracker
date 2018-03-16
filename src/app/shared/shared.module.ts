@@ -56,7 +56,7 @@ const modalsArr = [
   ChangePasswordUserModal,
   EditCommentModal,
   UniConfirmModal,
-  AddVendorModalComponent,
+  AddVendorModalComponent
 ];
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {

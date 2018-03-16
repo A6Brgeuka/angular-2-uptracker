@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AccountService } from '../../../core/services/account.service';
-import { DialogRef } from 'angular2-modal';
+import {DialogRef, Modal} from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import * as _ from 'lodash';
+import {HelpTextModal} from "../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
+import {ModalWindowService} from "../../../core/services/modal-window.service";
 
 export class AddNewProductModalContext extends BSModalContext {
 
@@ -44,9 +46,11 @@ export class AddNewProductModalComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    public dialog: DialogRef<AddNewProductModalContext>
+    public dialog: DialogRef<AddNewProductModalContext>,
+    public modal: Modal,
+    public modalWindowService: ModalWindowService
   ) {
-
+    dialog.setCloseGuard(this);
   }
 
   ngOnInit() {
@@ -68,7 +72,6 @@ export class AddNewProductModalComponent implements OnInit {
 
   nextStep() {
     this.step++;
-    console.log(this.step)
   }
 
   isLastStep() {
@@ -86,7 +89,6 @@ export class AddNewProductModalComponent implements OnInit {
   }
 
   checkStep(step) {
-    console.log(step, this.step)
     return this.step == step;
   }
 
@@ -95,7 +97,7 @@ export class AddNewProductModalComponent implements OnInit {
   }
 
   getVariants() {
-    return _.forEach(this.variants, (val, key) => val ? key : false);
+    return _.filter(_.keys(this.variants), (key) => this.variants[key]);
   }
 
   selectedAutocompletedVendor(vendor) {
@@ -108,5 +110,10 @@ export class AddNewProductModalComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = ($event: any) => this.product.image = $event.target.result;
     reader.readAsDataURL(file.target.files[0]);
+  }
+
+  openHelperModal() {
+    this.modal.open(HelpTextModal, this.modalWindowService
+      .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
   }
 }

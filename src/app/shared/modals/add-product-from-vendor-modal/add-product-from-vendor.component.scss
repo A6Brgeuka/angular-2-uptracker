@@ -1,0 +1,38 @@
+@import "../../../../colors";
+
+:host /deep/ {
+  .close {
+    display: block!important;
+  }
+
+  .back {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    color: white;
+    background: $tealish;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .bluebtn {
+    padding: 0 10px;
+    font-size: 12px;
+    line-height: 28px;
+    height: 30px;
+    min-width: 80px;
+    background: $tealish;
+    color: $white;
+    border-radius: 5px;
+    margin-right:20px;
+    margin-top:-2px;
+    box-shadow:none;
+    border:none;
+  }
+  .bluebtn:hover {
+    opacity: .8;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+}

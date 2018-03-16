@@ -7,12 +7,8 @@ import {Component, OnInit, Input} from '@angular/core';
 })
 export class ProductVariantComponent implements OnInit {
 
-  @Input("variant") public variant;
+  @Input("vendor") public vendor;
   @Input("selectAll") public selectAll;
-
-  public myArray: any = ['red', 'green', 'blue'];
-  public myPrice: number = 2;
-  public myCatalogHash: number = 5555;
 
   constructor() { }
 

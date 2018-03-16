@@ -1,0 +1,24 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="back" (click)="stepAction(-1); $event.stopPropagation()" *ngIf="checkStep(2)"><fa [name]="'chevron-left'"></fa></div>
+<div class="row right edit-buttons">
+  <button *ngIf="!isLastStep()"
+          class="uptracker-form-btn bluebtn waves-light waves-effect" (click)="stepAction(1)">
+    Next
+  </button>
+  <button *ngIf="isLastStep()"
+          class="uptracker-form-btn bluebtn waves-light waves-effect" (click)="save()">
+    <fa [name]="'plus'"></fa>
+    Add
+  </button>
+
+</div>
+
+<app-add-product-from-vendor-step1
+  *ngIf="checkStep(1)"
+  [product]="product">
+</app-add-product-from-vendor-step1>
+
+<app-add-product-from-vendor-step2
+  *ngIf="checkStep(2)"
+  [product]="product">
+</app-add-product-from-vendor-step2>
