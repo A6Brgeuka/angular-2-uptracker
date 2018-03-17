@@ -5,9 +5,10 @@ import {DialogRef, Modal} from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import * as _ from 'lodash';
+import {some, filter} from 'lodash';
 import {HelpTextModal} from "../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
 import {ModalWindowService} from "../../../core/services/modal-window.service";
+import {AddVendorModalComponent} from "../add-vendor-modal/add-vendor-modal.component";
 
 export class AddNewProductModalContext extends BSModalContext {
 
@@ -25,13 +26,15 @@ export class AddNewProductModalComponent implements OnInit {
   public variants: any = {};
   public product: any = {};
   public step: number = 0;
-  public vendor = {vendor_name:null, vendor_id:null, location_id: 'all'};
+  public vendors: any[] = [];
   public departmentCollection$: Observable<any> = new Observable<any>();
   public departmentCollection: any[];
   public productAccountingCollection$: Observable<any> = new Observable<any>();
   public productAccountingCollection: any[];
   public productCategoriesCollection$: Observable<any> = new Observable<any>();
   public productCategoriesCollection: any[];
+  public pricingRulesCollection$: Observable<any> = Observable.of(['Rule1', 'Rule2', 'Rule3']);
+  public pricingRulesCollection: any [];
 
   public productVariants = {
     color: ['green', 'blue', 'navy'],
@@ -42,6 +45,13 @@ export class AddNewProductModalComponent implements OnInit {
     prescription: ['examlpe1', 'examlpe2', 'examlpe3'],
     grit: ['examlpe1', 'examlpe2', 'examlpe3'],
     type: ['examlpe1', 'examlpe2', 'examlpe3']
+  };
+
+  //dummy values
+  public variationArrs = {
+    outer_package_type: ['Box', 'two'],
+    inner_package: ['Type', 'two'],
+    consumable_unit: ['Type', 'two']
   };
 
   constructor(
@@ -64,18 +74,18 @@ export class AddNewProductModalComponent implements OnInit {
       .subscribe(departments => this.departmentCollection = departments);
 
     this.subscribers.productAccountingCollection = this.productAccountingCollection$
-      .subscribe(products => this.productAccountingCollection = products);
+      .subscribe(collections => this.productAccountingCollection = collections);
 
     this.subscribers.productCategoriesCollection = this.productCategoriesCollection$
       .subscribe(productsCat => this.productCategoriesCollection = productsCat);
+
+    this.subscribers.pricingRulesCollection = this.pricingRulesCollection$
+      .subscribe(rules => this.pricingRulesCollection = rules);
+
   }
 
-  nextStep() {
-    this.step++;
-  }
-
-  isLastStep() {
-    return this.step == 3;
+  stepAction(step) {
+    this.step += step;
   }
 
   canProceed() {
@@ -83,7 +93,7 @@ export class AddNewProductModalComponent implements OnInit {
       return this.product.name;
     }
     if (this.step == 1) {
-      return _.some(this.variants, (val, key) =>  val);
+      return some(this.variants, (val, key) =>  val);
     }
     return true;
   }
@@ -97,13 +107,7 @@ export class AddNewProductModalComponent implements OnInit {
   }
 
   getVariants() {
-    return _.filter(_.keys(this.variants), (key) => this.variants[key]);
-  }
-
-  selectedAutocompletedVendor(vendor) {
-    if (!(this.vendor && !vendor.vendor_id && this.vendor.vendor_name === vendor)) {
-      this.vendor = (vendor.vendor_id) ? vendor : {vendor_name: vendor, vendor_id: null};
-    }
+    return filter(_.keys(this.variants), (key) => this.variants[key]);
   }
 
   uploadLogo(file: any) {
@@ -112,8 +116,22 @@ export class AddNewProductModalComponent implements OnInit {
     reader.readAsDataURL(file.target.files[0]);
   }
 
+  openAddVendorsModal() {
+    this.dismissModal();
+    this.modal
+      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+  }
+
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
       .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
+  }
+
+  onVendorChosen($event) {
+    this.vendors.push($event);
+  }
+
+  removeVendor(i) {
+    this.vendors.splice(i, 1);
   }
 }

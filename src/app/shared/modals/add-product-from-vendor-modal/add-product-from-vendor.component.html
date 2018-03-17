@@ -1,16 +1,28 @@
 <div class="close" (click)="dismissModal()"></div>
-<div class="back" (click)="stepAction(-1); $event.stopPropagation()" *ngIf="checkStep(2)"><fa [name]="'chevron-left'"></fa></div>
-<div class="row right edit-buttons">
-  <button *ngIf="!isLastStep()"
-          class="uptracker-form-btn bluebtn waves-light waves-effect" (click)="stepAction(1)">
-    Next
-  </button>
-  <button *ngIf="isLastStep()"
-          class="uptracker-form-btn bluebtn waves-light waves-effect" (click)="save()">
-    <fa [name]="'plus'"></fa>
-    Add
-  </button>
+<div class="row">
+  <div class="col s2">
+    <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
+            (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(1)">
+      <fa name="chevron-left"></fa>
+      Back
+    </button>
+  </div>
 
+  <div class="col s8 center-align">
+    <div class="title">Add custom product</div>
+  </div>
+
+  <div class="col s2 right-align">
+    <button *ngIf="!checkStep(2)"
+            class="uptracker-form-btn white-text waves-effect waves-light" (click)="stepAction(1)">
+      Next
+    </button>
+    <button *ngIf="checkStep(2)"
+            class="uptracker-form-btn white-text waves-effect waves-light" (click)="save()">
+      <fa name="plus"></fa>
+      Add
+    </button>
+  </div>
 </div>
 
 <app-add-product-from-vendor-step1

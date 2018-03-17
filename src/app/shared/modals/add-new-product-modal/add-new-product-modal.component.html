@@ -2,15 +2,24 @@
 <div class="inner edit-mode">
 
   <div class="row">
-    <div class="col s10">
+    <div class="col s2">
+      <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
+              (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(0)">
+        <fa name="chevron-left"></fa>
+        Back
+      </button>
+    </div>
+
+    <div class="col s8 center-align">
       <div class="title">Add custom product</div>
     </div>
-    <div class="col s2">
-      <button *ngIf="!isLastStep()" [disabled]="!canProceed()"
-              class="uptracker-form-btn white-text waves-effect waves-light" (click)="nextStep()">
+
+    <div class="col s2 right-align">
+      <button *ngIf="!checkStep(3)" [disabled]="!canProceed()"
+              class="uptracker-form-btn white-text waves-effect waves-light" (click)="stepAction(1)">
         Next
       </button>
-      <button *ngIf="isLastStep()"
+      <button *ngIf="checkStep(3)"
               class="uptracker-form-btn white-text waves-effect waves-light" (click)="save()">
         Save
       </button>
@@ -131,7 +140,19 @@
             </div>
           </div>
           <div class="row">
-            <div class="col s6">
+            <div class="col input s4">
+              <label>Pricing Rule</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
+              <div class="select">
+                <select
+                  [(ngModel)]="product.pricing_rule"
+                  materialize="material_select"
+                  [materializeSelectOptions]="pricingRulesCollection">
+                  <option *ngFor="let rule of pricingRulesCollection" [value]="rule">{{rule}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col s8">
               <div class="text">
                 <div class="file-field">
                   <div class="upload-link">
@@ -140,9 +161,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col s6 pricing-rule">
-              <a>Pricing Rule</a><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
             </div>
           </div>
           <div class="row">
@@ -286,11 +304,11 @@
   </div>
 
   <div *ngIf="checkStep(2)">
-    <div class="row">
-      <div class="col s12">
+    <div class="row center-align">
+      <div class="col s12 title">
         {{product.name}}
       </div>
-      <div class="col s12">
+      <div class="col s12 title">
         Variants
       </div>
     </div>
@@ -327,16 +345,7 @@
           Which vendors do you get this product from?
         </div>
         <div class="col s8">
-          <input type="text" auto-complete
-                 placeholder="Search vendors"
-                 [min-chars] = '1'
-                 (ngModelChange) = 'selectedAutocompletedVendor($event)'
-                 [list-formatter] = '"vendor_name"'
-                 [ngModel] = "vendor.vendor_name"
-                 [tab-to-select] = 'false'
-                 name="vendor"
-                 required
-          />
+          <app-vendor-search (vendorChosen)="onVendorChosen($event)"></app-vendor-search>
         </div>
         <div class="col s2">
           <button class="bluebtn waves-light waves-effect">
@@ -345,10 +354,91 @@
           </button>
         </div>
         <div class="col s2">
-          <button class="bluebtn waves-light waves-effect">
+          <button class="bluebtn waves-light waves-effect" (click)="openAddVendorsModal(); $event.stopPropagation()">
             <fa [name]="'plus'"></fa>
             Custom vendor
           </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngFor="let vendor of vendors; let i = index">
+      <div class="row">
+        <div class="col s4">
+          {{vendor.vendor_name}}
+        </div>
+        <div class="col s8 right-align">
+          <button class="bluebtn waves-light waves-effect" (click)="removeVendor(i)">
+            Remove
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s3">
+          Book Price
+          <input type="text">
+        </div>
+        <div class="col s3">
+          Your Price
+          <input type="text">
+        </div>
+        <div class="col s3">
+          Club Price
+          <input type="text">
+        </div>
+        <div class="col s3">
+          Catalog Number
+          <input type="text">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s4">
+          Outer package type
+          <div class="select ultra-low-height">
+            <select
+              [(ngModel)]="product.outer_package_type"
+              #outer_package_type="ngModel"
+              materialize="material_select"
+              [materializeSelectOptions]="variationArrs.outer_package_type">
+              <option value="">Box</option>
+              <option *ngFor="let item of variationArrs.outer_package_type" [value]="item">{{item}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col s4">
+          Inner package
+          <div class="select ultra-low-height">
+            <select
+              [(ngModel)]="product.inner_package"
+              #inner_package="ngModel"
+              materialize="material_select"
+              [materializeSelectOptions]="variationArrs.inner_package">
+              <option value="">Type</option>
+              <option *ngFor="let item of variationArrs.inner_package" [value]="item">{{item}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col s4">
+          Consumable unit
+          <div class="select ultra-low-height">
+            <select
+              [(ngModel)]="product.consumable_unit"
+              #consumable_unit="ngModel"
+              materialize="material_select"
+              [materializeSelectOptions]="variationArrs.consumable_unit">
+              <option value="">Type</option>
+              <option *ngFor="let item of variationArrs.consumable_unit" [value]="item">{{item}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col s3">
+          Packaging summary
+        </div>
+        <div class="col s9">
+          1 Box = 3 Bags * 2 Can
         </div>
       </div>
     </div>

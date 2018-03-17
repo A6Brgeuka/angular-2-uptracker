@@ -4,6 +4,7 @@ import {ProductService} from "../../../../core/services/product.service";
 import {HelpTextModal} from "../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
 import {ModalWindowService} from "../../../../core/services/modal-window.service";
 import {Modal} from "angular2-modal";
+import {AddVendorModalComponent} from "../../add-vendor-modal/add-vendor-modal.component";
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -145,6 +146,11 @@ export class AddProductFromVendorStep2Component implements OnInit {
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
       .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
+  }
+
+  openAddVendorsModal() {
+    this.modal
+      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
   }
 
 }

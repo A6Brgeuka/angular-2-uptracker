@@ -19,6 +19,7 @@ import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
+import {VendorSearchComponent} from "./components/vendor-search/vendor-search.component";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -30,6 +31,10 @@ let pipesArr = [
   IterablePipe,
   InputValueSearch,
   CapitalizeFirstPipe
+];
+
+let componentsArr = [
+  VendorSearchComponent
 ];
 
 // resolvers
@@ -89,6 +94,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ...directivesArr,
     ...pipesArr,
     ...modalsArr,
+    ...componentsArr
   ],
   exports: [
     BootstrapModalModule,
@@ -113,7 +119,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
     ...directivesArr,
     ...pipesArr,
-    ...modalsArr
+    ...modalsArr,
+    ...componentsArr
   ],
   providers: [
     ...MAIN_RESOLVER_PROVIDERS,

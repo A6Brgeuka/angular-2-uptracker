@@ -1,0 +1,12 @@
+<input type="text" auto-complete
+       placeholder="Vendor Name"
+       [source]="observableSourceVendor.bind(this)"
+       (input)='onSearchVendor($event)'
+       [min-chars]='1'
+       (ngModelChange)='selectedAutocompleteVendor($event)'
+       [list-formatter]='"vendor_name"'
+       [ngModel] = "vendor.vendor_name"
+       [tab-to-select]='false'
+       name="vendor"
+       required
+/>

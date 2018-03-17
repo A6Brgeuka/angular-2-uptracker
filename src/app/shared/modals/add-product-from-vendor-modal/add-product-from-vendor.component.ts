@@ -27,7 +27,6 @@ export class AddProductFromVendorModalComponent implements OnInit {
 
   stepAction = (step) => this.step += step;
   checkStep = (step) => this.step == step;
-  isLastStep = () => this.step == 2;
 
   save() {
     this.productService.addCustomProduct(this.product);

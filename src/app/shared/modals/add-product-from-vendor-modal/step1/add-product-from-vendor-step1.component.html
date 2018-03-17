@@ -105,20 +105,28 @@
           </div>
 
           <div class="row">
-            <div class="col s6">
+            <div class="col input s4">
+              <label>Pricing Rule</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
+              <div class="select">
+                <select
+                  [(ngModel)]="product.pricing_rule"
+                  materialize="material_select"
+                  [materializeSelectOptions]="pricingRulesCollection">
+                  <option *ngFor="let rule of pricingRulesCollection" [value]="rule">{{rule}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col s8">
               <div class="text">
                 <div class="file-field">
                   <div class="upload-link">
                     <input type="file" (change)="changeListener($event)" />
-                    <a>+Attach File</a>
+                    <a>Attach File</a>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col s6 pricing-rule">
-              <a>Pricing Rule</a><fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>
-            </div>
-          </div>
 
           <div class="row ttl-box input">
             <div class="col s12">
