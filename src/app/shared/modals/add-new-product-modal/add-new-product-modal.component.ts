@@ -5,7 +5,7 @@ import {DialogRef, Modal} from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {some, filter} from 'lodash';
+import {some, filter, keys} from 'lodash';
 import {HelpTextModal} from "../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
 import {ModalWindowService} from "../../../core/services/modal-window.service";
 import {AddVendorModalComponent} from "../add-vendor-modal/add-vendor-modal.component";
@@ -107,7 +107,7 @@ export class AddNewProductModalComponent implements OnInit {
   }
 
   getVariants() {
-    return filter(_.keys(this.variants), (key) => this.variants[key]);
+    return filter(keys(this.variants), (key) => this.variants[key]);
   }
 
   uploadLogo(file: any) {
