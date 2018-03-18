@@ -147,15 +147,15 @@
         <div class="row" *ngFor="let inventory of inventories; let i = index">
           <div class="col s6 stock-field thin left-padded">{{inventory.floorName}}</div>
           <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="inventory.floorQTY">
+            <input type="number" [(ngModel)]="inventory.floorQTY" (ngModelChange)="floorChange($event, i)">
           </div>
           <div class="col s3 stock-field thin">
-            <button class="action-button" (click)="floorChanges(1, i)" *ngIf="inventory.floorVisible">
+            <button class="action-button" (click)="floorClick(1, i)" *ngIf="inventory.floorVisible">
               <fa name="plus"></fa>
             </button>
             <button
               class="action-button right-align"
-              (click)="floorChanges(-1, i)"
+              (click)="floorClick(-1, i)"
               [disabled]="inventory.floorQTY <= inventory.floorLimit"
               *ngIf="inventory.floorVisible">
               <fa name="minus"></fa>
