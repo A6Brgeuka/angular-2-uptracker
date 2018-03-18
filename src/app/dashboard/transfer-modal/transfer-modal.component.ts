@@ -31,6 +31,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   public groups: Array<any> = [];
   public selectedGroup: any;
   public inventories: Array<any> = [];
+  public activeInventory: any = {};
 
   constructor(
     public dialog: DialogRef<TransferModalContext>,
@@ -103,19 +104,20 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   searchProducts(event) {}
 
   floorClick(event, index) {
-    if (this.inventories[index].stockQTY - event > -1) {
-      this.inventories[index].stockQTY -= event;
+    if (this.activeInventory.stockQTY - event > -1) {
+      this.activeInventory.stockQTY -= event;
       this.inventories[index].floorQTY += event;
     }
   }
 
   floorChange(event, index) {
-    if (event < this.inventories[index].floorLimit) {
+    if (event < this.inventories[index].floorLimit || event > this.activeInventory.stockQTY) {
       setTimeout(() => {
-        this.inventories[index].floorQTY = this.inventories[index].floorLimit;
+        this.activeInventory.floorQTY = this.activeInventory.floorLimit;
       })
     } else {
       this.inventories[index].floorQTY = event;
+      this.activeInventory.stockQTY -= event;
     }
   }
 
@@ -128,6 +130,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       }
       inventory.floorVisible = true;
     })
+    this.activeInventory = this.inventories[index];
   }
 
   toBackInitial() {
