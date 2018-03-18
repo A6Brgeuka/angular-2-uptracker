@@ -154,9 +154,9 @@
               <fa name="plus"></fa>
             </button>
             <button
-              class="action-button gray right-align"
+              class="action-button right-align"
               (click)="floorChanges(-1, i)"
-              [class.active]="inventory.minusActive"
+              [disabled]="inventory.floorQTY <= inventory.floorLimit"
               *ngIf="inventory.floorVisible">
               <fa name="minus"></fa>
             </button>

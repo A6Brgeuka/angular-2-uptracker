@@ -54,7 +54,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Front Desk',
       floorQTY: 2,
-      minusActive: false,
+      floorLimit: 2,
       floorVisible: false,
     }, {
       stockName: 'Shelf A',
@@ -62,7 +62,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Ex. Room 1',
       floorQTY: 0,
-      minusActive: false,
+      floorLimit: 0,
       floorVisible: false,
     }, {
       stockName: 'Sterlization Room',
@@ -70,7 +70,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Ex. Room 2',
       floorQTY: 10,
-      minusActive: false,
+      floorLimit: 10,
       floorVisible: false,
     }];
   }
@@ -96,19 +96,15 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   transferSort(event) {
     this.inventories.forEach((inventory) => {
       inventory.floorQTY = Math.round(100 * Math.random());
+      inventory.floorLimit = inventory.floorQTY;
     });
   }
 
   searchProducts(event) {}
 
   floorChanges(event, index) {
-    if (this.inventories[index].stockQTY - event > -1 && this.inventories[index].floorQTY + event > -1) {
-      this.inventories[index].stockQTY -= event;
-      this.inventories[index].floorQTY += event;
-    }
-    if (event > 0) {
-      this.inventories[index].minusActive = true;
-    }
+    this.inventories[index].stockQTY -= event;
+    this.inventories[index].floorQTY += event;
   }
 
   stockClick(index) {
