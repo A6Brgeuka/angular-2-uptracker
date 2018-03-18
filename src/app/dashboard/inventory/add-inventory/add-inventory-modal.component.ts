@@ -238,7 +238,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       updateItems$
     ).publishReplay(1).refCount();
 
-    this.subscribers.itemsSubscription = this.items$.subscribe(res => {
+    this.subscribers.itemsSubscription = this.items$.filter(i => i).subscribe(res => {
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {

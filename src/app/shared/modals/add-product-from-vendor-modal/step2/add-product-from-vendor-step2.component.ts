@@ -5,6 +5,7 @@ import {HelpTextModal} from "../../../../dashboard/inventory/add-inventory/help-
 import {ModalWindowService} from "../../../../core/services/modal-window.service";
 import {Modal} from "angular2-modal";
 import {AddVendorModalComponent} from "../../add-vendor-modal/add-vendor-modal.component";
+import {clone} from 'lodash';
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -16,8 +17,9 @@ export class AddProductFromVendorStep2Component implements OnInit {
   @Input('product') product: ProductModel;
   public vendor: any = {};
   public vendors: any = [];
-  public selectAll$: boolean;
+  public selectAll: boolean;
   public item: any = {};
+  public fillAllModel: any = {};
 
   //must be product.variants or vendor.variants
   public vendorVariants = [
@@ -143,6 +145,10 @@ export class AddProductFromVendorStep2Component implements OnInit {
   ngOnInit() {
   }
 
+  onFillAllClick() {
+    this.fillAllModel = clone(this.item);
+  }
+
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
       .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
@@ -151,6 +157,11 @@ export class AddProductFromVendorStep2Component implements OnInit {
   openAddVendorsModal() {
     this.modal
       .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+  }
+
+  onVendorChosen($event) {
+    const vendor = {...clone(this.vendorVariants[0]), name: $event.vendor_name};
+    this.vendorVariants.push(vendor);
   }
 
 }

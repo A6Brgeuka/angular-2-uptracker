@@ -4,7 +4,7 @@
       <p>{{vendor.name}}</p>
     </div>
     <div class="col s6 center-align">
-      <p>There will be total units</p>
+      <p>Bag = 100 boxes x 10 ties = 1000 consumable items</p>
     </div>
     <div class="col s2">
       <button class="bluebtn waves-light waves-effect edit-vendor">
@@ -17,8 +17,8 @@
     <div class="row">
 
       <div class="col s1 input-checkbox checkbox">
-        <input type="checkbox" class="checkbox-input" id={{variant}}/>
-        <label for={{variant}}></label>
+        <input type="checkbox" class="checkbox-input" [(ngModel)]="selected[variant.name]" id={{vendor.name+variant.name+i}}/>
+        <label for={{vendor.name+variant.name+i}}></label>
       </div>
 
       <div class="col s2 ">
@@ -26,15 +26,15 @@
       </div>
 
       <div class="col s2 row-input center-align">
-        $ <input type="text" [(ngModel)]="variant.book_price">
+        <input type="text" [(ngModel)]="variant.book_price">
       </div>
 
       <div class="col s2 row-input center-align">
-        $ <input type="text" [(ngModel)]="variant.your_price">
+        <input type="text" [(ngModel)]="variant.your_price">
       </div>
 
       <div class="col s2 row-input center-align">
-        $ <input type="text" [(ngModel)]="variant.club_price">
+        <input type="text" [(ngModel)]="variant.club_price">
       </div>
 
       <div class="col s1 row-input center-align">

@@ -14,7 +14,9 @@ import { AddInventoryModalModule } from './add-inventory/add-inventory-modal.mod
     InventoryItemModule,
     AddInventoryModalModule,
   ],
-  providers: []
+  exports: [InventoryComponent],
+  providers: [],
+  entryComponents: [ InventoryComponent ]
 })
 export class InventoryModule {
 }

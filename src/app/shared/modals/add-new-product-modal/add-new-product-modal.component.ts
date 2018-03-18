@@ -9,6 +9,9 @@ import {some, filter, keys} from 'lodash';
 import {HelpTextModal} from "../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
 import {ModalWindowService} from "../../../core/services/modal-window.service";
 import {AddVendorModalComponent} from "../add-vendor-modal/add-vendor-modal.component";
+import {AddInventoryModal} from "../../../dashboard/inventory/add-inventory/add-inventory-modal.component";
+import {InventorySearchModalComponent} from "../../../dashboard/inventory/inventory-search-modal/inventory-search-modal.component";
+import {ProductService} from "../../../core/services/product.service";
 
 export class AddNewProductModalContext extends BSModalContext {
 
@@ -56,6 +59,7 @@ export class AddNewProductModalComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
+    private productService: ProductService,
     public dialog: DialogRef<AddNewProductModalContext>,
     public modal: Modal,
     public modalWindowService: ModalWindowService
@@ -84,9 +88,9 @@ export class AddNewProductModalComponent implements OnInit {
 
   }
 
-  stepAction(step) {
-    this.step += step;
-  }
+  stepAction = (step) => this.step += step;
+  checkStep = (step) => this.step == step;
+  setStep = (step) => this.step = step;
 
   canProceed() {
     if (this.step == 0) {
@@ -96,10 +100,6 @@ export class AddNewProductModalComponent implements OnInit {
       return some(this.variants, (val, key) =>  val);
     }
     return true;
-  }
-
-  checkStep(step) {
-    return this.step == step;
   }
 
   dismissModal() {
@@ -119,12 +119,35 @@ export class AddNewProductModalComponent implements OnInit {
   openAddVendorsModal() {
     this.dismissModal();
     this.modal
-      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true));
   }
 
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
+      .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'));
+  }
+
+  openAddInventoryModal() {
+    this.modal.open(AddInventoryModal, this.modalWindowService
+      .overlayConfigFactoryWithParams({'inventoryItems': []}, true, 'big'))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {
+          }
+        );
+      });
+  }
+
+  openInventorySearchModal() {
+    this.modal.open(InventorySearchModalComponent, this.modalWindowService
+      .overlayConfigFactoryWithParams({}, true, 'big'))
+      .then((resultPromise) => resultPromise.result.then((id) => {
+        this.product.inventory_group = id;
+        this.setStep(6);
+      }));
   }
 
   onVendorChosen($event) {
@@ -133,5 +156,9 @@ export class AddNewProductModalComponent implements OnInit {
 
   removeVendor(i) {
     this.vendors.splice(i, 1);
+  }
+
+  save() {
+    this.productService.addCustomProduct(this.product);
   }
 }

@@ -5,9 +5,7 @@
     margin: 0;
     box-sizing:border-box;
   }
-  input[type="checkbox"]{
 
-  }
   input[type="text"]{
     height:25px;
     border:1px solid $light-grey;
@@ -32,6 +30,17 @@
   }
   .edit-vendor{
     margin-top:10px;
+  }
+
+  @media (max-width: 800px) {
+    .uptracker-form-btn,
+    .bluebtn {
+      min-width: 50px;
+    }
+
+    input[type="text"] {
+      width: 40px !important;
+    }
   }
 
 }

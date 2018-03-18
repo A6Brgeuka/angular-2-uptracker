@@ -6,9 +6,8 @@ import { DialogRef, Modal } from 'angular2-modal';
 import { AddProductFromVendorModalComponent } from '../add-product-from-vendor-modal/add-product-from-vendor.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {ProductModel} from "../../../models/product.model";
 
-import * as _ from 'lodash';
+import {DestroySubscribers} from "ngx-destroy-subscribers";
 
 export class BrowseGlobalMarketModalContext extends BSModalContext {
 
@@ -19,12 +18,16 @@ export class BrowseGlobalMarketModalContext extends BSModalContext {
   templateUrl: './browse-global-market-modal.component.html',
   styleUrls: ['browse-global-market-modal.component.scss']
 })
+
+@DestroySubscribers()
 export class BrowseGlobalMarketModalComponent implements OnInit {
+  public subscribers: any = {};
 
   public products$: any;
   public sortBy: string = 'A-Z';
   public infiniteScroll$: any = new BehaviorSubject(false);
-
+  public isRequest: boolean = false;
+  public total: number;
   constructor(
     public productService: ProductService,
     public dialog: DialogRef<BrowseGlobalMarketModalContext>,
@@ -44,6 +47,29 @@ export class BrowseGlobalMarketModalComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll(event) {
     this.getInfiniteScroll();
+  }
+
+  addSubscribers() {
+    this.subscribers.infiniteSccrollSubscription = this.infiniteScroll$
+      .filter((infinite) => infinite && !this.isRequest)
+      .switchMap((infinite) => {
+
+        this.isRequest = true;
+
+        if (this.total <= (this.productService.current_page) * this.productService.pagination_limit) {
+          this.isRequest = false;
+          return Observable.of(false);
+        } else {
+          return this.productService.getNextProducts(this.productService.current_page);
+        }
+      })
+      .subscribe(res => {
+      }, err => {
+        console.log(err);
+      });
+
+    this.subscribers.totalCountSubscription = this.productService.totalCount$
+      .subscribe(total => this.total = total);
   }
 
   ngOnInit() {

@@ -5,6 +5,10 @@
     display: block !important;
   }
 
+  .title {
+    margin-top: 0;
+  }
+
   .img-container {
     width: 140px;
     height: 140px;
@@ -105,6 +109,13 @@
       right:5px;
       transform:translateY(-50%);
       font-size:26px;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .uptracker-form-btn,
+    .bluebtn {
+      min-width: 50px;
     }
   }
 }

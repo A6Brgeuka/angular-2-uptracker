@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Input, AfterViewInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, HostListener, Input, AfterViewInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -20,6 +20,8 @@ import { Subject } from 'rxjs/Subject';
 @DestroySubscribers()
 export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input('inputRange') inputRange;
+  @Input('modalMode') modalMode: boolean;
+  @Output('onInventoryClick') onInventoryClickEvent = new EventEmitter();
 
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -313,6 +315,10 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       );
     });
+  }
+
+  onInventoryClick(id) {
+    this.onInventoryClickEvent.emit(id)
   }
 
 }

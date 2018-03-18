@@ -1,279 +1,275 @@
-<div class="product-page">
-  <div class="inner">
-    <div class="title center-align">Add Product
-      <p>Please select which variants<fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>you would like to add to your marketplace</p>
-    </div>
-    <div class="row uptracker-form">
-      <div class="info-box col s12 ">
+<div class="inner">
+  <div class="title center-align">Add product
+    <p>Please select which variants<fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>you would like to add to your marketplace</p>
+  </div>
+  <div class="row uptracker-form">
+    <div class="info-box col s12 ">
 
-        <div class="img-container left upload-link file-field">
-          <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
-            <input type="file" />
+      <div class="img-container left upload-link file-field">
+        <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+          <input type="file" />
+        </div>
+      </div>
+
+      <div class="left product-params">
+        <div class="ttl-box row input">
+          <div class="add-own-product">
+            <div class="technical-name-container">
+              <input type="text" [(ngModel)]="product.name"  placeholder="Type Name"/>
+              <fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>
+              <div class="clearfix"></div>
+            </div>
           </div>
         </div>
 
-        <div class="left product-params">
-          <div class="ttl-box row input">
-            <div class="add-own-product">
-              <div class="technical-name-container">
-                <input type="text" [(ngModel)]="product.name"  placeholder="Type Name"/>
-                <fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>
-                <div class="clearfix"></div>
-              </div>
+        <div class="ttl-box row input">
+          <input type="text" [(ngModel)]="product.proper_name" placeholder="Technical Name" />
+        </div>
+
+        <div class="row">
+          <div class="col s4 variant-checkbox head-item" >
+            <div class="checkbox input-checkbox ">
+              <label>Hazardous</label>
+              <input
+                type="checkbox"
+                class="input-checkbox"
+                id="checkbox1"
+              />
+              <label for="checkbox1"></label>
             </div>
           </div>
 
-          <div class="ttl-box row input">
-            <input type="text" [(ngModel)]="product.proper_name" placeholder="Technical Name" />
-          </div>
-
-          <div class="row">
-            <div class="col s4 variant-checkbox head-item" >
-              <div class="checkbox input-checkbox ">
-                <label>Hazardous</label>
-                <input
-                  type="checkbox"
-                  class="input-checkbox"
-                  id="checkbox1"
-                />
-                <label for="checkbox1"></label>
-              </div>
-            </div>
-
-            <div class="col s4 variant-checkbox head-item" >
-              <div class="checkbox input-checkbox ">
-                <label>Trackable</label>
-                <input
-                  type="checkbox"
-                  class="input-checkbox"
-                  id="checkbox2"
-                />
-                <label for="checkbox2"></label>
-              </div>
-            </div>
-
-            <div class="col s4 variant-checkbox head-item" >
-              <div class="checkbox input-checkbox ">
-                <label>Tax Exempt</label>
-                <input
-                  type="checkbox"
-                  class="input-checkbox"
-                  id="checkbox3"
-                />
-                <label for="checkbox3"></label>
-              </div>
+          <div class="col s4 variant-checkbox head-item" >
+            <div class="checkbox input-checkbox ">
+              <label>Trackable</label>
+              <input
+                type="checkbox"
+                class="input-checkbox"
+                id="checkbox2"
+              />
+              <label for="checkbox2"></label>
             </div>
           </div>
 
-
-          <div class="row">
-            <div class="col s4 input">
-              <label>Department</label>
-              <div class="select">
-                <select
-                  materialize="material_select"
-                  [materializeSelectOptions]="departmentCollection">
-                  <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
-                </select>
-              </div>
+          <div class="col s4 variant-checkbox head-item" >
+            <div class="checkbox input-checkbox ">
+              <label>Tax Exempt</label>
+              <input
+                type="checkbox"
+                class="input-checkbox"
+                id="checkbox3"
+              />
+              <label for="checkbox3"></label>
             </div>
+          </div>
+        </div>
 
-            <div class="col s4 input" >
-              <label>Category</label>
-              <div class="select">
-                <select
-                  materialize="material_select"
-                  [materializeSelectOptions]="productCategoriesCollection">
-                  <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
-                  </option>
-                </select>
-              </div>
-            </div>
-
-
-            <div class="col s4 input" >
-              <label>Accounting</label>
-              <div class="select">
-                <select
-                  materialize="material_select"
-                  [materializeSelectOptions]="productAccountingCollection">
-                  <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
-                  </option>
-                </select>
-              </div>
+        <div class="row">
+          <div class="col s12 m6 input">
+            <label>Department</label>
+            <div class="select">
+              <select
+                materialize="material_select"
+                [materializeSelectOptions]="departmentCollection">
+                <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
+              </select>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col input s4">
-              <label>Pricing Rule</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
-              <div class="select">
-                <select
-                  [(ngModel)]="product.pricing_rule"
-                  materialize="material_select"
-                  [materializeSelectOptions]="pricingRulesCollection">
-                  <option *ngFor="let rule of pricingRulesCollection" [value]="rule">{{rule}}
-                  </option>
-                </select>
-              </div>
+          <div class="col s12 m6 input" >
+            <label>Category</label>
+            <div class="select">
+              <select
+                materialize="material_select"
+                [materializeSelectOptions]="productCategoriesCollection">
+                <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
+                </option>
+              </select>
             </div>
-            <div class="col s8">
-              <div class="text">
-                <div class="file-field">
-                  <div class="upload-link">
-                    <input type="file" (change)="changeListener($event)" />
-                    <a>Attach File</a>
-                  </div>
+          </div>
+
+          <div class="col s12 m6 input" >
+            <label>Accounting</label>
+            <div class="select">
+              <select
+                materialize="material_select"
+                [materializeSelectOptions]="productAccountingCollection">
+                <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col s12 m6 input">
+            <label>Pricing Rule</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
+            <div class="select">
+              <select
+                [(ngModel)]="product.pricing_rule"
+                materialize="material_select"
+                [materializeSelectOptions]="pricingRulesCollection">
+                <option *ngFor="let rule of pricingRulesCollection" [value]="rule">{{rule}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="text">
+              <div class="file-field">
+                <div class="upload-link">
+                  <input type="file" (change)="changeListener($event)" />
+                  <a>Attach File</a>
                 </div>
               </div>
             </div>
-
-          <div class="row ttl-box input">
-            <div class="col s12">
-              <p>Notes</p>
-              <input type="text" />
-            </div>
           </div>
+        </div>
 
-          <div class="row">
-            <div *ngFor="let attr of currentVariant.custom_attr" class="col s2">
-              <label class="top">{{attr.name}}</label>
-              <div class="value">{{attr.value}}</div>
-            </div>
+        <div class="row ttl-box input">
+          <div class="col s12">
+            <p>Notes</p>
+            <input type="text" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div *ngFor="let attr of currentVariant.custom_attr" class="col s2">
+            <label class="top">{{attr.name}}</label>
+            <div class="value">{{attr.value}}</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="clearfix"></div>
+  <div class="clearfix"></div>
 
-    <div class="row table-head-filter">
-      <div class="col s12">
-        <ul class="tabs" materialize="tabs">
-          <li class="tab col s2">
-            <a href="#variations">Variations</a>
-          </li>
-        </ul>
-      </div>
+  <div class="row table-head-filter">
+    <div class="col s12">
+      <ul class="tabs" materialize="tabs">
+        <li class="tab col s2">
+          <a href="#variations">Variations</a>
+        </li>
+      </ul>
     </div>
+  </div>
 
-    <div id="variations">
-      <div *ngIf="!showVariant" class="inner product">
+  <div id="variations">
+    <div *ngIf="!showVariant" class="inner product">
+      <div class="variant-table">
+        <div class="uptracker-form variant-head">
+          <div class="variant-checkbox head-item">
+            <div class="checkbox input-checkbox ">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                (change)="headCheckboxChange()"
+                id="variation-checkbox"
+              />
+              <label for="variation-checkbox"></label>
+            </div>
+          </div>
+          <div class="name-heading head-item">
+            <div class="input">
+              <input
+                type="text"
+                class="name-input"
+                ngModel
+                (input)="changeName($event)"
+                placeholder="Name"
+                #name="ngModel"/>
+            </div>
+          </div>
+          <div class="small-heading  head-item">
+            <div class="select ultra-low-height">
+              <select
+                [(ngModel)]="variation.package_type"
+                #pkg="ngModel"
+                materialize="material_select"
+                (change)="changePkg($event)"
+                [materializeSelectOptions]="variationArrs.package_type">
+                <option value="">Pkg</option>
+                <option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="small-heading head-item">
+            <div class="select ultra-low-height">
+              <select
+                [(ngModel)]="variation.unit_type"
+                #unit="ngModel"
+                materialize="material_select"
+                (change)="changeUnit($event)"
+                [materializeSelectOptions]="variationArrs.unit_type">
+                <option value="">Unit</option>
+                <option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="small-heading head-item">
+            <div class="select ultra-low-height">
+              <select
+                [(ngModel)]="variation.units_per_package"
+                #units_pkg="ngModel"
+                materialize="material_select"
+                (change)="changeUnitsPkg($event)"
+                [materializeSelectOptions]="variationArrs.units_per_package">
+                <option value="">Qty</option>
+                <option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="text-heading valign-wrapper head-item">
+            <div class="text-head valign">
+              Total consumable units
+            </div>
+          </div>
+
+          <div class="flor">
+            <div class="filter-heading noselect head-item">
+              <fa [name]="'filter'"></fa>
+            </div>
+          </div>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="table-body">
         <div class="variant-table">
-          <div class="uptracker-form variant-head">
-            <div class="variant-checkbox head-item">
-              <div class="checkbox input-checkbox ">
+          <div class="uptracker-form  table-item"
+               *ngFor="let variant of filteredVariants$ | async"
+               (click)="toggleVariantDetailView(variant)">
+            <div class="variant-checkbox row-item">
+              <div class="checkbox input-checkbox">
                 <input
                   type="checkbox"
                   class="checkbox-input"
-                  (change)="headCheckboxChange()"
-                  id="variation-checkbox"
+                  [(ngModel)]="variant.checked"
+                  (change)="variantCheckedChange()"
+                  id="{{variant.id}}"
                 />
-                <label for="variation-checkbox"></label>
+                <label for="{{variant.id}}"></label>
               </div>
             </div>
-            <div class="name-heading head-item">
+            <div class="name-heading variant-name row-item valign-wrapper">
+            <span (click)="showVariantDetails($event,variant)"
+                  *ngIf="!showEdit"
+                  [class.reddish]="variant.status == 2"
+                  class="valign"
+            >{{variant.name || "Product Here"}}</span>
               <div class="input">
-                <input
-                  type="text"
-                  class="name-input"
-                  ngModel
-                  (input)="changeName($event)"
-                  placeholder="Name"
-                  #name="ngModel"/>
+                <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
               </div>
             </div>
-            <div class="small-heading  head-item">
-              <div class="select ultra-low-height">
-                <select
-                  [(ngModel)]="variation.package_type"
-                  #pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changePkg($event)"
-                  [materializeSelectOptions]="variationArrs.package_type">
-                  <option value="">Pkg</option>
-                  <option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="small-heading head-item">
-              <div class="select ultra-low-height">
-                <select
-                  [(ngModel)]="variation.unit_type"
-                  #unit="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnit($event)"
-                  [materializeSelectOptions]="variationArrs.unit_type">
-                  <option value="">Unit</option>
-                  <option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="small-heading head-item">
-              <div class="select ultra-low-height">
-                <select
-                  [(ngModel)]="variation.units_per_package"
-                  #units_pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnitsPkg($event)"
-                  [materializeSelectOptions]="variationArrs.units_per_package">
-                  <option value="">Qty</option>
-                  <option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            <div class="text-heading valign-wrapper head-item">
-              <div class="text-head valign">
-                Total consumable units
-              </div>
-            </div>
-
-            <div class="flor">
-              <div class="filter-heading noselect head-item">
-                <fa [name]="'filter'"></fa>
-              </div>
-            </div>
+            <div class="small-heading row-item">{{variant.package_type || ""}}</div>
+            <div class="small-heading row-item">{{variant.unit_type || ""}}</div>
+            <div class="small-heading row-item">{{variant.units_per_package || ""}}</div>
+            <div class="text-heading row-item nowrap">{{variant.price_range || ""}}</div>
 
             <div class="clearfix"></div>
-          </div>
-        </div>
-
-        <div class="table-body">
-          <div class="variant-table">
-            <div class="uptracker-form  table-item"
-                 *ngFor="let variant of filteredVariants$ | async"
-                 (click)="toggleVariantDetailView(variant)">
-              <div class="variant-checkbox row-item">
-                <div class="checkbox input-checkbox">
-                  <input
-                    type="checkbox"
-                    class="checkbox-input"
-                    [(ngModel)]="variant.checked"
-                    (change)="variantCheckedChange()"
-                    id="{{variant.id}}"
-                  />
-                  <label for="{{variant.id}}"></label>
-                </div>
-              </div>
-              <div class="name-heading variant-name row-item valign-wrapper">
-              <span (click)="showVariantDetails($event,variant)"
-                    *ngIf="!showEdit"
-                    [class.reddish]="variant.status == 2"
-                    class="valign"
-              >{{variant.name || "Product Here"}}</span>
-                <div class="input">
-                  <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
-                </div>
-              </div>
-              <div class="small-heading row-item">{{variant.package_type || ""}}</div>
-              <div class="small-heading row-item">{{variant.unit_type || ""}}</div>
-              <div class="small-heading row-item">{{variant.units_per_package || ""}}</div>
-              <div class="text-heading row-item nowrap">{{variant.price_range || ""}}</div>
-
-              <div class="clearfix"></div>
-            </div>
           </div>
         </div>
       </div>

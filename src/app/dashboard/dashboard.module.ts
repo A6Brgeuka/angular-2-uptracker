@@ -21,6 +21,7 @@ import { ReportsModule } from './reports/reports.module';
 import { AppliancesModule } from './appliances/appliances.module';
 import { AssetsModule } from './assets/assets.module';
 import { RestockFloorModule } from './restock-floor/restock-floor.module';
+import {InventorySearchModalModule} from "./inventory/inventory-search-modal/inventory-search-modal.module";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { RestockFloorModule } from './restock-floor/restock-floor.module';
     ReportsModule,
     ShoppingListModule,
     RestockFloorModule,
+    InventorySearchModalModule
   ],
   providers: []
 })

@@ -5,7 +5,7 @@ import { ScannerModule } from '../../dashboard/scanner/scanner.module';
 
 @NgModule({
   declarations: [
-    AddCustomProductComponent,
+    AddCustomProductComponent
   ],
   exports: [AddCustomProductComponent],
   imports: [
