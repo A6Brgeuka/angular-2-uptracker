@@ -103,8 +103,10 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   searchProducts(event) {}
 
   floorClick(event, index) {
-    this.inventories[index].stockQTY -= event;
-    this.inventories[index].floorQTY += event;
+    if (this.inventories[index].stockQTY - event > -1) {
+      this.inventories[index].stockQTY -= event;
+      this.inventories[index].floorQTY += event;
+    }
   }
 
   floorChange(event, index) {
