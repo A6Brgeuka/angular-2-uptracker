@@ -121,7 +121,7 @@
           <div class="col s6 stock-row bold">QTY</div>
         </div>
 
-        <div class="row no-margin" *ngFor="let inventory of inventories; let i = index">
+        <div class="row" *ngFor="let inventory of inventories; let i = index">
           <div class="col s6 stock-field thin">
             {{inventory.stockName}}
           </div>
@@ -144,7 +144,7 @@
           <div class="col s6 stock-row bold left-padded">Floor location</div>
           <div class="col s4 stock-row bold">QTY</div>
         </div>
-        <div class="row no-margin" *ngFor="let inventory of inventories; let i = index">
+        <div class="row" *ngFor="let inventory of inventories; let i = index">
           <div class="col s6 stock-field thin left-padded">{{inventory.floorName}}</div>
           <div class="col s3 stock-field thin">
             <input type="number" [(ngModel)]="inventory.floorQTY">
