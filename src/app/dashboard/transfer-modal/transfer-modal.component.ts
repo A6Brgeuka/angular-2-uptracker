@@ -55,6 +55,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Front Desk',
       floorQTY: 2,
+      floorQTYTemp: 2,
       floorLimit: 2,
       floorVisible: false,
     }, {
@@ -63,6 +64,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Ex. Room 1',
       floorQTY: 0,
+      floorQTYTemp: 0,
       floorLimit: 0,
       floorVisible: false,
     }, {
@@ -71,6 +73,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       stockDisabled: false,
       floorName: 'Ex. Room 2',
       floorQTY: 10,
+      floorQTYTemp: 10,
       floorLimit: 10,
       floorVisible: false,
     }];
@@ -97,6 +100,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   transferSort(event) {
     this.inventories.forEach((inventory) => {
       inventory.floorQTY = Math.round(100 * Math.random());
+      inventory.floorQTYTemp = inventory.floorQTY;
       inventory.floorLimit = inventory.floorQTY;
     });
   }
@@ -107,17 +111,19 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     if (this.activeInventory.stockQTY - event > -1) {
       this.activeInventory.stockQTY -= event;
       this.inventories[index].floorQTY += event;
+      this.inventories[index].floorQTYTemp = this.inventories[index].floorQTY;
     }
   }
 
   floorChange(event, index) {
     if (event < this.inventories[index].floorLimit || event > this.activeInventory.stockQTY) {
       setTimeout(() => {
-        this.activeInventory.floorQTY = this.activeInventory.floorLimit;
+        this.inventories[index].floorQTY = this.inventories[index].floorQTYTemp;
       })
     } else {
       this.inventories[index].floorQTY = event;
-      this.activeInventory.stockQTY -= event;
+      this.activeInventory.stockQTY -= (event - this.inventories[index].floorQTYTemp);
+      this.inventories[index].floorQTYTemp = event;
     }
   }
 
