@@ -84,14 +84,12 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   locationSort(event) {
     this.inventories.forEach((inventory) => {
       inventory.stockQTY = Math.round(100 * Math.random());
-      inventory.floorQTY = Math.round(100 * Math.random());
     });
   }
 
   productSort(event) {
     this.inventories.forEach((inventory) => {
       inventory.stockQTY = Math.round(100 * Math.random());
-      inventory.floorQTY = Math.round(100 * Math.random());
     });
   }
 
