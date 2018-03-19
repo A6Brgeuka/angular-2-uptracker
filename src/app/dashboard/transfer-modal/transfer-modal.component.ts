@@ -116,7 +116,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   }
 
   floorChange(event, index) {
-    if (event < this.inventories[index].floorLimit || event - this.inventories[index].floorQTYTemp > this.activeInventory.stockQTY) {
+    if (event - this.inventories[index].floorQTYTemp > this.activeInventory.stockQTY) {
       setTimeout(() => {
         this.inventories[index].floorQTY = this.inventories[index].floorQTYTemp;
       })
