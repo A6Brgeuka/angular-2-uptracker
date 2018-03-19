@@ -64,7 +64,11 @@ body {
   input.select-dropdown,
   input[type=number]:not(.browser-default),
   input[type=date]:not(.browser-default),
-  input[type=text]:not(.browser-default)
+  input[type=text]:not(.browser-default),
+  input[type=email]:not(.browser-default),
+  input[type=password]:not(.browser-default),
+  input[type=password].valid:not(.browser-default),
+  input[type=password].invalid:not(.browser-default)
   {
     border: 1px solid $grey;
     border-radius: 5px;
