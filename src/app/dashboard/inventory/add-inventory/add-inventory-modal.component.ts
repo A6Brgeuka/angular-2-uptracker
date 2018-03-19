@@ -25,6 +25,7 @@ export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
   inventoryGroup: any = null;
   selectedProduct: any = null;
+  modalMode: boolean;
 }
 
 @Component({
@@ -384,6 +385,10 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         });
       })
     }
+/*
+    if (this.context.modalMode) {
+      this.step1.nativeElement.click();
+    }*/
 
   }
 
@@ -643,6 +648,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         this.saveAdded$.next();
       }
     }
+    this.dialog.close(this.newInventory)
   }
 
   nextPackage(value) {

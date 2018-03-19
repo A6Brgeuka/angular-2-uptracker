@@ -1,10 +1,10 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {ProductModel} from "../../../../models/product.model";
-import {ProductService} from "../../../../core/services/product.service";
-import {HelpTextModal} from "../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
-import {ModalWindowService} from "../../../../core/services/modal-window.service";
+import {ProductModel} from "../../../../../models/product.model";
+import {ProductService} from "../../../../../core/services/product.service";
+import {HelpTextModal} from "../../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
+import {ModalWindowService} from "../../../../../core/services/modal-window.service";
 import {Modal} from "angular2-modal";
-import {AddVendorModalComponent} from "../../add-vendor-modal/add-vendor-modal.component";
+import {AddVendorModalComponent} from "../../../add-vendor-modal/add-vendor-modal.component";
 import {clone} from 'lodash';
 
 @Component({
@@ -156,11 +156,14 @@ export class AddProductFromVendorStep2Component implements OnInit {
 
   openAddVendorsModal() {
     this.modal
-      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true))
+      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({modalMode: true}, true))
+      .then((resultPromise) => resultPromise.result.then((customVendor) => {
+        this.onVendorChosen(customVendor);
+      }));
   }
 
-  onVendorChosen($event) {
-    const vendor = {...clone(this.vendorVariants[0]), name: $event.vendor_name};
+  onVendorChosen(customVendor) {
+    const vendor = {...this.vendorVariants[0], ...customVendor};
     this.vendorVariants.push(vendor);
   }
 

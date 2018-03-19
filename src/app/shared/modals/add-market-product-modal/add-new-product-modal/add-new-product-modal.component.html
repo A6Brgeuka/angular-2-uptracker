@@ -2,7 +2,11 @@
 <div class="inner edit-mode">
 
   <div class="row">
-    <div class="col s3">
+    <div class="col s4 center-align offset-s4">
+      <div class="title">Add custom product</div>
+    </div>
+
+    <div class="col s2 right-align">
       <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
               (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(0)">
         <fa name="chevron-left"></fa>
@@ -10,11 +14,7 @@
       </button>
     </div>
 
-    <div class="col s6 center-align">
-      <div class="title">Add custom product</div>
-    </div>
-
-    <div class="col s3 right-align">
+    <div class="col s2 right-align">
       <button *ngIf="!checkStep(6)" [disabled]="!canProceed()"
               class="uptracker-form-btn white-text waves-effect waves-light" (click)="stepAction(1)">
         Next
@@ -27,7 +27,7 @@
   </div>
 
   <div class="row uptracker-form" *ngIf="checkStep(0)">
-    <div class="col s12 m3 file-field">
+    <div class="col s12 m3 file-field center-align">
       <div class="img-container upload-link">
         <div class="img" *ngIf="product?.image"
              [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }"></div>
@@ -148,7 +148,21 @@
               </select>
             </div>
           </div>
+        </div>
+
+        <div class="row">
           <div class="col s12">
+            <div class="file-list">
+              <div class="item" *ngFor="let file of fileArr">
+                <a href="{{file.uri}}" target="_blank" *ngIf="file.uri">
+                  <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
+                </a>
+                <div class="tip" *ngIf="!file.uri">
+                  <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </div>
             <div class="text">
               <div class="file-field">
                 <div class="upload-link">
@@ -358,7 +372,7 @@
     <div class="row" *ngFor="let vendor of vendors; let i = index">
       <div class="row">
         <div class="col s4">
-          {{vendor.vendor_name}}
+          {{vendor.vendor_name || vendor.name}}
         </div>
         <div class="col s8 right-align">
           <button class="bluebtn waves-light waves-effect" (click)="removeVendor(i)">
@@ -511,6 +525,17 @@
         </div>
         <div>
           Inventory group: {{product.inventory_group || 'No'}}
+        </div>
+        <div class="file-list">
+          <div class="item" *ngFor="let file of fileArr">
+            <a href="{{file.uri}}" target="_blank" *ngIf="file.uri">
+              <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
+            </a>
+            <div class="tip" *ngIf="!file.uri">
+              <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
+            </div>
+            <div class="clearfix"></div>
+          </div>
         </div>
       </div>
     </div>

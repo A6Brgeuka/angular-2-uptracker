@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductModel} from "../../../models/product.model";
+import {ProductModel} from "../../../../models/product.model";
 import {BSModalContext} from "angular2-modal/plugins/bootstrap";
-import {ProductService} from "../../../core/services/product.service";
+import {ProductService} from "../../../../core/services/product.service";
 import {DialogRef} from "angular2-modal";
 
 export class AddProductFromVendorModalContext extends BSModalContext {

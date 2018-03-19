@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProductModel } from '../../../../models/product.model';
-import { ProductService } from '../../../../core/services/product.service';
-import {HelpTextModal} from "../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
+import { ProductModel } from '../../../../../models/product.model';
+import { ProductService } from '../../../../../core/services/product.service';
+import {HelpTextModal} from "../../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
 import {DialogRef, Modal} from "angular2-modal";
-import {ModalWindowService} from "../../../../core/services/modal-window.service";
+import {ModalWindowService} from "../../../../../core/services/modal-window.service";
 import {Observable} from "rxjs/Observable";
 import {DestroySubscribers} from "ngx-destroy-subscribers";
-import {AccountService} from "../../../../core/services/account.service";
+import {AccountService} from "../../../../../core/services/account.service";
 
 @Component({
   selector: 'app-add-product-from-vendor-step1',
@@ -33,6 +33,7 @@ export class AddProductFromVendorStep1Component implements OnInit {
   public productCategoriesCollection: any[];
   public pricingRulesCollection$: Observable<any> = Observable.of(['Rule1', 'Rule2', 'Rule3']);
   public pricingRulesCollection: any [];
+  public fileArr: any [] = [];
 
   //all variables after this comment are only for test
   currentVariant = {
@@ -80,4 +81,21 @@ export class AddProductFromVendorStep1Component implements OnInit {
     this.modal.open(HelpTextModal, this.modalWindowService
       .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
   }
+
+  // upload by input type=file
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    let file: File = inputValue.files[0];
+    this.onFileDrop(file);
+  }
+
+  onFileDrop(file: any): void {
+    let myReader: any = new FileReader();
+    myReader.fileName = file.name;
+    this.fileArr.push(file);
+  }
+
 }

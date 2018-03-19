@@ -4,10 +4,19 @@
     <div class="col s12">
       <div class="title">Add Product to your Marketplace</div>
       <div class="input relative">
-          <input [(ngModel)]="barcode" type="text" placeholder="Search-Keyword"
-                 name="upc"
-                 #upc="ngModel">
-          <app-scanner (searchText)="onUpcUpdated($event)"></app-scanner>
+        <div class="col s12 input search">
+          <input auto-complete (input)="onSearchTypeIn($event)"
+                 placeholder="Search-Keyword"
+                 [source]="observableSource.bind(this)"
+                 (ngModelChange)='selectedAutocompled($event)'
+                 [min-chars]='3'
+                 [(ngModel)]='searchText'
+                 [list-formatter]="listFormatter"
+                 [no-match-found-text]='noSearchedRes'
+                 [tab-to-select]='false'
+          />
+          <app-scanner (searchText)="onSearchTextUpdated($event)"></app-scanner>
+        </div>
         </div>
     </div>
     <div class="col s6">

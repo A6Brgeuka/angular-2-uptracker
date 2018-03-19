@@ -1,4 +1,4 @@
-@import "../../../../colors";
+@import "../../../../../colors";
 
 :host /deep/ {
 
@@ -11,6 +11,7 @@
   }
 
   perfect-scrollbar {
+    text-align: center;
     max-height: 50vh;
   }
 

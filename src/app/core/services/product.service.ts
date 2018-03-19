@@ -117,7 +117,7 @@ export class ProductService extends ModelService {
 
   getNextProducts(page?, marketplace?) {
     let reset: boolean = page ? false : true;
-    this.requestParams.page = this.current_page;
+    this.requestParams.page = page || this.current_page;
     return this.getMarketPlace(marketplace || this.marketplace, this.requestParams, reset);
   }
 
@@ -260,6 +260,14 @@ export class ProductService extends ModelService {
 
   addCustomProduct(data) {
     return this.restangular.all('products').all('custom').post(data).map(res => res.data);
+  }
+
+  autocompleteSearchProduct(keywords: string) {
+    return this.restangular.one('marketplace', 'global').customGET('', keywords).map((res: any) => res.data.results);
+  }
+
+  getGlobalProducts(queryParams) {
+    return this.restangular.one('marketplace', 'global').customGET('', queryParams).map((res: any) => res.data.results);
   }
 
 }

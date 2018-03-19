@@ -1,7 +1,8 @@
-@import "../../../../../colors";
+@import "../../../../../../colors";
 
 $normal: 14px;
 :host /deep/{
+
   .product-page {
     position: relative;
     //background: #fff;
@@ -51,7 +52,10 @@ $normal: 14px;
         }
       }
     }
+  }
 
+  .tip {
+    display: flex;
   }
 
   input{

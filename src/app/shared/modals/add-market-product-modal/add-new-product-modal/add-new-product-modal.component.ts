@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AccountService } from '../../../core/services/account.service';
+import { AccountService } from '../../../../core/services/account.service';
 import {DialogRef, Modal} from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import {some, filter, keys} from 'lodash';
-import {HelpTextModal} from "../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
-import {ModalWindowService} from "../../../core/services/modal-window.service";
-import {AddVendorModalComponent} from "../add-vendor-modal/add-vendor-modal.component";
-import {AddInventoryModal} from "../../../dashboard/inventory/add-inventory/add-inventory-modal.component";
-import {InventorySearchModalComponent} from "../../../dashboard/inventory/inventory-search-modal/inventory-search-modal.component";
-import {ProductService} from "../../../core/services/product.service";
+import {HelpTextModal} from "../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
+import {ModalWindowService} from "../../../../core/services/modal-window.service";
+import {AddVendorModalComponent} from "../../add-vendor-modal/add-vendor-modal.component";
+import {AddInventoryModal} from "../../../../dashboard/inventory/add-inventory/add-inventory-modal.component";
+import {InventorySearchModalComponent} from "../../../../dashboard/inventory/inventory-search-modal/inventory-search-modal.component";
+import {ProductService} from "../../../../core/services/product.service";
 
 export class AddNewProductModalContext extends BSModalContext {
 
@@ -19,7 +19,7 @@ export class AddNewProductModalContext extends BSModalContext {
 
 @Component({
   selector: 'app-add-new-product-modal',
-  templateUrl: './add-new-product-modal.component.html',
+  templateUrl: 'add-new-product-modal.component.html',
   styleUrls: ['add-new-product-modal.component.scss']
 })
 @DestroySubscribers()
@@ -38,6 +38,7 @@ export class AddNewProductModalComponent implements OnInit {
   public productCategoriesCollection: any[];
   public pricingRulesCollection$: Observable<any> = Observable.of(['Rule1', 'Rule2', 'Rule3']);
   public pricingRulesCollection: any [];
+  public fileArr: any[] = [];
 
   public productVariants = {
     color: ['green', 'blue', 'navy'],
@@ -117,9 +118,11 @@ export class AddNewProductModalComponent implements OnInit {
   }
 
   openAddVendorsModal() {
-    this.dismissModal();
     this.modal
-      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true));
+      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({modalMode: true}, true))
+      .then((resultPromise) => resultPromise.result.then((customVendor) => {
+        this.vendors.push(customVendor);
+      }));
   }
 
   openHelperModal() {
@@ -128,17 +131,52 @@ export class AddNewProductModalComponent implements OnInit {
   }
 
   openAddInventoryModal() {
+    const prod = {
+      catalog_number: ["030-090", "030-090"],
+      category: "Lab",
+      checked: false,
+      consumable_unit: {
+        properties: {
+          unit_type: "Discs",
+          qty: 10
+        }
+      },
+      department: "clinic",
+      images: [],
+      inventory_by: [
+        {type: "Package", label: "Box", value: "package", qty: 10},
+        {type: "Sub Package", label: "", value: "sub_package", qty: null},
+        {type: "Consumable Unit", label: "Disks", value: "consumable_unit", qty: 1}
+      ],
+      name: this.product.name,
+      notActive: false,
+      package_type: "Box",
+      product_id: null,
+      sub_package: {
+        properties: {
+          qty: null,
+          unit_type: ''
+        }
+      },
+      suggest: {
+        input: ["Bioplast", "4mm", "Round", "Red", "American Orthodontics", "Great Lakes Orthodontic"]
+      },
+      tags: ["Red", "American Orthodontics", "Great Lakes Orthodontic"],
+      ups: '',
+      variant_id: null,
+      vendors: [
+        {vendor_name: "American Orthodontics", vendor_id: "582f4fdd06e55c3aab564023"},
+        {vendor_name: "Great Lakes Orthodontic", vendor_id: "582f4fdf06e55c3aab564037"}
+      ]
+
+    };
     this.modal.open(AddInventoryModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({'inventoryItems': []}, true, 'big'))
-      .then((resultPromise) => {
-        resultPromise.result.then(
-          (res) => {
-            console.log(res);
-          },
-          (err) => {
-          }
-        );
-      });
+      .overlayConfigFactoryWithParams({'inventoryItems': [], 'modalMode': true}, true, 'big'))
+      .then((resultPromise) => resultPromise.result.then((inventory) => {
+        this.product.inventory_group = inventory;
+        this.setStep(6);
+        console.log(this.product);
+      }));
   }
 
   openInventorySearchModal() {
@@ -161,4 +199,21 @@ export class AddNewProductModalComponent implements OnInit {
   save() {
     this.productService.addCustomProduct(this.product);
   }
+
+  // upload by input type=file
+  changeListener($event): void {
+    this.readThis($event.target);
+  }
+
+  readThis(inputValue: any): void {
+    let file: File = inputValue.files[0];
+    this.onFileDrop(file);
+  }
+
+  onFileDrop(file: any): void {
+    let myReader: any = new FileReader();
+    myReader.fileName = file.name;
+    this.fileArr.push(file);
+  }
+
 }

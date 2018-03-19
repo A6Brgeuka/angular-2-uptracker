@@ -3,140 +3,150 @@
     <p>Please select which variants<fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>you would like to add to your marketplace</p>
   </div>
   <div class="row uptracker-form">
-    <div class="info-box col s12 ">
-
-      <div class="img-container left upload-link file-field">
+    <div class="col m3 s12 center-align">
+      <div class="img-container upload-link file-field">
         <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
           <input type="file" />
         </div>
       </div>
+    </div>
 
-      <div class="left product-params">
-        <div class="ttl-box row input">
-          <div class="add-own-product">
-            <div class="technical-name-container">
-              <input type="text" [(ngModel)]="product.name"  placeholder="Type Name"/>
-              <fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>
+    <div class="col m9 s12">
+      <div class="ttl-box row input">
+        <div class="add-own-product">
+          <div class="technical-name-container">
+            <input type="text" [(ngModel)]="product.name"  placeholder="Type Name"/>
+            <fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ttl-box row input">
+        <input type="text" [(ngModel)]="product.proper_name" placeholder="Technical Name" />
+      </div>
+
+      <div class="row">
+        <div class="col s4 variant-checkbox head-item" >
+          <div class="checkbox input-checkbox ">
+            <label>Hazardous</label>
+            <input
+              type="checkbox"
+              class="input-checkbox"
+              id="checkbox1"
+            />
+            <label for="checkbox1"></label>
+          </div>
+        </div>
+
+        <div class="col s4 variant-checkbox head-item" >
+          <div class="checkbox input-checkbox ">
+            <label>Trackable</label>
+            <input
+              type="checkbox"
+              class="input-checkbox"
+              id="checkbox2"
+            />
+            <label for="checkbox2"></label>
+          </div>
+        </div>
+
+        <div class="col s4 variant-checkbox head-item" >
+          <div class="checkbox input-checkbox ">
+            <label>Tax Exempt</label>
+            <input
+              type="checkbox"
+              class="input-checkbox"
+              id="checkbox3"
+            />
+            <label for="checkbox3"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12 m6 input">
+          <label>Department</label>
+          <div class="select">
+            <select
+              materialize="material_select"
+              [materializeSelectOptions]="departmentCollection">
+              <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col s12 m6 input" >
+          <label>Category</label>
+          <div class="select">
+            <select
+              materialize="material_select"
+              [materializeSelectOptions]="productCategoriesCollection">
+              <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col s12 m6 input" >
+          <label>Accounting</label>
+          <div class="select">
+            <select
+              materialize="material_select"
+              [materializeSelectOptions]="productAccountingCollection">
+              <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col s12 m6 input">
+          <label>Pricing Rule</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
+          <div class="select">
+            <select
+              [(ngModel)]="product.pricing_rule"
+              materialize="material_select"
+              [materializeSelectOptions]="pricingRulesCollection">
+              <option *ngFor="let rule of pricingRulesCollection" [value]="rule">{{rule}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <div class="file-list">
+            <div class="item" *ngFor="let file of fileArr">
+              <a href="{{file.uri}}" target="_blank" *ngIf="file.uri">
+                <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
+              </a>
+              <div class="tip" *ngIf="!file.uri">
+                <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
+              </div>
               <div class="clearfix"></div>
             </div>
           </div>
-        </div>
-
-        <div class="ttl-box row input">
-          <input type="text" [(ngModel)]="product.proper_name" placeholder="Technical Name" />
-        </div>
-
-        <div class="row">
-          <div class="col s4 variant-checkbox head-item" >
-            <div class="checkbox input-checkbox ">
-              <label>Hazardous</label>
-              <input
-                type="checkbox"
-                class="input-checkbox"
-                id="checkbox1"
-              />
-              <label for="checkbox1"></label>
-            </div>
-          </div>
-
-          <div class="col s4 variant-checkbox head-item" >
-            <div class="checkbox input-checkbox ">
-              <label>Trackable</label>
-              <input
-                type="checkbox"
-                class="input-checkbox"
-                id="checkbox2"
-              />
-              <label for="checkbox2"></label>
-            </div>
-          </div>
-
-          <div class="col s4 variant-checkbox head-item" >
-            <div class="checkbox input-checkbox ">
-              <label>Tax Exempt</label>
-              <input
-                type="checkbox"
-                class="input-checkbox"
-                id="checkbox3"
-              />
-              <label for="checkbox3"></label>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col s12 m6 input">
-            <label>Department</label>
-            <div class="select">
-              <select
-                materialize="material_select"
-                [materializeSelectOptions]="departmentCollection">
-                <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col s12 m6 input" >
-            <label>Category</label>
-            <div class="select">
-              <select
-                materialize="material_select"
-                [materializeSelectOptions]="productCategoriesCollection">
-                <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col s12 m6 input" >
-            <label>Accounting</label>
-            <div class="select">
-              <select
-                materialize="material_select"
-                [materializeSelectOptions]="productAccountingCollection">
-                <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="col s12 m6 input">
-            <label>Pricing Rule</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
-            <div class="select">
-              <select
-                [(ngModel)]="product.pricing_rule"
-                materialize="material_select"
-                [materializeSelectOptions]="pricingRulesCollection">
-                <option *ngFor="let rule of pricingRulesCollection" [value]="rule">{{rule}}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <div class="text">
-              <div class="file-field">
-                <div class="upload-link">
-                  <input type="file" (change)="changeListener($event)" />
-                  <a>Attach File</a>
-                </div>
+          <div class="text">
+            <div class="file-field">
+              <div class="upload-link">
+                <input type="file" (change)="changeListener($event)" />
+                <a>Attach File</a>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="row ttl-box input">
-          <div class="col s12">
-            <p>Notes</p>
-            <input type="text" />
-          </div>
+      <div class="row ttl-box input">
+        <div class="col s12">
+          <p>Notes</p>
+          <input type="text" />
         </div>
+      </div>
 
-        <div class="row">
-          <div *ngFor="let attr of currentVariant.custom_attr" class="col s2">
-            <label class="top">{{attr.name}}</label>
-            <div class="value">{{attr.value}}</div>
-          </div>
+      <div class="row">
+        <div *ngFor="let attr of currentVariant.custom_attr" class="col s2">
+          <label class="top">{{attr.name}}</label>
+          <div class="value">{{attr.value}}</div>
         </div>
       </div>
     </div>

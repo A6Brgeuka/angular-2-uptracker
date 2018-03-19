@@ -2,9 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import {DialogRef, Modal} from 'angular2-modal';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { BrowseGlobalMarketModalComponent } from '../browse-global-market-modal/browse-global-market-modal.component';
-import { AddNewProductModalComponent } from '../add-new-product-modal/add-new-product-modal.component';
-
+import { BrowseGlobalMarketModalComponent } from './browse-global-market-modal/browse-global-market-modal.component';
+import { AddNewProductModalComponent } from './add-new-product-modal/add-new-product-modal.component';
+import {Observable} from 'rxjs/Observable';
+import {DestroySubscribers} from 'ngx-destroy-subscribers';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subject} from 'rxjs/Subject';
+import {ProductService} from '../../../core/services/product.service';
+import {AddProductFromVendorModalComponent} from './add-product-from-vendor-modal/add-product-from-vendor.component';
+import {isObject} from 'lodash';
 export class AddMarketProductModalContext extends BSModalContext {
 
 }
@@ -14,11 +20,19 @@ export class AddMarketProductModalContext extends BSModalContext {
   templateUrl: 'add-market-product-modal.component.html',
   styleUrls: ['add-market-product-modal.component.scss']
 })
-export class AddMarketProductModalComponent implements OnInit {
 
-  public barcode: string = '';
+@DestroySubscribers()
+export class AddMarketProductModalComponent implements OnInit {
+  public subscribers: any = {};
+
+  public searchText: string = '';
+  public noSearchedRes: string = null;
+  public autocompleteProducts$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public autocompleteProducts: any =  [];
+  public typeIn$: any = new Subject();
 
   constructor(
+    private productService: ProductService,
     public dialog: DialogRef<AddMarketProductModalContext>,
     public modal: Modal,
     public modalWindowService: ModalWindowService
@@ -27,6 +41,14 @@ export class AddMarketProductModalComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  addSubscribers() {
+    this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
+      .switchMap((keywords: string) => this.productService.autocompleteSearchProduct(keywords)).publishReplay(1).refCount()
+      .subscribe(res => {
+        this.autocompleteProducts = res;
+      });
   }
 
   dismissModal() {
@@ -49,4 +71,39 @@ export class AddMarketProductModalComponent implements OnInit {
       .open(AddNewProductModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true, 'big'));
   }
 
+  openAddNewProductFromVendorModal(product) {
+    this.dismissModal();
+    this.modal
+      .open(AddProductFromVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({product}, true, 'big'));
+  }
+
+  onSearchTypeIn(event) {
+    const requestParams = {
+      query: event.target.value,
+      page: 1,
+      limit: 10
+    };
+    this.autocompleteProducts$
+      .next(requestParams);
+    if (event.target.value.length > 2) {
+      this.typeIn$.next(event.target.value);
+    } else {
+      this.typeIn$.next(null);
+    }
+  }
+
+  listFormatter = (product: any) => product.name;
+
+  onSearchTextUpdated(searchText){
+    this.searchText = searchText;
+    this.typeIn$.next(searchText);
+  }
+
+  selectedAutocompled(product: any) {
+    if (isObject(product))
+      this.openAddNewProductFromVendorModal(product);
+  }
+  observableSource(keyword: any) {
+    return Observable.of(this.autocompleteProducts).take(1);
+  }
 }
