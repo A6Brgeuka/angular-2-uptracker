@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { FormControl } from '@angular/forms';
 
@@ -11,16 +11,16 @@ import { VendorService } from '../../../../core/services/vendor.service';
   templateUrl: './vendor-filter.component.html',
 })
 @DestroySubscribers()
-export class VendorFilterComponent {
+export class VendorFilterComponent implements OnInit {
 
   public vendors = new FormControl([]);
-  public vendorsCollection = {'': null};
+  public vendorsCollection = {};
 
   public autocompleteVendors = {
     autocompleteOptions: {
       data: this.vendorsCollection,
       limit: Infinity,
-      minLength: 1,
+      minLength: 0,
     }
   };
 
@@ -31,7 +31,7 @@ export class VendorFilterComponent {
   ) {
   }
 
-  addSubscribers() {
+  ngOnInit() {
     this.subscribers.getVendorsSubscription = this.vendorService.getVendors()
     .subscribe((res: any) => {
       const vendorsData = _.flattenDeep(res.data.vendors);

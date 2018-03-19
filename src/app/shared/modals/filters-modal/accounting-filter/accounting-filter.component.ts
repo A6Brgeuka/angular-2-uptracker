@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { FormControl } from '@angular/forms';
 
@@ -9,16 +9,16 @@ import { AccountService } from '../../../../core/services/account.service';
   templateUrl: './accounting-filter.component.html',
 })
 @DestroySubscribers()
-export class AccountingFilterComponent {
+export class AccountingFilterComponent implements OnInit {
 
   public accountings = new FormControl([]);
-  public accountingCollection = {'': null};
+  public accountingCollection = {};
 
   public autocompleteAccountings = {
     autocompleteOptions: {
       data: this.accountingCollection,
       limit: Infinity,
-      minLength: 1,
+      minLength: 0,
     }
   };
 
@@ -29,7 +29,7 @@ export class AccountingFilterComponent {
   ) {
   }
 
-  addSubscribers() {
+  ngOnInit() {
     this.subscribers.getProductCategoriesSubscription = this.accountService.getProductAccounting()
     .subscribe((res: any) => {
       const categoriesData = [...res];

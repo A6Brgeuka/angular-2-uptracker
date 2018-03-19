@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -21,7 +21,7 @@ export class FiltersModalContext extends BSModalContext {
   styleUrls: ['./filters-modal.component.scss'],
 })
 @DestroySubscribers()
-export class FiltersModalComponent implements ModalComponent<FiltersModalContext> {
+export class FiltersModalComponent implements OnInit, ModalComponent<FiltersModalContext> {
   context;
   private subscribers: any = {};
 
@@ -30,12 +30,12 @@ export class FiltersModalComponent implements ModalComponent<FiltersModalContext
   public filterForm: FormGroup;
   public departmentCollection$: Observable<any> = this.accountService.getDepartments();
 
-  public vendorsCollection = {'': null};
+  public vendorsCollection = {};
   public autocompleteVendors = {
     autocompleteOptions: {
       data: this.vendorsCollection,
       limit: Infinity,
-      minLength: 1,
+      minLength: 0,
     }
   };
 
@@ -55,6 +55,7 @@ export class FiltersModalComponent implements ModalComponent<FiltersModalContext
       orderedFrom: new FormControl(),
       orderedTo: new FormControl(),
     });
+
   }
 
   get departmentsControl() {
@@ -82,7 +83,7 @@ export class FiltersModalComponent implements ModalComponent<FiltersModalContext
     return this.filterForm.get('orderedTo');
   }
 
-  addSubscribers() {
+  ngOnInit() {
     this.subscribers.getVendorsSubscription = this.vendorService.getVendors()
     .subscribe((res: any) => {
       const vendorsData = _.flattenDeep(res.data.vendors);
