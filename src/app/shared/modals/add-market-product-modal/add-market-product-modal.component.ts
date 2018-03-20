@@ -10,7 +10,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subject} from 'rxjs/Subject';
 import {ProductService} from '../../../core/services/product.service';
 import {AddProductFromVendorModalComponent} from './add-product-from-vendor-modal/add-product-from-vendor.component';
-import {isObject} from 'lodash';
+import {isObject} from 'lodash'
 export class AddMarketProductModalContext extends BSModalContext {
 
 }

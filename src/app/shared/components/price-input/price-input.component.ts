@@ -12,7 +12,6 @@ export class PriceInputComponent implements OnInit {
   ngOnInit() {
   }
 
-
   changePrice(val) {
     const regex = /[\d\.]*/g;
     let m: any = regex.exec(val);

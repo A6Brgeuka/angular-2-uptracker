@@ -171,11 +171,10 @@ export class AddNewProductModalComponent implements OnInit {
 
     };
     this.modal.open(AddInventoryModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({'inventoryItems': [], 'modalMode': true}, true, 'big'))
+      .overlayConfigFactoryWithParams({'selectedProduct': this.product, 'modalMode': true}, true, 'big'))
       .then((resultPromise) => resultPromise.result.then((inventory) => {
         this.product.inventory_group = inventory;
         this.setStep(6);
-        console.log(this.product);
       }));
   }
 

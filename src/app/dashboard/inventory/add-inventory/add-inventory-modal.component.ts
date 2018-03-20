@@ -243,6 +243,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {
+        console.log(res)
         const findedCategory: any = _.find(res, 'category');
         const searchedCategory = (findedCategory) ? this.productCategoriesCollection.indexOf(findedCategory.category) : null;
         this.newInventory.name = res[0].name;
@@ -385,11 +386,6 @@ export class AddInventoryModal implements OnInit, OnDestroy, CloseGuard, ModalCo
         });
       })
     }
-/*
-    if (this.context.modalMode) {
-      this.step1.nativeElement.click();
-    }*/
-
   }
 
   ngOnDestroy() {
