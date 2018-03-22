@@ -87,6 +87,12 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   @ViewChild('all') allLocationLink: ElementRef;
   @ViewChild('primary') primaryLocationLink: ElementRef;
   public defaultPlaceholder: any = {
+    address: "Enter Value",
+    country: "Enter Value",
+    email: "Enter Value",
+    phone: "Enter Value",
+    fax: "Enter Value",
+    website: "Enter Value",
     discount_percentage: "Enter Value",
     shipping_handling: "Enter Value",
     avg_lead_time: "Enter Value",

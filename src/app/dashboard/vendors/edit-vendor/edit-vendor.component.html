@@ -23,6 +23,60 @@
       </div>
     </div>
   </div>
+
+  <!--<div class="input row">
+    <div class="col s12 m4">
+      <div class="label left-align">Address</div>
+      <input id="address" placeholder="{{placeholder.address}}" class="validate col s12" [(ngModel)]="vendor.address.street_1" name="address"
+             #address="ngModel" type="text">
+      <div [hidden]="address.valid || address.pristine" class="error red-text left-align">
+        Address is required.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">Country</div>
+      <input id="country" placeholder="{{placeholder.country}}" class="validate col s12" [(ngModel)]="vendor.address.country" name="country"
+             #country="ngModel" type="text">
+      <div [hidden]="country.valid || country.pristine" class="error red-text left-align">
+        Country is required.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">Email</div>
+      <input id="email" placeholder="{{placeholder.email}}" class="validate col s12" [(ngModel)]="vendor.email" name="email"
+             #email="ngModel" type="text">
+      <div [hidden]="email.valid || email.pristine" class="error red-text left-align">
+        Email is required.
+      </div>
+    </div>
+  </div>
+
+  <div class="input row">
+    <div class="col s12 m4">
+      <div class="label left-align">Phone</div>
+      <input id="phone" placeholder="{{placeholder.phone}}" class="validate col s12" [(ngModel)]="vendor.phone" name="phone"
+             #phone="ngModel" type="text">
+      <div [hidden]="phone.valid || phone.pristine" class="error red-text left-align">
+        Phone is required.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">Fax</div>
+      <input id="fax" placeholder="{{placeholder.fax}}" class="validate col s12" [(ngModel)]="vendor.fax" name="fax"
+             #fax="ngModel" type="text">
+      <div [hidden]="fax.valid || fax.pristine" class="error red-text left-align">
+        Fax is required.
+      </div>
+    </div>
+    <div class="col s12 m4">
+      <div class="label left-align">Website</div>
+      <input id="website" placeholder="{{placeholder.website}}" class="validate col s12" [(ngModel)]="vendor.website" name="website"
+             #website="ngModel" type="text">
+      <div [hidden]="website.valid || website.pristine" class="error red-text left-align">
+        Website is required.
+      </div>
+    </div>
+  </div>-->
 </div>
 
 <div class="row">
@@ -105,7 +159,7 @@
         <div class="label">Shipping & Handling Fee</div>
         <div class="prefix-input">
           <div class="prefix" [innerHTML]="currencySign"></div>
-          <input id="shipping" class="validate col s12" placeholder="{{placeholder.shipping_handling}}" [(ngModel)]="vendor.shipping_handling"
+          <input id="shipping" class="validate col s12 extra-padding" placeholder="{{placeholder.shipping_handling}}" [(ngModel)]="vendor.shipping_handling"
             [textMask]="{mask: amountMask, guide: false}" name="shipping" #shipping="ngModel" type="text">
         </div>
         <div [hidden]="shipping.valid || shipping.pristine" class="error red-text left-align">

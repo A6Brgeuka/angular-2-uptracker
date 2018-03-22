@@ -129,13 +129,9 @@ export class AddVendorModalComponent implements OnInit {
       this.formData.append('logo', this.logo);
     }
 
-    this.vendorService.addAccountVendor(this.formData).subscribe(
-      (res: any) => {
-        this.router.navigate(['/vendors/edit/' + res.id]);
-        return this.dismissModal();
-      }
-    );
-
+    this.vendorService.addAccountVendor(this.formData)
+      .do(res => this.vendorService.addToCollection$.next(res))
+      .subscribe(res => this.router.navigate(['/vendors/edit/' + res.id]) && this.dismissModal())
   }
 
   uploadLogo(file: any) {
