@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AccountService } from '../../../../core/services/account.service';
-import {DialogRef, Modal} from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import {some, filter, keys} from 'lodash';
@@ -12,10 +11,6 @@ import {AddVendorModalComponent} from "../../add-vendor-modal/add-vendor-modal.c
 import {AddInventoryModal} from "../../../../dashboard/inventory/add-inventory/add-inventory-modal.component";
 import {InventorySearchModalComponent} from "../../../../dashboard/inventory/inventory-search-modal/inventory-search-modal.component";
 import {ProductService} from "../../../../core/services/product.service";
-
-export class AddNewProductModalContext extends BSModalContext {
-
-}
 
 @Component({
   selector: 'app-add-new-product-modal',
@@ -61,11 +56,9 @@ export class AddNewProductModalComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private productService: ProductService,
-    public dialog: DialogRef<AddNewProductModalContext>,
     public modal: Modal,
     public modalWindowService: ModalWindowService
   ) {
-    dialog.setCloseGuard(this);
   }
 
   ngOnInit() {
@@ -101,10 +94,6 @@ export class AddNewProductModalComponent implements OnInit {
       return some(this.variants, (val, key) =>  val);
     }
     return true;
-  }
-
-  dismissModal() {
-    this.dialog.dismiss();
   }
 
   getVariants() {
@@ -171,7 +160,7 @@ export class AddNewProductModalComponent implements OnInit {
 
     };
     this.modal.open(AddInventoryModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({'selectedProduct': this.product, 'modalMode': true}, true, 'big'))
+      .overlayConfigFactoryWithParams({'selectedProduct': {...prod, ...this.product}, 'modalMode': true}, true, 'big'))
       .then((resultPromise) => resultPromise.result.then((inventory) => {
         this.product.inventory_group = inventory;
         this.setStep(6);

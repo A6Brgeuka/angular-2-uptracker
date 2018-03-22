@@ -2,17 +2,9 @@
 
 :host /deep/ {
 
-  .close {
-    display: block !important;
-  }
 
   .title {
     text-align: center;
-  }
-
-  perfect-scrollbar {
-    text-align: center;
-    max-height: 50vh;
   }
 
   .list {
@@ -22,24 +14,23 @@
     padding-bottom: 15px;
     text-align: left;
     margin-left: -20px;
-
       .item {
         display: inline-block;
         vertical-align: top;
-        width: 150px;
-        height: 150px;
-        margin-left: 10px;
-        margin-bottom: 10px;
+        width: 250px;
+        height: 250px;
+        margin-left: 20px;
+        margin-bottom: 20px;
         max-width: 100%;
         position: relative;
 
         .inner {
-          width: 125px;
-          height: 125px;
+          width: 250px;
+          height: 250px;
           border: 1px solid #d6d6d6;
           background: #fff;
           cursor: pointer;
-          border-radius: 3px;
+          border-radius: 5px;
 
           .hazardous {
             position: absolute;
@@ -47,16 +38,22 @@
             top: 10px;
             color: #f1594e;
           }
-
           &.active {
             border: 3px solid #000;
           }
+
+          &:hover {
+            .star-right {
+              opacity: 1;
+            }
+          }
         }
 
+
         .img {
-          margin: 10px auto 10px;
-          height: 60px;
-          width: 60px;
+          margin: 21px auto 30px;
+          height: 140px;
+          width: 140px;
           background: #f1f2f2 no-repeat center center;
           background-size: cover;
           position: relative;
@@ -73,15 +70,13 @@
         .info {
           position: relative;
           font-size: 12px;
-          margin: 0 10px;
+          margin: 0 15px;
 
           .ttl {
-            font-size: 12px;
-            white-space: nowrap;
+            font-size: 14px;
             line-height: 18px;
-            text-overflow: ellipsis;
-            overflow: hidden;
             font-weight: bold;
+            height: 36px;
           }
 
           .bottom {
@@ -117,82 +112,9 @@
       }
     }
 
-    .row {
-      .col {
-        display: block;
-        label {
-          vertical-align: middle;
-
-        }
-      }
-    }
-    .heading {
-      margin: 10px 0;
-      color: #444;
-      border-bottom: 2px solid #ddd;
-      font-size: 14px;
-      font-weight: bold;
-      .col {
-      }
-      button {
-        width: 30px;
-        i {
-          font-size: 20px;
-          line-height: 28px;
-        }
-      }
-    }
-    .item {
-      margin-bottom: 0;
-      font-size: 14px;
-
-      .col {
-        min-height: 30px;
-        line-height: 30px;
-        color: #444;
-        &:nth-of-type(3), &:nth-of-type(4) {
-          text-align: center;
-        }
-        &:nth-of-type(2) {
-          color: $tealish;
-          cursor: pointer;
-        }
-      }
-      .trash-row-icon {
-        visibility: hidden;
-      }
-      &:hover {
-        .trash-row-icon {
-          visibility: visible;
-        }
-      }
-    }
-
-    input {
-      margin: 0;
-      height: 30px;
-      font-size: 11px;
-      background-color: #fff;
-      padding-left: 8px;
-      text-indent: 0;
-      text-overflow: ellipsis;
-      color: $grey;
-      border: 1px solid #9a9a9a!important;
-      border-radius: 5px;
-
-      &.empty {
-        color: $light-grey;
-      }
-      &:disabled {
-        background: none;
-        cursor: inherit;
-      }
-    }
-
   @media (max-width: 1024px) {
     .title {
       display: block;
-
     }
   }
 }

@@ -21,14 +21,14 @@
     </div>
     <div class="col s6">
       <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
-              (click)="openBrowseGlobalMarketModal()">
+              [routerLink]="['/product', 'global']" (click)="dismissModal(); $event.stopPropagation()">
         Browse global market
       </button>
     </div>
     <div class="col s6">
       <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
-              (click)="openAddNewProductModal()">
-        Add custom product
+              [routerLink]="['/product', 'custom']" (click)="dismissModal(); $event.stopPropagation()">
+      Add custom product
       </button>
     </div>
   </div>

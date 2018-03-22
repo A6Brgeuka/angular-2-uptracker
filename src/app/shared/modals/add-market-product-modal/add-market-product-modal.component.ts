@@ -11,6 +11,7 @@ import {Subject} from 'rxjs/Subject';
 import {ProductService} from '../../../core/services/product.service';
 import {AddProductFromVendorModalComponent} from './add-product-from-vendor-modal/add-product-from-vendor.component';
 import {isObject} from 'lodash'
+import {Router} from "@angular/router";
 export class AddMarketProductModalContext extends BSModalContext {
 
 }
@@ -33,6 +34,7 @@ export class AddMarketProductModalComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private router: Router,
     public dialog: DialogRef<AddMarketProductModalContext>,
     public modal: Modal,
     public modalWindowService: ModalWindowService
@@ -57,18 +59,6 @@ export class AddMarketProductModalComponent implements OnInit {
 
   closeModal(data) {
     this.dialog.close(data);
-  }
-
-  openBrowseGlobalMarketModal() {
-    this.dismissModal();
-    this.modal
-      .open(BrowseGlobalMarketModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true, 'big'));
-  }
-
-  openAddNewProductModal() {
-    this.dismissModal();
-    this.modal
-      .open(AddNewProductModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}, true, 'big'));
   }
 
   openAddNewProductFromVendorModal(product) {
@@ -101,8 +91,9 @@ export class AddMarketProductModalComponent implements OnInit {
 
   selectedAutocompled(product: any) {
     if (isObject(product))
-      this.openAddNewProductFromVendorModal(product);
+      this.router.navigate(['/product', 'global']);
   }
+
   observableSource(keyword: any) {
     return Observable.of(this.autocompleteProducts).take(1);
   }
