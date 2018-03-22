@@ -109,7 +109,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   showFiltersModal() {
     this.modal
-    .open(FiltersModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .open(FiltersModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({filtersType: 'ordersPageFilters'}))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
