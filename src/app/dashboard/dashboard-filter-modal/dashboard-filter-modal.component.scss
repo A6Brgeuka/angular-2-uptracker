@@ -299,6 +299,9 @@
         .line {
           display: flex;
           line-height: 32px;
+          .select-wrapper {
+            max-width: 100px;
+          }
           > span {
             padding-left: 15px;
           }
