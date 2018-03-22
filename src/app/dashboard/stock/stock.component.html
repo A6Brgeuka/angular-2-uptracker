@@ -1,8 +1,20 @@
-<div class="products content">
-  <div class="top">
-    <div class="row">
-      <div class="title left">Stock Count</div>
-      <button>ADD PRODUCT</button>
+<div class="stock content">
+  <div class="row top">
+    <div class="title left">Stock Count</div>
+    <button class="add-product">ADD PRODUCT</button>
+  </div>
+  <div class="row control">
+    <div class="select">
+      <select title="sort by" [(ngModel)]="sort" materialize="material_select" (change)="sortAlphabet($event)">
+        <option value="A-Z">A-Z</option>
+        <option value="Z-A">Z-A</option>
+      </select>
+    </div>
+    <div class="input wide-input">
+      <input type="text" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
+    </div>
+    <div class="toggle">
+      <i class="fa fa-th-large"></i>
     </div>
   </div>
 </div>

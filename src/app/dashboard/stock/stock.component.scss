@@ -1,12 +1,32 @@
-
+@import "../../../colors.scss";
 :host /deep/ {
-  .products {
+  .stock {
+    margin-right: 250px;
     .top {
+      position: relative;
       .title {
         margin-bottom: 15px;
       }
       .sub-title {
         font-size: 18px;
+      }
+      .add-product {
+        position: absolute;
+        right: 0;
+      }
+    }
+    .control {
+      display: flex;
+      justify-content: flex-end;
+      .select {
+        max-width: 200px;
+      }
+      .input {
+        max-width: 200px;
+      }
+      .toggle {
+        color: $tealish;
+        font-size: 24px;
       }
     }
   }

@@ -10,9 +10,13 @@ import * as _ from 'lodash';
   styleUrls: ['./stock.component.scss']
 })
 export class StockComponent implements OnInit {
+  public sort: string = '';
+  public filter: string = '';
   constructor(
     public modal: Modal,
   ) {}
 
   ngOnInit() {}
+  sortAlphabet() {}
+  filterChange() {}
 }
