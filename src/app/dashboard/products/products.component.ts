@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
-import { ProductFilterModal } from './product-filter-modal/product-filter-modal.component';
 import { ProductService } from '../../core/services/index';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { AccountService } from '../../core/services/account.service';
 import { UploadCsvModal } from './upload-csv-modal/upload-csv-modal.component';
 import { ToasterService } from '../../core/services/toaster.service';
+import { FiltersModalComponent } from '../../shared/modals/filters-modal/filters-modal.component';
 
 @Component({
   selector: 'app-products',
@@ -39,14 +39,13 @@ export class ProductsComponent implements OnInit {
   searchProducts(event) {
     this.productService.updateSearchKey(event);
   }
-   
+
   showFiltersModal() {
     this.modal
-    .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .open(FiltersModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({filtersType: 'marketplaceFilters'}))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
-          // this.filterProducts();
         },
         (err) => {
         }
