@@ -21,4 +21,12 @@
     <div class="col">Actual QTY</div>
     <div class="col">Reason</div>
   </div>
+  <div class="row product-list" *ngFor="let product of products; let i = index">
+    <div class="col preview"></div>
+    <div class="col title">{{product.title}}</div>
+    <div class="col count">{{product.countBy}}</div>
+    <div class="col current">{{product.currentQTY}}</div>
+    <div class="col actual">{{product.actual}}</div>
+    <div class="col reason">{{product.reason}}</div>
+  </div>
 </div>
