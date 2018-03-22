@@ -3,22 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FiltersModalComponent } from './filters-modal.component';
-import { PriceFilterModule } from './price-filter/price-filter.module';
-import { CheckboxesFilterModule } from './checkboxes-filter/checkboxes-filter.module';
-import { ChipsInputModule } from '../../components/chips-input/chips-input.module';
-import { DateFilterModule } from './date-filter/date-filter.module';
-import { SingleCheckboxFilterModule } from './single-checkbox-filter/single-checkbox-filter.module';
+import { OrdersPageFiltersModule } from './orders-page-filters/orders-page-filters.module';
+import { MarketplaceFiltersModule } from './marketplace-filters/marketplace-filters.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ChipsInputModule,
-    CheckboxesFilterModule,
-    DateFilterModule,
-    PriceFilterModule,
-    SingleCheckboxFilterModule,
+    MarketplaceFiltersModule,
+    OrdersPageFiltersModule,
   ],
   declarations: [
     FiltersModalComponent,

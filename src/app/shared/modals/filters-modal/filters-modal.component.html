@@ -1,69 +1,72 @@
 <div class="close" (click)="dismissModal()"></div>
 <div class="inner">
   <div class="title center-align">Filter Settings</div>
-  <form class="uptracker-form"
-    materialize
-    autocomplete="off"
-    novalidate
-  >
-    <div class="row">
-      <div class="col s12 m5">
-        <app-price-filter
-          [title]="'Price'"
-          [maxPrice]="maxPriceControl"
-          [minPrice]="minPriceControl"
-        ></app-price-filter>
-        <app-date-filter
-        [title]="'Previously ordered within X-X dates'"
-        [orderedFrom]="orderedFromControl"
-        [orderedTo]="orderedToControl"
-        ></app-date-filter>
-      </div>
-      <div class="col s12 m4">
-        <app-checkboxes-filter
-          [title]="'Discount'"
-          [collection]="discounts"
-          [formControl]="discountsControl"
-        >
-        </app-checkboxes-filter>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col s12 m6">
-        <div class="ttl bold">Vendor</div>
-        <app-chips-input
-          [formControl]="vendorsControl"
-          [materializeParams]="autocompleteVendors"
-        ></app-chips-input>
-      </div>
-      <div class="col s12 m6">
-        <app-checkboxes-filter
-          [title]="'Department'"
-          [collection]="(departmentCollection$ | async)"
-          [classCol]="'m6'"
-          [formControl]="departmentsControl"
-        >
-        </app-checkboxes-filter>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col s12 m6">
-        <app-single-checkbox-filter
-          [title]="'My Favorite'"
-          [control]="myFavoriteControl"
-        >
-        </app-single-checkbox-filter>
-      </div>
-    </div>
+  <app-orders-page-filters *ngIf="context.filtersType === 'ordersPageFilters'"></app-orders-page-filters>
+  <app-marketplace-filters *ngIf="context.filtersType === 'marketplaceFilters'"></app-marketplace-filters>
+  <!--<form class="uptracker-form"-->
+    <!--materialize-->
+    <!--autocomplete="off"-->
+    <!--novalidate-->
+  <!--&gt;-->
+    <!--<div class="row">-->
+      <!--<div class="col s12 m5">-->
+        <!--<app-price-filter-->
+          <!--[title]="'Price'"-->
+          <!--[maxPrice]="maxPriceControl"-->
+          <!--[minPrice]="minPriceControl"-->
+        <!--&gt;</app-price-filter>-->
+        <!--<app-date-filter-->
+        <!--[title]="'Previously ordered within X-X dates'"-->
+        <!--[orderedFrom]="orderedFromControl"-->
+        <!--[orderedTo]="orderedToControl"-->
+        <!--&gt;</app-date-filter>-->
+      <!--</div>-->
+      <!--<div class="col s12 m4">-->
+        <!--<app-checkboxes-filter-->
+          <!--[title]="'Discount'"-->
+          <!--[collection]="discounts"-->
+          <!--[formControl]="discountsControl"-->
+        <!--&gt;-->
+        <!--</app-checkboxes-filter>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+      <!--<div class="col s12 m6">-->
+        <!--<div class="ttl bold">Vendor</div>-->
+        <!--<app-chips-input-->
+          <!--[formControl]="vendorsControl"-->
+          <!--[materializeParams]="autocompleteVendors"-->
+        <!--&gt;</app-chips-input>-->
+      <!--</div>-->
+      <!--<div class="col s12 m6">-->
+        <!--<app-checkboxes-filter-->
+          <!--[title]="'Department'"-->
+          <!--[collection]="(departmentCollection$ | async)"-->
+          <!--[classCol]="'m6'"-->
+          <!--[formControl]="departmentsControl"-->
+        <!--&gt;-->
+        <!--</app-checkboxes-filter>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+      <!--<div class="col s12 m6">-->
+        <!--<app-single-checkbox-filter-->
+          <!--[title]="'My Favorite'"-->
+          <!--[control]="myFavoriteControl"-->
+        <!--&gt;-->
+        <!--</app-single-checkbox-filter>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</form>-->
     <div class="footer-btn">
-      <button class="uptracker-form-btn tealish white-text waves-effect waves-light"
+      <button class="uptracker-form-btn tealish white-text waves-effect waves-light" type="submit"
         (click)="applyFilters()"
       >
         Apply Filters
       </button>
-      <button class="uptracker-form-btn tealish tealish-text waves-effect waves-light back-btn">
+      <button class="uptracker-form-btn tealish tealish-text waves-effect waves-light back-btn" (click)="dismissModal()">
         Cancel
       </button>
     </div>
-  </form>
+
 </div>
