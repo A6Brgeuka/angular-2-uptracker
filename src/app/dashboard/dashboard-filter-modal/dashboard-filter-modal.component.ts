@@ -28,7 +28,7 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   public searchText: string = '';
   public modalState: number = 0;
   public location: string = '';
-  public productVariant: string = '';
+  public subtracting: string = 'Box';
   public groups: Array<any> = [];
   public selectedGroup: any;
 
@@ -72,14 +72,7 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.stockSterlizationLimit = this.stockSterlization;
   }
 
-  productSort(event) {
-    this.stockMini = Math.round(100 * Math.random());
-    this.stockMiniLimit = this.stockMini;
-    this.stockShelf = Math.round(100 * Math.random());
-    this.stockShelfLimit = this.stockShelf;
-    this.stockSterlization = Math.round(100 * Math.random());
-    this.stockSterlizationLimit = this.stockSterlization;
-  }
+  subtractingSort(event) {}
 
   searchProducts(event) {}
 
