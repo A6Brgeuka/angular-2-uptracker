@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { TransferModal } from './transfer-modal.component';
 import { AppSharedModule } from '../../shared/shared.module';
+import { RangeSliderModule } from '../../shared/components/range-slider/range-slider.module';
 
 @NgModule({
   declarations: [
     TransferModal
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    RangeSliderModule
   ],
   providers: [],
   // IMPORTANT:
