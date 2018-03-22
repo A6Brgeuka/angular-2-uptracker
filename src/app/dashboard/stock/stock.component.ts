@@ -12,9 +12,18 @@ import * as _ from 'lodash';
 export class StockComponent implements OnInit {
   public sort: string = '';
   public filter: string = '';
+  public products: Array<any> = [];
   constructor(
     public modal: Modal,
-  ) {}
+  ) {
+    this.products = [
+      { title: 'Gloves Tender Touch Nitrile Sempecare', countBy: '1 Box (100)', currentQTY: '100', actualQTY: '-', reason: 'N/A' },
+      { title: 'Gloves Tender Touch Nitrile Sempecare', countBy: '1 Box (100)', currentQTY: '80', actualQTY: '-', reason: 'N/A' },
+      { title: '20GM Maximum cure sealant a-flouo', countBy: '1 Box (100)', currentQTY: '20', actualQTY: '-', reason: 'N/A' },
+      { title: '5GM Light bond medium pst-push-fluo', countBy: '1 Box (100)', currentQTY: '8', actualQTY: '-', reason: 'N/A' },
+      { title: 'A2 Tips', countBy: '1 Box (100)', currentQTY: '12', actualQTY: '-', reason: 'N/A' },
+    ]
+  }
 
   ngOnInit() {}
   sortAlphabet() {}
