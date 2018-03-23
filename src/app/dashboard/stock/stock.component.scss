@@ -93,7 +93,10 @@
     }
   }
   .panel {
-    background-color: blue;
+    background-color: $white;
+    border-left: 1px solid $light-grey;
+    padding-top: 40px;
+    padding-left: 30px;
     position: absolute;
     transition: right .5s;
     top: 0;
@@ -102,6 +105,13 @@
     height: 100%;
     &.active {
       right: 0;
+    }
+
+    .title {
+      white-space: nowrap;
+      line-height: 30px;
+      font-size: 20px;
+      font-family: Ubuntu;
     }
   }
 }
