@@ -13,6 +13,7 @@ export class StockComponent implements OnInit {
   public sort: string = '';
   public filter: string = '';
   public products: Array<any> = [];
+  public panelActive: boolean = false;
   constructor(
     public modal: Modal,
   ) {
@@ -28,4 +29,11 @@ export class StockComponent implements OnInit {
   ngOnInit() {}
   sortAlphabet() {}
   filterChange() {}
+  actualChange(event) {
+    let active = false;
+    this.products.forEach(product => {
+      if (parseInt(product.actualQTY) > 0) active = true;
+    })
+    this.panelActive = active;
+  }
 }

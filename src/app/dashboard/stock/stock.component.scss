@@ -92,4 +92,16 @@
       border-bottom: none;
     }
   }
+  .panel {
+    background-color: blue;
+    position: absolute;
+    transition: right .5s;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    &.active {
+      right: 0;
+    }
+  }
 }
