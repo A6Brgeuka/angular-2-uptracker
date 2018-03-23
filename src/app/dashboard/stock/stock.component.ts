@@ -2,6 +2,8 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { UserService, AccountService } from '../../core/services/index';
+import { ModalWindowService } from '../../core/services/modal-window.service';
+import { UpdateStockModal } from './update-stock-modal/update-stock-modal.component';
 import * as _ from 'lodash';
 
 @Component({
@@ -16,6 +18,7 @@ export class StockComponent implements OnInit {
   public panelActive: boolean = false;
   constructor(
     public modal: Modal,
+    public modalWindowService: ModalWindowService,
   ) {
     this.products = [
       { title: 'Gloves Tender Touch Nitrile Sempecare', countBy: '1 Box (100)', currentQTY: 100, actualQTY: '-', reason: 'N/A' },
@@ -27,13 +30,27 @@ export class StockComponent implements OnInit {
   }
 
   ngOnInit() {}
+
   sortAlphabet() {}
+
   filterChange() {}
+
   actualChange(event) {
     let active = false;
     this.products.forEach(product => {
       if (parseInt(product.actualQTY) > 0) active = true;
     })
     this.panelActive = active;
+  }
+
+  openSuccessModal() {
+    this.modal
+    .open(UpdateStockModal, this.modalWindowService.overlayConfigFactoryWithParams({'product': []}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {},
+        (err) => {}
+      );
+    });
   }
 }
