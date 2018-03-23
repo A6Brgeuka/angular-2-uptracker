@@ -11,6 +11,7 @@ import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
 import { AddInventoryModal } from './add-inventory/add-inventory-modal.component';
 import { Subject } from 'rxjs/Subject';
+import { FiltersModalComponent } from '../../shared/modals/filters-modal/filters-modal.component';
 
 @Component({
   selector: 'app-inventory',
@@ -315,4 +316,16 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  showFiltersModal() {
+    this.modal
+    .open(FiltersModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({filtersType: 'inventoryGroupFilters'}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {
+        },
+        (err) => {
+        }
+      );
+    });
+  }
 }
