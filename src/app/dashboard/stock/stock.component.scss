@@ -69,6 +69,9 @@
         .input {
           max-width: 80px;
         }
+        input {
+          text-align: center;
+        }
       }
       .actual {
         .input {
@@ -76,6 +79,7 @@
         }
         input {
           background-color: $white;
+          text-align: center;
         }
       }
       .reason {
