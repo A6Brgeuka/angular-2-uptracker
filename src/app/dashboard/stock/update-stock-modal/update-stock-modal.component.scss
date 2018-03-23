@@ -1,5 +1,28 @@
+@import "../../../../colors.scss";
 :host /deep/ {
   .inner {
-
+    .check {
+      background-image: url(/assets/img/icon-check.png);
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 200px;
+      height: 200px;
+    }
+    .update {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: $tealish;
+      border: 0;
+      border-radius: 5px;
+      height: 30px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: normal;
+      max-width: 100px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 }
