@@ -36,7 +36,7 @@
     </div>
     <div class="col s2 current">
       <div class="input wide-input">
-        <input type="text" [(ngModel)]="product.currentQTY" (ngModelChange)="filterChange($event)">
+        <input type="text" [disabled]="true" [(ngModel)]="product.currentQTY" (ngModelChange)="filterChange($event)">
       </div>
     </div>
     <div class="col s2 actual">
