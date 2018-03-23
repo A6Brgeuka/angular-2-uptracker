@@ -95,6 +95,7 @@
     border-left: 1px solid $light-grey;
     padding-top: 40px;
     padding-left: 30px;
+    padding-right: 20px;
     position: absolute;
     transition: right .5s;
     top: 0;
@@ -108,8 +109,17 @@
     .title {
       white-space: nowrap;
       line-height: 30px;
+      margin-left: 10px;
+      margin-bottom: 30px;
       font-size: 20px;
       font-family: Ubuntu;
+    }
+    .changes {
+      border-bottom: 1px solid $light-grey;
+      padding-bottom: 20px;
+      .shrinkage {
+        color: $button-red;
+      }
     }
   }
 }
