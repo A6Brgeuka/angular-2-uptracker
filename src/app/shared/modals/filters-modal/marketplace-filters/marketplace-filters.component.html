@@ -41,7 +41,7 @@
   <div class="row">
     <div class="col s12 m6">
       <div class="ttl bold">Accounting</div>
-      <app-chips-input
+      <app-chips-input class="mrg-btm-20"
         [formControl]="accountingsControl"
         [materializeParams]="autocompleteAccountings"
       ></app-chips-input>
@@ -56,26 +56,31 @@
       <app-single-checkbox-filter
         [title]="'Show Retired Products'"
         [control]="retiredControl"
+        [className]="'m6'"
       >
       </app-single-checkbox-filter>
       <app-single-checkbox-filter
         [title]="'Show Hazardous Products'"
         [control]="hazardousControl"
+        [className]="'m6'"
       >
       </app-single-checkbox-filter>
       <app-single-checkbox-filter
         [title]="'Show Trackable Products'"
         [control]="trackableControl"
+        [className]="'m6'"
       >
       </app-single-checkbox-filter>
       <app-single-checkbox-filter
         [title]="'Show Tax Exempt Products'"
         [control]="taxExemptControl"
+        [className]="'m6'"
       >
       </app-single-checkbox-filter>
       <app-single-checkbox-filter
         [title]="'Most frequently ordered'"
         [control]="mostFrequentlyOrderedControl"
+        [className]="'m6'"
       >
       </app-single-checkbox-filter>
     </div>

@@ -28,7 +28,7 @@ export class MarketplaceFiltersComponent implements OnInit {
     }
   };
 
-  public productCategoriesCollection = {'': null};
+  public productCategoriesCollection: any = {'': null};
   public autocompleteCategories = {
     autocompleteOptions: {
       data: this.productCategoriesCollection,
@@ -128,10 +128,10 @@ export class MarketplaceFiltersComponent implements OnInit {
       });
     });
 
-    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductAccounting()
+    this.subscribers.getProductAccountingSubscription = this.accountService.getProductAccounting()
     .subscribe((res: any) => {
-      const categoriesData = [...res];
-      categoriesData.map((accounting) =>
+      const accountingsData = [...res];
+      accountingsData.map((accounting) =>
         this.accountingCollection[accounting] = null
       );
     });
