@@ -1,7 +1,7 @@
 <div class="stock content">
   <div class="row top">
     <div class="title left">Stock Count</div>
-    <button class="add-product">ADD PRODUCT</button>
+    <button class="add-product uptracker-form-btn">ADD PRODUCT</button>
   </div>
   <div class="row control">
     <div class="select">
@@ -15,18 +15,43 @@
     </div>
   </div>
   <div class="row product-header">
-    <div class="col">Product</div>
-    <div class="col">Count By</div>
-    <div class="col">Current QTY</div>
-    <div class="col">Actual QTY</div>
-    <div class="col">Reason</div>
+    <div class="col s4">Product</div>
+    <div class="col s2">Count By</div>
+    <div class="col s2">Current QTY</div>
+    <div class="col s2">Actual QTY</div>
+    <div class="col s2">Reason</div>
   </div>
   <div class="row product-list" *ngFor="let product of products; let i = index">
-    <div class="col preview"></div>
-    <div class="col title">{{product.title}}</div>
-    <div class="col count">{{product.countBy}}</div>
-    <div class="col current">{{product.currentQTY}}</div>
-    <div class="col actual">{{product.actual}}</div>
-    <div class="col reason">{{product.reason}}</div>
+    <div class="col s4 main">
+      <div class="preview"></div>
+      <div class="title">{{product.title}}</div>
+    </div>
+    <div class="col s2 count">
+      <div class="select">
+        <select title="sort by" [(ngModel)]="product.countBy" materialize="material_select" (change)="sortAlphabet($event)">
+          <option value="A-Z">1 Box (100)</option>
+          <option value="Z-A">1 Glove</option>
+        </select>
+      </div>
+    </div>
+    <div class="col s2 current">
+      <div class="input wide-input">
+        <input type="text" [(ngModel)]="product.currentQTY" (ngModelChange)="filterChange($event)">
+      </div>
+    </div>
+    <div class="col s2 actual">
+      <div class="input wide-input">
+        <input type="text" [(ngModel)]="product.actualQTY" (ngModelChange)="filterChange($event)">
+      </div>
+    </div>
+    <div class="col s2 reason">
+      <div class="select" [class.active]="product.reason != 'N/A'">
+        <select title="sort by" [(ngModel)]="product.reason" materialize="material_select" (change)="sortAlphabet($event)">
+          <option value="N/A">N/A</option>
+          <option value="Shrinkage">Shrinkage</option>
+          <option value="Used">Used</option>
+        </select>
+      </div>
+    </div>
   </div>
 </div>

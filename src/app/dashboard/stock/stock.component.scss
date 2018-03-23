@@ -20,17 +20,74 @@
       justify-content: flex-end;
       .select {
         max-width: 200px;
+        input {
+          background-color: $white;
+        }
       }
       .input {
+        margin-left: 20px;
         max-width: 200px;
+        input {
+          background-color: $white;
+        }
       }
     }
     .product-header {
-    }
-    .product-table {
+      border-bottom: 2px solid $grey;
+      font-family: 'Roboto';
+      font-weight: bold;
+      line-height: 50px;
+      .col {
+        padding-left: 0;
+      }
     }
     .product-list {
-      
+      border-bottom: 1px solid $light-grey;
+      padding-bottom: 20px;
+      .main {
+        display: flex;
+        margin-left: -10px;
+        .preview {
+          border: 1px solid $grey;
+          border-radius: 3px;
+          width: 75px;
+          height: 75px;
+        }
+        .title {
+          margin-left: 10px;
+        }
+      }
+      .count {
+        .select {
+          max-width: 120px;
+        }
+        .select-dropdown {
+          background-color: $white;
+        }
+      }
+      .current {
+        .input {
+          max-width: 80px;
+        }
+      }
+      .actual {
+        .input {
+          max-width: 80px;
+        }
+        input {
+          background-color: $white;
+        }
+      }
+      .reason {
+        .active {
+          input {
+            background-color: $white;
+          }
+        }
+      }
+    }
+    .product-list:last-child {
+      border-bottom: none;
     }
   }
 }
