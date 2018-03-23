@@ -2,9 +2,6 @@
   .checkboxesList {
     margin: 5px 0;
     padding: 0;
-    .input-checkbox {
-      float: left;
-    }
     [type="checkbox"]:not(.filled-in) + label:after {
       -webkit-transform: none;
       transform: none;

@@ -4,13 +4,6 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, ModalComponent } from 'angular2-modal';
 
-// import * as _ from 'lodash';
-
-// import { AccountService } from '../../../core/services/account.service';
-// import { FormControl, FormGroup } from '@angular/forms';
-// import { Observable } from 'rxjs/Observable';
-// import { VendorService } from '../../../core/services/vendor.service';
-
 export class FiltersModalContext extends BSModalContext {
   public filters: any;
 }
