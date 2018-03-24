@@ -23,7 +23,7 @@ export class OnlineOrderModalContext extends BSModalContext {
   templateUrl: './online-order-modal.component.html',
   styleUrls: ['./online-order-modal.component.scss']
 })
-@DestroySubscribers()
+
 export class OnlineOrderModalComponent implements OnInit, ModalComponent<OnlineOrderModalContext> {
   context: OnlineOrderModalContext;
   action: "Go to website" | "Email" | "Print" = "Email";
@@ -40,23 +40,29 @@ export class OnlineOrderModalComponent implements OnInit, ModalComponent<OnlineO
   ) {
     this.context = dialog.context;
   }
-  
+
   ngOnInit() {
     this.vendorService.getVendor(this.context.vendor_id).subscribe(vendor => {
       this.website = vendor.website;
     });
   }
-  
-  
+
+
   closeModal() {
     switch (this.action) {
       case "Go to website":
-        if (this.website) {
-          window.open(this.website);
-        }
-        this.dialog.close();
+        this.convertOrder()
+          .subscribe(order => {
+            this.orderService.sendOrderRequestFinal(order.id, {})
+              .subscribe(() => {
+                if (this.website) {
+                  window.open(this.website);
+                }
+                this.dialog.close();
+              })
+          });
         break;
-      case "Email": 
+      case "Email":
         this.route.params.subscribe((p: Params)=>{
           this.router.navigate(['/shoppinglist','purchase', this.context.order_id]);
           this.dialog.close();
@@ -64,24 +70,23 @@ export class OnlineOrderModalComponent implements OnInit, ModalComponent<OnlineO
         break;
       case "Print":
         this.spinner.show();
-        let ua = navigator.userAgent.toLowerCase(); 
+        let ua = navigator.userAgent.toLowerCase();
         let isSafari = ua.indexOf('safari') != -1;
         let w: Window;
         if (isSafari) {
           w = window.open();
         }
 
-        this.orderService.convertOrders(this.context.order_id, this.orderService.convertData)
-        .map(res => res.data.order)
-        .switchMap(order => {
-          return this.orderService.sendOrderRequest(order.id)
-          .switchMap(res => {
-            return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + order.id + '/download', {
-              responseType: ResponseContentType.ArrayBuffer
+        this.convertOrder()
+          .switchMap(order => {
+            return this.orderService.sendOrderRequestFinal(order.id, {})
+            .switchMap(res => {
+              return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + order.id + '/download', {
+                responseType: ResponseContentType.ArrayBuffer
+              });
             });
-          });
-        })
-        .subscribe((res) => { 
+          })
+        .subscribe((res) => {
           let file = new Blob([res.arrayBuffer()], {type: 'application/pdf'});
           let pdfUrl = window.URL.createObjectURL(file);
 
@@ -101,7 +106,12 @@ export class OnlineOrderModalComponent implements OnInit, ModalComponent<OnlineO
       default:
         break;
     }
-    
+
   }
-  
+
+  convertOrder() {
+    return this.orderService.convertOrders(this.context.order_id, this.orderService.convertData)
+      .map(res => res.data.order)
+  }
+
 }

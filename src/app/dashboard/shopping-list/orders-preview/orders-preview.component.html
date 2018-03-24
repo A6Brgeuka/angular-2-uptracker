@@ -47,7 +47,7 @@
             <div class="col s6">
               <div class="right dd-bt">
                 <button
-                  class="uptracker-form-btn tealish white-text waves-effect waves-light" (click)="prefillDataForConvertion([ order ])">
+                  class="uptracker-form-btn tealish white-text waves-effect waves-light" (click)="makeOrder([ order ])">
                   {{getButtonText(order)}}
                 </button>
                 <button materialize="dropdown"
@@ -57,10 +57,10 @@
                 </button>
                 <ul id='convertall23' class='dropdown-content'>
                   <li>
-                    <a href="#">one</a>
+                    <a (click)="onViewPoClick([ order ]); $event.stopPropagation()">View PO</a>
                   </li>
                   <li>
-                    <a href="#">two</a>
+                    <a (click)="onPrintPoClick([ order ]); $event.stopPropagation()">Print PO</a>
                   </li>
                 </ul>
               </div>
