@@ -1,12 +1,11 @@
-@import "../../../../../colors";
+@import "../../../../colors";
 
 :host /deep/ {
-  .close {
-    display: block!important;
-  }
 
   .title {
     margin-top: 0;
+    font-size: 18px;
+    font-family: Ubuntu;
   }
 
   .back {

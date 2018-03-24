@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AccountService } from '../../../../core/services/account.service';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import {some, filter, keys} from 'lodash';
-import {HelpTextModal} from "../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
-import {ModalWindowService} from "../../../../core/services/modal-window.service";
-import {AddVendorModalComponent} from "../../add-vendor-modal/add-vendor-modal.component";
-import {AddInventoryModal} from "../../../../dashboard/inventory/add-inventory/add-inventory-modal.component";
-import {InventorySearchModalComponent} from "../../../../dashboard/inventory/inventory-search-modal/inventory-search-modal.component";
-import {ProductService} from "../../../../core/services/product.service";
+import {AccountService} from '../../../core/services/account.service';
+import {ModalWindowService} from '../../../core/services/modal-window.service';
+import {ProductService} from '../../../core/services/product.service';
+import {InventorySearchModalComponent} from '../../inventory/inventory-search-modal/inventory-search-modal.component';
+import {AddInventoryModal} from '../../inventory/add-inventory/add-inventory-modal.component';
+import {HelpTextModal} from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
+import {AddVendorModalComponent} from '../../../shared/modals/add-vendor-modal/add-vendor-modal.component';
 
 @Component({
-  selector: 'app-add-new-product-modal',
-  templateUrl: 'add-new-product-modal.component.html',
-  styleUrls: ['add-new-product-modal.component.scss']
+  selector: 'app-add-new-product',
+  templateUrl: 'add-new-product.component.html',
+  styleUrls: ['add-new-product.component.scss']
 })
 @DestroySubscribers()
-export class AddNewProductModalComponent implements OnInit {
+export class AddNewProductComponent implements OnInit {
   public subscribers: any = {};
 
   public variants: any = {};
@@ -116,30 +116,30 @@ export class AddNewProductModalComponent implements OnInit {
 
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'));
+      .overlayConfigFactoryWithParams({'text': ''}, true, 'mid'));
   }
 
   openAddInventoryModal() {
     const prod = {
-      catalog_number: ["030-090", "030-090"],
-      category: "Lab",
+      catalog_number: ['030-090', '030-090'],
+      category: 'Lab',
       checked: false,
       consumable_unit: {
         properties: {
-          unit_type: "Discs",
+          unit_type: 'Discs',
           qty: 10
         }
       },
-      department: "clinic",
+      department: 'clinic',
       images: [],
       inventory_by: [
-        {type: "Package", label: "Box", value: "package", qty: 10},
-        {type: "Sub Package", label: "", value: "sub_package", qty: null},
-        {type: "Consumable Unit", label: "Disks", value: "consumable_unit", qty: 1}
+        {type: 'Package', label: 'Box', value: 'package', qty: 10},
+        {type: 'Sub Package', label: '', value: 'sub_package', qty: null},
+        {type: 'Consumable Unit', label: 'Disks', value: 'consumable_unit', qty: 1}
       ],
       name: this.product.name,
       notActive: false,
-      package_type: "Box",
+      package_type: 'Box',
       product_id: null,
       sub_package: {
         properties: {
@@ -148,14 +148,14 @@ export class AddNewProductModalComponent implements OnInit {
         }
       },
       suggest: {
-        input: ["Bioplast", "4mm", "Round", "Red", "American Orthodontics", "Great Lakes Orthodontic"]
+        input: ['Bioplast', '4mm', 'Round', 'Red', 'American Orthodontics', 'Great Lakes Orthodontic']
       },
-      tags: ["Red", "American Orthodontics", "Great Lakes Orthodontic"],
+      tags: ['Red', 'American Orthodontics', 'Great Lakes Orthodontic'],
       ups: '',
       variant_id: null,
       vendors: [
-        {vendor_name: "American Orthodontics", vendor_id: "582f4fdd06e55c3aab564023"},
-        {vendor_name: "Great Lakes Orthodontic", vendor_id: "582f4fdf06e55c3aab564037"}
+        {vendor_name: 'American Orthodontics', vendor_id: '582f4fdd06e55c3aab564023'},
+        {vendor_name: 'Great Lakes Orthodontic', vendor_id: '582f4fdf06e55c3aab564037'}
       ]
 
     };

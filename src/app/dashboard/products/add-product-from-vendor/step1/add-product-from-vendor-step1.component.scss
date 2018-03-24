@@ -1,4 +1,4 @@
-@import "../../../../../../colors";
+@import "../../../../../colors";
 
 $normal: 14px;
 :host /deep/{
@@ -258,10 +258,7 @@ $normal: 14px;
         }
 
         .small-heading {
-          width: 8%;
-          &.wider {
-            width: 11%;
-          }
+          width: 14%;
         }
 
         .text-head {

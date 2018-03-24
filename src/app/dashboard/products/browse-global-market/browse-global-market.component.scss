@@ -1,10 +1,12 @@
-@import "../../../../../colors";
+@import "../../../../colors";
 
 :host /deep/ {
 
 
-  .title {
-    text-align: center;
+  .title .main-title{
+    line-height: 30px;
+    font-size: 28px;
+    font-family: Ubuntu;
   }
 
   .list {

@@ -2,14 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {DialogRef, Modal} from 'angular2-modal';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { BrowseGlobalMarketModalComponent } from './browse-global-market-modal/browse-global-market-modal.component';
-import { AddNewProductModalComponent } from './add-new-product-modal/add-new-product-modal.component';
 import {Observable} from 'rxjs/Observable';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subject} from 'rxjs/Subject';
 import {ProductService} from '../../../core/services/product.service';
-import {AddProductFromVendorModalComponent} from './add-product-from-vendor-modal/add-product-from-vendor.component';
 import {isObject} from 'lodash'
 import {Router} from "@angular/router";
 export class AddMarketProductModalContext extends BSModalContext {
@@ -61,12 +58,6 @@ export class AddMarketProductModalComponent implements OnInit {
     this.dialog.close(data);
   }
 
-  openAddNewProductFromVendorModal(product) {
-    this.dismissModal();
-    this.modal
-      .open(AddProductFromVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({product}, true, 'big'));
-  }
-
   onSearchTypeIn(event) {
     const requestParams = {
       query: event.target.value,
@@ -91,7 +82,7 @@ export class AddMarketProductModalComponent implements OnInit {
 
   selectedAutocompled(product: any) {
     if (isObject(product))
-      this.router.navigate(['/product', 'global']);
+      this.router.navigate(['/product', 'global', product.id]) && this.dismissModal();
   }
 
   observableSource(keyword: any) {

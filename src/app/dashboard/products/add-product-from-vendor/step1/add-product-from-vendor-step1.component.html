@@ -1,11 +1,11 @@
-<div class="inner">
+<div class="inner" *ngIf="product">
   <div class="title center-align">Add product
     <p>Please select which variants<fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>you would like to add to your marketplace</p>
   </div>
   <div class="row uptracker-form">
     <div class="col m3 s12 center-align">
       <div class="img-container upload-link file-field">
-        <div class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+        <div class="img" [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }">
           <input type="file" />
         </div>
       </div>
@@ -69,6 +69,7 @@
           <label>Department</label>
           <div class="select">
             <select
+              [(ngModel)]="product.department"
               materialize="material_select"
               [materializeSelectOptions]="departmentCollection">
               <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
@@ -80,6 +81,7 @@
           <label>Category</label>
           <div class="select">
             <select
+              [(ngModel)]="product.category"
               materialize="material_select"
               [materializeSelectOptions]="productCategoriesCollection">
               <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
@@ -92,6 +94,7 @@
           <label>Accounting</label>
           <div class="select">
             <select
+              [(ngModel)]="product.accounting"
               materialize="material_select"
               [materializeSelectOptions]="productAccountingCollection">
               <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
@@ -250,7 +253,7 @@
       <div class="table-body">
         <div class="variant-table">
           <div class="uptracker-form  table-item"
-               *ngFor="let variant of filteredVariants$ | async"
+               *ngFor="let variant of variants"
                (click)="toggleVariantDetailView(variant)">
             <div class="variant-checkbox row-item">
               <div class="checkbox input-checkbox">
@@ -266,13 +269,9 @@
             </div>
             <div class="name-heading variant-name row-item valign-wrapper">
             <span (click)="showVariantDetails($event,variant)"
-                  *ngIf="!showEdit"
                   [class.reddish]="variant.status == 2"
                   class="valign"
             >{{variant.name || "Product Here"}}</span>
-              <div class="input">
-                <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
-              </div>
             </div>
             <div class="small-heading row-item">{{variant.package_type || ""}}</div>
             <div class="small-heading row-item">{{variant.unit_type || ""}}</div>

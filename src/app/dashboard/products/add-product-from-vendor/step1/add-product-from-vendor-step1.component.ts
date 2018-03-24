@@ -1,12 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ProductModel } from '../../../../../models/product.model';
-import { ProductService } from '../../../../../core/services/product.service';
-import {HelpTextModal} from "../../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
-import {DialogRef, Modal} from "angular2-modal";
-import {ModalWindowService} from "../../../../../core/services/modal-window.service";
-import {Observable} from "rxjs/Observable";
-import {DestroySubscribers} from "ngx-destroy-subscribers";
-import {AccountService} from "../../../../../core/services/account.service";
+import {Modal} from 'angular2-modal';
+import {Observable} from 'rxjs/Observable';
+import {DestroySubscribers} from 'ngx-destroy-subscribers';
+import {ProductModel} from '../../../../models/product.model';
+import {ModalWindowService} from '../../../../core/services/modal-window.service';
+import {AccountService} from '../../../../core/services/account.service';
+import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 
 @Component({
   selector: 'app-add-product-from-vendor-step1',
@@ -18,13 +17,13 @@ import {AccountService} from "../../../../../core/services/account.service";
 export class AddProductFromVendorStep1Component implements OnInit {
 
   @Input('product') product: ProductModel;
+  @Input('variants') variants: any;
 
   public subscribers: any = {};
   public vendor: any = {};
   public vendors: any = [];
   public selectAll: boolean;
   public item: any = {};
-  public variants: any = [{},{}];
   public departmentCollection$: Observable<any> = new Observable<any>();
   public departmentCollection: any[];
   public productAccountingCollection$: Observable<any> = new Observable<any>();
@@ -79,7 +78,7 @@ export class AddProductFromVendorStep1Component implements OnInit {
 
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
+      .overlayConfigFactoryWithParams({'text': ''}, true, 'mid'))
   }
 
   // upload by input type=file

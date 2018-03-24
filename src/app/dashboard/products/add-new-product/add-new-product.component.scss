@@ -1,21 +1,16 @@
-@import "../../../../../colors";
+@import "../../../../colors";
 
 :host /deep/ {
-  .close {
-    display: block !important;
-  }
 
   .title {
     margin-top: 0;
-  }
-
-  .tip {
-    display: flex;
+    font-size: 18px;
+    font-family: Ubuntu;
   }
 
   .img-container {
-    width: 140px;
-    height: 140px;
+    width: 200px;
+    height: 200px;
     border: 1px solid $light-grey;
 
     .img {
@@ -23,6 +18,10 @@
       background-position: center center;
       background-size: cover;
     }
+  }
+
+  .tip {
+    display: flex;
   }
 
   .uptracker-form-btn {

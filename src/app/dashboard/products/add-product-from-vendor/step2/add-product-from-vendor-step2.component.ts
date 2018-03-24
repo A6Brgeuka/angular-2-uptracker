@@ -1,11 +1,10 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {ProductModel} from "../../../../../models/product.model";
-import {ProductService} from "../../../../../core/services/product.service";
-import {HelpTextModal} from "../../../../../dashboard/inventory/add-inventory/help-text-modal/help-text-modal-component";
-import {ModalWindowService} from "../../../../../core/services/modal-window.service";
-import {Modal} from "angular2-modal";
-import {AddVendorModalComponent} from "../../../add-vendor-modal/add-vendor-modal.component";
+import {Modal} from 'angular2-modal';
 import {clone} from 'lodash';
+import {ProductModel} from '../../../../models/product.model';
+import {ModalWindowService} from '../../../../core/services/modal-window.service';
+import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/help-text-modal-component';
+import {AddVendorModalComponent} from '../../../../shared/modals/add-vendor-modal/add-vendor-modal.component';
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -137,7 +136,6 @@ export class AddProductFromVendorStep2Component implements OnInit {
   public productAccountingCollection = ['one', 'two'];
 
   constructor(
-    private productService: ProductService,
     public modal: Modal,
     public modalWindowService: ModalWindowService) {
   }
@@ -151,7 +149,7 @@ export class AddProductFromVendorStep2Component implements OnInit {
 
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
+      .overlayConfigFactoryWithParams({'text': ''}, true, 'mid'))
   }
 
   openAddVendorsModal() {

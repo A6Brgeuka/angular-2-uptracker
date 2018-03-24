@@ -11,6 +11,7 @@ import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import {ProductModel} from "../../models/product.model";
 
 @Injectable()
 @Subscribers({
@@ -45,6 +46,8 @@ export class ProductService extends ModelService {
   marketplaceData$: Observable<any>;
 
   public requestParams: any;
+
+  public selectedProduct: ProductModel;
 
   constructor(
     public injector: Injector,
