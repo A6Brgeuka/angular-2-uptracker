@@ -33,7 +33,14 @@ export class StockComponent implements OnInit {
 
   sortAlphabet() {}
 
-  filterChange() {}
+  filterChange(event) {}
+
+  filtered(product) {
+    if (!this.filter) {
+      return true;
+    }
+    return product.title.indexOf(this.filter) > 0;
+  }
 
   actualChange(event) {
     let active = false;

@@ -21,36 +21,38 @@
     <div class="col s2">Actual QTY</div>
     <div class="col s2">Reason</div>
   </div>
-  <div class="row product-list" *ngFor="let product of products; let i = index">
-    <div class="col s4 main">
-      <div class="preview"></div>
-      <div class="title">{{product.title}}</div>
-    </div>
-    <div class="col s2 count">
-      <div class="select">
-        <select title="sort by" [(ngModel)]="product.countBy" materialize="material_select" (change)="sortAlphabet($event)">
-          <option value="A-Z">1 Box (100)</option>
-          <option value="Z-A">1 Unit</option>
-        </select>
+  <div class="row" *ngFor="let product of products; let i = index">
+    <div class="product-list" *ngIf="filtered(product)">
+      <div class="col s4 main">
+        <div class="preview"></div>
+        <div class="title">{{product.title}}</div>
       </div>
-    </div>
-    <div class="col s2 current">
-      <div class="input wide-input">
-        <input type="text" [disabled]="true" [(ngModel)]="product.currentQTY" (ngModelChange)="filterChange($event)">
+      <div class="col s2 count">
+        <div class="select">
+          <select title="sort by" [(ngModel)]="product.countBy" materialize="material_select" (change)="sortAlphabet($event)">
+            <option value="A-Z">1 Box (100)</option>
+            <option value="Z-A">1 Unit</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="col s2 actual">
-      <div class="input wide-input">
-        <input type="text" [(ngModel)]="product.actualQTY" (ngModelChange)="actualChange($event)">
+      <div class="col s2 current">
+        <div class="input wide-input">
+          <input type="text" [disabled]="true" [(ngModel)]="product.currentQTY">
+        </div>
       </div>
-    </div>
-    <div class="col s2 reason">
-      <div class="select">
-        <select title="sort by" [disabled]="product.actualQTY == '-'" [(ngModel)]="product.reason" materialize="material_select" (change)="actualChange($event)">
-          <option value="N/A">N/A</option>
-          <option value="Shrinkage">Shrinkage</option>
-          <option value="Used">Used</option>
-        </select>
+      <div class="col s2 actual">
+        <div class="input wide-input">
+          <input type="text" [(ngModel)]="product.actualQTY" (ngModelChange)="actualChange($event)">
+        </div>
+      </div>
+      <div class="col s2 reason">
+        <div class="select">
+          <select title="sort by" [disabled]="product.actualQTY == '-'" [(ngModel)]="product.reason" materialize="material_select" (change)="actualChange($event)">
+            <option value="N/A">N/A</option>
+            <option value="Shrinkage">Shrinkage</option>
+            <option value="Used">Used</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
