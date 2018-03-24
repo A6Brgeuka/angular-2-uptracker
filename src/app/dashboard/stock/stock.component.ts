@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { comparator, equals, gt, prop, sort, sortBy } from 'ramda';
 import { UserService, AccountService } from '../../core/services/index';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { UpdateStockModal } from './update-stock-modal/update-stock-modal.component';
-import * as _ from 'lodash';
+
 
 @Component({
   selector: 'app-stock',
@@ -31,7 +32,15 @@ export class StockComponent implements OnInit {
 
   ngOnInit() {}
 
-  sortAlphabet() {}
+  sortAlphabet(event) {
+    if (equals(this.sort, 'A-Z')) {
+      const ascComparator = comparator((a, b) => gt(prop('title', b), prop('title', a)));
+      this.products = sort(ascComparator, this.products);
+    } else {
+      const desComparator = comparator((a, b) => gt(prop('title', a), prop('title', b)));
+      this.products = sort(desComparator, this.products);
+    }
+  }
 
   filterChange(event) {}
 
