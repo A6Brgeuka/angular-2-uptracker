@@ -83,6 +83,7 @@ export class BrowseGlobalMarketComponent implements OnInit {
   }
 
   goBack(): void {
+    this.productService.updateMarketplaceData('my');
     this.location.back();
   }
 
