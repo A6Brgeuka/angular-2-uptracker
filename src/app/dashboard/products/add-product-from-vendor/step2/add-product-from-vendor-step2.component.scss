@@ -1,6 +1,10 @@
 @import "../../../../../colors";
 
 :host /deep/ {
+
+  .with-margin {
+    margin: 0 50px;
+  }
   .bluebtn {
     padding: 0 10px;
     font-size: 12px;
@@ -10,7 +14,6 @@
     background: $tealish;
     color: $white;
     border-radius: 5px;
-    margin-right:20px;
     margin-top:-2px;
     box-shadow:none;
     border:none;
@@ -50,7 +53,6 @@
   .fill-all-selected {
     align-items: flex-end;
     display: flex;
-    margin-top:50px;
     margin-bottom:0;
     padding-top:30px;
     padding-bottom:30px;
@@ -101,6 +103,12 @@
   app-vendor-search {
     input {
       height: 30px!important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .with-margin {
+      margin: 0;
     }
   }
 }

@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {ProductService} from '../../../core/services/product.service';
 import {AccountService} from '../../../core/services/account.service';
 import {ProductModel} from '../../../models/product.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-product-from-vendor',
@@ -25,7 +26,9 @@ export class AddProductFromVendorComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
-    private accountService: AccountService) {
+    private accountService: AccountService,
+    private location: Location
+  ) {
   }
 
   stepAction = (step) => this.step += step;
@@ -53,6 +56,10 @@ export class AddProductFromVendorComponent implements OnInit {
         this.product = data.product;
         this.variants = data.variants;
         });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

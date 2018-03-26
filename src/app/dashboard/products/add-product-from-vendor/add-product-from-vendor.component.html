@@ -1,6 +1,6 @@
 <div class="row">
-
   <div class="col s2">
+    <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="checkStep(1)"></div>
     <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
             (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(1)">
       <fa name="chevron-left"></fa>
@@ -8,7 +8,7 @@
     </button>
   </div>
   <div class="col s8 center-align">
-    <div class="title">Add custom product</div>
+    <div class="main-title">Add custom product</div>
   </div>
   <div class="col s2 right-align">
     <button *ngIf="!checkStep(2)"

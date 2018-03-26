@@ -6,6 +6,10 @@
     box-sizing:border-box;
   }
 
+  .bluebtn {
+    margin: 0;
+  }
+
   input[type="text"]{
     height:25px;
     border:1px solid $light-grey;

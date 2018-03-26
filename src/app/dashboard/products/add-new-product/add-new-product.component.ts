@@ -11,6 +11,7 @@ import {InventorySearchModalComponent} from '../../inventory/inventory-search-mo
 import {AddInventoryModal} from '../../inventory/add-inventory/add-inventory-modal.component';
 import {HelpTextModal} from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 import {AddVendorModalComponent} from '../../../shared/modals/add-vendor-modal/add-vendor-modal.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-new-product',
@@ -57,7 +58,8 @@ export class AddNewProductComponent implements OnInit {
     private accountService: AccountService,
     private productService: ProductService,
     public modal: Modal,
-    public modalWindowService: ModalWindowService
+    public modalWindowService: ModalWindowService,
+    private location: Location
   ) {
   }
 
@@ -204,4 +206,8 @@ export class AddNewProductComponent implements OnInit {
     this.fileArr.push(file);
   }
 
+  trackByIndex = (i: number, obj: any) => i;
+  deleteVariant = (variant, i) => this.productVariants[variant].splice(i, 1);
+  addVariant = (variant) => this.productVariants[variant].push('');
+  goBack = (): void => this.location.back();
 }

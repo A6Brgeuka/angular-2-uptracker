@@ -2,11 +2,27 @@
 
 :host /deep/ {
 
-
   .title .main-title{
     line-height: 30px;
     font-size: 28px;
     font-family: Ubuntu;
+  }
+
+  .close {
+    transition: opacity .3s;
+    width: 40px;
+    height: 40px;
+    background-color: $tealish;
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 20px;
+    color: #fff;
+    line-height: 40px;
+    padding-right: 3px;
+    &:hover {
+      opacity: .8;
+    }
   }
 
   .list {

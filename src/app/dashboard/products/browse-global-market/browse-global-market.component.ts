@@ -5,6 +5,7 @@ import {includes} from 'lodash';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {Router} from '@angular/router';
 import {ProductService} from '../../../core/services/product.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-browse-global-market',
@@ -24,7 +25,8 @@ export class BrowseGlobalMarketComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -78,6 +80,10 @@ export class BrowseGlobalMarketComponent implements OnInit {
   selectProduct(product) {
     this.productService.selectedProduct = product;
     this.router.navigate(['/product', 'global', product.id]);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
 }
