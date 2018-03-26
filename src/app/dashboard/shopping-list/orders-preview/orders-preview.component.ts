@@ -1,7 +1,5 @@
-import {
-  Component, OnInit
-} from '@angular/core';
-import { BehaviorSubject } from 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs/Rx';
 import { Location }                 from '@angular/common';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
@@ -217,7 +215,7 @@ export class OrdersPreviewComponent implements OnInit {
     getButtonText(order: any) {
       switch (order.order_method) {
         case 'Email':
-          return 'Email';
+          return 'Send';
         case 'Fax':
           return 'Fax';
         case 'Online':
@@ -227,7 +225,7 @@ export class OrdersPreviewComponent implements OnInit {
         case 'Mail':
           return 'Finalize';
         default:
-          break;
+          return 'Send';
       }
     }
 
@@ -268,11 +266,8 @@ export class OrdersPreviewComponent implements OnInit {
     this.orderService.convertOrders(this.orderId, this.orderService.convertData)
       .map(res => res.data.order)
       .switchMap(order => {
-        return this.orderService.sendOrderRequestFinal(order.id, {})
-          .switchMap(res => {
-            return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + order.id + '/download', {
-              responseType: ResponseContentType.ArrayBuffer
-            });
+          return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + order.id + '/download', {
+            responseType: ResponseContentType.ArrayBuffer
           });
       })
       .subscribe((res) => {
@@ -292,7 +287,7 @@ export class OrdersPreviewComponent implements OnInit {
       })
   }
 
-  convertOrder() {
+  convertOrder(): Observable<any> {
     return this.orderService.convertOrders(this.orderId, this.orderService.convertData)
       .map(res => res.data.order)
   }
