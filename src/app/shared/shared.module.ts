@@ -17,6 +17,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
+import { OrderByDatePipe } from './pipes/order-by-date/order-by-date.pipe';
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
@@ -31,6 +32,7 @@ let directivesArr = [
 let pipesArr = [
   IterablePipe,
   InputValueSearch,
+  OrderByDatePipe
 ];
 
 // resolvers
@@ -94,7 +96,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [
     ...directivesArr,
     ...pipesArr,
-    ...modalsArr,
+    ...modalsArr
   ],
   exports: [
     BootstrapModalModule,

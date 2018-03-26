@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import {AddVendorModalComponent} from '../../../shared/modals/add-vendor-modal/add-vendor-modal.component';
 import {Modal} from 'angular2-modal';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Component({
   selector: 'app-vendors-tab',
@@ -23,7 +24,7 @@ export class VendorsTabComponent implements OnInit {
   public sortBy: string = 'A-Z';
   public sortBy$: any = new BehaviorSubject('A-Z');
   public total: number;
-
+  public updateCollectionCustomVendor$: any = new ReplaySubject(1);
   public isRequestVendors: boolean = false;
   public infiniteScroll$: any = new BehaviorSubject(false);
   public vendors$: Observable<any>;
@@ -72,6 +73,12 @@ export class VendorsTabComponent implements OnInit {
 
     this.subscribers.totalCountSubscription = this.vendorService.totalCount$
     .subscribe(total => this.total = total);
+
+    this.subscribers.updateCollectionCustomProductSubscription = this.updateCollectionCustomVendor$
+      .switchMap(() => {
+        this.vendorService.current_page = 1;
+        return this.vendorService.getNextVendors(0);
+      }).subscribe();
   }
 
   vendorsSort(event) {
@@ -97,7 +104,7 @@ export class VendorsTabComponent implements OnInit {
       .then((resultPromise) => {
         resultPromise.result.then(
           (res) => {
-            // this.updateCollectionCustomProduct$.next(true);
+            this.updateCollectionCustomVendor$.next(true);
           },
           (err) => {
           }
