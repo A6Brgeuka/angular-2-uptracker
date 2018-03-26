@@ -130,6 +130,8 @@ export class OrdersPreviewComponent implements OnInit {
 
     this.orderService.updateOrder(this.orderId, data).subscribe((res: any) => {
         this.calcTT(res);
+        //TODO: need to define, why order_method == null
+        order[0].order_method = order[0].order_method == null ? 'Email' : order[0].order_method;
         switch (order[0].order_method) {
           case 'Email':
             this.convertOrder()
