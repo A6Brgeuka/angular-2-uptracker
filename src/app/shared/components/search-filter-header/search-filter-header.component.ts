@@ -19,10 +19,19 @@ export class SearchFilterHeaderComponent {
   @Input() public searchKey: string;
   @Input() public searchType: SearchFilterHeaderType = SearchType.KEYWORD;
   @Input() chips = [];
+  @Input() isTitleSelect = false;
   @Output() chipsChange = new EventEmitter();
   @Output() searchEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
   @Output() openModalEvent = new EventEmitter();
+  @Output() changeDataTypeEvent = new EventEmitter();
+  selectedDataType = 'orders';
+  dataTypeArr: any[] = [
+    {value: 'orders', title: 'Orders'},
+    {value: 'orderItems', title: 'Order Items'},
+    {value: 'packingSlips', title: 'Packing Slips'},
+    {value: 'invoices', title: 'Invoices'},
+  ];
 
   get isChips() {
     return this.searchType === SearchType.CHIPS;
@@ -49,4 +58,7 @@ export class SearchFilterHeaderComponent {
     this.resetEvent.emit();
   }
 
+  changeDataType(event) {
+    this.changeDataTypeEvent.emit(event.value);
+  }
 }

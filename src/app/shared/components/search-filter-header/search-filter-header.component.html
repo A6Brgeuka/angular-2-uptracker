@@ -1,10 +1,23 @@
 <div class="row filter uptracker-form clearfix">
   <div class="col s12 m6 l7">
-        <span class="title">
-          <span class="main-title ">{{title}}</span>
-        </span>
+    <span class="title" *ngIf="!isTitleSelect">
+      <span class="main-title ">{{title}}</span>
+    </span>
+
+    <div class="select">
+      <select *ngIf="isTitleSelect"
+        name="dataType"
+        materialize="material_select"
+        (change)="changeDataType(selectedDataType)"
+        [(ngModel)]="selectedDataType"
+        [materializeSelectOptions]="dataTypeArr"
+      >
+        <option *ngFor="let data of dataTypeArr" [value]="data.value">{{data.title}}</option>
+      </select>
+    </div>
+
   </div>
-  <div class="ptop5 filter-right">
+  <div class="filter-right">
     <div
       *ngIf="isKeyword"
       class="col s4 l3 m2 input wide-input"
