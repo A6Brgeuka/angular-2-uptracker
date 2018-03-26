@@ -127,4 +127,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   activeChange(active: boolean, tab: string) {
     this.activeChange$.next({active, tab});
   }
+
+  changeDataType(event) {
+debugger;
+  }
 }

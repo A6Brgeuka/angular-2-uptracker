@@ -2,6 +2,7 @@
   <div class="top">
     <app-search-filter-header
       [title]="'Orders'"
+      isTitleSelect = "true"
       [searchKey]="searchKey"
       searchType="chips"
       [chips]="chips$ | async"
@@ -9,6 +10,7 @@
       (searchEvent)="searchOrders($event)"
       (resetEvent)="resetFilters()"
       (openModalEvent)="showFiltersModal()"
+      (changeDataTypeEvent)="changeDataType($event)"
     ></app-search-filter-header>
 
     <div class="row">
