@@ -129,6 +129,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   changeDataType(event) {
-debugger;
+
   }
 }
