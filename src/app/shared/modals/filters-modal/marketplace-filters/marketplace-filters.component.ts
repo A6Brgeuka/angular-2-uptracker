@@ -7,15 +7,20 @@ import { Observable } from 'rxjs/Observable';
 
 import { AccountService } from '../../../../core/services/account.service';
 import { VendorService } from '../../../../core/services/vendor.service';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DialogRef, ModalComponent } from 'angular2-modal';
 
+export class MarketplaceFiltersModalContext extends BSModalContext {
+  public filters: any;
+}
 @Component({
   selector: 'app-marketplace-filters',
   templateUrl: './marketplace-filters.component.html',
 })
 @DestroySubscribers()
-export class MarketplaceFiltersComponent implements OnInit {
+export class MarketplaceFiltersComponent implements OnInit, ModalComponent<MarketplaceFiltersModalContext> {
   private subscribers: any = {};
-
+  public context;
   public filterForm: FormGroup;
   public departmentCollection$: Observable<any> = this.accountService.getDepartments();
 
@@ -47,9 +52,12 @@ export class MarketplaceFiltersComponent implements OnInit {
   };
 
   constructor(
+    public dialog: DialogRef<MarketplaceFiltersModalContext>,
     private accountService: AccountService,
     private vendorService: VendorService,
   ) {
+    this.context = dialog.context;
+
     this.filterForm = new FormGroup({
       vendors: new FormControl(),
       categories: new FormControl(),
@@ -135,6 +143,14 @@ export class MarketplaceFiltersComponent implements OnInit {
         this.accountingCollection[accounting] = null
       );
     });
+  }
+
+  dismissModal() {
+    this.dialog.dismiss();
+  }
+
+  applyFilters() {
+
   }
 
 }

@@ -22,6 +22,9 @@ import { SingleCheckboxFilterModule } from '../single-checkbox-filter/single-che
   declarations: [
     MarketplaceFiltersComponent,
   ],
+  entryComponents: [
+    MarketplaceFiltersComponent,
+  ],
   exports: [
     MarketplaceFiltersComponent,
   ]
