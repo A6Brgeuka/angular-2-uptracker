@@ -6,14 +6,21 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 import { VendorService } from '../../../../core/services/vendor.service';
 import { AccountService } from '../../../../core/services/account.service';
+import { DialogRef, ModalComponent } from 'angular2-modal';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+
+export class InventoryGroupFiltersModalContext extends BSModalContext {
+  public filters: any;
+}
 
 @Component({
   selector: 'app-inventory-group-filters',
   templateUrl: './inventory-group-filters.component.html',
 })
 @DestroySubscribers()
-export class InventoryGroupFiltersComponent implements OnInit {
+export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<InventoryGroupFiltersModalContext> {
   private subscribers: any = {};
+  public context;
   public filterForm: FormGroup;
   public departmentCollection$: Observable<any> = this.accountService.getDepartments();
 
@@ -45,9 +52,12 @@ export class InventoryGroupFiltersComponent implements OnInit {
   };
 
   constructor(
+    public dialog: DialogRef<InventoryGroupFiltersModalContext>,
     private accountService: AccountService,
     private vendorService: VendorService,
   ) {
+    this.context = dialog.context;
+
     this.filterForm = new FormGroup({
       vendors: new FormControl(),
       categories: new FormControl(),
@@ -64,6 +74,7 @@ export class InventoryGroupFiltersComponent implements OnInit {
       hazardous: new FormControl(),
       trackable: new FormControl(),
       taxExempt: new FormControl(),
+      retired: new FormControl(),
     });
 
   }
@@ -71,23 +82,18 @@ export class InventoryGroupFiltersComponent implements OnInit {
   get vendorsControl() {
     return this.filterForm.get('vendors');
   }
-
   get categoriesControl() {
     return this.filterForm.get('categories');
   }
-
   get departmentsControl() {
     return this.filterForm.get('departments');
   }
-
   get accountingsControl() {
     return this.filterForm.get('accountings');
   }
-
   get myFavoriteControl() {
     return this.filterForm.get('myFavorite');
   }
-
   get orderedFromControl() {
     return this.filterForm.get('orderedFrom');
   }
@@ -118,6 +124,9 @@ export class InventoryGroupFiltersComponent implements OnInit {
   get trackingInfoControl() {
     return this.filterForm.get('trackingInfo');
   }
+  get retiredControl() {
+    return this.filterForm.get('retired');
+  }
 
   ngOnInit() {
 
@@ -144,6 +153,14 @@ export class InventoryGroupFiltersComponent implements OnInit {
         this.accountingCollection[accounting] = null
       );
     });
+  }
+
+  dismissModal() {
+    this.dialog.dismiss();
+  }
+
+  applyFilters() {
+
   }
 
 }

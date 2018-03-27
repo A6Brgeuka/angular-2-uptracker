@@ -22,6 +22,9 @@ import { InventoryGroupFiltersComponent } from './inventory-group-filters.compon
   declarations: [
     InventoryGroupFiltersComponent,
   ],
+  entryComponents: [
+    InventoryGroupFiltersComponent,
+  ],
   exports: [
     InventoryGroupFiltersComponent,
   ]
