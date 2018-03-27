@@ -57,7 +57,7 @@
     </div>
   </div>
 </div>
-<div class="panel" [class.active]="panelActive">
+<div class="panel" [class.active]="panel.visible">
   <div class="title">Changes</div>
   <div class="row product-list" *ngFor="let product of products; let i = index">
     <div class="changes" *ngIf="product.actualQTY != ''">

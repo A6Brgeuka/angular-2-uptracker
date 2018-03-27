@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 
 export class UpdateStockModalContent extends BSModalContext {
   public products: Array<any>;
+  public panel: any;
 }
 
 @Component({
@@ -48,8 +49,9 @@ export class UpdateStockModal implements OnInit, ModalComponent<UpdateStockModal
 
   clickThanks() {
     this.context.products.forEach(product => {
-      product.actualQTY = 0;
+      product.actualQTY = '';
     });
+    this.context.panel.visible = false;
     this.dialog.dismiss();
   }
 }

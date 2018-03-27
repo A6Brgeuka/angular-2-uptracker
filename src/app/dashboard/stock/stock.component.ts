@@ -16,7 +16,7 @@ export class StockComponent implements OnInit {
   public sort: string = '';
   public filter: string = '';
   public products: Array<any> = [];
-  public panelActive: boolean = false;
+  public panel: any = {};
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
@@ -28,6 +28,7 @@ export class StockComponent implements OnInit {
       { title: '5GM Light bond medium pst-push-fluo', countBy: '1 Box (100)', currentQTY: 8, actualQTY: '', reason: 'N/A' },
       { title: 'A2 Tips', countBy: '1 Box (100)', currentQTY: 12, actualQTY: '', reason: 'N/A' },
     ]
+    this.panel.visible = false;
   }
 
   ngOnInit() {}
@@ -58,12 +59,12 @@ export class StockComponent implements OnInit {
     this.products.forEach(product => {
       if (parseInt(product.actualQTY) > 0) active = true;
     })
-    this.panelActive = active;
+    this.panel.visible = active;
   }
 
   openSuccessModal() {
     this.modal
-    .open(UpdateStockModal, this.modalWindowService.overlayConfigFactoryWithParams({'products': this.products}))
+    .open(UpdateStockModal, this.modalWindowService.overlayConfigFactoryWithParams({'products': this.products, 'panel': this.panel}))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {},
