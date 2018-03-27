@@ -21,6 +21,9 @@ import { SingleCheckboxFilterModule } from '../single-checkbox-filter/single-che
   declarations: [
     ShoppingListFiltersComponent,
   ],
+  entryComponents: [
+    ShoppingListFiltersComponent,
+  ],
   exports: [
     ShoppingListFiltersComponent,
   ]

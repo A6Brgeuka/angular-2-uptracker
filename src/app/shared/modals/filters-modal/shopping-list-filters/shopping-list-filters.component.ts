@@ -7,14 +7,21 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { AccountService } from '../../../../core/services/account.service';
 import { VendorService } from '../../../../core/services/vendor.service';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DialogRef, ModalComponent } from 'angular2-modal';
+
+export class ShoppingListFiltersModalContext extends BSModalContext {
+  public filters: any;
+}
 
 @Component({
   selector: 'app-shopping-list-filters',
   templateUrl: './shopping-list-filters.component.html',
 })
 @DestroySubscribers()
-export class ShoppingListFiltersComponent implements OnInit {
+export class ShoppingListFiltersComponent implements OnInit, ModalComponent<ShoppingListFiltersModalContext> {
   private subscribers: any = {};
+  public context;
   public filterForm: FormGroup;
   public departmentCollection$: Observable<any> = this.accountService.getDepartments();
   public discounts = ['Bogo', 'Percent Off', 'Rewards Points Used'];
@@ -47,9 +54,12 @@ export class ShoppingListFiltersComponent implements OnInit {
   };
 
   constructor(
+    public dialog: DialogRef<ShoppingListFiltersModalContext>,
     private accountService: AccountService,
     private vendorService: VendorService,
   ) {
+    this.context = dialog.context;
+
     this.filterForm = new FormGroup({
       vendors: new FormControl(),
       categories: new FormControl(),
@@ -122,4 +132,11 @@ export class ShoppingListFiltersComponent implements OnInit {
     });
   }
 
+  dismissModal() {
+    this.dialog.dismiss();
+  }
+
+  applyFilters() {
+
+  }
 }
