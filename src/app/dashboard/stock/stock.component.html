@@ -42,12 +42,12 @@
       </div>
       <div class="col s2 actual">
         <div class="input wide-input">
-          <input type="text" [(ngModel)]="product.actualQTY" (ngModelChange)="actualChange($event)">
+          <input type="text" placeholder="-" [(ngModel)]="product.actualQTY" (ngModelChange)="actualChange($event)">
         </div>
       </div>
       <div class="col s2 reason">
         <div class="select">
-          <select title="sort by" [disabled]="product.actualQTY == '-'" [(ngModel)]="product.reason" materialize="material_select" (change)="actualChange($event)">
+          <select title="sort by" [disabled]="product.actualQTY == ''" [(ngModel)]="product.reason" materialize="material_select" (change)="actualChange($event)">
             <option value="N/A">N/A</option>
             <option value="Shrinkage">Shrinkage</option>
             <option value="Used">Used</option>
@@ -60,7 +60,7 @@
 <div class="panel" [class.active]="panelActive">
   <div class="title">Changes</div>
   <div class="row product-list" *ngFor="let product of products; let i = index">
-    <div class="changes" *ngIf="product.actualQTY != '-'">
+    <div class="changes" *ngIf="product.actualQTY != ''">
       <div class="row">
         <div class="col s5">Product</div>
         <div class="col s7">{{product.title}}</div>
