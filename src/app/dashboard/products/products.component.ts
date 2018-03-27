@@ -7,7 +7,7 @@ import { ModalWindowService } from '../../core/services/modal-window.service';
 import { AccountService } from '../../core/services/account.service';
 import { UploadCsvModal } from './upload-csv-modal/upload-csv-modal.component';
 import { ToasterService } from '../../core/services/toaster.service';
-import { FiltersModalComponent } from '../../shared/modals/filters-modal/filters-modal.component';
+import { MarketplaceFiltersComponent } from '../../shared/modals/filters-modal/marketplace-filters/marketplace-filters.component';
 
 @Component({
   selector: 'app-products',
@@ -42,7 +42,7 @@ export class ProductsComponent implements OnInit {
 
   showFiltersModal() {
     this.modal
-    .open(FiltersModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({filtersType: 'marketplaceFilters'}))
+    .open(MarketplaceFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
