@@ -21,6 +21,9 @@ import { OrdersPageFiltersComponent } from './orders-page-filters.component';
   declarations: [
     OrdersPageFiltersComponent,
   ],
+  entryComponents: [
+    OrdersPageFiltersComponent,
+  ],
   exports: [
     OrdersPageFiltersComponent,
   ]
