@@ -47,7 +47,7 @@
       </div>
       <div class="col s2 reason">
         <div class="select">
-          <select title="sort by" [disabled]="product.actualQTY == ''" [(ngModel)]="product.reason" materialize="material_select" (change)="actualChange($event)">
+          <select title="sort by" [disabled]="product.actualQTY == '' || product.currentQTY == product.actualQTY" [(ngModel)]="product.reason" materialize="material_select" (change)="actualChange($event)">
             <option value="N/A">N/A</option>
             <option value="Shrinkage">Shrinkage</option>
             <option value="Used">Used</option>

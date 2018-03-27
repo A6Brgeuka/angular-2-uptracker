@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { comparator, equals, gt, prop, sort, sortBy } from 'ramda';
+import { comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
 import { UserService, AccountService } from '../../core/services/index';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { UpdateStockModal } from './update-stock-modal/update-stock-modal.component';
@@ -50,7 +50,7 @@ export class StockComponent implements OnInit {
     if (!this.filter) {
       return true;
     }
-    return product.title.indexOf(this.filter) > 0;
+    return toLower(product.title).indexOf(toLower(this.filter)) > -1;
   }
 
   actualChange(event) {
@@ -63,7 +63,7 @@ export class StockComponent implements OnInit {
 
   openSuccessModal() {
     this.modal
-    .open(UpdateStockModal, this.modalWindowService.overlayConfigFactoryWithParams({'product': []}))
+    .open(UpdateStockModal, this.modalWindowService.overlayConfigFactoryWithParams({'products': this.products}))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {},

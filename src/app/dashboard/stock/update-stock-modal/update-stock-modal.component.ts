@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 
 
 export class UpdateStockModalContent extends BSModalContext {
-  public product: any;
+  public products: Array<any>;
 }
 
 @Component({
@@ -25,7 +25,6 @@ export class UpdateStockModalContent extends BSModalContext {
 export class UpdateStockModal implements OnInit, ModalComponent<UpdateStockModalContent> {
   public subscribers: any = {};
   public context: UpdateStockModalContent;
-  public product: any;
 
   constructor(
     public dialog: DialogRef<UpdateStockModalContent>,
@@ -45,5 +44,12 @@ export class UpdateStockModal implements OnInit, ModalComponent<UpdateStockModal
 
   closeModal(data) {
     this.dialog.close(data);
+  }
+
+  clickThanks() {
+    this.context.products.forEach(product => {
+      product.actualQTY = 0;
+    });
+    this.dialog.dismiss();
   }
 }
