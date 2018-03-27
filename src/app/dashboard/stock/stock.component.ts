@@ -42,6 +42,8 @@ export class StockComponent implements OnInit {
     }
   }
 
+  sortUnit(event) {}
+
   filterChange(event) {}
 
   filtered(product) {

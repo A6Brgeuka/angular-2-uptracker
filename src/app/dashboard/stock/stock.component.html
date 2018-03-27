@@ -29,7 +29,7 @@
       </div>
       <div class="col s2 count">
         <div class="select">
-          <select title="sort by" [(ngModel)]="product.countBy" materialize="material_select" (change)="sortAlphabet($event)">
+          <select title="sort by" [(ngModel)]="product.countBy" materialize="material_select" (change)="sortUnit($event)">
             <option value="A-Z">1 Box (100)</option>
             <option value="Z-A">1 Unit</option>
           </select>
