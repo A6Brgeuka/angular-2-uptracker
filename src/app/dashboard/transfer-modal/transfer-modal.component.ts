@@ -27,11 +27,12 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   public searchText: string = '';
   public modalState: number = 0;
   public location: string = '';
-  public productVariant: string = '';
+  public unit: string = 'Box';
   public groups: Array<any> = [];
   public selectedGroup: any;
   public inventories: Array<any> = [];
   public activeInventory: any = {};
+  public totalMove: number = 0;
 
   constructor(
     public dialog: DialogRef<TransferModalContext>,
@@ -50,8 +51,9 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       overstock_level: 25,
     }];
     this.inventories = [{
-      stockName: 'Mini Fridge',
+      stockName: 'Room A',
       stockQTY: 30,
+      stockMove: 0,
       stockDisabled: false,
       floorName: 'Front Desk',
       floorQTY: 2,
@@ -59,8 +61,9 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       floorLimit: 2,
       floorVisible: false,
     }, {
-      stockName: 'Shelf A',
+      stockName: 'Room B',
       stockQTY: 133,
+      stockMove: 0,
       stockDisabled: false,
       floorName: 'Ex. Room 1',
       floorQTY: 0,
@@ -68,8 +71,9 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       floorLimit: 0,
       floorVisible: false,
     }, {
-      stockName: 'Sterlization Room',
+      stockName: 'Room C',
       stockQTY: 2,
+      stockMove: 0,
       stockDisabled: false,
       floorName: 'Ex. Room 2',
       floorQTY: 10,

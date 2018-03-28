@@ -149,6 +149,9 @@
           color: $dark;
           margin-left: 20px;
           width: 100%;
+          .case {
+            margin-top: 10px;
+          }
           .line-header {
             font-weight: 200;
             margin-top: 20px;
@@ -171,12 +174,48 @@
           }
         }
       }
+      .amount {
+        display: flex;
+        border: 1px solid $light-grey;
+        border-radius: 5px;
+        max-width: 100px;
+        .count {
+          border-right: 1px solid $light-grey;
+          justify-content: center;
+          padding: 10px;
+          text-align: center;
+          width: 40%;
+        }
+        .unit {
+          justify-content: center;
+          padding: 10px;
+          text-align: center;
+          width: 60%;
+        }
+      }
       .location {
         color: $dark;
         margin: 0;
         input {
           border-color: $light-grey;
           max-width: 300px;
+        }
+        &.submit {
+          margin-top: 20px;
+          .btn {
+            background-color: $tealish;
+            border-radius: 5px;
+            box-shadow: none;
+          }
+        }
+      }
+      .unit {
+        display: flex;
+        .limit {
+          max-width: 100px;
+        }
+        > span {
+          line-height: 30px;
         }
       }
       .product {
@@ -193,7 +232,6 @@
         margin: 0;
         .stock-row {
           margin-bottom: 10px;
-          min-width: 200px;
           padding: 0;
         }
         .stock-field {
@@ -257,14 +295,6 @@
               background-color: $light-grey;
             }
           }
-        }
-      }
-      .submit {
-        margin: 0;
-        .btn {
-          background-color: $tealish;
-          border-radius: 5px;
-          box-shadow: none;
         }
       }
     }

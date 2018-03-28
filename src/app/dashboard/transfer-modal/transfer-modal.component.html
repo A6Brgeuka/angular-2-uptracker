@@ -27,7 +27,7 @@
   </div>
   <div class="middle" *ngIf="modalState === 1">
     <div class="nav fa fa-chevron-left" (click)="toGoModal(0)"></div>
-    <div class="title center-align"><span>SUBTRACT FROM INVENTORY</span></div>
+    <div class="title center-align"><span>TRANSFER INVENTORY</span></div>
     <div class="row description">
       <div class="preview">
         <div class="icon"></div>
@@ -35,6 +35,7 @@
       <div class="content">
         <div class="bold">Gloves Tender Touch Nitrile</div>
         <div class="thin">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
+        <div class="bold case">1 Case = 10 Boxes (3000 Gloves)</div>
         <div class="col s12 line-header">
           <div class="col s4">
             <div class="row">Department</div>
@@ -59,7 +60,7 @@
     <div class="row no-margin select-group">
       <div class="col s6 no-padding right-bordered">
         <div class="row location select">
-          <span class="bold">Location</span>
+          <span class="bold">Transfer From</span>
           <select title="sort by" [(ngModel)]="location" materialize="material_select" (change)="locationSort($event)">
             <option disabled value="">Ft. Lauderdale</option>
             <option value="relevance">Location 1</option>
@@ -67,40 +68,51 @@
             <option value="Z-A">Location 3</option>
           </select>
         </div>
-      </div>
-      <div class="col s6"></div>
-    </div>
-
-    <div class="row no-margin select-group">
-      <div class="col s6 no-padding right-bordered">
         <div class="row product select bottom-padded">
-          <span class="bold">Product Variant</span>
-          <select title="sort by" [(ngModel)]="productVariant" materialize="material_select" (change)="productSort($event)">
-            <option disabled value="">Ft. Lauderdale</option>
-            <option value="relevance">Location 1</option>
-            <option value="A-Z">Location 2</option>
-            <option value="Z-A">Location 3</option>
-          </select>
+          <span class="bold">What are you moving?</span>
+          <div class="unit">
+            <select class="limit" title="sort by" [(ngModel)]="unit" materialize="material_select" (change)="productSort($event)">
+              <option value="Box">1 Box</option>
+              <option value="Glove">1 Glove</option>
+            </select>
+            <span *ngIf="unit == 'Box'">&nbsp;&nbsp;&nbsp;= 300 Gloves</span>
+          </div>
         </div>
       </div>
       <div class="col s6 no-padding">
-        <div class="row location select left-padded bottom-padded">
-          <span class="bold">Transfer</span>
+        <div class="row location select left-padded">
+          <span class="bold">Transfer To</span>
           <select title="sort by" [(ngModel)]="transfer" materialize="material_select" (change)="transferSort($event)">
             <option disabled value="">Ft. Lauderdale</option>
-            <option value="relevance">Location 1</option>
-            <option value="A-Z">Location 2</option>
-            <option value="Z-A">Location 3</option>
+            <option value="loc1">Location 1</option>
+            <option value="loc2">Location 2</option>
+            <option value="loc3">Location 3</option>
           </select>
+        </div>
+        <div class="row location left-padded">You're transfering:</div>
+        <div class="row location left-padded">
+          <div class="amount">
+            <div class="count">{{totalMove}}</div>
+            <div class="unit">Boxes</div>
+          </div>
+        </div>
+        <div class="row location submit left-padded">
+          <div
+            class="btn white-text waves-effect waves-light"
+            (click)="toGoModal(2)">
+            TRANSFER
+          </div>
         </div>
       </div>
     </div>
 
     <div class="row backstock">
       <div class="col s6 right-bordered">
+        <div class="row bold">Where are you moving it from?</div>
         <div class="row">
-          <div class="col s6 stock-row bold">Backstock</div>
-          <div class="col s6 stock-row bold">QTY</div>
+          <div class="col s6 stock-row bold"></div>
+          <div class="col s3 stock-row bold">QTY</div>
+          <div class="col s3 stock-row bold">Move</div>
         </div>
 
         <div class="row" *ngFor="let inventory of inventories; let i = index">
@@ -108,51 +120,15 @@
             {{inventory.stockName}}
           </div>
           <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="inventory.stockQTY" [disabled]="inventory.stockDisabled">
+            <input type="number" [(ngModel)]="inventory.stockQTY" [disabled]="true">
           </div>
           <div class="col s3 stock-field thin">
-            <div
-              class="btn white-text waves-effect waves-light"
-              [class.inactive]="inventory.stockDisabled"
-              (click)="stockClick(i)">
-              Move <i class="fa fa-chevron-right"></i>
-            </div>
+            <input type="number" [(ngModel)]="inventory.stockMove">
           </div>
         </div>
       </div>
 
-      <div class="col s6">
-        <div class="row">
-          <div class="col s6 stock-row bold left-padded">Floor location</div>
-          <div class="col s4 stock-row bold">QTY</div>
-        </div>
-        <div class="row" *ngFor="let inventory of inventories; let i = index">
-          <div class="col s6 stock-field thin left-padded">{{inventory.floorName}}</div>
-          <div class="col s3 stock-field thin">
-            <input type="number" [(ngModel)]="inventory.floorQTY" (ngModelChange)="floorChange($event, i)">
-          </div>
-          <div class="col s3 stock-field thin">
-            <button class="action-button" (click)="floorClick(1, i)" *ngIf="inventory.floorVisible">
-              <fa name="plus"></fa>
-            </button>
-            <button
-              class="action-button right-align"
-              (click)="floorClick(-1, i)"
-              [disabled]="inventory.floorQTY <= inventory.floorLimit"
-              *ngIf="inventory.floorVisible">
-              <fa name="minus"></fa>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row submit">
-      <div
-        class="btn white-text waves-effect waves-light"
-        (click)="toGoModal(2)">
-        Submit
-      </div>
+      <div class="col s6"></div>
     </div>
   </div>
 
