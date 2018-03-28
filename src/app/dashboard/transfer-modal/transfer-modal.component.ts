@@ -27,7 +27,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
   public searchText: string = '';
   public modalState: number = 0;
   public location: string = '';
-  public unit: string = 'Box';
+  public unit: string = 'Boxes';
   public groups: Array<any> = [];
   public selectedGroup: any;
   public inventories: Array<any> = [];
@@ -95,12 +95,6 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     });
   }
 
-  productSort(event) {
-    this.inventories.forEach((inventory) => {
-      inventory.stockQTY = Math.round(100 * Math.random());
-    });
-  }
-
   transferSort(event) {
     this.inventories.forEach((inventory) => {
       inventory.floorQTY = Math.round(100 * Math.random());
@@ -141,6 +135,23 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       inventory.floorVisible = true;
     })
     this.activeInventory = this.inventories[index];
+  }
+
+  stockMoveChanges(event) {
+    if (event.stockMove > event.stockQTY) {
+      setTimeout(() => {
+        event.stockMove = event.stockQTY;
+        this.totalMove = 0;
+        this.inventories.forEach(inventory => {
+          this.totalMove += inventory.stockMove;
+        })
+      })
+    } else {
+      this.totalMove = 0;
+      this.inventories.forEach(inventory => {
+        this.totalMove += inventory.stockMove;
+      })
+    }
   }
 
   toBackInitial() {
