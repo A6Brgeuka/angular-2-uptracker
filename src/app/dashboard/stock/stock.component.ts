@@ -13,7 +13,7 @@ import { UpdateStockModal } from './update-stock-modal/update-stock-modal.compon
   styleUrls: ['./stock.component.scss']
 })
 export class StockComponent implements OnInit {
-  public sort: string = '';
+  public sort: string = 'A-Z';
   public filter: string = '';
   public products: Array<any> = [];
   public panel: any = {};
@@ -28,6 +28,7 @@ export class StockComponent implements OnInit {
       { title: '5GM Light bond medium pst-push-fluo', countBy: '1 Box (100)', currentQTY: 8, actualQTY: '', reason: 'N/A' },
       { title: 'A2 Tips', countBy: '1 Box (100)', currentQTY: 12, actualQTY: '', reason: 'N/A' },
     ]
+    this.sortAlphabet({});
     this.panel.visible = false;
   }
 
