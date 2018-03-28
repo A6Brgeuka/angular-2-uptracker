@@ -84,6 +84,11 @@
         input {
           background-color: $white;
         }
+        .disabled {
+          input {
+            color: #9a9c9e;
+          }
+        }
       }
     }
     .product-list:last-child {
