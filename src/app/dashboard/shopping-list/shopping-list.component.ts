@@ -19,6 +19,7 @@ import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
 import { SlFilters } from '../../models/slfilters.model';
 import { ChangingShoppingListModel, ItemModel, VariantModel } from '../../models/changing-shopping-list.model';
+import { ShoppingListFiltersComponent } from '../../shared/modals/filters-modal/shopping-list-filters/shopping-list-filters.component';
 
 @Component({
   selector: 'app-shopping-list',
@@ -192,33 +193,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
   
   showFiltersModal() {
-    Observable.combineLatest(
-      this.cartService.collection$,
-      this.cartService.filters$
-    )
-    .take(1)
-    .subscribe(([cart,filters]) => {
-      let vendors = [];
-      _.map(cart, (v: any) => {
-          vendors.push(v.selected_vendor.vendor_name)
-      });
-      vendors = _.sortedUniq(vendors.sort());
-      this.modal
-      .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({
-        vendors: vendors,
-        currentFilters: filters,
-        callback: this.applyFilters.bind(this)
-      }, true))
-      .then((resultPromise) => {
-        resultPromise.result.then(
-          (res) => {
-            // this.filterProducts();
-          },
-          (err) => {
-          }
-        );
-      });
-    });
+    this.modal.open(ShoppingListFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
   
   changePriceModal(item = {}) {
