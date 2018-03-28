@@ -109,18 +109,11 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   showFiltersModal() {
     this.modal
-    .open(OrdersPageFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-        },
-        (err) => {
-        }
-      );
-    });
+    .open(OrdersPageFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
 
   resetFilters() {
+    this.pastOrderService.filterQueryParams$.next(null);
     this.orderTableResetService.resetFilters();
   }
 
