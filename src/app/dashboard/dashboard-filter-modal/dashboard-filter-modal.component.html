@@ -75,20 +75,21 @@
     <div class="row location select">
       <span class="bold">Location</span>
       <select title="sort by" [(ngModel)]="location" materialize="material_select" (change)="locationSort($event)">
-          <option disabled value="">Ft. Lauderdale</option>
-          <option value="relevance">Location 1</option>
-          <option value="A-Z">Location 2</option>
-          <option value="Z-A">Location 3</option>
-        </select>
+        <option disabled value="">Ft. Lauderdale</option>
+        <option value="relevance">Location 1</option>
+        <option value="A-Z">Location 2</option>
+        <option value="Z-A">Location 3</option>
+      </select>
     </div>
-    <div class="row product select">
-      <span class="bold">Product Variant</span>
-      <select title="sort by" [(ngModel)]="productVariant" materialize="material_select" (change)="productSort($event)">
-          <option disabled value="">Ft. Lauderdale</option>
-          <option value="relevance">Location 1</option>
-          <option value="A-Z">Location 2</option>
-          <option value="Z-A">Location 3</option>
+    <div class="row subtracting select">
+      <span class="bold">What are you subtracting?</span>
+      <div class="line">
+        <select title="sort by" [(ngModel)]="subtracting" materialize="material_select" (change)="subtractingSort($event)">
+          <option value="Box">1 Box</option>
+          <option value="Glove">1 Glove</option>
         </select>
+        <span *ngIf="subtracting === 'Box'">=&nbsp;&nbsp;&nbsp;300 Gloves</span>
+      </div>
     </div>
     <div class="row backstock">
       <div class="stock-row bold">Backstock</div>

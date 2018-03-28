@@ -289,12 +289,22 @@
           max-width: 300px;
         }
       }
-      .product {
+      .subtracting {
         margin: 0;
         color: $dark;
         input {
           border-color: #d6d6d6;
           max-width: 300px;
+        }
+        .line {
+          display: flex;
+          line-height: 32px;
+          .select-wrapper {
+            max-width: 100px;
+          }
+          > span {
+            padding-left: 15px;
+          }
         }
       }
       .backstock {
