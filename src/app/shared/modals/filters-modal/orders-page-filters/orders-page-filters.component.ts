@@ -7,6 +7,9 @@ import * as _ from 'lodash';
 import { VendorService } from '../../../../core/services/vendor.service';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, ModalComponent } from 'angular2-modal';
+import { AllOrdersListService } from '../../../../dashboard/orders/services/all-orders-list.service';
+import { PastOrderService } from '../../../../core/services/pastOrder.service';
+import { OrdersPageFiltersModel } from './orders-page-filters.model';
 
 export class OrdersPageFiltersModalContext extends BSModalContext {
   public filters: any;
@@ -19,8 +22,9 @@ export class OrdersPageFiltersModalContext extends BSModalContext {
 @DestroySubscribers()
 export class OrdersPageFiltersComponent implements OnInit, ModalComponent<OrdersPageFiltersModalContext> {
   private subscribers: any = {};
-  context;
-  public discounts = ['Bogo', 'Percent Off', 'Rewards Points Used'];
+  public vendors$;
+  public vendorsData: any[];
+  public context;
 
   public filterForm: FormGroup;
 
@@ -35,26 +39,37 @@ export class OrdersPageFiltersComponent implements OnInit, ModalComponent<Orders
 
   constructor(
     public dialog: DialogRef<OrdersPageFiltersModalContext>,
+    public pastOrderService: PastOrderService,
     private vendorService: VendorService,
   ) {
     this.context = dialog.context;
+    this.vendors$ = this.vendorService.getVendors();
 
     this.filterForm = new FormGroup({
       archived: new FormControl(),
-      discounts: new FormControl(),
+      bogo: new FormControl(),
+      percent_off: new FormControl(),
+      rewards: new FormControl(),
+      vendorsName: new FormControl(),
       vendors: new FormControl(),
       voided: new FormControl(),
-      myFavorite: new FormControl(),
-      orderedFrom: new FormControl(),
-      orderedTo: new FormControl(),
+      my_favorite: new FormControl(),
+      order_date_min : new FormControl(),
+      order_date_max : new FormControl(),
     });
 
   }
   get archivedControl() {
     return this.filterForm.get('archived');
   }
-  get discountsControl() {
-    return this.filterForm.get('discounts');
+  get bogoControl() {
+    return this.filterForm.get('bogo');
+  }
+  get percentOffControl() {
+    return this.filterForm.get('percent_off');
+  }
+  get rewardsControl() {
+    return this.filterForm.get('rewards');
   }
   get voidedControl() {
     return this.filterForm.get('voided');
@@ -62,23 +77,35 @@ export class OrdersPageFiltersComponent implements OnInit, ModalComponent<Orders
   get vendorsControl() {
     return this.filterForm.get('vendors');
   }
+  get vendorsNameControl() {
+    return this.filterForm.get('vendorsName');
+  }
   get myFavoriteControl() {
-    return this.filterForm.get('myFavorite');
+    return this.filterForm.get('my_favorite');
   }
   get orderedFromControl() {
-    return this.filterForm.get('orderedFrom');
+    return this.filterForm.get('order_date_min');
   }
   get orderedToControl() {
-    return this.filterForm.get('orderedTo');
+    return this.filterForm.get('order_date_max');
   }
 
   ngOnInit() {
-    this.subscribers.getVendorsSubscription = this.vendorService.getVendors()
+    this.subscribers.getVendorsSubscription = this.vendors$
     .subscribe((res: any) => {
-      const vendorsData = _.flattenDeep(res.data.vendors);
-      vendorsData.map((vendor: any) => {
+      this.vendorsData = _.flatten(res.data.vendors);
+      this.vendorsData.map((vendor: any) => {
         this.vendorsCollection[vendor.name] = null;
       });
+    });
+
+    this.subscribers.changeVendorsValueSubscription = this.vendorsNameControl.valueChanges
+    .subscribe((vendors: string[]) => {
+      const VendorsIds = vendors.map((item) => {
+        const vendorId = _.find(this.vendorsData, ['name', item]);
+        return vendorId.id;
+      });
+      this.vendorsControl.setValue(VendorsIds);
     });
   }
 
@@ -87,8 +114,10 @@ export class OrdersPageFiltersComponent implements OnInit, ModalComponent<Orders
   }
 
   applyFilters() {
-    console.log(this.filterForm.value, 'Filter Form');
-    this.dialog.close(this.filterForm.value);
+    const filters = new OrdersPageFiltersModel(this.filterForm.value);
+    Object.keys(filters).forEach((key) => (filters[key] == null) && delete filters[key]);
+    this.pastOrderService.filterQueryParams$.next(filters);
+    this.dialog.dismiss();
   }
 
 }
