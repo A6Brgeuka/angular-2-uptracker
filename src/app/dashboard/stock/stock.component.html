@@ -5,7 +5,7 @@
   </div>
   <div class="row control">
     <div class="select">
-      <select title="sort by" [(ngModel)]="sort" materialize="material_select" (change)="sortAlphabet($event)">
+      <select title="sort by" [(ngModel)]="sort" materialize="material_select">
         <option value="A-Z">A-Z</option>
         <option value="Z-A">Z-A</option>
       </select>
@@ -21,7 +21,7 @@
     <div class="col s2">Actual QTY</div>
     <div class="col s2">Reason</div>
   </div>
-  <div class="row" *ngFor="let product of products; let i = index">
+  <div class="row" *ngFor="let product of (products | sortProducts: sort); let i = index">
     <div class="product-list" *ngIf="filtered(product)">
       <div class="col s4 main">
         <div class="preview"></div>
@@ -66,8 +66,8 @@
 </div>
 <div class="panel" [class.active]="panel.visible">
   <div class="title">Changes</div>
-  <div class="row product-list" *ngFor="let product of products; let i = index">
-    <div class="changes" *ngIf="product.actualQTY != ''">
+  <ng-container *ngFor="let product of products; let i = index">
+    <div class="product-list" *ngIf="product.actualQTY != ''">
       <div class="row">
         <div class="col s5">Product</div>
         <div class="col s7">{{product.title}}</div>
@@ -85,7 +85,7 @@
         <div class="col s7" [class.shrinkage]="product.reason == 'Shrinkage'">{{product.reason}}</div>
       </div>
     </div>
-  </div>
+  </ng-container>
   <div class="row center">
     <button class="update" (click)="openSuccessModal()">UPDATE STOCK</button>
   </div>
