@@ -35,11 +35,8 @@
     </div>
     <div class="row">
       <div class="col s12 m6">
-        <div class="ttl bold">Vendor</div>
-        <app-chips-input
-          [formControl]="vendorsNameControl"
-          [materializeParams]="autocompleteVendors"
-        ></app-chips-input>
+        <app-vendor-filter [vendorsControl]="vendorsControl">
+        </app-vendor-filter>
       </div>
       <div class="col s12 m6">
         <div class="ttl bold">Show</div>
