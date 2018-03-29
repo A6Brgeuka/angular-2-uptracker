@@ -7,6 +7,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Observable } from 'rxjs/Observable';
 
 import { AccountService } from '../../../../core/services/account.service';
+import { InventoryService } from '../../../../core/services/inventory.service';
 
 export class InventoryGroupFiltersModalContext extends BSModalContext {
   public filters: any;
@@ -25,6 +26,7 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
 
   constructor(
     public dialog: DialogRef<InventoryGroupFiltersModalContext>,
+    public inventoryService: InventoryService,
     private accountService: AccountService,
   ) {
     this.context = dialog.context;
@@ -34,9 +36,9 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
       categories: new FormControl(),
       departments: new FormControl(),
       accountings: new FormControl(),
-      myFavorite: new FormControl(),
-      orderedFrom: new FormControl(),
-      orderedTo: new FormControl(),
+      my_favorite: new FormControl(),
+      order_date_min: new FormControl(),
+      order_date_max: new FormControl(),
       withoutPrice: new FormControl(),
       belowCriticalLevel: new FormControl(),
       aboveFullyStocked: new FormControl(),
@@ -63,13 +65,13 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
     return this.filterForm.get('accountings');
   }
   get myFavoriteControl() {
-    return this.filterForm.get('myFavorite');
+    return this.filterForm.get('my_favorite');
   }
   get orderedFromControl() {
-    return this.filterForm.get('orderedFrom');
+    return this.filterForm.get('order_date_min');
   }
   get orderedToControl() {
-    return this.filterForm.get('orderedTo');
+    return this.filterForm.get('order_date_max');
   }
   get withoutPriceControl() {
     return this.filterForm.get('withoutPrice');
@@ -109,7 +111,7 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
 
   applyFilters() {
     Object.keys(this.filterForm.value).forEach((key) => (this.filterForm.value[key] == null) && delete this.filterForm.value[key]);
-    console.log(this.filterForm.value);
+    this.inventoryService.filterParams$.next(this.filterForm.value);
     this.dialog.dismiss();
   }
 
