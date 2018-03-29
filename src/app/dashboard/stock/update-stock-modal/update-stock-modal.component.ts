@@ -49,7 +49,7 @@ export class UpdateStockModal implements OnInit, ModalComponent<UpdateStockModal
 
   clickThanks() {
     this.context.products.forEach(product => {
-      product.actualQTY = '';
+      product.actualQTY = null;
       product.reason = 'N/A';
     });
     this.context.panel.visible = false;

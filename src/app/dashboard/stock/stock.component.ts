@@ -22,11 +22,11 @@ export class StockComponent implements OnInit {
     public modalWindowService: ModalWindowService,
   ) {
     this.products = [
-      { title: 'Gloves Tender Touch Nitrile Sempecare', countBy: '1 Box (100)', currentQTY: 100, actualQTY: '', reason: 'N/A' },
-      { title: 'Gloves Tender Touch Nitrile Sempecare', countBy: '1 Box (100)', currentQTY: 80, actualQTY: '', reason: 'N/A' },
-      { title: '20GM Maximum cure sealant a-flouo', countBy: '1 Box (100)', currentQTY: 20, actualQTY: '', reason: 'N/A' },
-      { title: '5GM Light bond medium pst-push-fluo', countBy: '1 Box (100)', currentQTY: 8, actualQTY: '', reason: 'N/A' },
-      { title: 'A2 Tips', countBy: '1 Box (100)', currentQTY: 12, actualQTY: '', reason: 'N/A' },
+      { title: 'Gloves Tender Touch Nitrile Sempecare', countBy: '1 Box (100)', currentQTY: 100, actualQTY: null, reason: 'N/A' },
+      { title: 'Gloves Tender Touch Nitrile Sempecare', countBy: '1 Box (100)', currentQTY: 80, actualQTY: null, reason: 'N/A' },
+      { title: '20GM Maximum cure sealant a-flouo', countBy: '1 Box (100)', currentQTY: 20, actualQTY: null, reason: 'N/A' },
+      { title: '5GM Light bond medium pst-push-fluo', countBy: '1 Box (100)', currentQTY: 8, actualQTY: null, reason: 'N/A' },
+      { title: 'A2 Tips', countBy: '1 Box (100)', currentQTY: 12, actualQTY: null, reason: 'N/A' },
     ]
     this.sortAlphabet({});
     this.panel.visible = false;
@@ -61,6 +61,18 @@ export class StockComponent implements OnInit {
       if (parseInt(product.actualQTY) > 0) active = true;
     })
     this.panel.visible = active;
+  }
+
+  remove(product) {
+    product.actualQTY = null;
+    this.actualChange({})
+  }
+
+  clear() {
+    this.products.forEach(product => {
+      product.actualQTY = null;
+    })
+    this.panel.visible = false;
   }
 
   openSuccessModal() {

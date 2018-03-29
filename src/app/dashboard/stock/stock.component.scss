@@ -98,15 +98,16 @@
   .panel {
     background-color: $white;
     border-left: 1px solid $light-grey;
+    overflow: scroll;
     padding-top: 40px;
     padding-left: 30px;
     padding-right: 20px;
     position: absolute;
     transition: right .5s;
     top: 0;
-    right: -250px;
-    width: 250px;
-    height: 100vh;
+    right: -270px;
+    width: 270px;
+    height: calc(100vh - 50px);
     &.active {
       right: 0;
     }
@@ -118,6 +119,19 @@
       margin-bottom: 30px;
       font-size: 20px;
       font-family: Ubuntu;
+    }
+    .product-list {
+      border-bottom: 1px solid $light-grey;
+      margin-bottom: 20px;
+      .remove {
+        display: flex;
+        justify-content: flex-end;
+        > a {
+          color: $black;
+          padding-bottom: 20px;
+          text-decoration: underline;
+        }
+      }
     }
     .changes {
       border-bottom: 1px solid $light-grey;
@@ -134,13 +148,17 @@
       background: $tealish;
       border: 0;
       border-radius: 5px;
-      height: 30px;
       color: #fff;
-      font-size: 12px;
+      font-size: 16px;
       font-weight: bold;
       letter-spacing: normal;
-      padding-left: 10px;
-      padding-right: 10px;
+      padding: 10px;
+      width: 100%;
+    }
+    .nevermind {
+      color: $black;
+      padding-bottom: 20px;
+      text-decoration: underline;
     }
   }
 

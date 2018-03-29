@@ -67,7 +67,7 @@
 <div class="panel" [class.active]="panel.visible">
   <div class="title">Changes</div>
   <ng-container *ngFor="let product of products; let i = index">
-    <div class="product-list" *ngIf="product.actualQTY != ''">
+    <div class="product-list" *ngIf="product.actualQTY != null">
       <div class="row">
         <div class="col s5">Product</div>
         <div class="col s7">{{product.title}}</div>
@@ -78,15 +78,21 @@
       </div>
       <div class="row">
         <div class="col s5">Change</div>
-        <div class="col s7">{{product.currentQTY}} -> {{product.actualQTY}}</div>
+        <div class="col s7">{{product.currentQTY}}&nbsp;&nbsp;<fa name="arrow-right"></fa>&nbsp;&nbsp;{{product.actualQTY}}</div>
       </div>
       <div class="row">
         <div class="col s5">Reason</div>
         <div class="col s7" [class.shrinkage]="product.reason == 'Shrinkage'">{{product.reason}}</div>
       </div>
+      <div class="remove">
+        <a (click)="remove(product)">Remove</a>
+      </div>
     </div>
   </ng-container>
   <div class="row center">
     <button class="update" (click)="openSuccessModal()">UPDATE STOCK</button>
+  </div>
+  <div class="row center">
+    <a class="nevermind" (click)="clear()">Nevermind</a>
   </div>
 </div>
