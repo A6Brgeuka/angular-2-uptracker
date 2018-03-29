@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import * as _ from 'lodash';
-import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import { Observable } from 'rxjs/Observable';
-import { VendorService } from '../../../../core/services/vendor.service';
-import { AccountService } from '../../../../core/services/account.service';
 import { DialogRef, ModalComponent } from 'angular2-modal';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { Observable } from 'rxjs/Observable';
+
+import { AccountService } from '../../../../core/services/account.service';
 
 export class InventoryGroupFiltersModalContext extends BSModalContext {
   public filters: any;
@@ -24,37 +23,9 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
   public filterForm: FormGroup;
   public departmentCollection$: Observable<any> = this.accountService.getDepartments();
 
-  public vendorsCollection = {};
-  public autocompleteVendors = {
-    autocompleteOptions: {
-      data: this.vendorsCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
-  public productCategoriesCollection: any = {'': null};
-  public autocompleteCategories = {
-    autocompleteOptions: {
-      data: this.productCategoriesCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
-  public accountingCollection = {'': null};
-  public autocompleteAccountings = {
-    autocompleteOptions: {
-      data: this.accountingCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
   constructor(
     public dialog: DialogRef<InventoryGroupFiltersModalContext>,
     private accountService: AccountService,
-    private vendorService: VendorService,
   ) {
     this.context = dialog.context;
 
@@ -130,29 +101,6 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
 
   ngOnInit() {
 
-    this.subscribers.getVendorsSubscription = this.vendorService.getVendors()
-    .subscribe((res: any) => {
-      const vendorsData = _.flattenDeep(res.data.vendors);
-      vendorsData.map((vendor: any) => {
-        this.vendorsCollection[vendor.name] = null;
-      });
-    });
-
-    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories()
-    .subscribe((res: any) => {
-      const categoriesData = [...res];
-      categoriesData.map((category: any) => {
-        this.productCategoriesCollection[category] = null;
-      });
-    });
-
-    this.subscribers.getProductAccountingSubscription = this.accountService.getProductAccounting()
-    .subscribe((res: any) => {
-      const accountingsData = [...res];
-      accountingsData.map((accounting) =>
-        this.accountingCollection[accounting] = null
-      );
-    });
   }
 
   dismissModal() {
@@ -160,7 +108,9 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
   }
 
   applyFilters() {
-
+    Object.keys(this.filterForm.value).forEach((key) => (this.filterForm.value[key] == null) && delete this.filterForm.value[key]);
+    console.log(this.filterForm.value);
+    this.dialog.dismiss();
   }
 
 }
