@@ -8,48 +8,50 @@ import { APP_DI_CONFIG } from '../../../../../../env';
 import { ToasterService } from "../../../../core/services/toaster.service";
 import { SpinnerService } from "../../../../core/services";
 
-export class PhoneOrderModalContext extends BSModalContext {
+export class WarningOrderModalContext extends BSModalContext {
   public order_id: string;
-  constructor(id: string) {
+  public order_method: string;
+  constructor(id: string, method: string) {
    super();
     this.order_id = id;
+    this.order_method = method.toLowerCase();
   }
 }
 
 @Component({
-  selector: 'app-phone-order-modal',
-  templateUrl: './phone-order-modal.component.html',
-  styleUrls: ['./phone-order-modal.component.scss']
+  selector: 'app-warning-order-modal',
+  templateUrl: './warning-order-modal.component.html',
+  styleUrls: ['./warning-order-modal.component.scss']
 })
 @DestroySubscribers()
-export class PhoneOrderModalComponent implements OnInit, ModalComponent<PhoneOrderModalContext> {
-  context: PhoneOrderModalContext;
+export class WarningOrderModalComponent implements OnInit, ModalComponent<WarningOrderModalContext> {
+  context: WarningOrderModalContext;
 
   constructor(
-    public dialog: DialogRef<PhoneOrderModalContext>,
+    public dialog: DialogRef<WarningOrderModalContext>,
     public httpClient: HttpClient,
     public toasterService: ToasterService,
     public spinner: SpinnerService
   ) {
     this.context = dialog.context;
   }
-  
+
   ngOnInit() {
   }
-  
+
   dismissModal() {
     this.toasterService.pop('', 'Order processed. Pending receiving');
     this.dialog.dismiss();
   }
-  
+
   closeModal() {
-    let ua = navigator.userAgent.toLowerCase(); 
+    let ua = navigator.userAgent.toLowerCase();
     let isSafari = ua.indexOf('safari') != -1;
     let w: Window;
     if (isSafari) {
       w = window.open();
     }
-    
+
     this.spinner.show();
     return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + this.context.order_id + '/download', {
       responseType: ResponseContentType.ArrayBuffer
@@ -66,10 +68,10 @@ export class PhoneOrderModalComponent implements OnInit, ModalComponent<PhoneOrd
         w = window.open(pdfUrl);
         w.print();
       }
-      
+
       this.spinner.hide();
       this.dialog.close();
     });
   }
-  
+
 }
