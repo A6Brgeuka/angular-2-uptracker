@@ -178,19 +178,19 @@
         display: flex;
         border: 1px solid $light-grey;
         border-radius: 5px;
-        max-width: 100px;
+        max-width: 150px;
         .count {
           border-right: 1px solid $light-grey;
           justify-content: center;
           padding: 10px;
           text-align: center;
-          width: 40%;
+          width: 60%;
         }
         .unit {
           justify-content: center;
           padding: 10px;
           text-align: center;
-          width: 60%;
+          width: 40%;
         }
       }
       .location {
