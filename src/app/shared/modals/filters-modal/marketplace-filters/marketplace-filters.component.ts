@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import * as _ from 'lodash';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { DialogRef, ModalComponent } from 'angular2-modal';
 import { Observable } from 'rxjs/Observable';
 
 import { AccountService } from '../../../../core/services/account.service';
-import { VendorService } from '../../../../core/services/vendor.service';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { DialogRef, ModalComponent } from 'angular2-modal';
+import { ProductService } from '../../../../core/services/product.service';
+import { MarketplaceFiltersModel } from './marketplace-filters.model';
 
 export class MarketplaceFiltersModalContext extends BSModalContext {
   public filters: any;
@@ -24,37 +24,10 @@ export class MarketplaceFiltersComponent implements OnInit, ModalComponent<Marke
   public filterForm: FormGroup;
   public departmentCollection$: Observable<any> = this.accountService.getDepartments();
 
-  public vendorsCollection = {};
-  public autocompleteVendors = {
-    autocompleteOptions: {
-      data: this.vendorsCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
-  public productCategoriesCollection: any = {'': null};
-  public autocompleteCategories = {
-    autocompleteOptions: {
-      data: this.productCategoriesCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
-  public accountingCollection = {'': null};
-  public autocompleteAccountings = {
-    autocompleteOptions: {
-      data: this.accountingCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
   constructor(
     public dialog: DialogRef<MarketplaceFiltersModalContext>,
     private accountService: AccountService,
-    private vendorService: VendorService,
+    private productService: ProductService,
   ) {
     this.context = dialog.context;
 
@@ -63,9 +36,9 @@ export class MarketplaceFiltersComponent implements OnInit, ModalComponent<Marke
       categories: new FormControl(),
       departments: new FormControl(),
       accountings: new FormControl(),
-      myFavorite: new FormControl(),
-      orderedFrom: new FormControl(),
-      orderedTo: new FormControl(),
+      my_favorite: new FormControl(),
+      order_date_min: new FormControl(),
+      order_date_max: new FormControl(),
       retired: new FormControl(),
       hazardous: new FormControl(),
       trackable: new FormControl(),
@@ -78,30 +51,24 @@ export class MarketplaceFiltersComponent implements OnInit, ModalComponent<Marke
   get vendorsControl() {
     return this.filterForm.get('vendors');
   }
-
   get categoriesControl() {
     return this.filterForm.get('categories');
   }
-
   get departmentsControl() {
     return this.filterForm.get('departments');
   }
-
   get accountingsControl() {
     return this.filterForm.get('accountings');
   }
-
   get myFavoriteControl() {
-    return this.filterForm.get('myFavorite');
+    return this.filterForm.get('my_favorite');
   }
-
   get orderedFromControl() {
-    return this.filterForm.get('orderedFrom');
+    return this.filterForm.get('order_date_min');
   }
   get orderedToControl() {
-    return this.filterForm.get('orderedTo');
+    return this.filterForm.get('order_date_max');
   }
-
   get retiredControl() {
     return this.filterForm.get('retired');
   }
@@ -120,29 +87,6 @@ export class MarketplaceFiltersComponent implements OnInit, ModalComponent<Marke
 
   ngOnInit() {
 
-    this.subscribers.getVendorsSubscription = this.vendorService.getVendors()
-    .subscribe((res: any) => {
-      const vendorsData = _.flattenDeep(res.data.vendors);
-      vendorsData.map((vendor: any) => {
-        this.vendorsCollection[vendor.name] = null;
-      });
-    });
-
-    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories()
-    .subscribe((res: any) => {
-      const categoriesData = [...res];
-      categoriesData.map((category: any) => {
-        this.productCategoriesCollection[category] = null;
-      });
-    });
-
-    this.subscribers.getProductAccountingSubscription = this.accountService.getProductAccounting()
-    .subscribe((res: any) => {
-      const accountingsData = [...res];
-      accountingsData.map((accounting) =>
-        this.accountingCollection[accounting] = null
-      );
-    });
   }
 
   dismissModal() {
@@ -150,7 +94,10 @@ export class MarketplaceFiltersComponent implements OnInit, ModalComponent<Marke
   }
 
   applyFilters() {
-
+    const filters = new MarketplaceFiltersModel(this.filterForm.value);
+    Object.keys(filters).forEach((key) => (filters[key] == null) && delete filters[key]);
+    this.productService.filterBy$.next(filters);
+    this.dialog.dismiss();
   }
 
 }
