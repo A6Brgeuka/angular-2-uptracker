@@ -8,11 +8,8 @@
   >
     <div class="row">
       <div class="col s12 m6">
-        <div class="ttl bold">Vendor</div>
-        <app-chips-input
-          [formControl]="vendorsControl"
-          [materializeParams]="autocompleteVendors"
-        ></app-chips-input>
+        <app-vendor-filter [vendorsControl]="vendorsControl">
+        </app-vendor-filter>
       </div>
       <div class="col s12 m6">
         <app-checkboxes-filter
@@ -26,28 +23,32 @@
     </div>
     <div class="row">
       <div class="col s12 m6">
-        <div class="ttl bold">Category</div>
-        <app-chips-input
-          [formControl]="categoriesControl"
-          [materializeParams]="autocompleteCategories"
-        ></app-chips-input>
+        <app-category-filter [categoriesControl]="categoriesControl">
+        </app-category-filter>
       </div>
       <div class="col s12 m6">
-        <app-checkboxes-filter
-          [title]="'Discount'"
-          [collection]="discounts"
-          [formControl]="discountsControl"
+        <div class="ttl bold">Discount</div>
+        <app-single-checkbox-filter
+          [title]="'Bogo'"
+          [control]="bogoControl"
         >
-        </app-checkboxes-filter>
+        </app-single-checkbox-filter>
+        <app-single-checkbox-filter
+          [title]="'Percent Off'"
+          [control]="percentOffControl"
+        >
+        </app-single-checkbox-filter>
+        <app-single-checkbox-filter
+          [title]="'Rewards Points Used'"
+          [control]="rewardsControl"
+        >
+        </app-single-checkbox-filter>
       </div>
     </div>
     <div class="row">
       <div class="col s12 m6">
-        <div class="ttl bold">Accounting</div>
-        <app-chips-input class="mrg-btm-20"
-          [formControl]="accountingsControl"
-          [materializeParams]="autocompleteAccountings"
-        ></app-chips-input>
+        <app-accounting-filter [accountingsControl]="accountingsControl">
+        </app-accounting-filter>
       </div>
       <div class="col s12 m6">
         <div class="ttl bold">Show</div>
