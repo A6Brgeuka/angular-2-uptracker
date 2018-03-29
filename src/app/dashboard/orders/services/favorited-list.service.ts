@@ -71,7 +71,7 @@ export class FavoritedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', 'favorites').customGET('', params);
+    return this.restangular.one('pos', 'favorites').all('items').customGET('', params);
   }
 
   postItem(item) {

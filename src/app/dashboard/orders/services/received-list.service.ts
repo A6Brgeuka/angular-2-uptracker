@@ -17,6 +17,6 @@ export class ReceivedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', '6').customGET('', params);
+    return this.restangular.one('pos', '6').all('items').customGET('', params);
   }
 }

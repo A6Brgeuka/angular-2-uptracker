@@ -17,6 +17,6 @@ export class BackorderedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', '10').customGET('', params);
+    return this.restangular.one('pos', '10').all('items').customGET('', params);
   }
 }

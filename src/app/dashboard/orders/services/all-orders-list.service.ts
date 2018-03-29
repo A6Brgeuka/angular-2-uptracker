@@ -17,6 +17,6 @@ export class AllOrdersListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.all('pos').customGET('', params);
+    return this.restangular.one('pos', 'all').all('items').customGET('', params);
   }
 }

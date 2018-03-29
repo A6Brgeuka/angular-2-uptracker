@@ -17,7 +17,7 @@ export class ClosedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', '8').customGET('', params);
+    return this.restangular.one('pos', '8').all('items').customGET('', params);
 
   }
 }

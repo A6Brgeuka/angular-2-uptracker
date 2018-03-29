@@ -72,7 +72,7 @@ export class FlaggedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', 'flagged').customGET('', params);
+    return this.restangular.one('pos', 'flagged').all('items').customGET('', params);
   }
 
   putItem(item) {

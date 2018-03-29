@@ -17,7 +17,7 @@ export class OpenOrdersListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', '5').customGET('', params);
+    return this.restangular.one('pos', '5').all('items').customGET('', params);
 
   }
 }
