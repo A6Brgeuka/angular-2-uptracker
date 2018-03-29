@@ -222,6 +222,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchKey = '';
     this.sortBy = '';
     this.inventoryService.current_page = 0;
+    this.inventoryService.filterParams$.next(null);
     this.inventoryService.getNextInventory(0, this.searchKey, this.sortBy).subscribe((r) => {
         this.getInfiniteScroll();
       }
@@ -318,14 +319,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showFiltersModal() {
     this.modal
-    .open(InventoryGroupFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}))
-    .then((resultPromise) => {
-      resultPromise.result.then(
-        (res) => {
-        },
-        (err) => {
-        }
-      );
-    });
+    .open(InventoryGroupFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
 }
