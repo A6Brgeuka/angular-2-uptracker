@@ -37,7 +37,7 @@ export class ShoppingListFiltersComponent implements OnInit, ModalComponent<Shop
       rewards: new FormControl(),
       departments: new FormControl(),
       accountings: new FormControl(),
-      myFavorite: new FormControl(),
+      my_favorite: new FormControl(),
       withoutPrice: new FormControl(),
       taxExempt: new FormControl(),
     });
@@ -73,7 +73,7 @@ export class ShoppingListFiltersComponent implements OnInit, ModalComponent<Shop
   }
 
   get myFavoriteControl() {
-    return this.filterForm.get('myFavorite');
+    return this.filterForm.get('my_favorite');
   }
 
   get withoutPriceControl() {
