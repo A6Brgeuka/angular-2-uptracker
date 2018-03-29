@@ -53,7 +53,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     this.inventories = [{
       stockName: 'Room A',
       stockQTY: 30,
-      stockMove: 0,
+      stockMove: null,
       stockDisabled: false,
       floorName: 'Front Desk',
       floorQTY: 2,
@@ -63,7 +63,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     }, {
       stockName: 'Room B',
       stockQTY: 133,
-      stockMove: 0,
+      stockMove: null,
       stockDisabled: false,
       floorName: 'Ex. Room 1',
       floorQTY: 0,
@@ -73,7 +73,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     }, {
       stockName: 'Room C',
       stockQTY: 2,
-      stockMove: 0,
+      stockMove: null,
       stockDisabled: false,
       floorName: 'Ex. Room 2',
       floorQTY: 10,
