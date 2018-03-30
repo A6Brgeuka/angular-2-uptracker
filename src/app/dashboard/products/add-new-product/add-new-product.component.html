@@ -310,7 +310,7 @@
     </div>
   </div>
 
-  <div class="container" *ngIf="checkStep(2)">
+  <ng-container *ngIf="checkStep(2)">
     <div class="row center-align">
       <div class="col s12 title">
         {{product.name}}
@@ -321,24 +321,48 @@
     </div>
 
     <div class="row">
-      <div class="col s12">
-        <div class="col s4 m2" *ngFor="let variant of getVariants() | iterable; let index = index; trackBy:trackByIndex;">
-          <div>
-            {{variant.key | capitalizeFirst}}(s)
+      <div class="col s12 flex">
+        <div class="col s4 m2 wrap" *ngFor="let variant of getVariants() | iterable; let index = index; trackBy:trackByIndex;">
+          <div class="select">
+            <select [(ngModel)]="variant.key"
+                    materialize="material_select"
+                    [materializeSelectOptions]="availableVariants">
+              <option [value]="variant.key">{{ variant.key | capitalizeFirst}}</option>
+              <option *ngFor="let v of availableVariants; let i = index; trackBy:trackByIndex;"  [value]="v">{{ v | capitalizeFirst }}</option>
+            </select>
           </div>
           <div *ngFor="let v of productVariants[variant.key]; let i = index; trackBy:trackByIndex;" class="product-variant">
-            <!--{{productVariants[variant.key][i]}}-->
             <input type="text" [(ngModel)]="productVariants[variant.key][i]">
-            <div class="delete-variant" (click)="deleteVariant(variant.key, i)"></div>
+            <div class="variant-action delete" (click)="deleteItem(variant.key, i)"></div>
           </div>
-          <button class="bluebtn waves-light waves-effect" (click)="addVariant(variant.key)">
-            <fa [name]="'plus'"></fa>
-            Add
-          </button>
+          <div class="product-variant">
+            <input type="text" [(ngModel)]="newProductVariants[variant.key]" placeholder="Add another {{variant.key | capitalizeFirst}}">
+            <div class="variant-action add" (click)="addVariant(variant.key)"></div>
+          </div>
+          <div class="section-action delete" (click)="deleteItem(variant, index)"></div>
+        </div>
+        <div class="col s4 m2 wrap">
+          <div class="select">
+            <select [(ngModel)]="newVariant.title"
+                    materialize="material_select"
+                    [materializeSelectOptions]="availableVariants"
+                    (ngModelChange)="onProductVariantSelect($event)">
+              <option [value]="newVariant.title">{{ newVariant.title | capitalizeFirst}}</option>
+              <option *ngFor="let v of availableVariants; let i = index; trackBy:trackByIndex;" [value]="v">{{ v | capitalizeFirst }}</option>
+            </select>
+          </div>
+          <div *ngFor="let v of newVariant.variants; let i = index;" class="product-variant">
+            <input type="text" [(ngModel)]="newVariant[v][i]">
+            <div class="variant-action delete" (click)="deleteItem(v, i)"></div>
+          </div>
+          <div class="product-variant">
+            <input type="text" placeholder="Add another {{newVariant.title | capitalizeFirst}}">
+            <div class="variant-action add" (click)="addVariant(variant.key)"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 
   <div class="container" *ngIf="checkStep(3)">
     <div class="row center-align">

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {some, filter, keys} from 'lodash';
+import {some, filter, keys, isObject, difference} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -16,7 +16,8 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-add-new-product',
   templateUrl: 'add-new-product.component.html',
-  styleUrls: ['add-new-product.component.scss']
+  styleUrls: ['add-new-product.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 @DestroySubscribers()
 export class AddNewProductComponent implements OnInit {
@@ -35,6 +36,11 @@ export class AddNewProductComponent implements OnInit {
   public pricingRulesCollection$: Observable<any> = Observable.of(['Rule1', 'Rule2', 'Rule3']);
   public pricingRulesCollection: any [];
   public fileArr: any[] = [];
+  public newProductVariants: any = {};
+  public newVariant: any = {
+    title: '',
+    variants: []
+  };
 
   public productVariants = {
     color: ['green', 'blue', 'navy'],
@@ -207,7 +213,27 @@ export class AddNewProductComponent implements OnInit {
   }
 
   trackByIndex = (i: number, obj: any) => i;
-  deleteVariant = (variant, i) => this.productVariants[variant].splice(i, 1);
-  addVariant = (variant) => this.productVariants[variant].push('');
+
+  deleteItem = (variant, i) => {
+    isObject(variant) ?
+      delete this.variants[variant.key] :
+      this.productVariants[variant].splice(i, 1);
+  };
+
+  addVariant = (variant) => {
+    this.productVariants[variant].push(this.newProductVariants[variant]);
+    this.newProductVariants[variant] = '';
+  };
+
+  get availableVariants() {
+    return difference(keys(this.productVariants), keys(this.variants));
+  }
+
+  onProductVariantSelect = ($event) => {
+    this.variants[$event] = true;
+    this.productVariants[$event] = [];
+    this.newVariant = { title: '', variants: []};
+  };
+
   goBack = (): void => this.location.back();
 }
