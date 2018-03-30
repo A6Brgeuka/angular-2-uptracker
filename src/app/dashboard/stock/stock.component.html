@@ -49,8 +49,8 @@
         <div class="select">
           <select
             title="sort by"
-            [disabled]="product.actualQTY == '' || product.currentQTY == product.actualQTY"
-            [class.disabled]="product.actualQTY == '' || product.currentQTY == product.actualQTY"
+            [disabled]="product.actualQTY == null || product.currentQTY == product.actualQTY"
+            [class.disabled]="product.actualQTY == null || product.currentQTY == product.actualQTY"
             [(ngModel)]="product.reason"
             materialize="material_select"
             (change)="actualChange($event)"
