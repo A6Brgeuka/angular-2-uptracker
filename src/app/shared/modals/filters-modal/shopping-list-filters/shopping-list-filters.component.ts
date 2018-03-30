@@ -7,6 +7,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Observable } from 'rxjs/Observable';
 
 import { AccountService } from '../../../../core/services/account.service';
+import { CartService } from '../../../../core/services/cart.service';
 
 export class ShoppingListFiltersModalContext extends BSModalContext {
   public filters: any;
@@ -25,6 +26,7 @@ export class ShoppingListFiltersComponent implements OnInit, ModalComponent<Shop
 
   constructor(
     public dialog: DialogRef<ShoppingListFiltersModalContext>,
+    public cartService: CartService,
     private accountService: AccountService,
   ) {
     this.context = dialog.context;
@@ -94,7 +96,7 @@ export class ShoppingListFiltersComponent implements OnInit, ModalComponent<Shop
 
   applyFilters() {
     Object.keys(this.filterForm.value).forEach((key) => (this.filterForm.value[key] == null) && delete this.filterForm.value[key]);
-    console.log(this.filterForm.value);
+    this.cartService.filtersParams$.next(this.filterForm.value);
     this.dialog.dismiss();
   }
 }
