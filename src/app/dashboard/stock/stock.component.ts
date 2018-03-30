@@ -65,12 +65,14 @@ export class StockComponent implements OnInit {
 
   remove(product) {
     product.actualQTY = null;
-    this.actualChange({})
+    product.reason = 'N/A';
+    this.actualChange({});
   }
 
   clear() {
     this.products.forEach(product => {
       product.actualQTY = null;
+      product.reason = 'N/A';
     })
     this.panel.visible = false;
   }
