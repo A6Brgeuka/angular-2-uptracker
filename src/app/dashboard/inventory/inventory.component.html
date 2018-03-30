@@ -11,7 +11,7 @@
         <span class="sub-title">{{total}} groups</span>
       </div>
       <div class="col s4 l1 m2 filter-btn text-right">
-        <a (click)="showFiltersModal()">
+        <a (click)="showFiltersModal()" [class.red-text]="(inventoryService.filterParams$ | async)">
           <fa [name]="'filter'"></fa>
           <span>Filters</span>
         </a>
