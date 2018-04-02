@@ -40,8 +40,8 @@ export class ShoppingListFiltersComponent implements OnInit, ModalComponent<Shop
       departments: new FormControl(),
       accountings: new FormControl(),
       my_favorite: new FormControl(),
-      withoutPrice: new FormControl(),
-      taxExempt: new FormControl(),
+      without_price: new FormControl(),
+      tax_exempt: new FormControl(),
     });
 
   }
@@ -79,11 +79,11 @@ export class ShoppingListFiltersComponent implements OnInit, ModalComponent<Shop
   }
 
   get withoutPriceControl() {
-    return this.filterForm.get('withoutPrice');
+    return this.filterForm.get('without_price');
   }
 
   get taxExemptControl() {
-    return this.filterForm.get('taxExempt');
+    return this.filterForm.get('tax_exempt');
   }
 
   ngOnInit() {
