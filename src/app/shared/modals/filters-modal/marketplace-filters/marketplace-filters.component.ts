@@ -42,8 +42,8 @@ export class MarketplaceFiltersComponent implements OnInit, ModalComponent<Marke
       retired: new FormControl(),
       hazardous: new FormControl(),
       trackable: new FormControl(),
-      taxExempt: new FormControl(),
-      mostFrequentlyOrdered: new FormControl(),
+      tax_exempt: new FormControl(),
+      most_frequently_ordered: new FormControl(),
     });
 
   }
@@ -79,10 +79,10 @@ export class MarketplaceFiltersComponent implements OnInit, ModalComponent<Marke
     return this.filterForm.get('trackable');
   }
   get taxExemptControl() {
-    return this.filterForm.get('taxExempt');
+    return this.filterForm.get('tax_exempt');
   }
   get mostFrequentlyOrderedControl() {
-    return this.filterForm.get('mostFrequentlyOrdered');
+    return this.filterForm.get('most_frequently_ordered');
   }
 
   ngOnInit() {
