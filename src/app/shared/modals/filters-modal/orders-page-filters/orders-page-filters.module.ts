@@ -7,6 +7,7 @@ import { CheckboxesFilterModule } from '../checkboxes-filter/checkboxes-filter.m
 import { DateFilterModule } from '../date-filter/date-filter.module';
 import { SingleCheckboxFilterModule } from '../single-checkbox-filter/single-checkbox-filter.module';
 import { OrdersPageFiltersComponent } from './orders-page-filters.component';
+import { VendorFilterModule } from '../vendor-filter/vendor-filter.module';
 
 @NgModule({
   imports: [
@@ -17,8 +18,12 @@ import { OrdersPageFiltersComponent } from './orders-page-filters.component';
     CheckboxesFilterModule,
     DateFilterModule,
     SingleCheckboxFilterModule,
+    VendorFilterModule,
   ],
   declarations: [
+    OrdersPageFiltersComponent,
+  ],
+  entryComponents: [
     OrdersPageFiltersComponent,
   ],
   exports: [

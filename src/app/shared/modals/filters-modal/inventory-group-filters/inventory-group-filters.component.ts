@@ -1,61 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import * as _ from 'lodash';
+import { DialogRef, ModalComponent } from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { Observable } from 'rxjs/Observable';
-import { VendorService } from '../../../../core/services/vendor.service';
+
 import { AccountService } from '../../../../core/services/account.service';
+import { InventoryService } from '../../../../core/services/inventory.service';
+
+export class InventoryGroupFiltersModalContext extends BSModalContext {
+  public filters: any;
+}
 
 @Component({
   selector: 'app-inventory-group-filters',
   templateUrl: './inventory-group-filters.component.html',
 })
 @DestroySubscribers()
-export class InventoryGroupFiltersComponent implements OnInit {
+export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<InventoryGroupFiltersModalContext> {
   private subscribers: any = {};
+  public context;
   public filterForm: FormGroup;
   public departmentCollection$: Observable<any> = this.accountService.getDepartments();
 
-  public vendorsCollection = {};
-  public autocompleteVendors = {
-    autocompleteOptions: {
-      data: this.vendorsCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
-  public productCategoriesCollection: any = {'': null};
-  public autocompleteCategories = {
-    autocompleteOptions: {
-      data: this.productCategoriesCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
-  public accountingCollection = {'': null};
-  public autocompleteAccountings = {
-    autocompleteOptions: {
-      data: this.accountingCollection,
-      limit: Infinity,
-      minLength: 0,
-    }
-  };
-
   constructor(
+    public dialog: DialogRef<InventoryGroupFiltersModalContext>,
+    public inventoryService: InventoryService,
     private accountService: AccountService,
-    private vendorService: VendorService,
   ) {
+    this.context = dialog.context;
+
     this.filterForm = new FormGroup({
       vendors: new FormControl(),
       categories: new FormControl(),
       departments: new FormControl(),
       accountings: new FormControl(),
-      myFavorite: new FormControl(),
-      orderedFrom: new FormControl(),
-      orderedTo: new FormControl(),
+      my_favorite: new FormControl(),
+      order_date_min: new FormControl(),
+      order_date_max: new FormControl(),
       withoutPrice: new FormControl(),
       belowCriticalLevel: new FormControl(),
       aboveFullyStocked: new FormControl(),
@@ -64,6 +47,7 @@ export class InventoryGroupFiltersComponent implements OnInit {
       hazardous: new FormControl(),
       trackable: new FormControl(),
       taxExempt: new FormControl(),
+      retired: new FormControl(),
     });
 
   }
@@ -71,28 +55,23 @@ export class InventoryGroupFiltersComponent implements OnInit {
   get vendorsControl() {
     return this.filterForm.get('vendors');
   }
-
   get categoriesControl() {
     return this.filterForm.get('categories');
   }
-
   get departmentsControl() {
     return this.filterForm.get('departments');
   }
-
   get accountingsControl() {
     return this.filterForm.get('accountings');
   }
-
   get myFavoriteControl() {
-    return this.filterForm.get('myFavorite');
+    return this.filterForm.get('my_favorite');
   }
-
   get orderedFromControl() {
-    return this.filterForm.get('orderedFrom');
+    return this.filterForm.get('order_date_min');
   }
   get orderedToControl() {
-    return this.filterForm.get('orderedTo');
+    return this.filterForm.get('order_date_max');
   }
   get withoutPriceControl() {
     return this.filterForm.get('withoutPrice');
@@ -118,32 +97,22 @@ export class InventoryGroupFiltersComponent implements OnInit {
   get trackingInfoControl() {
     return this.filterForm.get('trackingInfo');
   }
+  get retiredControl() {
+    return this.filterForm.get('retired');
+  }
 
   ngOnInit() {
 
-    this.subscribers.getVendorsSubscription = this.vendorService.getVendors()
-    .subscribe((res: any) => {
-      const vendorsData = _.flattenDeep(res.data.vendors);
-      vendorsData.map((vendor: any) => {
-        this.vendorsCollection[vendor.name] = null;
-      });
-    });
+  }
 
-    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories()
-    .subscribe((res: any) => {
-      const categoriesData = [...res];
-      categoriesData.map((category: any) => {
-        this.productCategoriesCollection[category] = null;
-      });
-    });
+  dismissModal() {
+    this.dialog.dismiss();
+  }
 
-    this.subscribers.getProductAccountingSubscription = this.accountService.getProductAccounting()
-    .subscribe((res: any) => {
-      const accountingsData = [...res];
-      accountingsData.map((accounting) =>
-        this.accountingCollection[accounting] = null
-      );
-    });
+  applyFilters() {
+    Object.keys(this.filterForm.value).forEach((key) => (this.filterForm.value[key] == null) && delete this.filterForm.value[key]);
+    this.inventoryService.filterParams$.next(this.filterForm.value);
+    this.dialog.dismiss();
   }
 
 }
