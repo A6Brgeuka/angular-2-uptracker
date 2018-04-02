@@ -135,7 +135,7 @@ export class OrdersPreviewComponent implements OnInit {
         switch (order[0].order_method) {
           case 'Email':
             this.convertOrder()
-              .switchMap((order: any) => this.orderService.sendOrderRequest(order.id))
+              .subscribe((order: any) => this.orderService.sendOrderRequest(order.id)
                 .take(1)
                 .subscribe((status: any) => {
                   this.showEmailDataEditModal({
@@ -150,7 +150,7 @@ export class OrdersPreviewComponent implements OnInit {
                     from_fax_number: order['from_fax_number'] || '1 11111111111',
                     rmFn:  null
                   });
-            });
+            }));
             break;
           case 'Fax':
             this.convertOrder()

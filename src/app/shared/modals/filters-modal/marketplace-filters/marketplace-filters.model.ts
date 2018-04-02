@@ -9,8 +9,8 @@ export class MarketplaceFiltersModel {
   retired: boolean = false;
   hazardous: boolean = false;
   trackable: boolean = false;
-  taxExempt: boolean = false;
-  mostFrequentlyOrdered: boolean = false;
+  tax_exempt: boolean = false;
+  most_frequently_ordered: boolean = false;
 
   constructor(obj?:any) {
     for (let field in obj) {

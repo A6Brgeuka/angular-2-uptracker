@@ -39,14 +39,14 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
       my_favorite: new FormControl(),
       order_date_min: new FormControl(),
       order_date_max: new FormControl(),
-      withoutPrice: new FormControl(),
-      belowCriticalLevel: new FormControl(),
-      aboveFullyStocked: new FormControl(),
-      trackingInfo: new FormControl(),
-      mostFrequentlyOrdered: new FormControl(),
+      without_price: new FormControl(),
+      below_critical_level: new FormControl(),
+      above_fully_stocked: new FormControl(),
+      tracking_info: new FormControl(),
+      most_frequently_ordered: new FormControl(),
       hazardous: new FormControl(),
       trackable: new FormControl(),
-      taxExempt: new FormControl(),
+      tax_exempt: new FormControl(),
       retired: new FormControl(),
     });
 
@@ -74,16 +74,16 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
     return this.filterForm.get('order_date_max');
   }
   get withoutPriceControl() {
-    return this.filterForm.get('withoutPrice');
+    return this.filterForm.get('without_price');
   }
   get belowCriticalLevelControl() {
-    return this.filterForm.get('belowCriticalLevel');
+    return this.filterForm.get('below_critical_level');
   }
   get aboveFullyStockedControl() {
-    return this.filterForm.get('aboveFullyStocked');
+    return this.filterForm.get('above_fully_stocked');
   }
   get mostFrequentlyOrderedControl() {
-    return this.filterForm.get('mostFrequentlyOrdered');
+    return this.filterForm.get('most_frequently_ordered');
   }
   get hazardousControl() {
     return this.filterForm.get('hazardous');
@@ -92,10 +92,10 @@ export class InventoryGroupFiltersComponent implements OnInit, ModalComponent<In
     return this.filterForm.get('trackable');
   }
   get taxExemptControl() {
-    return this.filterForm.get('taxExempt');
+    return this.filterForm.get('tax_exempt');
   }
   get trackingInfoControl() {
-    return this.filterForm.get('trackingInfo');
+    return this.filterForm.get('tracking_info');
   }
   get retiredControl() {
     return this.filterForm.get('retired');
