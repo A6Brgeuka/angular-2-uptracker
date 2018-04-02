@@ -22,4 +22,27 @@
       }
     }
   }
+
+  .uptracker-form .select.title-select .select-wrapper {
+    input.select-dropdown {
+      font-size: 28px;
+      font-family: Ubuntu;
+      font-weight: 700;
+      background: #F5F5FE url(/assets/img/icon-dropdown-arrow.svg) no-repeat 65% center;
+      background-color: transparent;
+      border: none;
+      width: auto;
+      color: rgba(0,0,0,.87);
+    }
+    .dropdown-content.select-dropdown {
+      top: 40px !important;
+      width: auto !important;
+      li span {
+        color: #33c6d9;
+        font-family: Lato;
+        font-size: 16px !important;
+        font-weight: lighter;
+      }
+    }
+  }
 }

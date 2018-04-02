@@ -59,7 +59,7 @@ export class SearchFilterHeaderComponent {
     this.resetEvent.emit();
   }
 
-  changeDataType(event) {
-    this.changeDataTypeEvent.emit(event.value);
+  changeDataType(selectedData) {
+    this.changeDataTypeEvent.emit(selectedData);
   }
 }
