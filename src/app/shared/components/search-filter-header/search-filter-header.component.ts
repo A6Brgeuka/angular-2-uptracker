@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 export type SearchFilterHeaderType = 'keyword' | 'chips' | 'multiple';
 
@@ -26,12 +26,12 @@ export class SearchFilterHeaderComponent {
   @Output() resetEvent = new EventEmitter();
   @Output() openModalEvent = new EventEmitter();
   @Output() changeDataTypeEvent = new EventEmitter();
-  selectedDataType = 'orders';
+  selectedDataType = '';
   dataTypeArr: any[] = [
-    {value: 'orders', title: 'Orders'},
-    {value: 'orderItems', title: 'Order Items'},
-    {value: 'packingSlips', title: 'Packing Slips'},
-    {value: 'invoices', title: 'Invoices'},
+    {value: '/', title: 'Orders'},
+    {value: '/items', title: 'Order Items'},
+    {value: '/packing-slips', title: 'Packing Slips'},
+    {value: '/invoices', title: 'Invoices'},
   ];
 
   get isChips() {

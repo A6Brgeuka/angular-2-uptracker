@@ -10,10 +10,10 @@ import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-mo
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
-import { FavoritedListService } from '../../../../services/favorited-list.service';
-import { FlaggedListService } from '../../../../services/flagged-list.service';
 import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
+import { FavoritedListService } from '../../../../order-items-table/services/favorited-list.service';
+import { FlaggedListService } from '../../../../order-items-table/services/flagged-list.service';
 
 @Component({
   selector: 'app-order-table-item-action',

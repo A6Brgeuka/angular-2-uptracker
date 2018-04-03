@@ -9,7 +9,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
 
-import { ModalWindowService } from "../../../core/services/modal-window.service";
+import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
 import { ToasterService } from '../../../core/services/toaster.service';
@@ -18,7 +18,7 @@ import { EditEmailDataModal } from '../../shopping-list/orders-preview/purchase-
 import { OrderService } from '../../../core/services/order.service';
 import { Subject } from 'rxjs/Subject';
 import { APP_DI_CONFIG } from '../../../../../env';
-import { FlaggedListService } from '../services/flagged-list.service';
+import { FlaggedListService } from '../order-items-table/services/flagged-list.service';
 
 
 @Component({

@@ -32,19 +32,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public visible: boolean[] = [];
 
-  public orderTabs = {
-    all: 'all',
-    open: 'open',
-    received: 'received',
-    backordered: 'backordered',
-    reconciled: 'reconciled',
-    closed: 'closed',
-    flagged: 'flagged',
-    favorited: 'favorited',
-  };
-
-  public orderTabsArr = map(this.orderTabs, (value, key) => value);
-
   private activeChange$ = new Subject<{active: boolean, tab: string}>();
   private activeTab$: Observable<string>;
 
@@ -80,6 +67,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
     this.chips$ = this.filterItems$
     .map((items) => map(items, (item) => item.value));
+
   }
 
   ngOnDestroy() {
@@ -122,6 +110,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   changeDataType(event) {
-
+    this.router.navigate([`orders${event}`]);
   }
 }
