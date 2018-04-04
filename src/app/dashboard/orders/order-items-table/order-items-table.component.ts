@@ -50,7 +50,4 @@ export class OrderItemsTableComponent  {
     this.ordersService.activeChange$.next({active, tab});
   }
 
-  changeDataType(event) {
-    this.router.navigate([`orders${event}`]);
-  }
 }
