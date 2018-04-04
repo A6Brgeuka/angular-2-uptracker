@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 export type SearchFilterHeaderType = 'keyword' | 'chips' | 'multiple';
 
@@ -13,8 +15,9 @@ export const SearchType: {[key: string]: SearchFilterHeaderType} = {
   templateUrl: './search-filter-header.component.html',
   styleUrls: ['./search-filter-header.component.scss'],
 })
-export class SearchFilterHeaderComponent {
-
+@DestroySubscribers()
+export class SearchFilterHeaderComponent implements OnDestroy {
+  public subscribers: any = {};
   @Input() public title:  string;
   @Input() public className:  string = '';
   @Input() public searchKey: string;
@@ -34,6 +37,13 @@ export class SearchFilterHeaderComponent {
     {value: '/invoices', title: 'Invoices'},
   ];
 
+  constructor(
+    public router: Router,
+    public route: ActivatedRoute,
+  ) {
+
+  }
+
   get isChips() {
     return this.searchType === SearchType.CHIPS;
   }
@@ -44,6 +54,17 @@ export class SearchFilterHeaderComponent {
 
   get isMultiple() {
     return this.searchType === SearchType.MULTIPLE;
+  }
+
+  ngOnDestroy() {
+    console.log('for unsubscribing');
+  }
+
+  addSubscribers() {
+    this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
+    .subscribe(res => {
+      this.selectedDataType = (res.length) ? `/${res[0].path}` : '';
+    });
   }
 
   searchFilter(event) {
