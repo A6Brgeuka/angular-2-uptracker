@@ -9,7 +9,7 @@ import { Modal } from 'angular2-modal';
 
 import { map, filter, intersectionBy } from 'lodash';
 
-import { OrdersPageFiltersComponent } from '../../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.component';
+// import { OrdersPageFiltersComponent } from '../../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.component';
 import { PastOrderService } from '../../../core/services/pastOrder.service';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { ToasterService } from '../../../core/services/toaster.service';
@@ -107,15 +107,15 @@ export class OrderItemsTableComponent implements OnInit, OnDestroy {
     this.searchKey$.next(value);
   };
 
-  showFiltersModal() {
-    this.modal
-    .open(OrdersPageFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
-  }
-
-  resetFilters() {
-    this.pastOrderService.filterQueryParams$.next(null);
-    this.orderTableResetService.resetFilters();
-  }
+  // showFiltersModal() {
+  //   this.modal
+  //   .open(OrdersPageFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
+  // }
+  //
+  // resetFilters() {
+  //   this.pastOrderService.filterQueryParams$.next(null);
+  //   this.orderTableResetService.resetFilters();
+  // }
 
   activeChange(active: boolean, tab: string) {
     this.activeChange$.next({active, tab});

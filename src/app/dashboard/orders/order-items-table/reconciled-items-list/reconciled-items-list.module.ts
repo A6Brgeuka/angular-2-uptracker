@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 
-import { FavoritedListComponent } from './favorited-list.component';
 import { AppSharedModule } from '../../../../shared/shared.module';
 import { OrderTableModule } from '../../directives/order-table/order-table.module';
+import { ReconciledItemsListComponent } from './reconciled-items-list.component';
 
 @NgModule({
   declarations: [
-    FavoritedListComponent,
+    ReconciledItemsListComponent,
   ],
-  exports: [FavoritedListComponent],
+  exports: [ReconciledItemsListComponent],
   imports: [
     AppSharedModule,
     OrderTableModule,
   ],
+  providers: [],
 })
-export class FavoritedListModule {
+export class ReconciledItemsListModule {
 
 }

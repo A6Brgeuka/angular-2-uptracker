@@ -3,22 +3,22 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
-import { OpenOrdersListService } from '../services/open-orders-list.service';
 import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
+import { PastOrderService } from '../../../../core/services/pastOrder.service';
+import { FavoritedItemsListService } from '../services/favorited-items-list.service';
 
 @Component({
-  selector: 'app-open-orders-list',
-  templateUrl: './open-orders-list.component.html',
-  styleUrls: ['./open-orders-list.component.scss'],
+  selector: 'app-favorited-items-list',
+  templateUrl: './favorited-items-list.component.html',
+  styleUrls: ['./favorited-items-list.component.scss'],
 })
 @DestroySubscribers()
-export class OpenOrdersListComponent implements OnInit, OnDestroy {
+export class FavoritedItemsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = OrderListType.open;
-
-  public tableHeaderOpen: any = [
+  public listName: string = OrderListType.favorited;
+  public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
@@ -32,25 +32,35 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
+
   public orders$: Observable<OrderItem[]>;
 
   constructor(
-    public openOrdersListService: OpenOrdersListService,
+    private pastOrderService: PastOrderService,
+    private favoritedItemsListService: FavoritedItemsListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.openOrdersListService.collection$;
-  }
+    this.orders$ = this.favoritedItemsListService.collection$;
+  };
 
   addSubscribers() {
-    this.subscribers.getOpenedProductSubscription = this.openOrdersListService.getCollection()
+    this.subscribers.getFavoritedCollectionSubscription = this.favoritedItemsListService.getCollection()
     .subscribe();
-  }
+  };
 
   ngOnDestroy() {
     console.log('for unsubscribing');
+  };
+
+  sortByHeaderUpdated(event) {
+    this.pastOrderService.updateSortBy(event.alias);
+  }
+
+  onFilterBy(value) {
+    this.pastOrderService.updateFilterBy(value);
   }
 
 }

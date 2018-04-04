@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 
-import { ClosedListComponent } from './closed-list.component';
 import { AppSharedModule } from '../../../../shared/shared.module';
 import { OrderTableModule } from '../../directives/order-table/order-table.module';
+import { ReceivedItemsListComponent } from './received-items-list.component';
 
 @NgModule({
   declarations: [
-    ClosedListComponent,
+    ReceivedItemsListComponent,
   ],
-  exports: [ClosedListComponent],
+  exports: [ReceivedItemsListComponent],
   imports: [
     AppSharedModule,
-    OrderTableModule,
+    OrderTableModule
   ],
 })
-export class ClosedListModule {
+export class ReceivedItemsListModule {
 
 }

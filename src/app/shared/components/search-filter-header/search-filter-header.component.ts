@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 export type SearchFilterHeaderType = 'keyword' | 'chips' | 'multiple';
@@ -38,7 +38,6 @@ export class SearchFilterHeaderComponent implements OnDestroy {
   ];
 
   constructor(
-    public router: Router,
     public route: ActivatedRoute,
   ) {
 

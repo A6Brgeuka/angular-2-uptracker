@@ -1,24 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
-
 import { Observable } from 'rxjs/Observable';
 
-import { ClosedListService } from '../services/closed-list.service';
 import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 
 @Component({
-  selector: 'app-closed-list',
-  templateUrl: './closed-list.component.html',
-  styleUrls: ['./closed-list.component.scss']
+  selector: 'app-reconciled-items-list',
+  templateUrl: './reconciled-items-list.component.html',
+  styleUrls: ['./reconciled-items-list.component.scss'],
 })
 @DestroySubscribers()
-export class ClosedListComponent implements OnInit, OnDestroy {
+export class ReconciledItemsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = OrderListType.closed;
+  public listName = OrderListType.reconciled;
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
@@ -33,22 +31,21 @@ export class ClosedListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
+
   public orders$: Observable<OrderItem[]>;
 
   constructor(
-    public closedListService: ClosedListService,
     public pastOrderService: PastOrderService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.closedListService.collection$;
+    // this.orders$ = this.pastOrderService.favoritedListCollection$;
   };
 
   addSubscribers() {
-    this.subscribers.getClosedCollectionSubscription = this.closedListService.getCollection()
-    .subscribe();
+
   };
 
   ngOnDestroy() {

@@ -5,19 +5,20 @@ import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
-import { PastOrderService } from '../../../../core/services/pastOrder.service';
+import { OpenItemsListService } from '../services/open-items-list.service';
 
 @Component({
-  selector: 'app-reconciled-list',
-  templateUrl: './reconciled-list.component.html',
-  styleUrls: ['./reconciled-list.component.scss'],
+  selector: 'app-open-items-list',
+  templateUrl: './open-items-list.component.html',
+  styleUrls: ['./open-items-list.component.scss'],
 })
 @DestroySubscribers()
-export class ReconciledListComponent implements OnInit, OnDestroy {
+export class OpenItemsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName = OrderListType.reconciled;
-  public tableHeader: any = [
+  public listName: string = OrderListType.open;
+
+  public tableHeaderOpen: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
@@ -31,33 +32,25 @@ export class ReconciledListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: true},
   ];
 
-
   public orders$: Observable<OrderItem[]>;
 
   constructor(
-    public pastOrderService: PastOrderService,
+    public openItemsListService: OpenItemsListService,
   ) {
 
   };
 
   ngOnInit() {
-    // this.orders$ = this.pastOrderService.favoritedListCollection$;
-  };
+    this.orders$ = this.openItemsListService.collection$;
+  }
 
   addSubscribers() {
-
-  };
+    this.subscribers.getOpenedProductSubscription = this.openItemsListService.getCollection()
+    .subscribe();
+  }
 
   ngOnDestroy() {
     console.log('for unsubscribing');
-  };
-
-  sortByHeaderUpdated(event) {
-    this.pastOrderService.updateSortBy(event.alias);
-  }
-
-  onFilterBy(value) {
-    this.pastOrderService.updateFilterBy(value);
   }
 
 }

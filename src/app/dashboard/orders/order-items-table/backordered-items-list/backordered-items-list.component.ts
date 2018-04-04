@@ -2,18 +2,19 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
-import { BackorderedListService } from '../services/backordered-list.service';
+
 import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
+import { BackorderedItemsListService } from '../services/backordered-items-list.service';
 
 @Component({
-  selector: 'app-backordered-list',
-  templateUrl: './backordered-list.component.html',
-  styleUrls: ['./backordered-list.component.scss']
+  selector: 'app-backordered-items-list',
+  templateUrl: './backordered-items-list.component.html',
+  styleUrls: ['./backordered-items-list.component.scss']
 })
 @DestroySubscribers()
-export class BackorderedListComponent implements OnInit, OnDestroy {
+export class BackorderedItemsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
   public listName: string = OrderListType.backordered;
@@ -34,18 +35,18 @@ export class BackorderedListComponent implements OnInit, OnDestroy {
   public orders$: Observable<OrderItem[]>;
 
   constructor(
-    public backorderedListService: BackorderedListService,
+    public backorderedItemsListService: BackorderedItemsListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.backorderedListService.collection$
+    this.orders$ = this.backorderedItemsListService.collection$
     .map((orders) => orders.map((order) => ({...order, status: OrderStatusAlreadyValues.backorder})));
   }
 
   addSubscribers() {
-    this.subscribers.getBackorderedCollectionSubscription = this.backorderedListService.getCollection()
+    this.subscribers.getBackorderedCollectionSubscription = this.backorderedItemsListService.getCollection()
     .subscribe();
   };
 

@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 
-import { ReceivedListComponent } from './received-list.component';
 import { AppSharedModule } from '../../../../shared/shared.module';
 import { OrderTableModule } from '../../directives/order-table/order-table.module';
+import { BackorderedItemsListComponent } from './backordered-items-list.component';
 
 @NgModule({
   declarations: [
-    ReceivedListComponent,
+    BackorderedItemsListComponent,
   ],
-  exports: [ReceivedListComponent],
+  exports: [BackorderedItemsListComponent],
   imports: [
     AppSharedModule,
-    OrderTableModule
+    OrderTableModule,
   ],
 })
-export class ReceivedListModule {
+export class BackorderedItemsListModule {
 
 }

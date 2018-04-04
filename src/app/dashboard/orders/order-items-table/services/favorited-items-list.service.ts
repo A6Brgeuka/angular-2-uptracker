@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 
 import { Restangular } from 'ngx-restangular';
 
-import { PastOrderService } from '../../../../core/services/index';
-import { OrderListBaseService } from '../../classes/order-list-base.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+
 import * as _ from 'lodash';
 
-@Injectable()
-export class FlaggedListService extends OrderListBaseService {
+import { PastOrderService } from '../../../../core/services/index';
+import { OrderListBaseService } from '../../classes/order-list-base.service';
 
-  private putItemRequest$: Observable<any>;
-  private putItem$: Subject<any> = new Subject();
+@Injectable()
+export class FavoritedItemsListService extends OrderListBaseService {
+
+  private postItemRequest$: Observable<any>;
+  private postItem$: Subject<any> = new Subject();
 
   constructor(
     private restangular: Restangular,
@@ -20,32 +22,29 @@ export class FlaggedListService extends OrderListBaseService {
   ) {
     super(pastOrderService);
 
-    this.putItemRequest$ = this.putItem$
-    .switchMap((item) => {
-      const data = {
-        'flagged': true,
-        'flagged_comment': item.flagged_comment,
-      };
-      return this.restangular.one('pos', item.order_id).one('flag', item.id).customPUT(data)
+
+    this.postItemRequest$ = this.postItem$
+    .switchMap((item) =>
+      this.restangular.one('pos', item.order_id).one('favorite', item.id).customPUT({'favorite': !item.favorite})
       .map((res: any) => res.data)
-      .catch((error) => Observable.never());
-    })
+      .catch((error) => Observable.never())
+    )
     .share();
 
     this.pastOrderService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
-    this.pastOrderService.addCollectionStreamToEntittesStream(this.putItemRequest$.map(item => [item]));
+    this.pastOrderService.addCollectionStreamToEntittesStream(this.postItemRequest$.map(item => [item]));
 
     const collectionIdsGetRequest$ = this.getCollectionRequest$
     .map((items) => _.map(items, 'id'))
     .let(this.getSetAction);
 
-    const collectionAddIds$ = this.putItemRequest$
-    .filter((item) => item.flagged)
+    const collectionAddIds$ = this.postItemRequest$
+    .filter((item) => item.favorite)
     .map((item) => [item.id])
     .let(this.getAddAction);
 
-    const collectionRemoveIds$ = this.putItemRequest$
-    .filter((item) => !item.flagged)
+    const collectionRemoveIds$ = this.postItemRequest$
+    .filter((item) => !item.favorite)
     .map((item) => [item.id])
     .let(this.getRemoveAction);
 
@@ -72,11 +71,11 @@ export class FlaggedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', 'flagged').all('items').customGET('', params);
+    return this.restangular.one('pos', 'favorites').all('items').customGET('', params);
   }
 
-  putItem(item) {
-    this.putItem$.next(item);
-    return this.putItemRequest$;
+  postItem(item) {
+    this.postItem$.next(item);
+    return this.postItemRequest$;
   }
 }

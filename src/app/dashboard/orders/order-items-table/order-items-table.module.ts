@@ -10,15 +10,16 @@ import { ReconcileModule } from '../reconcile/reconcile.module';
 import { ResendOrderModalModule } from '../resend-order-modal/resend-order-modal.module';
 import { OrderFlagModalModule } from '../directives/order-flag-modal/order-flag-modal.module';
 import { OrdersPageFiltersModule } from '../../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.module';
-import { AllOrdersListModule } from './all-orders-list/all-orders-list.module';
-import { BackorderedListModule } from './backordered-list/backordered-list.module';
-import { ReconciledListModule } from './reconciled-list/reconciled-list.module';
-import { OpenOrdersListModule } from './open-list/open-orders-list.module';
-import { FavoritedListModule } from './favorited-list/favorited-list.module';
-import { FlaggedListModule } from './flagged-list/flagged-list.module';
-import { ReceivedListModule } from './received-list/received-list.module';
-import { ClosedListModule } from './closed-list/closed-list.module';
+
 import { ORDER_PROVIDERS } from './services/index';
+import { AllItemsListModule } from './all-order-items-list/all-order-items-list.module';
+import { BackorderedItemsListModule } from './backordered-items-list/backordered-items-list.module';
+import { ReconciledItemsListModule } from './reconciled-items-list/reconciled-items-list.module';
+import { OpenItemsListModule } from './open-items-list/open-items-list.module';
+import { FavoritedItemsListModule } from './favorited-items-list/favorited-items-list.module';
+import { FlaggedItemsListModule } from './flagged-items-list/flagged-items-list.module';
+import { ReceivedItemsListModule } from './received-items-list/received-items-list.module';
+import { ClosedItemsListModule } from './closed-items-list/closed-items-list.module';
 
 @NgModule({
   declarations: [
@@ -26,18 +27,18 @@ import { ORDER_PROVIDERS } from './services/index';
   ],
   imports: [
     AppSharedModule,
-    AllOrdersListModule,
-    BackorderedListModule,
+    AllItemsListModule,
+    BackorderedItemsListModule,
     ReceiveModule,
-    ReconciledListModule,
+    ReconciledItemsListModule,
     OrderModule,
-    OpenOrdersListModule,
-    FavoritedListModule,
-    FlaggedListModule,
+    OpenItemsListModule,
+    FavoritedItemsListModule,
+    FlaggedItemsListModule,
     SelectVendorModule,
     SearchFilterHeaderModule,
-    ReceivedListModule,
-    ClosedListModule,
+    ReceivedItemsListModule,
+    ClosedItemsListModule,
     ReconcileModule,
     ResendOrderModalModule,
     OrderFlagModalModule,

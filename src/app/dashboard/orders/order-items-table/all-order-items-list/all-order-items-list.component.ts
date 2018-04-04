@@ -4,21 +4,21 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { Observable } from 'rxjs/Observable';
 
-import { FlaggedListService } from '../services/flagged-list.service';
 import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
+import { AllItemsListService } from '../services/all-items-list.service';
 
 @Component({
-  selector: 'app-flagged-list',
-  templateUrl: './flagged-list.component.html',
-  styleUrls: ['./flagged-list.component.scss'],
+  selector: 'app-all-order-items-list',
+  templateUrl: './all-order-items-list.component.html',
+  styleUrls: ['./all-order-items-list.component.scss'],
 })
 @DestroySubscribers()
-export class FlaggedListComponent implements OnInit, OnDestroy {
+export class AllItemsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = OrderListType.flagged;
+  public listName: string = OrderListType.all;
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
@@ -36,18 +36,18 @@ export class FlaggedListComponent implements OnInit, OnDestroy {
   public orders$: Observable<OrderItem[]>;
 
   constructor(
-    private pastOrderService: PastOrderService,
-    private flaggedListService: FlaggedListService,
+    public pastOrderService: PastOrderService,
+    public allItemsListService: AllItemsListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.flaggedListService.collection$;
+    this.orders$ = this.allItemsListService.collection$;
   };
 
   addSubscribers() {
-    this.subscribers.getFlaggedCollectionSubscription = this.flaggedListService.getCollection()
+    this.subscribers.getAllCollectionSubscription = this.allItemsListService.getCollection()
     .subscribe();
   };
 

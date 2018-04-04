@@ -2,19 +2,17 @@ import { Injectable } from '@angular/core';
 
 import { Restangular } from 'ngx-restangular';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
-import * as _ from 'lodash';
-
 import { PastOrderService } from '../../../../core/services/index';
 import { OrderListBaseService } from '../../classes/order-list-base.service';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import * as _ from 'lodash';
 
 @Injectable()
-export class FavoritedListService extends OrderListBaseService {
+export class FlaggedItemsListService extends OrderListBaseService {
 
-  private postItemRequest$: Observable<any>;
-  private postItem$: Subject<any> = new Subject();
+  private putItemRequest$: Observable<any>;
+  private putItem$: Subject<any> = new Subject();
 
   constructor(
     private restangular: Restangular,
@@ -22,29 +20,32 @@ export class FavoritedListService extends OrderListBaseService {
   ) {
     super(pastOrderService);
 
-
-    this.postItemRequest$ = this.postItem$
-    .switchMap((item) =>
-      this.restangular.one('pos', item.order_id).one('favorite', item.id).customPUT({'favorite': !item.favorite})
+    this.putItemRequest$ = this.putItem$
+    .switchMap((item) => {
+      const data = {
+        'flagged': true,
+        'flagged_comment': item.flagged_comment,
+      };
+      return this.restangular.one('pos', item.order_id).one('flag', item.id).customPUT(data)
       .map((res: any) => res.data)
-      .catch((error) => Observable.never())
-    )
+      .catch((error) => Observable.never());
+    })
     .share();
 
     this.pastOrderService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
-    this.pastOrderService.addCollectionStreamToEntittesStream(this.postItemRequest$.map(item => [item]));
+    this.pastOrderService.addCollectionStreamToEntittesStream(this.putItemRequest$.map(item => [item]));
 
     const collectionIdsGetRequest$ = this.getCollectionRequest$
     .map((items) => _.map(items, 'id'))
     .let(this.getSetAction);
 
-    const collectionAddIds$ = this.postItemRequest$
-    .filter((item) => item.favorite)
+    const collectionAddIds$ = this.putItemRequest$
+    .filter((item) => item.flagged)
     .map((item) => [item.id])
     .let(this.getAddAction);
 
-    const collectionRemoveIds$ = this.postItemRequest$
-    .filter((item) => !item.favorite)
+    const collectionRemoveIds$ = this.putItemRequest$
+    .filter((item) => !item.flagged)
     .map((item) => [item.id])
     .let(this.getRemoveAction);
 
@@ -71,11 +72,11 @@ export class FavoritedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', 'favorites').all('items').customGET('', params);
+    return this.restangular.one('pos', 'flagged').all('items').customGET('', params);
   }
 
-  postItem(item) {
-    this.postItem$.next(item);
-    return this.postItemRequest$;
+  putItem(item) {
+    this.putItem$.next(item);
+    return this.putItemRequest$;
   }
 }

@@ -12,8 +12,8 @@ import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
 import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
-import { FavoritedListService } from '../../../../order-items-table/services/favorited-list.service';
-import { FlaggedListService } from '../../../../order-items-table/services/flagged-list.service';
+import { FlaggedItemsListService } from '../../../../order-items-table/services/flagged-items-list.service';
+import { FavoritedItemsListService } from '../../../../order-items-table/services/favorited-items-list.service';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -42,8 +42,8 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
-    private favoritedListService: FavoritedListService,
-    private flaggedListService: FlaggedListService,
+    private favoritedItemsListService: FavoritedItemsListService,
+    private flaggedItemsListService: FlaggedItemsListService,
   ) {
   }
 
@@ -78,13 +78,13 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   addSubscribers() {
 
     this.subscribers.updateFlaggedSubscription = this.updateFlagged$
-    .switchMap((item: any) => this.flaggedListService.putItem(item))
+    .switchMap((item: any) => this.flaggedItemsListService.putItem(item))
     .subscribe( res => this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged'),
       err => console.log('error')
     );
 
     this.subscribers.updateFavoriteSubscription = this.updateFavorite$
-    .switchMap((item: any) => this.favoritedListService.postItem(item))
+    .switchMap((item: any) => this.favoritedItemsListService.postItem(item))
     .subscribe( res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
       err => console.log('error')
     );

@@ -4,21 +4,21 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { Observable } from 'rxjs/Observable';
 
-import { AllOrdersListService } from '../services/all-orders-list.service';
 import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
+import { ClosedItemsListService } from '../services/closed-items-list.service';
 
 @Component({
-  selector: 'app-all-orders-list',
-  templateUrl: './all-orders-list.component.html',
-  styleUrls: ['./all-orders-list.component.scss'],
+  selector: 'app-closed-items-list',
+  templateUrl: './closed-items-list.component.html',
+  styleUrls: ['./closed-items-list.component.scss']
 })
 @DestroySubscribers()
-export class AllOrdersListComponent implements OnInit, OnDestroy {
+export class ClosedItemsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = OrderListType.all;
+  public listName: string = OrderListType.closed;
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
@@ -36,18 +36,18 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
   public orders$: Observable<OrderItem[]>;
 
   constructor(
+    public closedItemsListService: ClosedItemsListService,
     public pastOrderService: PastOrderService,
-    public allOrdersListService: AllOrdersListService,
   ) {
 
   };
 
   ngOnInit() {
-    this.orders$ = this.allOrdersListService.collection$;
+    this.orders$ = this.closedItemsListService.collection$;
   };
 
   addSubscribers() {
-    this.subscribers.getAllCollectionSubscription = this.allOrdersListService.getCollection()
+    this.subscribers.getClosedCollectionSubscription = this.closedItemsListService.getCollection()
     .subscribe();
   };
 

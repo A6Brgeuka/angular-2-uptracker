@@ -6,7 +6,7 @@ import { PastOrderService } from '../../../../core/services/index';
 import { OrderListBaseService } from '../../classes/order-list-base.service';
 
 @Injectable()
-export class ClosedListService extends OrderListBaseService {
+export class ReceivedItemsListService extends OrderListBaseService {
 
   constructor(
     private restangular: Restangular,
@@ -17,7 +17,6 @@ export class ClosedListService extends OrderListBaseService {
   }
 
   getRequest(params) {
-    return this.restangular.one('pos', '8').all('items').customGET('', params);
-
+    return this.restangular.one('pos', '6').all('items').customGET('', params);
   }
 }
