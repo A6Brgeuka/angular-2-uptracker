@@ -1,1 +1,17 @@
-<div>Orders!!!!!!!</div>
+<div class="row">
+  <ul class="tabs location-tabs mrg-btm-0" materialize="tabs">
+    <li
+      class="tab"
+      *ngFor="let tab of orderTabsArr"
+    >
+      <a
+        href="#{{tab}}Tab"
+        appHasClass="active"
+        (hasClassChange)="activeChange($event, tab)"
+      >{{tab}}</a>
+    </li>
+  </ul>
+</div>
+<app-all-orders-list id="{{orderTabs.all}}Tab"></app-all-orders-list>
+<app-open-orders-list id="{{orderTabs.open}}Tab"></app-open-orders-list>
+<!--<app-received-orders-list id="{{orderTabs.received}}Tab"></app-received-orders-list>-->
