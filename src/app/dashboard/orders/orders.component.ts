@@ -1,21 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
-
-import { map, filter, intersectionBy } from 'lodash';
-
 import { PastOrderService } from '../../core/services/pastOrder.service';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { ToasterService } from '../../core/services/toaster.service';
 import { OrderTableResetService } from './directives/order-table/order-table-reset.service';
-import { OrderTableFilterByService } from './directives/order-table/order-table-filter-by.service';
 import { OrdersPageFiltersComponent } from '../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.component';
+import { OrdersService } from './orders.service';
 
 @Component({
   selector: 'app-orders',
@@ -23,22 +17,8 @@ import { OrdersPageFiltersComponent } from '../../shared/modals/filters-modal/or
   styleUrls: ['./orders.component.scss']
 })
 @DestroySubscribers()
-export class OrdersComponent implements OnInit, OnDestroy {
+export class OrdersComponent {
   public subscribers: any = {};
-  public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public searchKey: string;
-  public sortBy: string;
-  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public visible: boolean[] = [];
-
-  private activeChange$ = new Subject<{active: boolean, tab: string}>();
-  private activeTab$: Observable<string>;
-
-  public chips$;
-
-  private filterItems$: Observable<any[]>;
-  private onChipsChange$ = new Subject<string[]>();
 
   constructor(
       public modal: Modal,
@@ -47,52 +27,18 @@ export class OrdersComponent implements OnInit, OnDestroy {
       public modalWindowService: ModalWindowService,
       public toasterService: ToasterService,
       public orderTableResetService: OrderTableResetService,
-      private orderTableFilterByService: OrderTableFilterByService
+      public ordersService: OrdersService,
   ) {
   }
 
-  ngOnInit() {
-    this.activeTab$ = this.activeChange$
-    .filter((event) => event.active)
-    .map((event) => event.tab)
-    .shareReplay(1);
-
-    this.filterItems$ = this.activeTab$
-    .switchMap((tab) =>
-      this.orderTableFilterByService.getFilterByListName(tab)
-    )
-    .map((filterObj) => map(filterObj, (value, key) => ({value, key})))
-    .map((items) => filter(items, 'value'))
-    .shareReplay(1);
-
-    this.chips$ = this.filterItems$
-    .map((items) => map(items, (item) => item.value));
-
-  }
-
-  ngOnDestroy() {
-    console.log('for unsubscribing');
-  }
-
-  addSubscribers() {
-    this.onChipsChange$
-    .withLatestFrom(this.filterItems$, this.activeTab$)
-    .subscribe(([chips, filterItems, tab]) => {
-      const chipsObj = chips.map((value) => ({value}));
-      const items = intersectionBy(filterItems, chipsObj, 'value');
-      const filter = items.reduce((acc, item) => ({...acc, [item.key]: item.value}), {});
-      this.orderTableFilterByService.setFilterBy(filter, tab);
-    });
-  }
-
   onChipChange(chips) {
-    this.onChipsChange$.next(chips);
+    this.ordersService.onChipsChange$.next(chips);
   }
 
   searchOrders(event) {
     // replace forbidden characters
-    const value = event.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-    this.searchKey$.next(value);
+    const value = event.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
+    this.ordersService.searchKey$.next(value);
   };
 
   showFiltersModal() {
@@ -105,11 +51,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.orderTableResetService.resetFilters();
   }
 
-  activeChange(active: boolean, tab: string) {
-    this.activeChange$.next({active, tab});
-  }
-
   changeDataType(event) {
+    this.orderTableResetService.resetFilters();
     this.router.navigate([`orders${event}`]);
   }
 }

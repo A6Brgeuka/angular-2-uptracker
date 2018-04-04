@@ -11,6 +11,7 @@ import { OrdersTableModule } from './orders-table/orders-table.module';
 import { OrderItemsTableModule } from './order-items-table/order-items-table.module';
 import { PackingSlipsTableModule } from './packing-slips-table/packing-slips-table.module';
 import { InvoicesTableModule } from './invoices-table/invoices-table.module';
+import { OrdersService } from './orders.service';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,9 @@ import { InvoicesTableModule } from './invoices-table/invoices-table.module';
     PackingSlipsTableModule,
     InvoicesTableModule,
   ],
+  providers: [
+    OrdersService,
+  ]
 })
 export class OrdersModule {
 }
