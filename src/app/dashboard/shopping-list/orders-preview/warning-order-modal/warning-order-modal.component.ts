@@ -1,12 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { DestroySubscribers } from "ngx-destroy-subscribers";
-import { ModalComponent, DialogRef } from "angular2-modal";
-import { BSModalContext } from "angular2-modal/plugins/bootstrap";
-import { HttpClient } from "app/core/services/http.service";
-import { ResponseContentType } from "@angular/http";
+import { Component, OnInit } from '@angular/core';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { ModalComponent, DialogRef } from 'angular2-modal';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { HttpClient } from 'app/core/services/http.service';
+import { ResponseContentType } from '@angular/http';
 import { APP_DI_CONFIG } from '../../../../../../env';
-import { ToasterService } from "../../../../core/services/toaster.service";
-import { SpinnerService } from "../../../../core/services";
+import { ToasterService } from '../../../../core/services/toaster.service';
+import { SpinnerService } from '../../../../core/services';
+import { ModalWindowService } from '../../../../core/services/modal-window.service';
 
 export class WarningOrderModalContext extends BSModalContext {
   public order_id: string;
@@ -31,7 +32,8 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
     public dialog: DialogRef<WarningOrderModalContext>,
     public httpClient: HttpClient,
     public toasterService: ToasterService,
-    public spinner: SpinnerService
+    public spinner: SpinnerService,
+    public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
   }
@@ -71,6 +73,7 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
 
       this.spinner.hide();
       this.dialog.close();
+      this.modalWindowService.confirmModal$.next(true);
     });
   }
 
