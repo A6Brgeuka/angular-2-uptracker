@@ -60,10 +60,12 @@ export class SearchFilterHeaderComponent implements OnDestroy {
   }
 
   addSubscribers() {
-    this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
-    .subscribe(res => {
-      this.selectedDataType = (res.length) ? `/${res[0].path}` : '';
-    });
+    if (this.route && this.route.firstChild) {
+      this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
+      .subscribe(res =>
+        this.selectedDataType = (res.length) ? `/${res[0].path}` : ''
+      );
+    }
   }
 
   searchFilter(event) {
