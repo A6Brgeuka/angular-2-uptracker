@@ -4,14 +4,14 @@
     <button class="add-product uptracker-form-btn">ADD PRODUCT</button>
   </div>
   <div class="row control">
+    <div class="input wide-input">
+      <input type="text" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
+    </div>
     <div class="select">
       <select title="sort by" [(ngModel)]="sort" materialize="material_select">
         <option value="A-Z">A-Z</option>
         <option value="Z-A">Z-A</option>
       </select>
-    </div>
-    <div class="input wide-input">
-      <input type="text" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
     </div>
   </div>
   <div class="row product-header">

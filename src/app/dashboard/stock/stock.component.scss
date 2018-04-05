@@ -18,12 +18,12 @@
       justify-content: flex-end;
       .select {
         max-width: 200px;
+        margin-left: 20px;
         input {
           background-color: $white;
         }
       }
       .input {
-        margin-left: 20px;
         max-width: 200px;
         input {
           background-color: $white;
