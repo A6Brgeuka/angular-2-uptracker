@@ -44,7 +44,9 @@ export class StockComponent implements OnInit {
     }
   }
 
-  sortUnit(event) {}
+  sortUnit(event) {
+    event.currentQTY = Math.round(100 * Math.random());
+  }
 
   filterChange(event) {}
 
