@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 
 import { OrderListBaseService } from '../../classes/order-list-base.service';
 import { OrderItemsTableService } from './order-items-table.service';
+import { OrdersService } from '../../orders.service';
 
 @Injectable()
 export class FlaggedItemsListService extends OrderListBaseService {
@@ -19,8 +20,9 @@ export class FlaggedItemsListService extends OrderListBaseService {
   constructor(
     private restangular: Restangular,
     private orderItemsTableService: OrderItemsTableService,
+    private ordersService: OrdersService,
   ) {
-    super(orderItemsTableService);
+    super(orderItemsTableService, ordersService);
 
     this.putItemRequest$ = this.putItem$
     .switchMap((item) => {
