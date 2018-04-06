@@ -15,7 +15,6 @@ export abstract class EntitiesService {
   public filterQueryParams$: Subject<any> = new Subject();
 
   protected abstract idName: string;
-  // protected idName: string = 'id';
 
   constructor(
     public restangular: Restangular,
