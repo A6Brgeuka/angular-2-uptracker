@@ -5,8 +5,9 @@ import { FlaggedItemsListService } from './flagged-items-list.service';
 import { OpenItemsListService } from './open-items-list.service';
 import { ReceivedItemsListService } from './received-items-list.service';
 import { ClosedItemsListService } from './closed-items-list.service';
+import { OrderItemsTableService } from './order-items-table.service';
 
-export const ORDER_PROVIDERS = [
+export const ORDER_ITEMS_PROVIDERS = [
   AllItemsListService,
   BackorderedItemsListService,
   ClosedItemsListService,
@@ -14,4 +15,5 @@ export const ORDER_PROVIDERS = [
   FlaggedItemsListService,
   OpenItemsListService,
   ReceivedItemsListService,
+  OrderItemsTableService,
 ];
