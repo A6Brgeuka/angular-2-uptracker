@@ -1,24 +1,26 @@
 import { Injectable } from '@angular/core';
 
 import { Restangular } from 'ngx-restangular';
-
-import { PastOrderService } from '../../../../core/services/index';
-import { OrderListBaseService } from '../../classes/order-list-base.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
 
+import { OrderListBaseService } from '../../classes/order-list-base.service';
+import { OrderItemsTableService } from './order-items-table.service';
+
 @Injectable()
 export class FlaggedItemsListService extends OrderListBaseService {
+
+  protected idName = 'id';
 
   private putItemRequest$: Observable<any>;
   private putItem$: Subject<any> = new Subject();
 
   constructor(
     private restangular: Restangular,
-    private pastOrderService: PastOrderService,
+    private orderItemsTableService: OrderItemsTableService,
   ) {
-    super(pastOrderService);
+    super(orderItemsTableService);
 
     this.putItemRequest$ = this.putItem$
     .switchMap((item) => {
@@ -32,8 +34,8 @@ export class FlaggedItemsListService extends OrderListBaseService {
     })
     .share();
 
-    this.pastOrderService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
-    this.pastOrderService.addCollectionStreamToEntittesStream(this.putItemRequest$.map(item => [item]));
+    this.orderItemsTableService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
+    this.orderItemsTableService.addCollectionStreamToEntittesStream(this.putItemRequest$.map(item => [item]));
 
     const collectionIdsGetRequest$ = this.getCollectionRequest$
     .map((items) => _.map(items, 'id'))
@@ -49,7 +51,7 @@ export class FlaggedItemsListService extends OrderListBaseService {
     .map((item) => [item.id])
     .let(this.getRemoveAction);
 
-    const collectionVoidedIds$ = this.pastOrderService.removeIds$
+    const collectionVoidedIds$ = this.orderItemsTableService.removeIds$
     .let(this.getRemoveAction);
 
     this.ids$ = Observable.merge(
@@ -63,7 +65,7 @@ export class FlaggedItemsListService extends OrderListBaseService {
     this.ids$.connect();
 
     this.collection$ = Observable.combineLatest(
-      this.pastOrderService.entities$,
+      this.orderItemsTableService.entities$,
       this.ids$,
     )
     .map(([entities, ids]) =>

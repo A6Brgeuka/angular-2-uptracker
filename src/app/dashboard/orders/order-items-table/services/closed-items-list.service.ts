@@ -2,22 +2,24 @@ import { Injectable } from '@angular/core';
 
 import { Restangular } from 'ngx-restangular';
 
-import { PastOrderService } from '../../../../core/services/index';
 import { OrderListBaseService } from '../../classes/order-list-base.service';
+import { OrderItemsTableService } from './order-items-table.service';
 
 @Injectable()
 export class ClosedItemsListService extends OrderListBaseService {
 
+  protected idName = 'id';
+
   constructor(
     private restangular: Restangular,
-    private pastOrderService: PastOrderService,
+    private orderItemsTableService: OrderItemsTableService,
   ) {
-    super(pastOrderService);
-    this.pastOrderService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
+    super(orderItemsTableService);
+    this.orderItemsTableService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
   }
 
   getRequest(params) {
     return this.restangular.one('pos', '8').all('items').customGET('', params);
-
   }
+
 }

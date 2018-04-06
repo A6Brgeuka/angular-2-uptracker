@@ -7,21 +7,22 @@ import { Subject } from 'rxjs/Subject';
 
 import * as _ from 'lodash';
 
-import { PastOrderService } from '../../../../core/services/index';
 import { OrderListBaseService } from '../../classes/order-list-base.service';
+import { OrderItemsTableService } from './order-items-table.service';
 
 @Injectable()
 export class FavoritedItemsListService extends OrderListBaseService {
+
+  protected idName = 'id';
 
   private postItemRequest$: Observable<any>;
   private postItem$: Subject<any> = new Subject();
 
   constructor(
     private restangular: Restangular,
-    private pastOrderService: PastOrderService,
+    private orderItemsTableService: OrderItemsTableService,
   ) {
-    super(pastOrderService);
-
+    super(orderItemsTableService);
 
     this.postItemRequest$ = this.postItem$
     .switchMap((item) =>
@@ -31,8 +32,8 @@ export class FavoritedItemsListService extends OrderListBaseService {
     )
     .share();
 
-    this.pastOrderService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
-    this.pastOrderService.addCollectionStreamToEntittesStream(this.postItemRequest$.map(item => [item]));
+    this.orderItemsTableService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
+    this.orderItemsTableService.addCollectionStreamToEntittesStream(this.postItemRequest$.map(item => [item]));
 
     const collectionIdsGetRequest$ = this.getCollectionRequest$
     .map((items) => _.map(items, 'id'))
@@ -48,7 +49,7 @@ export class FavoritedItemsListService extends OrderListBaseService {
     .map((item) => [item.id])
     .let(this.getRemoveAction);
 
-    const collectionVoidedIds$ = this.pastOrderService.removeIds$
+    const collectionVoidedIds$ = this.orderItemsTableService.removeIds$
     .let(this.getRemoveAction);
 
     this.ids$ = Observable.merge(
@@ -62,7 +63,7 @@ export class FavoritedItemsListService extends OrderListBaseService {
     this.ids$.connect();
 
     this.collection$ = Observable.combineLatest(
-      this.pastOrderService.entities$,
+      this.orderItemsTableService.entities$,
       this.ids$,
     )
     .map(([entities, ids]) =>
