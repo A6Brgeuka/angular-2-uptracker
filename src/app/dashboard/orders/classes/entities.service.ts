@@ -12,7 +12,6 @@ export abstract class EntitiesService {
   public voidOrderRequest$: ConnectableObservable<any>;
   protected addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
   public removeIds$;
-  public filterQueryParams$: Subject<any> = new Subject();
 
   protected abstract idName: string;
 
@@ -55,6 +54,10 @@ export abstract class EntitiesService {
     return this.voidOrderRequest$;
   }
 
+  /**
+   * Used to add stream as source for entities
+   * @param {Observable<any>} stream$
+   */
   public addCollectionStreamToEntittesStream(stream$: Observable<any>) {
     this.addCollectionToEntittesStream$.next(stream$);
   }
