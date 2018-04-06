@@ -73,6 +73,12 @@
               {{ item[alias] }}{{ last ? '' : headerCol.join }}
             </ng-template>
           </span>
+          <span *ngIf="headerCol.aliasItemArray && headerCol.aliasItemArray.length">
+              <span *ngFor="let name of item[headerCol.aliasItemArray]; last as isLast">
+                {{name?.item_name}}
+                <span *ngIf="!isLast">, </span>
+              </span>
+          </span>
           <fa
             *ngIf="headerCol.showChevron && item.status_int === orderStatus.multiple"
             (click)="toggleStatusHistoryDetail(item); $event.stopPropagation()"
@@ -80,7 +86,6 @@
             [name]="item.statusHistoryVisibility ? 'chevron-up' : 'chevron-down'"
           ></fa>
         </div>
-
 
         <app-order-table-item-action
           [item]="item"
