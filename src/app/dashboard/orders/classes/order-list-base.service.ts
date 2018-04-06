@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 
 import { OrderItem } from '../models/order-item';
 import { EntitiesService } from './entities.service';
+import { OrdersService } from '../orders.service';
 
 export enum IdsActions {
   add,
@@ -23,10 +24,11 @@ export abstract class OrderListBaseService {
 
   constructor(
     entitiesService: EntitiesService,
+    ordersService: OrdersService,
   ) {
     this.getCollectionRequest$ = Observable.merge(
       this.getCollection$,
-      entitiesService.filterQueryParams$
+      ordersService.filterQueryParams$,
     )
     .switchMap((params) =>
       this.getRequest(params)
