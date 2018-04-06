@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
 
 import { OrderItem } from '../models/order-item';
-import { PastOrderService } from '../../../core/services';
+import { EntitiesService } from './entities.service';
 
 export enum IdsActions {
   add,
@@ -19,14 +19,14 @@ export abstract class OrderListBaseService {
   public getCollection$: Subject<any> = new Subject();
   public collection$: Observable<OrderItem[]>;
   public ids$: ConnectableObservable<string[]>;
-
+  protected abstract idName: string;
 
   constructor(
-    pastOrderService: PastOrderService
+    entitiesService: EntitiesService,
   ) {
     this.getCollectionRequest$ = Observable.merge(
       this.getCollection$,
-      pastOrderService.filterQueryParams$
+      entitiesService.filterQueryParams$
     )
     .switchMap((params) =>
       this.getRequest(params)
@@ -37,9 +37,9 @@ export abstract class OrderListBaseService {
 
     this.ids$ = Observable.merge(
       this.getCollectionRequest$
-      .map((items) => _.map(items, 'id'))
+      .map((items) => _.map(items, this.idName))
       .let(this.getSetAction),
-      pastOrderService.removeIds$
+      entitiesService.removeIds$
       .let(this.getRemoveAction),
     )
     .scan(
@@ -50,7 +50,7 @@ export abstract class OrderListBaseService {
     this.ids$.connect();
 
     this.collection$ = Observable.combineLatest(
-      pastOrderService.entities$,
+      entitiesService.entities$,
       this.ids$,
     )
     .map(([entities, ids]) => ids.map((id) => entities[id]));
