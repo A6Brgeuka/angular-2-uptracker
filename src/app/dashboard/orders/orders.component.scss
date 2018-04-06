@@ -282,6 +282,9 @@
       }
     }
   }
+  .items-numbers .col-content-wrapper {
+    white-space: inherit;
+  }
 }
 
 @media all and (max-width: 768px) {
