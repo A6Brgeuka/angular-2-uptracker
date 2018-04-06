@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import { PastOrderService } from '../../core/services/pastOrder.service';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { ToasterService } from '../../core/services/toaster.service';
 import { OrderTableResetService } from './directives/order-table/order-table-reset.service';
@@ -23,7 +22,6 @@ export class OrdersComponent {
   constructor(
       public modal: Modal,
       public router: Router,
-      public pastOrderService: PastOrderService,
       public modalWindowService: ModalWindowService,
       public toasterService: ToasterService,
       public orderTableResetService: OrderTableResetService,
@@ -47,12 +45,12 @@ export class OrdersComponent {
   }
 
   resetFilters() {
-    this.pastOrderService.filterQueryParams$.next(null);
+    this.ordersService.filterQueryParams$.next(null);
     this.orderTableResetService.resetFilters();
   }
 
   changeDataType(event) {
-    this.orderTableResetService.resetFilters();
+    this.resetFilters();
     this.router.navigate([`orders${event}`]);
   }
 }

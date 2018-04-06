@@ -22,6 +22,8 @@ export class OrdersService {
   public filterItems$: Observable<any[]>;
   public onChipsChange$ = new Subject<string[]>();
 
+  public filterQueryParams$: Subject<any> = new Subject();
+
   constructor(
     public orderTableFilterByService: OrderTableFilterByService,
   ) {

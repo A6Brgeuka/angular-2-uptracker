@@ -2,7 +2,7 @@
   <div class="top">
     <app-search-filter-header
       [title]="'Orders'"
-      [className]="(pastOrderService.filterQueryParams$ | async) ? 'red-text' : ''"
+      [className]="(ordersService.filterQueryParams$ | async) ? 'red-text' : ''"
       isTitleSelect = "true"
       [searchKey]="ordersService.searchKey"
       searchType="chips"
