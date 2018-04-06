@@ -37,10 +37,7 @@ export class AddNewProductComponent implements OnInit {
   public pricingRulesCollection: any [];
   public fileArr: any[] = [];
   public newProductVariants: any = {};
-  public newVariant: any = {
-    title: '',
-    variants: []
-  };
+  public newVariant: string = '';
 
   public productVariants = {
     color: ['green', 'blue', 'navy'],
@@ -225,6 +222,8 @@ export class AddNewProductComponent implements OnInit {
     this.newProductVariants[variant] = '';
   };
 
+  addSection = (name) => this.variants[name.toLowerCase()] = [];
+
   get availableVariants() {
     return difference(keys(this.productVariants), keys(this.variants));
   }
@@ -232,7 +231,7 @@ export class AddNewProductComponent implements OnInit {
   onProductVariantSelect = ($event) => {
     this.variants[$event] = true;
     this.productVariants[$event] = [];
-    this.newVariant = { title: '', variants: []};
+    this.newVariant = '';
   };
 
   goBack = (): void => this.location.back();

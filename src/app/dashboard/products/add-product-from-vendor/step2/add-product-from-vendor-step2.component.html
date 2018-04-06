@@ -1,75 +1,17 @@
-<div class="container">
-  <div class="row">
-    <div class="col s12 center-align">
-      <div class="title">
-        {{product.name}}
-      </div>
-    </div>
-
-    <div class="col s12 center-align">
-      <div class="title">
-        Which vendors do you get this product from?
-      </div>
-    </div>
+<div class="row">
+  <div class="col s10">
+    <app-vendor-search (vendorChosen)="onVendorChosen($event)"></app-vendor-search>
   </div>
-
-  <div class="row with-margin">
-    <div class="col s7 m7">
-      <app-vendor-search (vendorChosen)="onVendorChosen($event)"></app-vendor-search>
-    </div>
-    <div class="col s2 m2 center-align">
-      <button class="bluebtn waves-light waves-effect">
-        <fa [name]="'plus'"></fa>
-        Add
-      </button>
-    </div>
-
-    <div class="col s3 m3">
-      <button class="bluebtn custom-vendor-btn waves-light waves-effect"
-              (click)="openAddVendorsModal(); $event.stopPropagation()">
-        <fa [name]="'plus'"></fa>
-        Custom vendor
-      </button>
-    </div>
-  </div>
-
-  <div class="row fill-all-selected">
-    <div class="col s1">
-      <div class="input-checkbox checkbox">
-        <input
-          type="checkbox"
-          class="checkbox-input"
-          [(ngModel)]="selectAll"
-          id="selectAll"
-        />
-        <label for="selectAll"></label>
-      </div>
-    </div>
-    <div class="col s2 select-title">
-      Select All
-    </div>
-    <div class="col s2 price-title center-align">
-      <p>Book $</p>
-      <input (click)="$event.stopPropagation();" type="text" class="yourprice" [(ngModel)]="item.book_price" >
-    </div>
-    <div class="col s2 price-title center-align">
-      <p>Your $</p>
-      <input (click)="$event.stopPropagation();" type="text" class="yourprice" [(ngModel)]="item.your_price" >
-    </div>
-    <div class="col s2 price-title center-align">
-      <p>Club $<fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa></p>
-      <input (click)="$event.stopPropagation();" type="text" class="yourprice" [(ngModel)]="item.club_price" >
-    </div>
-    <div class="col s3 text-right">
-      <button class="bluebtn waves-light waves-effect" (click)="onFillAllClick(); $event.stopPropagation()">
-        Fill all selected
-      </button>
-    </div>
+  <div class="col s2 right-align">
+    <button class="bluebtn waves-light waves-effect">
+      <fa [name]="'plus'"></fa>
+      Add Vendor
+    </button>
   </div>
 </div>
+
 <app-product-variant
-  *ngFor="let vendor of vendorVariants"
-  [selectAll]="selectAll"
-  [fillAll]="fillAllModel"
-  [vendor]="vendor" >
+  *ngFor="let vendor of vendorVariants; let i = index"
+  [vendor]="vendor"
+  (vendorDelete)="onVendorDelete(i)">
 </app-product-variant>

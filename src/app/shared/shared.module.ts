@@ -19,7 +19,8 @@ import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
-import {VendorSearchComponent} from "./components/vendor-search/vendor-search.component";
+import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
+import { PriceInputComponent } from "./components/price-input/price-input.component";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -34,7 +35,8 @@ let pipesArr = [
 ];
 
 let componentsArr = [
-  VendorSearchComponent
+  VendorSearchComponent,
+  PriceInputComponent
 ];
 
 // resolvers

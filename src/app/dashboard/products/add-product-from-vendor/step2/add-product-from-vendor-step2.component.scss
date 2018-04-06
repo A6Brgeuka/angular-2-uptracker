@@ -2,9 +2,6 @@
 
 :host /deep/ {
 
-  .with-margin {
-    margin: 0 50px;
-  }
   .bluebtn {
     padding: 0 10px;
     font-size: 12px;
@@ -15,6 +12,7 @@
     color: $white;
     border-radius: 5px;
     margin-top:-2px;
+    margin-right: 0;
     box-shadow:none;
     border:none;
   }
@@ -50,23 +48,7 @@
       width: 100%;
     }
   }
-  .fill-all-selected {
-    align-items: flex-end;
-    display: flex;
-    margin-bottom:0;
-    padding-top:30px;
-    padding-bottom:30px;
-    border: none;
 
-    input{
-      width:70px;
-      margin-bottom:0;
-    }
-
-    .bluebtn {
-      margin-right: 0;
-    }
-  }
   .edit-total-units {
     margin-top:0px;
     padding-top:0px;

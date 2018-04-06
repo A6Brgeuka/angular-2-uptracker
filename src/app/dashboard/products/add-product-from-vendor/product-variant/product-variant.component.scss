@@ -1,5 +1,5 @@
 @import "../../../../../colors";
-:host{
+:host /deep/ {
 
   input{
     margin: 0;
@@ -10,8 +10,32 @@
     margin: 0;
   }
 
+  .vendor-title {
+    height: 24px;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: $black;
+  }
+
+  .sub-title {
+    height: 22px;
+    font-family: Ubuntu;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: $dark;
+  }
+
   input[type="text"]{
-    height:25px;
+    height:30px;
     border:1px solid $light-grey;
     border-radius:5px;
     background-color: $white;
@@ -20,33 +44,42 @@
       border-color: $tealish;
     }
   }
-  .item{
-    padding:20px 0;
+
+  .flex {
+    display: flex;
+    align-items: center;
   }
-  .new-product-vendor{
-    box-sizing: border-box;
-    margin:20px 0;
+
+  .input-checkbox {
+    padding-right: 10px;
   }
-  .row-input{
-    input{
-      width:70px;
-    }
-  }
-  .edit-vendor{
-    margin-top:10px;
-  }
+
 
   @media (max-width: 800px) {
     .uptracker-form-btn,
     .bluebtn {
       min-width: 50px;
     }
-
-    input[type="text"] {
-      width: 40px !important;
+  }
+//////////
+ .package:hover {
+    fa[name="times-circle"] {
+      opacity: 1;
     }
   }
 
+  fa[name="times-circle"]{
+    font-size: 16px;
+    cursor: pointer;
+    color: $mid-grey;
+    opacity: 0;
+    transition: all .3s;
+  }
+
+  .ttl {
+    padding-left: 0.75rem;
+    padding-bottom: 7px;
+  }
 }
 
 

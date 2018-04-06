@@ -1,10 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Modal} from 'angular2-modal';
-import {clone} from 'lodash';
 import {ProductModel} from '../../../../models/product.model';
 import {ModalWindowService} from '../../../../core/services/modal-window.service';
 import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/help-text-modal-component';
-import {AddVendorModalComponent} from '../../../../shared/modals/add-vendor-modal/add-vendor-modal.component';
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -16,14 +14,12 @@ export class AddProductFromVendorStep2Component implements OnInit {
   @Input('product') product: ProductModel;
   public vendor: any = {};
   public vendors: any = [];
-  public selectAll: boolean;
   public item: any = {};
-  public fillAllModel: any = {};
 
   //must be product.variants or vendor.variants
   public vendorVariants = [
     {
-      name: '3M - Emiteck',
+      vendor_name: '3M - Emiteck',
       variants: [
         {
           name: 'red',
@@ -70,7 +66,7 @@ export class AddProductFromVendorStep2Component implements OnInit {
       ]
     },
     {
-      name: 'Henry Schine',
+      vendor_name: 'Henry Schine',
       variants: [
         {
           name: 'blue',
@@ -143,26 +139,18 @@ export class AddProductFromVendorStep2Component implements OnInit {
   ngOnInit() {
   }
 
-  onFillAllClick() {
-    this.fillAllModel = clone(this.item);
-  }
-
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
       .overlayConfigFactoryWithParams({'text': ''}, true, 'mid'))
   }
 
-  openAddVendorsModal() {
-    this.modal
-      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({modalMode: true}, true))
-      .then((resultPromise) => resultPromise.result.then((customVendor) => {
-        this.onVendorChosen(customVendor);
-      }));
-  }
-
   onVendorChosen(customVendor) {
     const vendor = {...this.vendorVariants[0], ...customVendor};
-    this.vendorVariants.push(vendor);
+    this.vendorVariants.unshift(vendor);
+  }
+
+  onVendorDelete(i) {
+    this.vendorVariants.splice(i, 1);
   }
 
 }

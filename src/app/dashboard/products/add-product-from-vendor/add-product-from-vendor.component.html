@@ -1,4 +1,9 @@
 <div class="row">
+  <div class="col s12">
+    <div class="main-title">Add custom product</div>
+  </div>
+</div>
+<div class="row">
   <div class="col s2">
     <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="checkStep(1)"></div>
     <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
@@ -8,7 +13,9 @@
     </button>
   </div>
   <div class="col s8 center-align">
-    <div class="main-title">Add custom product</div>
+    <div class="sub-title" *ngIf="checkStep(2)">
+      Vendors
+    </div>
   </div>
   <div class="col s2 right-align">
     <button *ngIf="!checkStep(2)"

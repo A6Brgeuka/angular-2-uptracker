@@ -322,42 +322,40 @@
 
     <div class="row">
       <div class="col s12 flex">
-        <div class="col s4 m2 wrap" *ngFor="let variant of getVariants() | iterable; let index = index; trackBy:trackByIndex;">
-          <div class="select">
-            <select [(ngModel)]="variant.key"
-                    materialize="material_select"
-                    [materializeSelectOptions]="availableVariants">
-              <option [value]="variant.key">{{ variant.key | capitalizeFirst}}</option>
-              <option *ngFor="let v of availableVariants; let i = index; trackBy:trackByIndex;"  [value]="v">{{ v | capitalizeFirst }}</option>
-            </select>
+        <div class="col s4 m2" *ngFor="let variant of getVariants() | iterable; let index = index; trackBy:trackByIndex;">
+          <div class="wrap">
+            <div class="select">
+              <select [(ngModel)]="variant.key"
+                      materialize="material_select"
+                      [materializeSelectOptions]="availableVariants">
+                <option [value]="variant.key">{{ variant.key | capitalizeFirst}}</option>
+                <option *ngFor="let v of availableVariants; let i = index; trackBy:trackByIndex;"  [value]="v">{{ v | capitalizeFirst }}</option>
+              </select>
+            </div>
+            <div *ngFor="let v of productVariants[variant.key]; let i = index; trackBy:trackByIndex;" class="product-variant">
+              <input type="text" [(ngModel)]="productVariants[variant.key][i]">
+              <fa name="times-circle" (click)="deleteItem(variant.key, i)"></fa>
+            </div>
+            <div class="product-variant">
+              <input type="text" [(ngModel)]="newProductVariants[variant.key]" placeholder="Add another {{variant.key | capitalizeFirst}}">
+              <fa name="plus-circle" (click)="addVariant(variant.key)"></fa>
+            </div>
+            <fa name="times-circle" class="hide-by-opacity" (click)="deleteItem(variant, index)"></fa>
           </div>
-          <div *ngFor="let v of productVariants[variant.key]; let i = index; trackBy:trackByIndex;" class="product-variant">
-            <input type="text" [(ngModel)]="productVariants[variant.key][i]">
-            <div class="variant-action delete" (click)="deleteItem(variant.key, i)"></div>
-          </div>
-          <div class="product-variant">
-            <input type="text" [(ngModel)]="newProductVariants[variant.key]" placeholder="Add another {{variant.key | capitalizeFirst}}">
-            <div class="variant-action add" (click)="addVariant(variant.key)"></div>
-          </div>
-          <div class="section-action delete" (click)="deleteItem(variant, index)"></div>
         </div>
-        <div class="col s4 m2 wrap">
-          <div class="select">
-            <select [(ngModel)]="newVariant.title"
-                    materialize="material_select"
-                    [materializeSelectOptions]="availableVariants"
-                    (ngModelChange)="onProductVariantSelect($event)">
-              <option [value]="newVariant.title">{{ newVariant.title | capitalizeFirst}}</option>
-              <option *ngFor="let v of availableVariants; let i = index; trackBy:trackByIndex;" [value]="v">{{ v | capitalizeFirst }}</option>
-            </select>
-          </div>
-          <div *ngFor="let v of newVariant.variants; let i = index;" class="product-variant">
-            <input type="text" [(ngModel)]="newVariant[v][i]">
-            <div class="variant-action delete" (click)="deleteItem(v, i)"></div>
-          </div>
-          <div class="product-variant">
-            <input type="text" placeholder="Add another {{newVariant.title | capitalizeFirst}}">
-            <div class="variant-action add" (click)="addVariant(variant.key)"></div>
+        <div class="col s4 m2">
+          <div class="wrap">
+            <div class="select">
+              <input class="overlay-input" type="text" placeholder="Variant name" [(ngModel)]="newVariant">
+              <select [(ngModel)]="newVariant"
+                      materialize="material_select"
+                      [materializeSelectOptions]="availableVariants"
+                      (ngModelChange)="onProductVariantSelect($event)">
+                <option [value]="newVariant">{{ newVariant | capitalizeFirst}}</option>
+                <option *ngFor="let v of availableVariants; let i = index; trackBy:trackByIndex;" [value]="v">{{ v | capitalizeFirst }}</option>
+              </select>
+              <fa name="plus-circle" class="add-section" (click)="addSection(newVariant)"></fa>
+            </div>
           </div>
         </div>
       </div>
