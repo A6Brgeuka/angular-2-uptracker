@@ -11,7 +11,7 @@ import { ResendOrderModalModule } from '../resend-order-modal/resend-order-modal
 import { OrderFlagModalModule } from '../directives/order-flag-modal/order-flag-modal.module';
 import { OrdersPageFiltersModule } from '../../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.module';
 
-import { ORDER_PROVIDERS } from './services/index';
+import { ORDER_ITEMS_PROVIDERS } from './services/index';
 import { AllItemsListModule } from './all-order-items-list/all-order-items-list.module';
 import { BackorderedItemsListModule } from './backordered-items-list/backordered-items-list.module';
 import { ReconciledItemsListModule } from './reconciled-items-list/reconciled-items-list.module';
@@ -45,7 +45,7 @@ import { ClosedItemsListModule } from './closed-items-list/closed-items-list.mod
     OrdersPageFiltersModule,
   ],
   providers: [
-    ORDER_PROVIDERS
+    ORDER_ITEMS_PROVIDERS
   ]
 })
 export class OrderItemsTableModule {
