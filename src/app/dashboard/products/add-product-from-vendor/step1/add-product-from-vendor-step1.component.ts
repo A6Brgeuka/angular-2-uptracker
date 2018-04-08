@@ -97,4 +97,10 @@ export class AddProductFromVendorStep1Component implements OnInit {
     this.fileArr.push(file);
   }
 
+  uploadLogo(file: any) {
+    const reader = new FileReader();
+    reader.onload = ($event: any) => this.product.image = $event.target.result;
+    reader.readAsDataURL(file.target.files[0]);
+  }
+
 }

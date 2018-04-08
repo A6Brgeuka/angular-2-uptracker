@@ -11,7 +11,9 @@
 <div class="row package" *ngFor="let package of packages; let i = index">
   <div class="row">
     <div class="col s11 sub-title">
-      1 Package of 1 Item(s) in tcu
+      {{product.package_type}} <span *ngIf="product.package_type">of</span>
+      {{product.sub_package.properties.qty}} {{product.sub_package.properties.unit_type}} <span *ngIf="product.sub_package.properties.unit_type">of</span>
+      {{product.consumableUnitQty}} {{product.consumable_unit.properties.unit_type}} in tcu
     </div>
     <div class="col s1 right-align">
       <fa name="times-circle" (click)="deletePackage(i)"></fa>
@@ -35,6 +37,7 @@
                  required
           >
         </div>
+        <div class="label">=</div>
       </div>
     </div>
   </div>
@@ -45,7 +48,6 @@
         <div class="input">
           <input [(ngModel)]="product.sub_package.properties.qty"
                  type="text" placeholder="Qty"
-                 [disabled] ="!product.sub_package.properties.unit_type"
                  [required] = "product.sub_package.properties.unit_type"
                  name="qty"
                  #qty="ngModel"
@@ -66,14 +68,13 @@
                  [(ngModel)] = 'innerPack'
           >
         </div>
+        <div class="label">=</div>
       </div>
     </div>
   </div>
   <div class="col m4 l3">
     <div class="ttl">
       Consumable Units Per Inner/Outer
-      <span *ngIf="product.sub_package.properties.unit_type">per {{ product.sub_package.properties.unit_type }}</span>
-      <span *ngIf="!product.sub_package.properties.unit_type && product.package_type">per {{ product.package_type }}</span>
     </div>
     <div class="row relative">
       <div class="col s3">
@@ -123,8 +124,8 @@
 <div class="row">
   <div class="col s6 flex">
     <div class="input-checkbox">
-      <input type="checkbox" class="checkbox-input" [(ngModel)]="selectAll" id="selectAll"/>
-      <label for=selectAll></label>
+      <input type="checkbox" class="checkbox-input" [(ngModel)]="selected.all" (change)="selectAll()" id="{{vendor.vendor_name}}+'selectAll'"/>
+      <label for="{{vendor.vendor_name}}+'selectAll'"></label>
     </div>
 
     Product Variant Name

@@ -25,11 +25,31 @@
   </div>
 
   <div class="row uptracker-form" *ngIf="checkStep(0)">
-    <div class="col s12 m3 file-field center-align">
-      <div class="img-container upload-link">
-        <div class="img" *ngIf="product?.image"
-             [ngStyle]="{ 'background-image': 'url(' + product?.image + ')' }"></div>
-        <input type="file" (change)="uploadLogo($event)" />
+    <div class="col s12 m3 center-align">
+      <div class="col s12">
+        <div class="img-container">
+          <div class="img" *ngIf="product.image" [ngStyle]="{ 'background-image': 'url(' + (product.image) + ')' }">
+            <div class="del-img-btn" (click)="product.image = ''">
+              <i class="material-icons">delete</i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <div>
+          Vendor logo
+        </div>
+        <div>
+          Please upload a JPG or PNG max size 10 MB
+        </div>
+        <div class="input add-attachment">
+          <div class="file-field">
+            <div class="upload-link">
+              <input type="file" accept="image/*" (change)="uploadLogo($event)"/>
+              <a>Upload a logo</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="info-box col s12 m9">

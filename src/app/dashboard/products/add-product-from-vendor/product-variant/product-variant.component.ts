@@ -4,20 +4,21 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {InventoryService} from '../../../../core/services/inventory.service';
 import {Observable} from 'rxjs';
 import {InventorySearchResults} from '../../../../models/inventory.model';
+import {DestroySubscribers} from 'ngx-destroy-subscribers';
 
 @Component({
   selector: 'app-product-variant',
   templateUrl: 'product-variant.component.html',
   styleUrls: ['product-variant.component.scss']
 })
+@DestroySubscribers()
 export class ProductVariantComponent implements OnInit {
   @Input('vendor') public vendor;
   @Output('vendorDelete') public vendorDelete = new EventEmitter();
 
   public subscribers: any = {};
-  public selectAll: boolean = false;
   public product: any = new InventorySearchResults();
-  public selected = {};
+  public selected: any = {};
   public autocompleteOuterPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteOuterPackage: any = [];
   public autocompleteInnerPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -33,6 +34,9 @@ export class ProductVariantComponent implements OnInit {
     each(this.vendor.variants, (variant) => {
       this.selected[variant.name] = false
     });
+    this.autocompleteOuterPackage$.next('');
+    this.autocompleteInnerPackage$.next('');
+    this.autocompleteConsPackage$.next('');
   }
 
   addSubscribers() {
@@ -104,6 +108,12 @@ export class ProductVariantComponent implements OnInit {
     if (!this.packages.length) {
       this.vendorDelete.emit();
     }
+  }
+
+  selectAll() {
+    each(this.selected, (val, key) => {
+      this.selected[key] = this.selected.all
+    });
   }
 
 }

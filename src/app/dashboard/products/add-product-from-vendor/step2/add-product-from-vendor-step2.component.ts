@@ -3,6 +3,7 @@ import {Modal} from 'angular2-modal';
 import {ProductModel} from '../../../../models/product.model';
 import {ModalWindowService} from '../../../../core/services/modal-window.service';
 import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/help-text-modal-component';
+import {clone} from 'lodash';
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -17,7 +18,7 @@ export class AddProductFromVendorStep2Component implements OnInit {
   public item: any = {};
 
   //must be product.variants or vendor.variants
-  public vendorVariants = [
+  public dummyVendorVariants = [
     {
       vendor_name: '3M - Emiteck',
       variants: [
@@ -114,6 +115,7 @@ export class AddProductFromVendorStep2Component implements OnInit {
     }
 
   ];
+  public vendorVariants: any = [];
 
   //all variables after this comment are only for test
   public currentVariant = {
@@ -137,6 +139,7 @@ export class AddProductFromVendorStep2Component implements OnInit {
   }
 
   ngOnInit() {
+    this.vendorVariants = clone(this.dummyVendorVariants);
   }
 
   openHelperModal() {
@@ -145,7 +148,7 @@ export class AddProductFromVendorStep2Component implements OnInit {
   }
 
   onVendorChosen(customVendor) {
-    const vendor = {...this.vendorVariants[0], ...customVendor};
+    const vendor = {...this.dummyVendorVariants[0], ...customVendor};
     this.vendorVariants.unshift(vendor);
   }
 

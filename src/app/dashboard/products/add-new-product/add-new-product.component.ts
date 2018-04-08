@@ -1,9 +1,9 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {some, filter, keys, isObject, difference} from 'lodash';
+import {some, filter, keys, isObject, difference, every} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -62,7 +62,8 @@ export class AddNewProductComponent implements OnInit {
     private productService: ProductService,
     public modal: Modal,
     public modalWindowService: ModalWindowService,
-    private location: Location
+    private location: Location,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
   }
 
@@ -85,6 +86,14 @@ export class AddNewProductComponent implements OnInit {
     this.subscribers.pricingRulesCollection = this.pricingRulesCollection$
       .subscribe(rules => this.pricingRulesCollection = rules);
 
+    this.subscribers.obsArrReadySubscription = Observable.combineLatest(
+      this.departmentCollection$,
+      this.productAccountingCollection$,
+      this.productCategoriesCollection$,
+      this.pricingRulesCollection$
+    )
+      .filter(([d, p, c, r]) => d && p && c && r)
+      .subscribe(() => this.changeDetectorRef.detectChanges())
   }
 
   stepAction = (step) => this.step += step;
@@ -107,7 +116,10 @@ export class AddNewProductComponent implements OnInit {
 
   uploadLogo(file: any) {
     const reader = new FileReader();
-    reader.onload = ($event: any) => this.product.image = $event.target.result;
+    reader.onload = ($event: any) => {
+      this.product.image = $event.target.result;
+      this.changeDetectorRef.detectChanges();
+    };
     reader.readAsDataURL(file.target.files[0]);
   }
 
