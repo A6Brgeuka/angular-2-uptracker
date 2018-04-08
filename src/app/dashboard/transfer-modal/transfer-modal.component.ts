@@ -62,7 +62,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       floorVisible: false,
     }, {
       stockName: 'Room B',
-      stockQTY: 133,
+      stockQTY: 13,
       stockMove: null,
       stockDisabled: false,
       floorName: 'Ex. Room 1',
@@ -150,6 +150,18 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       this.totalMove = 0;
       this.inventories.forEach(inventory => {
         this.totalMove += inventory.stockMove;
+      })
+    }
+  }
+
+  unitChange(event) {
+    if (event === 'Gloves') {
+      this.inventories.forEach((inventory, index) => {
+        inventory.stockQTY = inventory.stockQTY * 100;
+      })
+    } else {
+      this.inventories.forEach((inventory, index) => {
+        inventory.stockQTY = inventory.stockQTY / 100;
       })
     }
   }
