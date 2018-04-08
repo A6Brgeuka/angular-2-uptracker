@@ -4,6 +4,12 @@
     <button class="add-product uptracker-form-btn">ADD PRODUCT</button>
   </div>
   <div class="row control">
+    <div class="filter">
+      <a>
+        <fa [name]="'filter'"></fa>
+        <span>Filters</span>
+      </a>
+    </div>
     <div class="input wide-input">
       <input type="text" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
     </div>

@@ -16,6 +16,10 @@
     .control {
       display: flex;
       justify-content: flex-end;
+      .filter {
+        line-height: 30px;
+        margin-right: 15px;
+      }
       .select {
         max-width: 200px;
         margin-left: 20px;
