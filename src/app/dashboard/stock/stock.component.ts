@@ -5,6 +5,7 @@ import { comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
 import { UserService, AccountService } from '../../core/services/index';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { UpdateStockModal } from './update-stock-modal/update-stock-modal.component';
+import { StockFilterModal } from './stock-filter-modal/stock-filter-modal.component';
 
 
 @Component({
@@ -77,6 +78,17 @@ export class StockComponent implements OnInit {
       product.reason = 'N/A';
     })
     this.panel.visible = false;
+  }
+
+  openFilterModal() {
+    this.modal
+    .open(StockFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({'products': this.products, 'panel': this.panel}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {},
+        (err) => {}
+      );
+    });
   }
 
   openSuccessModal() {
