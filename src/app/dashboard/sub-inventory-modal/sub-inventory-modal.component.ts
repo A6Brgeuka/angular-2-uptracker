@@ -9,26 +9,26 @@ import { UserService, AccountService } from '../../core/services';
 import * as _ from 'lodash';
 
 
-export class DashboardFilterModalContext extends BSModalContext {
+export class SubInventoryModalContext extends BSModalContext {
   public product: any;
 }
 
 @Component({
-  selector: 'dashboard-filter-modal',
+  selector: 'sub-inventory-modal',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
-  templateUrl: './dashboard-filter-modal.component.html',
-  styleUrls: ['./dashboard-filter-modal.component.scss']
+  templateUrl: './sub-inventory-modal.component.html',
+  styleUrls: ['./sub-inventory-modal.component.scss']
 })
 @DestroySubscribers()
-export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFilterModalContext> {
-  public context: DashboardFilterModalContext;
+export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryModalContext> {
+  public context: SubInventoryModalContext;
   public subscribers: any = {};
   public searchText: string = '';
   public modalState: number = 0;
   public location: string = '';
-  public productVariant: string = '';
+  public subtracting: string = 'Box';
   public groups: Array<any> = [];
   public selectedGroup: any;
 
@@ -40,7 +40,7 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
   public stockSterlizationLimit: number = 2;
 
   constructor(
-    public dialog: DialogRef<DashboardFilterModalContext>,
+    public dialog: DialogRef<SubInventoryModalContext>,
     public userService: UserService,
     public accountService: AccountService,
   ) {
@@ -72,14 +72,7 @@ export class DashboardFilterModal implements OnInit, ModalComponent<DashboardFil
     this.stockSterlizationLimit = this.stockSterlization;
   }
 
-  productSort(event) {
-    this.stockMini = Math.round(100 * Math.random());
-    this.stockMiniLimit = this.stockMini;
-    this.stockShelf = Math.round(100 * Math.random());
-    this.stockShelfLimit = this.stockShelf;
-    this.stockSterlization = Math.round(100 * Math.random());
-    this.stockSterlizationLimit = this.stockSterlization;
-  }
+  subtractingSort(event) {}
 
   searchProducts(event) {}
 
