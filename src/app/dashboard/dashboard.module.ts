@@ -9,8 +9,9 @@ import { LocationsModule } from './locations/locations.module';
 import { UsersModule } from './users/users.module';
 import { VendorsModule } from './vendors/vendors.module';
 import { ProductsModule } from './products/products.module';
-import { InventoryModule } from "./inventory/inventory.module";
-import { TranseferModule } from "./transfer/transfer.module";
+import { InventoryModule } from './inventory/inventory.module';
+import { TranseferModule } from './transfer/transfer.module';
+import { StockModule } from './stock/stock.module';
 import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
@@ -44,6 +45,7 @@ import { TransferModalModule } from './transfer-modal/transfer-modal.module';
     ProductsModule,
     InventoryModule,
     TranseferModule,
+    StockModule,
     ReportsModule,
     ShoppingListModule,
     RestockFloorModule,
