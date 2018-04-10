@@ -46,8 +46,8 @@ export class FlaggedOrdersListComponent implements OnInit, OnDestroy {
   };
 
   addSubscribers() {
-    // this.subscribers.getFlaggedCollectionSubscription = this.flaggedOrdersListService.getCollection()
-    // .subscribe();
+    this.subscribers.getFlaggedCollectionSubscription = this.flaggedOrdersListService.getCollection()
+    .subscribe();
   };
 
   ngOnDestroy() {
