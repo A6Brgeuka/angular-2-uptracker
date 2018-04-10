@@ -28,7 +28,7 @@ export class FlaggedOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
     {name: '# of Items', className: 's2 items-numbers', aliasItemArray: 'order_items'},
-    {name: 'Total', className: 's1', alias: 'total'},
+    {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
     {name: '', className: 's1', actions: true},
   ];
 
