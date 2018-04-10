@@ -9,7 +9,7 @@ import { OrdersTableService } from './orders-table.service';
 @Injectable()
 export class BackorderedOrdersListService extends OrderListBaseService {
 
-  protected idName = 'id';
+  protected idName = 'order_id';
 
   constructor(
     private restangular: Restangular,
