@@ -171,6 +171,17 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     this.searchText = '';
   }
 
+  getTransferText(unit, move) {
+    if (unit == 'Boxes' && move > 1) {
+      return `${move} Boxes = ${300 * move} Gloves`;
+    } else if (unit == 'Boxes' && move == 1) {
+      return `${move} Box = ${300 * move} Gloves`;
+    } else if (unit == 'Gloves' && move > 1) {
+      return `${move} Gloves`;
+    }
+    return `${move} Glove`;
+  }
+
   toGoModal(state, index) {
     this.modalState = state;
     if (index !== undefined) {
