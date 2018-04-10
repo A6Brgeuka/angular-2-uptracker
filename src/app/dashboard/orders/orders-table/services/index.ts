@@ -3,6 +3,7 @@ import { BackorderedOrdersListService } from './backordered-orders-list.service'
 import { OpenOrdersListService } from './open-orders-list.service';
 import { OrdersTableService } from './orders-table.service';
 import { ReceivedOrdersListService } from './received-orders-list.service';
+import { ReconciledOrdersListService } from './reconciled-orders-list.service';
 
 export const ORDERS_PROVIDERS = [
   OrdersTableService,
@@ -10,4 +11,5 @@ export const ORDERS_PROVIDERS = [
   BackorderedOrdersListService,
   OpenOrdersListService,
   ReceivedOrdersListService,
+  ReconciledOrdersListService,
 ];
