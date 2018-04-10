@@ -85,7 +85,7 @@
             <option value="loc2">Miami</option>
           </select>
         </div>
-        <div class="row location left-padded" *ngIf="totalMove > 0">You're transfering:</div>
+        <div class="row location left-padded">You're transfering:</div>
         <div class="row location amount left-padded" *ngIf="unit == 'Boxes' && totalMove > 0">{{getTransferText(unit, totalMove)}}</div>
         <div class="row location amount left-padded" *ngIf="unit == 'Gloves' && totalMove > 0">{{getTransferText(unit, totalMove)}}</div>
         <div class="row location submit left-padded">
