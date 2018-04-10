@@ -64,6 +64,12 @@ export class StockComponent implements OnInit {
       if (parseInt(product.actualQTY) > 0) active = true;
     })
     this.panel.visible = active;
+
+    if (event.reason == 'Used' && event.currentQTY < event.actualQTY) {
+      event.reason = 'N/A'
+    } else if (event.reason == 'Shrinkage' && event.currentQTY > event.actualQTY) {
+      event.reason = 'N/A'
+    }
   }
 
   remove(product) {
