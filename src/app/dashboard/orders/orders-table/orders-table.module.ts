@@ -10,6 +10,7 @@ import { ORDERS_PROVIDERS } from './services/index';
 import { OpenOrdersListModule } from './open-orders-list/open-orders-list.module';
 import { ReceivedOrdersListModule } from './received-orders-list/received-orders-list.module';
 import { ReconciledOrdersListModule } from './reconciled-orders-list/reconciled-orders-list.module';
+import { FlaggedOrdersListModule } from './flagged-orders-list/flagged-orders-list.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ReconciledOrdersListModule } from './reconciled-orders-list/reconciled-
     BackorderedOrdersListModule,
     ClosedOrdersListModule,
     FavoritedOrdersListModule,
+    FlaggedOrdersListModule,
     OpenOrdersListModule,
     ReceivedOrdersListModule,
     ReconciledOrdersListModule,
