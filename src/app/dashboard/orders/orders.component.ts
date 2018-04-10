@@ -8,13 +8,14 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 
-import { map } from 'lodash';
+import { map, filter, intersectionBy } from 'lodash';
 
 import { PastOrderService } from '../../core/services/pastOrder.service';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { ToasterService } from '../../core/services/toaster.service';
 import { OrderTableResetService } from './directives/order-table/order-table-reset.service';
 import { OrderTableFilterByService } from './directives/order-table/order-table-filter-by.service';
+import { OrdersPageFiltersComponent } from '../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.component';
 
 @Component({
   selector: 'app-orders',
@@ -50,6 +51,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public chips$;
 
   private filterItems$: Observable<any[]>;
+  private onChipsChange$ = new Subject<string[]>();
 
   constructor(
       public modal: Modal,
@@ -73,6 +75,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
       this.orderTableFilterByService.getFilterByListName(tab)
     )
     .map((filterObj) => map(filterObj, (value, key) => ({value, key})))
+    .map((items) => filter(items, 'value'))
     .shareReplay(1);
 
     this.chips$ = this.filterItems$
@@ -83,6 +86,21 @@ export class OrdersComponent implements OnInit, OnDestroy {
     console.log('for unsubscribing');
   }
 
+  addSubscribers() {
+    this.onChipsChange$
+    .withLatestFrom(this.filterItems$, this.activeTab$)
+    .subscribe(([chips, filterItems, tab]) => {
+      const chipsObj = chips.map((value) => ({value}));
+      const items = intersectionBy(filterItems, chipsObj, 'value');
+      const filter = items.reduce((acc, item) => ({...acc, [item.key]: item.value}), {});
+      this.orderTableFilterByService.setFilterBy(filter, tab);
+    });
+  }
+
+  onChipChange(chips) {
+    this.onChipsChange$.next(chips);
+  }
+
   searchOrders(event) {
     // replace forbidden characters
     const value = event.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
@@ -90,10 +108,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
   };
 
   showFiltersModal() {
-
+    this.modal
+    .open(OrdersPageFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
 
   resetFilters() {
+    this.pastOrderService.filterQueryParams$.next(null);
     this.orderTableResetService.resetFilters();
   }
 

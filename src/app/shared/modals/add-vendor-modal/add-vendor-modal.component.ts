@@ -35,7 +35,7 @@ export class AddVendorModalComponent implements OnInit {
   public step: number = 1;
   public uploadName: string = '';
   public formData: FormData = new FormData();
-  public logo: File;
+  public logo: any;
   public logoPreview: string = '';
 
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
@@ -50,7 +50,6 @@ export class AddVendorModalComponent implements OnInit {
     public phoneMaskService: PhoneMaskService,
   ) {
     this.vendorModel = new NewVendorModel();
-    dialog.setCloseGuard(this);
   }
 
   ngOnInit() {
@@ -138,6 +137,10 @@ export class AddVendorModalComponent implements OnInit {
       }
     );
 
+  }
+
+  deleteLogo() {
+    this.logo = this.logoPreview = '';
   }
 
   uploadLogo(file: any) {

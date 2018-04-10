@@ -36,7 +36,6 @@ export class AddMarketProductModalComponent implements OnInit {
     public modal: Modal,
     public modalWindowService: ModalWindowService
   ) {
-    dialog.setCloseGuard(this);
   }
 
   ngOnInit() {

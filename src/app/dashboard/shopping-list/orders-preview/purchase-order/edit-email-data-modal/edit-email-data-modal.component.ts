@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +10,7 @@ import { OrderService } from '../../../../../core/services/order.service';
 import { Router } from '@angular/router';
 import { PhoneMaskService } from '../../../../../core/services/phone-mask.service';
 import { ToasterService } from '../../../../../core/services/toaster.service';
+import { ModalWindowService } from '../../../../../core/services/modal-window.service';
 
 export class AttachmentUploadModel {
   file_name: string;
@@ -39,19 +40,19 @@ export class EditEmailDataModalContext extends BSModalContext {
   styleUrls: ['./edit-email-data-modal.component.scss']
 })
 @DestroySubscribers()
-export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, ModalComponent<EditEmailDataModalContext> {
+export class EditEmailDataModal implements OnInit, AfterViewInit, ModalComponent<EditEmailDataModalContext> {
   public subscribers: any = {};
   context: EditEmailDataModalContext;
 
   fileIsOver: boolean = false;
-  
+
   public file$: Observable<any>;
   public file;
   public loadFile$: Subject<any> = new Subject<any>();
   public addFileToFile$: Subject<any> = new Subject<any>();
   public deleteFromFile$: Subject<any> = new Subject<any>();
   public updateFile$: Subject<any> = new Subject<any>();
-  
+
   public emailTo:string;
   public emailFrom:string;
   public emailSubject:string;
@@ -62,7 +63,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   public apiUrl:string;
   public faxCountry: any;
   public phoneMask = this.phoneMaskService.defaultTextMask;
-  
+
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
       public fileUploadService: FileUploadService,
@@ -70,13 +71,13 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
       public router: Router,
       public phoneMaskService: PhoneMaskService,
       public toasterService: ToasterService,
+      public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
-    dialog.setCloseGuard(this);
     this.emailMessage = this.context.email_text;
     this.emailFrom = this.context.user_email;
     this.emailTo = this.context.vendor_email;
-  
+
     this.faxNumber = this.phoneMaskService.getPhoneByIntlPhone(this.context.from_fax_number);
     this.faxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.context.from_fax_number);
 
@@ -91,7 +92,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
 
   ngAfterViewInit(){
   }
-  
+
   // File add, delete actions
   fileActions(): any {
     let addFileToFile$ = this.addFileToFile$
@@ -104,7 +105,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
         return file;
       });
     });
-    
+
     let tmpFile;
     let deleteFromFile$ = this.deleteFromFile$
     .switchMap((attach: AttachmentUploadModel) => {
@@ -123,7 +124,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
         });
       });
     });
-    
+
     this.file$ = Observable.merge(
       this.loadFile$,
       this.updateFile$,
@@ -136,7 +137,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
       this.hasFiles = res.length > 0;
     });
   }
-  
+
   dismissModal(){
     this.dialog.dismiss();
   }
@@ -144,36 +145,35 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
   closeModal(data){
     this.dialog.close(data);
   }
-  
-  
+
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
   }
-  
+
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
     this.addFile(file);
   }
-  
+
   onFileUpload(event) {
     this.onFileDrop(event.target.files[0]);
   }
-  
+
   addFile(file) {
     this.addFileToFile$.next([file]);
   }
-  
+
   removeFile(file) {
     console.log(`remove ${file.file_name}`);
     this.deleteFromFile$.next(file);
   }
-  
+
   getType(mime){
     return mime.split('/')[0];
   }
-  
+
   sendPO(){
     this.orderService.sendOrderRequestFinal(this.context.order_id,{
       body:this.emailMessage,
@@ -185,6 +185,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, CloseGuard, Mo
     .subscribe((res: any) => {
       this.toasterService.pop('','Successfully sent');
       this.closeModal(true);
+      this.modalWindowService.confirmModal$.next(true);
       if (this.context.rmFn) {
         this.context.rmFn();
       }

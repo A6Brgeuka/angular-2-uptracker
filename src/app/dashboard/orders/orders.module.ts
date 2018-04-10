@@ -17,6 +17,8 @@ import { FavoritedListModule } from './favorited-list/favorited-list.module';
 import { FlaggedListModule } from './flagged-list/flagged-list.module';
 import { ReconciledListModule } from './reconciled-list/reconciled-list.module';
 import { ORDER_PROVIDERS } from './services';
+import { OrderFlagModalModule } from './directives/order-flag-modal/order-flag-modal.module';
+import { OrdersPageFiltersModule } from '../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { ORDER_PROVIDERS } from './services';
     ClosedListModule,
     ReconcileModule,
     ResendOrderModalModule,
+    OrderFlagModalModule,
+    OrdersPageFiltersModule,
   ],
   providers: [
     ORDER_PROVIDERS

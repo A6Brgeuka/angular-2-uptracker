@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import { OrderStatus, OrderStatusValues } from '../../order-status';
+import { OrderStatus, OrderStatusValues } from '../../models/order-status';
 
 export interface OrderReceivingStatus {
   value: string;
@@ -20,7 +20,7 @@ export class OrderItemStatusFormModel {
   status_int?: string;
   id?: string;
   qty_change?: boolean;
-  note?: string  ;
+  note?: string;
 }
 
 export class OrderItemStatusFormGroup extends FormGroup {

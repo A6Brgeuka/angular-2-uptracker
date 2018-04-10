@@ -1,0 +1,13 @@
+<div class="ttl bold">{{title}}</div>
+<div *ngFor="let item of collection; let i=index" class="col s12 checkboxesList" ngClass="{{classCol}}">
+  <div class="input-checkbox checkbox inline-block">
+    <input
+      id='{{item + i}}'
+      type="checkbox"
+      name={{item}}
+      value="{{item}}"
+      (change)="change($event)"
+    >
+    <label for='{{item + i}}' class="bold checkbox-text">{{item}}</label>
+  </div>
+</div>

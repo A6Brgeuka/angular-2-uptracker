@@ -84,8 +84,7 @@ export class MarketplaceTabComponent implements OnInit {
       );
       return products;
     });
-
-
+    
   }
 
   addSubscribers() {

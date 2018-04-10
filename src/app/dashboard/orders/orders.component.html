@@ -2,9 +2,11 @@
   <div class="top">
     <app-search-filter-header
       [title]="'Orders'"
+      [className]="(pastOrderService.filterQueryParams$ | async) ? 'red-text' : ''"
       [searchKey]="searchKey"
       searchType="chips"
       [chips]="chips$ | async"
+      (chipsChange)="onChipChange($event)"
       (searchEvent)="searchOrders($event)"
       (resetEvent)="resetFilters()"
       (openModalEvent)="showFiltersModal()"

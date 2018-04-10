@@ -18,7 +18,6 @@ export class InventorySearchModalComponent implements OnInit {
     public modalWindowService: ModalWindowService,
     public modal: Modal,
   ) {
-    dialog.setCloseGuard(this);
   }
 
   ngOnInit() {

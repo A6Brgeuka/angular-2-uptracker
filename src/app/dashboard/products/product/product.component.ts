@@ -735,6 +735,7 @@ ngOnDestroy() {
           this.subscribers.updateProduct
           .filter(res => res.data)
           .map(res => res.data)
+          .do(res => this.productService.updateElementCollection$.next(res.product))
           .subscribe(data => {
               this.variants = _.map(data.variants, (item: any) => {
                 item.checked = false;
@@ -802,6 +803,12 @@ ngOnDestroy() {
 
   hideVariantDetails() {
 
+  }
+
+  uploadLogo(file: any) {
+    let reader = new FileReader();
+    reader.onload = ($event: any) => this.productCopy.image = $event.target.result;
+    reader.readAsDataURL(file.target.files[0]);
   }
 
 }

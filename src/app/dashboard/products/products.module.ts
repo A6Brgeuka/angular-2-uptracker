@@ -15,6 +15,7 @@ import { SearchFilterHeaderModule } from '../../shared/components/search-filter-
 import { BrowseGlobalMarketModule } from './browse-global-market/browse-global-market.module';
 import { AddNewProductModule } from './add-new-product/add-new-product.module';
 import { AddProductFromVendorModule } from './add-product-from-vendor/add-product-from-vendor.module';
+import { MarketplaceFiltersModule } from '../../shared/modals/filters-modal/marketplace-filters/marketplace-filters.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { AddProductFromVendorModule } from './add-product-from-vendor/add-produc
     ProductModule,
     MarisListTabModule,
     MarketplaceTabModule,
+    MarketplaceFiltersModule,
     UploadCsvModalModule,
     BrowseGlobalMarketModule,
     AddNewProductModule,
