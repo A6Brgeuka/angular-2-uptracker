@@ -46,8 +46,8 @@ export class FavoritedOrdersListComponent implements OnInit, OnDestroy {
   };
 
   addSubscribers() {
-    // this.subscribers.getFavoritedCollectionSubscription = this.favoritedOrdersListService.getCollection()
-    // .subscribe();
+    this.subscribers.getFavoritedCollectionSubscription = this.favoritedOrdersListService.getCollection()
+    .subscribe();
   };
 
   ngOnDestroy() {
