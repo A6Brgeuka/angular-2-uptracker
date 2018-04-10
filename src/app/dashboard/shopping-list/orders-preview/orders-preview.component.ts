@@ -159,7 +159,7 @@ export class OrdersPreviewComponent implements OnInit {
                     user_email: this.userService.selfData.email_address,
                     from_fax_number: order['from_fax_number'] || '1 11111111111',
                     rmFn:  null
-                  })
+                  });
             }));
             break;
           case 'Fax':
@@ -316,10 +316,10 @@ export class OrdersPreviewComponent implements OnInit {
 
   showEmailDataEditModal(data) {
     if (!data.email_text) {
-      data.email_text = 'Email text'
+      data.email_text = 'Email text';
     }
     if (!data.po_number) {
-      data.po_number = '1234567890'
+      data.po_number = '1234567890';
     }
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, 'oldschool'));
   }
