@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
@@ -16,7 +16,7 @@ export const SearchType: {[key: string]: SearchFilterHeaderType} = {
   styleUrls: ['./search-filter-header.component.scss'],
 })
 @DestroySubscribers()
-export class SearchFilterHeaderComponent implements OnDestroy {
+export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   @Input() public title:  string;
   @Input() public className:  string = '';
@@ -55,17 +55,17 @@ export class SearchFilterHeaderComponent implements OnDestroy {
     return this.searchType === SearchType.MULTIPLE;
   }
 
-  ngOnDestroy() {
-    console.log('for unsubscribing');
-  }
-
-  addSubscribers() {
+  ngOnInit() {
     if (this.route && this.route.firstChild) {
       this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
       .subscribe(res =>
         this.selectedDataType = (res.length) ? `/${res[0].path}` : ''
       );
     }
+  }
+
+  ngOnDestroy() {
+    console.log('for unsubscribing');
   }
 
   searchFilter(event) {
