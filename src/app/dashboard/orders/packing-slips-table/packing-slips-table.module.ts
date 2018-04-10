@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { AppSharedModule } from '../../../shared/shared.module';
 import { PackingSlipsTableComponent } from './packing-slips-table.component';
+import { PACKINGSLIPS_PROVIDERS } from './services/index';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,7 @@ import { PackingSlipsTableComponent } from './packing-slips-table.component';
     AppSharedModule,
   ],
   providers: [
-    // ORDER_PROVIDERS
+    PACKINGSLIPS_PROVIDERS,
   ]
 })
 export class PackingSlipsTableModule {
