@@ -46,8 +46,8 @@ export class ClosedOrdersListComponent implements OnInit, OnDestroy {
   };
 
   addSubscribers() {
-    // this.subscribers.getClosedCollectionSubscription = this.closedOrdersListService.getCollection()
-    // .subscribe();
+    this.subscribers.getClosedCollectionSubscription = this.closedOrdersListService.getCollection()
+    .subscribe();
   };
 
   ngOnDestroy() {
