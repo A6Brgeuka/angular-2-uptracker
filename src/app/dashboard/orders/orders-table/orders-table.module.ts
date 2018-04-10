@@ -6,6 +6,7 @@ import { ORDERS_PROVIDERS } from './services/index';
 import { AllOrdersListModule } from './all-orders-list/all-orders-list.module';
 import { OpenOrdersListModule } from './open-orders-list/open-orders-list.module';
 import { ReceivedOrdersListModule } from './received-orders-list/received-orders-list.module';
+import { BackorderedOrdersListModule } from './backordered-orders-list/backordered-orders-list.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { ReceivedOrdersListModule } from './received-orders-list/received-orders
   imports: [
     AppSharedModule,
     AllOrdersListModule,
+    BackorderedOrdersListModule,
     OpenOrdersListModule,
     ReceivedOrdersListModule,
   ],
