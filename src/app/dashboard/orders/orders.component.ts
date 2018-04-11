@@ -51,6 +51,6 @@ export class OrdersComponent {
 
   changeDataType(event) {
     this.resetFilters();
-    this.router.navigate([`orders${event}`]);
+    this.router.navigate((event) ? [`orders`, event] : [`orders`]);
   }
 }

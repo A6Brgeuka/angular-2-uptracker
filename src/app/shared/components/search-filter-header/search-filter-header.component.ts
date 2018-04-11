@@ -31,10 +31,10 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
   @Output() changeDataTypeEvent = new EventEmitter();
   selectedDataType = '';
   dataTypeArr: any[] = [
-    {value: '/', title: 'Orders'},
-    {value: '/items', title: 'Order Items'},
-    {value: '/packing-slips', title: 'Packing Slips'},
-    {value: '/invoices', title: 'Invoices'},
+    {value: '', title: 'Orders'},
+    {value: 'items', title: 'Order Items'},
+    {value: 'packing-slips', title: 'Packing Slips'},
+    {value: 'invoices', title: 'Invoices'},
   ];
 
   constructor(
@@ -59,7 +59,7 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
     if (this.route && this.route.firstChild) {
       this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
       .subscribe(res =>
-        this.selectedDataType = (res.length) ? `/${res[0].path}` : ''
+        this.selectedDataType = (res.length) ? res[0].path : ''
       );
     }
   }
