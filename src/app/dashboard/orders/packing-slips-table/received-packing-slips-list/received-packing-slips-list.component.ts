@@ -18,7 +18,7 @@ import { ReceivedPackingSlipsListService } from '../services/received-packing-sl
 export class ReceivedPackingSlipsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = OrderListType.all;
+  public listName: string = OrderListType.received;
   public tableHeader: any = [
     {name: 'Packing Slip #', className: 's2', alias: 'packing_slip_number', filterBy: true, },
     {name: 'Vendor', className: 's2', alias: 'vendor_name', filterBy: true, wrap: 2, },
