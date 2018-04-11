@@ -5,6 +5,7 @@ import { PackingSlipsTableComponent } from './packing-slips-table.component';
 import { PACKINGSLIPS_PROVIDERS } from './services/index';
 import { AllPackingSlipsListModule } from './all-packing-slips-list/all-packing-slips-list.module';
 import { OpenPackingSlipsListModule } from './open-packing-slips-list/open-packing-slips-list.module';
+import { ReceivedPackingSlipsListModule } from './received-packing-slips-list/received-packing-slips-list.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { OpenPackingSlipsListModule } from './open-packing-slips-list/open-packi
     AppSharedModule,
     AllPackingSlipsListModule,
     OpenPackingSlipsListModule,
+    ReceivedPackingSlipsListModule,
   ],
   providers: [
     PACKINGSLIPS_PROVIDERS,
