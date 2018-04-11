@@ -2,6 +2,8 @@ import { ConnectableObservable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Restangular } from 'ngx-restangular';
+import { OrdersService } from '../orders.service';
+import { Router } from '@angular/router';
 
 export abstract class EntitiesService {
   public entities$: ConnectableObservable<{ [id: string]: any }>;
@@ -10,10 +12,14 @@ export abstract class EntitiesService {
   protected addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
   public removeIds$;
 
+  public filterQueryParams$: Observable<any> = this.ordersService.filterQueryParams$;
+
   protected abstract idName: string;
 
   constructor(
     public restangular: Restangular,
+    public ordersService: OrdersService,
+    public router: Router,
   ) {
 
     this.voidOrderRequest$ = this.voidOrder$
