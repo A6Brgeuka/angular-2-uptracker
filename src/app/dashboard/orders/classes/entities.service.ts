@@ -1,11 +1,8 @@
-import { Injectable } from '@angular/core';
-
 import { ConnectableObservable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Restangular } from 'ngx-restangular';
 
-@Injectable()
 export abstract class EntitiesService {
   public entities$: ConnectableObservable<{ [id: string]: any }>;
   public voidOrder$ = new Subject();
