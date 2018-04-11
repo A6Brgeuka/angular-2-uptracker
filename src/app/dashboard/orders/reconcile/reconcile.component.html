@@ -12,54 +12,173 @@
             [materializeSelectOptions]=""
             name="vendor"
           >
-            <option value="">Patterson</option>
+            <option value="">#KOM-123456789</option>
+            <option value="">#KOM-123456789</option>
+            <option value="">#KOM-123456789</option>
           </select>
         </div>
       </div>
-      <div class="col l1 m2">
-        <div class="input">
-          <input
-            type="text"
-            placeholder="Invoice #"
-          >
+    </div>
+
+    <div class="invoice">
+      <div class="row bottom-border">
+        <div class="col l6 left">
+          <div class="row"><span>Invoice Date</span></div>
+          <div class="row date-picker">
+            <input type="text" name="daterangeInput" daterangepicker [options]="dateOptions" (selected)="OnDate($event, daterange)" />
+            <div class="calendar">
+              <img src="/assets/img/icon-calendar.png" alt="" />
+            </div>
+          </div>
+          <div class="row"><span>Currency</span></div>
+          <div class="row">
+            <div class="currency">
+              <span>$1.00</span>
+              <div class="select">
+                <select
+                  class="wide"
+                  materialize="material_select"
+                  [materializeSelectOptions]=""
+                  name="currency"
+                >
+                  <option value="">USD</option>
+                  <option value="">USD</option>
+                  <option value="">USD</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row"><span>Exchange rate</span></div>
+        </div>
+        <div class="col l6 right">
+          <div class="row">
+            <div class="item">
+              <span>Calculated Sub-Total</span>
+              <div class="input-calculated">
+                $250.00
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Invoiced Sub-Total</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    placeholder="$200.00"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Invoiced Credit</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    placeholder="$5.00"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Shipping</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    placeholder="$20.00"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Handling</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    placeholder="$5.00"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Taxes</span>
+              <div class="input-taxes">
+                <span>$1.00</span>
+                <div class="plus">
+                  <fa name="plus"></fa>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>P.O. Discount</span>
+              <div class="input-discount">
+                <span>$1.00</span>
+                <div class="select">
+                  <select
+                    class="wide"
+                    materialize="material_select"
+                    [materializeSelectOptions]=""
+                    name="currency"
+                  >
+                    <option value="">%</option>
+                    <option value="">%</option>
+                    <option value="">%</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col l1 m2">
-        <div class="input">
-          <input
-            type="text"
-            placeholder="Invoice Date"
+      <div class="row">
+        <div class="col l6 left">
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
           >
+            UPDATE DETAILS
+          </button>
         </div>
-      </div>
-      <div class="col l1 m2">
-        <div class="select">
-          <select
-            class="wide"
-            materialize="material_select"
-            [materializeSelectOptions]=""
-            name="currency"
-          >
-            <option value="">USD</option>
-          </select>
+        <div class="col l6 right">
+          <div class="row">
+            <div class="item">
+              <span>Total</span>
+              <div class="input-calculated">
+                <span class="bold">$180.00</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Calculated Total</span>
+              <div class="input-calculated">
+                $300.00
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span class="diff-red">Diff</span>
+              <div class="input-calculated">
+                <span class="diff-red">$120.00</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col l1 m2">
-        <div class="input">
-          <input
-            type="text"
-            placeholder="1.0"
-          >
-        </div>
-      </div>
-      <div class="col l2 m4 right-align">
-        <button
-          type="submit"
-          class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
-        >
-          <fa name="check"></fa>
-          Save
-        </button>
       </div>
     </div>
 
