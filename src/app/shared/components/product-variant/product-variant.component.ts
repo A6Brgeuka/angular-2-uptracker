@@ -1,9 +1,9 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {each, sortBy} from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {InventoryService} from '../../../../core/services/inventory.service';
+import {InventoryService} from '../../../core/services/inventory.service';
 import {Observable} from 'rxjs';
-import {InventorySearchResults} from '../../../../models/inventory.model';
+import {InventorySearchResults} from '../../../models/inventory.model';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
 
 @Component({

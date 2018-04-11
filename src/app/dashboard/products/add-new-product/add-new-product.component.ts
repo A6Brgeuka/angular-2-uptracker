@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {some, filter, keys, isObject, difference, every} from 'lodash';
+import {some, filter, keys, clone, difference, each} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -12,19 +12,20 @@ import {AddInventoryModal} from '../../inventory/add-inventory/add-inventory-mod
 import {HelpTextModal} from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 import {AddVendorModalComponent} from '../../../shared/modals/add-vendor-modal/add-vendor-modal.component';
 import { Location } from '@angular/common';
+import {CustomProductModel} from '../../../models/custom-product.model';
+import {ProductAttributesModel} from "../../../models/product-attributes.model";
 
 @Component({
   selector: 'app-add-new-product',
   templateUrl: 'add-new-product.component.html',
   styleUrls: ['add-new-product.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 @DestroySubscribers()
 export class AddNewProductComponent implements OnInit {
   public subscribers: any = {};
 
   public variants: any = {};
-  public product: any = {};
+  public product: CustomProductModel = new CustomProductModel();
   public step: number = 0;
   public vendors: any[] = [];
   public departmentCollection$: Observable<any> = new Observable<any>();
@@ -33,38 +34,132 @@ export class AddNewProductComponent implements OnInit {
   public productAccountingCollection: any[];
   public productCategoriesCollection$: Observable<any> = new Observable<any>();
   public productCategoriesCollection: any[];
-  public pricingRulesCollection$: Observable<any> = Observable.of(['Rule1', 'Rule2', 'Rule3']);
-  public pricingRulesCollection: any [];
   public fileArr: any[] = [];
-  public newProductVariants: any = {};
-  public newVariant: string = '';
+  public newProductAttributes: any = {};
+  public newAttribute: string = '';
+  public formData: FormData = new FormData();
+  public logo: any;
+  public logoPreview: string = null;
 
-  public productVariants = {
-    color: ['green', 'blue', 'navy'],
-    size: ['s', 'm', 'xl'],
-    length: ['1', '3', '5'],
-    strength: ['examlpe1', 'examlpe2', 'examlpe3'],
-    texture: ['examlpe1', 'examlpe2', 'examlpe3'],
-    prescription: ['examlpe1', 'examlpe2', 'examlpe3'],
-    grit: ['examlpe1', 'examlpe2', 'examlpe3'],
-    type: ['examlpe1', 'examlpe2', 'examlpe3']
-  };
+  public dummyVendorVariants = [
+    {
+      vendor_name: '3M - Emiteck',
+      variants: [
+        {
+          name: 'red',
+          catalog_number: '555-125',
+          package_type: 'Bag',
+          units_per_package: 100,
+          sub_package: 'ties',
+          sub_package_per_package: 10,
+          price: 11,
+          price_max: 10,
+          price_min: 7,
+          book_price: 7,
+          club_price: 8,
+          your_price: 8
+        },
+        {
+          name: 'blue',
+          catalog_number: '555-126',
+          package_type: 'Bag',
+          units_per_package: 100,
+          sub_package: 'ties',
+          sub_package_per_package: 10,
+          price: 11,
+          price_max: 10,
+          price_min: 7,
+          book_price: 7,
+          club_price: 8,
+          your_price: 8
+        },
+        {
+          name: 'green',
+          catalog_number: '555-127',
+          package_type: 'Bag',
+          units_per_package: 100,
+          sub_package: 'ties',
+          sub_package_per_package: 10,
+          price: 11,
+          price_max: 10,
+          price_min: 7,
+          book_price: 7,
+          club_price: 8,
+          your_price: 8
+        }
+      ]
+    },
+    {
+      vendor_name: 'Henry Schine',
+      variants: [
+        {
+          name: 'blue',
+          catalog_number: '333-1251',
+          package_type: 'sticks',
+          units_per_package: 200,
+          sub_package: 'ties',
+          sub_package_per_package: 25,
+          price: 10,
+          price_max: 10,
+          price_min: 8,
+          book_price: 7,
+          club_price: 8,
+          your_price: 9
+        },
+        {
+          name: 'red',
+          catalog_number: '333-1252',
+          package_type: 'sticks',
+          units_per_package: 200,
+          sub_package: 'ties',
+          sub_package_per_package: 25,
+          price: 10,
+          price_max: 10,
+          price_min: 8,
+          book_price: 7,
+          club_price: 8,
+          your_price: 9
+        },
+        {
+          name: 'purple',
+          catalog_number: '333-1253',
+          package_type: 'sticks',
+          units_per_package: 200,
+          sub_package: 'ties',
+          sub_package_per_package: 25,
+          price: 10,
+          price_max: 10,
+          price_min: 8,
+          book_price: 7,
+          club_price: 8,
+          your_price: 9
+        }
+      ]
+    }
 
-  //dummy values
-  public variationArrs = {
-    outer_package_type: ['Box', 'two'],
-    inner_package: ['Type', 'two'],
-    consumable_unit: ['Type', 'two']
-  };
+  ];
+  public vendorVariants: any = [];
+
+  public productAttributes: ProductAttributesModel[] = [
+    {
+      name: 'color',
+      values: ['green', 'blue', 'navy']
+    },
+    {
+      name: 'size',
+      values: ['s', 'm', 'xl']
+    }
+  ];
 
   constructor(
     private accountService: AccountService,
     private productService: ProductService,
-    public modal: Modal,
-    public modalWindowService: ModalWindowService,
+    private modal: Modal,
+    private modalWindowService: ModalWindowService,
     private location: Location,
     private changeDetectorRef: ChangeDetectorRef
   ) {
+    this.vendorVariants = clone(this.dummyVendorVariants);
   }
 
   ngOnInit() {
@@ -83,16 +178,12 @@ export class AddNewProductComponent implements OnInit {
     this.subscribers.productCategoriesCollection = this.productCategoriesCollection$
       .subscribe(productsCat => this.productCategoriesCollection = productsCat);
 
-    this.subscribers.pricingRulesCollection = this.pricingRulesCollection$
-      .subscribe(rules => this.pricingRulesCollection = rules);
-
     this.subscribers.obsArrReadySubscription = Observable.combineLatest(
       this.departmentCollection$,
       this.productAccountingCollection$,
-      this.productCategoriesCollection$,
-      this.pricingRulesCollection$
+      this.productCategoriesCollection$
     )
-      .filter(([d, p, c, r]) => d && p && c && r)
+      .filter(([d, p, c]) => d && p && c)
       .subscribe(() => this.changeDetectorRef.detectChanges())
   }
 
@@ -100,12 +191,14 @@ export class AddNewProductComponent implements OnInit {
   checkStep = (step) => this.step == step;
   setStep = (step) => this.step = step;
 
+  setTechName = (name) => {
+    this.product.technical_name = name
+    this.changeDetectorRef.detectChanges();
+  }
+
   canProceed() {
     if (this.step == 0) {
       return this.product.name;
-    }
-    if (this.step == 1) {
-      return some(this.variants, (val, key) =>  val);
     }
     return true;
   }
@@ -116,19 +209,14 @@ export class AddNewProductComponent implements OnInit {
 
   uploadLogo(file: any) {
     const reader = new FileReader();
+    const formData = new FormData();
     reader.onload = ($event: any) => {
-      this.product.image = $event.target.result;
-      this.changeDetectorRef.detectChanges();
+      this.logoPreview = $event.target.result;
+      formData.append('image', file.target.files[0]);
+      this.productService.addCustomProductImage(formData)
+        .subscribe((url) => this.product.image = url);
     };
     reader.readAsDataURL(file.target.files[0]);
-  }
-
-  openAddVendorsModal() {
-    this.modal
-      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({modalMode: true}, true))
-      .then((resultPromise) => resultPromise.result.then((customVendor) => {
-        this.vendors.push(customVendor);
-      }));
   }
 
   openHelperModal() {
@@ -190,22 +278,10 @@ export class AddNewProductComponent implements OnInit {
       .then((resultPromise) => resultPromise.result.then((id) => {
         this.product.inventory_group = id;
         this.setStep(6);
+        this.changeDetectorRef.detectChanges()
       }));
   }
 
-  onVendorChosen($event) {
-    this.vendors.push($event);
-  }
-
-  removeVendor(i) {
-    this.vendors.splice(i, 1);
-  }
-
-  save() {
-    this.productService.addCustomProduct(this.product);
-  }
-
-  // upload by input type=file
   changeListener($event): void {
     this.readThis($event.target);
   }
@@ -223,28 +299,59 @@ export class AddNewProductComponent implements OnInit {
 
   trackByIndex = (i: number, obj: any) => i;
 
-  deleteItem = (variant, i) => {
-    isObject(variant) ?
-      delete this.variants[variant.key] :
-      this.productVariants[variant].splice(i, 1);
+  deleteItem = (attribute, i) => {
+      attribute.splice(i, 1);
   };
 
-  addVariant = (variant) => {
-    this.productVariants[variant].push(this.newProductVariants[variant]);
-    this.newProductVariants[variant] = '';
+  addAttribute = (attribute) => {
+    this.productAttributes.push(attribute);
+    this.newProductAttributes = {};
   };
 
   addSection = (name) => this.variants[name.toLowerCase()] = [];
 
-  get availableVariants() {
-    return difference(keys(this.productVariants), keys(this.variants));
+  get availableAttributes() {
+    return difference(keys(this.productAttributes), keys(this.variants));
   }
 
-  onProductVariantSelect = ($event) => {
-    this.variants[$event] = true;
-    this.productVariants[$event] = [];
-    this.newVariant = '';
+  onProductAttributeSelect = ($event) => {
+    let obj = {name: $event, values: []};
+    this.productAttributes.push(obj);
+    this.newAttribute = '';
   };
 
   goBack = (): void => this.location.back();
+
+  onSubmit() {
+    this.productService.addCustomProduct(this.product);
+  }
+
+  onVendorChosen(customVendor) {
+    const vendor = {...this.dummyVendorVariants[0], ...customVendor};
+    this.vendorVariants.unshift(vendor);
+    let vv = [
+      {...customVendor,
+        "inventory_by":[
+      {"type":"Package", "label":"Case", "value":"package", "qty":1200},
+      {"type":"Sub Package", "label":"Box", "value":"sub_package", "qty":"100"},
+      {"type":"Consumable Unit", "label":"Glove", "value":"consumable_unit", "qty":1}
+    ],
+      "variants":[
+      {
+        "name":"Small Red Item",
+        "catalog_number":"123-100",
+        "list_price":120,
+        "our_price":110,
+        "club_price":115,
+        "enabled": true
+      }
+    ]}]
+    this.product.attributes = this.productAttributes;
+    this.product.vendor_variants = vv;
+    console.log(this.product , vv)
+  }
+
+  onVendorDelete(i) {
+    this.vendorVariants.splice(i, 1);
+  }
 }

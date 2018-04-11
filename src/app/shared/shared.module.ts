@@ -17,13 +17,15 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
-import {CapitalizeFirstPipe} from "./pipes/capitilizeFirst/capitilizeFirst";
+import { CapitalizeFirstPipe } from "./pipes/capitilizeFirst/capitilizeFirst";
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
 import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
 import { PriceInputComponent } from "./components/price-input/price-input.component";
+import { FileAttachmentComponent } from "./components/file-attachment/file-attachment.component";
+import { ProductVariantComponent } from "./components/product-variant/product-variant.component";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -39,7 +41,9 @@ let pipesArr = [
 
 let componentsArr = [
   VendorSearchComponent,
-  PriceInputComponent
+  PriceInputComponent,
+  FileAttachmentComponent,
+  ProductVariantComponent
 ];
 
 // resolvers

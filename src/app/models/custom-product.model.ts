@@ -1,3 +1,4 @@
+import {ProductAttributesModel} from "./product-attributes.model";
 export class CustomProductModel {
   name: string = null;
   catalog_number: string = null;
@@ -10,8 +11,20 @@ export class CustomProductModel {
   custom_product: boolean = true;
   manufacturer: string = null;
   mfg_number: string|number = '';
-  
-  
+
+  image: string = null;
+  technical_name: string = null;
+  hazardous: boolean = null;
+  trackable: boolean = null;
+  tax_exempt: boolean = null;
+  department: string = null;
+  category: string = null;
+  notes: string = null;
+  accounting_category: string = null;
+  attributes: ProductAttributesModel[];
+  vendor_variants: any[] = [];
+  inventory_group: string = null;
+
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {

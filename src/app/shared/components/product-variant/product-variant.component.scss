@@ -1,8 +1,8 @@
-@import "../../../../../colors";
+@import "../../../../colors";
 :host /deep/ {
 
   input{
-    margin: 0;
+    margin: 0 !important;
     box-sizing:border-box;
   }
 
@@ -48,6 +48,12 @@
   .flex {
     display: flex;
     align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .label {
+    padding-left: 10px;
+    font-size: 20px;
   }
 
   .input-checkbox {

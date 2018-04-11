@@ -85,7 +85,6 @@ export class ProductService extends ModelService {
     this.marketplaceData$
     .filter((marketplace) => marketplace && marketplace !== 'home')
     .switchMap(([marketplace, location, searchkey, sortBy, filterBy]) => {
-      
       this.loadCollection$.next([]);
       this.current_page = 1;
       this.marketplace = marketplace;
@@ -264,6 +263,14 @@ export class ProductService extends ModelService {
 
   addCustomProduct(data) {
     return this.restangular.all('products').all('custom').post(data).map(res => res.data);
+  }
+
+  addCustomProductImage(data) {
+    return this.restangular.all('products').all('custom').all('image').post(data);
+  }
+
+  addCustomProductDocument(data) {
+    return this.restangular.all('products').all('custom').all('documents').post(data).map(res => res.data);
   }
 
   autocompleteSearchProduct(keywords: string) {
