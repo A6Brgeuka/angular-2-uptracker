@@ -56,7 +56,7 @@ export class OnlineOrderModalComponent implements OnInit, ModalComponent<OnlineO
             this.orderService.sendOrderRequestFinal(order.id, {})
               .subscribe(() => {
                 if (this.website) {
-                  window.open(this.website);
+                  this.checkAndOpen(this.website);
                 }
                 this.dialog.close();
               })
@@ -98,6 +98,13 @@ export class OnlineOrderModalComponent implements OnInit, ModalComponent<OnlineO
       data.po_number = '1234567890'
     }
     this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, 'oldschool'));
+  }
+
+  checkAndOpen(url) {
+    if (!url.match(/^https?:\/\//i)) {
+      url = 'http://' + url;
+    }
+    window.open(url);
   }
 
   dismissModal() {
