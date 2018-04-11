@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Restangular } from 'ngx-restangular';
 
 import { EntitiesService } from '../../classes/entities.service';
-import { Restangular } from 'ngx-restangular';
+import { OrdersService } from '../../orders.service';
 
 @Injectable()
 export class PackingSlipsTableService extends EntitiesService {
@@ -9,7 +12,9 @@ export class PackingSlipsTableService extends EntitiesService {
 
   constructor(
     public restangular: Restangular,
+    public ordersService: OrdersService,
+    public router: Router,
   ) {
-    super(restangular);
+    super(restangular, ordersService, router);
   }
 }
