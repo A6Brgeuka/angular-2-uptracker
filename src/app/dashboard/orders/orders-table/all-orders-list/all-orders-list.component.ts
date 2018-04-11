@@ -27,7 +27,7 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
     {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
-    {name: '# of Items', className: 's2 items-numbers', aliasItemArray: 'order_items'},
+    {name: '# of Items', className: 's1', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
     {name: '', className: 's1', actions: true},
   ];
