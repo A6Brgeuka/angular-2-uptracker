@@ -1,20 +1,23 @@
 import { Component, OnInit } from "@angular/core";
-import { DestroySubscribers } from "ngx-destroy-subscribers";
-import { ModalComponent, DialogRef } from "angular2-modal";
+import {ModalComponent, DialogRef, Modal} from "angular2-modal";
 import { BSModalContext } from "angular2-modal/plugins/bootstrap";
 import { HttpClient } from "app/core/services/http.service";
 import { ResponseContentType } from "@angular/http";
 import { APP_DI_CONFIG } from '../../../../../../env';
 import { ToasterService } from "../../../../core/services/toaster.service";
 import { SpinnerService } from "../../../../core/services";
+import {OrderService, OrderItems} from "../../../../core/services/order.service";
+import {UserService} from "../../../../core/services/user.service";
+import {EditEmailDataModal} from "../purchase-order/edit-email-data-modal/edit-email-data-modal.component";
+import {ModalWindowService} from "../../../../core/services/modal-window.service";
 
 export class WarningOrderModalContext extends BSModalContext {
-  public order_id: string;
-  public order_method: string;
-  constructor(id: string, method: string) {
+  public order: OrderItems;
+  public status: any;
+  constructor(order: OrderItems) {
    super();
-    this.order_id = id;
-    this.order_method = method.toLowerCase();
+    this.order = order;
+    this.status = status;
   }
 }
 
@@ -23,7 +26,6 @@ export class WarningOrderModalContext extends BSModalContext {
   templateUrl: './warning-order-modal.component.html',
   styleUrls: ['./warning-order-modal.component.scss']
 })
-@DestroySubscribers()
 export class WarningOrderModalComponent implements OnInit, ModalComponent<WarningOrderModalContext> {
   context: WarningOrderModalContext;
 
@@ -31,12 +33,35 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
     public dialog: DialogRef<WarningOrderModalContext>,
     public httpClient: HttpClient,
     public toasterService: ToasterService,
-    public spinner: SpinnerService
+    public spinner: SpinnerService,
+    public userService : UserService,
+    public orderService: OrderService,
+    public modalWindowService: ModalWindowService,
+    public modal: Modal
+
   ) {
     this.context = dialog.context;
   }
 
   ngOnInit() {
+  }
+
+  showPo() {
+    const order = this.context.order;
+    const status = this.context.status;
+    this.showEmailDataEditModal({
+      order_method:order['order_method'],
+      attachments: order['attachments'],
+      email_text: "",
+      po_number: order['po_number'],
+      preview_id: order['preview_id'],
+      order_id: order['id'],
+      vendor_email: order['vendor_email_address'],
+      user_email: this.userService.selfData.email_address,
+      from_fax_number: order['from_fax_number'] || '1 11111111111',
+      rmFn:  null
+    });
+    this.dialog.dismiss();
   }
 
   dismissModal() {
@@ -53,7 +78,7 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
     }
 
     this.spinner.show();
-    return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + this.context.order_id + '/download', {
+    return this.httpClient.get(APP_DI_CONFIG.apiEndpoint + '/po/' + this.context.order.id + '/download', {
       responseType: ResponseContentType.ArrayBuffer
     })
     .subscribe(res => {
@@ -72,6 +97,16 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
       this.spinner.hide();
       this.dialog.close();
     });
+  }
+
+  showEmailDataEditModal(data) {
+    if (!data.email_text) {
+      data.email_text = "Email text"
+    }
+    if (!data.po_number) {
+      data.po_number = "1234567890"
+    }
+    this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"));
   }
 
 }
