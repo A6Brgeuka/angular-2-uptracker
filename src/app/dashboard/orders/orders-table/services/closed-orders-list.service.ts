@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Restangular } from 'ngx-restangular';
 
 import { OrderListBaseService } from '../../classes/order-list-base.service';
-import { OrdersService } from '../../orders.service';
 import { OrdersTableService } from './orders-table.service';
 
 @Injectable()
@@ -14,9 +13,8 @@ export class ClosedOrdersListService extends OrderListBaseService {
   constructor(
     private restangular: Restangular,
     private ordersTableService: OrdersTableService,
-    private ordersService: OrdersService,
   ) {
-    super(ordersTableService, ordersService);
+    super(ordersTableService);
     this.ordersTableService.addCollectionStreamToEntittesStream(this.getCollectionRequest$);
   }
 

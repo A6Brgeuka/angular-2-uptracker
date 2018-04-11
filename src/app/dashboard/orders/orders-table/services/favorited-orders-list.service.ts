@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { Restangular } from 'ngx-restangular';
-
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import * as _ from 'lodash';
 
 import { OrderListBaseService } from '../../classes/order-list-base.service';
-import { OrdersService } from '../../orders.service';
 import { OrdersTableService } from './orders-table.service';
 
 @Injectable()
@@ -22,9 +20,8 @@ export class FavoritedOrdersListService extends OrderListBaseService {
   constructor(
     private restangular: Restangular,
     private ordersTableService: OrdersTableService,
-    private ordersService: OrdersService,
   ) {
-    super(ordersTableService, ordersService);
+    super(ordersTableService);
 
     this.postItemRequest$ = this.postItem$
     .switchMap((item) =>
