@@ -18,7 +18,7 @@ import { OpenPackingSlipsListService } from '../services/open-packing-slips-list
 export class OpenPackingSlipsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = OrderListType.all;
+  public listName: string = OrderListType.open;
   public tableHeader: any = [
     {name: 'Packing Slip #', className: 's2', alias: 'packing_slip_number', filterBy: true, },
     {name: 'Vendor', className: 's2', alias: 'vendor_name', filterBy: true, wrap: 2, },
