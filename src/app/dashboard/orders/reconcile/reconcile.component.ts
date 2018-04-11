@@ -23,10 +23,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     }
   }
+  public sort: string = 'A-Z';
+  public filter: string = '';
   
-  constructor(
-  
-  ) {
+  constructor() {
   
   }
   
@@ -52,5 +52,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   
   saveReconcile() {
   
+  }
+
+  openFilterModal() {
+
+  }
+
+  filterChange() {
+    
   }
 }

@@ -182,6 +182,30 @@
       </div>
     </div>
 
+    <div class="control">
+      <div class="input wide-input">
+        <input type="text" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
+      </div>
+      <div class="select">
+        <select title="sort by" [(ngModel)]="sort" materialize="material_select">
+          <option value="A-Z">A-Z</option>
+          <option value="Z-A">Z-A</option>
+        </select>
+      </div>
+      <div class="filter">
+        <a (click)="openFilterModal()">
+          <fa [name]="'filter'"></fa>
+          <span>Filters</span>
+        </a>
+      </div>
+      <button
+        (click)="addProduct()"
+        class="right mtop uptracker-form-btn white-text waves-effect waves-light"
+      >
+        Add Product
+      </button>
+    </div>
+
     <div class="list is-grid-view">
       <div class="heading row">
         <div class="col s4 left-align">
@@ -280,71 +304,6 @@
             <fa name="trash" class="tealish-text"></fa>
           </a>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col s12">
-        <button
-          (click)="addProduct()"
-          class="right mtop uptracker-form-btn white-text waves-effect waves-light"
-        >
-          <fa name="plus"></fa>
-          Add Product
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="row right-bottom-part">
-    <div class="col s3 right">
-      <div class="row flex-center">
-        <div class="col s6">
-          Sub-Total
-        </div>
-        <div class="col s6 text-right pdg-r-0">
-          $200.00
-        </div>
-      </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          Shipping
-        </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
-        </div>
-      </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          Handing
-        </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
-        </div>
-      </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          Tax
-        </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
-        </div>
-      </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          P.O. Discount
-        </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
-        </div>
-      </div>
-      <div class="row flex-center">
-        <h5 class="col s6">
-          Total
-        </h5>
-        <h5 class="col s6 text-right pdg-r-0">
-          $200.00
-        </h5>
       </div>
     </div>
   </div>
