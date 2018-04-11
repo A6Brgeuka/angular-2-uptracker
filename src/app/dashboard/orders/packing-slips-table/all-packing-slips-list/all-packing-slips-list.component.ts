@@ -20,16 +20,14 @@ export class AllPackingSlipsListComponent implements OnInit, OnDestroy {
 
   public listName: string = OrderListType.all;
   public tableHeader: any = [
-    {name: 'Packing Slip #', className: 's1', alias: 'order_number', filterBy: true, },
+    {name: 'Packing Slip #', className: 's2', alias: 'packing_slip_number', filterBy: true, },
     {name: 'Vendor', className: 's2', alias: 'vendor_name', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
-    {name: 'Location', className: 's1', alias: 'location_name', filterBy: true, },
-    // {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
-    // {name: 'Received', className: 's1', alias: 'received_date', filterBy: true, },
-    // {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
-    // {name: '# of Items', className: 's2 items-numbers', aliasItemArray: 'order_items'},
-    // {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
-    // {name: '', className: 's1', actions: true},
+    {name: 'Location', className: 's2', alias: 'location_name', filterBy: true, },
+    {name: 'Date', className: 's1', alias: 'date', filterBy: true, },
+    {name: 'Received By', className: 's2', alias: 'received_by', filterBy: true, },
+    {name: '# of Items', className: 's1', alias: 'item_count'},
+    {name: '', className: 's1', actions: true},
   ];
 
   public packingSlips$: Observable<OrderItem[]>;
@@ -46,8 +44,8 @@ export class AllPackingSlipsListComponent implements OnInit, OnDestroy {
   };
 
   addSubscribers() {
-    // this.subscribers.getAllCollectionSubscription = this.allPackingSlipsListService.getCollection()
-    // .subscribe();
+    this.subscribers.getAllCollectionSubscription = this.allPackingSlipsListService.getCollection()
+    .subscribe();
   };
 
   ngOnDestroy() {
