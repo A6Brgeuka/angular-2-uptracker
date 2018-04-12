@@ -1,4 +1,5 @@
 export const OrderListType = {
+  approval: 'approval',
   all: 'all',
   open: 'open',
   received: 'received',
