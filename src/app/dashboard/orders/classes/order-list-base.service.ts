@@ -28,6 +28,7 @@ export abstract class OrderListBaseService {
       this.getCollection$,
       entitiesService.filterQueryParams$,
     )
+    .debounceTime(100)
     .switchMap((params) =>
       this.getRequest(params)
       .map((res: any) => res.data)
