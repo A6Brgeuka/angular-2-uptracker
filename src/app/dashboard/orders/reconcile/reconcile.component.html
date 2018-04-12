@@ -317,9 +317,9 @@
   <div class="panel" [class.active]="panelVisible">
     <div class="title">Bulk Updates</div>
     <ng-container *ngFor="let product of products; let i = index">
-      <div class="product-list" *ngIf="product.actualQTY != null">
+      <div class="product-list" *ngIf="product.checked">
         <div class="row">
-          <span>Gloves Tender Touch Nirtrile Sempecare</span>
+          <span>{{product.name}}</span>
         </div>
         <div class="remove">
           <a (click)="remove(product)">Remove</a>

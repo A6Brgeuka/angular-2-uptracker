@@ -32,7 +32,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   constructor() {
     this.products = [
       {
-        name: 'Gloves Tender Touch Nitrile Sempecare',
+        name: 'Gloves Tender Touch Nitrile Sempecare 1',
         pkgTop: 'Box', pkgBottom: 'Box',
         qtyTop: 100, qtyBottom: 50,
         pkgpTop: '$10.00', pkgpBottom: '$10.00',
@@ -42,7 +42,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         checked: false,
       },
       {
-        name: 'Gloves Tender Touch Nitrile Sempecare',
+        name: 'Gloves Tender Touch Nitrile Sempecare 2',
         pkgTop: 'Box', pkgBottom: 'Box',
         qtyTop: 100, qtyBottom: 50,
         pkgpTop: '$10.00', pkgpBottom: '$10.00',
@@ -52,7 +52,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         checked: false,
       },
       {
-        name: 'Gloves Tender Touch Nitrile Sempecare',
+        name: 'Gloves Tender Touch Nitrile Sempecare 3',
         pkgTop: 'Box', pkgBottom: 'Box',
         qtyTop: 100, qtyBottom: 50,
         pkgpTop: '$10.00', pkgpBottom: '$10.00',

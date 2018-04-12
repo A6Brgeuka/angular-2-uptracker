@@ -323,11 +323,11 @@
     position: absolute;
     transition: right .5s;
     top: 0;
-    right: -270px;
-    width: 270px;
+    right: -260px;
+    width: 260px;
     height: 100%;
     &.active {
-      right: -15px;
+      right: 0;
     }
 
     .title {
