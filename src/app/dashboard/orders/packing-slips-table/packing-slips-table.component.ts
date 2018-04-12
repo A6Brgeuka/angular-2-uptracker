@@ -17,13 +17,13 @@ export class PackingSlipsTableComponent implements OnInit, OnDestroy {
 
   public packingSlips$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public visible: boolean[] = [];
-  public orderTabs = {
+  public packingSlipsTabs = {
     all: 'all',
     open: 'open',
     received: 'received',
   };
 
-  public packingSlipsTabsArr = map(this.orderTabs, (value, key) => value);
+  public packingSlipsTabsArr = map(this.packingSlipsTabs, (value, key) => value);
 
   constructor(
     private ordersService: OrdersService,
