@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { map } from 'lodash';
 
 import { OrdersService } from '../orders.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-invoices-table',
@@ -19,8 +18,8 @@ export class InvoicesTableComponent {
   public invoicesTabs = {
     all: 'all',
     open: 'open',
-    approval: 'pending approval',
-    payment: 'pending payment',
+    approval: 'pending_approval',
+    payment: 'pending_payment',
     paid: 'paid',
     flagged: 'flagged',
   };

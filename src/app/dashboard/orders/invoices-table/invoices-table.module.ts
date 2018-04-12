@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppSharedModule } from '../../../shared/shared.module';
 import { InvoicesTableComponent } from './invoices-table.component';
 import { INVOICES_PROVIDERS } from './services/index';
+import { ApprovalInvoicesListModule } from './approval-invoices-list/approval-invoices-list.module';
 import { AllInvoicesListModule } from './all-invoices-list/all-invoices-list.module';
 import { OpenInvoicesListModule } from './open-invoices-list/open-invoices-list.module';
 
@@ -12,6 +13,7 @@ import { OpenInvoicesListModule } from './open-invoices-list/open-invoices-list.
   ],
   imports: [
     AppSharedModule,
+    ApprovalInvoicesListModule,
     AllInvoicesListModule,
     OpenInvoicesListModule,
   ],
