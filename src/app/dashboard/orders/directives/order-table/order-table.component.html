@@ -25,6 +25,7 @@
         [name]="(sort$ | async)?.order === asc ? 'chevron-up' : 'chevron-down'"
       ></fa>
       <app-order-table-header-action
+        *ngIf="headerCol.actions && showHeaderMenu$ | async"
         [orders]="checkedOrders$ | async"
         [isShow]="headerCol.actions && showHeaderMenu$ | async"
         [listName]="_listName"
@@ -82,6 +83,7 @@
         </div>
 
         <app-order-table-item-action
+          *ngIf="headerCol.actions"
           [item]="item"
           [isShow]="headerCol.actions"
           [listName]="_listName"
