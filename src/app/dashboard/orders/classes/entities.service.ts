@@ -3,7 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Restangular } from 'ngx-restangular';
 import { OrdersService } from '../orders.service';
-import { Router } from '@angular/router';
+import { StateService } from '../../../core/services/state.service';
 
 export abstract class EntitiesService {
   public entities$: ConnectableObservable<{ [id: string]: any }>;
@@ -12,15 +12,18 @@ export abstract class EntitiesService {
   protected addCollectionToEntittesStream$: Subject<Observable<any>> = new Subject();
   public removeIds$;
 
-  public filterQueryParams$: Observable<any> = this.ordersService.filterQueryParams$;
+  public filterQueryParams$: Observable<any>;
 
   protected abstract idName: string;
+  protected abstract url: string;
 
   constructor(
     public restangular: Restangular,
     public ordersService: OrdersService,
-    public router: Router,
+    public stateService: StateService,
   ) {
+    this.filterQueryParams$ = this.ordersService.filterQueryParams$
+    .filter((filterObj) => this.stateService.isUrl(this.url));
 
     this.voidOrderRequest$ = this.voidOrder$
     .switchMap((data) =>
