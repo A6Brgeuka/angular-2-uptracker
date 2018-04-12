@@ -18,7 +18,7 @@ import { OpenInvoicesListService } from '../services/open-invoices-list.service'
 export class OpenInvoicesListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
-  public listName: string = OrderListType.all;
+  public listName: string = OrderListType.open;
   public tableHeader: any = [
     {name: 'Invoice #', className: 's1', alias: 'invoice_id', filterBy: true, },
     {name: 'Vendor', className: 's2', alias: 'vendor', filterBy: true, wrap: 2, },
