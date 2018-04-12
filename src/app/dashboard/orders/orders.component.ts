@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -9,6 +9,7 @@ import { ToasterService } from '../../core/services/toaster.service';
 import { OrderTableResetService } from './directives/order-table/order-table-reset.service';
 import { OrdersPageFiltersComponent } from '../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.component';
 import { OrdersService } from './orders.service';
+import { StateService } from '../../core/services/state.service';
 
 @Component({
   selector: 'app-orders',
@@ -16,7 +17,7 @@ import { OrdersService } from './orders.service';
   styleUrls: ['./orders.component.scss']
 })
 @DestroySubscribers()
-export class OrdersComponent {
+export class OrdersComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
   constructor(
@@ -26,7 +27,17 @@ export class OrdersComponent {
       public toasterService: ToasterService,
       public orderTableResetService: OrderTableResetService,
       public ordersService: OrdersService,
+      public stateService: StateService,
   ) {
+  }
+
+  ngOnInit() {
+    this.subscribers.resetFiltersSubscription = this.stateService.navigationEndUrl$
+    .subscribe(() => this.resetFilters());
+  }
+
+  ngOnDestroy() {
+    console.log('for unsubscribing');
   }
 
   onChipChange(chips) {
@@ -45,12 +56,11 @@ export class OrdersComponent {
   }
 
   resetFilters() {
-    this.ordersService.filterQueryParams$.next(null);
+    this.ordersService.updateFilterQueryParams(null);
     this.orderTableResetService.resetFilters();
   }
 
   changeDataType(event) {
-    this.resetFilters();
     this.router.navigate((event) ? [`orders`, event] : [`orders`]);
   }
 }
