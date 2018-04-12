@@ -162,6 +162,9 @@
           background-color: $white;
           font-family: 'Roboto';
         }
+        .select-wrapper .select-dropdown {
+          border: 1px solid #9a9c9e !important;
+        }
       }
       .input {
         max-width: 200px;
@@ -294,6 +297,9 @@
         min-width: 80px;
         width: 80px;
         height: 80px;
+      }
+      .mini-input {
+        min-width: 30px;
       }
     }
     .right-bottom-part {
