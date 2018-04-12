@@ -4,7 +4,7 @@ import { Location }                 from '@angular/common';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
-import { ModalWindowService } from "../../../core/services/modal-window.service";
+import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -16,8 +16,9 @@ import { ResponseContentType } from '@angular/http';
 import { EditFaxDataModal } from './edit-fax-data-modal/edit-fax-data-modal.component';
 import { WarningOrderModalComponent } from './warning-order-modal/warning-order-modal.component';
 import { OnlineOrderModalComponent } from './online-order-modal/online-order-modal.component';
-import {SpinnerService} from "../../../core/services/spinner.service";
-import {EditEmailDataModal} from "./purchase-order/edit-email-data-modal/edit-email-data-modal.component";
+import { SpinnerService } from '../../../core/services/spinner.service';
+import { EditEmailDataModal } from './purchase-order/edit-email-data-modal/edit-email-data-modal.component';
+import { ConfirmModalService } from '../../../shared/modals/confirm-modal/confirm-modal.service';
 
 
 @Component({
@@ -27,13 +28,13 @@ import {EditEmailDataModal} from "./purchase-order/edit-email-data-modal/edit-em
 })
 @DestroySubscribers()
 export class OrdersPreviewComponent implements OnInit {
+  public subscribers: any = {};
 
   public orderId: string = '';
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   public location_id: string;
   public apiUrl: string;
   private first_order: any;
-  private subscribers: any = {};
 
   constructor(
     public modal: Modal,
@@ -46,7 +47,8 @@ export class OrdersPreviewComponent implements OnInit {
     public toasterService: ToasterService,
     public router: Router,
     public httpClient: HttpClient,
-    public spinner: SpinnerService
+    public spinner: SpinnerService,
+    public confirmModalService: ConfirmModalService
   ) {
     this.apiUrl = APP_DI_CONFIG.apiEndpoint;
   }
@@ -74,7 +76,7 @@ export class OrdersPreviewComponent implements OnInit {
   }
 
   saveOrder(orderId: string, key: string, val, vendorId: string) {
-    if (key != "ship_to" && key != "order_method") {
+    if (key != 'ship_to' && key != 'order_method') {
       const regex = /[\d\.]*/g;
       let m: any = regex.exec(val);
       regex.lastIndex++;
@@ -116,6 +118,14 @@ export class OrdersPreviewComponent implements OnInit {
     data.order_method = order[0].order_method;
     data['vendor_id'] = order[0].vendor_id;
     return data;
+  }
+
+  addSubscribers() {
+    this.subscribers.confirmModalSubscription = this.modalWindowService.confirmModal$
+      .subscribe(() => {
+        this.confirmModalService.confirmModal('Success', 'Order is finalized ', [{text: 'Ok', value: 'ok', cancel: true}])
+          .subscribe(() => this.router.navigate(['/shoppinglist']));
+      })
   }
 
   makeOrder(order: any) {
@@ -306,12 +316,12 @@ export class OrdersPreviewComponent implements OnInit {
 
   showEmailDataEditModal(data) {
     if (!data.email_text) {
-      data.email_text = "Email text"
+      data.email_text = 'Email text';
     }
     if (!data.po_number) {
-      data.po_number = "1234567890"
+      data.po_number = '1234567890';
     }
-    this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, "oldschool"));
+    this.modal.open(EditEmailDataModal, this.modalWindowService.overlayConfigFactoryWithParams(data, true, 'oldschool'));
   }
 
 }

@@ -10,6 +10,7 @@ import { OrderService } from '../../../../core/services/order.service';
 import { Router } from '@angular/router';
 import { PhoneMaskService } from '../../../../core/services/phone-mask.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
+import { ModalWindowService } from '../../../../core/services/modal-window.service';
 
 export class AttachmentUploadModel {
   file_name: string;
@@ -44,14 +45,14 @@ export class EditFaxDataModal implements OnInit, AfterViewInit, ModalComponent<E
   context: EditEmailDataModalContext;
 
   fileIsOver: boolean = false;
-  
+
   public file$: Observable<any>;
   public file;
   public loadFile$: Subject<any> = new Subject<any>();
   public addFileToFile$: Subject<any> = new Subject<any>();
   public deleteFromFile$: Subject<any> = new Subject<any>();
   public updateFile$: Subject<any> = new Subject<any>();
-  
+
   public nameTo: string;
   public nameFrom: string;
   public faxSubject: string;
@@ -62,7 +63,7 @@ export class EditFaxDataModal implements OnInit, AfterViewInit, ModalComponent<E
   public apiUrl: string;
   public faxCountry: any;
   public phoneMask = this.phoneMaskService.defaultTextMask;
-  
+
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
       public fileUploadService: FileUploadService,
@@ -70,6 +71,7 @@ export class EditFaxDataModal implements OnInit, AfterViewInit, ModalComponent<E
       public router: Router,
       public phoneMaskService: PhoneMaskService,
       public toasterService: ToasterService,
+      public modalWindowService: ModalWindowService,
   ) {
     this.context = dialog.context;
     this.faxMessage = this.context.fax_text;
@@ -90,7 +92,7 @@ export class EditFaxDataModal implements OnInit, AfterViewInit, ModalComponent<E
 
   ngAfterViewInit(){
   }
-  
+
   // File add, delete actions
   fileActions(): any {
     let addFileToFile$ = this.addFileToFile$
@@ -103,7 +105,7 @@ export class EditFaxDataModal implements OnInit, AfterViewInit, ModalComponent<E
         return file;
       });
     });
-    
+
     let tmpFile;
     let deleteFromFile$ = this.deleteFromFile$
     .switchMap((attach: AttachmentUploadModel) => {
@@ -122,7 +124,7 @@ export class EditFaxDataModal implements OnInit, AfterViewInit, ModalComponent<E
         });
       });
     });
-    
+
     this.file$ = Observable.merge(
       this.loadFile$,
       this.updateFile$,
@@ -135,44 +137,45 @@ export class EditFaxDataModal implements OnInit, AfterViewInit, ModalComponent<E
       this.hasFiles = res.length > 0;
     });
   }
-  
+
   dismissModal() {
     this.dialog.dismiss();
   }
 
   closeModal(data) {
+    this.modalWindowService.confirmModal$.next(data);
     this.dialog.close(data);
   }
-  
-  
+
+
   // upload by filedrop
   fileOver(fileIsOver: boolean): void {
     this.fileIsOver = fileIsOver;
   }
-  
+
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
     this.addFile(file);
   }
-  
+
   onFileUpload(event) {
     this.onFileDrop(event.target.files[0]);
   }
-  
+
   addFile(file) {
     this.addFileToFile$.next([file]);
   }
-  
+
   removeFile(file) {
     console.log(`remove ${file.file_name}`);
     this.deleteFromFile$.next(file);
   }
-  
+
   getType(mime) {
     return mime.split('/')[0];
   }
-  
+
   sendPO() {
     this.orderService.sendOrderRequestFinal(this.context.order_id, {
       body: this.faxMessage,

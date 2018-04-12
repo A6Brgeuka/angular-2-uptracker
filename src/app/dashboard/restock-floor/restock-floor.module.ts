@@ -7,6 +7,9 @@ import { RestockFloorComponent } from './restock-floor.component';
   declarations: [
     RestockFloorComponent
   ],
+  exports: [
+    RestockFloorComponent
+  ],
   imports: [
     AppSharedModule
   ],

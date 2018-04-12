@@ -10,6 +10,7 @@ import { OrderService } from '../../../../../core/services/order.service';
 import { Router } from '@angular/router';
 import { PhoneMaskService } from '../../../../../core/services/phone-mask.service';
 import { ToasterService } from '../../../../../core/services/toaster.service';
+import { ModalWindowService } from '../../../../../core/services/modal-window.service';
 
 export class AttachmentUploadModel {
   file_name: string;
@@ -44,14 +45,14 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, ModalComponent
   context: EditEmailDataModalContext;
 
   fileIsOver: boolean = false;
-  
+
   public file$: Observable<any>;
   public file;
   public loadFile$: Subject<any> = new Subject<any>();
   public addFileToFile$: Subject<any> = new Subject<any>();
   public deleteFromFile$: Subject<any> = new Subject<any>();
   public updateFile$: Subject<any> = new Subject<any>();
-  
+
   public emailTo:string;
   public emailFrom:string;
   public emailSubject:string;
@@ -62,7 +63,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, ModalComponent
   public apiUrl:string;
   public faxCountry: any;
   public phoneMask = this.phoneMaskService.defaultTextMask;
-  
+
   constructor(
       public dialog: DialogRef<EditEmailDataModalContext>,
       public fileUploadService: FileUploadService,
@@ -70,12 +71,13 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, ModalComponent
       public router: Router,
       public phoneMaskService: PhoneMaskService,
       public toasterService: ToasterService,
+      public modalWindowService: ModalWindowService
   ) {
     this.context = dialog.context;
     this.emailMessage = this.context.email_text;
     this.emailFrom = this.context.user_email;
     this.emailTo = this.context.vendor_email;
-  
+
     this.faxNumber = this.phoneMaskService.getPhoneByIntlPhone(this.context.from_fax_number);
     this.faxCountry = this.phoneMaskService.getCountryArrayByIntlPhone(this.context.from_fax_number);
 
@@ -103,7 +105,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, ModalComponent
         return file;
       });
     });
-    
+
     let tmpFile;
     let deleteFromFile$ = this.deleteFromFile$
     .switchMap((attach: AttachmentUploadModel) => {
@@ -183,6 +185,7 @@ export class EditEmailDataModal implements OnInit, AfterViewInit, ModalComponent
     .subscribe((res: any) => {
       this.toasterService.pop('','Successfully sent');
       this.closeModal(true);
+      this.modalWindowService.confirmModal$.next(true);
       if (this.context.rmFn) {
         this.context.rmFn();
       }
