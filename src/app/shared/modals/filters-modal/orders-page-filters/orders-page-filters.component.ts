@@ -76,7 +76,7 @@ export class OrdersPageFiltersComponent implements OnInit, ModalComponent<Orders
   applyFilters() {
     const filters = new OrdersPageFiltersModel(this.filterForm.value);
     Object.keys(filters).forEach((key) => (filters[key] == null) && delete filters[key]);
-    this.ordersService.filterQueryParams$.next(filters);
+    this.ordersService.updateFilterQueryParams(filters);
     this.dialog.dismiss();
   }
 
