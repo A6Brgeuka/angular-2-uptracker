@@ -1,1 +1,15 @@
-<div>Invoices!!!!!!!</div>
+<div class="row">
+  <ul class="tabs location-tabs mrg-btm-0" materialize="tabs">
+    <li
+      class="tab"
+      *ngFor="let tab of invoicesTabsArr"
+    >
+      <a
+        href="#{{tab}}Tab"
+        appHasClass="active"
+        (hasClassChange)="activeChange($event, tab)"
+      >{{tab}}</a>
+    </li>
+  </ul>
+</div>
+<app-all-invoices-list id="{{invoicesTabs.all}}Tab"></app-all-invoices-list>

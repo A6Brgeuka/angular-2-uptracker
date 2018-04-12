@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { map } from 'lodash';
+
+import { OrdersService } from '../orders.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-invoices-table',
@@ -8,14 +12,28 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
   styleUrls: ['./invoices-table.component.scss']
 })
 @DestroySubscribers()
-export class InvoicesTableComponent implements OnInit, OnDestroy {
+export class InvoicesTableComponent {
   public subscribers: any = {};
 
-  ngOnInit() {
+  public visible: boolean[] = [];
+  public invoicesTabs = {
+    all: 'all',
+    open: 'open',
+    approval: 'pending approval',
+    payment: 'pending payment',
+    paid: 'paid',
+    flagged: 'flagged',
+  };
 
+  public invoicesTabsArr = map(this.invoicesTabs, (value, key) => value);
+
+  constructor(
+    private ordersService: OrdersService,
+  ) {
   }
 
-  ngOnDestroy() {
-    console.log('for unsubscribing');
+  activeChange(active: boolean, tab: string) {
+    this.ordersService.activeChange$.next({active, tab});
   }
+
 }

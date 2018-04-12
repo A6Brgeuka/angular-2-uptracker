@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 
 import { AppSharedModule } from '../../../shared/shared.module';
 import { InvoicesTableComponent } from './invoices-table.component';
+import { INVOICES_PROVIDERS } from './services/index';
+import { AllInvoicesListModule } from './all-invoices-list/all-invoices-list.module';
 
 @NgModule({
   declarations: [
@@ -9,9 +11,10 @@ import { InvoicesTableComponent } from './invoices-table.component';
   ],
   imports: [
     AppSharedModule,
+    AllInvoicesListModule,
   ],
   providers: [
-    // ORDER_PROVIDERS
+    INVOICES_PROVIDERS,
   ]
 })
 export class InvoicesTableModule {
