@@ -53,4 +53,8 @@ export class OrdersService {
     });
   }
 
+  updateFilterQueryParams(params) {
+    this.filterQueryParams$.next(params);
+  }
+
 }
