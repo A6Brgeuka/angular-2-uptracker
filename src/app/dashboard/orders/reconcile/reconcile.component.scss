@@ -1,296 +1,372 @@
 @import "../../../../colors.scss";
 
 :host /deep/ {
-  .invoice {
-    background-color: #e8ecf0;
-    border-radius: 5px;
-    padding: 30px;
+  .top {
+    margin-right: 255px;
+    .invoice {
+      background-color: #e8ecf0;
+      border-radius: 5px;
+      padding: 30px;
+      font-family: 'Roboto';
 
-    .bottom-border {
-      border-bottom: 1px solid #9e9e9e;
-    }
-    .left {
-      .date-picker {
-        display: flex;
-        position: relative;
-
-        .calendar {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-left: 1px solid #9e9e9e;
-          margin-left: -50px;
-          width: 50px;
-          height: 37px;
-          > img {
-            width: 25px;
-            height: 25px;
-          }
-        }
-
-        input {
-          background-color: #f5f6f7;
-          border: 1px solid #9e9e9e;
-          border-radius: 5px;
-          max-width: 300px;
-          padding-left: 20px;
-          height: 36px;
-        }
-    
-        fa {
-          position: absolute;
-          right: 30px;
-          top: 10px;
-        }
+      .bottom-border {
+        border-bottom: 1px solid #9e9e9e;
       }
-      .currency {
-        display: flex;
-        border: 1px solid #9e9e9e;
-        border-radius: 5px;
-        overflow: hidden;
-        padding-right: 5px;
-        width: 160px;
-        height: 36px;
-        > span {
-          background-color: #f5f6f7;
-          border-right: 1px solid #9e9e9e;
-          line-height: 36px;
-          text-align: center;
-          width: 80px;
-        }
-        .select {
-          max-width: 80px;
-          .select-dropdown {
-            background-color: #e8ecf0;
-            border: none;
-          }
-        }
-      }
-    }
-    .right {
-      .item {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        border: none;
-        width: 100%;
-
-        .input-calculated {
-          width: 154px;
-        }
-        .input-taxes {
-          width: 154px;
+      .left {
+        .date-picker {
           display: flex;
-          border: 1px solid #9e9e9e;
-          border-radius: 5px;
-          overflow: hidden;
-          width: 154px;
-          height: 32px;
-          > span {
-            background-color: #f5f6f7;
-            border-right: 1px solid #9e9e9e;
-            line-height: 30px;
-            padding-left: 5px;
-            width: 80%;
-          }
-          .plus {
+          position: relative;
+
+          .calendar {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 20%;
+            border-left: 1px solid #9e9e9e;
+            margin-left: -50px;
+            width: 50px;
+            height: 37px;
+            > img {
+              width: 25px;
+              height: 25px;
+            }
+          }
+
+          input {
+            background-color: #f5f6f7;
+            border: 1px solid #9e9e9e;
+            border-radius: 5px;
+            max-width: 300px;
+            padding-left: 20px;
+            height: 36px;
+          }
+      
+          fa {
+            position: absolute;
+            right: 30px;
+            top: 10px;
           }
         }
-        .input-discount {
+        .currency {
           display: flex;
           border: 1px solid #9e9e9e;
           border-radius: 5px;
           overflow: hidden;
-          width: 154px;
-          height: 32px;
+          padding-right: 5px;
+          width: 160px;
+          height: 36px;
           > span {
             background-color: #f5f6f7;
             border-right: 1px solid #9e9e9e;
-            line-height: 30px;
-            padding-left: 5px;
-            width: 70%;
+            line-height: 36px;
+            text-align: center;
+            width: 80px;
           }
           .select {
-            margin-right: 5px;
-            width: 30%;
-            input {
+            max-width: 80px;
+            .select-dropdown {
               background-color: #e8ecf0;
               border: none;
-              height: 28px;
+            }
+          }
+        }
+      }
+      .right {
+        .item {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          border: none;
+          width: 100%;
+
+          .input-calculated {
+            width: 154px;
+          }
+          .input-taxes {
+            width: 154px;
+            display: flex;
+            border: 1px solid #9e9e9e;
+            border-radius: 5px;
+            overflow: hidden;
+            width: 154px;
+            height: 32px;
+            > span {
+              background-color: #f5f6f7;
+              border-right: 1px solid #9e9e9e;
+              line-height: 30px;
+              padding-left: 5px;
+              width: 80%;
+            }
+            .plus {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 20%;
+            }
+          }
+          .input-discount {
+            display: flex;
+            border: 1px solid #9e9e9e;
+            border-radius: 5px;
+            overflow: hidden;
+            width: 154px;
+            height: 32px;
+            > span {
+              background-color: #f5f6f7;
+              border-right: 1px solid #9e9e9e;
+              line-height: 30px;
+              padding-left: 5px;
+              width: 70%;
+            }
+            .select {
+              margin-right: 5px;
+              width: 30%;
+              input {
+                background-color: #e8ecf0;
+                border: none;
+                height: 28px;
+              }
+            }
+          }
+
+          .bold {
+            font-weight: bold;
+          }
+
+          .diff-red {
+            color: red;
+          }
+
+          > span {
+            padding-right: 20px;
+            text-align: right;
+            width: 200px;
+          }
+        }
+      }
+    }
+
+    .control {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 50px;
+      margin-bottom: 50px;
+      .filter {
+        line-height: 30px;
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+      .select {
+        max-width: 200px;
+        margin-left: 20px;
+        input {
+          background-color: $white;
+          font-family: 'Roboto';
+        }
+      }
+      .input {
+        max-width: 200px;
+        input {
+          background-color: $white;
+          font-family: 'Roboto';
+          margin: 0;
+        }
+      }
+    }
+
+    .list {
+      letter-spacing: 0;
+      word-spacing: 0;
+      font-size: 0;
+      font-family: 'Roboto';
+      text-align: left;
+
+      &.is-grid-view {
+        .row {
+          .col {
+            display: block;
+            label {
+              vertical-align: middle;
+            }
+          }
+        }
+        .heading {
+          margin: 10px 0;
+          padding-bottom: 20px;
+          color: #444;
+          border-bottom: 1px solid #888;
+          font-size: 14px;
+          font-family: 'Roboto';
+          font-weight: bold;
+          .product {
+            margin-left: 30px;
+          }
+          .col {
+          }
+          button {
+            width: 30px;
+            i {
+              font-size: 20px;
+              line-height: 28px;
+            }
+          }
+        }
+        .item {
+          margin-bottom: 0;
+          font-size: 14px;
+          font-family: 'Roboto';
+
+          .col {
+            min-height: 40px;
+            line-height: 40px;
+            color: #888;
+            &.pointer {
+              cursor: pointer;
+            }
+            &:nth-of-type(5) {
+              white-space: nowrap;
+            }
+            &:nth-of-type(1) {
+              color: $tealish;
+              cursor: pointer;
+            }
+            .fa-eye, .fa-eye-slash {
+              margin-right: 9px;
+              line-height: 35px;
+              transition: color .7s;
+              cursor: pointer;
+            }
+            .fa-eye {
+              color: $tealish;
+            }
+            .fa-eye-slash {
+              color: $red;
+            }
+          }
+          .edititem {
+            visibility: hidden;
+          }
+          &:hover {
+            .edititem {
+              visibility: visible;
             }
           }
         }
 
-        .bold {
-          font-weight: bold;
-        }
+        input {
+          margin: 0;
+          height: 25px;
+          font-family: 'Roboto';
+          font-size: 11px;
+          padding-left: 8px;
+          text-indent: 0;
+          text-overflow: ellipsis;
+          color: $grey;
+          background-color: $white;
 
-        .diff-red {
-          color: red;
-        }
 
-        > span {
-          padding-right: 20px;
-          text-align: right;
-          width: 200px;
+          &.empty {
+            color: $light-grey;
+          }
         }
       }
     }
-  }
-
-  .control {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    .filter {
-      line-height: 30px;
-      margin-left: 15px;
-      margin-right: 15px;
+    .checkbox {
+      margin-right: 10px;
     }
-    .select {
-      max-width: 200px;
-      margin-left: 20px;
+    .item {
+      font-family: 'Roboto';
+      border-bottom: 1px solid #ddd;
+      .text-right {
+        padding-right: 5px;
+      }
       input {
-        background-color: $white;
+        font-family: 'Roboto';
+        margin-top: 0;
+      }
+      .flex-center {
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      .product-pic {
+        border: 1px solid #9e9e9e;
+        margin-right: 10px;
+        min-width: 80px;
+        width: 80px;
+        height: 80px;
       }
     }
-    .input {
-      max-width: 200px;
-      input {
-        background-color: $white;
-        margin: 0;
-      }
-    }
-  }
-
-  .list {
-    letter-spacing: 0;
-    word-spacing: 0;
-    font-size: 0;
-    //padding-bottom: 15px;
-    text-align: left;
-
-    &.is-grid-view {
+    .right-bottom-part {
       .row {
-        .col {
-          display: block;
-          label {
-            vertical-align: middle;
-          }
-        }
-      }
-      .heading {
-        margin: 10px 0;
-        //padding-bottom: 20px;
-        color: #444;
-        border-bottom: 1px solid #888;
-        font-size: 14px;
-        font-weight: bold;
-        .col {
-        }
-        button {
-          width: 30px;
-          i {
-            font-size: 20px;
-            line-height: 28px;
-          }
-        }
-      }
-      .item {
         margin-bottom: 0;
-        font-size: 14px;
-
-        .col {
-          min-height: 40px;
-          line-height: 40px;
-          color: #888;
-          &.pointer {
-            cursor: pointer;
-          }
-          &:nth-of-type(5) {
-            white-space: nowrap;
-          }
-          &:nth-of-type(1) {
-            color: $tealish;
-            cursor: pointer;
-          }
-          .fa-eye, .fa-eye-slash {
-            margin-right: 9px;
-            line-height: 35px;
-            transition: color .7s;
-            cursor: pointer;
-          }
-          .fa-eye {
-            color: $tealish;
-          }
-          .fa-eye-slash {
-            color: $red;
-          }
-        }
-        .edititem {
-          visibility: hidden;
-        }
-        &:hover {
-          .edititem {
-            visibility: visible;
-          }
-        }
       }
-
       input {
-        margin: 0;
-        height: 25px;
-        font-size: 11px;
-        padding-left: 8px;
-        text-indent: 0;
-        text-overflow: ellipsis;
-        color: $grey;
-        background-color: $white;
+        font-family: 'Roboto';
+        margin-top: 0;
+        text-align: right;
+        padding-right: 5px;
+      }
+      .pdg-r-0 {
+        padding-right: 0;
+      }
+    }
+    .edititem {
+      margin: 0 0 10px 0;
+    }
+  }
+  .panel {
+    background-color: $white;
+    border-left: 1px solid $light-grey;
+    overflow: auto;
+    padding-top: 40px;
+    padding-left: 30px;
+    padding-right: 20px;
+    position: absolute;
+    transition: right .5s;
+    top: 0;
+    right: -270px;
+    width: 270px;
+    height: 100%;
+    &.active {
+      right: -15px;
+    }
 
-
-        &.empty {
-          color: $light-grey;
+    .title {
+      white-space: nowrap;
+      line-height: 30px;
+      margin-left: 10px;
+      margin-bottom: 30px;
+      font-size: 20px;
+      font-family: Ubuntu;
+    }
+    .product-list {
+      border-bottom: 1px solid $light-grey;
+      margin-bottom: 20px;
+      .remove {
+        display: flex;
+        justify-content: flex-end;
+        > a {
+          color: $black;
+          padding-bottom: 20px;
+          text-decoration: underline;
         }
       }
     }
-  }
-  .checkbox {
-    margin-right: 10px;
-  }
-  .item {
-    //padding-bottom: 20px;
-    border-bottom: 1px solid #ddd;
-    .text-right {
-      padding-right: 5px;
+    .update {
+      background: $tealish;
+      border: 0;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: normal;
+      padding: 10px;
+      width: 100%;
     }
-    input {
-      margin-top: 0;
+    .nevermind {
+      color: $black;
+      padding-bottom: 20px;
+      text-decoration: underline;
     }
-    .flex-center {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-  }
-  .right-bottom-part {
-    .row {
-      margin-bottom: 0;
-    }
-    input {
-      margin-top: 0;
-      text-align: right;
-      padding-right: 5px;
-    }
-    .pdg-r-0 {
-      padding-right: 0;
-    }
-  }
-  .edititem {
-    margin: 0 0 10px 0;
   }
 }
 

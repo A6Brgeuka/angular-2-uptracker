@@ -66,6 +66,7 @@
                 <div class="input">
                   <input
                     type="text"
+                    name="subTotal"
                     placeholder="$200.00"
                   >
                 </div>
@@ -79,6 +80,7 @@
                 <div class="input">
                   <input
                     type="text"
+                    name="invoicedCredit"
                     placeholder="$5.00"
                   >
                 </div>
@@ -92,6 +94,7 @@
                 <div class="input">
                   <input
                     type="text"
+                    name="shipping"
                     placeholder="$20.00"
                   >
                 </div>
@@ -105,6 +108,7 @@
                 <div class="input">
                   <input
                     type="text"
+                    name="handling"
                     placeholder="$5.00"
                   >
                 </div>
@@ -184,10 +188,10 @@
 
     <div class="control">
       <div class="input wide-input">
-        <input type="text" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
+        <input type="text" name="filterInput" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
       </div>
       <div class="select">
-        <select title="sort by" [(ngModel)]="sort" materialize="material_select">
+        <select title="sort by" name="sort" [(ngModel)]="sort" materialize="material_select">
           <option value="A-Z">A-Z</option>
           <option value="Z-A">Z-A</option>
         </select>
@@ -209,102 +213,124 @@
     <div class="list is-grid-view">
       <div class="heading row">
         <div class="col s4 left-align">
-          <div class="input-checkbox left checkbox">
-            <input
-              type="checkbox"
-              class="checkbox-input"
-              id="selectAll"
-              name="selectAll"
-            />
-            <label for="selectAll"></label>
-          </div>
-          <div class="left">
+          <div class="left product">
             Product
           </div>
         </div>
         <div class="col s7">
           <div class="row mrg-btm-0">
-            <div class="col s2">Quantity</div>
-            <div class="col s3">Pkg Price</div>
+            <div class="col s2">Pkg</div>
+            <div class="col s1">QTY</div>
+            <div class="col s2">Pkg Price</div>
             <div class="col s3">Discount</div>
             <div class="col s2">Disc Price</div>
             <div class="col s2">Total Price</div>
           </div>
         </div>
         <div class="col s1">
-          <div class="right edititem">
-            <fa name="pencil"></fa>
-          </div>
         </div>
       </div>
     </div>
 
-    <div class="item row">
-      <div class="table-item flex-center">
-        <div class="col s4 left-align flex-center">
-          <div class="input-checkbox left checkbox">
-            <input
-              type="checkbox"
-              class="checkbox-input"
-              id="selectProduct"
-              name="selectProduct"
-            />
-            <label for="selectProduct"></label>
+    <ng-container *ngFor="let product of products; let i = index">
+      <div class="item row">
+        <div class="table-item flex-center">
+          <div class="col s4 left-align flex-center">
+            <div class="input-checkbox left checkbox">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                id="selectProduct{{i}}"
+                name="selectProduct{{i}}"
+                [(ngModel)]="product.checked"
+                (click)="productSelect(product)"
+              />
+              <label for="selectProduct{{i}}"></label>
+            </div>
+            <div class="product-pic"></div>
+            <div class="left">
+              <a>{{product.name}}</a>
+            </div>
           </div>
-          <div class="left">
-            <a>Some Product Name Which We Know Is Longgggg</a>
-          </div>
-        </div>
 
-        <div class="col s7">
-          <div class="row mrg-btm-0 flex-center">
-            <div class="col s2">
-              <div class="text-right">20</div>
+          <div class="col s7">
+            <div class="row mrg-btm-0 flex-center">
+              <div class="col s2">
+                <div class="text-left">{{product.pkgTop}}</div>
+              </div>
+              <div class="col s1">
+                <div class="text-left">{{product.qtyTop}}</div>
+              </div>
+              <div class="col s2">
+                <div class="text-left">{{product.pkgpTop}}</div>
+              </div>
+              <div class="col s3">
+                <div class="text-left">{{product.dtTop}}</div>
+              </div>
+              <div class="col s2">
+                <div>{{product.discTop}}</div>
+              </div>
+              <div class="col s2">
+                <div>{{product.totalTop}}</div>
+              </div>
             </div>
-            <div class="col s3">
-              <div class="text-right">$10.00</div>
-            </div>
-            <div class="col s3">
-              <div class="text-right">$0.00</div>
-            </div>
-            <div class="col s2">
-              <div><i>$10.00</i></div>
-            </div>
-            <div class="col s2">
-              <div>$200.00</div>
+            <div class="row mrg-btm-0 flex-center">
+              <div class="col s2">
+                <div class="input">
+                  <input class="text-left" name="PKG{{i}}" type="text" value="{{product.pkgBottom}}">
+                </div>
+              </div>
+              <div class="col s1">
+                <div class="input">
+                  <input class="text-left" name="QTY{{i}}" type="text" value="{{product.qtyBottom}}">
+                </div>
+              </div>
+              <div class="col s2">
+                <div class="input">
+                  <input class="text-left" name="PKGP{{i}}" type="text" value="{{product.pkgpBottom}}">
+                </div>
+              </div>
+              <div class="col s3">
+                <div class="input">
+                  <input class="text-left" name="DT{{i}}" type="text" value="{{product.dtBottom}}">
+                </div>
+              </div>
+              <div class="col s2">
+                <div>{{product.discBottom}}</div>
+              </div>
+              <div class="col s2">
+                <div>{{product.totalBottom}}</div>
+              </div>
             </div>
           </div>
-          <div class="row mrg-btm-0 flex-center">
-            <div class="col s2">
-              <div class="input">
-                <input class="text-right" type="text" value="20">
-              </div>
-            </div>
-            <div class="col s3">
-              <div class="input">
-                <input class="text-right" type="text" value="$10.00">
-              </div>
-            </div>
-            <div class="col s3">
-              <div class="input">
-                <input class="text-right" type="text" value="$0.00">
-              </div>
-            </div>
-            <div class="col s2">
-              <div><i>$10.00</i></div>
-            </div>
-            <div class="col s2">
-              <div>$200.00</div>
-            </div>
-          </div>
-        </div>
 
-        <div class="col s1 flex-center justify-center trash-icon">
-          <a>
-            <fa name="trash" class="tealish-text"></fa>
-          </a>
+          <div class="col s1 flex-center justify-center trash-icon">
+            <a>
+              <fa name="ellipsis-h" class="tealish-text"></fa>
+            </a>
+          </div>
         </div>
       </div>
+    </ng-container>
+  </div>
+
+  <div class="panel" [class.active]="panelVisible">
+    <div class="title">Bulk Updates</div>
+    <ng-container *ngFor="let product of products; let i = index">
+      <div class="product-list" *ngIf="product.actualQTY != null">
+        <div class="row">
+          <span>Gloves Tender Touch Nirtrile Sempecare</span>
+        </div>
+        <div class="remove">
+          <a (click)="remove(product)">Remove</a>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row center">
+      <button class="update" (click)="bulkUpdates()">UPDATE</button>
+    </div>
+    <div class="row center">
+      <a class="nevermind" (click)="bulkNevermind()">Nevermind</a>
     </div>
   </div>
 </form>
