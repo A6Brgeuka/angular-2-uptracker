@@ -136,6 +136,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   addProduct() {
   
   }
+
+  removeProduct(product) {
+    product.checked = false;
+  }
   
   saveReconcile() {
   
