@@ -6,6 +6,7 @@ import { INVOICES_PROVIDERS } from './services/index';
 import { ApprovalInvoicesListModule } from './approval-invoices-list/approval-invoices-list.module';
 import { AllInvoicesListModule } from './all-invoices-list/all-invoices-list.module';
 import { OpenInvoicesListModule } from './open-invoices-list/open-invoices-list.module';
+import { PaymentInvoicesListModule } from './payment-invoices-list/payment-invoices-list.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { OpenInvoicesListModule } from './open-invoices-list/open-invoices-list.
     ApprovalInvoicesListModule,
     AllInvoicesListModule,
     OpenInvoicesListModule,
+    PaymentInvoicesListModule,
   ],
   providers: [
     INVOICES_PROVIDERS,
