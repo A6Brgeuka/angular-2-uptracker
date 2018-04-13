@@ -8,6 +8,7 @@ import { AllInvoicesListModule } from './all-invoices-list/all-invoices-list.mod
 import { OpenInvoicesListModule } from './open-invoices-list/open-invoices-list.module';
 import { PaymentInvoicesListModule } from './payment-invoices-list/payment-invoices-list.module';
 import { PaidInvoicesListModule } from './paid-invoices-list/paid-invoices-list.module';
+import { FlaggedInvoicesListModule } from './flagged-invoices-list/flagged-invoices-list.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { PaidInvoicesListModule } from './paid-invoices-list/paid-invoices-list.
     AppSharedModule,
     ApprovalInvoicesListModule,
     AllInvoicesListModule,
+    FlaggedInvoicesListModule,
     OpenInvoicesListModule,
     PaymentInvoicesListModule,
     PaidInvoicesListModule,
