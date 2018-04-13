@@ -8,6 +8,7 @@ import { OrderItem } from '../../models/order-item';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { BackorderedItemsListService } from '../services/backordered-items-list.service';
 import { FavoritedItemsListService } from '../services/favorited-items-list.service';
+import { FlaggedItemsListService } from '../services/flagged-items-list.service';
 
 @Component({
   selector: 'app-backordered-items-list',
@@ -37,6 +38,7 @@ export class BackorderedItemsListComponent implements OnInit, OnDestroy {
   constructor(
     public backorderedItemsListService: BackorderedItemsListService,
     private favoritedItemsListService: FavoritedItemsListService,
+    private flaggedItemsListService: FlaggedItemsListService,
   ) {
 
   };
@@ -57,6 +59,10 @@ export class BackorderedItemsListComponent implements OnInit, OnDestroy {
 
   onFavorite(item) {
     this.favoritedItemsListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedItemsListService.putItem(item);
   }
 
 }

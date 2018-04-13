@@ -9,6 +9,7 @@ import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { AllItemsListService } from '../services/all-items-list.service';
 import { FavoritedItemsListService } from '../services/favorited-items-list.service';
+import { FlaggedItemsListService } from '../services/flagged-items-list.service';
 
 @Component({
   selector: 'app-all-order-items-list',
@@ -41,6 +42,7 @@ export class AllItemsListComponent implements OnInit, OnDestroy {
     public pastOrderService: PastOrderService,
     public allItemsListService: AllItemsListService,
     private favoritedItemsListService: FavoritedItemsListService,
+    private flaggedItemsListService: FlaggedItemsListService,
   ) {
 
   };
@@ -68,6 +70,10 @@ export class AllItemsListComponent implements OnInit, OnDestroy {
 
   onFavorite(item) {
     this.favoritedItemsListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedItemsListService.putItem(item);
   }
 
 }

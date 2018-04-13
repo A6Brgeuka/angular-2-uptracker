@@ -69,4 +69,8 @@ export class FlaggedItemsListComponent implements OnInit, OnDestroy {
     this.favoritedItemsListService.postItem(item);
   }
 
+  onFlagged(item) {
+    this.flaggedItemsListService.putItem(item);
+  }
+
 }

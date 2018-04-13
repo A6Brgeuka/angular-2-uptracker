@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 
 import { OrderListBaseService } from '../../classes/order-list-base.service';
 import { OrderItemsTableService } from './order-items-table.service';
+import { ToasterService } from '../../../../core/services/toaster.service';
 
 @Injectable()
 export class FlaggedItemsListService extends OrderListBaseService {
@@ -19,6 +20,7 @@ export class FlaggedItemsListService extends OrderListBaseService {
   constructor(
     private restangular: Restangular,
     private orderItemsTableService: OrderItemsTableService,
+    private toasterService: ToasterService,
   ) {
     super(orderItemsTableService);
 
@@ -29,7 +31,10 @@ export class FlaggedItemsListService extends OrderListBaseService {
         'flagged_comment': item.flagged_comment,
       };
       return this.restangular.one('pos', item.order_id).one('flag', item.id).customPUT(data)
-      .map((res: any) => res.data)
+      .map((res: any) => {
+        this.toasterService.pop('', res.data.flagged ? 'Flagged' : 'Unflagged');
+        return res.data;
+      })
       .catch((error) => Observable.never());
     })
     .share();
