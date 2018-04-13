@@ -309,8 +309,22 @@
                 </div>
               </div>
               <div class="col s3">
-                <div class="input">
-                  <input class="text-left" name="DT{{i}}" type="text" value="{{product.dtBottom}}">
+                <div class="discount">
+                  <div class="input">
+                    <input class="text-left" name="DT{{i}}" type="text" value="{{product.dtBottom}}">
+                  </div>
+                  <div class="select">
+                    <select
+                      class="wide"
+                      materialize="material_select"
+                      [materializeSelectOptions]=""
+                      name="currency"
+                      [(ngModel)]="selectedInvoice.discountType"
+                    >
+                      <option value="PERCENT">%</option>
+                      <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="col s2">

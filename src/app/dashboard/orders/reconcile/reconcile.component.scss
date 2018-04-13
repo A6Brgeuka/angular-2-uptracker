@@ -319,6 +319,29 @@
         border-color: #9a9c9e !important;
         margin: 0;
       }
+      .discount {
+        border: 1px solid #9a9c9e;
+        border-radius: 5px;
+        display: flex;
+        .input {
+          width: 70%;
+          input {
+            border: none;
+          }
+        }
+        .select {
+          width: 30%;
+          input {
+            border-radius: 0;
+            border-left: 1px solid #9a9c9e;
+            border-bottom: none;
+            border-top: none;
+            border-right: none;
+            border-bottom-right-radius: 5px;
+            border-top-right-radius: 5px;
+          }
+        }
+      }
     }
     .right-bottom-part {
       .row {
