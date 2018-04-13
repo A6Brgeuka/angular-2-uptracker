@@ -37,6 +37,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     MXN: '$',
     JPY: '¥',
   }
+  public board: any = {}
 
   constructor() {
     this.products = [
@@ -115,6 +116,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       }
     ]
     this.selectedInvoice = this.invoices[0];
+    this.board = {
+      pkg: 'Box',
+      qty: 20,
+      pkgPrice: 20,
+      discountAmount: 20,
+      discountType: 'PERCENT',
+    }
   }
   
   ngOnInit() {

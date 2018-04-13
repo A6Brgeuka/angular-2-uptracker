@@ -399,6 +399,47 @@
         }
       }
     }
+    .board {
+      .board-title {
+        display: flex;
+        justify-content: flex-end;
+        line-height: 32px;
+        text-align: right;
+      }
+      .select .select-wrapper input {
+        border-color: #9a9c9e !important;
+        margin: 0;
+      }
+      .input input {
+        margin: 0;
+      }
+      .discount {
+        border: 1px solid #9a9c9e;
+        border-radius: 5px;
+        display: flex;
+        .input {
+          width: 60%;
+          input {
+            border: none;
+          }
+        }
+        .select {
+          width: 40%;
+          input {
+            border-radius: 0;
+            border-left: 1px solid #9a9c9e;
+            border-bottom: none;
+            border-top: none;
+            border-right: none;
+            border-bottom-right-radius: 5px;
+            border-top-right-radius: 5px;
+          }
+          .select-wrapper input.select-dropdown {
+            text-indent: 5px;
+          }
+        }
+      }
+    }
     .update {
       background: $tealish;
       border: 0;
