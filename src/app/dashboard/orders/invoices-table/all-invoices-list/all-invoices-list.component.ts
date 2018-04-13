@@ -26,7 +26,7 @@ export class AllInvoicesListComponent implements OnInit, OnDestroy {
     {name: 'Location', className: 's2', alias: 'location_name', filterBy: true, },
     {name: 'Date', className: 's2', alias: 'date', filterBy: true, },
     {name: 'Reconciled by', className: 's2', alias: 'reconciled_by_name', filterBy: true, },
-    {name: '# of Items', className: 's1', alias: 'item_count'},
+    {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
     // {name: '', className: 's1', actions: true},
   ];
