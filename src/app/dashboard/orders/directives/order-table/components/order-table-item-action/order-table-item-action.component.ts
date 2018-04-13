@@ -12,7 +12,6 @@ import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
 import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
-import { FlaggedItemsListService } from '../../../../order-items-table/services/flagged-items-list.service';
 import { OrderItem } from '../../../../models/order-item';
 
 @Component({
@@ -22,8 +21,6 @@ import { OrderItem } from '../../../../models/order-item';
 @DestroySubscribers()
 
 export class OrderTableItemActionComponent implements OnInit, OnDestroy {
-
-  private updateFlagged$: any = new Subject<any>();
 
   private subscribers: any = {};
 
@@ -35,6 +32,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   @Input() listName: string;
   @Input() uniqueField: string;
   @Output() onFavorite: EventEmitter<OrderItem> = new EventEmitter();
+  @Output() onFlagged: EventEmitter<OrderItem> = new EventEmitter();
 
   constructor(
     public modal: Modal,
@@ -42,7 +40,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
-    private flaggedItemsListService: FlaggedItemsListService,
   ) {
   }
 
@@ -75,12 +72,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   addSubscribers() {
-
-    this.subscribers.updateFlaggedSubscription = this.updateFlagged$
-    .switchMap((item: any) => this.flaggedItemsListService.putItem(item))
-    .subscribe( res => this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged'),
-      err => console.log('error')
-    );
 
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
@@ -121,7 +112,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     .then((resultPromise) => resultPromise.result)
     .then(
       (response) => {
-        this.updateFlagged$.next({...item, flagged_comment: response.comment});
+        this.onFlagged.emit({...item, flagged_comment: response.comment});
       },
       (err) => {
       }
