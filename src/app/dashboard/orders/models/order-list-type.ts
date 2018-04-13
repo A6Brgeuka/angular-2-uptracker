@@ -8,4 +8,5 @@ export const OrderListType = {
   closed: 'closed',
   flagged: 'flagged',
   favorited: 'favorited',
+  payment: 'payment',
 };
