@@ -270,7 +270,7 @@ export class ProductService extends ModelService {
   }
 
   addCustomProductDocument(data) {
-    return this.restangular.all('products').all('custom').all('documents').post(data).map(res => res.data);
+    return this.restangular.all('products').all('custom').all('documents').post(data);
   }
 
   autocompleteSearchProduct(keywords: string) {

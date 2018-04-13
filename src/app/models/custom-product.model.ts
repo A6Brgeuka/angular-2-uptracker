@@ -14,6 +14,7 @@ export class CustomProductModel {
   mfg_number: string|number = '';
 
   image: string = null;
+  attachments: any[] = [];
   technical_name: string = null;
   hazardous: boolean = null;
   trackable: boolean = null;

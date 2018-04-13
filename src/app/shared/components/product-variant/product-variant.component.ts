@@ -1,10 +1,14 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {each, sortBy, times, every} from 'lodash';
+import {each, sortBy, map, every} from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {InventoryService} from '../../../core/services/inventory.service';
 import {Observable} from 'rxjs';
 import {InventorySearchResults, PackageModel} from '../../../models/inventory.model';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
+const dummyInventory = [
+  {type: 'Package', value: 'package'},
+  {type: 'Sub Package', value: 'sub_package'},
+  {type: 'Consumable Unit', value: 'consumable_unit'}];
 
 @Component({
   selector: 'app-product-variant',
@@ -44,7 +48,7 @@ export class ProductVariantComponent implements OnInit {
   }
 
   addPackage() {
-    const pack = times(3, () => new PackageModel());
+    const pack = map(dummyInventory, (inv) => new PackageModel(inv));
     this.vendor.inventory_by.push(pack);
   }
 

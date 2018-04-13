@@ -1,9 +1,9 @@
-import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {filter, keys, difference, times, map, join} from 'lodash';
+import {filter, keys, difference, each, map, join} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -48,7 +48,6 @@ export class AddNewProductComponent implements OnInit {
   public productAccountingCollection: any[];
   public productCategoriesCollection$: Observable<any> = new Observable<any>();
   public productCategoriesCollection: any[];
-  public fileArr: any[] = [];
   public newVariant: string = '';
   public logo: any;
   public logoPreview: string = null;
@@ -72,7 +71,6 @@ export class AddNewProductComponent implements OnInit {
     private modalWindowService: ModalWindowService,
     private location: Location,
     private toasterService: ToasterService,
-    private changeDetectorRef: ChangeDetectorRef
   ) {
   }
 
@@ -94,14 +92,6 @@ export class AddNewProductComponent implements OnInit {
 
     this.subscribers.productCategoriesCollection = this.productCategoriesCollection$
       .subscribe(productsCat => this.productCategoriesCollection = productsCat);
-
-    this.subscribers.obsArrReadySubscription = Observable.combineLatest(
-      this.departmentCollection$,
-      this.productAccountingCollection$,
-      this.productCategoriesCollection$
-    )
-      .filter(([d, p, c]) => d && p && c)
-      .subscribe(() => this.changeDetectorRef.detectChanges())
   }
 
   createVendorVariants() {
@@ -130,11 +120,7 @@ export class AddNewProductComponent implements OnInit {
 
   stepAction = (step) => this.step += step;
   checkStep = (step) => this.step == step;
-
-  setTechName = (name) => {
-    this.product.technical_name = name;
-    this.changeDetectorRef.detectChanges();
-  };
+  setTechName = (name) => this.product.technical_name = name;
 
   canProceed() {
     if (this.step == 0) {
@@ -185,17 +171,26 @@ export class AddNewProductComponent implements OnInit {
   }
 
   readThis(inputValue: any): void {
-    let file: File = inputValue.files[0];
-    this.onFileDrop(file);
+    let files: File[] = inputValue.files;
+    this.addFile(files);
   }
 
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
-    this.fileArr.push(file);
+    this.addFile(file);
   }
 
-  trackByIndex = (i: number, obj: any) => i;
+  addFile(files) {
+    const formData = new FormData();
+    each(files, (file, i) => formData.append(`documents[${i}]`, file));
+    this.productService.addCustomProductDocument(formData)
+      .subscribe(urls =>
+        this.product.attachments = this.product.attachments.concat(urls))
+  }
+  removeFile(i) {
+    this.product.attachments.splice(i, 1)
+  }
 
   deleteItem = (variant, i) => {
       variant.splice(i, 1);
@@ -226,11 +221,17 @@ export class AddNewProductComponent implements OnInit {
   goBack = (): void => this.location.back();
 
   onSubmit() {
-    this.productService.addCustomProduct(this.product)
+    const product = this.formatProduct(this.product);
+    this.productService.addCustomProduct(product)
       .subscribe((res) => {
         this.step++;
         this.toasterService.pop('', 'Product successfully added');
       });
+  }
+
+  formatProduct(product) {
+    const attachments = map(product.attachments, 'public_url');
+    return {...product, attachments};
   }
 
   onVendorChosen(customVendor) {

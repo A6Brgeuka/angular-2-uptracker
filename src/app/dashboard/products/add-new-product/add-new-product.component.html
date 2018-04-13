@@ -158,20 +158,17 @@
         <div class="row">
           <div class="col s12">
             <div class="file-list">
-              <div class="item" *ngFor="let file of fileArr">
-                <a href="{{file.uri}}" target="_blank" *ngIf="file.uri">
-                  <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
+              <div class="item flex-doc" *ngFor="let file of product.attachments; let i = index;">
+                <a class="flex" href="{{file.public_url}}" target="_blank" *ngIf="file.public_url">
+                  <img src="/assets/img/icon-info.svg" alt="" />{{file.file_name}}
                 </a>
-                <div class="tip" *ngIf="!file.uri">
-                  <img src="/assets/img/icon-info.svg" alt="" /> {{file.name}}
-                </div>
-                <div class="clearfix"></div>
+                <fa name="trash" (click)="removeFile(i)"></fa>
               </div>
             </div>
             <div class="text">
               <div class="file-field">
                 <div class="upload-link">
-                  <input type="file" (change)="changeListener($event)" />
+                  <input type="file" (change)="changeListener($event)" multiple />
                   <a>Attach File</a>
                 </div>
               </div>
