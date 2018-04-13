@@ -28,7 +28,16 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public filter: string = '';
   public panelVisible: boolean = false
   public products: Array<any> = [];
-  
+  public invoices: Array<any> = [];
+  public invoiceId: string = '';
+  public selectedInvoice: any = {};
+  public DOLLARSIGNS: any = {
+    USD: '$',
+    CAD: '$',
+    MXN: '$',
+    JPY: '¥',
+  }
+
   constructor() {
     this.products = [
       {
@@ -62,10 +71,54 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         checked: false,
       }
     ]
+    this.invoices = [
+      {
+        id: '#KOM-123456787',
+        date: 'Feb 1, 2018',
+        currency: 'USD',
+        calculatedSubTotal: 250,
+        invoicedSubTotal: 220,
+        invoiceCredit: 5,
+        shipping: 20,
+        handling: 5,
+        taxes: 0,
+        total: 200,
+        discountAmount: 20,
+        discountType: 'PERCENT',
+      },
+      {
+        id: '#KOM-123456788',
+        date: 'Feb 2, 2018',
+        currency: 'CAD',
+        calculatedSubTotal: 250,
+        invoicedSubTotal: 215,
+        invoiceCredit: 5,
+        shipping: 20,
+        handling: 5,
+        taxes: 0,
+        total: 200,
+        discountAmount: 20,
+        discountType: 'PERCENT',
+      },{
+        id: '#KOM-123456789',
+        date: 'Feb 3, 2018',
+        currency: 'JPY',
+        calculatedSubTotal: 250,
+        invoicedSubTotal: 225,
+        invoiceCredit: 5,
+        shipping: 20,
+        handling: 5,
+        taxes: 0,
+        total: 200,
+        discountAmount: 20,
+        discountType: 'PERCENT',
+      }
+    ]
+    this.selectedInvoice = this.invoices[0];
   }
   
   ngOnInit() {
-  
+
   }
   
   ngOnDestroy() {
@@ -107,5 +160,43 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   bulkNevermind() {
     this.panelVisible = false;
+  }
+
+  changeInvoice() {}
+
+  getCalculatedTotal() {
+    const total = this.selectedInvoice.invoicedSubTotal
+      - this.selectedInvoice.invoiceCredit
+      + this.selectedInvoice.shipping
+      + this.selectedInvoice.handling
+      + this.selectedInvoice.taxes
+      - this.selectedInvoice.discountAmount;
+    return total;
+
+  }
+
+  getDiff() {
+    return this.getCalculatedTotal() - this.selectedInvoice.total;
+  }
+
+  getDollarSign() {
+    const type = this.selectedInvoice.currency;
+    switch (type) {
+      case 'USD':
+        return '$';
+      case 'CAD':
+        return '$';
+      case 'MXN':
+        return '$';
+      case 'JPY':
+        return '¥';
+      default:
+        return '$';
+    }
+  }
+
+  dollarSignChange(event) {
+    this.selectedInvoice.currency = event;
+    this.selectedInvoice.discountType = event;
   }
 }

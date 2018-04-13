@@ -11,10 +11,10 @@
             materialize="material_select"
             [materializeSelectOptions]=""
             name="vendor"
+            [(ngModel)]="invoiceId"
+            (change)="changeInvoice($event)"
           >
-            <option value="">#KOM-123456789</option>
-            <option value="">#KOM-123456789</option>
-            <option value="">#KOM-123456789</option>
+            <option *ngFor="let invoice of invoices" [value]="invoice.id">{{invoice.id}}</option>
           </select>
         </div>
       </div>
@@ -33,17 +33,20 @@
           <div class="row"><span>Currency</span></div>
           <div class="row">
             <div class="currency">
-              <span>$1.00</span>
+              <span>{{this.getDollarSign()}}1.00</span>
               <div class="select">
                 <select
                   class="wide"
                   materialize="material_select"
                   [materializeSelectOptions]=""
                   name="currency"
+                  [(ngModel)]="selectedInvoice.currency"
+                  (ngModelChange)="dollarSignChange($event)"
                 >
-                  <option value="">USD</option>
-                  <option value="">USD</option>
-                  <option value="">USD</option>
+                  <option value="USD">USD</option>
+                  <option value="CAD">CAD</option>
+                  <option value="MXN">MXN</option>
+                  <option value="JPY">JPY</option>
                 </select>
               </div>
             </div>
@@ -55,7 +58,7 @@
             <div class="item">
               <span>Calculated Sub-Total</span>
               <div class="input-calculated">
-                $250.00
+                ${{selectedInvoice.calculatedSubTotal}}
               </div>
             </div>
           </div>
@@ -67,7 +70,8 @@
                   <input
                     type="text"
                     name="subTotal"
-                    placeholder="$200.00"
+                    placeholder="$0.00"
+                    [(ngModel)]="selectedInvoice.invoicedSubTotal"
                   >
                 </div>
               </div>
@@ -80,8 +84,9 @@
                 <div class="input">
                   <input
                     type="text"
-                    name="invoicedCredit"
-                    placeholder="$5.00"
+                    name="invoiceCredit"
+                    placeholder="$0.00"
+                    [(ngModel)]="selectedInvoice.invoiceCredit"
                   >
                 </div>
               </div>
@@ -95,7 +100,8 @@
                   <input
                     type="text"
                     name="shipping"
-                    placeholder="$20.00"
+                    placeholder="$0.00"
+                    [(ngModel)]="selectedInvoice.shipping"
                   >
                 </div>
               </div>
@@ -110,6 +116,7 @@
                     type="text"
                     name="handling"
                     placeholder="$5.00"
+                    [(ngModel)]="selectedInvoice.handling"
                   >
                 </div>
               </div>
@@ -119,7 +126,7 @@
             <div class="item">
               <span>Taxes</span>
               <div class="input-taxes">
-                <span>$1.00</span>
+                <span>{{selectedInvoice.taxes}}</span>
                 <div class="plus">
                   <fa name="plus"></fa>
                 </div>
@@ -130,17 +137,17 @@
             <div class="item">
               <span>P.O. Discount</span>
               <div class="input-discount">
-                <span>$1.00</span>
+                <span>{{selectedInvoice.discountAmount}}</span>
                 <div class="select">
                   <select
                     class="wide"
                     materialize="material_select"
                     [materializeSelectOptions]=""
                     name="currency"
+                    [(ngModel)]="selectedInvoice.discountType"
                   >
-                    <option value="">%</option>
-                    <option value="">%</option>
-                    <option value="">%</option>
+                    <option value="PERCENT">%</option>
+                    <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
                   </select>
                 </div>
               </div>
@@ -162,7 +169,7 @@
             <div class="item">
               <span>Total</span>
               <div class="input-calculated">
-                <span class="bold">$180.00</span>
+                <span class="bold">${{selectedInvoice.total}}</span>
               </div>
             </div>
           </div>
@@ -170,7 +177,7 @@
             <div class="item">
               <span>Calculated Total</span>
               <div class="input-calculated">
-                $300.00
+                ${{this.getCalculatedTotal()}}
               </div>
             </div>
           </div>
@@ -178,7 +185,7 @@
             <div class="item">
               <span class="diff-red">Diff</span>
               <div class="input-calculated">
-                <span class="diff-red">$120.00</span>
+                <span class="diff-red">${{this.getDiff()}}</span>
               </div>
             </div>
           </div>
