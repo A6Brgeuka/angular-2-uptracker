@@ -29,7 +29,7 @@ export class ReconciledOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
     {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
-    {name: '', className: 's1', actions: true},
+    {name: '', className: 's1', actions: false},
   ];
 
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
