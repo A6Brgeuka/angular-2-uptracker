@@ -15,13 +15,13 @@
     </div>
     <ul id="orders-dropdown" class="navigation-dropdown-content dropdown-content">
       <li>
-        <a [routerLink]="['/orders']" routerLinkActive="active" (click)="updateTitle('Orders')">
-          Orders
+        <a [routerLink]="['items']" routerLinkActive="active" (click)="updateTitle('Order Items')">
+          Order Items
         </a>
       </li>
       <li>
-        <a [routerLink]="['items']" routerLinkActive="active" (click)="updateTitle('Order Items')">
-          Order Items
+        <a [routerLink]="['/orders']" routerLinkActive="active" (click)="updateTitle('Orders')">
+          Orders
         </a>
       </li>
       <li>
