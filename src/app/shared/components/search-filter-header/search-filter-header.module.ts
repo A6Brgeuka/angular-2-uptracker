@@ -8,6 +8,7 @@ import { SearchFilterHeaderComponent } from './search-filter-header.component';
 import { ChipsInputModule } from '../chips-input/chips-input.module';
 import { ChipsModule } from '../chips/chips.module';
 import { MaterializeModule } from 'angular2-materialize';
+import { AppSharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { MaterializeModule } from 'angular2-materialize';
   ],
   exports: [SearchFilterHeaderComponent],
   imports: [
+    AppSharedModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { find } from 'lodash';
 
 export type SearchFilterHeaderType = 'keyword' | 'chips' | 'multiple';
 
@@ -28,9 +30,7 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
   @Output() searchEvent = new EventEmitter();
   @Output() resetEvent = new EventEmitter();
   @Output() openModalEvent = new EventEmitter();
-  @Output() changeDataTypeEvent = new EventEmitter();
-  selectedDataType = '';
-  dataTypeArr: any[] = [
+  public dataTypeArr: any[] = [
     {value: '', title: 'Orders'},
     {value: 'items', title: 'Order Items'},
     {value: 'packing-slips', title: 'Packing Slips'},
@@ -58,8 +58,9 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.route && this.route.firstChild) {
       this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
-      .subscribe(res =>
-        this.selectedDataType = (res.length) ? res[0].path : ''
+      .subscribe(res => {
+        this.title = (res.length) ? find(this.dataTypeArr, {'value': res[0].path}).title : 'Orders';
+      }
       );
     }
   }
@@ -81,7 +82,7 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
     this.resetEvent.emit();
   }
 
-  changeDataType(selectedData) {
-    this.changeDataTypeEvent.emit(selectedData);
+  updateTitle(title) {
+    this.title = title;
   }
 }
