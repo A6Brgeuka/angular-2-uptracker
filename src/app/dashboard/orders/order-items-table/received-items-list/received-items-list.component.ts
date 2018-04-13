@@ -9,6 +9,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { ReceivedItemsListService } from '../services/received-items-list.service';
+import { FavoritedItemsListService } from '../services/favorited-items-list.service';
 
 @Component({
   selector: 'app-received-items-list',
@@ -38,6 +39,7 @@ export class ReceivedItemsListComponent implements OnInit, OnDestroy {
 
   constructor(
     public pastOrderService: ReceivedItemsListService,
+    private favoritedItemsListService: FavoritedItemsListService,
   ) {
 
   }
@@ -58,6 +60,10 @@ export class ReceivedItemsListComponent implements OnInit, OnDestroy {
 
   sortByHeaderUpdated(event) {
     this.sortBy$.next(event.alias);
+  }
+
+  onFavorite(item) {
+    this.favoritedItemsListService.postItem(item);
   }
 
 }

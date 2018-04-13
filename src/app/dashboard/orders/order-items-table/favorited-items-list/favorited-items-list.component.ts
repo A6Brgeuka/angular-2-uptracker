@@ -63,4 +63,8 @@ export class FavoritedItemsListComponent implements OnInit, OnDestroy {
     this.pastOrderService.updateFilterBy(value);
   }
 
+  onFavorite(item) {
+    this.favoritedItemsListService.postItem(item);
+  }
+
 }

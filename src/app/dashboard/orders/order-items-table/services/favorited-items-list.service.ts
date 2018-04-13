@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 
 import { OrderListBaseService } from '../../classes/order-list-base.service';
 import { OrderItemsTableService } from './order-items-table.service';
+import { ToasterService } from '../../../../core/services/toaster.service';
 
 @Injectable()
 export class FavoritedItemsListService extends OrderListBaseService {
@@ -20,13 +21,17 @@ export class FavoritedItemsListService extends OrderListBaseService {
   constructor(
     private restangular: Restangular,
     private orderItemsTableService: OrderItemsTableService,
+    private toasterService: ToasterService,
   ) {
     super(orderItemsTableService);
 
     this.postItemRequest$ = this.postItem$
     .switchMap((item) =>
       this.restangular.one('pos', item.order_id).one('favorite', item.id).customPUT({'favorite': !item.favorite})
-      .map((res: any) => res.data)
+      .map((res: any) => {
+        this.toasterService.pop('', res.data.favorite ? 'Favorite' : 'Unfavorite');
+        return res.data;
+      })
       .catch((error) => Observable.never())
     )
     .share();

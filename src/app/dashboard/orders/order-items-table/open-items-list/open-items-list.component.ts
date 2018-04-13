@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { OpenItemsListService } from '../services/open-items-list.service';
+import { FavoritedItemsListService } from '../services/favorited-items-list.service';
 
 @Component({
   selector: 'app-open-items-list',
@@ -36,6 +37,7 @@ export class OpenItemsListComponent implements OnInit, OnDestroy {
 
   constructor(
     public openItemsListService: OpenItemsListService,
+    private favoritedItemsListService: FavoritedItemsListService,
   ) {
 
   };
@@ -51,6 +53,10 @@ export class OpenItemsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('for unsubscribing');
+  }
+
+  onFavorite(item) {
+    this.favoritedItemsListService.postItem(item);
   }
 
 }

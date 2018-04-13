@@ -8,6 +8,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { FlaggedItemsListService } from '../services/flagged-items-list.service';
+import { FavoritedItemsListService } from '../services/favorited-items-list.service';
 
 @Component({
   selector: 'app-flagged-items-list',
@@ -38,6 +39,7 @@ export class FlaggedItemsListComponent implements OnInit, OnDestroy {
   constructor(
     private pastOrderService: PastOrderService,
     private flaggedItemsListService: FlaggedItemsListService,
+    private favoritedItemsListService: FavoritedItemsListService,
   ) {
 
   };
@@ -61,6 +63,10 @@ export class FlaggedItemsListComponent implements OnInit, OnDestroy {
 
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
+  }
+
+  onFavorite(item) {
+    this.favoritedItemsListService.postItem(item);
   }
 
 }

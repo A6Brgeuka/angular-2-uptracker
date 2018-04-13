@@ -8,6 +8,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { AllItemsListService } from '../services/all-items-list.service';
+import { FavoritedItemsListService } from '../services/favorited-items-list.service';
 
 @Component({
   selector: 'app-all-order-items-list',
@@ -19,6 +20,7 @@ export class AllItemsListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
 
   public listName: string = OrderListType.all;
+
   public tableHeader: any = [
     {name: 'Order #', className: 's1', alias: 'po_number', filterBy: true, },
     {name: 'Product Name', className: 's2', alias: 'item_name', filterBy: true, wrap: 2, },
@@ -38,6 +40,7 @@ export class AllItemsListComponent implements OnInit, OnDestroy {
   constructor(
     public pastOrderService: PastOrderService,
     public allItemsListService: AllItemsListService,
+    private favoritedItemsListService: FavoritedItemsListService,
   ) {
 
   };
@@ -61,6 +64,10 @@ export class AllItemsListComponent implements OnInit, OnDestroy {
 
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
+  }
+
+  onFavorite(item) {
+    this.favoritedItemsListService.postItem(item);
   }
 
 }

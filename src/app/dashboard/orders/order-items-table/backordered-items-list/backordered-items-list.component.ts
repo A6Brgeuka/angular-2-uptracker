@@ -7,6 +7,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { BackorderedItemsListService } from '../services/backordered-items-list.service';
+import { FavoritedItemsListService } from '../services/favorited-items-list.service';
 
 @Component({
   selector: 'app-backordered-items-list',
@@ -25,7 +26,6 @@ export class BackorderedItemsListComponent implements OnInit, OnDestroy {
     {name: 'Location', className: 's1', alias: 'location_name', filterBy: true, },
     {name: 'Placed', className: 's1', alias: 'placed_date', filterBy: true, },
     {name: 'Backordered', className: 's2', alias: 'backordered_date', filterBy: true, },
-    // {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
     {name: 'Qty', className: 's1 bold underline-text right-align', aliasArray: ['backordered_qty', 'quantity'], join: '/'},
     {name: 'Pkg Price', className: 's1', alias: 'package_price'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
@@ -36,6 +36,7 @@ export class BackorderedItemsListComponent implements OnInit, OnDestroy {
 
   constructor(
     public backorderedItemsListService: BackorderedItemsListService,
+    private favoritedItemsListService: FavoritedItemsListService,
   ) {
 
   };
@@ -52,6 +53,10 @@ export class BackorderedItemsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('for unsubscribing');
+  }
+
+  onFavorite(item) {
+    this.favoritedItemsListService.postItem(item);
   }
 
 }
