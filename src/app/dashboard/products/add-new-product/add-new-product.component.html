@@ -4,7 +4,7 @@
     <div class="col s2">
       <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="checkStep(0)"></div>
       <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-              (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(0)">
+              (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(0) && !checkStep(3)">
         <fa name="chevron-left"></fa>
         Back
       </button>
@@ -201,39 +201,38 @@
 
     <div class="row">
       <div class="col s12 flex">
-        <div class="col s4 m2" *ngFor="let attribute of productAttributes; let index = index;">
+        <div class="col s4 m2" *ngFor="let variant of productVariants; let index = index;">
           <div class="wrap">
-            <div class="select">
-              <select [(ngModel)]="attribute.name"
-                      materialize="material_select"
-                      [materializeSelectOptions]="availableAttributes">
-                <option [value]="attribute.name">{{ attribute.name | capitalizeFirst}}</option>
-                <option *ngFor="let attr of availableAttributes; let i = index; trackBy:trackByIndex;"  [value]="attr">{{ attr | capitalizeFirst }}</option>
-              </select>
+            <div class="input search select">
+              <input type="text"
+                     class="center-align"
+                     auto-complete
+                     placeholder="Type"
+                     [(ngModel)] = 'variant.name'
+              >
+              <fa name="angle-down"></fa>
             </div>
-            <div *ngFor="let attr of productAttributes[index].values; let i = index; trackBy:trackByIndex;" class="product-variant">
-              <input type="text" [(ngModel)]="productAttributes[index].values[i]">
-              <fa name="times-circle" (click)="deleteItem(attribute.values, i)"></fa>
+            <div *ngFor="let attr of productVariants[index].values; let i = index;" class="product-variant">
+              <input type="text" [(ngModel)]="productVariants[index].values[i]">
+              <fa name="times-circle" (click)="deleteItem(variant.values, i)"></fa>
             </div>
             <div class="product-variant">
-              <input type="text" [(ngModel)]="newProductAttributes.name" placeholder="Add another {{newProductAttributes.name | capitalizeFirst}}">
-              <fa name="plus-circle" (click)="addAttribute(newProductAttributes)"></fa>
+              <input type="text" [(ngModel)]="variant.newName" placeholder="Add another {{ variant.name | capitalizeFirst}}">
+              <fa name="plus-circle" (click)="addVariant(variant.newName, index)"></fa>
             </div>
-            <fa name="times-circle" class="hide-by-opacity" (click)="deleteItem(variant, index)"></fa>
+            <fa name="times-circle" class="hide-by-opacity" (click)="deleteVariant(index)"></fa>
           </div>
         </div>
         <div class="col s4 m2">
           <div class="wrap">
             <div class="select">
-              <input class="overlay-input" type="text" placeholder="Attribute name" [(ngModel)]="newAttribute">
-              <select [(ngModel)]="newAttribute"
+              <input class="overlay-input" type="text" placeholder="Variant name" [(ngModel)]="newVariant">
+              <select [(ngModel)]="newVariant"
                       materialize="material_select"
-                      [materializeSelectOptions]="availableAttributes"
-                      (ngModelChange)="onProductAttributeSelect($event)">
-                <option [value]="newAttribute">{{ newAttribute | capitalizeFirst}}</option>
-                <option *ngFor="let attr of availableAttributes; let i = index; trackBy:trackByIndex;" [value]="attr">{{ attr | capitalizeFirst }}</option>
+                      disabled>
+                <option [value]="newVariant">{{ newVariant}}</option>
               </select>
-              <fa name="plus-circle" class="add-section" (click)="addSection(newAttribute)"></fa>
+              <fa name="plus-circle" class="add-section" (click)="onProductVariantSelect(newVariant)"></fa>
             </div>
           </div>
         </div>
@@ -243,10 +242,10 @@
 
   <ng-container *ngIf="checkStep(2)">
     <div class="row">
-      <div class="col s10">
+      <div class="col s11">
         <app-vendor-search (vendorChosen)="onVendorChosen($event)"></app-vendor-search>
       </div>
-      <div class="col s2 right-align">
+      <div class="col s1">
         <button class="bluebtn waves-light waves-effect">
           <fa [name]="'plus'"></fa>
           Add Vendor
@@ -255,9 +254,10 @@
     </div>
 
     <app-product-variant
-      *ngFor="let vendor of vendorVariants; let i = index"
+      *ngFor="let vendor of product.vendor_variants; let i = index"
       [vendor]="vendor"
-      (vendorDelete)="onVendorDelete(i)">
+      (vendorDelete)="onVendorDelete(i)"
+    >
     </app-product-variant>
   </ng-container>
 
@@ -271,15 +271,15 @@
     <div class="row">
       <div class="s12 center-align buttons-group">
         <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-                (click)="stepAction(1); $event.stopPropagation()">
+                (click)="stepAction(-1); $event.stopPropagation()">
           No
         </button>
         <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-                (click)="stepAction(2); $event.stopPropagation()" *ngIf="!checkStep(0)">
+                (click)="openAddInventoryModal(); $event.stopPropagation()">
           Yes, Create new
         </button>
         <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-                (click)="stepAction(2); $event.stopPropagation()" *ngIf="!checkStep(0)">
+                (click)="openInventorySearchModal(); $event.stopPropagation()">
           Yes, Add to Existing
         </button>
       </div>

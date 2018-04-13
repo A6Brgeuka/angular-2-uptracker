@@ -1,4 +1,17 @@
+export class PackageModel {
+  type: string = null;
+  label:string = null;
+  value: string = null;
+  qty: number = 1;
 
+  constructor(obj?: any) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+      }
+    }
+  }
+}
 
 export class PackageProperties{
   properties:Package
@@ -36,13 +49,13 @@ export class InventorySearchResults {
   product_id:string  = null;
   upc:string = "";
   variant_id:string = null;
-  
+
   inventory_by: any[] = [];
-  
+
   checked:boolean = false; // my prop
-  
+
   notActive:boolean = false; // my prop
-  
+
   formattedPrice: any = '$0.00';
   formattedForumPrice: any = '$0.00';
   formattedClubPrice: any = '$0.00';
@@ -50,13 +63,13 @@ export class InventorySearchResults {
   custom_product: boolean = false; // my prop
   vendor_id: string = null;
   vendor_name: string = 'Auto';
-  
+
   account_product_id: string = null;
   account_variant_id: string = null;
   inventory_product_id: string = null;
   consumableUnitQty: string = null;
   manufacturer: string = null;
-  
+
   edited:boolean = false;
 
   constructor(obj?:any) {

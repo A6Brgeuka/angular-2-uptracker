@@ -1,8 +1,9 @@
-import {ProductAttributesModel} from "./product-attributes.model";
+import {ProductVariantsModel} from "./product-variants.model";
+import {PackageModel} from "./inventory.model";
 export class CustomProductModel {
   name: string = null;
   catalog_number: string = null;
-  inventory_by: any[] = [];
+  inventory_by: PackageModel[][] = [];
   upc: string = null;
   list_price: number = null;
   club_price: number = null;
@@ -21,7 +22,6 @@ export class CustomProductModel {
   category: string = null;
   notes: string = null;
   accounting_category: string = null;
-  attributes: ProductAttributesModel[];
   vendor_variants: any[] = [];
   inventory_group: string = null;
 

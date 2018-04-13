@@ -12,7 +12,7 @@ import {AddCustomProductModule} from '../../../shared/components/add-custom-prod
   imports: [
     ViewProductModalModule,
     AppSharedModule,
-    AddCustomProductModule,
+    AddCustomProductModule
   ],
   providers: [],
   exports: [

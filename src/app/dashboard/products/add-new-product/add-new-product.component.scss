@@ -81,6 +81,13 @@
     color: $mid-grey;
   }
 
+  fa[name="angle-down"] {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    font-size: 20px;
+  }
+
   .title {
     margin-top: 0;
     font-size: 18px;
@@ -240,6 +247,8 @@
       outline:none;
     }
   }
+
+
 
   .fa-question-circle {
     margin-left:5px;

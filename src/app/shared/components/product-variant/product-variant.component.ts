@@ -1,9 +1,9 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {each, sortBy} from 'lodash';
+import {each, sortBy, times, every} from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {InventoryService} from '../../../core/services/inventory.service';
 import {Observable} from 'rxjs';
-import {InventorySearchResults} from '../../../models/inventory.model';
+import {InventorySearchResults, PackageModel} from '../../../models/inventory.model';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
 
 @Component({
@@ -19,101 +19,51 @@ export class ProductVariantComponent implements OnInit {
   public subscribers: any = {};
   public product: any = new InventorySearchResults();
   public selected: any = {};
-  public autocompleteOuterPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteOuterPackage: any = [];
-  public autocompleteInnerPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteInnerPackage: any = [];
-  public autocompleteConsPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompleteConsPackage: any = [];
-  public packages: any[] = [{}];
+  public autocompletePackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public autocompletePackage: any = [];
 
   constructor(public inventoryService: InventoryService) {
   }
 
   ngOnInit() {
-    each(this.vendor.variants, (variant) => {
-      this.selected[variant.name] = false
-    });
-    this.autocompleteOuterPackage$.next('');
-    this.autocompleteInnerPackage$.next('');
-    this.autocompleteConsPackage$.next('');
+    this.autocompletePackage$.next('');
   }
 
   addSubscribers() {
-    this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
+    this.subscribers.autocompleteOuterPackSubscription = this.autocompletePackage$
       .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-      .subscribe((pack: any) => this.autocompleteOuterPackage = sortBy(pack, ['unit_name']));
-
-    this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
-      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-      .subscribe((pack: any) => this.autocompleteInnerPackage = sortBy(pack, ['plural_unit_name']));
-
-    this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
-      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-      .subscribe((pack: any) => (this.autocompleteConsPackage = pack) && console.log(pack));
+      .subscribe((pack: any) => this.autocompletePackage = sortBy(pack, ['unit_name']));
   }
 
-  selectedAutocompledOuterPackage(outerPackage) {
-    this.product.package_type = outerPackage.unit_name;
-  }
-  onSearchOuterPackage(event) {
-    this.autocompleteOuterPackage$.next(event.target.value);
-  }
-  observableSourceOuterPackage(keyword: any) {
-    return Observable.of(this.autocompleteOuterPackage).take(1);
+  observableSourcePackage(keyword: any) {
+    return Observable.of(this.autocompletePackage).take(1);
   }
 
-  updateOuterPackege(event) {
-    /*this.outerPack = (this.product.package_type === event.target.value) ? this.product.package_type : null;
-    if (!this.outerPack) {
-      this.autocompleteOuterPackage$.next('');
-    }*/
-    this.autocompleteOuterPackage$.next('');
-  }
-
-  selectedAutocompledInnerPackage(innerPackage) {
-    this.product.sub_package.properties.unit_type = innerPackage.plural_unit_name;
-  }
-  onSearchInnerPackage(event) {
-    this.autocompleteInnerPackage$.next(event.target.value);
-  }
-  observableSourceInnerPackage(keyword: any) {
-    return Observable.of(this.autocompleteInnerPackage).take(1);
-  }
-  updateInnerPackege(event) {
-    /*this.innerPack = (this.newProductData.sub_package.properties.unit_type === event.target.value) ? this.newProductData.sub_package.properties.unit_type : null;
-    if (!this.innerPack) {
-      this.autocompleteInnerPackage$.next('');
-    }*/
-    this.autocompleteInnerPackage$.next('');
-  }
-  selectedAutocompledConsPackage(consPackage) {
-    this.product.consumable_unit.properties.unit_type = consPackage.unit_name ? consPackage.unit_name : consPackage;
-  }
-  onSearchConsPackage(event) {
-    /*this.packDirty = true;*/
-    this.product.consumable_unit.properties.unit_type = event.target.value;
-    this.autocompleteConsPackage$.next(event.target.value);
-  }
-  observableSourceConsPackage(keyword: any) {
-    return Observable.of(this.autocompleteConsPackage).take(1);
+  onSearchPackage(event) {
+    this.autocompletePackage$.next(event.target.value);
   }
 
   addPackage() {
-    this.packages.push({});
+    const pack = times(3, () => new PackageModel());
+    this.vendor.inventory_by.push(pack);
   }
 
   deletePackage(i) {
-    this.packages.splice(i, 1);
-    if (!this.packages.length) {
+    this.vendor.inventory_by.splice(i, 1);
+    if (!this.vendor.inventory_by.length) {
       this.vendorDelete.emit();
     }
   }
 
   selectAll() {
-    each(this.selected, (val, key) => {
-      this.selected[key] = this.selected.all
+    each(this.vendor.variants, (v) => {
+      v.enabled = this.selected.all
     });
+  }
+
+  packageSummary(pack): string {
+    if (every(pack, 'label'))
+      return `${pack[0].label} of ${pack[1].qty} ${pack[1].label} of ${pack[2].qty} ${pack[2].label} in tcu`;
   }
 
 }

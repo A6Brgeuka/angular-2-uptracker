@@ -1,6 +1,7 @@
-export class ProductAttributesModel {
+export class ProductVariantsModel {
   name: string = null;
-  values: string[] = null;
+  values: string[] = [];
+  newName: string = null;
 
   constructor(obj?:any) {
     for (let field in obj) {

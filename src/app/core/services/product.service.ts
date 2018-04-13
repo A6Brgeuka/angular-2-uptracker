@@ -266,7 +266,7 @@ export class ProductService extends ModelService {
   }
 
   addCustomProductImage(data) {
-    return this.restangular.all('products').all('custom').all('image').post(data);
+    return this.restangular.all('products').all('custom').all('image').post(data).map(res => res.image);
   }
 
   addCustomProductDocument(data) {

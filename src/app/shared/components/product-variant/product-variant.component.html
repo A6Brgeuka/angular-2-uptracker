@@ -5,15 +5,13 @@
     </div>
   </div>
   <div class="col s4 right-align">
-    <a (click)="addPackage()">+ Add Packaging</a>
+    <a class="add-button" (click)="addPackage()">+ Add Packaging</a>
   </div>
 </div>
-<div class="row package" *ngFor="let package of packages; let i = index">
+<div class="row package" *ngFor="let package of vendor.inventory_by; let i = index">
   <div class="row">
     <div class="col s11 sub-title">
-      {{product.package_type}} <span *ngIf="product.package_type">of</span>
-      {{product.sub_package.properties.qty}} {{product.sub_package.properties.unit_type}} <span *ngIf="product.sub_package.properties.unit_type">of</span>
-      {{product.consumableUnitQty}} {{product.consumable_unit.properties.unit_type}} in tcu
+      {{packageSummary(package)}}
     </div>
     <div class="col s1 right-align">
       <fa name="times-circle" (click)="deletePackage(i)"></fa>
@@ -23,19 +21,19 @@
     <div class="ttl">Outer Package</div>
     <div class="row relative">
       <div class="col s12 flex">
-        <div class="input search">
+        <div class="input search select">
           <input class="caret" auto-complete
                  placeholder="Type"
-                 [source]="observableSourceOuterPackage.bind(this)"
-                 (input) = 'onSearchOuterPackage($event)'
-                 (blur)="updateOuterPackege($event)"
-                 (ngModelChange) = 'selectedAutocompledOuterPackage($event)'
+                 [source]="observableSourcePackage.bind(this)"
+                 (input) = 'onSearchPackage($event)'
                  [list-formatter] = '"unit_name"'
                  [tab-to-select] = 'false'
+                 [select-value-of] = "'unit_name'"
                  name="package_type"
-                 [(ngModel)] = 'outerPack'
+                 [(ngModel)] = 'package[0].label'
                  required
           >
+          <fa name="angle-down"></fa>
         </div>
         <div class="label">=</div>
       </div>
@@ -46,27 +44,22 @@
     <div class="row relative">
       <div class="col s3">
         <div class="input">
-          <input [(ngModel)]="product.sub_package.properties.qty"
-                 type="text" placeholder="Qty"
-                 [required] = "product.sub_package.properties.unit_type"
-                 name="qty"
-                 #qty="ngModel"
-          >
+          <input [(ngModel)]="package[1].qty" type="text" placeholder="Qty">
         </div>
       </div>
       <div class="col s9 flex">
-        <div class="input search">
+        <div class="input search select">
           <input class="caret" auto-complete
                  placeholder="Type"
-                 [source]="observableSourceInnerPackage.bind(this)"
-                 (input) = 'onSearchInnerPackage($event)'
-                 (blur)="updateInnerPackege($event)"
-                 (ngModelChange) = 'selectedAutocompledInnerPackage($event)'
+                 [source]="observableSourcePackage.bind(this)"
+                 (input) = 'onSearchPackage($event)'
                  [list-formatter] = '"plural_unit_name"'
                  [tab-to-select] = 'false'
+                 [select-value-of] = "'plural_unit_name'"
                  name="sub_package_type"
-                 [(ngModel)] = 'innerPack'
+                 [(ngModel)] = 'package[1].label'
           >
+          <fa name="angle-down"></fa>
         </div>
         <div class="label">=</div>
       </div>
@@ -79,27 +72,24 @@
     <div class="row relative">
       <div class="col s3">
         <div class="input">
-          <input [(ngModel)]="product.consumableUnitQty" type="text" placeholder="Qty"
-                 name="qty2"
-                 #qty2="ngModel"
-                 required>
+          <input [(ngModel)]="package[2].qty" type="text" placeholder="Qty">
         </div>
       </div>
       <div class="col s9">
-        <div class="input search" [class.dirty]="packDirty"
+        <div class="input search select" [class.dirty]="packDirty"
              [class.valid]="product.consumable_unit.properties.unit_type">
-          <input auto-complete
+          <input class="caret" auto-complete
                  placeholder="Type"
-                 [source]="observableSourceConsPackage.bind(this)"
-                 (input) = 'onSearchConsPackage($event)'
-                 (ngModelChange) = 'selectedAutocompledConsPackage($event)'
-                 [ngModel] = "product.consumable_unit.properties.unit_type"
+                 [source]="observableSourcePackage.bind(this)"
+                 (input) = 'onSearchPackage($event)'
+                 [(ngModel)] = "package[2].label"
                  [list-formatter] = '"unit_name"'
+                 [select-value-of] = "'unit_name'"
                  [tab-to-select] = 'false'
                  name="cons_package_type"
-                 [disabled] = "(packageType && packageType.consumable_unit)"
                  required
           >
+          <fa name="angle-down"></fa>
         </div>
       </div>
     </div>
@@ -122,7 +112,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col s6 flex">
+  <div class="col s5 flex">
     <div class="input-checkbox">
       <input type="checkbox" class="checkbox-input" [(ngModel)]="selected.all" (change)="selectAll()" id="{{vendor.vendor_name}}+'selectAll'"/>
       <label for="{{vendor.vendor_name}}+'selectAll'"></label>
@@ -130,45 +120,52 @@
 
     Product Variant Name
   </div>
-  <div class="col s6">
+  <div class="col s7">
+    <div class="col s3">
+      Barcode
+    </div>
     <div class="col s3">
       Catalog #
     </div>
-    <div class="col s3">
+    <div class="col s2">
       List $
     </div>
-    <div class="col s3">
+    <div class="col s2">
       Our $
     </div>
-    <div class="col s3">
+    <div class="col s2">
       Club $
     </div>
   </div>
 </div>
 <div class="row" *ngFor='let variant of vendor.variants; let i = index'>
-  <div class="col s6 flex">
+  <div class="col s5 flex">
     <div class="input-checkbox">
-      <input type="checkbox" class="checkbox-input" [(ngModel)]="selected[variant.name]" id={{vendor.vendor_name+variant.name+i}}/>
+      <input type="checkbox" class="checkbox-input" [(ngModel)]="variant.enabled" id={{vendor.vendor_name+variant.name+i}}/>
       <label for={{vendor.vendor_name+variant.name+i}}></label>
     </div>
-
-    <input  type="text" [(ngModel)]="variant.name">
+    <input type="text" [(ngModel)]="variant.name">
   </div>
-
-  <div class="col s6">
+  <div class="col s7">
+    <div class="col s3 row-input">
+      <input type="text" [(ngModel)]="variant.barcode" placeholder="Barcode">
+      <!--
+            <app-scanner ></app-scanner>
+      -->
+    </div>
     <div class="col s3 row-input">
       <input type="text" [(ngModel)]="variant.catalog_number" placeholder="Catalog #">
     </div>
 
-    <div class="col s3 row-input">
-      <app-price-input [placeholder]="'List $'" [(ngModel)]="variant.book_price"></app-price-input>
+    <div class="col s2 row-input">
+      <app-price-input [placeholder]="'List $'" [(ngModel)]="variant.list_price"></app-price-input>
     </div>
 
-    <div class="col s3 row-input">
-      <app-price-input [placeholder]="'Our $'" [(ngModel)]="variant.your_price"></app-price-input>
+    <div class="col s2 row-input">
+      <app-price-input [placeholder]="'Our $'" [(ngModel)]="variant.our_price"></app-price-input>
     </div>
 
-    <div class="col s3 row-input">
+    <div class="col s2 row-input">
       <app-price-input [placeholder]="'Club $'" [(ngModel)]="variant.club_price"></app-price-input>
     </div>
   </div>
