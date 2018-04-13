@@ -9,4 +9,5 @@ export const OrderListType = {
   flagged: 'flagged',
   favorited: 'favorited',
   payment: 'payment',
+  paid: 'paid',
 };
