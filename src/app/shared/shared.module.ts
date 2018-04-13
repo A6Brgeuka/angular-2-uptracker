@@ -24,7 +24,6 @@ import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
 import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
 import { PriceInputComponent } from "./components/price-input/price-input.component";
-import { FileAttachmentComponent } from "./components/file-attachment/file-attachment.component";
 import { ProductVariantComponent } from "./components/product-variant/product-variant.component";
 
 let directivesArr = [
@@ -42,7 +41,6 @@ let pipesArr = [
 let componentsArr = [
   VendorSearchComponent,
   PriceInputComponent,
-  FileAttachmentComponent,
   ProductVariantComponent
 ];
 
