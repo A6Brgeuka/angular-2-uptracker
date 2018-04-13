@@ -44,30 +44,30 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         name: 'Gloves Tender Touch Nitrile Sempecare 1',
         pkgTop: 'Box', pkgBottom: 'Box',
         qtyTop: 100, qtyBottom: 50,
-        pkgpTop: '$10.00', pkgpBottom: '$10.00',
-        dtTop: '0.00', dtBottom: '$5.00',
-        discTop: '$20.00', discBottom: '$15.00',
-        totalTop: '$500.00', totalBottom: '$450.00',
+        pkgpTop: 10.00, pkgpBottom: 10.00,
+        dtTop: 0.00, dtBottom: 5.00,
+        discTop: 20.00, discBottom: 15.00,
+        totalTop: 500.00, totalBottom: 450.00,
         checked: false,
       },
       {
         name: 'Gloves Tender Touch Nitrile Sempecare 2',
         pkgTop: 'Box', pkgBottom: 'Box',
         qtyTop: 100, qtyBottom: 50,
-        pkgpTop: '$10.00', pkgpBottom: '$10.00',
-        dtTop: '0.00', dtBottom: '$5.00',
-        discTop: '$20.00', discBottom: '$15.00',
-        totalTop: '$500.00', totalBottom: '$450.00',
+        pkgpTop: 10.00, pkgpBottom: 10.00,
+        dtTop: 0.00, dtBottom: 5.00,
+        discTop: 20.00, discBottom: 15.00,
+        totalTop: 500.00, totalBottom: 450.00,
         checked: false,
       },
       {
         name: 'Gloves Tender Touch Nitrile Sempecare 3',
         pkgTop: 'Box', pkgBottom: 'Box',
         qtyTop: 100, qtyBottom: 50,
-        pkgpTop: '$10.00', pkgpBottom: '$10.00',
-        dtTop: '0.00', dtBottom: '$5.00',
-        discTop: '$20.00', discBottom: '$15.00',
-        totalTop: '$500.00', totalBottom: '$450.00',
+        pkgpTop: 10.00, pkgpBottom: 10.00,
+        dtTop: 0.00, dtBottom: 5.00,
+        discTop: 20.00, discBottom: 15.00,
+        totalTop: 500.00, totalBottom: 450.00,
         checked: false,
       }
     ]
@@ -193,6 +193,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       default:
         return '$';
     }
+  }
+
+  getMask(product) {
+    return `{ prefix: '${this.DOLLARSIGNS[product.currency]}', thousands: ',', decimal: '.', align: 'left' }`
   }
 
   dollarSignChange(event) {

@@ -277,16 +277,16 @@
                 <div class="text-left mini-input">{{product.qtyTop}}</div>
               </div>
               <div class="col s2">
-                <div class="text-left">{{product.pkgpTop}}</div>
+                <div class="text-left">${{product.pkgpTop}}</div>
               </div>
               <div class="col s3">
-                <div class="text-left">{{product.dtTop}}</div>
+                <div class="text-left">${{product.dtTop}}</div>
               </div>
               <div class="col s2">
-                <div>{{product.discTop}}</div>
+                <div>${{product.discTop}}</div>
               </div>
               <div class="col s2">
-                <div>{{product.totalTop}}</div>
+                <div>${{product.totalTop}}</div>
               </div>
             </div>
             <div class="row mrg-btm-0 flex-center">
@@ -305,13 +305,27 @@
               </div>
               <div class="col s2">
                 <div class="input">
-                  <input class="text-left" name="PKGP{{i}}" type="text" value="{{product.pkgpBottom}}">
+                  <input
+                    class="text-left"
+                    name="PKGP{{i}}"
+                    type="text"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                    [(ngModel)]="product.pkgpBottom"
+                  >
                 </div>
               </div>
               <div class="col s3">
                 <div class="discount">
                   <div class="input">
-                    <input class="text-left" name="DT{{i}}" type="text" value="{{product.dtBottom}}">
+                    <input
+                      class="text-left"
+                      name="DT{{i}}"
+                      type="text"
+                      currencyMask
+                      [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                      [(ngModel)]="product.dtBottom"
+                    >
                   </div>
                   <div class="select">
                     <select
@@ -328,10 +342,10 @@
                 </div>
               </div>
               <div class="col s2">
-                <div>{{product.discBottom}}</div>
+                <div>${{product.discBottom}}</div>
               </div>
               <div class="col s2">
-                <div>{{product.totalBottom}}</div>
+                <div>${{product.totalBottom}}</div>
               </div>
             </div>
           </div>
