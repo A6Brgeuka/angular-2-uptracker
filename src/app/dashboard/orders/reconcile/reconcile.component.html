@@ -71,6 +71,8 @@
                     type="text"
                     name="subTotal"
                     placeholder="$0.00"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoicedSubTotal"
                   >
                 </div>
@@ -86,6 +88,8 @@
                     type="text"
                     name="invoiceCredit"
                     placeholder="$0.00"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoiceCredit"
                   >
                 </div>
@@ -101,6 +105,8 @@
                     type="text"
                     name="shipping"
                     placeholder="$0.00"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.shipping"
                   >
                 </div>
@@ -116,6 +122,8 @@
                     type="text"
                     name="handling"
                     placeholder="$5.00"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.handling"
                   >
                 </div>
@@ -283,8 +291,11 @@
             </div>
             <div class="row mrg-btm-0 flex-center">
               <div class="col s2">
-                <div class="input">
-                  <input class="text-left" name="PKG{{i}}" type="text" value="{{product.pkgBottom}}">
+                <div class="select">
+                  <select title="Pkg" name="pkg" [(ngModel)]="product.pkgBottom" materialize="material_select">
+                    <option value="Box">Box</option>
+                    <option value="Glove">Glove</option>
+                  </select>
                 </div>
               </div>
               <div class="col s1">
