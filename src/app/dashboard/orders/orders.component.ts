@@ -60,7 +60,4 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.orderTableResetService.resetFilters();
   }
 
-  changeDataType(event) {
-    this.router.navigate((event) ? [`orders`, event] : [`orders`]);
-  }
 }
