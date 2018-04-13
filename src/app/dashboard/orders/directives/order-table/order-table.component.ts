@@ -51,6 +51,7 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   };
   @Output() sortByHeaderUpdated = new EventEmitter();
   @Output() filterBy = new EventEmitter();
+  @Output() onFavoriteItem = new EventEmitter();
   @Input()
   set orders(value){
     this.orderTableService.setOrders$.next(value);
@@ -148,4 +149,7 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     item.statusHistoryVisibility = !item.statusHistoryVisibility;
   }
 
+  onFavorite(event) {
+    this.onFavoriteItem.emit(event);
+  }
 }

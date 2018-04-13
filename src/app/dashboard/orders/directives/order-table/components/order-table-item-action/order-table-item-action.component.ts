@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { Subject } from 'rxjs/Subject';
@@ -13,7 +13,7 @@ import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-mo
 import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
 import { FlaggedItemsListService } from '../../../../order-items-table/services/flagged-items-list.service';
-import { FavoritedItemsListService } from '../../../../order-items-table/services/favorited-items-list.service';
+import { OrderItem } from '../../../../models/order-item';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -24,7 +24,6 @@ import { FavoritedItemsListService } from '../../../../order-items-table/service
 export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   private updateFlagged$: any = new Subject<any>();
-  private updateFavorite$: any = new Subject<any>();
 
   private subscribers: any = {};
 
@@ -35,6 +34,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   @Input() isShow: boolean;
   @Input() listName: string;
   @Input() uniqueField: string;
+  @Output() onFavorite: EventEmitter<OrderItem> = new EventEmitter();
 
   constructor(
     public modal: Modal,
@@ -42,7 +42,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
-    private favoritedItemsListService: FavoritedItemsListService,
     private flaggedItemsListService: FlaggedItemsListService,
   ) {
   }
@@ -83,12 +82,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
       err => console.log('error')
     );
 
-    this.subscribers.updateFavoriteSubscription = this.updateFavorite$
-    .switchMap((item: any) => this.favoritedItemsListService.postItem(item))
-    .subscribe( res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
-      err => console.log('error')
-    );
-
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
@@ -96,7 +89,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   setFavorite(item) {
-    this.updateFavorite$.next(item);
+    this.onFavorite.emit(item);
   }
 
   buyAgainOrder(item) {
