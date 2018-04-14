@@ -378,84 +378,99 @@
       right: 0;
     }
 
-    .title {
-      white-space: nowrap;
-      line-height: 30px;
-      margin-left: 10px;
-      margin-bottom: 30px;
-      font-size: 20px;
-      font-family: Ubuntu;
-    }
-    .product-list {
-      border-bottom: 1px solid $light-grey;
-      margin-bottom: 20px;
-      .remove {
-        display: flex;
-        justify-content: flex-end;
-        > a {
-          color: $black;
-          padding-bottom: 20px;
-          text-decoration: underline;
+    .active-area {
+      position: relative;
+      height: 100vh;
+
+      .title {
+        white-space: nowrap;
+        line-height: 30px;
+        margin-left: 10px;
+        margin-bottom: 30px;
+        font-size: 20px;
+        font-family: Ubuntu;
+      }
+      .list-area {
+        height: calc(100vh - 500px);
+        overflow-y: scroll;
+        .product-list {
+          border-bottom: 1px solid $light-grey;
+          margin-bottom: 20px;
+          .remove {
+            display: flex;
+            justify-content: flex-end;
+            > a {
+              color: $black;
+              padding-bottom: 20px;
+              text-decoration: underline;
+            }
+          }
         }
       }
-    }
-    .board {
-      .board-title {
-        display: flex;
-        justify-content: flex-end;
-        line-height: 32px;
-        text-align: right;
+      .board {
+        bottom: 120px;
+        position: absolute;
+        .board-title {
+          display: flex;
+          justify-content: flex-end;
+          line-height: 32px;
+          text-align: right;
+        }
+        .select .select-wrapper input {
+          border-color: #9a9c9e !important;
+          margin: 0;
+        }
+        .input input {
+          margin: 0;
+        }
+        .discount {
+          border: 1px solid #9a9c9e;
+          border-radius: 5px;
+          display: flex;
+          .input {
+            width: 60%;
+            input {
+              border: none;
+            }
+          }
+          .select {
+            width: 40%;
+            input {
+              border-radius: 0;
+              border-left: 1px solid #9a9c9e;
+              border-bottom: none;
+              border-top: none;
+              border-right: none;
+              border-bottom-right-radius: 5px;
+              border-top-right-radius: 5px;
+            }
+            .select-wrapper input.select-dropdown {
+              text-indent: 5px;
+            }
+          }
+        }
       }
-      .select .select-wrapper input {
-        border-color: #9a9c9e !important;
-        margin: 0;
-      }
-      .input input {
-        margin: 0;
-      }
-      .discount {
-        border: 1px solid #9a9c9e;
+      .update {
+        background: $tealish;
+        border: 0;
         border-radius: 5px;
-        display: flex;
-        .input {
-          width: 60%;
-          input {
-            border: none;
-          }
-        }
-        .select {
-          width: 40%;
-          input {
-            border-radius: 0;
-            border-left: 1px solid #9a9c9e;
-            border-bottom: none;
-            border-top: none;
-            border-right: none;
-            border-bottom-right-radius: 5px;
-            border-top-right-radius: 5px;
-          }
-          .select-wrapper input.select-dropdown {
-            text-indent: 5px;
-          }
-        }
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        letter-spacing: normal;
+        padding: 10px;
+        width: 100%;
       }
-    }
-    .update {
-      background: $tealish;
-      border: 0;
-      border-radius: 5px;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: normal;
-      padding: 10px;
-      width: 100%;
-    }
-    .nevermind {
-      color: $black;
-      padding-bottom: 20px;
-      text-decoration: underline;
+      .nevermind {
+        color: $black;
+        padding-bottom: 20px;
+        text-decoration: underline;
+      }
     }
   }
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 

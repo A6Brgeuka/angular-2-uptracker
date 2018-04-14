@@ -361,94 +361,98 @@
   </div>
 
   <div class="panel" [class.active]="panelVisible">
-    <div class="title">Bulk Updates</div>
-    <ng-container *ngFor="let product of products; let i = index">
-      <div class="product-list" *ngIf="product.checked">
-        <div class="row">
-          <span>{{product.name}}</span>
-        </div>
-        <div class="remove">
-          <a (click)="removeProduct(product)">Remove</a>
-        </div>
-      </div>
-    </ng-container>
-    <div class="board">
-      <div class="row">
-        <div class="col s5"><span class="board-title">Pkg</span></div>
-        <div class="col s7">
-          <div class="select">
-            <select title="Pkg" name="board-pkg" [(ngModel)]="board.Pkg" materialize="material_select">
-              <option value="Box">Box</option>
-              <option value="Glove">Glove</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s5"><span class="board-title">QTY</span></div>
-        <div class="col s7">
-          <div class="input">
-            <input
-              class="text-left"
-              name="board-qty"
-              type="text"
-              currencyMask
-              [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-              [(ngModel)]="board.qty"
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s5"><span class="board-title">Pkg Price</span></div>
-        <div class="col s7">
-          <div class="input">
-            <input
-              class="text-left"
-              name="board-qty"
-              type="text"
-              currencyMask
-              [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-              [(ngModel)]="board.pkgPrice"
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s5"><span class="board-title">Discount</span></div>
-        <div class="col s7">
-          <div class="discount">
-            <div class="input">
-              <input
-                class="text-left"
-                name="DT{{i}}"
-                type="text"
-                currencyMask
-                [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                [(ngModel)]="board.discountAmount"
-              >
+    <div class="active-area">
+      <div class="title">Bulk Updates</div>
+      <div class="list-area">
+        <ng-container *ngFor="let product of products; let i = index">
+          <div class="product-list" *ngIf="product.checked">
+            <div class="row">
+              <span>{{product.name}}</span>
             </div>
+            <div class="remove">
+              <a (click)="removeProduct(product)">Remove</a>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="board">
+        <div class="row">
+          <div class="col s5"><span class="board-title">Pkg</span></div>
+          <div class="col s7">
             <div class="select">
-              <select
-                class="wide"
-                materialize="material_select"
-                [materializeSelectOptions]=""
-                name="currency"
-                [(ngModel)]="board.discountType"
-              >
-                <option value="PERCENT">%</option>
-                <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+              <select title="Pkg" name="board-pkg" [(ngModel)]="board.Pkg" materialize="material_select">
+                <option value="Box">Box</option>
+                <option value="Glove">Glove</option>
               </select>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col s5"><span class="board-title">QTY</span></div>
+          <div class="col s7">
+            <div class="input">
+              <input
+                class="text-left"
+                name="board-qty"
+                type="text"
+                currencyMask
+                [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                [(ngModel)]="board.qty"
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s5"><span class="board-title">Pkg Price</span></div>
+          <div class="col s7">
+            <div class="input">
+              <input
+                class="text-left"
+                name="board-qty"
+                type="text"
+                currencyMask
+                [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                [(ngModel)]="board.pkgPrice"
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s5"><span class="board-title">Discount</span></div>
+          <div class="col s7">
+            <div class="discount">
+              <div class="input">
+                <input
+                  class="text-left"
+                  name="DT{{i}}"
+                  type="text"
+                  currencyMask
+                  [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                  [(ngModel)]="board.discountAmount"
+                >
+              </div>
+              <div class="select">
+                <select
+                  class="wide"
+                  materialize="material_select"
+                  [materializeSelectOptions]=""
+                  name="currency"
+                  [(ngModel)]="board.discountType"
+                >
+                  <option value="PERCENT">%</option>
+                  <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row center">
+          <button class="update" (click)="bulkUpdates()">UPDATE</button>
+        </div>
+        <div class="row center">
+          <a class="nevermind" (click)="bulkNevermind()">Nevermind</a>
+        </div>
       </div>
-    </div>
-    <div class="row center">
-      <button class="update" (click)="bulkUpdates()">UPDATE</button>
-    </div>
-    <div class="row center">
-      <a class="nevermind" (click)="bulkNevermind()">Nevermind</a>
     </div>
   </div>
 </form>
