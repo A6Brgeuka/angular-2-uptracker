@@ -6,16 +6,13 @@
       </div>
       <div class="col l3 m6">
         <div class="select">
-          <select
-            class="wide"
-            materialize="material_select"
-            [materializeSelectOptions]=""
-            name="vendor"
-            [(ngModel)]="invoiceId"
-            (change)="changeInvoice($event)"
+          <ngx-select-dropdown
+            [config]="selectConfig"
+            [options]="invoices"
+            [(value)]="invoices_"
+            [multiple]="false"
           >
-            <option *ngFor="let invoice of invoices" [value]="invoice.id">{{invoice.id}}</option>
-          </select>
+          </ngx-select-dropdown>
         </div>
       </div>
     </div>

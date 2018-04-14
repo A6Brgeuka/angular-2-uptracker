@@ -29,6 +29,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public panelVisible: boolean = false
   public products: Array<any> = [];
   public invoices: Array<any> = [];
+  public invoices_: Array<any> = [];
   public invoiceId: string = '';
   public selectedInvoice: any = {};
   public DOLLARSIGNS: any = {
@@ -38,6 +39,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     JPY: '¥',
   }
   public board: any = {}
+  public selectConfig = { displayKey: "id", search: true };
 
   constructor() {
     this.products = [
