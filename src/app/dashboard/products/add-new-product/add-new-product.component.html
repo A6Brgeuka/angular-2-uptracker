@@ -257,29 +257,4 @@
     >
     </app-product-variant>
   </ng-container>
-
-  <div class="container" *ngIf="checkStep(3)">
-    <div class="row">
-      <div class="col s12 title center-align">
-        The Custom Product has been successfully created! Would you like to inventory this product?
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="s12 center-align buttons-group">
-        <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-                (click)="stepAction(-1); $event.stopPropagation()">
-          No
-        </button>
-        <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-                (click)="openAddInventoryModal(); $event.stopPropagation()">
-          Yes, Create new
-        </button>
-        <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-                (click)="openInventorySearchModal(); $event.stopPropagation()">
-          Yes, Add to Existing
-        </button>
-      </div>
-    </div>
-  </div>
 </div>

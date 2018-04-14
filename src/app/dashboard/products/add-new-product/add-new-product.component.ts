@@ -3,18 +3,17 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {filter, keys, difference, each, map, join} from 'lodash';
+import {each, map, join} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
-import {InventorySearchModalComponent} from '../../inventory/inventory-search-modal/inventory-search-modal.component';
-import {AddInventoryModal} from '../../inventory/add-inventory/add-inventory-modal.component';
 import {HelpTextModal} from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 import { Location } from '@angular/common';
 import {CustomProductModel} from '../../../models/custom-product.model';
-import {ProductVariantsModel} from "../../../models/product-variants.model";
-import {PackageModel} from "../../../models/inventory.model";
-import {ToasterService} from "../../../core/services/toaster.service";
+import {ProductVariantsModel} from '../../../models/product-variants.model';
+import {PackageModel} from '../../../models/inventory.model';
+import {ToasterService} from '../../../core/services/toaster.service';
+import {Router} from '@angular/router';
 
 const dummyVariant = {
   catalog_number: '555-125',
@@ -23,7 +22,7 @@ const dummyVariant = {
   our_price: 8,
   enabled: false
 };
-const dummyProductVariants = ["size”, “color”, “texture”, “grit”, “length”, “strength”, “prescription”, “type"];
+const dummyProductVariants = ['size”, “color”, “texture”, “grit”, “length”, “strength”, “prescription”, “type'];
 const dummyInventory = [
   {type: 'Package', value: 'package'},
   {type: 'Sub Package', value: 'sub_package'},
@@ -71,6 +70,7 @@ export class AddNewProductComponent implements OnInit {
     private modalWindowService: ModalWindowService,
     private location: Location,
     private toasterService: ToasterService,
+    private router: Router
   ) {
   }
 
@@ -80,9 +80,6 @@ export class AddNewProductComponent implements OnInit {
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
   }
 
-  observableProductVariants(keyword: any) {
-    return Observable.of(dummyProductVariants).take(1);
-  }
   addSubscribers() {
     this.subscribers.departmenCollectiontSubscription = this.departmentCollection$
       .subscribe(departments => this.departmentCollection = departments);
@@ -129,10 +126,6 @@ export class AddNewProductComponent implements OnInit {
     return true;
   }
 
-  getVariants() {
-    return filter(keys(this.variants), (key) => this.variants[key]);
-  }
-
   uploadLogo(file: any) {
     const reader = new FileReader();
     const formData = new FormData();
@@ -148,22 +141,6 @@ export class AddNewProductComponent implements OnInit {
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
       .overlayConfigFactoryWithParams({'text': ''}, true, 'mid'));
-  }
-
-  openAddInventoryModal() {
-    this.modal.open(AddInventoryModal, this.modalWindowService
-      .overlayConfigFactoryWithParams({'selectedProduct': this.product, 'modalMode': true}, true, 'big'))
-      .then((resultPromise) =>
-        resultPromise.result.then((inventory) =>
-          this.product.inventory_group = inventory));
-  }
-
-  openInventorySearchModal() {
-    this.modal.open(InventorySearchModalComponent, this.modalWindowService
-      .overlayConfigFactoryWithParams({}, true, 'big'))
-      .then((resultPromise) =>
-        resultPromise.result.then((id) =>
-          this.product.inventory_group = id));
   }
 
   changeListener($event): void {
@@ -206,12 +183,6 @@ export class AddNewProductComponent implements OnInit {
     this.productVariants[i].newName = '';
   };
 
-  addSection = (name) => this.variants[name.toLowerCase()] = [];
-
-  get availableVariants() {
-    return difference(keys(this.productVariants), keys(this.variants));
-  }
-
   onProductVariantSelect = (name) => {
     if (!name) return;
     this.productVariants.push(new ProductVariantsModel({name}));
@@ -224,8 +195,8 @@ export class AddNewProductComponent implements OnInit {
     const product = this.formatProduct(this.product);
     this.productService.addCustomProduct(product)
       .subscribe((res) => {
-        this.step++;
         this.toasterService.pop('', 'Product successfully added');
+        this.router.navigate(['/products']);
       });
   }
 
