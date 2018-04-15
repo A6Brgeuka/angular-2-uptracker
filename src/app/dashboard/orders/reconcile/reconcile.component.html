@@ -11,6 +11,7 @@
           [options]="invoices"
           [(value)]="invoices_"
           [multiple]="false"
+          (ngModelChange)="invoiceChange($event)"
         >
         </ngx-select-dropdown>
       </div>

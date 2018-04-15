@@ -14,9 +14,11 @@
       // .ngx-dorpdown-container .ngx-dropdown-list-container ul.selected-items li
       .ngx-dorpdown-container {
         .ngx-dropdown-list-container {
+          box-shadow: none;
+          border: 1px solid #9a9c9e !important;
           .search-container {
             input {
-              border: 1px solid #9e9e9e !important;
+              border: 1px solid #9a9c9e !important;
               border-radius: 3px !important;
             }
             label {
@@ -76,7 +78,7 @@
         }
         .currency {
           display: flex;
-          border: 1px solid #9e9e9e;
+          border: 1px solid #9a9c9e;
           border-radius: 5px;
           padding-right: 5px;
           width: 160px;
@@ -105,6 +107,9 @@
               }
               .dropdown-content li.selected {
                 background-color: #f5f5f5;
+              }
+              ul {
+                border: 1px solid #9a9c9e !important;
               }
             }
           }
@@ -165,6 +170,9 @@
                 background-color: #e8ecf0;
                 border: none;
                 height: 28px;
+              }
+              .select-wrapper ul {
+                border: 1px solid #9a9c9e !important;
               }
             }
           }

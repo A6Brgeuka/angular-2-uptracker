@@ -62,6 +62,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         })
       })
       this.invoices = res;
+      // this.invoices_ = res;
       if (this.invoices.length > 0) {
         this.selectedInvoice = this.invoices[0];
       }
