@@ -5,6 +5,7 @@ import {InventoryService} from '../../../core/services/inventory.service';
 import {Observable} from 'rxjs';
 import {InventorySearchResults, PackageModel} from '../../../models/inventory.model';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
+import {CustomProductVariantModel} from "../../../models/custom-product.model";
 const dummyInventory = [
   {type: 'Package', value: 'package'},
   {type: 'Sub Package', value: 'sub_package'},
@@ -25,6 +26,7 @@ export class ProductVariantComponent implements OnInit {
   public selected: any = {};
   public autocompletePackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompletePackage: any = [];
+  public mainPrices: any = new CustomProductVariantModel();
 
   constructor(public inventoryService: InventoryService) {
   }
@@ -63,6 +65,10 @@ export class ProductVariantComponent implements OnInit {
     each(this.vendor.variants, (v) => {
       v.enabled = this.selected.all
     });
+  }
+
+  fillOurPrice(variant) {
+    variant.our_price = variant.list_price;
   }
 
   packageSummary(pack): string {

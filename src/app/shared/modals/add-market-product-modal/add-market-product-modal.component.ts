@@ -87,4 +87,9 @@ export class AddMarketProductModalComponent implements OnInit {
   observableSource(keyword: any) {
     return Observable.of(this.autocompleteProducts).take(1);
   }
+
+  onAddCustomClick() {
+    this.productService.searchText = this.searchText;
+    this.router.navigate(['/product', 'custom']) && this.dismissModal();
+  }
 }

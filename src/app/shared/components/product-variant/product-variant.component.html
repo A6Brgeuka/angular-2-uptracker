@@ -50,7 +50,7 @@
       <div class="col s9 flex">
         <div class="input search select">
           <input class="caret" auto-complete
-                 placeholder="Type"
+                 placeholder="N/A"
                  [source]="observableSourcePackage.bind(this)"
                  (input) = 'onSearchPackage($event)'
                  [list-formatter] = '"plural_unit_name"'
@@ -100,13 +100,28 @@
     </div>
     <div class="row relative">
       <div class="col s4">
-        <app-price-input [placeholder]="'List $'" [(ngModel)]="product.book_price"></app-price-input>
+        <input type="text" [class.dirty]="price.dirty"
+               appCurrencyUsdFormat
+               placeholder="List $"
+               #price="ngModel"
+               (change)="fillOurPrice(mainPrices)"
+               [(ngModel)]="mainPrices.list_price">
       </div>
+
       <div class="col s4">
-        <app-price-input [placeholder]="'Our $'" [(ngModel)]="product.your_price"></app-price-input>
+        <input type="text" [class.dirty]="price.dirty"
+               appCurrencyUsdFormat
+               #price="ngModel"
+               placeholder="Our $"
+               [(ngModel)]="mainPrices.our_price">
       </div>
+
       <div class="col s4">
-        <app-price-input [placeholder]="'Club $'" [(ngModel)]="product.club_price"></app-price-input>
+        <input type="text" [class.dirty]="price.dirty"
+               appCurrencyUsdFormat
+               placeholder="N/A"
+               #price="ngModel"
+               [(ngModel)]="mainPrices.club_price">
       </div>
     </div>
   </div>
@@ -158,15 +173,29 @@
     </div>
 
     <div class="col s2 row-input">
-      <app-price-input [placeholder]="'List $'" [(ngModel)]="variant.list_price"></app-price-input>
+      <input type="text" appCurrencyUsdFormat
+             [class.dirty]="price.dirty"
+             #price="ngModel"
+             placeholder="List $"
+             (change)="fillOurPrice(variant)"
+             [(ngModel)]="variant.list_price">
     </div>
 
     <div class="col s2 row-input">
-      <app-price-input [placeholder]="'Our $'" [(ngModel)]="variant.our_price"></app-price-input>
+      <input type="text"
+             #price="ngModel"
+             [class.dirty]="price.dirty"
+             appCurrencyUsdFormat placeholder="Our $"
+             [(ngModel)]="variant.our_price">
     </div>
 
     <div class="col s2 row-input">
-      <app-price-input [placeholder]="'Club $'" [(ngModel)]="variant.club_price"></app-price-input>
+      <input type="text"
+             [class.dirty]="price.dirty"
+             #price="ngModel"
+             appCurrencyUsdFormat
+             placeholder="N/A"
+             [(ngModel)]="variant.club_price">
     </div>
   </div>
 </div>

@@ -2,7 +2,7 @@ export class PackageModel {
   type: string = null;
   label:string = null;
   value: string = null;
-  qty: number = 1;
+  qty: number = null;
 
   constructor(obj?: any) {
     for (let field in obj) {

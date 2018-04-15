@@ -27,7 +27,7 @@
     </div>
     <div class="col s6">
       <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
-              [routerLink]="['/product', 'custom']" (click)="dismissModal(); $event.stopPropagation()">
+              (click)="onAddCustomClick(); $event.stopPropagation()">
       Add custom product
       </button>
     </div>

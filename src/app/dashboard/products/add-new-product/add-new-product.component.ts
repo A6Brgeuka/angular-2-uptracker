@@ -9,24 +9,17 @@ import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
 import {HelpTextModal} from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 import { Location } from '@angular/common';
-import {CustomProductModel} from '../../../models/custom-product.model';
+import {CustomProductModel, CustomProductVariantModel} from '../../../models/custom-product.model';
 import {ProductVariantsModel} from '../../../models/product-variants.model';
 import {PackageModel} from '../../../models/inventory.model';
 import {ToasterService} from '../../../core/services/toaster.service';
 import {Router} from '@angular/router';
 
-const dummyVariant = {
-  catalog_number: '555-125',
-  list_price: 7,
-  club_price: 8,
-  our_price: 8,
-  enabled: false
-};
-const dummyProductVariants = ['size”, “color”, “texture”, “grit”, “length”, “strength”, “prescription”, “type'];
 const dummyInventory = [
   {type: 'Package', value: 'package'},
   {type: 'Sub Package', value: 'sub_package'},
   {type: 'Consumable Unit', value: 'consumable_unit'}];
+const dummyProductVariants = ['size”, “color”, “texture”, “grit”, “length”, “strength”, “prescription”, “type'];
 
 @Component({
   selector: 'app-add-new-product',
@@ -75,6 +68,7 @@ export class AddNewProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.product.name = this.product.technical_name = this.productService.searchText;
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
@@ -91,16 +85,20 @@ export class AddNewProductComponent implements OnInit {
       .subscribe(productsCat => this.productCategoriesCollection = productsCat);
   }
 
+  observableSourceVariants(keyword: any) {
+    return Observable.of(dummyProductVariants).take(1);
+  }
+
   createVendorVariants() {
     let arr = map(this.productVariants, 'values');
     let newVar = (arr) => {
-      return {...dummyVariant, name: join(arr, ' ')}
+      return {...new CustomProductVariantModel(), name: join(arr, ' ')}
     };
     function recursive() {
-      var r = [], arg = arguments, max = arg.length-1;
+      let r = [], arg = arguments, max = arg.length-1;
       function helper(arr, i) {
-        for (var j=0, l=arg[i].length; j<l; j++) {
-          var a = arr.slice(0); // clone arr
+        for (let j=0, l=arg[i].length; j<l; j++) {
+          let a = arr.slice(0); // clone arr
           a.push(arg[i][j]);
           if (i==max)
             r.push(newVar(a));
@@ -115,16 +113,7 @@ export class AddNewProductComponent implements OnInit {
     return recursive(...arr);
   }
 
-  stepAction = (step) => this.step += step;
-  checkStep = (step) => this.step == step;
   setTechName = (name) => this.product.technical_name = name;
-
-  canProceed() {
-    if (this.step == 0) {
-      return this.product.name;
-    }
-    return true;
-  }
 
   uploadLogo(file: any) {
     const reader = new FileReader();

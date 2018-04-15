@@ -48,6 +48,7 @@ export class ProductService extends ModelService {
   public requestParams: any;
 
   public selectedProduct: ProductModel;
+  public searchText: string;
 
   constructor(
     public injector: Injector,

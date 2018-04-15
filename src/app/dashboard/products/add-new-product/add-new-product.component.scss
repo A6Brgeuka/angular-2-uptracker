@@ -31,10 +31,7 @@
   .flex-doc {
     display: flex;
     justify-content: space-between;
-
-    p {
-      margin: 0;
-      flex: 1;
+    a {
       color: $grey;
     }
   }
@@ -211,7 +208,6 @@
     }
 
     input[type="text"] {
-      padding-right: 20px;
       border: none;
       text-align: center;
       height: 25px;
@@ -259,6 +255,7 @@
     padding: 5px;
     resize: none;
     height:auto;
+    background-color: $white;
     &:focus{
       border-color: $tealish;
       outline:none;
@@ -304,5 +301,10 @@
     .bluebtn {
       min-width: 50px;
     }
+  }
+
+  .input-checkbox > label,
+  .checkbox-input {
+    background-color: $white;
   }
 }

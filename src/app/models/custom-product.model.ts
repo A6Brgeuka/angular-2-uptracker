@@ -34,3 +34,11 @@ export class CustomProductModel {
     }
   }
 }
+
+export class CustomProductVariantModel {
+  catalog_number: number | string  = null;
+  list_price: number | string = 0;
+  our_price: number | string = 0;
+  club_price: number | string = 'N/A';
+  enabled: boolean = false;
+}

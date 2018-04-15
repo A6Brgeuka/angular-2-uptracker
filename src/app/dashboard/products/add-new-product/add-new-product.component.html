@@ -2,9 +2,9 @@
 
   <div class="row">
     <div class="col s2">
-      <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="checkStep(0)"></div>
+      <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="step == 0"></div>
       <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-              (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(0) && !checkStep(3)">
+              (click)="step=step-1;" *ngIf="step != 0">
         <fa name="chevron-left"></fa>
         Back
       </button>
@@ -13,18 +13,18 @@
       <div class="main-title">Add custom product</div>
     </div>
     <div class="col s2 right-align">
-      <button *ngIf="!checkStep(2) && !checkStep(3)" [disabled]="!canProceed()"
-              class="uptracker-form-btn white-text waves-effect waves-light" (click)="stepAction(1)">
+      <button *ngIf="step != 2" [disabled]="!product.name"
+              class="uptracker-form-btn white-text waves-effect waves-light" (click)="step=step+1">
         Next
       </button>
-      <button *ngIf="checkStep(2) && !checkStep(3)"
+      <button *ngIf="step == 2"
               class="uptracker-form-btn white-text waves-effect waves-light" (click)="onSubmit()">
         Save
       </button>
     </div>
   </div>
 
-  <div class="row uptracker-form" *ngIf="checkStep(0)">
+  <div class="row uptracker-form" *ngIf="step == 0">
     <div class="col s12 m3 center-align">
       <div class="col s12">
         <div class="img-container">
@@ -160,7 +160,7 @@
             <div class="file-list">
               <div class="item flex-doc" *ngFor="let file of product.attachments; let i = index;">
                 <a class="flex" href="{{file.public_url}}" target="_blank" *ngIf="file.public_url">
-                  <img src="/assets/img/icon-info.svg" alt="" />{{file.file_name}}
+                  {{file.file_name}}
                 </a>
                 <fa name="trash" (click)="removeFile(i)"></fa>
               </div>
@@ -186,7 +186,7 @@
     <div class="clearfix"></div>
   </div>
 
-  <ng-container *ngIf="checkStep(1)">
+  <ng-container *ngIf="step == 1">
     <div class="row center-align">
       <div class="col s12 title">
         {{product.name}}
@@ -204,6 +204,7 @@
               <input type="text"
                      class="center-align"
                      auto-complete
+                     [source]="observableSourceVariants.bind(this)"
                      placeholder="Type"
                      [(ngModel)] = 'variant.name'
               >
@@ -214,8 +215,9 @@
               <fa name="times-circle" (click)="deleteItem(variant.values, i)"></fa>
             </div>
             <div class="product-variant">
-              <input type="text" [(ngModel)]="variant.newName" placeholder="Add another {{ variant.name | capitalizeFirst}}">
-              <fa name="plus-circle" (click)="addVariant(variant.newName, index)"></fa>
+              <input type="text" [(ngModel)]="variant.newName"
+                     (keydown.enter)="addVariant(variant.newName, index)"
+                     placeholder="Add another {{ variant.name | capitalizeFirst}}">
             </div>
             <fa name="times-circle" class="hide-by-opacity" (click)="deleteVariant(index)"></fa>
           </div>
@@ -237,7 +239,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="checkStep(2)">
+  <ng-container *ngIf="step == 2">
     <div class="row">
       <div class="col s11">
         <app-vendor-search (vendorChosen)="onVendorChosen($event)"></app-vendor-search>

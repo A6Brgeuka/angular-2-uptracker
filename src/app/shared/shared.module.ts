@@ -18,29 +18,29 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
 import { CapitalizeFirstPipe } from "./pipes/capitilizeFirst/capitilizeFirst";
+import {CurrencyUsdPipe} from "./pipes/currency-usd/currency-usd.pipe";
 import * as directives from "./index";
 import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
 import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
-import { PriceInputComponent } from "./components/price-input/price-input.component";
 import { ProductVariantComponent } from "./components/product-variant/product-variant.component";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
   directives.UserDropdownMenuDirective,
+  directives.CurrencyUsdFormatDirective
 ];
-
 
 let pipesArr = [
   IterablePipe,
   InputValueSearch,
-  CapitalizeFirstPipe
+  CapitalizeFirstPipe,
+  CurrencyUsdPipe
 ];
 
 let componentsArr = [
   VendorSearchComponent,
-  PriceInputComponent,
   ProductVariantComponent
 ];
 
@@ -142,6 +142,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   providers: [
     ...MAIN_RESOLVER_PROVIDERS,
     ...ACCOUNT_RESOLVER_PROVIDERS,
+    CurrencyUsdPipe
   ],
   entryComponents: [
     ...modalsArr
