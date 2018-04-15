@@ -54,6 +54,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.reconcileService.getInvoices().subscribe(res => {
+      console.log('----->>>   ', res)
+      res.map(invoice => {
+        invoice.order_items.forEach(item => {
+          item.qty_ = item.qty;
+          item.package_price_ = item.package_price;
+        })
+      })
       this.invoices = res;
       if (this.invoices.length > 0) {
         this.selectedInvoice = this.invoices[0];

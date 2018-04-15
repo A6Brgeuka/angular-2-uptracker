@@ -5,16 +5,14 @@
         <span class="main-title">Reconcile Invoice</span>
       </div>
       <div class="col l3 m6">
-        <div class="select">
-          <ngx-select-dropdown 
-            *ngIf="invoices.length > 0"
-            [config]="selectConfig"
-            [options]="invoices"
-            [(value)]="invoices_"
-            [multiple]="false"
-          >
-          </ngx-select-dropdown>
-        </div>
+        <ngx-select-dropdown 
+          *ngIf="invoices.length > 0"
+          [config]="selectConfig"
+          [options]="invoices"
+          [(value)]="invoices_"
+          [multiple]="false"
+        >
+        </ngx-select-dropdown>
       </div>
     </div>
 
@@ -278,7 +276,7 @@
                 <div class="text-left">{{product.package_price}}</div>
               </div>
               <div class="col s3">
-                <div class="text-left">${{product.dtTop}}</div>
+                <div class="text-left">{{product.dtTop}}</div>
               </div>
               <div class="col s2">
                 <div>${{product.discTop}}</div>
@@ -298,7 +296,7 @@
               </div>
               <div class="col s1">
                 <div class="input mini-input">
-                  <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.qty">
+                  <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.qty_">
                 </div>
               </div>
               <div class="col s2">
@@ -309,7 +307,7 @@
                     type="text"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="product.package_price"
+                    [(ngModel)]="product.package_price_"
                   >
                 </div>
               </div>
