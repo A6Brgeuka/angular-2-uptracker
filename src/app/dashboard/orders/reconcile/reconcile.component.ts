@@ -57,8 +57,14 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.reconcileService.getReconcile().subscribe(res => {
       res.invoice.invoice_date = '04/16/2018';
-      res.invoice.currency = 'USD'
-      res.invoice.total = '200.00'
+      res.invoice.currency = 'USD';
+      res.invoice.total = '$200.00';
+      res.invoice.invoiced_sub_total = '0.00';
+      res.invoice.invoice_credit = '0.00';
+      res.invoice.shipping = '0.00';
+      res.invoice.handling = '0.00';
+      res.invoice.taxes = '0.00';
+      res.invoice.po_discount = '0.00';
 
       res.items.forEach(item => {
         item.package_ = item.package;
@@ -117,20 +123,36 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   changeInvoice() {}
 
+  getTotal() {
+    try {
+      const total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total)
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
+      + parseFloat(this.selectedInvoice.invoice.shipping)
+      + parseFloat(this.selectedInvoice.invoice.handling)
+      + parseFloat(this.selectedInvoice.invoice.taxes)
+      - parseFloat(this.selectedInvoice.invoice.po_discount);
+      return total;
+    } catch (err) {
+      return 0;
+    }
+  }
+
   getCalculatedTotal() {
-    const total = this.selectedInvoice.invoicedSubTotal
-      - this.selectedInvoice.invoiceCredit
-      + this.selectedInvoice.shipping
-      + this.selectedInvoice.handling
-      + this.selectedInvoice.taxes
-      - this.selectedInvoice.discountAmount;
-    // return total;
-    return '$20000.00';
+    try {
+      const total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', ''))
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
+      + parseFloat(this.selectedInvoice.invoice.shipping)
+      + parseFloat(this.selectedInvoice.invoice.handling)
+      + parseFloat(this.selectedInvoice.invoice.taxes)
+      - parseFloat(this.selectedInvoice.invoice.po_discount);
+      return total;
+    } catch (err) {
+      return 0;
+    }
   }
 
   getDiff() {
-    // return this.getCalculatedTotal() - this.selectedInvoice.total;
-    return '$2484.00'
+    return (this.getCalculatedTotal() - this.getTotal()).toFixed(2);
   }
 
   getDollarSign() {
@@ -165,10 +187,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   taxBoardOKClick() {
     this.taxBoardVisible = !this.taxBoardVisible;
 
-    const total = parseFloat(this.selectedInvoice.taxes)
-      + parseFloat(this.selectedInvoice.sales_tax)
-      + parseFloat(this.selectedInvoice.vat);
-    this.selectedInvoice.taxes = total.toString();
+    const total = parseFloat(this.selectedInvoice.invoice.taxes)
+      + parseFloat(this.selectedInvoice.invoice.sales_tax)
+      + parseFloat(this.selectedInvoice.invoice.vat);
+    this.selectedInvoice.invoice.taxes = total.toString();
   }
 
   sortAlphabet(event) {

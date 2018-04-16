@@ -74,7 +74,7 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.invoiced_sub_total"
+                    [(ngModel)]="selectedInvoice.invoice.invoiced_sub_total"
                   >
                 </div>
               </div>
@@ -91,7 +91,7 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.invoice_credit"
+                    [(ngModel)]="selectedInvoice.invoice.invoice_credit"
                   >
                 </div>
               </div>
@@ -108,7 +108,7 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.shipping"
+                    [(ngModel)]="selectedInvoice.invoice.shipping"
                   >
                 </div>
               </div>
@@ -125,7 +125,7 @@
                     placeholder="$5.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.handling"
+                    [(ngModel)]="selectedInvoice.invoice.handling"
                   >
                 </div>
               </div>
@@ -140,7 +140,7 @@
                   name="taxes"
                   currencyMask
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                  [(ngModel)]="selectedInvoice.taxes"
+                  [(ngModel)]="selectedInvoice.invoice.taxes"
                 >
                 <div class="plus" (click)="toggleTaxBoard()">
                   <fa name="plus"></fa>
@@ -154,7 +154,7 @@
                         name="salestax"
                         currencyMask
                         [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                        [(ngModel)]="selectedInvoice.sales_tax"
+                        [(ngModel)]="selectedInvoice.invoice.sales_tax"
                       >
                     </div>
                   </div>
@@ -166,7 +166,7 @@
                         name="vat"
                         currencyMask
                         [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                        [(ngModel)]="selectedInvoice.vat"
+                        [(ngModel)]="selectedInvoice.invoice.vat"
                       >
                     </div>
                   </div>
@@ -183,7 +183,7 @@
             <div class="item">
               <span>P.O. Discount</span>
               <div class="input-discount">
-                <input type="text" name="discount" [(ngModel)]="selectedInvoice.po_discount">
+                <input type="text" name="discount" [(ngModel)]="selectedInvoice.invoice.po_discount">
                 <div class="select">
                   <select
                     class="wide"
@@ -193,7 +193,7 @@
                     [(ngModel)]="selectedInvoice.po_discount_type"
                   >
                     <option value="PERCENT">%</option>
-                    <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                    <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
                     <option value="REWARDS">R</option>
                   </select>
                 </div>
@@ -216,7 +216,7 @@
             <div class="item">
               <span>Total</span>
               <div class="input-calculated">
-                <span class="bold">{{selectedInvoice.invoice.total}}</span>
+                <span class="bold">${{this.getTotal()}}</span>
               </div>
             </div>
           </div>
@@ -224,7 +224,7 @@
             <div class="item">
               <span>Calculated Total</span>
               <div class="input-calculated">
-                {{this.getCalculatedTotal()}}
+                ${{this.getCalculatedTotal()}}
               </div>
             </div>
           </div>
@@ -232,7 +232,7 @@
             <div class="item">
               <span class="diff-red">Diff</span>
               <div class="input-calculated">
-                <span class="diff-red">{{this.getDiff()}}</span>
+                <span class="diff-red">${{this.getDiff()}}</span>
               </div>
             </div>
           </div>
@@ -377,7 +377,7 @@
                       [(ngModel)]="selectedInvoice.discountType"
                     >
                       <option value="PERCENT">%</option>
-                      <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                      <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
                     </select>
                   </div>
                 </div>
@@ -481,7 +481,7 @@
                   [(ngModel)]="board.discountType"
                 >
                   <option value="PERCENT">%</option>
-                  <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                  <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
                 </select>
               </div>
             </div>
