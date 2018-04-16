@@ -274,9 +274,9 @@
         <div class="col s8">
           <div class="row mrg-btm-0">
             <div class="col s2">Pkg</div>
-            <div class="col s1">QTY</div>
+            <div class="col s2">QTY</div>
             <div class="col s2">Pkg Price</div>
-            <div class="col s3">Discount</div>
+            <div class="col s2">Discount</div>
             <div class="col s2">Disc Price</div>
             <div class="col s2">Total Price</div>
           </div>
@@ -312,13 +312,13 @@
               <div class="col s2">
                 <div class="text-left input-header">{{product.package}}</div>
               </div>
-              <div class="col s1">
+              <div class="col s2">
                 <div class="text-left mini-input input-header">{{product.qty}}</div>
               </div>
               <div class="col s2">
                 <div class="text-left input-header">{{product.package_price}}</div>
               </div>
-              <div class="col s3">
+              <div class="col s2">
                 <div class="text-left input-header">{{product.discount}}</div>
               </div>
               <div class="col s2">
@@ -337,7 +337,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col s1">
+              <div class="col s2">
                 <div class="input mini-input">
                   <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.qty_">
                 </div>
@@ -354,7 +354,7 @@
                   >
                 </div>
               </div>
-              <div class="col s3">
+              <div class="col s2">
                 <div class="discount">
                   <div class="input">
                     <input
