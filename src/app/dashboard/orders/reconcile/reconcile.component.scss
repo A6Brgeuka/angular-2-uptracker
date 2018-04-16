@@ -416,6 +416,9 @@
         background-color: white;
         font-family: 'Roboto';
         margin-top: 0;
+        &:focus {
+          border-color: #9a9c9e;
+        }
       }
       .flex-center {
         padding-top: 5px;
