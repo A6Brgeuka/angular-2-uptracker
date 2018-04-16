@@ -142,7 +142,7 @@
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                   [(ngModel)]="selectedInvoice.taxes"
                 >
-                <div class="plus" (click)="clickTaxBoard()">
+                <div class="plus" (click)="toggleTaxBoard()">
                   <fa name="plus"></fa>
                 </div>
                 <div class="tax-board" *ngIf="taxBoardVisible">
@@ -171,7 +171,7 @@
                     </div>
                   </div>
                   <div class="row button">
-                    <button class="btn white-text" (click)="taxBoardClick()">
+                    <button class="btn white-text" (click)="taxBoardOKClick()">
                       <span>OK</span>
                     </button>
                   </div>

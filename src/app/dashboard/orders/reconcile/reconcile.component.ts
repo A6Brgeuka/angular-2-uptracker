@@ -184,8 +184,17 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.selectedInvoice.discountType = event;
   }
 
-  taxBoardClick() {
-    this.taxBoardVisible = false;
+  toggleTaxBoard() {
+    this.taxBoardVisible = !this.taxBoardVisible;
+  }
+
+  taxBoardOKClick() {
+    this.taxBoardVisible = !this.taxBoardVisible;
+
+    const total = parseFloat(this.selectedInvoice.taxes)
+      + parseFloat(this.selectedInvoice.sales_tax)
+      + parseFloat(this.selectedInvoice.vat);
+    this.selectedInvoice.taxes = total.toString();
   }
 
   sortAlphabet(event) {
@@ -203,14 +212,5 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       return true;
     }
     return toLower(product.item_name).indexOf(toLower(this.filter)) > -1;
-  }
-
-  clickTaxBoard() {
-    this.taxBoardVisible = !this.taxBoardVisible;
-
-    const total = parseFloat(this.selectedInvoice.taxes)
-      + parseFloat(this.selectedInvoice.sales_tax)
-      + parseFloat(this.selectedInvoice.vat);
-    this.selectedInvoice.taxes = total.toString();
   }
 }
