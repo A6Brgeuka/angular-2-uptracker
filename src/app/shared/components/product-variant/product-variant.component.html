@@ -40,7 +40,10 @@
     </div>
   </div>
   <div class="col m4 l3">
-    <div class="ttl">Inner Package ?</div>
+    <div class="ttl">
+      Inner Package
+      <fa [name]="'question-circle'"></fa>
+    </div>
     <div class="row relative">
       <div class="col s3">
         <div class="input">
@@ -95,33 +98,32 @@
     </div>
   </div>
   <div class="col m12 l3 offset-l1">
-    <div class="ttl">
-      Default Package Pricing
-    </div>
     <div class="row relative">
       <div class="col s4">
-        <input type="text" [class.dirty]="price.dirty"
-               appCurrencyUsdFormat
-               placeholder="List $"
-               #price="ngModel"
-               (change)="fillOurPrice(mainPrices)"
-               [(ngModel)]="mainPrices.list_price">
+        <div class="ttl">List $</div>
+        <app-price-input
+          [placeholder]="'List $'"
+          [(ngModel)]="mainPrices.list_price"
+          (ngModelChange)='fillPrices(mainPrices, "list_price", true)'>
+        </app-price-input>
       </div>
 
       <div class="col s4">
-        <input type="text" [class.dirty]="price.dirty"
-               appCurrencyUsdFormat
-               #price="ngModel"
-               placeholder="Our $"
-               [(ngModel)]="mainPrices.our_price">
+        <div class="ttl">Our $</div>
+        <app-price-input
+          [placeholder]="'Our $'"
+          [(ngModel)]="mainPrices.our_price"
+          (ngModelChange)='fillPrices(mainPrices, "our_price", true)'>
+        </app-price-input>
       </div>
 
       <div class="col s4">
-        <input type="text" [class.dirty]="price.dirty"
-               appCurrencyUsdFormat
-               placeholder="N/A"
-               #price="ngModel"
-               [(ngModel)]="mainPrices.club_price">
+        <div class="ttl">Club $</div>
+        <app-price-input
+          [placeholder]="'Club $'"
+          [(ngModel)]="mainPrices.club_price"
+          (ngModelChange)='fillPrices(mainPrices, "club_price", true)'>
+        </app-price-input>
       </div>
     </div>
   </div>
@@ -162,41 +164,34 @@
     <input type="text" [(ngModel)]="variant.name">
   </div>
   <div class="col s7">
-    <div class="col s3 row-input">
+    <div class="col s3 row-input relative">
       <input type="text" [(ngModel)]="variant.barcode" placeholder="Barcode">
-      <!--
-            <app-scanner ></app-scanner>
-      -->
+      <app-scanner (searchText)="variant.barcode = $event"></app-scanner>
     </div>
     <div class="col s3 row-input">
       <input type="text" [(ngModel)]="variant.catalog_number" placeholder="Catalog #">
     </div>
 
     <div class="col s2 row-input">
-      <input type="text" appCurrencyUsdFormat
-             [class.dirty]="price.dirty"
-             #price="ngModel"
-             placeholder="List $"
-             (change)="fillOurPrice(variant)"
-             [(ngModel)]="variant.list_price">
+      <app-price-input
+        [placeholder]="'List $'"
+        [(ngModel)]="variant.list_price"
+        (ngModelChange)='fillPrices(variant, "list_price")'>
+      </app-price-input>
     </div>
-
     <div class="col s2 row-input">
-      <input type="text"
-             #price="ngModel"
-             [class.dirty]="price.dirty"
-             appCurrencyUsdFormat placeholder="Our $"
-             [(ngModel)]="variant.our_price">
+      <app-price-input
+        [placeholder]="'Our $'"
+        [(ngModel)]="variant.our_price">
+      </app-price-input>
     </div>
-
     <div class="col s2 row-input">
-      <input type="text"
-             [class.dirty]="price.dirty"
-             #price="ngModel"
-             appCurrencyUsdFormat
-             placeholder="N/A"
-             [(ngModel)]="variant.club_price">
+      <app-price-input
+        [placeholder]="'Club $'"
+        [(ngModel)]="variant.club_price">
+      </app-price-input>
     </div>
   </div>
+  <div class="divider-line"></div>
 </div>
 

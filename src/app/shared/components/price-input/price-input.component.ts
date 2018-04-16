@@ -1,8 +1,6 @@
-import {Component, forwardRef, OnInit, Input} from '@angular/core';
+import {Component, forwardRef, Input, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-
-const noop = () => {
-};
+import {CurrencyUsdPipe} from "../../pipes/currency-usd/currency-usd.pipe";
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -16,67 +14,51 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   styleUrls: ['./price-input.component.scss'],
   providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
 })
-export class PriceInputComponent implements OnInit, ControlValueAccessor {
+export class PriceInputComponent implements ControlValueAccessor, AfterViewInit {
   private _innerValue: any;
+  private el: any;
   @Input('placeholder') public placeholder: any;
+  @ViewChild("inputEl") inputEl: ElementRef;
 
-  private onTouchedCallback: () => void = noop;
-  private onChangeCallback: (_: any) => void = noop;
-
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private formatCurrencyPipe: CurrencyUsdPipe) {
   }
 
-  get value(): any {
-    return this._innerValue;
+  ngAfterViewInit() {
+    this.el = this.inputEl.nativeElement;
+    this.el.value = this.formatCurrencyPipe.transform(this.el.value);
   }
 
-  set value(v: any) {
-    if (v !== this._innerValue) {
-      this._innerValue = v;
-      this.onChangeCallback(v);
-    }
+  get value() {
+    return this._innerValue
   }
 
-  onBlur() {
-    this.onTouchedCallback();
+  set value(v) {
+    this._innerValue = v;
   }
 
   writeValue(value: any) {
-    if (value !== this._innerValue) {
-      this.onChangeListPrice(value)
-    }
+    if (value == 'N/A')
+      return this._innerValue = value;
+    this._innerValue = this.formatCurrencyPipe.transform(value);
+    this.propagateChanges(this._innerValue);
   }
 
-  registerOnChange(fn: any) {
-    this.onChangeCallback = fn;
+  propagateChanges = (...any) => {
+  };
+
+  registerOnChange(fn: any): void {
+    this.propagateChanges = fn;
   }
 
   registerOnTouched(fn: any) {
-    this.onTouchedCallback = fn;
   }
 
-  changePrice(val) {
-    const regex = /[\d\.]*/g;
-    const m: any = regex.exec(val);
-    regex.lastIndex++;
-    const m1: any = regex.exec(val);
-    if (m && m[0]) {
-      val = parseFloat(m[0] ? m[0] : '0');
-    } else if (m1 && m1[0]) {
-      val = parseFloat(m1[0] ? m1[0] : '0');
-    }
-    if (!val) {
-      val = 0;
-    }
-    return val;
+  onFocus() {
+    this.el.select();
   }
 
-  onChangeListPrice(val) {
-    const value = this.changePrice(val);
-    this._innerValue = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  onBlur($event) {
+    this.writeValue($event.target.value);
   }
-
 
 }

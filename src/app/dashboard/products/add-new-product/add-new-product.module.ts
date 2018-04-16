@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
 
 import { AddNewProductComponent } from './add-new-product.component';
-import {ViewProductModalModule} from '../view-product-modal/view-product-modal.module';
 import {AppSharedModule} from '../../../shared/shared.module';
-import {AddCustomProductModule} from '../../../shared/components/add-custom-product.module';
+import {ProductVariantModule} from "../../../shared/components/product-variant/product-variant.module";
 
 @NgModule({
   declarations: [
     AddNewProductComponent,
   ],
   imports: [
-    ViewProductModalModule,
     AppSharedModule,
-    AddCustomProductModule
+    ProductVariantModule
   ],
   providers: [],
   exports: [

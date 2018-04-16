@@ -4,6 +4,7 @@ import {AddProductFromVendorStep1Component} from './step1/add-product-from-vendo
 import {AddProductFromVendorStep2Component} from './step2/add-product-from-vendor-step2.component';
 import {AddProductFromVendorComponent} from "./add-product-from-vendor.component";
 import {AppSharedModule} from '../../../shared/shared.module';
+import {ProductVariantModule} from "../../../shared/components/product-variant/product-variant.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {AppSharedModule} from '../../../shared/shared.module';
     AddProductFromVendorComponent
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    ProductVariantModule
   ],
   providers: [],
   entryComponents: [

@@ -18,16 +18,17 @@ export class CurrencyUsdPipe implements PipeTransform {
   }
   transform(value: string, fractionSize:number = 0 ): string {
 
-    if(parseFloat(value) % 1 != 0)
+    let parsed = value ? parseFloat(value.replace(/[^0-9-.]/g, '')) : 0;
+    if(parsed % 1 != 0)
     {
       fractionSize = 2;
     }
-    let [ integer, fraction = ""] = (parseFloat(value).toString() || "").toString().split(".");
+    let [ integer, fraction = ""] = (parsed.toString() || "").toString().split(".");
 
     fraction = fractionSize > 0
       ? this.decimal_separator + (fraction+padding).substring(0, fractionSize) : "";
     integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, this.thousands_separator);
-    if(isNaN(parseFloat(integer)))
+    if(isNaN(parsed))
     {
       integer = "0";
     }

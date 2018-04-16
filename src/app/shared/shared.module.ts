@@ -24,12 +24,12 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
 import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
-import { ProductVariantComponent } from "./components/product-variant/product-variant.component";
+import {PriceInputComponent} from "./components/price-input/price-input.component";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
   directives.UserDropdownMenuDirective,
-  directives.CurrencyUsdFormatDirective
+  directives.OnlyNumbersDirective
 ];
 
 let pipesArr = [
@@ -41,7 +41,7 @@ let pipesArr = [
 
 let componentsArr = [
   VendorSearchComponent,
-  ProductVariantComponent
+  PriceInputComponent
 ];
 
 // resolvers

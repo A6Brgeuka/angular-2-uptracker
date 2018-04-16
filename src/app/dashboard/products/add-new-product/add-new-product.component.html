@@ -13,11 +13,11 @@
       <div class="main-title">Add custom product</div>
     </div>
     <div class="col s2 right-align">
-      <button *ngIf="step != 2" [disabled]="!product.name"
+      <button *ngIf="step != 2" [disabled]="!canProceed()"
               class="uptracker-form-btn white-text waves-effect waves-light" (click)="step=step+1">
         Next
       </button>
-      <button *ngIf="step == 2"
+      <button *ngIf="step == 2" [disabled]="productNotValid()"
               class="uptracker-form-btn white-text waves-effect waves-light" (click)="onSubmit()">
         Save
       </button>
@@ -135,6 +135,7 @@
                 [(ngModel)]="product.category"
                 materialize="material_select"
                 [materializeSelectOptions]="productCategoriesCollection">
+                <option value="">N/A</option>
                 <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
                 </option>
               </select>
@@ -204,7 +205,8 @@
               <input type="text"
                      class="center-align"
                      auto-complete
-                     [source]="observableSourceVariants.bind(this)"
+                     [source]="dummyProductVariants"
+                     [accept-user-input]="true"
                      placeholder="Type"
                      [(ngModel)] = 'variant.name'
               >
@@ -225,13 +227,14 @@
         <div class="col s4 m2">
           <div class="wrap">
             <div class="select">
-              <input class="overlay-input" type="text" placeholder="Variant name" [(ngModel)]="newVariant">
-              <select [(ngModel)]="newVariant"
-                      materialize="material_select"
-                      disabled>
-                <option [value]="newVariant">{{ newVariant}}</option>
-              </select>
-              <fa name="plus-circle" class="add-section" (click)="onProductVariantSelect(newVariant)"></fa>
+              <input class="center-align" type="text"
+                     auto-complete
+                     placeholder="Variant name"
+                     [(ngModel)]="newVariant"
+                     [source]="availableVariants"
+                     [accept-user-input]="true"
+                     (keydown.enter)="onProductVariantSelect(newVariant)">
+              <fa name="plus-circle" (click)="onProductVariantSelect(newVariant)"></fa>
             </div>
           </div>
         </div>
@@ -255,8 +258,7 @@
     <app-product-variant
       *ngFor="let vendor of product.vendor_variants; let i = index"
       [vendor]="vendor"
-      (vendorDelete)="onVendorDelete(i)"
-    >
+      (vendorDelete)="onVendorDelete(i)">
     </app-product-variant>
   </ng-container>
 </div>

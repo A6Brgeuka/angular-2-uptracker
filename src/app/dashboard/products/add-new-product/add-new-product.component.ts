@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {each, map, join} from 'lodash';
+import {each, map, join, every, difference} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -16,10 +16,9 @@ import {ToasterService} from '../../../core/services/toaster.service';
 import {Router} from '@angular/router';
 
 const dummyInventory = [
-  {type: 'Package', value: 'package'},
+  {type: 'Package', value: 'package', qty: 1},
   {type: 'Sub Package', value: 'sub_package'},
   {type: 'Consumable Unit', value: 'consumable_unit'}];
-const dummyProductVariants = ['size”, “color”, “texture”, “grit”, “length”, “strength”, “prescription”, “type'];
 
 @Component({
   selector: 'app-add-new-product',
@@ -43,15 +42,16 @@ export class AddNewProductComponent implements OnInit {
   public newVariant: string = '';
   public logo: any;
   public logoPreview: string = null;
+  public dummyProductVariants = ["Size", "Color", "Texture", "Grit", "Length", "Strength", "Prescription", "Type"];
   public productVariants: ProductVariantsModel[] = [
     {
-      name: 'color',
-      values: ['green', 'blue', 'navy'],
+      name: 'Color',
+      values: ['Green', 'Blue', 'Navy'],
       newName: ''
     },
     {
-      name: 'size',
-      values: ['s', 'm', 'xl'],
+      name: 'Size',
+      values: ['S', 'M', 'XL'],
       newName: ''
     }
   ];
@@ -85,10 +85,6 @@ export class AddNewProductComponent implements OnInit {
       .subscribe(productsCat => this.productCategoriesCollection = productsCat);
   }
 
-  observableSourceVariants(keyword: any) {
-    return Observable.of(dummyProductVariants).take(1);
-  }
-
   createVendorVariants() {
     let arr = map(this.productVariants, 'values');
     let newVar = (arr) => {
@@ -109,7 +105,6 @@ export class AddNewProductComponent implements OnInit {
       helper([], 0);
       return r;
     }
-
     return recursive(...arr);
   }
 
@@ -183,8 +178,9 @@ export class AddNewProductComponent implements OnInit {
   onSubmit() {
     const product = this.formatProduct(this.product);
     this.productService.addCustomProduct(product)
-      .subscribe((res) => {
+      .subscribe((product) => {
         this.toasterService.pop('', 'Product successfully added');
+        this.productService.addToCollection$.next([product]);
         this.router.navigate(['/products']);
       });
   }
@@ -192,6 +188,28 @@ export class AddNewProductComponent implements OnInit {
   formatProduct(product) {
     const attachments = map(product.attachments, 'public_url');
     return {...product, attachments};
+  }
+
+  canProceed() {
+    if (this.step == 0) {
+      return this.product.name;
+    }
+    if (this.step == 1) {
+      return this.validVariants();
+    }
+  }
+
+  get availableVariants() {
+    return difference(this.dummyProductVariants, map(this.productVariants, 'name'));
+  }
+
+  validVariants() {
+    return every(this.productVariants, 'name') &&
+      every(this.productVariants, (v) => v.values.length > 0);
+  }
+
+  productNotValid() {
+    return this.product.vendor_variants.length < 1;
   }
 
   onVendorChosen(customVendor) {
