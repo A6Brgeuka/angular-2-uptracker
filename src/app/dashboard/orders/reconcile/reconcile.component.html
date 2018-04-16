@@ -135,18 +135,40 @@
             <div class="item">
               <span>Taxes</span>
               <div class="input-taxes">
-                <input type="text" name="taxes" [(ngModel)]="selectedInvoice.taxes">
-                <div class="plus" (click)="taxBoardVisible = !taxBoardVisible">
+                <input
+                  type="text"
+                  name="taxes"
+                  currencyMask
+                  [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                  [(ngModel)]="selectedInvoice.taxes"
+                >
+                <div class="plus" (click)="clickTaxBoard()">
                   <fa name="plus"></fa>
                 </div>
                 <div class="tax-board" *ngIf="taxBoardVisible">
                   <div class="row">
                     <div class="col s5"><span>Sales Tax</span></div>
-                    <div class="col s7 input"><input type="text" name="salestax" value="$5.00"></div>
+                    <div class="col s7 input">
+                      <input
+                        type="text"
+                        name="salestax"
+                        currencyMask
+                        [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                        [(ngModel)]="selectedInvoice.sales_tax"
+                      >
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col s5"><span>VAT</span></div>
-                    <div class="col s7 input"><input type="text" name="vat" value="$5.00"></div>
+                    <div class="col s7 input">
+                      <input
+                        type="text"
+                        name="vat"
+                        currencyMask
+                        [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                        [(ngModel)]="selectedInvoice.vat"
+                      >
+                    </div>
                   </div>
                   <div class="row button">
                     <button class="btn white-text" (click)="taxBoardClick()">
