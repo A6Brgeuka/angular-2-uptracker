@@ -285,6 +285,9 @@
           background-color: $white;
           font-family: 'Roboto';
           margin: 0;
+          &:focus {
+            border-color: #9a9c9e;
+          }
         }
       }
     }
