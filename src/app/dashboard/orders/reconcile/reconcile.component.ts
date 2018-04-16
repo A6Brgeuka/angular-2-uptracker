@@ -31,7 +31,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public panelVisible: boolean = false
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
-  public selectedInvoice: any = {};
+  public selectedInvoice: any = {invoice: {}, items: [], vendors: {}};
   public DOLLARSIGNS: any = {
     USD: '$',
     CAD: '$',
@@ -56,44 +56,26 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.reconcileService.getReconcile().subscribe(res => {
+      res.invoice.invoice_date = '04/16/2018';
+      res.invoice.currency = 'USD'
+      res.invoice.total = '200.00'
+
+      res.items.forEach(item => {
+        item.package_ = item.package;
+        item.received_qty_ = item.received_qty;
+        item.package_price_ = item.package_price.replace('$', '');
+        item.discounted_price_ = item.discounted_price.replace('$', '');
+        item.total_ = item.total;
+
+        item.disc_price = '$100'
+        item.disc_price_ = item.disc_price;
+      })
+
+      this.invoices = [res];
+      this.invoices_ = _.cloneDeep(this.invoices);
+      this.selectedInvoice = this.invoices[0];
       console.log('-------------<<<   ', res)
     })
-    this.reconcileService.getInvoices().subscribe(res => {
-      console.log('------------->>>   ', res)
-      // res.map(invoice => {
-      //   invoice.currency = 'USD';
-      //   invoice.calculated_sub_total = '$250';
-      //   invoice.invoiced_sub_total = '200';
-      //   invoice.invoice_credit = '5.00';
-      //   invoice.shipping = '20';
-      //   invoice.handling = '5';
-      //   invoice.taxes = '0.00';
-      //   invoice.po_discount = '20.00';
-      //   invoice.po_discount_type = 'PERCENT';
-      //   invoice.calculated_total = '$2000.00';
-
-      //   invoice.sales_tax = '0.00';
-      //   invoice.vat = '0.00';
-
-      //   invoice.order_items.forEach(item => {
-      //     item.package = 'Box';
-      //     item.package_ = item.package;
-      //     item.qty_ = item.qty;
-      //     item.package_price_ = item.package_price.replace('$', '');
-      //     item.discount = '0.00';
-      //     item.discount_ = '5.00';
-      //     item.disc_price = '$20.00';
-      //     item.disc_price_ = '$15.00';
-      //     item.total_ = item.total;
-      //   })
-      // })
-      this.invoices = res;
-      this.invoices_ = _.cloneDeep(res);
-      if (this.invoices.length > 0) {
-        this.selectedInvoice = this.invoices[0];
-      }
-    });
-
   }
   
   ngOnDestroy() {

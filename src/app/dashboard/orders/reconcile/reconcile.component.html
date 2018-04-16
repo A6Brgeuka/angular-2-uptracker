@@ -25,7 +25,7 @@
             <input
               type="text"
               name="datePicker"
-              [(ngModel)]="selectedInvoice.placed_date"
+              [(ngModel)]="selectedInvoice.invoice.invoice_date"
             />
             <div class="calendar">
               <img src="/assets/img/icon-calendar.png" alt="" />
@@ -41,7 +41,7 @@
                   materialize="material_select"
                   [materializeSelectOptions]=""
                   name="currency"
-                  [(ngModel)]="selectedInvoice.currency"
+                  [(ngModel)]="selectedInvoice.invoice.currency"
                   (ngModelChange)="dollarSignChange($event)"
                 >
                   <option value="USD">USD</option>
@@ -59,7 +59,7 @@
             <div class="item">
               <span>Calculated Sub-Total</span>
               <div class="input-calculated">
-                {{selectedInvoice.calculated_sub_total}}
+                {{selectedInvoice.invoice.calculated_sub_total}}
               </div>
             </div>
           </div>
@@ -216,7 +216,7 @@
             <div class="item">
               <span>Total</span>
               <div class="input-calculated">
-                <span class="bold">{{selectedInvoice.total}}</span>
+                <span class="bold">{{selectedInvoice.invoice.total}}</span>
               </div>
             </div>
           </div>
@@ -286,7 +286,7 @@
       </div>
     </div>
 
-    <ng-container *ngFor="let product of selectedInvoice.order_items; let i = index">
+    <ng-container *ngFor="let product of selectedInvoice.items; let i = index">
       <div class="item row"  *ngIf="filtered(product)">
         <div class="table-item flex-center">
           <div class="col s3 left-align flex-center">
@@ -301,7 +301,9 @@
               />
               <label for="selectProduct{{i}}"></label>
             </div>
-            <div class="product-pic"></div>
+            <div class="product-pic">
+              <img src="{{product.image}}" alt="PRODUCT" />
+            </div>
             <div class="left">
               <a>{{product.item_name}}</a>
             </div>
@@ -313,13 +315,13 @@
                 <div class="text-left input-header">{{product.package}}</div>
               </div>
               <div class="col s2">
-                <div class="text-left mini-input input-header">{{product.qty}}</div>
+                <div class="text-left mini-input input-header">{{product.received_qty}}</div>
               </div>
               <div class="col s2">
                 <div class="text-left input-header">{{product.package_price}}</div>
               </div>
               <div class="col s2">
-                <div class="text-left input-header">{{product.discount}}</div>
+                <div class="text-left input-header">{{product.discounted_price}}</div>
               </div>
               <div class="col s2">
                 <div>{{product.disc_price}}</div>
@@ -339,7 +341,7 @@
               </div>
               <div class="col s2">
                 <div class="input mini-input">
-                  <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.qty_">
+                  <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.received_qty_">
                 </div>
               </div>
               <div class="col s2">
@@ -363,7 +365,7 @@
                       type="text"
                       currencyMask
                       [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                      [(ngModel)]="product.discount_"
+                      [(ngModel)]="product.discounted_price_"
                     >
                   </div>
                   <div class="select">
