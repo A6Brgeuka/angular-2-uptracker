@@ -245,15 +245,15 @@
 
     <div class="list is-grid-view">
       <div class="heading row">
-        <div class="col s4 left-align">
+        <div class="col s3 left-align">
           <div class="left product">
             Product
           </div>
         </div>
-        <div class="col s7">
+        <div class="col s8">
           <div class="row mrg-btm-0">
             <div class="col s2">Pkg</div>
-            <div class="col s2">QTY</div>
+            <div class="col s1">QTY</div>
             <div class="col s2">Pkg Price</div>
             <div class="col s3">Discount</div>
             <div class="col s2">Disc Price</div>
@@ -268,7 +268,7 @@
     <ng-container *ngFor="let product of selectedInvoice.order_items; let i = index">
       <div class="item row">
         <div class="table-item flex-center">
-          <div class="col s4 left-align flex-center">
+          <div class="col s3 left-align flex-center">
             <div class="input-checkbox left checkbox">
               <input
                 type="checkbox"
@@ -286,12 +286,12 @@
             </div>
           </div>
 
-          <div class="col s7">
+          <div class="col s8">
             <div class="row mrg-btm-0 flex-center">
               <div class="col s2">
                 <div class="text-left">{{product.pkgTop}}</div>
               </div>
-              <div class="col s2">
+              <div class="col s1">
                 <div class="text-left mini-input">{{product.qty}}</div>
               </div>
               <div class="col s2">
@@ -316,7 +316,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col s2">
+              <div class="col s1">
                 <div class="input mini-input">
                   <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.qty_">
                 </div>
