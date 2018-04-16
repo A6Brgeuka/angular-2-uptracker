@@ -447,7 +447,7 @@
       .select {
         .select-wrapper {
           .caret + input {
-            background-position: 90%;
+            background-position: 95%;
           }
           input {
             border-color: #9a9c9e !important;
@@ -471,7 +471,7 @@
         .select {
           width: 40%;
           .select-wrapper {
-            padding-right: 10px;
+            padding-right: 5px;
           }
           input {
             background-color: #f5f6f7;
@@ -541,7 +541,6 @@
       .title {
         white-space: nowrap;
         line-height: 30px;
-        margin-left: 10px;
         margin-bottom: 30px;
         font-size: 20px;
         font-family: Ubuntu;
@@ -552,6 +551,7 @@
         .product-list {
           border-bottom: 1px solid $light-grey;
           margin-bottom: 20px;
+          font-family: 'Roboto';
           .remove {
             display: flex;
             justify-content: flex-end;
