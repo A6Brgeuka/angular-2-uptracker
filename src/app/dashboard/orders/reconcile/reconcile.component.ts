@@ -61,8 +61,15 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       console.log('---->>>>>>>   ', res);
       res.map(invoice => {
         invoice.order_items.forEach(item => {
+          item.package = 'Box';
+          item.package_ = item.package;
           item.qty_ = item.qty;
-          item.package_price_ = item.package_price;
+          item.package_price_ = item.package_price.replace('$', '');
+          item.discount = '0.00';
+          item.discount_ = '5.00';
+          item.disc_price = '$20.00';
+          item.disc_price_ = '$15.00';
+          item.total_ = item.total;
         })
       })
       this.invoices = res;

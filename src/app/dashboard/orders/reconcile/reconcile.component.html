@@ -287,19 +287,19 @@
           <div class="col s8">
             <div class="row mrg-btm-0 flex-center">
               <div class="col s2">
-                <div class="text-left">{{product.pkgTop}}</div>
+                <div class="text-left input-header">{{product.package}}</div>
               </div>
               <div class="col s1">
-                <div class="text-left mini-input">{{product.qty}}</div>
+                <div class="text-left mini-input input-header">{{product.qty}}</div>
               </div>
               <div class="col s2">
-                <div class="text-left">{{product.package_price}}</div>
+                <div class="text-left input-header">{{product.package_price}}</div>
               </div>
               <div class="col s3">
-                <div class="text-left">{{product.dtTop}}</div>
+                <div class="text-left input-header">{{product.discount}}</div>
               </div>
               <div class="col s2">
-                <div>${{product.discTop}}</div>
+                <div>{{product.disc_price}}</div>
               </div>
               <div class="col s2">
                 <div>{{product.total}}</div>
@@ -308,7 +308,7 @@
             <div class="row mrg-btm-0">
               <div class="col s2">
                 <div class="select">
-                  <select title="Pkg" name="pkg" [(ngModel)]="product.pkgBottom" materialize="material_select">
+                  <select title="Pkg" name="pkg" [(ngModel)]="product.package_" materialize="material_select">
                     <option value="Box">Box</option>
                     <option value="Glove">Glove</option>
                   </select>
@@ -340,7 +340,7 @@
                       type="text"
                       currencyMask
                       [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                      [(ngModel)]="product.dtBottom"
+                      [(ngModel)]="product.discount_"
                     >
                   </div>
                   <div class="select">
@@ -358,10 +358,10 @@
                 </div>
               </div>
               <div class="col s2">
-                <div>${{product.discBottom}}</div>
+                <div class="lined">${{product.disc_price_}}</div>
               </div>
               <div class="col s2">
-                <div>{{product.total}}</div>
+                <div class="lined">{{product.total_}}</div>
               </div>
             </div>
           </div>
