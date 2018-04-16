@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as moment from 'moment';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
+import * as _ from 'lodash';
 import { ReconcileService } from '../../../core/services/reconcile.service';
 
 @Component({
@@ -87,7 +88,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       //   })
       // })
       this.invoices = res;
-      this.invoices_ = res;
+      this.invoices_ = _.cloneDeep(res);
       if (this.invoices.length > 0) {
         this.selectedInvoice = this.invoices[0];
       }
