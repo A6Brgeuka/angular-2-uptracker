@@ -222,7 +222,7 @@
         <input type="text" name="filterInput" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
       </div>
       <div class="select">
-        <select title="sort by" name="sort" [(ngModel)]="sort" materialize="material_select">
+        <select title="sort by" name="sort" [(ngModel)]="sort" materialize="material_select"  (ngModelChange)="sortAlphabet($event)">
           <option value="A-Z">A-Z</option>
           <option value="Z-A">Z-A</option>
         </select>

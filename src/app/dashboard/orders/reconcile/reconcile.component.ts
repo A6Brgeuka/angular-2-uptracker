@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as moment from 'moment';
-import { any } from 'ramda'
+import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
 import { ReconcileService } from '../../../core/services/reconcile.service';
 
 @Component({
@@ -167,5 +167,16 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   taxBoardClick() {
     this.taxBoardVisible = false;
+  }
+
+  sortAlphabet(event) {
+    if (equals(this.sort, 'A-Z')) {
+      console.log('****************')
+      const ascComparator = comparator((a, b) => gt(prop('item_name', b), prop('item_name', a)));
+      this.selectedInvoice.order_items = sort(ascComparator, this.selectedInvoice.order_items);
+    } else {
+      const desComparator = comparator((a, b) => gt(prop('item_name', a), prop('item_name', b)));
+      this.selectedInvoice.order_items = sort(desComparator, this.selectedInvoice.order_items);
+    }
   }
 }
