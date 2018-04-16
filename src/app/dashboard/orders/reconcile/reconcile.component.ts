@@ -39,7 +39,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
   public board: any = {}
   public selectConfig = { displayKey: "order_number", search: true };
-  public taxBoardVisible = true;
+  public taxBoardVisible = false;
 
   constructor(
     public reconcileService: ReconcileService

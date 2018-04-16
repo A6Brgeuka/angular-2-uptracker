@@ -118,6 +118,7 @@
               }
               ul {
                 border: 1px solid #9a9c9e !important;
+                top: 35px !important;
               }
             }
           }
@@ -184,6 +185,7 @@
                   background-color: $tealish;
                   line-height: 32px;
                   margin-right: 10px;
+                  min-width: 80px;
                   height: 30px;
                   &:hover {
                     box-shadow: none;
@@ -221,6 +223,7 @@
                 }
                 ul {
                   border: 1px solid #9a9c9e !important;
+                  top: 35px !important;
                 }
               }
             }
