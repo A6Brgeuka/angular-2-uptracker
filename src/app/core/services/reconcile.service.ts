@@ -51,6 +51,6 @@ export class ReconcileService extends ModelService {
 
   getReconcile() {
     // return this.restangular.one('inventory', 'search').customGET('', {'q': keyword}).map((res: any) => res.data);
-    return this.restangular.one('reconcile').customGET('', {item_ids: '5ad0ed36587120000d926cde'}).map(res => res.data);
+    return this.restangular.one('reconcile').customGET('', {item_ids: '5ad0ed4e587120000d926ce2'}).map(res => res.data);
   }
 }

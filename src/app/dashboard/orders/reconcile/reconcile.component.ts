@@ -54,10 +54,11 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-    // this.reconcileService.getReconcile().subscribe(res => {
-    //   console.log('----$$$$$$$$$>>>>>>>>>>   ', res);
-    // })
+    this.reconcileService.getReconcile().subscribe(res => {
+      console.log('----$$$$$$$$$>>>>>>>>>>   ', res);
+    })
     this.reconcileService.getInvoices().subscribe(res => {
+      console.log('---->>>>>>>   ', res);
       res.map(invoice => {
         invoice.order_items.forEach(item => {
           item.qty_ = item.qty;
