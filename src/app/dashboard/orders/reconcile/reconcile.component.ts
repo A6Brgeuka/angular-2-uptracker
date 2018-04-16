@@ -156,4 +156,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.selectedInvoice.currency = event;
     this.selectedInvoice.discountType = event;
   }
+
+  selectDate(event, range) {
+    console.log('$$$$$$$$$$$$:   ', range)
+  }
 }

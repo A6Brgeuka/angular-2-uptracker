@@ -20,14 +20,20 @@
     <div class="invoice">
       <div class="row bottom-border">
         <div class="col l6 left">
-          <div class="row"><span>Invoice Date</span></div>
+          <div class="row input-header"><span>Invoice Date</span></div>
           <div class="row date-picker">
-            <input type="text" name="daterangeInput" daterangepicker [options]="dateOptions" (selected)="OnDate($event, daterange)" />
+            <input
+              type="text"
+              name="daterangeInput"
+              daterangepicker
+              [options]="dateOptions"
+              (selected)="selectDate($event, daterange)"
+            />
             <div class="calendar">
               <img src="/assets/img/icon-calendar.png" alt="" />
             </div>
           </div>
-          <div class="row"><span>Currency</span></div>
+          <div class="row input-header"><span>Currency</span></div>
           <div class="row">
             <div class="currency">
               <span>{{this.getDollarSign()}}1.00</span>
@@ -131,7 +137,7 @@
             <div class="item">
               <span>Taxes</span>
               <div class="input-taxes">
-                <span>{{selectedInvoice.taxes}}</span>
+                <input type="text" name="taxes" [(ngModel)]="selectedInvoice.taxes">
                 <div class="plus">
                   <fa name="plus"></fa>
                 </div>
@@ -142,7 +148,7 @@
             <div class="item">
               <span>P.O. Discount</span>
               <div class="input-discount">
-                <span>{{selectedInvoice.discountAmount}}</span>
+                <input type="text" name="discount" [(ngModel)]="selectedInvoice.discountAmount">
                 <div class="select">
                   <select
                     class="wide"
