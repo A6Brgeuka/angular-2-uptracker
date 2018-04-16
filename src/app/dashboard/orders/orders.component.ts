@@ -10,6 +10,7 @@ import { OrderTableResetService } from './directives/order-table/order-table-res
 import { OrdersPageFiltersComponent } from '../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.component';
 import { OrdersService } from './orders.service';
 import { StateService } from '../../core/services/state.service';
+import { PastOrderService } from '../../core/services/pastOrder.service';
 
 @Component({
   selector: 'app-orders',
@@ -32,8 +33,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscribers.resetFiltersSubscription = this.stateService.navigationEndUrl$
-    .subscribe(() => this.resetFilters());
+    this.ordersService.updateRoute(this.router.url);
+
+    this.subscribers.navigationEndSubscription = this.stateService.navigationEndUrl$
+    .subscribe((url) => {
+      this.ordersService.updateRoute(url);
+      this.resetFilters();
+    });
   }
 
   ngOnDestroy() {
