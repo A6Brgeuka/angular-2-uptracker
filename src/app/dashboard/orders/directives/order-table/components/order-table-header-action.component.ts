@@ -14,6 +14,8 @@ import { ToasterService } from '../../../../../core/services/toaster.service';
 import { OrderTableOnVoidService } from '../order-table-on-void.service';
 import { OrderStatusValues } from '../../../models/order-status';
 import { OrderListType } from '../../../models/order-list-type';
+import { OrdersService } from '../../../orders.service';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -23,7 +25,8 @@ import { OrderListType } from '../../../models/order-list-type';
 @DestroySubscribers()
 export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
 
-  public reorderOrders$: Subject<any>;
+  public reorderOrdersSubject$: Subject<any> = new Subject<any>();
+  public reorderOrders$: Observable<any>;
 
   @Input() listName: string;
   @Input() isShow: boolean;
@@ -38,6 +41,7 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService,
     public orderTableService: OrderTableService,
     public orderTableOnVoidService: OrderTableOnVoidService,
+    public ordersService: OrdersService,
   ) {
   }
 
@@ -50,7 +54,10 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.reorderOrders$ = new Subject<any>();
+    this.reorderOrders$ = Observable.combineLatest(
+      this.ordersService.tableRoute$,
+      this.reorderOrdersSubject$,
+    );
   }
 
   ngOnDestroy() {
@@ -58,9 +65,10 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   }
 
   addSubscribers() {
+
     this.subscribers.reorderOrdersSubscription = this.reorderOrders$
-    .switchMap(() => {
-      const filteredChecked = this.onFilterCheckedOrders();
+    .switchMap(([url, items]) => {
+      const filteredChecked = this.onFilterCheckedOrders(url);
       const data = {
         'orders': filteredChecked,
       };
@@ -69,12 +77,12 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
   }
 
-  onFilterCheckedOrders() {
+  onFilterCheckedOrders(url) {
     return this.orders
     .map((order: any) => {
       return new selectedOrderModel(
         Object.assign(order, {
-          items_ids: [order.id],
+          items_ids: (url === '/orders/items') ? [order.id] : order.order_items.map((res) => res.id),
         })
       );
     });
@@ -93,7 +101,7 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   }
 
   buyAgainOrders() {
-    this.reorderOrders$.next('');
+    this.reorderOrdersSubject$.next('');
   }
 
   onVoidOrder() {
