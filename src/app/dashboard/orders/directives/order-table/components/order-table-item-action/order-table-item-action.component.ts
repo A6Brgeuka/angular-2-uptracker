@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import { Subject } from 'rxjs/Subject';
@@ -10,10 +10,9 @@ import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-mo
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
-import { FavoritedListService } from '../../../../services/favorited-list.service';
-import { FlaggedListService } from '../../../../services/flagged-list.service';
 import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
+import { OrderItem } from '../../../../models/order-item';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -22,9 +21,6 @@ import { OrderListType } from '../../../../models/order-list-type';
 @DestroySubscribers()
 
 export class OrderTableItemActionComponent implements OnInit, OnDestroy {
-
-  private updateFlagged$: any = new Subject<any>();
-  private updateFavorite$: any = new Subject<any>();
 
   private subscribers: any = {};
 
@@ -35,6 +31,8 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   @Input() isShow: boolean;
   @Input() listName: string;
   @Input() uniqueField: string;
+  @Output() onFavorite: EventEmitter<OrderItem> = new EventEmitter();
+  @Output() onFlagged: EventEmitter<OrderItem> = new EventEmitter();
 
   constructor(
     public modal: Modal,
@@ -42,8 +40,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
-    private favoritedListService: FavoritedListService,
-    private flaggedListService: FlaggedListService,
   ) {
   }
 
@@ -77,18 +73,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   addSubscribers() {
 
-    this.subscribers.updateFlaggedSubscription = this.updateFlagged$
-    .switchMap((item: any) => this.flaggedListService.putItem(item))
-    .subscribe( res => this.toasterService.pop('', res.flagged ? 'Flagged' : 'Unflagged'),
-      err => console.log('error')
-    );
-
-    this.subscribers.updateFavoriteSubscription = this.updateFavorite$
-    .switchMap((item: any) => this.favoritedListService.postItem(item))
-    .subscribe( res => this.toasterService.pop('', res.favorite ? 'Favorite' : 'Unfavorite'),
-      err => console.log('error')
-    );
-
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
@@ -96,7 +80,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   setFavorite(item) {
-    this.updateFavorite$.next(item);
+    this.onFavorite.emit(item);
   }
 
   buyAgainOrder(item) {
@@ -128,7 +112,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     .then((resultPromise) => resultPromise.result)
     .then(
       (response) => {
-        this.updateFlagged$.next({...item, flagged_comment: response.comment});
+        this.onFlagged.emit({...item, flagged_comment: response.comment});
       },
       (err) => {
       }

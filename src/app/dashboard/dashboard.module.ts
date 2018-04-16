@@ -15,7 +15,7 @@ import { StockModule } from './stock/stock.module';
 import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
-//import { routing } from './index';
+// import { routing } from './index';
 import { OrdersPreviewModule } from './shopping-list/orders-preview/orders-preview.module';
 import { PurchaseOrderModule } from './shopping-list/orders-preview/purchase-order/purchase-order.module';
 import { ReportsModule } from './reports/reports.module';
@@ -32,7 +32,7 @@ import { TransferModalModule } from './transfer-modal/transfer-modal.module';
     DashboardComponent,
   ],
   imports: [
-    //routing,
+    // routing,
     AppliancesModule,
     AppSharedModule,
     AssetsModule,

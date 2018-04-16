@@ -25,18 +25,16 @@
                  [options]="options"
                  (fileOver)="fileOver($event)"
                  (onFileDrop)="onFileDrop($event)">
-              <div class="file-field" [hidden]="uploadedImage">
+              <div class="file-field">
                 <div class="upload-link">
                   <input
                       type="file"
                       accept="image/*"
                       (change)="changeListener($event)" />
-                  <a>Upload a photo</a>
                 </div>
               </div>
-              <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }">
-                <div class="del-img-btn" (click)="uploadedImage = null"><i class="material-icons">delete</i></div>
-              </div>
+              <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }"></div>
+              <div class="del-img-btn" (click)="uploadedImage = null"><i class="material-icons">delete</i></div>
             </div>
           </div>
         </div>

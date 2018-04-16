@@ -7,11 +7,11 @@ import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'lodash';
 
-import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { ModalWindowService } from '../../../../core/services/modal-window.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { OrderTableService } from './order-table.service';
 import { AddCommentModalComponent } from '../../../../shared/modals/add-comment-modal/add-comment-modal.component';
+import { OrderItemsTableService } from '../../order-items-table/services/order-items-table.service';
 
 
 @Injectable()
@@ -22,10 +22,10 @@ export class OrderTableOnVoidService {
 
   constructor(
     public modal: Modal,
-    public pastOrderService: PastOrderService,
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableService: OrderTableService,
+    public orderItemsTableService: OrderItemsTableService,
   ) {
     this.voidOrder$ = new Subject<any>();
     this.voidCheckedOrders$ = new Subject<any>();
@@ -48,7 +48,7 @@ export class OrderTableOnVoidService {
       .map((result) => ids.map((id) => ({id, message: result.body})))
     )
     .switchMap((items: any) =>
-      this.pastOrderService.onVoidOrder({items})
+      this.orderItemsTableService.onVoidOrder({items})
     )
     .subscribe();
 

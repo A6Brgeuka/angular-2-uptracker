@@ -6,4 +6,4 @@ export const RestockFloorRoutes = [
     component: RestockFloorComponent,
     canActivate: [],
   }
-]
+];

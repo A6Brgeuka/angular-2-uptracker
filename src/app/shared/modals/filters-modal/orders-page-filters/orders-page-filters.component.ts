@@ -3,8 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DialogRef, ModalComponent } from 'angular2-modal';
-import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { OrdersPageFiltersModel } from './orders-page-filters.model';
+import { OrdersService } from '../../../../dashboard/orders/orders.service';
 
 export class OrdersPageFiltersModalContext extends BSModalContext {
   public filters: any;
@@ -20,7 +20,7 @@ export class OrdersPageFiltersComponent implements OnInit, ModalComponent<Orders
 
   constructor(
     public dialog: DialogRef<OrdersPageFiltersModalContext>,
-    public pastOrderService: PastOrderService,
+    public ordersService: OrdersService,
   ) {
     this.context = dialog.context;
 
@@ -76,7 +76,7 @@ export class OrdersPageFiltersComponent implements OnInit, ModalComponent<Orders
   applyFilters() {
     const filters = new OrdersPageFiltersModel(this.filterForm.value);
     Object.keys(filters).forEach((key) => (filters[key] == null) && delete filters[key]);
-    this.pastOrderService.filterQueryParams$.next(filters);
+    this.ordersService.updateFilterQueryParams(filters);
     this.dialog.dismiss();
   }
 

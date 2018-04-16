@@ -1,0 +1,11 @@
+<app-order-table
+  [uniqueField]="'id'"
+  [header] = 'tableHeader'
+  [orders] = '(orders$ | async)'
+  [listName] = 'listName'
+  (sortByHeaderUpdated)="sortByHeaderUpdated($event)"
+  (onFilterBy)="onFilterBy($event)"
+  (onFavoriteItem)="onFavorite($event)"
+  (onFlaggedItem)="onFlagged($event)"
+>
+</app-order-table>

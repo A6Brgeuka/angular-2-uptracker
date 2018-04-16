@@ -2,37 +2,16 @@
   <div class="top">
     <app-search-filter-header
       [title]="'Orders'"
-      [className]="(pastOrderService.filterQueryParams$ | async) ? 'red-text' : ''"
-      [searchKey]="searchKey"
+      [className]="(ordersService.filterQueryParams$ | async) ? 'red-text' : ''"
+      isTitleSelect = "true"
+      [searchKey]="ordersService.searchKey"
       searchType="chips"
-      [chips]="chips$ | async"
+      [chips]="(ordersService.chips$ | async)"
       (chipsChange)="onChipChange($event)"
       (searchEvent)="searchOrders($event)"
       (resetEvent)="resetFilters()"
       (openModalEvent)="showFiltersModal()"
     ></app-search-filter-header>
-
-    <div class="row">
-      <ul class="tabs location-tabs mrg-btm-0" materialize="tabs">
-        <li
-          class="tab"
-          *ngFor="let tab of orderTabsArr"
-        >
-          <a
-            href="#{{tab}}Tab"
-            appHasClass="active"
-            (hasClassChange)="activeChange($event, tab)"
-          >{{tab}}</a>
-        </li>
-      </ul>
-    </div>
-    <app-all-orders-list id="{{orderTabs.all}}Tab"></app-all-orders-list>
-    <app-open-orders-list id="{{orderTabs.open}}Tab"></app-open-orders-list>
-    <app-received-list id="{{orderTabs.received}}Tab"></app-received-list>
-    <app-favorited-list id="{{orderTabs.favorited}}Tab"></app-favorited-list>
-    <app-backordered-list id="{{orderTabs.backordered}}Tab"></app-backordered-list>
-    <app-reconciled-list id="{{orderTabs.reconciled}}Tab"></app-reconciled-list>
-    <app-flagged-list id="{{orderTabs.flagged}}Tab"></app-flagged-list>
-    <app-closed-list id="{{orderTabs.closed}}Tab"></app-closed-list>
+    <router-outlet></router-outlet>
   </div>
 </div>
