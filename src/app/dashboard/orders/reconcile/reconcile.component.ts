@@ -39,6 +39,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
   public board: any = {}
   public selectConfig = { displayKey: "order_number", search: true };
+  public taxBoardVisible = true;
 
   constructor(
     public reconcileService: ReconcileService
@@ -62,7 +63,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         })
       })
       this.invoices = res;
-      // this.invoices_ = res;
+      this.invoices_ = res;
       if (this.invoices.length > 0) {
         this.selectedInvoice = this.invoices[0];
         this.selectedInvoice.currency = 'USD';
@@ -159,5 +160,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   selectDate(event, range) {
     console.log('$$$$$$$$$$$$:   ', range)
+  }
+
+  taxBoardClick() {
+    this.taxBoardVisible = false;
   }
 }
