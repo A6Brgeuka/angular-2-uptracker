@@ -24,10 +24,8 @@
           <div class="row date-picker">
             <input
               type="text"
-              name="daterangeInput"
-              daterangepicker
-              [options]="dateOptions"
-              (selected)="selectDate($event, daterange)"
+              name="datePicker"
+              [(ngModel)]="selectedInvoice.placed_date"
             />
             <div class="calendar">
               <img src="/assets/img/icon-calendar.png" alt="" />
