@@ -59,7 +59,7 @@
             <div class="item">
               <span>Calculated Sub-Total</span>
               <div class="input-calculated">
-                ${{selectedInvoice.calculatedSubTotal}}
+                {{selectedInvoice.calculated_sub_total}}
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.invoicedSubTotal"
+                    [(ngModel)]="selectedInvoice.invoiced_sub_total"
                   >
                 </div>
               </div>
@@ -82,7 +82,7 @@
           </div>
           <div class="row">
             <div class="item">
-              <span>Invoiced Credit</span>
+              <span>Invoice Credit</span>
               <div>
                 <div class="input">
                   <input
@@ -91,7 +91,7 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.invoiceCredit"
+                    [(ngModel)]="selectedInvoice.invoice_credit"
                   >
                 </div>
               </div>
@@ -161,14 +161,14 @@
             <div class="item">
               <span>P.O. Discount</span>
               <div class="input-discount">
-                <input type="text" name="discount" [(ngModel)]="selectedInvoice.discountAmount">
+                <input type="text" name="discount" [(ngModel)]="selectedInvoice.po_discount">
                 <div class="select">
                   <select
                     class="wide"
                     materialize="material_select"
                     [materializeSelectOptions]=""
                     name="currency"
-                    [(ngModel)]="selectedInvoice.discountType"
+                    [(ngModel)]="selectedInvoice.po_discount_type"
                   >
                     <option value="PERCENT">%</option>
                     <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
@@ -201,7 +201,7 @@
             <div class="item">
               <span>Calculated Total</span>
               <div class="input-calculated">
-                ${{this.getCalculatedTotal()}}
+                {{this.getCalculatedTotal()}}
               </div>
             </div>
           </div>
@@ -209,7 +209,7 @@
             <div class="item">
               <span class="diff-red">Diff</span>
               <div class="input-calculated">
-                <span class="diff-red">${{this.getDiff()}}</span>
+                <span class="diff-red">{{this.getDiff()}}</span>
               </div>
             </div>
           </div>
@@ -380,10 +380,10 @@
     <div class="active-area">
       <div class="title">Bulk Updates</div>
       <div class="list-area">
-        <ng-container *ngFor="let product of products; let i = index">
+        <ng-container *ngFor="let product of selectedInvoice.order_items; let i = index">
           <div class="product-list" *ngIf="product.checked">
             <div class="row">
-              <span>{{product.name}}</span>
+              <span>{{product.item_name}}</span>
             </div>
             <div class="remove">
               <a (click)="removeProduct(product)">Remove</a>

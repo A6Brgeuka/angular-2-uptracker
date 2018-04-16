@@ -55,7 +55,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.reconcileService.getReconcile().subscribe(res => {
-      console.log('----$$$$$$$$$>>>>>>>>>>   ', res);
+      console.log('----$$$$$$$   ', res);
     })
     this.reconcileService.getInvoices().subscribe(res => {
       console.log('---->>>>>>>   ', res);
@@ -77,6 +77,15 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       if (this.invoices.length > 0) {
         this.selectedInvoice = this.invoices[0];
         this.selectedInvoice.currency = 'USD';
+        this.selectedInvoice.calculated_sub_total = '$250';
+        this.selectedInvoice.invoiced_sub_total = '200';
+        this.selectedInvoice.invoice_credit = '5.00';
+        this.selectedInvoice.shipping = '20';
+        this.selectedInvoice.handling = '5';
+        this.selectedInvoice.taxes = '0.00';
+        this.selectedInvoice.po_discount = '20.00';
+        this.selectedInvoice.po_discount_type = 'PERCENT';
+        this.selectedInvoice.calculated_total = '$2000.00';
       }
     });
   }
@@ -99,6 +108,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   removeProduct(product) {
     product.checked = false;
+    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.order_items);
   }
   
   saveReconcile() {
@@ -135,12 +145,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       + this.selectedInvoice.handling
       + this.selectedInvoice.taxes
       - this.selectedInvoice.discountAmount;
-    return total;
-
+    // return total;
+    return '$20000.00';
   }
 
   getDiff() {
-    return this.getCalculatedTotal() - this.selectedInvoice.total;
+    // return this.getCalculatedTotal() - this.selectedInvoice.total;
+    return '$2484.00'
   }
 
   getDollarSign() {
