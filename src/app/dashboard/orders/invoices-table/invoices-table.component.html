@@ -8,7 +8,7 @@
         href="#{{tab}}Tab"
         appHasClass="active"
         (hasClassChange)="activeChange($event, tab)"
-      >{{tab}}</a>
+      >{{tab.replace('_', ' ')}}</a>
     </li>
   </ul>
 </div>
