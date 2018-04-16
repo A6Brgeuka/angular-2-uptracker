@@ -39,7 +39,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     JPY: '¥',
   }
   public board: any = {};
-  public selectConfig = { displayKey: "order_number", search: true };
+  public selectConfig = { displayKey: "id", search: true };
   public taxBoardVisible = false;
 
   constructor(
@@ -56,6 +56,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.reconcileService.getReconcile().subscribe(res => {
+      res.id = '5ad4f32e3d0192000d3acf1e';
       res.invoice.invoice_date = '04/16/2018';
       res.invoice.currency = 'USD';
       res.invoice.total = '$200.00';
@@ -65,6 +66,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       res.invoice.handling = '0.00';
       res.invoice.taxes = '0.00';
       res.invoice.po_discount = '0.00';
+      res.invoice.po_discount_type = 'PERCENT';
 
       res.items.forEach(item => {
         item.package_ = item.package;
@@ -73,8 +75,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         item.discounted_price_ = item.discounted_price.replace('$', '');
         item.total_ = item.total;
 
-        item.disc_price = '$100'
-        item.disc_price_ = item.disc_price;
+        // item.disc_price = '$100'
+        // item.disc_price_ = item.disc_price;
       })
 
       this.invoices = [res];
@@ -125,12 +127,19 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   getTotal() {
     try {
-      const total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total)
+      let total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total)
       - parseFloat(this.selectedInvoice.invoice.invoice_credit)
       + parseFloat(this.selectedInvoice.invoice.shipping)
       + parseFloat(this.selectedInvoice.invoice.handling)
-      + parseFloat(this.selectedInvoice.invoice.taxes)
-      - parseFloat(this.selectedInvoice.invoice.po_discount);
+      + parseFloat(this.selectedInvoice.invoice.taxes);
+
+      let po_discount = 0;
+      if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
+        po_discount = total * parseFloat(this.selectedInvoice.invoice.po_discount) / 100;
+      } else {
+        po_discount = parseFloat(this.selectedInvoice.invoice.po_discount);
+      }
+      total = total - po_discount;
       return total;
     } catch (err) {
       return 0;
@@ -139,12 +148,19 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   getCalculatedTotal() {
     try {
-      const total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', ''))
+      let total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', ''))
       - parseFloat(this.selectedInvoice.invoice.invoice_credit)
       + parseFloat(this.selectedInvoice.invoice.shipping)
       + parseFloat(this.selectedInvoice.invoice.handling)
-      + parseFloat(this.selectedInvoice.invoice.taxes)
-      - parseFloat(this.selectedInvoice.invoice.po_discount);
+      + parseFloat(this.selectedInvoice.invoice.taxes);
+
+      let po_discount = 0;
+      if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
+        po_discount = total * parseFloat(this.selectedInvoice.invoice.po_discount) / 100;
+      } else {
+        po_discount = parseFloat(this.selectedInvoice.invoice.po_discount);
+      }
+      total = total - po_discount;
       return total;
     } catch (err) {
       return 0;

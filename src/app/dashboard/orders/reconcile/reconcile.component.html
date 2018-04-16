@@ -4,7 +4,7 @@
       <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
       </div>
-      <div class="col l3 m6 padded">
+      <div class="col l4 m6 padded">
         <ngx-select-dropdown 
           *ngIf="invoices.length > 0"
           [config]="selectConfig"
@@ -190,7 +190,7 @@
                     materialize="material_select"
                     [materializeSelectOptions]=""
                     name="currency"
-                    [(ngModel)]="selectedInvoice.po_discount_type"
+                    [(ngModel)]="selectedInvoice.invoice.po_discount_type"
                   >
                     <option value="PERCENT">%</option>
                     <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
@@ -363,8 +363,6 @@
                       class="text-left"
                       name="DT{{i}}"
                       type="text"
-                      currencyMask
-                      [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                       [(ngModel)]="product.discounted_price_"
                     >
                   </div>
