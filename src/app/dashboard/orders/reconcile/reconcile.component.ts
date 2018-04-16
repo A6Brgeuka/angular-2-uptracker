@@ -130,6 +130,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   bulkUpdates() {
     this.panelVisible = false;
+    this.selectedInvoice.order_items.forEach(item => {
+      item.checked = false;
+    })
   }
 
   bulkNevermind() {
