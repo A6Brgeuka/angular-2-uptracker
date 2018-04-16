@@ -242,6 +242,8 @@
                 ul {
                   border: 1px solid #9a9c9e !important;
                   top: 35px !important;
+                  left: auto !important;
+                  right: 0 !important;
                 }
               }
             }
@@ -562,11 +564,23 @@
           line-height: 32px;
           text-align: right;
         }
-        .select .select-wrapper input {
-          border-color: #9a9c9e !important;
-          margin: 0;
+        .select .select-wrapper {
+          .caret + input {
+            background-position: 90%;
+          }
+          input {
+            background-color: #ffffff;
+            border-color: #9a9c9e !important;
+            margin: 0;
+            text-indent: 0;
+          }
+          ul {
+            border: 1px solid #9a9c9e !important;
+            top: 35px !important;
+          }
         }
         .input input {
+          background-color: #ffffff;
           margin: 0;
         }
         .discount {
@@ -574,14 +588,18 @@
           border-radius: 5px;
           display: flex;
           .input {
-            width: 70%;
+            width: 60%;
             input {
               border: none;
             }
           }
           .select {
-            width: 30%;
+            background-color: #f5f6f7;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            width: 40%;
             input {
+              background-color: #f5f6f7;
               border-radius: 0;
               border-left: 1px solid #9a9c9e;
               border-bottom: none;
@@ -590,10 +608,25 @@
               border-bottom-right-radius: 5px;
               border-top-right-radius: 5px;
             }
-            .select-wrapper input.select-dropdown {
-              text-indent: 5px;
+            .select-wrapper {
+              padding-right: 5px;
+              .caret + input {
+                background-position: 90%;
+              }
+              input.select-dropdown {
+                text-indent: 5px;
+              }
+              ul {
+                border: 1px solid #9a9c9e !important;
+                margin-left: 5px;
+                top: 35px !important;
+              }
             }
           }
+        }
+        .row .col {
+          padding-left: 5px;
+          padding-right: 5px;
         }
       }
       .update {
