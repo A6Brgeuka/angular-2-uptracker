@@ -54,35 +54,38 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-    this.reconcileService.getReconcile().subscribe(res => {})
+    this.reconcileService.getReconcile().subscribe(res => {
+      console.log('-------------<<<   ', res)
+    })
     this.reconcileService.getInvoices().subscribe(res => {
-      res.map(invoice => {
-        invoice.currency = 'USD';
-        invoice.calculated_sub_total = '$250';
-        invoice.invoiced_sub_total = '200';
-        invoice.invoice_credit = '5.00';
-        invoice.shipping = '20';
-        invoice.handling = '5';
-        invoice.taxes = '0.00';
-        invoice.po_discount = '20.00';
-        invoice.po_discount_type = 'PERCENT';
-        invoice.calculated_total = '$2000.00';
+      console.log('------------->>>   ', res)
+      // res.map(invoice => {
+      //   invoice.currency = 'USD';
+      //   invoice.calculated_sub_total = '$250';
+      //   invoice.invoiced_sub_total = '200';
+      //   invoice.invoice_credit = '5.00';
+      //   invoice.shipping = '20';
+      //   invoice.handling = '5';
+      //   invoice.taxes = '0.00';
+      //   invoice.po_discount = '20.00';
+      //   invoice.po_discount_type = 'PERCENT';
+      //   invoice.calculated_total = '$2000.00';
 
-        invoice.sales_tax = '0.00';
-        invoice.vat = '0.00';
+      //   invoice.sales_tax = '0.00';
+      //   invoice.vat = '0.00';
 
-        invoice.order_items.forEach(item => {
-          item.package = 'Box';
-          item.package_ = item.package;
-          item.qty_ = item.qty;
-          item.package_price_ = item.package_price.replace('$', '');
-          item.discount = '0.00';
-          item.discount_ = '5.00';
-          item.disc_price = '$20.00';
-          item.disc_price_ = '$15.00';
-          item.total_ = item.total;
-        })
-      })
+      //   invoice.order_items.forEach(item => {
+      //     item.package = 'Box';
+      //     item.package_ = item.package;
+      //     item.qty_ = item.qty;
+      //     item.package_price_ = item.package_price.replace('$', '');
+      //     item.discount = '0.00';
+      //     item.discount_ = '5.00';
+      //     item.disc_price = '$20.00';
+      //     item.disc_price_ = '$15.00';
+      //     item.total_ = item.total;
+      //   })
+      // })
       this.invoices = res;
       this.invoices_ = res;
       if (this.invoices.length > 0) {

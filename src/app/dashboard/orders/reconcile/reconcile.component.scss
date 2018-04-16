@@ -22,6 +22,7 @@
               input {
                 border: 1px solid #9a9c9e !important;
                 border-radius: 3px !important;
+                text-indent: 10px;
               }
               label {
                 display: none !important;
@@ -51,6 +52,8 @@
 
         .date-picker {
           display: flex;
+          max-width: 160px;
+          margin-left: 0;
           position: relative;
 
           .calendar {
@@ -65,7 +68,7 @@
             margin-left: -51px;
             margin-top: 1px;
             width: 50px;
-            height: 36px;
+            height: 32px;
             > img {
               width: 25px;
               height: 25px;
@@ -78,7 +81,7 @@
             border-radius: 5px;
             max-width: 300px;
             padding-left: 20px;
-            height: 36px;
+            height: 32px;
           }
       
           fa {
