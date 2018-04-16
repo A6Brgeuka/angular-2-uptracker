@@ -84,7 +84,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         })
       })
       this.invoices = res;
-      // this.invoices_ = res;
+      this.invoices_ = res;
       if (this.invoices.length > 0) {
         this.selectedInvoice = this.invoices[0];
       }
@@ -96,34 +96,22 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     console.log('for unsubscribing')
   }
 
-  addSubscribers() {
-    
-  }
+  addSubscribers() {}
   
-  toggleSelectAll() {
+  toggleSelectAll() {}
   
-  }
-  
-  addProduct() {
-  
-  }
+  addProduct() {}
 
   removeProduct(product) {
     product.checked = false;
     this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.order_items);
   }
   
-  saveReconcile() {
-  
-  }
+  saveReconcile() {}
 
-  openFilterModal() {
+  openFilterModal() {}
 
-  }
-
-  filterChange() {
-
-  }
+  filterChange(event) {}
 
   productSelect(product) {
     product.checked = !product.checked
