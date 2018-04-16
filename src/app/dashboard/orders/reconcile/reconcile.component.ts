@@ -37,7 +37,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     MXN: '$',
     JPY: '¥',
   }
-  public board: any = {}
+  public board: any = {};
   public selectConfig = { displayKey: "order_number", search: true };
   public taxBoardVisible = false;
 
@@ -73,7 +73,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         })
       })
       this.invoices = res;
-      this.invoices_ = res;
+      // this.invoices_ = res;
       if (this.invoices.length > 0) {
         this.selectedInvoice = this.invoices[0];
         this.selectedInvoice.currency = 'USD';
@@ -88,6 +88,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.selectedInvoice.calculated_total = '$2000.00';
       }
     });
+
   }
   
   ngOnDestroy() {
