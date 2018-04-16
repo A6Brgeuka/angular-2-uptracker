@@ -13,6 +13,8 @@ import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-mo
 import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
 import { OrderItem } from '../../../../models/order-item';
+import { OrdersService } from '../../../../orders.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -24,7 +26,8 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   private subscribers: any = {};
 
-  private reorderProduct$:  any = new Subject<any>();
+  private reorderProductSubject$:  Subject<any> = new Subject<any>();
+  private reorderProducts$:  Observable<any>;
 
   @Input() i: any;
   @Input() item: any;
@@ -40,6 +43,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
+    public ordersService: OrdersService,
   ) {
   }
 
@@ -65,6 +69,12 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(`${this.constructor.name} Inits`);
+
+    this.reorderProducts$ = Observable.combineLatest(
+      this.ordersService.tableRoute$,
+      this.reorderProductSubject$,
+    );
+
   }
 
   ngOnDestroy() {
@@ -73,8 +83,18 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   addSubscribers() {
 
-    this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
-    .switchMap((data) => this.pastOrderService.reorder(data))
+    this.subscribers.reorderProductFromOrderSubscription = this.reorderProducts$
+    .switchMap(([url, item]) => {
+      const data = {
+        'orders': [
+          {
+            'order_id': item.order_id,
+            'items_ids': (url === '/orders/items') ? [item[this.uniqueField]] : item.order_items.map((res) => res.id),
+          }
+        ]
+      };
+      return this.pastOrderService.reorder(data);
+    })
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
 
   }
@@ -84,15 +104,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   buyAgainOrder(item) {
-    const data = {
-      'orders': [
-        {
-          'order_id': item.order_id,
-          'items_ids': [item[this.uniqueField]],
-        }
-      ]
-    };
-    this.reorderProduct$.next(data);
+    this.reorderProductSubject$.next(item);
   }
 
   openResendDialog(item) {
