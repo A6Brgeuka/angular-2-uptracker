@@ -264,7 +264,7 @@
     </div>
 
     <ng-container *ngFor="let product of selectedInvoice.order_items; let i = index">
-      <div class="item row">
+      <div class="item row"  *ngIf="filtered(product)">
         <div class="table-item flex-center">
           <div class="col s3 left-align flex-center">
             <div class="input-checkbox left checkbox">

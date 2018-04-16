@@ -161,22 +161,24 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.selectedInvoice.discountType = event;
   }
 
-  selectDate(event, range) {
-    console.log('$$$$$$$$$$$$:   ', range)
-  }
-
   taxBoardClick() {
     this.taxBoardVisible = false;
   }
 
   sortAlphabet(event) {
     if (equals(this.sort, 'A-Z')) {
-      console.log('****************')
       const ascComparator = comparator((a, b) => gt(prop('item_name', b), prop('item_name', a)));
       this.selectedInvoice.order_items = sort(ascComparator, this.selectedInvoice.order_items);
     } else {
       const desComparator = comparator((a, b) => gt(prop('item_name', a), prop('item_name', b)));
       this.selectedInvoice.order_items = sort(desComparator, this.selectedInvoice.order_items);
     }
+  }
+
+  filtered(product) {
+    if (!this.filter) {
+      return true;
+    }
+    return toLower(product.item_name).indexOf(toLower(this.filter)) > -1;
   }
 }
