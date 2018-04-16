@@ -403,7 +403,7 @@
     <div class="active-area">
       <div class="title">Bulk Updates</div>
       <div class="list-area">
-        <ng-container *ngFor="let product of selectedInvoice.order_items; let i = index">
+        <ng-container *ngFor="let product of selectedInvoice.items; let i = index">
           <div class="product-list" *ngIf="product.checked">
             <div class="row">
               <span>{{product.item_name}}</span>

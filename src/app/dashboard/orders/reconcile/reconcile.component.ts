@@ -98,7 +98,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   removeProduct(product) {
     product.checked = false;
-    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.order_items);
+    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
   }
   
   saveReconcile() {}
@@ -109,12 +109,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   productSelect(product) {
     product.checked = !product.checked
-    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.order_items);
+    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
   }
 
   bulkUpdates() {
     this.panelVisible = false;
-    this.selectedInvoice.order_items.forEach(item => {
+    this.selectedInvoice.items.forEach(item => {
       item.checked = false;
     })
   }
@@ -212,10 +212,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   sortAlphabet(event) {
     if (equals(this.sort, 'A-Z')) {
       const ascComparator = comparator((a, b) => gt(prop('item_name', b), prop('item_name', a)));
-      this.selectedInvoice.order_items = sort(ascComparator, this.selectedInvoice.order_items);
+      this.selectedInvoice.items = sort(ascComparator, this.selectedInvoice.items);
     } else {
       const desComparator = comparator((a, b) => gt(prop('item_name', a), prop('item_name', b)));
-      this.selectedInvoice.order_items = sort(desComparator, this.selectedInvoice.order_items);
+      this.selectedInvoice.items = sort(desComparator, this.selectedInvoice.items);
     }
   }
 

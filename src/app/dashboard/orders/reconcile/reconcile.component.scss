@@ -538,7 +538,8 @@
     }
 
     .active-area {
-      position: relative;
+      position: fixed;
+      margin-right: 15px;
       height: 100vh;
 
       .title {
@@ -568,8 +569,7 @@
       }
       .board {
         bottom: 10px;
-        position: fixed;
-        margin-right: 15px;
+        position: absolute;
         .board-title {
           display: flex;
           justify-content: flex-end;
