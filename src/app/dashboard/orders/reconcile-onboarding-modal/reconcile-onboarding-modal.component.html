@@ -7,7 +7,7 @@
     </div>
     <div class="row option">
       <p class="">
-        <input name="selection" type="radio" id="add_existing" value="add" [(ngModel)]="reconcileType" (ngModelChange)="reconcile()" />
+        <input name="selection" type="radio" id="add_existing" value="add" [(ngModel)]="reconcileType" (ngModelChange)="reconcile($event)" />
         <label for="add_existing">Add to an existing Invoice</label>
       </p>
       <div class="dropdown" [class.show]="reconcileType == 'add'">
