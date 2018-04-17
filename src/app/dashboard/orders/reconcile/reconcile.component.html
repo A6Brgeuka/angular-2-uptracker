@@ -40,10 +40,11 @@
                   [(ngModel)]="selectedInvoice.invoice.currency"
                   (ngModelChange)="invoiceChange($event)"
                 >
-                  <option value="USD">USD</option>
-                  <option value="CAD">CAD</option>
-                  <option value="MXN">MXN</option>
-                  <option value="JPY">JPY</option>
+                  <ng-container *ngFor="let country of countries; let i = index">
+                    <ng-container *ngIf="country.currencies.length > 0 && country.emoji">
+                      <option value="{{country.currencies[0]}}">{{country.emoji}} {{country.name}}</option>
+                    </ng-container>
+                  </ng-container>
                 </select>
               </div>
             </div>

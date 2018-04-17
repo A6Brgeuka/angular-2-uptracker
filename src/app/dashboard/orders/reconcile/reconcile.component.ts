@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { ReconcileService } from '../../../core/services/reconcile.service';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
+import * as Country from 'country-data';
 
 @Component({
   selector: 'app-reconcile',
@@ -28,6 +29,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public selectConfig: any = { displayKey: "id", search: true };
   public taxBoardVisible: boolean = false;
   public productHeader: boolean = false;
+  public countries: any = [];
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
@@ -39,6 +41,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
+    this.countries = Country.countries.all;
     this.reconcileService.getReconcile().subscribe(res => {
       res.id = '5ad4f32e3d0192000d3acf1e';
       res.invoice.invoice_date = new Date('04/16/2018');

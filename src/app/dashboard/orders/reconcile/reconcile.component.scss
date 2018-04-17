@@ -104,7 +104,7 @@
           display: flex;
           border: 1px solid #9a9c9e;
           border-radius: 5px;
-          width: 160px;
+          width: 300px;
           height: 36px;
           > span {
             background-color: #ffffff;
@@ -120,9 +120,8 @@
             background-color: #f5f6f7;
             border-bottom-right-radius: 5px;
             border-top-right-radius: 5px;
-            max-width: 80px;
+            width: 220px;
             .select-wrapper {
-              padding-right: 10px;
               .select-dropdown {
                 background-color: #f5f6f7;
                 border: none;
