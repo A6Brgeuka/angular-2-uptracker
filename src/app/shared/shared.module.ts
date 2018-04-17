@@ -16,6 +16,8 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 // import { CoreModule } from "../core/core.module";
 
+import { DatepickerModule } from 'angular2-material-datepicker';
+
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
 import * as directives from "./index";
@@ -91,7 +93,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     Daterangepicker,
     NgxDatatableModule,
     CurrencyMaskModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+
+    DatepickerModule
   ],
   declarations: [
     ...directivesArr,
@@ -124,6 +128,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HasClassModule,
     ChipsInputModule,
     ChipsModule,
+
+    DatepickerModule,
 
     ...directivesArr,
     ...pipesArr,

@@ -22,13 +22,8 @@
         <div class="col l6 left">
           <div class="row input-header"><span>Invoice Date</span></div>
           <div class="row date-picker">
-            <input
-              type="text"
-              name="datePicker"
-              [(ngModel)]="selectedInvoice.invoice.invoice_date"
-              (ngModelChange)="invoiceChange($event)"
-            />
-            <div class="calendar">
+            <material-datepicker #datepicker accentColor="#33c6d9" [(date)]="selectedInvoice.invoice.invoice_date"></material-datepicker>
+            <div class="calendar" (click)="toggleDatepicker($event)">
               <img src="/assets/img/icon-calendar.png" alt="" />
             </div>
           </div>

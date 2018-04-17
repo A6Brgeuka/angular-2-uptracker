@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as moment from 'moment';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
 import * as _ from 'lodash';
 import { ReconcileService } from '../../../core/services/reconcile.service';
+import { DatepickerComponent } from 'angular2-material-datepicker';
 
 @Component({
   selector: 'app-reconcile',
@@ -42,6 +43,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public selectConfig = { displayKey: "id", search: true };
   public taxBoardVisible = false;
 
+  @ViewChild('datepicker') datepicker: DatepickerComponent;
+
   constructor(
     public reconcileService: ReconcileService
   ) {
@@ -57,7 +60,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.reconcileService.getReconcile().subscribe(res => {
       res.id = '5ad4f32e3d0192000d3acf1e';
-      res.invoice.invoice_date = '04/16/2018';
+      res.invoice.invoice_date = new Date('04/16/2018');
       res.invoice.currency = 'USD';
       res.invoice.invoiced_sub_total = '0.00';
       res.invoice.invoice_credit = '0.00';
@@ -217,5 +220,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       return true;
     }
     return toLower(product.item_name).indexOf(toLower(this.filter)) > -1;
+  }
+
+  toggleDatepicker(event) {
+    event.stopPropagation();
+    this.datepicker.showCalendar = !this.datepicker.showCalendar;
   }
 }
