@@ -28,6 +28,9 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   public reorderOrdersSubject$: Subject<any> = new Subject<any>();
   public reorderOrders$: Observable<any>;
 
+  private receiveOrdersSubject$:  Subject<any> = new Subject<any>();
+  private receiveOrders$:  Observable<any>;
+
   @Input() listName: string;
   @Input() isShow: boolean;
   @Input() orders: any;
@@ -58,6 +61,11 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
       this.ordersService.tableRoute$,
       this.reorderOrdersSubject$,
     );
+
+    this.receiveOrders$ = Observable.combineLatest(
+      this.ordersService.tableRoute$,
+      this.receiveOrdersSubject$,
+    );
   }
 
   ngOnDestroy() {
@@ -75,6 +83,26 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
       return this.pastOrderService.reorder(data);
     })
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
+
+    this.subscribers.receiveOrdersSubscription = this.receiveOrders$
+    .map(([url, orders]) => {
+      const sendOrders = orders.filteredCheckedProducts.map((order) =>
+        order.order_id
+      );
+      let sendItems: any[];
+      const uniqsendOrders: any[] = _.uniq(sendOrders);
+      if (url === '/orders/items') {
+        sendItems = orders.filteredCheckedProducts.map((order) =>
+          order.id
+        );
+      } else if (url === '/orders') {
+        sendItems = orders.filteredCheckedProducts.map((order) =>
+          order.order_items.map((item) => item.id));
+      };
+      const queryParams = uniqsendOrders.toString() + '&' + sendItems.toString();
+      this.pastOrderService.goToReceive(queryParams, orders.type);
+    })
+    .subscribe();
   }
 
   onFilterCheckedOrders(url) {
@@ -89,15 +117,7 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   }
 
   sendToReceiveProducts(filteredCheckedProducts, type?) {
-    const sendOrders = filteredCheckedProducts.map((order) => {
-      return order.order_id;
-    });
-    const uniqsendOrders: any[] = _.uniq(sendOrders);
-    const sendItems: any[] = filteredCheckedProducts.map((order) => {
-      return order.id;
-    });
-    const queryParams = uniqsendOrders.toString() + '&' + sendItems.toString();
-    this.pastOrderService.goToReceive(queryParams, type);
+    this.receiveOrdersSubject$.next({filteredCheckedProducts, type});
   }
 
   buyAgainOrders() {
