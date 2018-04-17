@@ -29,6 +29,9 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   private reorderProductSubject$:  Subject<any> = new Subject<any>();
   private reorderProducts$:  Observable<any>;
 
+  private receiveProductSubject$:  Subject<any> = new Subject<any>();
+  private receiveProducts$:  Observable<any>;
+
   @Input() i: any;
   @Input() item: any;
   @Input() isShow: boolean;
@@ -52,7 +55,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   get isBackorderedList() {
-    return this.listName === OrderListType.received;
+    return this.listName === OrderListType.backordered;
   }
 
   get isBackorderedItem() {
@@ -73,6 +76,11 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     this.reorderProducts$ = Observable.combineLatest(
       this.ordersService.tableRoute$,
       this.reorderProductSubject$,
+    );
+
+    this.receiveProducts$ = Observable.combineLatest(
+      this.ordersService.tableRoute$,
+      this.receiveProductSubject$,
     );
 
   }
@@ -96,6 +104,18 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
       return this.pastOrderService.reorder(data);
     })
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
+
+    this.subscribers.receiveProductSubscription = this.receiveProducts$
+    .map(([url, item]) => {
+      let queryParams;
+      if (url === '/orders/items') {
+        queryParams = item.item.order_id.toString() + '&' + item.item[this.uniqueField].toString();
+      } else if (url === '/orders') {
+        queryParams = item.item.order_id.toString() + '&' + item.item.order_items.map((res) => res.id).toString();
+      }
+      this.pastOrderService.goToReceive(queryParams, item.type);
+    })
+    .subscribe();
 
   }
 
@@ -148,8 +168,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   private sendToReceiveProduct(item, type?) {
-    const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
-    this.pastOrderService.goToReceive(queryParams, type);
+    this.receiveProductSubject$.next({item, type});
   }
 
 }
