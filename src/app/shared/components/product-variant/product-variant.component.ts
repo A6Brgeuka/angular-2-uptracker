@@ -27,10 +27,8 @@ export class ProductVariantComponent implements OnInit {
   public autocompletePackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompletePackage: any = [];
   public mainPrices: any = new CustomProductVariantModel();
-  /*public createdVariants = clone(this.vendor.variants);*/
 
   constructor(public inventoryService: InventoryService) {
-    console.log(this.vendor)
   }
 
   ngOnInit() {

@@ -1,15 +1,25 @@
 import { NgModule } from '@angular/core';
-import {ScannerModule} from "../../../dashboard/scanner/scanner.module";
 import {ProductVariantComponent} from "./product-variant.component";
-import {AppSharedModule} from "../../shared.module";
+import {CommonModule} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Angular2FontawesomeModule} from "angular2-fontawesome";
+import {MaterializeModule} from "angular2-materialize/dist";
+import {NguiAutoCompleteModule} from "@ngui/auto-complete";
+import {PriceInputModule} from "../price-input/price-input.module";
+import {ScannerModule} from "../../../dashboard/scanner/scanner.module";
 
 @NgModule({
   declarations: [
     ProductVariantComponent,
   ],
   imports: [
-    AppSharedModule,
-    ScannerModule
+    ScannerModule,
+    CommonModule,
+    FormsModule,
+    Angular2FontawesomeModule,
+    MaterializeModule,
+    NguiAutoCompleteModule,
+    PriceInputModule
   ],
   exports: [
     ProductVariantComponent

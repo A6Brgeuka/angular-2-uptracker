@@ -20,12 +20,12 @@ export class PriceInputComponent implements ControlValueAccessor, AfterViewInit 
   @Input('placeholder') public placeholder: any;
   @ViewChild("inputEl") inputEl: ElementRef;
 
-  constructor(private formatCurrencyPipe: CurrencyUsdPipe) {
+  constructor(private currencyUsdPipe: CurrencyUsdPipe) {
   }
 
   ngAfterViewInit() {
     this.el = this.inputEl.nativeElement;
-    this.el.value = this.formatCurrencyPipe.transform(this.el.value);
+    this.el.value = this.currencyUsdPipe.transform(this.el.value);
   }
 
   get value() {
@@ -39,8 +39,8 @@ export class PriceInputComponent implements ControlValueAccessor, AfterViewInit 
   writeValue(value: any) {
     if (value == 'N/A')
       return this._innerValue = value;
-    this._innerValue = this.formatCurrencyPipe.transform(value);
-    this.propagateChanges(this._innerValue);
+    this._innerValue = this.currencyUsdPipe.transform(value);
+    this.propagateChanges(this.currencyUsdPipe.parse(this._innerValue));
   }
 
   propagateChanges = (...any) => {

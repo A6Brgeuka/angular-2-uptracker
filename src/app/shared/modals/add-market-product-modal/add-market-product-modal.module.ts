@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { ScannerModule } from '../../../dashboard/scanner/scanner.module';
 import { AddMarketProductModalComponent } from './add-market-product-modal.component';
 import { AppSharedModule } from '../../shared.module';
 
@@ -9,8 +8,7 @@ import { AppSharedModule } from '../../shared.module';
     AddMarketProductModalComponent,
   ],
   imports: [
-    AppSharedModule,
-    ScannerModule,
+    AppSharedModule
   ],
   providers: [],
   exports: [

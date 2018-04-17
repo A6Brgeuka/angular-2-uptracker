@@ -24,12 +24,10 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
 import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
-import {PriceInputComponent} from "./components/price-input/price-input.component";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
-  directives.UserDropdownMenuDirective,
-  directives.OnlyNumbersDirective
+  directives.UserDropdownMenuDirective
 ];
 
 let pipesArr = [
@@ -40,8 +38,7 @@ let pipesArr = [
 ];
 
 let componentsArr = [
-  VendorSearchComponent,
-  PriceInputComponent
+  VendorSearchComponent
 ];
 
 // resolvers
@@ -62,6 +59,9 @@ import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-per
 import { AddVendorModalComponent } from './modals/add-vendor-modal/add-vendor-modal.component';
 import { ChipsInputModule } from './components/chips-input/chips-input.module';
 import { ChipsModule } from './components/chips/chips.module';
+import {ScannerModule} from "../dashboard/scanner/scanner.module";
+import {ProductVariantModule} from "./components/product-variant/product-variant.module";
+import {PriceInputModule} from "./components/price-input/price-input.module";
 
 const modalsArr = [
   EditUserModal,
@@ -100,7 +100,10 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SelectModule,
     Daterangepicker,
     NgxDatatableModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    PriceInputModule,
+    ScannerModule,
+    ProductVariantModule
   ],
   declarations: [
     ...directivesArr,
@@ -133,6 +136,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HasClassModule,
     ChipsInputModule,
     ChipsModule,
+    PriceInputModule,
+    ScannerModule,
+    ProductVariantModule,
 
     ...directivesArr,
     ...pipesArr,

@@ -6,6 +6,7 @@ import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {Observable} from 'rxjs/Observable';
 
 import {isObject} from 'lodash';
+import {VendorService} from "../../../core/services/vendor.service";
 
 @Component({
   selector: 'app-vendor-search',
@@ -25,7 +26,8 @@ export class VendorSearchComponent implements OnInit {
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
 
-  constructor(private inventoryService: InventoryService) {
+  constructor(private inventoryService: InventoryService,
+              private vendorService: VendorService) {
   }
 
   addSubscribers() {
@@ -41,6 +43,7 @@ export class VendorSearchComponent implements OnInit {
   onSearchVendor(event) {
     this.vendorDirty = true;
     this.vendorValid = !!(event.target.value);
+    this.vendorService.vendorSearch = event.target.value;
     this.autocompleteVendors$.next(event.target.value);
   }
 

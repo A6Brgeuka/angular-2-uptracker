@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {each, map, join, every, difference} from 'lodash';
+import {each, map, every, difference} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -14,6 +14,7 @@ import {ProductVariantsModel} from '../../../models/product-variants.model';
 import {PackageModel} from '../../../models/inventory.model';
 import {ToasterService} from '../../../core/services/toaster.service';
 import {Router} from '@angular/router';
+import {AddVendorModalComponent} from "../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
 
 const dummyInventory = [
   {type: 'Package', value: 'package', qty: 1},
@@ -87,25 +88,8 @@ export class AddNewProductComponent implements OnInit {
 
   createVendorVariants() {
     let arr = map(this.productVariants, 'values');
-    let newVar = (arr) => {
-      return {...new CustomProductVariantModel(), name: join(arr, ' ')}
-    };
-    function recursive() {
-      let r = [], arg = arguments, max = arg.length-1;
-      function helper(arr, i) {
-        for (let j=0, l=arg[i].length; j<l; j++) {
-          let a = arr.slice(0); // clone arr
-          a.push(arg[i][j]);
-          if (i==max)
-            r.push(newVar(a));
-          else
-            helper(a, i+1);
-        }
-      }
-      helper([], 0);
-      return r;
-    }
-    return recursive(...arr);
+    if (!arr.length) return [{...new CustomProductVariantModel(), name: this.product.name}];
+    return this.productService.recursive(...arr);
   }
 
   setTechName = (name) => this.product.technical_name = name;
@@ -221,5 +205,19 @@ export class AddNewProductComponent implements OnInit {
 
   onVendorDelete(i) {
     this.product.vendor_variants.splice(i, 1);
+  }
+
+  openAddVendorsModal() {
+    this.modal
+      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({modalMode: true}, true))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (vendor) => {
+            this.onVendorChosen({vendor_name: vendor.name});
+          },
+          (err) => {
+          }
+        );
+      });
   }
 }

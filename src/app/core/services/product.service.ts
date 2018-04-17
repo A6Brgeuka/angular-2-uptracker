@@ -12,6 +12,7 @@ import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import {ProductModel} from "../../models/product.model";
+import {CustomProductVariantModel} from "../../models/custom-product.model";
 
 @Injectable()
 @Subscribers({
@@ -260,6 +261,22 @@ export class ProductService extends ModelService {
       ;
     }
     return false;
+  }
+
+  recursive(): CustomProductVariantModel[] {
+    let r = [], arg = arguments, max = arg.length-1;
+    function helper(arr, i) {
+      for (let j=0, l=arg[i].length; j<l; j++) {
+        let a = arr.slice(0);
+        a.push(arg[i][j]);
+        if (i==max)
+          r.push({...new CustomProductVariantModel(), name: _.join(a, ' ')});
+        else
+          helper(a, i+1);
+      }
+    }
+    helper([], 0);
+    return r;
   }
 
   addCustomProduct(data) {

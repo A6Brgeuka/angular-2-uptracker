@@ -53,6 +53,7 @@ export class AddVendorModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.vendor.vendor_name = this.vendorService.vendorSearch;
   }
 
   dismissModal() {
