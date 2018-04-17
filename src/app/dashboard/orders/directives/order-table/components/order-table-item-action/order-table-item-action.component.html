@@ -39,7 +39,7 @@
       <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
     </li>
     <li *ngIf="isRecieveList || isReceivedItem">
-      <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+      <a class="tealish-text" (click)="reconcile()">Reconcile</a>
     </li>
     <li *ngIf="!isReceivedItem && !isRecieveList">
       <a class="tealish-text" (click)="receive()">Receive</a>

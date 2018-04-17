@@ -1,0 +1,23 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="inner">
+  <div class="row title center-align">RECONCILE</div>
+  <div class="row">
+    <div class="question">
+      Would you like to add an existing invoice or start a new invoice reconcile?
+    </div>
+    <div class="row">
+      <p>
+        <input name="selection" type="radio" id="add_existing" value="add" [(ngModel)]="reconcileType" (ngModelChange)="reconcile()" />
+        <label for="add_existing">Add to an existing Invoice</label>
+      </p>
+      <p>
+        <input name="selection" type="radio" id="start_new" value="start" [(ngModel)]="reconcileType" (ngModelChange)="reconcile()" />
+        <label for="start_new">Start a New Invoice Reconcile</label>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light">CONTINUE</button>
+  </div>
+</div>
+
