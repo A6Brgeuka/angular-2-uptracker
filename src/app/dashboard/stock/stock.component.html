@@ -59,7 +59,7 @@
             [class.disabled]="product.actualQTY == null || product.currentQTY == product.actualQTY"
             [(ngModel)]="product.reason"
             materialize="material_select"
-            (change)="actualChange($event)"
+            (change)="actualChange(product)"
           >
             <option value="N/A">N/A</option>
             <option value="Shrinkage" [disabled]="product.actualQTY < product.currentQTY">Shrinkage</option>
