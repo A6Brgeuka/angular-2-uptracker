@@ -5,8 +5,8 @@
     <div class="question">
       Would you like to add an existing invoice or start a new invoice reconcile?
     </div>
-    <div class="row">
-      <p>
+    <div class="row option">
+      <p class="">
         <input name="selection" type="radio" id="add_existing" value="add" [(ngModel)]="reconcileType" (ngModelChange)="reconcile()" />
         <label for="add_existing">Add to an existing Invoice</label>
       </p>
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="row">
-    <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light">CONTINUE</button>
+    <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light" (click)="continue()">CONTINUE</button>
   </div>
 </div>
 

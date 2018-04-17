@@ -49,6 +49,14 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     })
   }
 
+  continue() {
+    this.dialog.dismiss();
+
+    if (this.reconcileType == 'start') {
+      this.router.navigate(['/orders/reconcile']);
+    }
+  }
+
   dismissModal() {
     this.dialog.dismiss();
   }

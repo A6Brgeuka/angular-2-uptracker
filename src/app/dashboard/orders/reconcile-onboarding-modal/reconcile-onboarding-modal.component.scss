@@ -4,6 +4,17 @@
   .close {
     display: block !important;
   }
+  .title {
+    font-size: 22px !important;
+  }
+  .question {
+    margin-top: 50px;
+  }
+  .option {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 20px;
+  }
   ngx-select-dropdown {
     .icon-angle-down {        
       font-family: FontAwesome;
@@ -44,11 +55,11 @@
   .dropdown {
     height: 0px;
     transition: height .2s;
+    position: relative;
     overflow: hidden;
 
     &.show {
       overflow: visible;
-      position: relative;
       height: 37px;
     }
 
@@ -72,10 +83,26 @@
       left: 20px;
     }
   }
+  .uptracker-form-btn {
+    width: 150px;
+    height: 40px;
+  }
 
   [type="radio"]:checked + label:after {
     background-color: $tealish;
     border-color: $tealish;
     left: 3px;
+  }
+}
+
+/deep/ .modal {
+  margin-top: 120px;
+  min-height: auto;
+  width: 700px;
+  .modal-content {
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 }
