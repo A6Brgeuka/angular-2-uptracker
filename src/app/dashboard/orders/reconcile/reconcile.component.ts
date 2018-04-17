@@ -40,8 +40,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     JPY: '¥',
   }
   public board: any = {};
-  public selectConfig = { displayKey: "id", search: true };
-  public taxBoardVisible = false;
+  public selectConfig: any = { displayKey: "id", search: true };
+  public taxBoardVisible: boolean = false;
+  public productHeader: boolean = false;
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
@@ -113,6 +114,15 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   openFilterModal() {}
 
   filterChange(event) {}
+
+  productHeaderSelect(event) {
+    setTimeout(() => {
+      this.selectedInvoice.items.forEach(item => {
+        item.checked = this.productHeader;
+      })
+      this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
+    })
+  }
 
   productSelect(product) {
     product.checked = !product.checked

@@ -276,8 +276,17 @@
     <div class="list is-grid-view">
       <div class="heading row">
         <div class="col s3 left-align">
-          <div class="left product">
-            Product
+          <div class="input-checkbox checkbox left product">
+            <input
+              type="checkbox"
+              class="checkbox-input"
+              id="selectProductHeader"
+              name="selectProductHeader"
+              [(ngModel)]="productHeader"
+              (click)="productHeaderSelect($event)"
+            />
+            <label for="selectProductHeader"></label>
+            <span>Product</span>
           </div>
         </div>
         <div class="col s8">
@@ -303,12 +312,12 @@
               <input
                 type="checkbox"
                 class="checkbox-input"
-                id="selectProduct{{i}}"
-                name="selectProduct{{i}}"
+                id="selectProduct"
+                name="selectProduct"
                 [(ngModel)]="product.checked"
                 (click)="productSelect(product)"
               />
-              <label for="selectProduct{{i}}"></label>
+              <label for="selectProduct"></label>
             </div>
             <div class="product-pic">
               <img src="{{product.image}}" alt="PRODUCT" />
