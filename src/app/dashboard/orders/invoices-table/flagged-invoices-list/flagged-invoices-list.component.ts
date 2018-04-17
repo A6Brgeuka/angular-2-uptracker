@@ -8,6 +8,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { FlaggedInvoicesListService } from '../services/flagged-invoices-list.service';
+import { Invoice } from '../../models/invoice';
 
 @Component({
   selector: 'app-flagged-invoices-list',
@@ -31,7 +32,7 @@ export class FlaggedInvoicesListComponent implements OnInit, OnDestroy {
     // {name: '', className: 's1', actions: true},
   ];
 
-  public invoices$: Observable<OrderItem[]>;
+  public invoices$: Observable<Invoice[]>;
 
   constructor(
     public pastOrderService: PastOrderService,

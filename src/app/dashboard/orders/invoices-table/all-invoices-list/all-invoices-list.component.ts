@@ -5,9 +5,9 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { AllInvoicesListService } from '../services/all-invoices-list.service';
+import { Invoice } from '../../models/invoice';
 
 @Component({
   selector: 'app-all-invoices-list',
@@ -31,7 +31,7 @@ export class AllInvoicesListComponent implements OnInit, OnDestroy {
     // {name: '', className: 's1', actions: true},
   ];
 
-  public invoices$: Observable<OrderItem[]>;
+  public invoices$: Observable<Invoice[]>;
 
   constructor(
     public pastOrderService: PastOrderService,
