@@ -73,6 +73,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         item.received_qty_ = item.received_qty;
         item.package_price_ = item.package_price.replace('$', '');
         item.discounted_price_ = item.discounted_price.replace('$', '');
+        item.discounted_price_type = 'USD';
         item.total_ = item.total;
 
         // item.disc_price = '$100'
@@ -169,6 +170,30 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   getDiff() {
     return (this.getCalculatedTotal() - this.getTotal()).toFixed(2);
+  }
+
+  getProductDiscountPrice(product) {
+    try {
+      let total = product.received_qty * parseFloat(product.package_price.replace('$', ''))
+      total = total - parseFloat(product.discounted_price.replace('$', ''));
+      return total.toFixed(2);
+    } catch (err) {
+      return 0.00;
+    }
+  }
+
+  getProductDiscountPrice_(product) {
+    try {
+      let total = product.received_qty_ * parseFloat(product.package_price.replace('$', ''))
+      if (product.discounted_price_type === 'PERCENT') {
+        total = total * parseFloat(product.discounted_price_) / 100;
+      } else {
+        total = total - parseFloat(product.discounted_price_);
+      }
+      return total.toFixed(2);
+    } catch (err) {
+      return 0.00;
+    }
   }
 
   getDollarSign() {

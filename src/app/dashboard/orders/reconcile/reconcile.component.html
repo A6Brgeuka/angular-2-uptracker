@@ -193,7 +193,7 @@
                     [(ngModel)]="selectedInvoice.invoice.po_discount_type"
                   >
                     <option value="PERCENT">%</option>
-                    <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                    <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
                     <option value="REWARDS">R</option>
                   </select>
                 </div>
@@ -324,7 +324,7 @@
                 <div class="text-left input-header">{{product.discounted_price}}</div>
               </div>
               <div class="col s2">
-                <div>{{product.disc_price}}</div>
+                <div>${{this.getProductDiscountPrice(product)}}</div>
               </div>
               <div class="col s2">
                 <div>{{product.total}}</div>
@@ -370,18 +370,17 @@
                     <select
                       class="wide"
                       materialize="material_select"
-                      [materializeSelectOptions]=""
                       name="currency"
-                      [(ngModel)]="selectedInvoice.discountType"
+                      [(ngModel)]="product.discounted_price_type"
                     >
                       <option value="PERCENT">%</option>
-                      <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                      <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
                     </select>
                   </div>
                 </div>
               </div>
               <div class="col s2">
-                <div class="lined">{{product.disc_price_}}</div>
+                <div class="lined">${{this.getProductDiscountPrice_(product)}}</div>
               </div>
               <div class="col s2">
                 <div class="lined">{{product.total_}}</div>
@@ -479,7 +478,7 @@
                   [(ngModel)]="board.discountType"
                 >
                   <option value="PERCENT">%</option>
-                  <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                  <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
                 </select>
               </div>
             </div>
