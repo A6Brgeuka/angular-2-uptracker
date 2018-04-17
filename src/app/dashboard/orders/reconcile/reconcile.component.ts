@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { DatepickerComponent } from 'angular2-material-datepicker';
 import * as moment from 'moment';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
 import * as _ from 'lodash';
 import { ReconcileService } from '../../../core/services/reconcile.service';
-import { DatepickerComponent } from 'angular2-material-datepicker';
+import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
 
 @Component({
   selector: 'app-reconcile',
@@ -14,31 +17,13 @@ import { DatepickerComponent } from 'angular2-material-datepicker';
 @DestroySubscribers()
 export class ReconcileComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
-  public selectAll: boolean;
-  public dateOptions: any = {
-    locale: { format: 'MMM D, YYYY' },
-    alwaysShowCalendars: false,
-    ranges: {
-      'Today': [moment(), moment()],
-      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
-  }
   public sort: string = 'A-Z';
   public filter: string = '';
   public panelVisible: boolean = false
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
   public selectedInvoice: any = {invoice: {}, items: [], vendors: {}};
-  public DOLLARSIGNS: any = {
-    USD: '$',
-    CAD: '$',
-    MXN: '$',
-    JPY: '¥',
-  }
+  public DOLLARSIGNS: any = { USD: '$', CAD: '$', MXN: '$', JPY: '¥' }
   public board: any = {};
   public selectConfig: any = { displayKey: "id", search: true };
   public taxBoardVisible: boolean = false;
@@ -47,7 +32,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
   constructor(
-    public reconcileService: ReconcileService
+    public modal: Modal,
+    public reconcileService: ReconcileService,
+    public modalWindowService: ModalWindowService
   ) {
   }
   
@@ -85,6 +72,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.invoiceChange({});
       console.log('-------------<<<   ', res)
     })
+
     this.board = {
       pkg: '',
       qty: null,
@@ -98,11 +86,14 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     console.log('for unsubscribing')
   }
 
+  showProductModal() {
+    this.modal
+    .open(ReconcileProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}));
+  }
+
   addSubscribers() {}
   
   toggleSelectAll() {}
-  
-  addProduct() {}
 
   removeProduct(product) {
     product.checked = false;
