@@ -351,6 +351,7 @@
                   >
                     <option value="Box">Box</option>
                     <option value="Glove">Glove</option>
+                    <option value="Canister">Canister</option>
                   </select>
                 </div>
               </div>
@@ -443,6 +444,7 @@
           <div class="col s8">
             <div class="select">
               <select title="Pkg" name="board-pkg" [(ngModel)]="board.Pkg" materialize="material_select">
+                <option value="" disabled selected>Select</option>
                 <option value="Box">Box</option>
                 <option value="Glove">Glove</option>
               </select>
@@ -457,8 +459,6 @@
                 class="text-left"
                 name="board-qty"
                 type="text"
-                currencyMask
-                [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                 [(ngModel)]="board.qty"
               >
             </div>
@@ -470,7 +470,7 @@
             <div class="input">
               <input
                 class="text-left"
-                name="board-qty"
+                name="board-pkg"
                 type="text"
                 currencyMask
                 [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
@@ -486,7 +486,7 @@
               <div class="input">
                 <input
                   class="text-left"
-                  name="discount"
+                  name="board-discount"
                   type="text"
                   currencyMask
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"

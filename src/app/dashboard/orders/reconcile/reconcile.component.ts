@@ -48,13 +48,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   constructor(
     public reconcileService: ReconcileService
   ) {
-    this.board = {
-      pkg: 'Box',
-      qty: 20,
-      pkgPrice: 20,
-      discountAmount: 20,
-      discountType: 'PERCENT',
-    }
   }
   
   ngOnInit() {
@@ -91,6 +84,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.invoiceChange({});
       console.log('-------------<<<   ', res)
     })
+    this.board = {
+      pkg: '',
+      qty: null,
+      pkgPrice: null,
+      discountAmount: null,
+      discountType: 'PERCENT',
+    }
   }
   
   ngOnDestroy() {
@@ -178,6 +178,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   bulkUpdates() {
     this.panelVisible = false;
     this.selectedInvoice.items.forEach(item => {
+      if (item.checked) {
+        item.package_ = this.board.pkg;
+        item.received_qty_ = this.board.qty;
+        item.package_price_ = this.board.pkgPrice;
+        item.discounted_price_ = this.board.discountAmount;
+      }
+      this.productChange(item);
       item.checked = false;
     })
   }
