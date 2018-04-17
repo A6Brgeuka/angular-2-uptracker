@@ -26,6 +26,7 @@
               type="text"
               name="datePicker"
               [(ngModel)]="selectedInvoice.invoice.invoice_date"
+              (ngModelChange)="invoiceChange($event)"
             />
             <div class="calendar">
               <img src="/assets/img/icon-calendar.png" alt="" />
@@ -42,7 +43,7 @@
                   [materializeSelectOptions]=""
                   name="currency"
                   [(ngModel)]="selectedInvoice.invoice.currency"
-                  (ngModelChange)="dollarSignChange($event)"
+                  (ngModelChange)="invoiceChange($event)"
                 >
                   <option value="USD">USD</option>
                   <option value="CAD">CAD</option>
@@ -75,6 +76,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.invoiced_sub_total"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -92,6 +94,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.invoice_credit"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -109,6 +112,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.shipping"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -126,6 +130,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.handling"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -141,6 +146,7 @@
                   currencyMask
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                   [(ngModel)]="selectedInvoice.invoice.taxes"
+                  (ngModelChange)="invoiceChange($event)"
                 >
                 <div class="plus" (click)="toggleTaxBoard()">
                   <fa name="plus"></fa>
@@ -183,7 +189,12 @@
             <div class="item">
               <span>P.O. Discount</span>
               <div class="input-discount">
-                <input type="text" name="discount" [(ngModel)]="selectedInvoice.invoice.po_discount">
+                <input
+                  type="text"
+                  name="discount"
+                  [(ngModel)]="selectedInvoice.invoice.po_discount"
+                  (ngModelChange)="invoiceChange($event)"
+                >
                 <div class="select">
                   <select
                     class="wide"
@@ -191,6 +202,7 @@
                     [materializeSelectOptions]=""
                     name="currency"
                     [(ngModel)]="selectedInvoice.invoice.po_discount_type"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                     <option value="PERCENT">%</option>
                     <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
@@ -216,7 +228,7 @@
             <div class="item">
               <span>Total</span>
               <div class="input-calculated">
-                <span class="bold">${{this.getTotal()}}</span>
+                <span class="bold">${{selectedInvoice.invoice.total}}</span>
               </div>
             </div>
           </div>
@@ -224,7 +236,7 @@
             <div class="item">
               <span>Calculated Total</span>
               <div class="input-calculated">
-                ${{this.getCalculatedTotal()}}
+                ${{selectedInvoice.invoice.calculated_total}}
               </div>
             </div>
           </div>
@@ -232,7 +244,7 @@
             <div class="item">
               <span class="diff-red">Diff</span>
               <div class="input-calculated">
-                <span class="diff-red">${{this.getDiff()}}</span>
+                <span class="diff-red">${{selectedInvoice.invoice.diff}}</span>
               </div>
             </div>
           </div>

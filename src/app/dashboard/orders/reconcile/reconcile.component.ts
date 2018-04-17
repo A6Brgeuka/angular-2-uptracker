@@ -59,7 +59,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       res.id = '5ad4f32e3d0192000d3acf1e';
       res.invoice.invoice_date = '04/16/2018';
       res.invoice.currency = 'USD';
-      res.invoice.total = '$200.00';
       res.invoice.invoiced_sub_total = '0.00';
       res.invoice.invoice_credit = '0.00';
       res.invoice.shipping = '0.00';
@@ -67,6 +66,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       res.invoice.taxes = '0.00';
       res.invoice.po_discount = '0.00';
       res.invoice.po_discount_type = 'PERCENT';
+      res.invoice.total = '0.00';
+      res.invoice.calculated_total = '0.00';
+      res.invoice.diff = '0.00';
 
       res.items.forEach(item => {
         item.package_ = item.package;
@@ -78,14 +80,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         item.disc_price = '$10.00';
 
         this.productChange(item);
-
-        // item.disc_price = '$100'
-        // item.disc_price_ = item.disc_price;
       })
 
       this.invoices = [res];
       this.invoices_ = _.cloneDeep(this.invoices);
       this.selectedInvoice = this.invoices[0];
+      this.invoiceChange({});
       console.log('-------------<<<   ', res)
     })
   }
@@ -116,6 +116,47 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
   }
 
+  invoiceChange(event) {
+    try {
+      // Total
+      let total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total)
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
+      + parseFloat(this.selectedInvoice.invoice.shipping)
+      + parseFloat(this.selectedInvoice.invoice.handling)
+      + parseFloat(this.selectedInvoice.invoice.taxes);
+
+      let po_discount = 0;
+      if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
+        po_discount = total * parseFloat(this.selectedInvoice.invoice.po_discount) / 100;
+      } else {
+        po_discount = parseFloat(this.selectedInvoice.invoice.po_discount);
+      }
+      total = total - po_discount;
+      this.selectedInvoice.invoice.total = total;
+
+      // Calculated Total
+      let calculated_total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', ''))
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
+      + parseFloat(this.selectedInvoice.invoice.shipping)
+      + parseFloat(this.selectedInvoice.invoice.handling)
+      + parseFloat(this.selectedInvoice.invoice.taxes);
+
+      po_discount = 0;
+      if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
+        po_discount = calculated_total * parseFloat(this.selectedInvoice.invoice.po_discount) / 100;
+      } else {
+        po_discount = parseFloat(this.selectedInvoice.invoice.po_discount);
+      }
+      calculated_total = calculated_total - po_discount;
+      this.selectedInvoice.invoice.calculated_total = calculated_total;
+
+      // Diff
+      this.selectedInvoice.invoice.diff = (calculated_total - total).toFixed(2);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   productChange(product) {
     try {
       let disc_price = 0;
@@ -144,59 +185,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   changeInvoice() {}
 
-  getTotal() {
-    try {
-      let total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total)
-      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
-      + parseFloat(this.selectedInvoice.invoice.shipping)
-      + parseFloat(this.selectedInvoice.invoice.handling)
-      + parseFloat(this.selectedInvoice.invoice.taxes);
-
-      let po_discount = 0;
-      if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
-        po_discount = total * parseFloat(this.selectedInvoice.invoice.po_discount) / 100;
-      } else {
-        po_discount = parseFloat(this.selectedInvoice.invoice.po_discount);
-      }
-      total = total - po_discount;
-      return total;
-    } catch (err) {
-      return 0;
-    }
-  }
-
-  getCalculatedTotal() {
-    try {
-      let total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', ''))
-      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
-      + parseFloat(this.selectedInvoice.invoice.shipping)
-      + parseFloat(this.selectedInvoice.invoice.handling)
-      + parseFloat(this.selectedInvoice.invoice.taxes);
-
-      let po_discount = 0;
-      if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
-        po_discount = total * parseFloat(this.selectedInvoice.invoice.po_discount) / 100;
-      } else {
-        po_discount = parseFloat(this.selectedInvoice.invoice.po_discount);
-      }
-      total = total - po_discount;
-      return total;
-    } catch (err) {
-      return 0;
-    }
-  }
-
-  getDiff() {
-    return (this.getCalculatedTotal() - this.getTotal()).toFixed(2);
-  }
-
   getMask(product) {
     return `{ prefix: '${this.DOLLARSIGNS[product.currency]}', thousands: ',', decimal: '.', align: 'left' }`
-  }
-
-  dollarSignChange(event) {
-    this.selectedInvoice.currency = event;
-    this.selectedInvoice.discountType = event;
   }
 
   toggleTaxBoard() {
