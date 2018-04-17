@@ -173,9 +173,9 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
 
   getTransferText(unit, move) {
     if (unit == 'Boxes' && move > 1) {
-      return `${move} Boxes = ${300 * move} Gloves`;
+      return `${move} Boxes = ${(300 * move).toLocaleString()} Gloves`;
     } else if (unit == 'Boxes' && move == 1) {
-      return `${move} Box = ${300 * move} Gloves`;
+      return `${move} Box = ${(300 * move).toLocaleString()} Gloves`;
     } else if (unit == 'Gloves' && move > 1) {
       return `${move} Gloves`;
     }
