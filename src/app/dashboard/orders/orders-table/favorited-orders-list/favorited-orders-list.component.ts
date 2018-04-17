@@ -4,9 +4,9 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
+import { Order } from '../../models/order';
 
 @Component({
   selector: 'app-favorited-orders-list',
@@ -32,7 +32,7 @@ export class FavoritedOrdersListComponent implements OnInit, OnDestroy {
   ];
 
 
-  public orders$: Observable<OrderItem[]>;
+  public orders$: Observable<Order[]>;
 
   constructor(
     private pastOrderService: PastOrderService,

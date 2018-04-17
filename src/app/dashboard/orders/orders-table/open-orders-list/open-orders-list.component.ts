@@ -4,8 +4,8 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { OpenOrdersListService } from '../services/open-orders-list.service';
+import { Order } from '../../models/order';
 
 @Component({
   selector: 'app-open-orders-list',
@@ -31,7 +31,7 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: false},
   ];
 
-  public orders$: Observable<OrderItem[]>;
+  public orders$: Observable<Order[]>;
 
   constructor(
     public openOrdersListService: OpenOrdersListService,

@@ -4,9 +4,9 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { BackorderedOrdersListService } from '../services/backordered-orders-list.service';
+import { Order } from '../../models/order';
 
 @Component({
   selector: 'app-backordered-orders-list',
@@ -31,7 +31,7 @@ export class BackorderedOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: false},
   ];
 
-  public orders$: Observable<OrderItem[]>;
+  public orders$: Observable<Order[]>;
 
   constructor(
     public backorderedOrdersListService: BackorderedOrdersListService,

@@ -5,9 +5,9 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { ClosedOrdersListService } from '../services/closed-orders-list.service';
+import { Order } from '../../models/order';
 
 @Component({
   selector: 'app-closed-orders-list',
@@ -32,7 +32,7 @@ export class ClosedOrdersListComponent implements OnInit, OnDestroy {
     {name: '', className: 's1', actions: false},
   ];
 
-  public orders$: Observable<OrderItem[]>;
+  public orders$: Observable<Order[]>;
 
   constructor(
     public closedOrdersListService: ClosedOrdersListService,

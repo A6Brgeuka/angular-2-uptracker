@@ -6,9 +6,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { ReconciledOrdersListService } from '../services/reconciled-orders-list.service';
+import { Order } from '../../models/order';
 
 @Component({
   selector: 'app-reconciled-orders-list',
@@ -33,7 +33,7 @@ export class ReconciledOrdersListComponent implements OnInit, OnDestroy {
   ];
 
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public orders$: Observable<OrderItem[]>;
+  public orders$: Observable<Order[]>;
 
   constructor(
     public reconciledOrdersListService: ReconciledOrdersListService,
