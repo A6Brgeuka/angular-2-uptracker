@@ -5,9 +5,9 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { AllPackingSlipsListService } from '../services/all-packing-slips-list.service';
+import { PackingSlip } from '../../models/packing-slip';
 
 @Component({
   selector: 'app-all-packing-slips-list',
@@ -30,7 +30,7 @@ export class AllPackingSlipsListComponent implements OnInit, OnDestroy {
     // {name: '', className: 's1', actions: true},
   ];
 
-  public packingSlips$: Observable<OrderItem[]>;
+  public packingSlips$: Observable<PackingSlip[]>;
 
   constructor(
     public pastOrderService: PastOrderService,
