@@ -1,0 +1,6 @@
+<app-order-table
+  [uniqueField]="'order_id'"
+  [header]="tableHeaderOpen"
+  [orders]="orders$ | async"
+  [listName] = 'listName'
+></app-order-table>
