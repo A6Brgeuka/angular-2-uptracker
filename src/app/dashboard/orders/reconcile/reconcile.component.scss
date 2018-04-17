@@ -347,6 +347,7 @@
         }
         .heading {
           margin: 10px 0;
+          padding-bottom: 5px;
           color: #444;
           border-bottom: 1px solid #888;
           font-size: 14px;
@@ -672,6 +673,14 @@
         color: $black;
         padding-bottom: 20px;
         text-decoration: underline;
+      }
+    }
+  }
+  
+  .select {
+    .select-wrapper {
+      ul li.disabled span {
+        color: rgba(0, 0, 0, 0.3) !important;
       }
     }
   }
