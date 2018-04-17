@@ -4,7 +4,7 @@ import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class ScannerService {
-  selectedFile$: Subject<File> = new Subject();
+  capturedFile: any;
   subscribers: any = {};
   videoStreamUrl: string;
   navigator: any = navigator;
@@ -15,11 +15,11 @@ export class ScannerService {
   constructor(
       private ngZone: NgZone,
   ) {}
-    onChangeFile(file) {
+    /*onChangeFile(file) {
         if (file.target.files.length) {
             this.selectedFile$.next(file.target.files[0]);
         }
-    }
+    }*/
 
     captureMe() {
         const canvas: HTMLCanvasElement = this.canvas.nativeElement;
@@ -37,7 +37,7 @@ export class ScannerService {
         let file = this.dataURLtoFile(base64dataUrl, 'img');
 
         this.ngZone.run(() => {
-            this.selectedFile$.next(file);
+            this.capturedFile = file;
         });
     };
 
@@ -54,7 +54,7 @@ export class ScannerService {
         this.subscribers.qwe.unsubscribe();
         this.videoStreamUrl = '';
         this.video.nativeElement.src = this.videoStreamUrl;
-        this.modal.dismiss();
+        this.modal.dismiss(this.capturedFile);
     }
 
     onStartStream(video, canvas, modal) {

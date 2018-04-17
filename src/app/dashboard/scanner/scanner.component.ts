@@ -17,6 +17,7 @@ import {ScannerService} from "../../core/services/scanner.service";
 })
 @DestroySubscribers()
 export class ScannerComponent implements OnInit {
+  file$: Subject<File> = new Subject();
   subscribers: any;
   barCode$: Subject<string>;
   qrCode$: Subject<string>;
@@ -80,7 +81,7 @@ export class ScannerComponent implements OnInit {
   }
 
   onChangeFile(file) {
-      this.scannerService.onChangeFile(file);
+    this.file$.next(file.target.files[0]);
   }
 
   onOpenVideo() {
@@ -89,6 +90,7 @@ export class ScannerComponent implements OnInit {
       .then((resultPromise) => {
           resultPromise.result.then(
               (res) => {
+                this.file$.next(res);
               },
               (err) => {
               }
