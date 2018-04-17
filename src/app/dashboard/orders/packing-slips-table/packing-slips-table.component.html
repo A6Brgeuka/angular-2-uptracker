@@ -1,0 +1,15 @@
+<div class="row">
+  <ul class="tabs location-tabs mrg-btm-0" materialize="tabs">
+    <li
+      class="tab"
+      *ngFor="let tab of packingSlipsTabsArr"
+    >
+      <a
+        href="#{{tab}}Tab"
+        appHasClass="active"
+        (hasClassChange)="activeChange($event, tab)"
+      >{{tab}}</a>
+    </li>
+  </ul>
+</div>
+<app-all-packing-slips-list id="{{packingSlipsTabs.all}}Tab"></app-all-packing-slips-list>

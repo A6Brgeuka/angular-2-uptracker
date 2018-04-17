@@ -34,8 +34,17 @@ $tealish: #33c6d9;
         position:absolute;
         text-align:center;
         left:0;
-        top:120px;
-        width:100%;
+        width: 100%;
+        height: 100%;
+        z-index: 6;
+
+        .upload-link {
+          width: inherit;
+          height: inherit;
+        }
+      }
+      .del-img-btn {
+        z-index: 7;
       }
     }
 
