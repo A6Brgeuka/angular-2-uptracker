@@ -34,7 +34,7 @@
           <div class="row input-header"><span>Currency</span></div>
           <div class="row">
             <div class="currency">
-              <span>{{this.getDollarSign()}}1.00</span>
+              <span>{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}1.00</span>
               <div class="select">
                 <select
                   class="wide"
@@ -324,7 +324,7 @@
                 <div class="text-left input-header">{{product.discounted_price}}</div>
               </div>
               <div class="col s2">
-                <div>${{this.getProductDiscountPrice(product)}}</div>
+                <div>{{product.disc_price}}</div>
               </div>
               <div class="col s2">
                 <div>{{product.total}}</div>
@@ -333,7 +333,13 @@
             <div class="row mrg-btm-0">
               <div class="col s2">
                 <div class="select">
-                  <select title="Pkg" name="pkg" [(ngModel)]="product.package_" materialize="material_select">
+                  <select
+                    title="Pkg"
+                    name="pkg"
+                    materialize="material_select"
+                    [(ngModel)]="product.package_"
+                    (ngModelChange)="productChange(product)"
+                  >
                     <option value="Box">Box</option>
                     <option value="Glove">Glove</option>
                   </select>
@@ -341,7 +347,13 @@
               </div>
               <div class="col s2">
                 <div class="input mini-input">
-                  <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.received_qty_">
+                  <input
+                    type="text"
+                    class="text-left"
+                    name="QTY"
+                    [(ngModel)]="product.received_qty_"
+                    (ngModelChange)="productChange(product)"
+                  >
                 </div>
               </div>
               <div class="col s2">
@@ -353,6 +365,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="product.package_price_"
+                    (ngModelChange)="productChange(product)"
                   >
                 </div>
               </div>
@@ -364,6 +377,7 @@
                       name="DT{{i}}"
                       type="text"
                       [(ngModel)]="product.discounted_price_"
+                      (ngModelChange)="productChange(product)"
                     >
                   </div>
                   <div class="select">
@@ -372,6 +386,7 @@
                       materialize="material_select"
                       name="currency"
                       [(ngModel)]="product.discounted_price_type"
+                      (ngModelChange)="productChange(product)"
                     >
                       <option value="PERCENT">%</option>
                       <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
@@ -380,10 +395,10 @@
                 </div>
               </div>
               <div class="col s2">
-                <div class="lined">${{this.getProductDiscountPrice_(product)}}</div>
+                <div class="lined">${{product.disc_price_}}</div>
               </div>
               <div class="col s2">
-                <div class="lined">{{product.total_}}</div>
+                <div class="lined">${{product.total_}}</div>
               </div>
             </div>
           </div>

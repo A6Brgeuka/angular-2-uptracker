@@ -75,6 +75,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         item.discounted_price_ = item.discounted_price.replace('$', '');
         item.discounted_price_type = 'USD';
         item.total_ = item.total;
+        item.disc_price = '$10.00';
+
+        this.productChange(item);
 
         // item.disc_price = '$100'
         // item.disc_price_ = item.disc_price;
@@ -111,6 +114,21 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   productSelect(product) {
     product.checked = !product.checked
     this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
+  }
+
+  productChange(product) {
+    try {
+      let disc_price = 0;
+      if (product.discounted_price_type === 'PERCENT') {
+        disc_price = (1 -  parseFloat(product.discounted_price_) / 100) * parseFloat(product.package_price_);
+      } else {
+        disc_price = parseFloat(product.package_price_) - parseFloat(product.discounted_price_);
+      }
+      product.disc_price_ = disc_price.toFixed(2);
+      product.total_ = (product.disc_price_ * product.received_qty_).toFixed(2);
+    } catch (err) {
+      console.log('err');
+    }
   }
 
   bulkUpdates() {
@@ -170,46 +188,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   getDiff() {
     return (this.getCalculatedTotal() - this.getTotal()).toFixed(2);
-  }
-
-  getProductDiscountPrice(product) {
-    try {
-      let total = product.received_qty * parseFloat(product.package_price.replace('$', ''))
-      total = total - parseFloat(product.discounted_price.replace('$', ''));
-      return total.toFixed(2);
-    } catch (err) {
-      return 0.00;
-    }
-  }
-
-  getProductDiscountPrice_(product) {
-    try {
-      let total = product.received_qty_ * parseFloat(product.package_price.replace('$', ''))
-      if (product.discounted_price_type === 'PERCENT') {
-        total = total * parseFloat(product.discounted_price_) / 100;
-      } else {
-        total = total - parseFloat(product.discounted_price_);
-      }
-      return total.toFixed(2);
-    } catch (err) {
-      return 0.00;
-    }
-  }
-
-  getDollarSign() {
-    const type = this.selectedInvoice.currency;
-    switch (type) {
-      case 'USD':
-        return '$';
-      case 'CAD':
-        return '$';
-      case 'MXN':
-        return '$';
-      case 'JPY':
-        return '¥';
-      default:
-        return '$';
-    }
   }
 
   getMask(product) {
