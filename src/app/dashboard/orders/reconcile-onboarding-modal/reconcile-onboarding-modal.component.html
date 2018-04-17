@@ -10,6 +10,20 @@
         <input name="selection" type="radio" id="add_existing" value="add" [(ngModel)]="reconcileType" (ngModelChange)="reconcile()" />
         <label for="add_existing">Add to an existing Invoice</label>
       </p>
+      <div class="dropdown" [class.show]="reconcileType == 'add'">
+        <div [class.invoice]="invoices_.length > 0">
+          <ngx-select-dropdown 
+            *ngIf="invoices.length > 0"
+            [config]="selectConfig"
+            [options]="invoices"
+            [(value)]="invoices_"
+            [multiple]="false"
+            (ngModelChange)="invoiceChange($event)"
+          >
+          </ngx-select-dropdown>
+        </div>
+        <span class="placeholder" *ngIf="invoices_.length == 0">Select Invoice</span>
+      </div>
       <p>
         <input name="selection" type="radio" id="start_new" value="start" [(ngModel)]="reconcileType" (ngModelChange)="reconcile()" />
         <label for="start_new">Start a New Invoice Reconcile</label>
