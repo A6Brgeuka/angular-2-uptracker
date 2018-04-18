@@ -9,21 +9,17 @@ import { SelectModule } from 'ng-select';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
-import { SelectDropDownModule } from 'ngx-select-dropdown';
-
+import { DatepickerModule } from 'angular2-material-datepicker';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
-
-// import { CoreModule } from "../core/core.module";
-
-import { DatepickerModule } from 'angular2-material-datepicker';
+import { TextMaskModule } from 'angular2-text-mask';
+import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
-import * as directives from "./index";
-import { TextMaskModule } from 'angular2-text-mask';
-import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
+// import { SelectDropDownModule } from './components/ngx-select-dropdown/ngx-select-dropdown.module';
+import * as directives from "./index";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -93,7 +89,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     Daterangepicker,
     NgxDatatableModule,
     CurrencyMaskModule,
-    SelectDropDownModule,
+    // SelectDropDownModule,
 
     DatepickerModule
   ],
@@ -115,7 +111,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     Daterangepicker,
     NgxDatatableModule,
     CurrencyMaskModule,
-    SelectDropDownModule,
+    // SelectDropDownModule,
 
     MaterializeModule,
     FileDropModule,

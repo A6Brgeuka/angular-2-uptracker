@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 
 import { AppSharedModule } from '../../../shared/shared.module';
 import { ReconcileOnboardingModal } from './reconcile-onboarding-modal.component';
+import { SelectDropDownModule } from '../../../shared/components/ngx-select-dropdown/ngx-select-dropdown.module';
 
 @NgModule({
   declarations: [
     ReconcileOnboardingModal
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    SelectDropDownModule,
   ],
   providers: [],
   // IMPORTANT:
