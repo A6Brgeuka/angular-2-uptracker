@@ -73,8 +73,8 @@ export class BrowseGlobalMarketComponent implements OnInit {
     this.getInfiniteScroll();
   }
 
-  onSearchEvent($event) {
-    this.searchKey$.next($event);
+  searchProducts(event) {
+    this.productService.updateSearchKey(event);
   }
 
   selectProduct(product) {
