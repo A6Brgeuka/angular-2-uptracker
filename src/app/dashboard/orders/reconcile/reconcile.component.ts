@@ -1,8 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import * as moment from 'moment';
+import { DatepickerComponent } from 'angular2-material-datepicker';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
+import * as moment from 'moment';
+import * as _ from 'lodash';
+import * as CurrencyFormatter from 'currency-formatter';
+import * as Currency from 'currency-codes';
 import { ReconcileService } from '../../../core/services/reconcile.service';
+import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
 
 @Component({
   selector: 'app-reconcile',
@@ -12,99 +19,85 @@ import { ReconcileService } from '../../../core/services/reconcile.service';
 @DestroySubscribers()
 export class ReconcileComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
-  public selectAll: boolean;
-  public dateOptions: any = {
-    locale: { format: 'MMM D, YYYY' },
-    alwaysShowCalendars: false,
-    ranges: {
-      'Today': [moment(), moment()],
-      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
-  }
   public sort: string = 'A-Z';
   public filter: string = '';
   public panelVisible: boolean = false
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
-  public selectedInvoice: any = {};
-  public DOLLARSIGNS: any = {
-    USD: '$',
-    CAD: '$',
-    MXN: '$',
-    JPY: '¥',
-  }
+  public selectedInvoice: any = {invoice: {}, items: [], vendors: {}};
+  public DOLLARSIGNS: any = { USD: '$', CAD: '$', MXN: '$', JPY: '¥' }
   public board: any = {};
-  public selectConfig = { displayKey: "order_number", search: true };
-  public taxBoardVisible = false;
+  public selectConfig: any = { displayKey: "id", search: true };
+  public taxBoardVisible: boolean = false;
+  public productHeader: boolean = false;
+  public currencies: any = [];
+
+  @ViewChild('datepicker') datepicker: DatepickerComponent;
 
   constructor(
-    public reconcileService: ReconcileService
+    public modal: Modal,
+    public reconcileService: ReconcileService,
+    public modalWindowService: ModalWindowService
   ) {
+  }
+
+  ngOnInit() {
+    Currency.codes().forEach(code => {
+      this.currencies.push(Currency.code(code));
+    })
+    this.reconcileService.getReconcile().subscribe(res => {
+      res.id = '5ad4f32e3d0192000d3acf1e';
+      res.invoice.calculated_sub_total = parseFloat(res.invoice.calculated_sub_total.replace('$', ''));
+      res.invoice.discount_ = res.invoice.discount;
+      res.invoice.discount_type = 'USD';
+
+      res.items.forEach(item => {
+        item.discounted_price = parseFloat(item.discounted_price.replace('$', ''));
+        item.package_price = parseFloat(item.package_price.replace('$', ''));
+        item.total = parseFloat(item.total.replace('$', ''));
+        item.reconciled_discount_type = 'PERCENT';
+        item.reconciled_discounted_price = parseFloat(item.reconciled_discounted_price.replace('$', ''));
+        item.reconciled_package_price = parseFloat(item.reconciled_package_price.replace('$', ''));
+        item.reconciled_total = parseFloat(item.reconciled_total.replace('$', ''));
+        this.productChange(item);
+      })
+
+      this.invoices = [res];
+      this.invoices_ = _.cloneDeep(this.invoices);
+      this.selectedInvoice = this.invoices[0];
+      this.invoiceChange({});
+      console.log('-------------<<<   ', res)
+    })
+
     this.board = {
-      pkg: 'Box',
-      qty: 20,
-      pkgPrice: 20,
-      discountAmount: 20,
+      qty: null,
+      pkgPrice: null,
+      discountAmount: null,
       discountType: 'PERCENT',
     }
   }
-  
-  ngOnInit() {
-    this.reconcileService.getReconcile().subscribe(res => {})
-    this.reconcileService.getInvoices().subscribe(res => {
-      res.map(invoice => {
-        invoice.currency = 'USD';
-        invoice.calculated_sub_total = '$250';
-        invoice.invoiced_sub_total = '200';
-        invoice.invoice_credit = '5.00';
-        invoice.shipping = '20';
-        invoice.handling = '5';
-        invoice.taxes = '0.00';
-        invoice.po_discount = '20.00';
-        invoice.po_discount_type = 'PERCENT';
-        invoice.calculated_total = '$2000.00';
 
-        invoice.sales_tax = '0.00';
-        invoice.vat = '0.00';
-
-        invoice.order_items.forEach(item => {
-          item.package = 'Box';
-          item.package_ = item.package;
-          item.qty_ = item.qty;
-          item.package_price_ = item.package_price.replace('$', '');
-          item.discount = '0.00';
-          item.discount_ = '5.00';
-          item.disc_price = '$20.00';
-          item.disc_price_ = '$15.00';
-          item.total_ = item.total;
-        })
-      })
-      this.invoices = res;
-      this.invoices_ = res;
-      if (this.invoices.length > 0) {
-        this.selectedInvoice = this.invoices[0];
-      }
-    });
-
-  }
-  
   ngOnDestroy() {
     console.log('for unsubscribing')
+  }
+
+  currencyFormat(event: string) {
+    const value = parseFloat(event);
+    return CurrencyFormatter.format(value, { code: 'USD' });
+  }
+
+  showProductModal() {
+    this.modal
+    .open(ReconcileProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
 
   addSubscribers() {}
   
   toggleSelectAll() {}
-  
-  addProduct() {}
 
   removeProduct(product) {
     product.checked = false;
-    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.order_items);
+    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
   }
   
   saveReconcile() {}
@@ -113,63 +106,92 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   filterChange(event) {}
 
+  productHeaderSelect(event) {
+    setTimeout(() => {
+      this.selectedInvoice.items.forEach(item => {
+        item.checked = this.productHeader;
+      })
+      this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
+    })
+  }
+
   productSelect(product) {
     product.checked = !product.checked
-    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.order_items);
+    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
+  }
+
+  invoiceChange(event) {
+    try {
+      // Total
+      let total = this.selectedInvoice.invoice.sub_total
+      - this.selectedInvoice.invoice.invoice_credit
+      + this.selectedInvoice.invoice.shipping
+      + this.selectedInvoice.invoice.handling
+      + this.selectedInvoice.invoice.tax;
+
+      if (this.selectedInvoice.invoice.discount_type === 'PERCENT') {
+        this.selectedInvoice.invoice.discount = total * this.selectedInvoice.invoice.discount_ / 100;
+      } else {
+        this.selectedInvoice.invoice.discount = this.selectedInvoice.invoice.discount_;
+      }
+      this.selectedInvoice.invoice.total = total - this.selectedInvoice.invoice.discount;
+
+      // Calculated Total
+      let calculated_total = this.selectedInvoice.invoice.calculated_sub_total
+      - this.selectedInvoice.invoice.invoice_credit
+      + this.selectedInvoice.invoice.shipping
+      + this.selectedInvoice.invoice.handling
+      + this.selectedInvoice.invoice.tax;
+
+      if (this.selectedInvoice.invoice.discount_type === 'PERCENT') {
+        this.selectedInvoice.invoice.discount = calculated_total * this.selectedInvoice.invoice.discount_ / 100;
+      } else {
+        this.selectedInvoice.invoice.discount = this.selectedInvoice.invoice.discount_;
+      }
+      this.selectedInvoice.invoice.calculated_total = calculated_total - this.selectedInvoice.invoice.discount;
+
+      // Diff
+      this.selectedInvoice.invoice.diff = this.selectedInvoice.invoice.calculated_total - this.selectedInvoice.invoice.total;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  productChange(product) {
+    try {
+      if (product.reconciled_discount_type === 'PERCENT') {
+        product.reconciled_discounted_price = (1 - product.reconciled_discount / 100) * product.reconciled_package_price;
+      } else {
+        product.reconciled_discounted_price = product.reconciled_package_price - product.reconciled_discount;
+      }
+      product.reconciled_total = (product.reconciled_discounted_price * product.received_qty);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   bulkUpdates() {
     this.panelVisible = false;
-    this.selectedInvoice.order_items.forEach(item => {
+    this.productHeader = false;
+    this.selectedInvoice.items.forEach(item => {
+      if (item.checked) {
+        item.received_qty_ = this.board.qty ? parseInt(this.board.qty).toLocaleString() : item.received_qty_;
+        item.package_price_ = this.board.pkgPrice ? this.board.pkgPrice.toLocaleString() : item.package_price_;
+        item.discounted_price_ = this.board.discountAmount ? this.board.discountAmount.toLocaleString() : item.discounted_price_;
+      }
+      this.productChange(item);
       item.checked = false;
     })
   }
 
   bulkNevermind() {
     this.panelVisible = false;
-  }
-
-  changeInvoice() {}
-
-  getCalculatedTotal() {
-    const total = this.selectedInvoice.invoicedSubTotal
-      - this.selectedInvoice.invoiceCredit
-      + this.selectedInvoice.shipping
-      + this.selectedInvoice.handling
-      + this.selectedInvoice.taxes
-      - this.selectedInvoice.discountAmount;
-    // return total;
-    return '$20000.00';
-  }
-
-  getDiff() {
-    // return this.getCalculatedTotal() - this.selectedInvoice.total;
-    return '$2484.00'
-  }
-
-  getDollarSign() {
-    const type = this.selectedInvoice.currency;
-    switch (type) {
-      case 'USD':
-        return '$';
-      case 'CAD':
-        return '$';
-      case 'MXN':
-        return '$';
-      case 'JPY':
-        return '¥';
-      default:
-        return '$';
-    }
+    this.productHeader = false;
+    this.selectedInvoice.items.map(item => item.checked = false)
   }
 
   getMask(product) {
     return `{ prefix: '${this.DOLLARSIGNS[product.currency]}', thousands: ',', decimal: '.', align: 'left' }`
-  }
-
-  dollarSignChange(event) {
-    this.selectedInvoice.currency = event;
-    this.selectedInvoice.discountType = event;
   }
 
   toggleTaxBoard() {
@@ -179,19 +201,19 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   taxBoardOKClick() {
     this.taxBoardVisible = !this.taxBoardVisible;
 
-    const total = parseFloat(this.selectedInvoice.taxes)
-      + parseFloat(this.selectedInvoice.sales_tax)
-      + parseFloat(this.selectedInvoice.vat);
-    this.selectedInvoice.taxes = total.toString();
+    const total = parseFloat(this.selectedInvoice.invoice.taxes)
+      + parseFloat(this.selectedInvoice.invoice.sales_tax)
+      + parseFloat(this.selectedInvoice.invoice.vat);
+    this.selectedInvoice.invoice.taxes = total.toString();
   }
 
   sortAlphabet(event) {
     if (equals(this.sort, 'A-Z')) {
       const ascComparator = comparator((a, b) => gt(prop('item_name', b), prop('item_name', a)));
-      this.selectedInvoice.order_items = sort(ascComparator, this.selectedInvoice.order_items);
+      this.selectedInvoice.items = sort(ascComparator, this.selectedInvoice.items);
     } else {
       const desComparator = comparator((a, b) => gt(prop('item_name', a), prop('item_name', b)));
-      this.selectedInvoice.order_items = sort(desComparator, this.selectedInvoice.order_items);
+      this.selectedInvoice.items = sort(desComparator, this.selectedInvoice.items);
     }
   }
 
@@ -200,5 +222,47 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       return true;
     }
     return toLower(product.item_name).indexOf(toLower(this.filter)) > -1;
+  }
+
+  toggleDatepicker(event) {
+    event.stopPropagation();
+    this.datepicker.showCalendar = !this.datepicker.showCalendar;
+  }
+
+  updateDetails() {
+    let items = [];
+    this.selectedInvoice.items.forEach(item => {
+      const newItem = {
+        invoice_line_item_id: item.invoice_line_item_id,
+        discount: item.discount,
+        discounted_price: item.discounted_price,
+        order_line_item_id: item.order_line_item_id,
+        order_qty: item.order_qty,
+        package_price: item.package_price,
+        received_qty: item.received_qty,
+        reconciled_qty: item.reconciled_qty,
+        reconciled_package_price: item.reconciled_package_price,
+        reconciled_discount: item.reconciled_discount,
+        reconciled_discounted_price: item.reconciled_discounted_price,
+        reconciled_total: item.reconciled_total,
+      };
+      items.push(item);
+    })
+    const invoice = {
+      currency: this.selectedInvoice.invoice.currency,
+      discount: this.selectedInvoice.invoice.discount,
+      handling: this.selectedInvoice.invoice.handling,
+      invoice_date: this.selectedInvoice.invoice.invoice_date,
+      invoice_number: this.selectedInvoice.invoice.invoice_number,
+      shipping: this.selectedInvoice.invoice.shipping,
+      sub_total: this.selectedInvoice.invoice.sub_total,
+      tax: this.selectedInvoice.invoice.tax,
+      total: this.selectedInvoice.invoice.total,
+      vendor_id: this.selectedInvoice.invoice.vendor_id,
+      vendor_name: this.selectedInvoice.invoice.vendor_name,
+    }
+
+    const payload = { items, invoice }
+    this.reconcileService.createReconcile(payload);
   }
 }

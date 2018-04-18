@@ -2,6 +2,7 @@
 import {NgModule, Optional, SkipSelf} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BrowserModule} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule} from '@angular/http';
 import {Router} from '@angular/router';
 
@@ -27,6 +28,7 @@ import { APP_DI_CONFIG } from '../../../env';
     imports: [
         CommonModule,
         BrowserModule,
+        BrowserAnimationsModule,
         HttpModule,
         CookieModule.forRoot(),
         RestangularModule.forRoot(

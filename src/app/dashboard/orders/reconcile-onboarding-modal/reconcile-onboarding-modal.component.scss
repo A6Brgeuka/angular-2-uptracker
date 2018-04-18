@@ -1,0 +1,97 @@
+@import "../../../../colors.scss";
+
+:host /deep/ {
+  .close {
+    display: block !important;
+  }
+  .title {
+    font-size: 22px !important;
+  }
+  .question {
+    margin-top: 50px;
+  }
+  .option {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 20px;
+  }
+  ngx-select-dropdown {
+    .icon-angle-down {        
+      font-family: FontAwesome;
+      &:before {
+        content: '\F107';
+      }
+    }
+    .ngx-dorpdown-container {
+      margin-left: 35px;
+      width: 300px;
+      .ngx-dropdown-button {
+        border-color: #9a9c9e !important; 
+        min-height: 35px;
+        .icon-angle-down {
+          display: inline-block;
+        }
+      }
+      .ngx-dropdown-list-container {
+        box-shadow: none !important;
+        border: 1px solid #9a9c9e !important;
+        top: 50px;
+        .search-container {
+          input {
+            border: 1px solid #9a9c9e !important;
+            border-radius: 3px !important;
+            text-indent: 10px;
+          }
+          label {
+            display: none !important;
+          }
+        }
+        ul {
+          &.selected-items li {
+            background-color: $tealish !important;
+          }
+        }
+      }
+    }
+  }
+  .dropdown {
+    height: 0px;
+    transition: height .2s;
+    position: relative;
+    overflow: hidden;
+
+    &.show {
+      overflow: visible;
+      height: 37px;
+    }
+
+    .placeholder {
+      line-height: 36px;
+      position: absolute;
+      top: 0;
+      left: 20px;
+    }
+  }
+  .uptracker-form-btn {
+    width: 150px;
+    height: 40px;
+  }
+
+  [type="radio"]:checked + label:after {
+    background-color: $tealish;
+    border-color: $tealish;
+    left: 3px;
+  }
+}
+
+/deep/ .modal {
+  margin-top: 120px;
+  min-height: auto;
+  width: 700px;
+  .modal-content {
+    padding-left: 70px !important;
+    padding-right: 70px !important;
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+}

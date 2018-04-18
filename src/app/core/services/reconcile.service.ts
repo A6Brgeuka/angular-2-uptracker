@@ -34,7 +34,7 @@ export class Invoice {
 export class ReconcileService extends ModelService {
   public appConfig: AppConfig;
   public invoices: Array<Invoice>;
-  
+
   constructor(
     public injector: Injector,
     public restangular: Restangular,
@@ -46,16 +46,17 @@ export class ReconcileService extends ModelService {
   }
 
   getInvoices() {
-    return this.restangular.all('pos').all('all').customGET('').map(res => res.data.map(item => {
-      for (let key in item) {
-        item[key] = item[key] || '';
-      }
-      return item;
-    }));
+    return this.restangular.all('pos').all('all').customGET('');
   }
 
   getReconcile() {
-    // return this.restangular.one('inventory', 'search').customGET('', {'q': keyword}).map((res: any) => res.data);
-    return this.restangular.one('reconcile').customGET('', {item_ids: '5ad0ed4e587120000d926ce2'}).map(res => res.data);
+    return this.restangular.one('reconcile').customGET('', {item_ids: '5ad4f32e3d0192000d3acf1e'}).map(res => res.data);
+  }
+
+  createReconcile(data) {
+    return this.restangular.all('reconcile').post(data)
+    .do((res: any) => {
+      console.log('--------------->>>>>>   ', res);
+    });
   }
 }

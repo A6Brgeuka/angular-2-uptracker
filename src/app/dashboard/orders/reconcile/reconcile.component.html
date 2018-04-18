@@ -4,14 +4,14 @@
       <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
       </div>
-      <div class="col l3 m6 padded">
+      <div class="col l4 m6 padded">
         <ngx-select-dropdown 
           *ngIf="invoices.length > 0"
           [config]="selectConfig"
           [options]="invoices"
           [(value)]="invoices_"
           [multiple]="false"
-          (ngModelChange)="invoiceChange($event)"
+          (valueChange)="invoiceChange($event)"
         >
         </ngx-select-dropdown>
       </div>
@@ -22,44 +22,47 @@
         <div class="col l6 left">
           <div class="row input-header"><span>Invoice Date</span></div>
           <div class="row date-picker">
-            <input
-              type="text"
-              name="datePicker"
-              [(ngModel)]="selectedInvoice.placed_date"
-            />
-            <div class="calendar">
+            <material-datepicker
+              #datepicker
+              accentColor="#33c6d9"
+              dateFormat="MM-DD-YYYY"
+              [(date)]="selectedInvoice.invoice.invoice_date"
+            >
+            </material-datepicker>
+            <div class="calendar" (click)="toggleDatepicker($event)">
               <img src="/assets/img/icon-calendar.png" alt="" />
             </div>
           </div>
           <div class="row input-header"><span>Currency</span></div>
           <div class="row">
             <div class="currency">
-              <span>{{this.getDollarSign()}}1.00</span>
+              <span>{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}1.00</span>
               <div class="select">
                 <select
                   class="wide"
                   materialize="material_select"
                   [materializeSelectOptions]=""
                   name="currency"
-                  [(ngModel)]="selectedInvoice.currency"
-                  (ngModelChange)="dollarSignChange($event)"
+                  [(ngModel)]="selectedInvoice.invoice.currency"
+                  (ngModelChange)="invoiceChange($event)"
                 >
-                  <option value="USD">USD</option>
-                  <option value="CAD">CAD</option>
-                  <option value="MXN">MXN</option>
-                  <option value="JPY">JPY</option>
+                  <ng-container *ngFor="let currency of currencies; let i = index">
+                    <option value="{{currency.code}}">{{currency.currency}}</option>
+                  </ng-container>
                 </select>
               </div>
             </div>
           </div>
-          <div class="row"><span>Exchange rate</span></div>
+          <div class="row">
+            <a class="exchange" href="https://www.xe.com/currencytables" target="_blank">Exchange Rate</a> 
+          </div>
         </div>
         <div class="col l6 right">
           <div class="row">
             <div class="item">
               <span>Calculated Sub-Total</span>
               <div class="input-calculated">
-                {{selectedInvoice.calculated_sub_total}}
+                {{currencyFormat(selectedInvoice.invoice.calculated_sub_total)}}
               </div>
             </div>
           </div>
@@ -74,7 +77,8 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.invoiced_sub_total"
+                    [(ngModel)]="selectedInvoice.invoice.sub_total"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -91,7 +95,8 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.invoice_credit"
+                    [(ngModel)]="selectedInvoice.invoice.invoice_credit"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -108,7 +113,8 @@
                     placeholder="$0.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.shipping"
+                    [(ngModel)]="selectedInvoice.invoice.shipping"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -125,7 +131,8 @@
                     placeholder="$5.00"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="selectedInvoice.handling"
+                    [(ngModel)]="selectedInvoice.invoice.handling"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                 </div>
               </div>
@@ -140,7 +147,8 @@
                   name="taxes"
                   currencyMask
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                  [(ngModel)]="selectedInvoice.taxes"
+                  [(ngModel)]="selectedInvoice.invoice.tax"
+                  (ngModelChange)="invoiceChange($event)"
                 >
                 <div class="plus" (click)="toggleTaxBoard()">
                   <fa name="plus"></fa>
@@ -154,7 +162,7 @@
                         name="salestax"
                         currencyMask
                         [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                        [(ngModel)]="selectedInvoice.sales_tax"
+                        [(ngModel)]="selectedInvoice.invoice.sales_tax"
                       >
                     </div>
                   </div>
@@ -166,7 +174,7 @@
                         name="vat"
                         currencyMask
                         [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                        [(ngModel)]="selectedInvoice.vat"
+                        [(ngModel)]="selectedInvoice.invoice.vat"
                       >
                     </div>
                   </div>
@@ -183,17 +191,23 @@
             <div class="item">
               <span>P.O. Discount</span>
               <div class="input-discount">
-                <input type="text" name="discount" [(ngModel)]="selectedInvoice.po_discount">
+                <input
+                  type="text"
+                  name="discount"
+                  [(ngModel)]="selectedInvoice.invoice.discount_"
+                  (ngModelChange)="invoiceChange($event)"
+                >
                 <div class="select">
                   <select
                     class="wide"
                     materialize="material_select"
-                    [materializeSelectOptions]=""
                     name="currency"
-                    [(ngModel)]="selectedInvoice.po_discount_type"
+                    [(ngModel)]="selectedInvoice.invoice.discount_type"
+                    (ngModelChange)="invoiceChange($event)"
                   >
                     <option value="PERCENT">%</option>
-                    <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                    <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                    <option class="disabled" value="REWARDS" disabled>Rewards<br />(Coming soon)</option>
                   </select>
                 </div>
               </div>
@@ -206,6 +220,7 @@
           <button
             type="submit"
             class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="updateDetails()"
           >
             UPDATE DETAILS
           </button>
@@ -215,7 +230,7 @@
             <div class="item">
               <span>Total</span>
               <div class="input-calculated">
-                <span class="bold">{{selectedInvoice.total}}</span>
+                <span class="bold">{{currencyFormat(selectedInvoice.invoice.total)}}</span>
               </div>
             </div>
           </div>
@@ -223,7 +238,7 @@
             <div class="item">
               <span>Calculated Total</span>
               <div class="input-calculated">
-                {{this.getCalculatedTotal()}}
+                {{currencyFormat(selectedInvoice.invoice.calculated_total)}}
               </div>
             </div>
           </div>
@@ -231,7 +246,7 @@
             <div class="item">
               <span class="diff-red">Diff</span>
               <div class="input-calculated">
-                <span class="diff-red">{{this.getDiff()}}</span>
+                <span class="diff-red">{{currencyFormat(selectedInvoice.invoice.diff)}}</span>
               </div>
             </div>
           </div>
@@ -256,7 +271,7 @@
         </a>
       </div>
       <button
-        (click)="addProduct()"
+        (click)="showProductModal()"
         class="right mtop uptracker-form-btn white-text waves-effect waves-light"
       >
         Add Product
@@ -266,16 +281,25 @@
     <div class="list is-grid-view">
       <div class="heading row">
         <div class="col s3 left-align">
-          <div class="left product">
-            Product
+          <div class="input-checkbox checkbox left product">
+            <input
+              type="checkbox"
+              class="checkbox-input"
+              id="selectProductHeader"
+              name="selectProductHeader"
+              [(ngModel)]="productHeader"
+              (click)="productHeaderSelect($event)"
+            />
+            <label for="selectProductHeader"></label>
+            <span>Product</span>
           </div>
         </div>
         <div class="col s8">
           <div class="row mrg-btm-0">
             <div class="col s2">Pkg</div>
-            <div class="col s1">QTY</div>
+            <div class="col s2">QTY</div>
             <div class="col s2">Pkg Price</div>
-            <div class="col s3">Discount</div>
+            <div class="col s2">Discount</div>
             <div class="col s2">Disc Price</div>
             <div class="col s2">Total Price</div>
           </div>
@@ -285,7 +309,7 @@
       </div>
     </div>
 
-    <ng-container *ngFor="let product of selectedInvoice.order_items; let i = index">
+    <ng-container *ngFor="let product of selectedInvoice.items; let i = index">
       <div class="item row"  *ngIf="filtered(product)">
         <div class="table-item flex-center">
           <div class="col s3 left-align flex-center">
@@ -293,14 +317,16 @@
               <input
                 type="checkbox"
                 class="checkbox-input"
-                id="selectProduct{{i}}"
-                name="selectProduct{{i}}"
+                id="selectProduct"
+                name="selectProduct"
                 [(ngModel)]="product.checked"
                 (click)="productSelect(product)"
               />
-              <label for="selectProduct{{i}}"></label>
+              <label for="selectProduct"></label>
             </div>
-            <div class="product-pic"></div>
+            <div class="product-pic">
+              <img src="{{product.image}}" alt="PRODUCT" />
+            </div>
             <div class="left">
               <a>{{product.item_name}}</a>
             </div>
@@ -309,81 +335,83 @@
           <div class="col s8">
             <div class="row mrg-btm-0 flex-center">
               <div class="col s2">
-                <div class="text-left input-header">{{product.package}}</div>
-              </div>
-              <div class="col s1">
-                <div class="text-left mini-input input-header">{{product.qty}}</div>
+                <div class="text-left">{{product.package}}</div>
               </div>
               <div class="col s2">
-                <div class="text-left input-header">{{product.package_price}}</div>
-              </div>
-              <div class="col s3">
-                <div class="text-left input-header">{{product.discount}}</div>
+                <div class="text-left mini-input input-header">{{product.order_qty}}</div>
               </div>
               <div class="col s2">
-                <div>{{product.disc_price}}</div>
+                <div class="text-left input-header">{{currencyFormat(product.package_price)}}</div>
               </div>
               <div class="col s2">
-                <div>{{product.total}}</div>
+                <div class="text-left input-header">{{currencyFormat(product.discount)}}</div>
+              </div>
+              <div class="col s2">
+                <div>{{currencyFormat(product.discounted_price)}}</div>
+              </div>
+              <div class="col s2">
+                <div>{{currencyFormat(product.total)}}</div>
               </div>
             </div>
             <div class="row mrg-btm-0">
               <div class="col s2">
-                <div class="select">
-                  <select title="Pkg" name="pkg" [(ngModel)]="product.package_" materialize="material_select">
-                    <option value="Box">Box</option>
-                    <option value="Glove">Glove</option>
-                  </select>
-                </div>
+                <div class="lined">{{product.package}}</div>
               </div>
-              <div class="col s1">
+              <div class="col s2">
                 <div class="input mini-input">
-                  <input class="text-left" name="QTY{{i}}" type="text" [(ngModel)]="product.qty_">
+                  <input
+                    type="text"
+                    class="text-left"
+                    name="reconciled_qty"
+                    [(ngModel)]="product.reconciled_qty"
+                    (ngModelChange)="productChange(product)"
+                  >
                 </div>
               </div>
               <div class="col s2">
                 <div class="input">
                   <input
                     class="text-left"
-                    name="PKGP{{i}}"
+                    name="reconciled_package_price"
                     type="text"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                    [(ngModel)]="product.package_price_"
+                    [(ngModel)]="product.reconciled_package_price"
+                    (ngModelChange)="productChange(product)"
                   >
                 </div>
               </div>
-              <div class="col s3">
+              <div class="col s2">
                 <div class="discount">
                   <div class="input">
                     <input
                       class="text-left"
-                      name="DT{{i}}"
-                      type="text"
-                      currencyMask
-                      [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
-                      [(ngModel)]="product.discount_"
+                      name="reconciled_discount"
+                      type="number"
+                      [(ngModel)]="product.reconciled_discount"
+                      (ngModelChange)="productChange(product)"
                     >
                   </div>
                   <div class="select">
                     <select
                       class="wide"
                       materialize="material_select"
-                      [materializeSelectOptions]=""
-                      name="currency"
-                      [(ngModel)]="selectedInvoice.discountType"
+                      name="reconciled_discount_type"
+                      [(ngModel)]="product.reconciled_discount_type"
+                      (ngModelChange)="productChange(product)"
                     >
                       <option value="PERCENT">%</option>
-                      <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                      <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                      <option class="disabled" value="REWARDS" disabled>Rewards<br />(Coming soon)</option>
                     </select>
                   </div>
                 </div>
               </div>
               <div class="col s2">
-                <div class="lined">{{product.disc_price_}}</div>
+                <div class="lined">{{currencyFormat(product.reconciled_discounted_price)}}</div>
               </div>
               <div class="col s2">
-                <div class="lined">{{product.total_}}</div>
+                <div class="lined">{{currencyFormat(product.reconciled_total)}}</div>
               </div>
             </div>
           </div>
@@ -402,7 +430,7 @@
     <div class="active-area">
       <div class="title">Bulk Updates</div>
       <div class="list-area">
-        <ng-container *ngFor="let product of selectedInvoice.order_items; let i = index">
+        <ng-container *ngFor="let product of selectedInvoice.items; let i = index">
           <div class="product-list" *ngIf="product.checked">
             <div class="row">
               <span>{{product.item_name}}</span>
@@ -415,17 +443,6 @@
       </div>
       <div class="board">
         <div class="row">
-          <div class="col s4"><span class="board-title">Pkg</span></div>
-          <div class="col s8">
-            <div class="select">
-              <select title="Pkg" name="board-pkg" [(ngModel)]="board.Pkg" materialize="material_select">
-                <option value="Box">Box</option>
-                <option value="Glove">Glove</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col s4"><span class="board-title">QTY</span></div>
           <div class="col s8">
             <div class="input">
@@ -433,8 +450,6 @@
                 class="text-left"
                 name="board-qty"
                 type="text"
-                currencyMask
-                [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                 [(ngModel)]="board.qty"
               >
             </div>
@@ -446,7 +461,7 @@
             <div class="input">
               <input
                 class="text-left"
-                name="board-qty"
+                name="board-pkg"
                 type="text"
                 currencyMask
                 [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
@@ -462,7 +477,7 @@
               <div class="input">
                 <input
                   class="text-left"
-                  name="discount"
+                  name="board-discount"
                   type="text"
                   currencyMask
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
@@ -478,7 +493,8 @@
                   [(ngModel)]="board.discountType"
                 >
                   <option value="PERCENT">%</option>
-                  <option value="selectedInvoice.currency">{{DOLLARSIGNS[selectedInvoice.currency]}}</option>
+                  <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                  <option class="disabled" value="REWARDS" disabled>Rewards<br />(Coming soon)</option>
                 </select>
               </div>
             </div>
