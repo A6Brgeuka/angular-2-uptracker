@@ -13,5 +13,6 @@ export interface Order {
   status: string;
   status_int: number;
   total: string;
+  vendor_id: string;
   vendor_name: string;
 }
