@@ -37,7 +37,7 @@
       </div>
       <div class="col s12">
         <div>
-          Vendor logo
+          Product image
         </div>
         <div>
           Please upload a JPG or PNG max size 10 MB
@@ -46,7 +46,7 @@
           <div class="file-field">
             <div class="upload-link">
               <input type="file" accept="image/*" (change)="uploadLogo($event)"/>
-              <a>Upload a logo</a>
+              <a>Upload an image</a>
             </div>
           </div>
         </div>
@@ -134,7 +134,10 @@
               <select
                 [(ngModel)]="product.category"
                 materialize="material_select"
-                [materializeSelectOptions]="productCategoriesCollection">
+                [materializeSelectOptions]="productCategoriesCollection"
+                #category="ngModel"
+                [class.invalid]="category.invalid"
+                required>
                 <option value="">N/A</option>
                 <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
                 </option>
@@ -232,6 +235,9 @@
                      (keydown.enter)="addVariant(variant.newName, index)"
                      placeholder="Add another {{ variant.name | capitalizeFirst}}">
             </div>
+            <button class="uptracker-form-btn add-variant-button" *ngIf="variant.newName" (click)="addVariant(variant.newName, index)">
+              Add {{variant.newName}}
+            </button>
             <fa name="times-circle" class="hide-by-opacity" (click)="deleteVariant(index)"></fa>
           </div>
         </div>
@@ -245,6 +251,9 @@
                      [source]="availableVariants"
                      [accept-user-input]="true"
                      (keydown.enter)="onProductVariantSelect(newVariant)">
+              <button class="uptracker-form-btn add-variant-button" *ngIf="newVariant" (click)="onProductVariantSelect(newVariant)">
+                Add {{newVariant}}
+              </button>
               <fa name="plus-circle" (click)="onProductVariantSelect(newVariant)"></fa>
             </div>
           </div>

@@ -46,13 +46,8 @@ export class AddNewProductComponent implements OnInit {
   public dummyProductVariants = ["Size", "Color", "Texture", "Grit", "Length", "Strength", "Prescription", "Type"];
   public productVariants: ProductVariantsModel[] = [
     {
-      name: 'Color',
-      values: ['Green', 'Blue', 'Navy'],
-      newName: ''
-    },
-    {
       name: 'Size',
-      values: ['S', 'M', 'XL'],
+      values: ['Small', 'Medium', 'Large'],
       newName: ''
     }
   ];
@@ -176,7 +171,7 @@ export class AddNewProductComponent implements OnInit {
 
   canProceed() {
     if (this.step == 0) {
-      return this.product.name;
+      return this.product.name && this.product.category;
     }
     if (this.step == 1) {
       return this.validVariants();

@@ -36,6 +36,14 @@
     }
   }
 
+  .select-dropdown{
+    background-color: $white !important;
+  }
+
+  .invalid .select-dropdown {
+    border-color: $red!important;
+  }
+
   .wrap {
     margin-top: 10px;
     padding: 10px;
@@ -183,6 +191,12 @@
       pointer-events: none;
     }
 
+  }
+
+  .add-variant-button {
+    height: 25px;
+    width: 100%;
+    color: $white;
   }
 
   .select {

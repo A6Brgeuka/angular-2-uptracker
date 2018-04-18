@@ -99,4 +99,19 @@
       min-width: 30px;
     }
   }
+
+  input,
+  .select-dropdown,
+  .input-checkbox > label,
+  .checkbox-input {
+    background-color: $white !important;
+  }
+
+  .checkbox-container {
+    display: inline-block;
+    position: relative;
+    label {
+      margin-right: 10px;
+    }
+  }
 }

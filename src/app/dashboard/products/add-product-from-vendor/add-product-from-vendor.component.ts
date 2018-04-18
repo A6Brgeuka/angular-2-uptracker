@@ -6,6 +6,14 @@ import {ProductService} from '../../../core/services/product.service';
 import {AccountService} from '../../../core/services/account.service';
 import {ProductModel} from '../../../models/product.model';
 import { Location } from '@angular/common';
+import {PackageModel} from "../../../models/inventory.model";
+import {map} from 'lodash';
+
+export const dummyInventory = [
+  {type: 'Package', value: 'package', qty: 1},
+  {type: 'Sub Package', value: 'sub_package'},
+  {type: 'Consumable Unit', value: 'consumable_unit'}
+  ];
 
 @Component({
   selector: 'app-add-product-from-vendor',
@@ -55,9 +63,21 @@ export class AddProductFromVendorComponent implements OnInit {
       .subscribe(data => {
         this.product = data.product;
         this.variants = data.variants;
+        console.log(data)
         });
   }
 
+  /*onVendorChosen(vendorInfo) {
+    const inventory_by = [map(dummyInventory, (inv) => new PackageModel(inv))];
+    const vendor = {...vendorInfo, inventory_by};
+    if (vendor.additional) {
+      const i = findIndex(this.product.vendor_variants, (v) => v.vendor_name == vendor.vendor_name);
+      this.product.vendor_variants.splice(i+1, 0, vendor);
+      return;
+    }
+    this.product.vendor_variants.unshift(vendor);
+  }
+*/
   goBack(): void {
     this.location.back();
   }

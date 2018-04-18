@@ -15,7 +15,7 @@
       </div>
       <div class="col s12">
         <div>
-          Vendor logo
+          Product image
         </div>
         <div>
           Please upload a JPG or PNG max size 10 MB
@@ -24,7 +24,7 @@
           <div class="file-field">
             <div class="upload-link">
               <input type="file" accept="image/*" (change)="uploadLogo($event)"/>
-              <a>Upload a logo</a>
+              <a>Upload an image</a>
             </div>
           </div>
         </div>
@@ -49,37 +49,43 @@
       <div class="row">
         <div class="col s4 variant-checkbox head-item" >
           <div class="checkbox input-checkbox ">
-            <label>Hazardous</label>
             <input
               type="checkbox"
               class="input-checkbox"
               id="checkbox1"
             />
             <label for="checkbox1"></label>
+            <div class="checkbox-container">
+              <label>Hazardous</label>
+            </div>
           </div>
         </div>
 
         <div class="col s4 variant-checkbox head-item" >
           <div class="checkbox input-checkbox ">
-            <label>Trackable</label>
             <input
               type="checkbox"
               class="input-checkbox"
               id="checkbox2"
             />
             <label for="checkbox2"></label>
+            <div class="checkbox-container">
+              <label>Trackable</label>
+            </div>
           </div>
         </div>
 
         <div class="col s4 variant-checkbox head-item" >
           <div class="checkbox input-checkbox ">
-            <label>Tax Exempt</label>
             <input
               type="checkbox"
               class="input-checkbox"
               id="checkbox3"
             />
             <label for="checkbox3"></label>
+            <div class="checkbox-container">
+              <label>Tax Exempt</label>
+            </div>
           </div>
         </div>
       </div>
