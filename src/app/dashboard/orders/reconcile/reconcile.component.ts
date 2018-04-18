@@ -5,8 +5,8 @@ import { DatepickerComponent } from 'angular2-material-datepicker';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import * as Country from 'country-data';
 import * as CurrencyFormatter from 'currency-formatter';
+import * as Currency from 'currency-codes';
 import { ReconcileService } from '../../../core/services/reconcile.service';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
@@ -30,7 +30,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public selectConfig: any = { displayKey: "id", search: true };
   public taxBoardVisible: boolean = false;
   public productHeader: boolean = false;
-  public countries: any = [];
+  public currencies: any = [];
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
@@ -42,7 +42,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-    this.countries = Country.countries.all;
+    Currency.codes().forEach(code => {
+      this.currencies.push(Currency.code(code));
+    })
     this.reconcileService.getReconcile().subscribe(res => {
       res.id = '5ad4f32e3d0192000d3acf1e';
       res.invoice.invoice_date = new Date('04/16/2018');
@@ -84,8 +86,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       discountAmount: null,
       discountType: 'PERCENT',
     }
+
+    console.log('---------->>>>>>>>>>>   ', Currency.code('USD'))
   }
-  
+
   ngOnDestroy() {
     console.log('for unsubscribing')
   }
