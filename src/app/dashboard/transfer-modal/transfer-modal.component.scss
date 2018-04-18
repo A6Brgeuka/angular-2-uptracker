@@ -151,6 +151,7 @@
           width: 100%;
           .case {
             margin-top: 10px;
+            margin-bottom: 15px;
           }
           .line-header {
             font-weight: 200;
@@ -174,26 +175,6 @@
           }
         }
       }
-      .amount {
-        display: flex;
-        border: 1px solid $light-grey;
-        border-radius: 5px;
-        max-width: 150px;
-        .count {
-          border-right: 1px solid $light-grey;
-          justify-content: center;
-          padding: 10px;
-          text-align: center;
-          width: 60%;
-        }
-        .unit {
-          background-color: $light-light-grey;
-          justify-content: center;
-          padding: 10px;
-          text-align: center;
-          width: 40%;
-        }
-      }
       .location {
         color: $dark;
         margin: 0;
@@ -202,12 +183,15 @@
           max-width: 300px;
         }
         &.submit {
-          margin-top: 20px;
+          margin-top: 30px;
           .btn {
             background-color: $tealish;
             border-radius: 5px;
             box-shadow: none;
           }
+        }
+        &.amount {
+          margin-top: 20px;
         }
       }
       .unit {
