@@ -205,6 +205,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   bulkNevermind() {
     this.panelVisible = false;
+    this.selectedInvoice.items.map(item => item.checked = false)
   }
 
   changeInvoice() {}
