@@ -1,57 +1,22 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {each, sortBy, map, every, clone} from 'lodash';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {InventoryService} from '../../../core/services/inventory.service';
-import {Observable} from 'rxjs';
-import {InventorySearchResults, PackageModel} from '../../../models/inventory.model';
-import {DestroySubscribers} from 'ngx-destroy-subscribers';
-import {CustomProductVariantModel} from "../../../models/custom-product.model";
-const dummyInventory = [
-  {type: 'Package', value: 'package'},
-  {type: 'Sub Package', value: 'sub_package'},
-  {type: 'Consumable Unit', value: 'consumable_unit'}];
+import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {each} from 'lodash';
+import {InventorySearchResults} from '../../../models/inventory.model';
 
 @Component({
   selector: 'app-product-variant',
   templateUrl: 'product-variant.component.html',
   styleUrls: ['product-variant.component.scss']
 })
-@DestroySubscribers()
-export class ProductVariantComponent implements OnInit {
+
+export class ProductVariantComponent {
   @Input('vendor') public vendor;
   @Output('vendorDelete') public vendorDelete = new EventEmitter();
+  @Output('addVendor') public addVendor = new EventEmitter();
 
-  public subscribers: any = {};
   public product: any = new InventorySearchResults();
   public selected: any = {};
-  public autocompletePackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompletePackage: any = [];
-  public mainPrices: any = new CustomProductVariantModel();
 
-  constructor(public inventoryService: InventoryService) {
-  }
-
-  ngOnInit() {
-    this.autocompletePackage$.next('');
-  }
-
-  addSubscribers() {
-    this.subscribers.autocompleteOuterPackSubscription = this.autocompletePackage$
-      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-      .subscribe((pack: any) => this.autocompletePackage = sortBy(pack, ['unit_name']));
-  }
-
-  observableSourcePackage(keyword: any) {
-    return Observable.of(this.autocompletePackage).take(1);
-  }
-
-  onSearchPackage(event) {
-    this.autocompletePackage$.next(event.target.value);
-  }
-
-  addPackage() {
-    const pack = map(dummyInventory, (inv) => new PackageModel(inv));
-    this.vendor.inventory_by.push(pack);
+  constructor() {
   }
 
   deletePackage(i) {
@@ -67,17 +32,27 @@ export class ProductVariantComponent implements OnInit {
     });
   }
 
-  fillPrices(variant, prop, main) {
-    if (prop && main)
-      each(this.vendor.variants, (v) => v[prop] = variant[prop]);
-    if (prop == 'list_price' && main)
-      each(this.vendor.variants, (v) => v[prop] = v['our_price'] = variant[prop]);
-    variant.our_price = variant.list_price;
+  onFillAll(price) {
+    each(this.vendor.variants, v => {
+      v.list_price = v.our_price = price;
+    });
   }
 
-  packageSummary(pack): string {
-    if (every(pack, 'label'))
-      return `${pack[0].label} of ${pack[1].qty} ${pack[1].label} of ${pack[2].qty} ${pack[2].label} in tcu`;
+  onFillColumn(price) {
+    each(this.vendor.variants, v => v[price.prop] = price.value);
+  }
+
+  onAddPackageClick() {
+    const vendor = {
+      vendor_name: this.vendor.vendor_name,
+      vendor_id: this.vendor.vendor_id,
+      additional: true
+    };
+    this.addVendor.emit(vendor);
+  }
+
+  onFillOur(price, i) {
+    this.vendor.variants[i].our_price = price;
   }
 
 }

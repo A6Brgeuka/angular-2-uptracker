@@ -189,8 +189,19 @@
 
   <ng-container *ngIf="step == 1">
     <div class="row center-align">
-      <div class="col s12 title">
+      <div class="col s12 sub-title">
         {{product.name}}
+      </div>
+      <div class="container">
+        <p class="title">What is a Product Variant?</p>
+        <p>
+          A product Variant is when a product has more than one type.
+          For example gloves have different sizes, color chains come in different colors,
+          Q-tips come in boxes of 500, 650 and 700, brackets have different sizes and prescriptions.
+          Variants should be the same product just with slightly different attributes.
+          If the product you are adding has no variants please delete the prefilled suggestions.
+          If the product has a different variant please select one from drop down or type in new Variant type.
+        </p>
       </div>
       <div class="col s12 title">
         Variants
@@ -261,7 +272,8 @@
     <app-product-variant
       *ngFor="let vendor of product.vendor_variants; let i = index"
       [vendor]="vendor"
-      (vendorDelete)="onVendorDelete(i)">
+      (vendorDelete)="onVendorDelete(i)"
+      (addVendor)="onVendorChosen($event)">
     </app-product-variant>
   </ng-container>
 </div>

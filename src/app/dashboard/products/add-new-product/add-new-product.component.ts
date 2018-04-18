@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {each, map, every, difference} from 'lodash';
+import {each, map, every, difference, sortBy, findIndex} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -196,10 +196,15 @@ export class AddNewProductComponent implements OnInit {
     return this.product.vendor_variants.length < 1;
   }
 
-  onVendorChosen(customVendor) {
+  onVendorChosen(vendorInfo) {
     const variants = this.createVendorVariants();
     const inventory_by = [map(dummyInventory, (inv) => new PackageModel(inv))];
-    const vendor = {...customVendor, inventory_by, variants};
+    const vendor = {...vendorInfo, inventory_by, variants};
+    if (vendor.additional) {
+      const i = findIndex(this.product.vendor_variants, (v) => v.vendor_name == vendor.vendor_name);
+      this.product.vendor_variants.splice(i+1, 0, vendor);
+      return;
+    }
     this.product.vendor_variants.unshift(vendor);
   }
 

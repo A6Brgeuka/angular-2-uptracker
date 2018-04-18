@@ -1,133 +1,23 @@
-<div class="row">
+<div class="divider-line" *ngIf="vendor.additional"></div>
+<div class="row margin" *ngIf="!vendor.additional">
   <div class="col s8">
     <div class="vendor-title">
       {{vendor.vendor_name}}
     </div>
   </div>
   <div class="col s4 right-align">
-    <a class="add-button" (click)="addPackage()">+ Add Packaging</a>
+    <a class="add-button" (click)="onAddPackageClick()">+ Add Packaging</a>
   </div>
 </div>
-<div class="row package" *ngFor="let package of vendor.inventory_by; let i = index">
-  <div class="row">
-    <div class="col s11 sub-title">
-      {{packageSummary(package)}}
-    </div>
-    <div class="col s1 right-align">
-      <fa name="times-circle" (click)="deletePackage(i)"></fa>
-    </div>
-  </div>
-  <div class="col m4 l2">
-    <div class="ttl">Outer Package</div>
-    <div class="row relative">
-      <div class="col s12 flex">
-        <div class="input search select">
-          <input class="caret" auto-complete
-                 placeholder="Type"
-                 [source]="observableSourcePackage.bind(this)"
-                 (input) = 'onSearchPackage($event)'
-                 [list-formatter] = '"unit_name"'
-                 [tab-to-select] = 'false'
-                 [select-value-of] = "'unit_name'"
-                 name="package_type"
-                 [(ngModel)] = 'package[0].label'
-                 required
-          >
-          <fa name="angle-down"></fa>
-        </div>
-        <div class="label">=</div>
-      </div>
-    </div>
-  </div>
-  <div class="col m4 l3">
-    <div class="ttl">
-      Inner Package
-      <fa [name]="'question-circle'"></fa>
-    </div>
-    <div class="row relative">
-      <div class="col s3">
-        <div class="input">
-          <input [(ngModel)]="package[1].qty" type="text" placeholder="Qty">
-        </div>
-      </div>
-      <div class="col s9 flex">
-        <div class="input search select">
-          <input class="caret" auto-complete
-                 placeholder="N/A"
-                 [source]="observableSourcePackage.bind(this)"
-                 (input) = 'onSearchPackage($event)'
-                 [list-formatter] = '"plural_unit_name"'
-                 [tab-to-select] = 'false'
-                 [select-value-of] = "'plural_unit_name'"
-                 name="sub_package_type"
-                 [(ngModel)] = 'package[1].label'
-          >
-          <fa name="angle-down"></fa>
-        </div>
-        <div class="label">=</div>
-      </div>
-    </div>
-  </div>
-  <div class="col m4 l3">
-    <div class="ttl">
-      Consumable Units Per Inner/Outer
-    </div>
-    <div class="row relative">
-      <div class="col s3">
-        <div class="input">
-          <input [(ngModel)]="package[2].qty" type="text" placeholder="Qty">
-        </div>
-      </div>
-      <div class="col s9">
-        <div class="input search select" [class.dirty]="packDirty"
-             [class.valid]="product.consumable_unit.properties.unit_type">
-          <input class="caret" auto-complete
-                 placeholder="Type"
-                 [source]="observableSourcePackage.bind(this)"
-                 (input) = 'onSearchPackage($event)'
-                 [(ngModel)] = "package[2].label"
-                 [list-formatter] = '"unit_name"'
-                 [select-value-of] = "'unit_name'"
-                 [tab-to-select] = 'false'
-                 name="cons_package_type"
-                 required
-          >
-          <fa name="angle-down"></fa>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col m12 l3 offset-l1">
-    <div class="row relative">
-      <div class="col s4">
-        <div class="ttl">List $</div>
-        <app-price-input
-          [placeholder]="'List $'"
-          [(ngModel)]="mainPrices.list_price"
-          (ngModelChange)='fillPrices(mainPrices, "list_price", true)'>
-        </app-price-input>
-      </div>
 
-      <div class="col s4">
-        <div class="ttl">Our $</div>
-        <app-price-input
-          [placeholder]="'Our $'"
-          [(ngModel)]="mainPrices.our_price"
-          (ngModelChange)='fillPrices(mainPrices, "our_price", true)'>
-        </app-price-input>
-      </div>
+<app-vendor-product-package
+  *ngFor="let package of vendor.inventory_by; let i = index"
+  [package]="package"
+  (fillAll)="onFillAll($event)"
+  (fillColumn)="onFillColumn($event)">
+  <fa name="times-circle" (click)="deletePackage(i)"></fa>
+</app-vendor-product-package>
 
-      <div class="col s4">
-        <div class="ttl">Club $</div>
-        <app-price-input
-          [placeholder]="'Club $'"
-          [(ngModel)]="mainPrices.club_price"
-          (ngModelChange)='fillPrices(mainPrices, "club_price", true)'>
-        </app-price-input>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="row">
   <div class="col s5 flex">
     <div class="input-checkbox">
@@ -176,7 +66,7 @@
       <app-price-input
         [placeholder]="'List $'"
         [(ngModel)]="variant.list_price"
-        (ngModelChange)='fillPrices(variant, "list_price")'>
+        (ngModelChange)='onFillOur(variant.list_price, i)'>
       </app-price-input>
     </div>
     <div class="col s2 row-input">
@@ -192,6 +82,4 @@
       </app-price-input>
     </div>
   </div>
-  <!--<div class="divider-line"></div>-->
 </div>
-
