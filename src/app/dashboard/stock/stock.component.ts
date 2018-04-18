@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
+import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
 import { UserService, AccountService } from '../../core/services/index';
 import { ModalWindowService } from '../../core/services/modal-window.service';
 import { UpdateStockModal } from './update-stock-modal/update-stock-modal.component';
@@ -59,11 +59,13 @@ export class StockComponent implements OnInit {
   }
 
   actualChange(event) {
-    let active = false;
-    this.products.forEach(product => {
-      if (parseInt(product.actualQTY) > 0) active = true;
-    })
-    this.panel.visible = active;
+    this.panel.visible = any((pd) => parseInt(pd.actualQTY) > 0 && pd.actualQTY != pd.currentQTY)(this.products);
+
+    if (event.reason == 'Used' && event.currentQTY < event.actualQTY) {
+      event.reason = 'N/A'
+    } else if (event.reason == 'Shrinkage' && event.currentQTY > event.actualQTY) {
+      event.reason = 'N/A'
+    }
   }
 
   remove(product) {
