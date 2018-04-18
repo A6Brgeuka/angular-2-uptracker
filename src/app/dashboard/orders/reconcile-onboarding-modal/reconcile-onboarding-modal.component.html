@@ -28,7 +28,11 @@
     </div>
   </div>
   <div class="row">
-    <button class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light" (click)="continue()">CONTINUE</button>
+    <button
+      class="uptracker-form-btn next-btn white-text tealish waves-effect waves-light"
+      [disabled]="reconcileType.length == 0"
+      (click)="continue()"
+    >CONTINUE</button>
   </div>
 </div>
 
