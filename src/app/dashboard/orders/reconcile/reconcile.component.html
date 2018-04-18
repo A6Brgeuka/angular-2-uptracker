@@ -335,7 +335,7 @@
           <div class="col s8">
             <div class="row mrg-btm-0 flex-center">
               <div class="col s2">
-                <div class="text-left input-header">{{product.package}}</div>
+                <div class="text-left">{{product.package}}</div>
               </div>
               <div class="col s2">
                 <div class="text-left mini-input input-header">{{product.received_qty}}</div>
@@ -355,19 +355,7 @@
             </div>
             <div class="row mrg-btm-0">
               <div class="col s2">
-                <div class="select">
-                  <select
-                    title="Pkg"
-                    name="pkg"
-                    materialize="material_select"
-                    [(ngModel)]="product.package_"
-                    (ngModelChange)="productChange(product)"
-                  >
-                    <option value="Box">Box</option>
-                    <option value="Glove">Glove</option>
-                    <option value="Canister">Canister</option>
-                  </select>
-                </div>
+                <div class="lined">{{product.package}}</div>
               </div>
               <div class="col s2">
                 <div class="input mini-input">
@@ -454,18 +442,6 @@
         </ng-container>
       </div>
       <div class="board">
-        <div class="row">
-          <div class="col s4"><span class="board-title">Pkg</span></div>
-          <div class="col s8">
-            <div class="select">
-              <select title="Pkg" name="board-pkg" [(ngModel)]="board.Pkg" materialize="material_select">
-                <option value="" disabled selected>Select</option>
-                <option value="Box">Box</option>
-                <option value="Glove">Glove</option>
-              </select>
-            </div>
-          </div>
-        </div>
         <div class="row">
           <div class="col s4"><span class="board-title">QTY</span></div>
           <div class="col s8">

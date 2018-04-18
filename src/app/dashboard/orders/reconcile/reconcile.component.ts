@@ -61,7 +61,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       res.invoice.diff = '0.00';
 
       res.items.forEach(item => {
-        item.package_ = item.package;
         item.received_qty_ = item.received_qty;
         item.package_price_ = item.package_price.replace('$', '');
         item.discounted_price_ = item.discounted_price.replace('$', '');
@@ -80,7 +79,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     })
 
     this.board = {
-      pkg: '',
       qty: null,
       pkgPrice: null,
       discountAmount: null,
@@ -192,7 +190,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.productHeader = false;
     this.selectedInvoice.items.forEach(item => {
       if (item.checked) {
-        item.package_ = this.board.pkg ? this.board.pkg.toLocaleString() : item.package_;
         item.received_qty_ = this.board.qty ? parseInt(this.board.qty).toLocaleString() : item.received_qty_;
         item.package_price_ = this.board.pkgPrice ? this.board.pkgPrice.toLocaleString() : item.package_price_;
         item.discounted_price_ = this.board.discountAmount ? this.board.discountAmount.toLocaleString() : item.discounted_price_;
