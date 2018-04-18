@@ -54,9 +54,9 @@ export class ReconcileService extends ModelService {
   }
 
   createReconcile(data) {
-    // return this.restangular.all('reconcile').post(data)
-    // .do((res: any) => {
-    //   console.log('--------------->>>>>>   ', res);
-    // });
+    return this.restangular.all('reconcile').post(data)
+    .do((res: any) => {
+      console.log('--------------->>>>>>   ', res);
+    });
   }
 }

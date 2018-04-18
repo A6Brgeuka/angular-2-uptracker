@@ -89,9 +89,9 @@
   min-height: auto;
   width: 700px;
   .modal-content {
-    padding-left: 70px;
-    padding-right: 70px;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-left: 70px !important;
+    padding-right: 70px !important;
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
   }
 }
