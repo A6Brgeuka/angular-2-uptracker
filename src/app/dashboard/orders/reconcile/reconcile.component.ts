@@ -2,13 +2,14 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
-import * as moment from 'moment';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
+import * as moment from 'moment';
 import * as _ from 'lodash';
+import * as Country from 'country-data';
+import * as CurrencyFormatter from 'currency-formatter';
 import { ReconcileService } from '../../../core/services/reconcile.service';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
-import * as Country from 'country-data';
 
 @Component({
   selector: 'app-reconcile',
@@ -89,6 +90,11 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     console.log('for unsubscribing')
   }
 
+  formatNumber(event: string) {
+    const value = parseFloat(event);
+    return CurrencyFormatter.format(value, { code: 'USD' });
+  }
+
   showProductModal() {
     this.modal
     .open(ReconcileProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}));
@@ -126,11 +132,11 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   invoiceChange(event) {
     try {
       // Total
-      let total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total)
-      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
-      + parseFloat(this.selectedInvoice.invoice.shipping)
-      + parseFloat(this.selectedInvoice.invoice.handling)
-      + parseFloat(this.selectedInvoice.invoice.taxes);
+      let total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total) || 0
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit) || 0
+      + parseFloat(this.selectedInvoice.invoice.shipping) || 0
+      + parseFloat(this.selectedInvoice.invoice.handling) || 0
+      + parseFloat(this.selectedInvoice.invoice.taxes) || 0;
 
       let po_discount = 0;
       if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
@@ -142,11 +148,11 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.selectedInvoice.invoice.total = total;
 
       // Calculated Total
-      let calculated_total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', ''))
-      - parseFloat(this.selectedInvoice.invoice.invoice_credit)
-      + parseFloat(this.selectedInvoice.invoice.shipping)
-      + parseFloat(this.selectedInvoice.invoice.handling)
-      + parseFloat(this.selectedInvoice.invoice.taxes);
+      let calculated_total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', '')) || 0
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit) || 0
+      + parseFloat(this.selectedInvoice.invoice.shipping) || 0
+      + parseFloat(this.selectedInvoice.invoice.handling) || 0
+      + parseFloat(this.selectedInvoice.invoice.taxes) || 0;
 
       po_discount = 0;
       if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {

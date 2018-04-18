@@ -22,7 +22,13 @@
         <div class="col l6 left">
           <div class="row input-header"><span>Invoice Date</span></div>
           <div class="row date-picker">
-            <material-datepicker #datepicker accentColor="#33c6d9" [(date)]="selectedInvoice.invoice.invoice_date"></material-datepicker>
+            <material-datepicker
+              #datepicker
+              accentColor="#33c6d9"
+              dateFormat="MM-DD-YYYY"
+              [(date)]="selectedInvoice.invoice.invoice_date"
+            >
+            </material-datepicker>
             <div class="calendar" (click)="toggleDatepicker($event)">
               <img src="/assets/img/icon-calendar.png" alt="" />
             </div>
@@ -226,7 +232,7 @@
             <div class="item">
               <span>Total</span>
               <div class="input-calculated">
-                <span class="bold">${{selectedInvoice.invoice.total}}</span>
+                <span class="bold">{{formatNumber(selectedInvoice.invoice.total)}}</span>
               </div>
             </div>
           </div>
@@ -234,7 +240,7 @@
             <div class="item">
               <span>Calculated Total</span>
               <div class="input-calculated">
-                ${{selectedInvoice.invoice.calculated_total}}
+                {{formatNumber(selectedInvoice.invoice.calculated_total)}}
               </div>
             </div>
           </div>
@@ -242,7 +248,7 @@
             <div class="item">
               <span class="diff-red">Diff</span>
               <div class="input-calculated">
-                <span class="diff-red">${{selectedInvoice.invoice.diff}}</span>
+                <span class="diff-red">{{formatNumber(selectedInvoice.invoice.diff)}}</span>
               </div>
             </div>
           </div>
