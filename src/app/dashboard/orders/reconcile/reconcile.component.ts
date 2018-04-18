@@ -86,8 +86,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       discountAmount: null,
       discountType: 'PERCENT',
     }
-
-    console.log('---------->>>>>>>>>>>   ', Currency.code('USD'))
   }
 
   ngOnDestroy() {
@@ -136,11 +134,11 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   invoiceChange(event) {
     try {
       // Total
-      let total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total) || 0
-      - parseFloat(this.selectedInvoice.invoice.invoice_credit) || 0
-      + parseFloat(this.selectedInvoice.invoice.shipping) || 0
-      + parseFloat(this.selectedInvoice.invoice.handling) || 0
-      + parseFloat(this.selectedInvoice.invoice.taxes) || 0;
+      let total = parseFloat(this.selectedInvoice.invoice.invoiced_sub_total || '0')
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit || '0')
+      + parseFloat(this.selectedInvoice.invoice.shipping || '0')
+      + parseFloat(this.selectedInvoice.invoice.handling || '0')
+      + parseFloat(this.selectedInvoice.invoice.taxes || '0');
 
       let po_discount = 0;
       if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
@@ -152,11 +150,11 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.selectedInvoice.invoice.total = total;
 
       // Calculated Total
-      let calculated_total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', '')) || 0
-      - parseFloat(this.selectedInvoice.invoice.invoice_credit) || 0
-      + parseFloat(this.selectedInvoice.invoice.shipping) || 0
-      + parseFloat(this.selectedInvoice.invoice.handling) || 0
-      + parseFloat(this.selectedInvoice.invoice.taxes) || 0;
+      let calculated_total = parseFloat(this.selectedInvoice.invoice.calculated_sub_total.replace('$', '') || '0')
+      - parseFloat(this.selectedInvoice.invoice.invoice_credit || '0')
+      + parseFloat(this.selectedInvoice.invoice.shipping || '0')
+      + parseFloat(this.selectedInvoice.invoice.handling || '0')
+      + parseFloat(this.selectedInvoice.invoice.taxes || '0');
 
       po_discount = 0;
       if (this.selectedInvoice.invoice.po_discount_type === 'PERCENT') {
@@ -178,25 +176,26 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     try {
       let disc_price = 0;
       if (product.discounted_price_type === 'PERCENT') {
-        disc_price = (1 -  parseFloat(product.discounted_price_) / 100) * parseFloat(product.package_price_);
+        disc_price = (1 -  parseFloat(product.discounted_price_ || '0') / 100) * parseFloat(product.package_price_);
       } else {
-        disc_price = parseFloat(product.package_price_) - parseFloat(product.discounted_price_);
+        disc_price = parseFloat(product.package_price_ || '0') - parseFloat(product.discounted_price_ || '0');
       }
       product.disc_price_ = disc_price.toFixed(2);
       product.total_ = (product.disc_price_ * product.received_qty_).toFixed(2);
     } catch (err) {
-      console.log('err');
+      console.log(err);
     }
   }
 
   bulkUpdates() {
     this.panelVisible = false;
+    this.productHeader = false;
     this.selectedInvoice.items.forEach(item => {
       if (item.checked) {
-        item.package_ = this.board.pkg;
-        item.received_qty_ = this.board.qty;
-        item.package_price_ = this.board.pkgPrice;
-        item.discounted_price_ = this.board.discountAmount;
+        item.package_ = this.board.pkg ? this.board.pkg.toLocaleString() : item.package_;
+        item.received_qty_ = this.board.qty ? parseInt(this.board.qty).toLocaleString() : item.received_qty_;
+        item.package_price_ = this.board.pkgPrice ? this.board.pkgPrice.toLocaleString() : item.package_price_;
+        item.discounted_price_ = this.board.discountAmount ? this.board.discountAmount.toLocaleString() : item.discounted_price_;
       }
       this.productChange(item);
       item.checked = false;
@@ -205,6 +204,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   bulkNevermind() {
     this.panelVisible = false;
+    this.productHeader = false;
     this.selectedInvoice.items.map(item => item.checked = false)
   }
 
