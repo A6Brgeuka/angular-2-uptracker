@@ -35,10 +35,19 @@ export class CustomProductModel {
 }
 
 export class CustomProductVariantModel {
+  name: string = null;
   catalog_number: number | string  = null;
   list_price: string = null;
   our_price: string = null;
   club_price: string = 'N/A';
-  barcode: any = null;
+  upc: any = null;
   enabled: boolean = false;
+
+  constructor(obj?:any) {
+    for (let field in obj) {
+      if (typeof this[field] !== "undefined") {
+        this[field] = obj && obj[field];
+      }
+    }
+  }
 }

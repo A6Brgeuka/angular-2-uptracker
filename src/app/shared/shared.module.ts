@@ -63,6 +63,7 @@ import { ChipsModule } from './components/chips/chips.module';
 import {ScannerModule} from "../dashboard/scanner/scanner.module";
 import {ProductVariantModule} from "./components/product-variant/product-variant.module";
 import {PriceInputModule} from "./components/price-input/price-input.module";
+import {VariantDetailModule} from "./components/variant-detail/variant-detail.module";
 
 const modalsArr = [
   EditUserModal,
@@ -105,7 +106,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PriceInputModule,
     ScannerModule,
     ProductVariantModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    VariantDetailModule
   ],
   declarations: [
     ...directivesArr,
@@ -142,6 +144,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PriceInputModule,
     ScannerModule,
     ProductVariantModule,
+    VariantDetailModule,
 
     ...directivesArr,
     ...pipesArr,

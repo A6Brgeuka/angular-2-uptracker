@@ -5,24 +5,24 @@
 </div>
 <div class="row">
   <div class="col s2">
-    <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="checkStep(1)"></div>
+    <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="step==0"></div>
     <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
-            (click)="stepAction(-1); $event.stopPropagation()" *ngIf="!checkStep(1)">
+            (click)="step=step-1" *ngIf="step != 0">
       <fa name="chevron-left"></fa>
       Back
     </button>
   </div>
   <div class="col s8 center-align">
-    <div class="sub-title" *ngIf="checkStep(2)">
+    <div class="sub-title" *ngIf="step==1">
       Vendors
     </div>
   </div>
   <div class="col s2 right-align">
-    <button *ngIf="!checkStep(2)"
-            class="uptracker-form-btn white-text waves-effect waves-light" (click)="stepAction(1)">
+    <button *ngIf="step!=1"
+            class="uptracker-form-btn white-text waves-effect waves-light" (click)="step=step+1">
       Next
     </button>
-    <button *ngIf="checkStep(2)"
+    <button *ngIf="step==1"
             class="uptracker-form-btn white-text waves-effect waves-light" (click)="save()">
       <fa name="plus"></fa>
       Add
@@ -32,12 +32,12 @@
 </div>
 
 <app-add-product-from-vendor-step1
-  *ngIf="checkStep(1)"
+  *ngIf="step == 0"
   [product]="product"
   [variants]="variants">
 </app-add-product-from-vendor-step1>
 
 <app-add-product-from-vendor-step2
-  *ngIf="checkStep(2)"
+  *ngIf="step == 1"
   [product]="product">
 </app-add-product-from-vendor-step2>

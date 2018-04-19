@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {ProductService} from '../../../core/services/product.service';
 import {AccountService} from '../../../core/services/account.service';
-import {ProductModel} from '../../../models/product.model';
 import { Location } from '@angular/common';
-import {PackageModel} from "../../../models/inventory.model";
-import {map} from 'lodash';
+import {map, merge, each, flatten} from 'lodash';
+import {ToasterService} from "../../../core/services/toaster.service";
 
 export const dummyInventory = [
   {type: 'Package', value: 'package', qty: 1},
@@ -25,8 +24,8 @@ export const dummyInventory = [
 export class AddProductFromVendorComponent implements OnInit {
   public subscribers: any = {};
 
-  public step: number = 1;
-  public product: ProductModel;
+  public step: number = 0;
+  public product: any;
   public variants: any;
   public product_id: any;
   public location_id: any;
@@ -35,15 +34,25 @@ export class AddProductFromVendorComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private accountService: AccountService,
-    private location: Location
+    private location: Location,
+    private router: Router,
+    private toasterService: ToasterService
   ) {
   }
 
-  stepAction = (step) => this.step += step;
-  checkStep = (step) => this.step == step;
+  onSubmit() {
+    const product = this.formatProduct(this.product);
+    this.productService.addCustomProduct(product)
+      .subscribe((product) => {
+        this.toasterService.pop('', 'Product successfully added');
+        this.productService.addToCollection$.next([product]);
+        this.router.navigate(['/products']);
+      });
+  }
 
-  save() {
-    this.productService.addCustomProduct(this.product);
+  formatProduct(product) {
+    const attachments = map(product.attachments, 'public_url');
+    return {...product, attachments};
   }
 
   ngOnInit() {
@@ -61,23 +70,37 @@ export class AddProductFromVendorComponent implements OnInit {
       .filter(res => res.data)
       .map(res => res.data)
       .subscribe(data => {
-        this.product = data.product;
-        this.variants = data.variants;
-        console.log(data)
+        const vendors = flatten(map(data.variants, 'vendor_variants'));
+
+        const variants = map(vendors, v => {
+          const inventory = [
+            {label: v['package_type'], qty: 1},
+            {label: v['sub_package'], qty: v['sub_unit_per_package'] || ''},
+            {label: v['unit_type'], qty: v['units_per_package' || '']}
+          ];
+          //TODO: Define nest[]
+          const inventory_by = [merge(dummyInventory, inventory)];
+          const vendor = {
+            vendor_name: v['vendor_name'],
+            vendor_id: v['vendor_id']
+          };
+          const variants = [{
+            name: v['name'],
+            catalog_number: v['catalog_number'],
+            club_price: v['club_price'],
+            list_price: v['list_price'],
+            our_price: v['our_price'],
+            upc: v['upc']
+          }];
+
+          return {...vendor, inventory_by, variants}
         });
+
+        this.product = {...data.product, account_category:"", vendor_variants: variants};
+        this.variants = data.variants;
+      });
   }
 
-  /*onVendorChosen(vendorInfo) {
-    const inventory_by = [map(dummyInventory, (inv) => new PackageModel(inv))];
-    const vendor = {...vendorInfo, inventory_by};
-    if (vendor.additional) {
-      const i = findIndex(this.product.vendor_variants, (v) => v.vendor_name == vendor.vendor_name);
-      this.product.vendor_variants.splice(i+1, 0, vendor);
-      return;
-    }
-    this.product.vendor_variants.unshift(vendor);
-  }
-*/
   goBack(): void {
     this.location.back();
   }

@@ -693,6 +693,19 @@ $normal: 14px;
     }
   }
 
+  .checkbox-container {
+    display:inline-block;
+    position: relative;
+    label{
+      margin-right:10px;
+    }
+    .fa-question-circle {
+      position: absolute;
+      top:-3px;
+      right:-1px;
+    }
+  }
+
   @media (max-width: 1024px) {
 
     .title {
@@ -704,5 +717,11 @@ $normal: 14px;
       width: 100% !important;
       float: inherit!important;
     }
+  }
+}
+
+app-variant-detail /deep/ {
+  .variant-detail-table {
+    background: none !important;
   }
 }

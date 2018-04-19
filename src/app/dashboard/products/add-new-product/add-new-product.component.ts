@@ -128,6 +128,7 @@ export class AddNewProductComponent implements OnInit {
       .subscribe(urls =>
         this.product.attachments = this.product.attachments.concat(urls))
   }
+
   removeFile(i) {
     this.product.attachments.splice(i, 1)
   }

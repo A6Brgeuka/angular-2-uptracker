@@ -6,6 +6,8 @@ import {ProductModel} from '../../../../models/product.model';
 import {ModalWindowService} from '../../../../core/services/modal-window.service';
 import {AccountService} from '../../../../core/services/account.service';
 import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/help-text-modal-component';
+import {ProductService} from "../../../../core/services/product.service";
+import {each} from 'lodash';
 
 @Component({
   selector: 'app-add-product-from-vendor-step1',
@@ -16,7 +18,7 @@ import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/he
 @DestroySubscribers()
 export class AddProductFromVendorStep1Component implements OnInit {
 
-  @Input('product') product: ProductModel;
+  @Input('product') product: any;
   @Input('variants') variants: any;
 
   public subscribers: any = {};
@@ -32,28 +34,13 @@ export class AddProductFromVendorStep1Component implements OnInit {
   public productCategoriesCollection: any[];
   public pricingRulesCollection$: Observable<any> = Observable.of(['Rule1', 'Rule2', 'Rule3']);
   public pricingRulesCollection: any [];
-  public fileArr: any [] = [];
-
-  //all variables after this comment are only for test
-  currentVariant = {
-    custom_attr: []
-  };
-  variationArrs = {
-    package_type: ['one', 'two'],
-    unit_type: ['one', 'two'],
-    units_per_package: ['one', 'two'],
-    size: ['one', 'two'],
-    material: ['one', 'two'],
-    price_range: ['one', 'two']
-  };
-  variation={
-    ackage_type: ''
-  };
+  public logoPreview: any;
 
   constructor(
     private accountService: AccountService,
     public modal: Modal,
-    public modalWindowService: ModalWindowService) {
+    public modalWindowService: ModalWindowService,
+    public productService: ProductService) {
   }
 
   ngOnInit() {
@@ -81,26 +68,47 @@ export class AddProductFromVendorStep1Component implements OnInit {
       .overlayConfigFactoryWithParams({'text': ''}, true, 'mid'))
   }
 
-  // upload by input type=file
+  toggleVariantDetailView(variant) {
+    variant.detailView = !variant.detailView;
+  }
+
+  uploadLogo(file: any) {
+    const reader = new FileReader();
+    const formData = new FormData();
+    reader.onload = ($event: any) => {
+      this.logoPreview = $event.target.result;
+      formData.append('image', file.target.files[0]);
+      this.productService.addCustomProductImage(formData)
+        .subscribe(url => this.product.image = url);
+    };
+    reader.readAsDataURL(file.target.files[0]);
+  }
+
   changeListener($event): void {
     this.readThis($event.target);
   }
 
   readThis(inputValue: any): void {
-    let file: File = inputValue.files[0];
-    this.onFileDrop(file);
+    let files: File[] = inputValue.files;
+    this.addFile(files);
   }
 
   onFileDrop(file: any): void {
     let myReader: any = new FileReader();
     myReader.fileName = file.name;
-    this.fileArr.push(file);
+    this.addFile(file);
   }
 
-  uploadLogo(file: any) {
-    const reader = new FileReader();
-    reader.onload = ($event: any) => this.product.image = $event.target.result;
-    reader.readAsDataURL(file.target.files[0]);
+  addFile(files) {
+    const formData = new FormData();
+    each(files, (file, i) => formData.append(`documents[${i}]`, file));
+    this.productService.addCustomProductDocument(formData)
+      .subscribe(urls =>
+        this.product.attachments = this.product.attachments.concat(urls))
+  }
+
+  removeFile(i) {
+    this.product.attachments.splice(i, 1)
   }
 
 }

@@ -55,8 +55,8 @@
   </div>
   <div class="col s7">
     <div class="col s3 row-input relative">
-      <input type="text" [(ngModel)]="variant.barcode" placeholder="Barcode">
-      <app-scanner (searchText)="variant.barcode = $event"></app-scanner>
+      <input type="text" [(ngModel)]="variant.upc" placeholder="Barcode">
+      <app-scanner (searchText)="variant.upc = $event"></app-scanner>
     </div>
     <div class="col s3 row-input">
       <input type="text" [(ngModel)]="variant.catalog_number" placeholder="Catalog #">

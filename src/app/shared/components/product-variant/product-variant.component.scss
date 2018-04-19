@@ -74,7 +74,7 @@
   .flex {
     display: flex;
     align-items: center;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap !important;
   }
 
   .label {
@@ -129,6 +129,11 @@
   .margin {
     margin-top: 20px;
   }
+
+  .select {
+    position: relative;
+  }
+
 }
 
 

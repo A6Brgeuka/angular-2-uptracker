@@ -1,6 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {each} from 'lodash';
-import {InventorySearchResults} from '../../../models/inventory.model';
 
 @Component({
   selector: 'app-product-variant',
@@ -13,7 +12,6 @@ export class ProductVariantComponent {
   @Output('vendorDelete') public vendorDelete = new EventEmitter();
   @Output('addVendor') public addVendor = new EventEmitter();
 
-  public product: any = new InventorySearchResults();
   public selected: any = {};
 
   constructor() {
