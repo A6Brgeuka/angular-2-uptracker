@@ -4,6 +4,7 @@ import {ModalWindowService} from '../../../../core/services/modal-window.service
 import {map, findIndex} from 'lodash';
 import {PackageModel} from "../../../../models/inventory.model";
 import {CustomProductVariantModel} from "../../../../models/custom-product.model";
+import {AddVendorModalComponent} from "../../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
 
 export const dummyInventory = [
   {type: 'Package', value: 'package', qty: 1},
@@ -39,6 +40,20 @@ export class AddProductFromVendorStep2Component {
 
   onVendorDelete(i) {
     this.product.vendor_variants.splice(i, 1);
+  }
+
+  openAddVendorsModal() {
+    this.modal
+      .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({modalMode: true}, true))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (vendor) => {
+            this.onVendorChosen({vendor_name: vendor.name});
+          },
+          (err) => {
+          }
+        );
+      });
   }
 
 }
