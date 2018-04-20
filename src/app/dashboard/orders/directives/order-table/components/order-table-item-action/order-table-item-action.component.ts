@@ -29,6 +29,8 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   private reorderProductSubject$:  Subject<any> = new Subject<any>();
   private reorderProducts$:  Observable<any>;
 
+  private voidProductSubject$:  Subject<any> = new Subject<any>();
+
   private receiveProductSubject$:  Subject<any> = new Subject<any>();
   private receiveProducts$:  Observable<any>;
 
@@ -39,6 +41,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   @Input() uniqueField: string;
   @Output() onFavorite: EventEmitter<OrderItem> = new EventEmitter();
   @Output() onFlagged: EventEmitter<OrderItem> = new EventEmitter();
+  @Output() onVoid: EventEmitter<OrderItem> = new EventEmitter();
 
   constructor(
     public modal: Modal,
@@ -83,6 +86,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
       this.receiveProductSubject$,
     );
 
+
   }
 
   ngOnDestroy() {
@@ -91,13 +95,21 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   addSubscribers() {
 
+    this.subscribers.voidProductSubscription = this.voidProductSubject$
+    .switchMap((item) =>
+      this.orderTableOnVoidService.onVoidOrder(item)
+    )
+    .subscribe((res) =>
+      this.onVoid.emit(res)
+    );
+
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProducts$
     .switchMap(([url, item]) => {
       const data = {
-        'orders': [
+        orders: [
           {
-            'order_id': item.order_id,
-            'items_ids': (url === '/orders/items') ? [item[this.uniqueField]] : item.order_items.map((res) => res.id),
+            order_id: item.order_id,
+            items_ids: (url === '/orders/items') ? [item[this.uniqueField]] : item.order_items.map((res) => res.id),
           }
         ]
       };
@@ -134,7 +146,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   };
 
   onVoidOrder(item) {
-    this.orderTableOnVoidService.onVoidOrder(item);
+    this.voidProductSubject$.next(item);
   }
 
   openAddCommentModal(item) {
