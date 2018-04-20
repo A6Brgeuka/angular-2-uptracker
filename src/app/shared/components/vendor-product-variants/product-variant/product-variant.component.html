@@ -1,4 +1,4 @@
-<fa name="times-circle" (click)="deleteVendor(i)"></fa>
+<fa name="times-circle" (click)="deleteVendor()"></fa>
 <app-vendor-product-package
   *ngFor="let package of vendor.inventory_by; let i = index"
   [package]="package"
