@@ -11,7 +11,7 @@
           [options]="invoices"
           [(value)]="invoices_"
           [multiple]="false"
-          (valueChange)="invoiceChange($event)"
+          (valueChange)="handleInvoiceChanges($event)"
         >
         </ngx-select-dropdown>
       </div>
@@ -44,7 +44,7 @@
                   [materializeSelectOptions]=""
                   name="currency"
                   [(ngModel)]="selectedInvoice.invoice.currency"
-                  (ngModelChange)="invoiceChange($event)"
+                  (ngModelChange)="updateInvoiceDetails($event)"
                 >
                   <ng-container *ngFor="let currency of currencies; let i = index">
                     <option value="{{currency.code}}">{{currency.currency}}</option>
@@ -78,7 +78,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.sub_total"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -96,7 +96,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.invoice_credit"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -114,7 +114,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.shipping"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -132,7 +132,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.handling"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -148,7 +148,7 @@
                   currencyMask
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                   [(ngModel)]="selectedInvoice.invoice.tax"
-                  (ngModelChange)="invoiceChange($event)"
+                  (ngModelChange)="updateInvoiceDetails($event)"
                 >
                 <div class="plus" (click)="toggleTaxBoard()">
                   <fa name="plus"></fa>
@@ -195,7 +195,7 @@
                   type="text"
                   name="discount"
                   [(ngModel)]="selectedInvoice.invoice.discount_"
-                  (ngModelChange)="invoiceChange($event)"
+                  (ngModelChange)="updateInvoiceDetails($event)"
                 >
                 <div class="select">
                   <select
@@ -203,7 +203,7 @@
                     materialize="material_select"
                     name="currency"
                     [(ngModel)]="selectedInvoice.invoice.discount_type"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                     <option value="PERCENT">%</option>
                     <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>

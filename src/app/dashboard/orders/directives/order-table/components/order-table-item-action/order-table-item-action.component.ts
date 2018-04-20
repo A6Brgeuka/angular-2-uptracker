@@ -131,7 +131,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   reconcile() {
     this.modal
     .open(ReconcileOnboardingModal, this.modalWindowService
-    .overlayConfigFactoryWithParams('mid'));
+    .overlayConfigFactoryWithParams({order: this.item}));
   }
 
   backorder() {

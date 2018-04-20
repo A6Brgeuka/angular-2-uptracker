@@ -1,5 +1,6 @@
-import { ModelService } from "../../overrides/model.service";
 import { Injectable, Injector } from "@angular/core";
+import { isNil } from 'ramda'
+import { ModelService } from "../../overrides/model.service";
 import { Subscribers } from "../../decorators/subscribers.decorator";
 import { Restangular } from "ngx-restangular";
 import { APP_CONFIG, AppConfig } from "../../app.config";
@@ -35,6 +36,8 @@ export class ReconcileService extends ModelService {
   public appConfig: AppConfig;
   public invoices: Array<Invoice>;
 
+  public orders$: BehaviorSubject<any> = new BehaviorSubject(null);
+
   constructor(
     public injector: Injector,
     public restangular: Restangular,
@@ -49,14 +52,22 @@ export class ReconcileService extends ModelService {
     return this.restangular.all('pos').all('all').customGET('');
   }
 
-  getReconcile() {
-    return this.restangular.one('reconcile').customGET('', {item_ids: '5ad4f32e3d0192000d3acf1e'}).map(res => res.data);
+  getReconcile(item_ids, invoice_id) {
+    return this.restangular.one('reconcile').customGET('', {item_ids, invoice_id}).map(res => res.data);
   }
 
   createReconcile(data) {
     return this.restangular.all('reconcile').post(data)
     .do((res: any) => {
-      console.log('--------------->>>>>>   ', res);
+      console.log('CREATING RECONCILE --------------->>>>>>   ', res);
     });
+  }
+
+  lookInvoices(id) {
+    if (isNil(id)) {
+      return this.restangular.all('invoices').all('lookup').customGET('').map(res => res.data);;
+    } else {
+      return this.restangular.one('invoices').one('lookup').customGET('', {vendor_id: id}).map(res => res.data);
+    }
   }
 }

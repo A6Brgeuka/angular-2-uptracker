@@ -7,9 +7,10 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
 import * as Currency from 'currency-codes';
-import { ReconcileService } from '../../../core/services/reconcile.service';
+import { ReconcileService, UserService } from '../../../core/services/index';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reconcile',
@@ -27,25 +28,58 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public selectedInvoice: any = {invoice: {}, items: [], vendors: {}};
   public DOLLARSIGNS: any = { USD: '$', CAD: '$', MXN: '$', JPY: '¥' }
   public board: any = {};
-  public selectConfig: any = { displayKey: "id", search: true };
+  public selectConfig: any = { displayKey: "invoice_number", search: true };
   public taxBoardVisible: boolean = false;
   public productHeader: boolean = false;
   public currencies: any = [];
+  public orders: any = [];
+
+  private orderSubscription: Subscription;
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
   constructor(
     public modal: Modal,
     public reconcileService: ReconcileService,
-    public modalWindowService: ModalWindowService
+    public modalWindowService: ModalWindowService,
+    public userService: UserService
   ) {
   }
 
   ngOnInit() {
+    // console.log('###############:   ', this.userService.selfData.account)
     Currency.codes().forEach(code => {
       this.currencies.push(Currency.code(code));
     })
-    this.reconcileService.getReconcile().subscribe(res => {
+    this.board = {
+      qty: null,
+      pkgPrice: null,
+      discountAmount: null,
+      discountType: 'PERCENT',
+    };
+    this.orderSubscription = this.reconcileService.orders$.subscribe(res => {
+      this.orders = res;
+      this.searchInvoices();
+    });
+    this.handleInvoiceChanges();
+  }
+
+  ngOnDestroy() {
+    console.log('for unsubscribing');
+    this.orderSubscription.unsubscribe();
+  }
+
+  searchInvoices() {
+    this.reconcileService.lookInvoices(null).subscribe(res => {
+      this.invoices = res;
+      this.invoices_ = [_.cloneDeep(this.invoices[0])];
+      // console.log('INVOICES---------->>>   ', res);
+      // console.log('ORDERS------------>>>   ', this.orders);
+    });
+  }
+
+  handleInvoiceChanges() {
+    this.reconcileService.getReconcile(this.orders.id, this.invoices_[0].invoice_id).subscribe(res => {
       res.id = '5ad4f32e3d0192000d3acf1e';
       res.invoice.calculated_sub_total = parseFloat(res.invoice.calculated_sub_total.replace('$', ''));
       res.invoice.discount_ = res.invoice.discount;
@@ -62,23 +96,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.productChange(item);
       })
 
-      this.invoices = [res];
-      this.invoices_ = _.cloneDeep(this.invoices);
       this.selectedInvoice = this.invoices[0];
-      this.invoiceChange({});
-      console.log('-------------<<<   ', res)
+      this.updateInvoiceDetails({});
+      // console.log('-------------<<<   ', res)
     })
-
-    this.board = {
-      qty: null,
-      pkgPrice: null,
-      discountAmount: null,
-      discountType: 'PERCENT',
-    }
-  }
-
-  ngOnDestroy() {
-    console.log('for unsubscribing')
   }
 
   currencyFormat(event: string) {
@@ -120,7 +141,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
   }
 
-  invoiceChange(event) {
+  updateInvoiceDetails(event) {
     try {
       // Total
       let total = this.selectedInvoice.invoice.sub_total
@@ -231,35 +252,52 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   updateDetails() {
     let items = [];
-    this.selectedInvoice.items.forEach(item => {
-      const newItem = {
-        invoice_line_item_id: item.invoice_line_item_id,
-        discount: item.discount,
-        discounted_price: item.discounted_price,
-        order_line_item_id: item.order_line_item_id,
-        order_qty: item.order_qty,
-        package_price: item.package_price,
-        received_qty: item.received_qty,
-        reconciled_qty: item.reconciled_qty,
-        reconciled_package_price: item.reconciled_package_price,
-        reconciled_discount: item.reconciled_discount,
-        reconciled_discounted_price: item.reconciled_discounted_price,
-        reconciled_total: item.reconciled_total,
-      };
-      items.push(item);
-    })
+    // this.selectedInvoice.items.forEach(item => {
+    //   const newItem = {
+    //     invoice_line_item_id: item.invoice_line_item_id || '',
+    //     discount: item.discount || '$0.00',
+    //     discounted_price: item.discounted_price || '$3.49',
+    //     order_line_item_id: item.order_line_item_id || '5ad4f32e3d0192000d3acf1e',
+    //     order_qty: item.order_qty || 1,
+    //     package_price: item.package_price || '$3.49',
+    //     received_qty: item.received_qty || 1,
+    //     reconciled_qty: item.reconciled_qty || 1,
+    //     reconciled_package_price: item.reconciled_package_price || '$3.49',
+    //     reconciled_discount: item.reconciled_discount || '$0.00',
+    //     reconciled_discounted_price: item.reconciled_discounted_price || '$3.49',
+    //     reconciled_total: item.reconciled_total || '$3.49',
+    //   };
+    //   items.push(newItem);
+    // })
+    const newItem = {
+      invoice_line_item_id: '',
+      discount: '$0.00',
+      discounted_price: '$3.49',
+      order_line_item_id: '5ad4f32e3d0192000d3acf1e',
+      order_qty: 1,
+      package_price: '$3.49',
+      received_qty: 1,
+      reconciled_qty: 1,
+      reconciled_package_price: '$3.49',
+      reconciled_discount: '$0.00',
+      reconciled_discounted_price: '$3.49',
+      reconciled_total: '$3.49',
+    };
+    // items.push(newItem);
+
     const invoice = {
-      currency: this.selectedInvoice.invoice.currency,
-      discount: this.selectedInvoice.invoice.discount,
-      handling: this.selectedInvoice.invoice.handling,
-      invoice_date: this.selectedInvoice.invoice.invoice_date,
-      invoice_number: this.selectedInvoice.invoice.invoice_number,
-      shipping: this.selectedInvoice.invoice.shipping,
-      sub_total: this.selectedInvoice.invoice.sub_total,
-      tax: this.selectedInvoice.invoice.tax,
-      total: this.selectedInvoice.invoice.total,
-      vendor_id: this.selectedInvoice.invoice.vendor_id,
-      vendor_name: this.selectedInvoice.invoice.vendor_name,
+      currency: this.selectedInvoice.invoice.currency || 'USD',
+      discount: this.selectedInvoice.invoice.discount || '$0.00',
+      handling: this.selectedInvoice.invoice.handling || '$0.00',
+      invoice_date: this.selectedInvoice.invoice.invoice_date || '4/20/2018',
+      invoice_number: this.selectedInvoice.invoice.invoice_number || '100-101',
+      shipping: this.selectedInvoice.invoice.shipping || '$0.0',
+      sub_total: this.selectedInvoice.invoice.sub_total || '$3.49',
+      tax: this.selectedInvoice.invoice.tax || '$0.00',
+      total: this.selectedInvoice.invoice.total || '$3.49',
+      vendor_id: this.selectedInvoice.invoice.vendor_id || '582f4fe306e55c3aab564065',
+      vendor_name: this.selectedInvoice.invoice.vendor_name || 'Reliance Orthodontics',
+      files: [],
     }
 
     const payload = { items, invoice }
