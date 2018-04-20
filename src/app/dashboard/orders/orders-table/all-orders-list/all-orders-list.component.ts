@@ -8,6 +8,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { AllOrdersListService } from '../services/all-orders-list.service';
 import { Order } from '../../models/order';
+import { OrdersTableService } from '../services/orders-table.service';
 
 @Component({
   selector: 'app-all-orders-list',
@@ -37,6 +38,7 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
   constructor(
     public pastOrderService: PastOrderService,
     public allIOrdersListService: AllOrdersListService,
+    public ordersTableService: OrdersTableService,
   ) {
 
   };
@@ -60,6 +62,11 @@ export class AllOrdersListComponent implements OnInit, OnDestroy {
 
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
+  }
+
+  onVoid(value) {
+    const data = {orders: value.map((item) => ({order_id: item.item.order_id, message: item.message}))};
+    this.ordersTableService.onVoidOrder(data);
   }
 
 }

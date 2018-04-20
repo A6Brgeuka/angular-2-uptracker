@@ -7,6 +7,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { BackorderedOrdersListService } from '../services/backordered-orders-list.service';
 import { Order } from '../../models/order';
+import { OrdersTableService } from '../services/orders-table.service';
 
 @Component({
   selector: 'app-backordered-orders-list',
@@ -28,13 +29,14 @@ export class BackorderedOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
     {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
-    {name: '', className: 's1', actions: false},
+    {name: '', className: 's1', actions: true},
   ];
 
   public orders$: Observable<Order[]>;
 
   constructor(
     public backorderedOrdersListService: BackorderedOrdersListService,
+    public ordersTableService: OrdersTableService,
   ) {
 
   };
@@ -51,6 +53,11 @@ export class BackorderedOrdersListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('for unsubscribing');
+  }
+
+  onVoid(value) {
+    const data = {orders: value.map((item) => ({order_id: item.item.order_id, message: item.message}))};
+    this.ordersTableService.onVoidOrder(data);
   }
 
 }

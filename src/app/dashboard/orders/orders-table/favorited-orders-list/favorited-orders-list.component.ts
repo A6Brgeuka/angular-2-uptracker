@@ -7,6 +7,7 @@ import { OrderListType } from '../../models/order-list-type';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
 import { Order } from '../../models/order';
+import { OrdersTableService } from '../services/orders-table.service';
 
 @Component({
   selector: 'app-favorited-orders-list',
@@ -28,7 +29,7 @@ export class FavoritedOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
     {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
-    {name: '', className: 's1', actions: false},
+    {name: '', className: 's1', actions: true},
   ];
 
 
@@ -37,6 +38,7 @@ export class FavoritedOrdersListComponent implements OnInit, OnDestroy {
   constructor(
     private pastOrderService: PastOrderService,
     private favoritedOrdersListService: FavoritedOrdersListService,
+    private ordersTableService: OrdersTableService,
   ) {
 
   };
@@ -60,6 +62,11 @@ export class FavoritedOrdersListComponent implements OnInit, OnDestroy {
 
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
+  }
+
+  onVoid(value) {
+    const data = {orders: value.map((item) => ({order_id: item.item.order_id, message: item.message}))};
+    this.ordersTableService.onVoidOrder(data);
   }
 
 }

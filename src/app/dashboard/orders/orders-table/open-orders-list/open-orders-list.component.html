@@ -3,4 +3,5 @@
   [header]="tableHeaderOpen"
   [orders]="orders$ | async"
   [listName] = 'listName'
+  (onVoidItem)="onVoid($event)"
 ></app-order-table>
