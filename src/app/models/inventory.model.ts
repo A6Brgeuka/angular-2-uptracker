@@ -13,6 +13,12 @@ export class PackageModel {
   }
 }
 
+export const inventoryExample = [
+  {type: 'Package', label: 'Package', value: 'package', qty: 1},
+  {type: 'Sub Package', value: 'sub_package'},
+  {type: 'Consumable Unit', label: 'Unit', value: 'consumable_unit', qty: 1}
+];
+
 export class PackageProperties{
   properties:Package
 }

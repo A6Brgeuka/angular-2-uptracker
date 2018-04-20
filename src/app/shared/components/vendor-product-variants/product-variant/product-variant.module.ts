@@ -5,9 +5,9 @@ import {FormsModule} from "@angular/forms";
 import {Angular2FontawesomeModule} from "angular2-fontawesome";
 import {MaterializeModule} from "angular2-materialize/dist";
 import {NguiAutoCompleteModule} from "@ngui/auto-complete";
-import {PriceInputModule} from "../price-input/price-input.module";
-import {ScannerModule} from "../../../dashboard/scanner/scanner.module";
-import {VendorProductPackageComponent} from "./vendor-product-package/vendor-product-package.component";
+import {PriceInputModule} from "../../price-input/price-input.module";
+import {ScannerModule} from "../../../../dashboard/scanner/scanner.module";
+import {VendorProductPackageComponent} from "../vendor-product-package/vendor-product-package.component";
 
 @NgModule({
   declarations: [

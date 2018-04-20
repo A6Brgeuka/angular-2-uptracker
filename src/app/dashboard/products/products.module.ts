@@ -16,7 +16,6 @@ import { BrowseGlobalMarketModule } from './browse-global-market/browse-global-m
 import { AddNewProductModule } from './add-new-product/add-new-product.module';
 import { AddProductFromVendorModule } from './add-product-from-vendor/add-product-from-vendor.module';
 import { MarketplaceFiltersModule } from '../../shared/modals/filters-modal/marketplace-filters/marketplace-filters.module';
-import {ProductVariantModule} from "../../shared/components/product-variant/product-variant.module";
 
 @NgModule({
   declarations: [
@@ -37,8 +36,7 @@ import {ProductVariantModule} from "../../shared/components/product-variant/prod
     UploadCsvModalModule,
     BrowseGlobalMarketModule,
     AddNewProductModule,
-    AddProductFromVendorModule,
-    ProductVariantModule
+    AddProductFromVendorModule
   ],
   providers: []
 })

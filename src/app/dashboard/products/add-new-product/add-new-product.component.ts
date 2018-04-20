@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {each, map, every, difference, sortBy, findIndex} from 'lodash';
+import {each, map, every, difference, clone} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -11,15 +11,11 @@ import {HelpTextModal} from '../../inventory/add-inventory/help-text-modal/help-
 import { Location } from '@angular/common';
 import {CustomProductModel, CustomProductVariantModel} from '../../../models/custom-product.model';
 import {ProductVariantsModel} from '../../../models/product-variants.model';
-import {PackageModel} from '../../../models/inventory.model';
+import {PackageModel, inventoryExample} from '../../../models/inventory.model';
 import {ToasterService} from '../../../core/services/toaster.service';
 import {Router} from '@angular/router';
 import {AddVendorModalComponent} from "../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
-
-const dummyInventory = [
-  {type: 'Package', value: 'package', qty: 1},
-  {type: 'Sub Package', value: 'sub_package'},
-  {type: 'Consumable Unit', value: 'consumable_unit'}];
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-add-new-product',
@@ -32,6 +28,7 @@ export class AddNewProductComponent implements OnInit {
 
   public variants: any = {};
   public product: CustomProductModel = new CustomProductModel();
+  public vendorVariants: any = {};
   public step: number = 0;
   public vendors: any[] = [];
   public departmentCollection$: Observable<any> = new Observable<any>();
@@ -44,6 +41,7 @@ export class AddNewProductComponent implements OnInit {
   public logo: any;
   public logoPreview: string = null;
   public dummyProductVariants = ["Size", "Color", "Texture", "Grit", "Length", "Strength", "Prescription", "Type"];
+  public vendorVariants$: BehaviorSubject<any> = new BehaviorSubject({});
   public productVariants: ProductVariantsModel[] = [
     {
       name: 'Size',
@@ -64,7 +62,8 @@ export class AddNewProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.product.name = this.product.technical_name = this.productService.searchText;
+    this.vendorVariants$.next(this.vendorVariants);
+    this.product.name = this.product.proper_name = this.productService.searchText;
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
     this.productCategoriesCollection$ = this.accountService.getProductCategories().take(1);
@@ -87,7 +86,7 @@ export class AddNewProductComponent implements OnInit {
     return this.productService.recursive(...arr);
   }
 
-  setTechName = (name) => this.product.technical_name = name;
+  setPropName = (name) => this.product.proper_name = name;
 
   uploadLogo(file: any) {
     const reader = new FileReader();
@@ -193,19 +192,12 @@ export class AddNewProductComponent implements OnInit {
   }
 
   onVendorChosen(vendorInfo) {
-    const variants = this.createVendorVariants();
-    const inventory_by = [map(dummyInventory, (inv) => new PackageModel(inv))];
+    const variants = this.createVendorVariants;
+    const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
     const vendor = {...vendorInfo, inventory_by, variants};
-    if (vendor.additional) {
-      const i = findIndex(this.product.vendor_variants, (v) => v.vendor_name == vendor.vendor_name);
-      this.product.vendor_variants.splice(i+1, 0, vendor);
-      return;
-    }
-    this.product.vendor_variants.unshift(vendor);
-  }
-
-  onVendorDelete(i) {
-    this.product.vendor_variants.splice(i, 1);
+    this.vendorVariants[vendor['vendor_name']] = this.vendorVariants[vendor['vendor_name']] || [];
+    this.vendorVariants[vendor['vendor_name']].unshift(vendor);
+    this.vendorVariants$.next(clone(this.vendorVariants));
   }
 
   openAddVendorsModal() {

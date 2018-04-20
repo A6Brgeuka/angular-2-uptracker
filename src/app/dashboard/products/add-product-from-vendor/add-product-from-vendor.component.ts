@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {ProductService} from '../../../core/services/product.service';
 import {AccountService} from '../../../core/services/account.service';
 import { Location } from '@angular/common';
-import {map, merge, each, flatten} from 'lodash';
+import {map, merge, each, flatten, filter, groupBy, reduce} from 'lodash';
 import {ToasterService} from "../../../core/services/toaster.service";
-
-export const dummyInventory = [
-  {type: 'Package', value: 'package', qty: 1},
-  {type: 'Sub Package', value: 'sub_package'},
-  {type: 'Consumable Unit', value: 'consumable_unit'}
-  ];
+import {inventoryExample} from "../../../models/inventory.model";
 
 @Component({
   selector: 'app-add-product-from-vendor',
@@ -29,6 +24,7 @@ export class AddProductFromVendorComponent implements OnInit {
   public variants: any;
   public product_id: any;
   public location_id: any;
+  public vendorVariants: any = {};
 
   constructor(
     private productService: ProductService,
@@ -52,7 +48,8 @@ export class AddProductFromVendorComponent implements OnInit {
 
   formatProduct(product) {
     const attachments = map(product.attachments, 'public_url');
-    return {...product, attachments};
+    const vendor_variants = reduce(this.vendorVariants, (result: any[], value) => result.concat(value));
+    return {...product, attachments, account_category: "Supplies", vendor_variants};
   }
 
   ngOnInit() {
@@ -66,39 +63,53 @@ export class AddProductFromVendorComponent implements OnInit {
   }
 
   getProducts() {
+    this.subscribers.onVendorsChange = this.productService.changeVendors$.skip(1).subscribe(v => {
+      const vendors = flatten(map(
+                        filter(this.variants, 'checked'), 'vendor_variants'));
+      const structured = this.structureVariants(vendors);
+      this.vendorVariants = groupBy(structured, 'vendor_name');
+    })
+
     this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product_id, this.location_id)
       .filter(res => res.data)
       .map(res => res.data)
+      .do(data => each(data.variants, v => v.checked = true))
       .subscribe(data => {
         const vendors = flatten(map(data.variants, 'vendor_variants'));
-
-        const variants = map(vendors, v => {
-          const inventory = [
-            {label: v['package_type'], qty: 1},
-            {label: v['sub_package'], qty: v['sub_unit_per_package'] || ''},
-            {label: v['unit_type'], qty: v['units_per_package' || '']}
-          ];
-          //TODO: Define nest[]
-          const inventory_by = [merge(dummyInventory, inventory)];
-          const vendor = {
-            vendor_name: v['vendor_name'],
-            vendor_id: v['vendor_id']
-          };
-          const variants = [{
-            name: v['name'],
-            catalog_number: v['catalog_number'],
-            club_price: v['club_price'],
-            list_price: v['list_price'],
-            our_price: v['our_price'],
-            upc: v['upc']
-          }];
-
-          return {...vendor, inventory_by, variants}
-        });
-
-        this.product = {...data.product, account_category:"", vendor_variants: variants};
+        const structured = this.structureVariants(vendors);
+        this.product = data.product;
         this.variants = data.variants;
+        this.vendorVariants = groupBy(structured, 'vendor_name');
       });
+  }
+
+  structureVariants(vendors) {
+
+    return map(vendors, v => {
+      const inventory = [
+        {label: v['package_type'], qty: 1},
+        {label: v['sub_package'], qty: v['sub_unit_per_package']},
+        {label: v['unit_type'], qty: v['units_per_package']}
+      ];
+      //TODO: Define nest[]
+      const inventory_by = [map(inventory, (inv, i) => {
+        return {...inventoryExample[i], ...inv};
+      })];
+      const vendor = {
+        vendor_name: v['vendor_name'],
+        vendor_id: v['vendor_id']
+      };
+      const variants = [{
+        name: v['name'],
+        catalog_number: v['catalog_number'],
+        club_price: v['club_price'],
+        list_price: v['list_price'],
+        our_price: v['our_price'],
+        upc: v['upc']
+      }];
+
+      return {...vendor, inventory_by, variants}
+    });
   }
 
   goBack(): void {

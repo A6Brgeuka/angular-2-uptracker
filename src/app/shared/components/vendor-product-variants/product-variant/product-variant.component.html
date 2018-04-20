@@ -1,27 +1,15 @@
-<div class="divider-line" *ngIf="vendor.additional"></div>
-<div class="row margin" *ngIf="!vendor.additional">
-  <div class="col s8">
-    <div class="vendor-title">
-      {{vendor.vendor_name}}
-    </div>
-  </div>
-  <div class="col s4 right-align">
-    <a class="add-button" (click)="onAddPackageClick()">+ Add Packaging</a>
-  </div>
-</div>
-
+<fa name="times-circle" (click)="deleteVendor(i)"></fa>
 <app-vendor-product-package
   *ngFor="let package of vendor.inventory_by; let i = index"
   [package]="package"
   (fillAll)="onFillAll($event)"
   (fillColumn)="onFillColumn($event)">
-  <fa name="times-circle" (click)="deletePackage(i)"></fa>
 </app-vendor-product-package>
 
 <div class="row">
   <div class="col s5 flex">
     <div class="input-checkbox">
-      <input type="checkbox" class="checkbox-input" [(ngModel)]="selected.all" (change)="selectAll()" id="{{vendor.vendor_name}}+'selectAll'"/>
+      <input type="checkbox" class="checkbox-input" [(ngModel)]="selected" (change)="selectAll()" id="{{vendor.vendor_name}}+'selectAll'"/>
       <label for="{{vendor.vendor_name}}+'selectAll'"></label>
     </div>
 

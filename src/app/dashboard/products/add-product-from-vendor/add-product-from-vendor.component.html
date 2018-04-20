@@ -23,9 +23,8 @@
       Next
     </button>
     <button *ngIf="step==1"
-            class="uptracker-form-btn white-text waves-effect waves-light" (click)="save()">
-      <fa name="plus"></fa>
-      Add
+            class="uptracker-form-btn white-text waves-effect waves-light" (click)="onSubmit()">
+      Save
     </button>
   </div>
 
@@ -39,5 +38,6 @@
 
 <app-add-product-from-vendor-step2
   *ngIf="step == 1"
-  [product]="product">
+  [product]="product"
+  [vendorVariants]="vendorVariants">
 </app-add-product-from-vendor-step2>

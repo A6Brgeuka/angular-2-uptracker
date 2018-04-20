@@ -50,6 +50,7 @@ export class ProductService extends ModelService {
 
   public selectedProduct: ProductModel;
   public searchText: string;
+  public changeVendors$: Subject<any> = new Subject();
 
   constructor(
     public injector: Injector,

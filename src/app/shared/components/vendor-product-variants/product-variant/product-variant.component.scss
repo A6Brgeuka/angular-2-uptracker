@@ -1,9 +1,8 @@
-@import "../../../../colors";
+@import "../../../../../colors";
 
 :host /deep/ {
-  background-color: rgba(255, 255, 255, 0.6);
+  position: relative;
   display: block;
-  padding: 10px;
 
   .col {
     padding: 0 0.25rem;
@@ -34,18 +33,6 @@
 
   .bluebtn {
     margin: 0;
-  }
-
-  .vendor-title {
-    height: 24px;
-    font-family: Ubuntu;
-    font-size: 20px;
-    font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    color: $black;
   }
 
   .sub-title {
@@ -86,7 +73,6 @@
     padding-right: 10px;
   }
 
-
   @media (max-width: 800px) {
     .uptracker-form-btn,
     .bluebtn {
@@ -101,29 +87,19 @@
     font-size: 20px;
   }
 
-  app-vendor-product-package:hover {
-    fa[name="times-circle"] {
-      opacity: 1;
-    }
-  }
-
   fa[name="times-circle"]{
+    position: absolute;
+    right: 0;
     font-size: 16px;
     cursor: pointer;
     color: $mid-grey;
     opacity: 0;
     transition: all .3s;
-    right: 0;
   }
 
   .ttl {
     padding-left: 0.75rem;
     padding-bottom: 7px;
-  }
-
-  .divider-line {
-    height: 2px;
-    border-top: 1px solid $light-grey;
   }
 
   .margin {
@@ -136,5 +112,9 @@
 
 }
 
-
+:host:hover {
+  fa[name="times-circle"] {
+    opacity: 1;
+  }
+}
 

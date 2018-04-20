@@ -56,12 +56,12 @@
       <div class="ttl-box row input">
         <div class="col s12">
           <input class="ttl col s12 name-field"
-                 [(ngModel)]="product.name" (change)="setTechName(product.name)" type="text" placeholder="Type Name">
+                 [(ngModel)]="product.name" (change)="setPropName(product.name)" type="text" placeholder="Type Name">
         </div>
         <div class="col s12">
           <div class="technical-name-container">
             <input class="ttl col s12 name-field"
-                   [(ngModel)]="product.technical_name" type="text" placeholder="Technical Name">
+                   [(ngModel)]="product.proper_name" type="text" placeholder="Technical Name">
             <fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
             <div class="clearfix"></div>
           </div>
@@ -149,7 +149,7 @@
             <label>Accounting</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
             <div class="select">
               <select
-                [(ngModel)]="product.accounting_category"
+                [(ngModel)]="product.account_category"
                 materialize="material_select"
                 [materializeSelectOptions]="productAccountingCollection">
                 <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
@@ -200,7 +200,7 @@
         <p>
           A product Variant is when a product has more than one type.
           For example gloves have different sizes, color chains come in different colors,
-          Q-tips come in boxes of 500, 650 and 700, brackets have different sizes and prescriptions.
+          brackets have different sizes and prescriptions.
           Variants should be the same product just with slightly different attributes.
           If the product you are adding has no variants please delete the prefilled suggestions.
           If the product has a different variant please select one from drop down or type in new Variant type.
@@ -290,11 +290,10 @@
       </div>
     </div>
 
-    <app-product-variant
-      *ngFor="let vendor of product.vendor_variants; let i = index"
-      [vendor]="vendor"
-      (vendorDelete)="onVendorDelete(i)"
+    <app-vendor-product-variants
+      *ngFor="let variants of vendorVariants$ | async | iterable"
+      [variants]="variants.value"
       (addVendor)="onVendorChosen($event)">
-    </app-product-variant>
+    </app-vendor-product-variants>
   </ng-container>
 </div>

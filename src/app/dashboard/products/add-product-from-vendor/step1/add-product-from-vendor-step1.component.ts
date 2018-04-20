@@ -24,7 +24,7 @@ export class AddProductFromVendorStep1Component implements OnInit {
   public subscribers: any = {};
   public vendor: any = {};
   public vendors: any = [];
-  public selectAll: boolean;
+  public selectAll: boolean = true;
   public item: any = {};
   public departmentCollection$: Observable<any> = new Observable<any>();
   public departmentCollection: any[];
@@ -32,9 +32,8 @@ export class AddProductFromVendorStep1Component implements OnInit {
   public productAccountingCollection: any[];
   public productCategoriesCollection$: Observable<any> = new Observable<any>();
   public productCategoriesCollection: any[];
-  public pricingRulesCollection$: Observable<any> = Observable.of(['Rule1', 'Rule2', 'Rule3']);
-  public pricingRulesCollection: any [];
   public logoPreview: any;
+  public searchText: any;
 
   constructor(
     private accountService: AccountService,
@@ -58,18 +57,11 @@ export class AddProductFromVendorStep1Component implements OnInit {
 
     this.subscribers.productCategoriesCollection = this.productCategoriesCollection$
       .subscribe(productsCat => this.productCategoriesCollection = productsCat);
-
-    this.subscribers.pricingRulesCollection = this.pricingRulesCollection$
-      .subscribe(rules => this.pricingRulesCollection = rules);
   }
 
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
       .overlayConfigFactoryWithParams({'text': ''}, true, 'mid'))
-  }
-
-  toggleVariantDetailView(variant) {
-    variant.detailView = !variant.detailView;
   }
 
   uploadLogo(file: any) {
@@ -104,11 +96,22 @@ export class AddProductFromVendorStep1Component implements OnInit {
     each(files, (file, i) => formData.append(`documents[${i}]`, file));
     this.productService.addCustomProductDocument(formData)
       .subscribe(urls =>
-        this.product.attachments = this.product.attachments.concat(urls))
+        this.product.attachments = (this.product.attachments || []).concat(urls));
+  }
+
+  select(value) {
+    each(this.variants, (v) => {
+      v.checked = value;
+    });
+    this.onVariantChanged();
   }
 
   removeFile(i) {
     this.product.attachments.splice(i, 1)
+  }
+
+  onVariantChanged() {
+    this.productService.changeVendors$.next();
   }
 
 }

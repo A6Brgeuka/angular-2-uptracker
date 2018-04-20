@@ -7,8 +7,8 @@ import {DestroySubscribers} from "ngx-destroy-subscribers";
 
 @Component({
   selector: 'app-vendor-product-package',
-  templateUrl: './vendor-product-package.component.html',
-  styleUrls: ['./vendor-product-package.component.scss']
+  templateUrl: 'vendor-product-package.component.html',
+  styleUrls: ['vendor-product-package.component.scss']
 })
 
 @DestroySubscribers()
@@ -32,7 +32,7 @@ export class VendorProductPackageComponent implements OnInit {
 
   addSubscribers() {
     this.subscribers.autocompleteOuterPackSubscription = this.autocompletePackage$
-      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).take(1).publishReplay(1).refCount()
       .subscribe((pack: any) => this.autocompletePackage = sortBy(pack, ['unit_name']));
   }
 

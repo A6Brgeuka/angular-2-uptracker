@@ -33,17 +33,17 @@
 
     <div class="col m9 s12">
       <div class="ttl-box row input">
-        <div class="add-own-product">
+        <div class="col s12">
+          <input type="text" [(ngModel)]="product.name"  placeholder="Type Name"/>
+        </div>
+
+        <div class="col s12">
           <div class="technical-name-container">
-            <input type="text" [(ngModel)]="product.name"  placeholder="Type Name"/>
+            <input type="text" [(ngModel)]="product.proper_name"  placeholder="Type Name"/>
             <fa [name]="'question-circle'" (click)="openHelperModal()" aria-hidden="true"></fa>
             <div class="clearfix"></div>
           </div>
         </div>
-      </div>
-
-      <div class="ttl-box row input">
-        <input type="text" [(ngModel)]="product.proper_name" placeholder="Technical Name" />
       </div>
 
       <div class="row">
@@ -179,7 +179,7 @@
   </div>
 
   <div id="variations">
-    <div *ngIf="!showVariant" class="inner product">
+    <div class="inner product">
       <div class="variant-table">
         <div class="uptracker-form variant-head">
           <div class="variant-checkbox head-item">
@@ -187,7 +187,8 @@
               <input
                 type="checkbox"
                 class="checkbox-input"
-                (change)="headCheckboxChange()"
+                (change)="select(selectAll)"
+                [(ngModel)]="selectAll"
                 id="variation-checkbox"
               />
               <label for="variation-checkbox"></label>
@@ -198,17 +199,15 @@
               <input
                 type="text"
                 class="name-input"
-                ngModel
-                (input)="changeName($event)"
-                placeholder="Name"
-                #name="ngModel"/>
+                [(ngModel)]="searchText"
+                placeholder="Name"/>
             </div>
           </div>
-          <div class="small-heading head-item">Pkg</div>
-          <div class="small-heading head-item">Unit</div>
-          <div class="small-heading head-item">Qty</div>
+          <div class="small-heading row-item">Pkg</div>
+          <div class="small-heading row-item">Unit</div>
+          <div class="small-heading row-item">Qty</div>
 
-          <div class="text-heading valign-wrapper head-item">
+          <div class="text-heading wider valign-wrapper head-item">
             <div class="text-head valign">
               Total consumable units
             </div>
@@ -224,28 +223,26 @@
         </div>
       </div>
 
-      <div class="table-body">
+      <div class="table-body" *ngIf="variants">
         <div class="variant-table">
           <div class="uptracker-form  table-item"
-               *ngFor="let variant of variants"
-               (click)="toggleVariantDetailView(variant)">
+               *ngFor="let variant of variants | textFilter:searchText:'name'">
             <div class="variant-checkbox row-item">
               <div class="checkbox input-checkbox">
                 <input
                   type="checkbox"
                   class="checkbox-input"
                   [(ngModel)]="variant.checked"
-                  (change)="variantCheckedChange()"
+                  (change)="onVariantChanged()"
                   id="{{variant.id}}"
                 />
                 <label for="{{variant.id}}"></label>
               </div>
             </div>
             <div class="name-heading variant-name row-item valign-wrapper">
-            <span (click)="showVariantDetails($event,variant)"
-                  [class.reddish]="variant.status == 2"
-                  class="valign"
-            >{{variant.name || "Product Here"}}</span>
+              <span [class.reddish]="variant.status == 2" class="valign">
+                {{variant.name || "Product Here"}}
+              </span>
             </div>
             <div class="small-heading row-item">{{variant.package_type || ""}}</div>
             <div class="small-heading row-item">{{variant.unit_type || ""}}</div>
@@ -253,10 +250,6 @@
             <div class="text-heading row-item nowrap">{{variant.price_range || ""}}</div>
 
             <div class="clearfix"></div>
-            <app-variant-detail [showEdit]="showEdit"
-                                [variant]="variant"
-                                *ngIf="variant.detailView">
-            </app-variant-detail>
           </div>
         </div>
       </div>
