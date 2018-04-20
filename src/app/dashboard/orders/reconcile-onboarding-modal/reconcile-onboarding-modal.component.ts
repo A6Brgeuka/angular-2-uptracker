@@ -47,6 +47,10 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
       this.invoices = [res];
       // this.invoices_ = _.cloneDeep(this.invoices);
     })
+    this.reconcileService.lookInvoices(this.context.order.vendor_id).subscribe(res => {
+      this.invoices = res;
+      this.invoices_ = res;
+    })
   }
 
   continue() {
