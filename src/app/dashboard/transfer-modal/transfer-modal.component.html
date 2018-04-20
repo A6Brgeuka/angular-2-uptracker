@@ -35,22 +35,22 @@
       <div class="content">
         <div class="bold">Gloves Tender Touch Nitrile</div>
         <div class="thin">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
-        <div class="bold case">1 Case = 10 Boxes (3000 Gloves)</div>
         <div class="col s12 line-header">
           <div class="col s4">
-            <div class="row">Department</div>
+            <div class="row bold">Department</div>
             <div class="row">Clinic</div>
           </div>
           <div class="col s4 center-align"><div class="left-align">
-            <div class="row">Category</div>
+            <div class="row bold">Category</div>
             <div class="row">Gloves</div></div>
           </div>
           <div class="col s4 right-align"><div class="left-align">
-            <div class="row">Accounting</div>
+            <div class="row bold">Accounting</div>
             <div class="row">Not Specified</div></div>
           </div>
         </div>
-        <div class="col s12">
+        <div class="bold case">1 Case = 10 Boxes (3,000 Gloves)</div>
+        <div class="col s12 no-padding">
           <range-slider [product]="selectedGroup"></range-slider>
         </div>
       </div>
@@ -67,9 +67,9 @@
           </select>
         </div>
         <div class="row product select bottom-padded">
-          <span class="bold">What are you moving?</span>
+          <span class="bold">How are you counting this?</span>
           <div class="unit">
-            <select class="limit" title="sort by" [(ngModel)]="unit" materialize="material_select">
+            <select class="limit" title="sort by" materialize="material_select" [(ngModel)]="unit" (ngModelChange)="unitChange($event)">
               <option value="Boxes">1 Box</option>
               <option value="Gloves">1 Glove</option>
             </select>
@@ -86,18 +86,15 @@
           </select>
         </div>
         <div class="row location left-padded">You're transfering:</div>
-        <div class="row location left-padded">
-          <div class="amount">
-            <div class="count">{{totalMove}}</div>
-            <div class="unit">{{unit}}</div>
-          </div>
-        </div>
+        <div class="row location amount left-padded" *ngIf="unit == 'Boxes' && totalMove > 0">{{getTransferText(unit, totalMove)}}</div>
+        <div class="row location amount left-padded" *ngIf="unit == 'Gloves' && totalMove > 0">{{getTransferText(unit, totalMove)}}</div>
         <div class="row location submit left-padded">
-          <div
+          <button
+            [disabled]="totalMove == 0"
             class="btn white-text waves-effect waves-light"
             (click)="toGoModal(2)">
             TRANSFER
-          </div>
+          </button>
         </div>
       </div>
     </div>

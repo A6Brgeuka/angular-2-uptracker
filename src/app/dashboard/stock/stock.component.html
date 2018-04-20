@@ -48,7 +48,7 @@
       </div>
       <div class="col s2 actual">
         <div class="input wide-input">
-          <input type="number" placeholder="-" [(ngModel)]="product.actualQTY" (ngModelChange)="actualChange($event)">
+          <input type="number" placeholder="-" [(ngModel)]="product.actualQTY" (ngModelChange)="actualChange(product)">
         </div>
       </div>
       <div class="col s2 reason">
@@ -59,11 +59,11 @@
             [class.disabled]="product.actualQTY == null || product.currentQTY == product.actualQTY"
             [(ngModel)]="product.reason"
             materialize="material_select"
-            (change)="actualChange($event)"
+            (change)="actualChange(product)"
           >
             <option value="N/A">N/A</option>
-            <option value="Shrinkage">Shrinkage</option>
-            <option value="Used">Used</option>
+            <option value="Shrinkage" [disabled]="product.actualQTY < product.currentQTY">Shrinkage</option>
+            <option value="Used" [disabled]="product.actualQTY > product.currentQTY">Used</option>
           </select>
         </div>
       </div>
