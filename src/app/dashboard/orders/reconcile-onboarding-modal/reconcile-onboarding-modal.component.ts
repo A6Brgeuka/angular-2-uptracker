@@ -24,7 +24,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
   public subscribers: any = {};
   public context: any;
   public reconcileType: string = '';
-  public selectConfig: any = { displayKey: "id", search: true, selectedDisplayText: 'Select Invoice' };
+  public selectConfig: any = { displayKey: "invoice_number", search: true };
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
 
@@ -41,15 +41,10 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
 
   ngOnInit() {
     console.log(this.context, 'Resend context');
-    this.reconcileService.getReconcile().subscribe(res => {
-      res.id = '5ad4f32e3d0192000d3acf1e';
-
-      this.invoices = [res];
-      // this.invoices_ = _.cloneDeep(this.invoices);
-    })
-    this.reconcileService.lookInvoices(this.context.order.vendor_id).subscribe(res => {
+    // console.log('--------->>>   ', this.context.order)
+    this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
-      this.invoices_ = res;
+      this.invoices_ = [res[0]];
     })
   }
 
@@ -57,7 +52,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     this.dialog.dismiss();
 
     if (this.reconcileType == 'start') {
-      this.reconcileService.order$.next(this.context.order);
+      this.reconcileService.orders$.next(this.context.order);
       this.router.navigate(['/orders/reconcile']);
     }
   }
