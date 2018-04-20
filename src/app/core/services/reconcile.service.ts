@@ -35,6 +35,8 @@ export class ReconcileService extends ModelService {
   public appConfig: AppConfig;
   public invoices: Array<Invoice>;
 
+  public order$: BehaviorSubject<any> = new BehaviorSubject(null);
+
   constructor(
     public injector: Injector,
     public restangular: Restangular,
@@ -56,7 +58,11 @@ export class ReconcileService extends ModelService {
   createReconcile(data) {
     return this.restangular.all('reconcile').post(data)
     .do((res: any) => {
-      console.log('--------------->>>>>>   ', res);
+      console.log('CREATING RECONCILE --------------->>>>>>   ', res);
     });
+  }
+
+  lookInvoices(id) {
+    return this.restangular.one('invoices').one('lookup').customGET('', {vendor_id: id}).map(res => res.data);
   }
 }

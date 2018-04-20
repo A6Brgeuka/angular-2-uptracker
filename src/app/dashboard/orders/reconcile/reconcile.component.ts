@@ -7,9 +7,10 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
 import * as Currency from 'currency-codes';
-import { ReconcileService } from '../../../core/services/reconcile.service';
+import { ReconcileService, UserService } from '../../../core/services/index';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reconcile',
@@ -32,16 +33,20 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public productHeader: boolean = false;
   public currencies: any = [];
 
+  private orderSubscription: Subscription;
+
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
   constructor(
     public modal: Modal,
     public reconcileService: ReconcileService,
-    public modalWindowService: ModalWindowService
+    public modalWindowService: ModalWindowService,
+    public userService: UserService
   ) {
   }
 
   ngOnInit() {
+    console.log('###############:   ', this.userService.selfData.account)
     Currency.codes().forEach(code => {
       this.currencies.push(Currency.code(code));
     })
@@ -74,11 +79,23 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       pkgPrice: null,
       discountAmount: null,
       discountType: 'PERCENT',
-    }
+    };
+
+    this.orderSubscription = this.reconcileService.order$.subscribe(res => {
+      this.searchInvoices(res);
+    });
   }
 
   ngOnDestroy() {
-    console.log('for unsubscribing')
+    console.log('for unsubscribing');
+    this.orderSubscription.unsubscribe();
+  }
+
+  searchInvoices(order) {
+    console.log('ORDER--------->>>   ', order);
+    this.reconcileService.lookInvoices(order.vendor_id).subscribe(res => {
+      console.log('INVOICES---------->>>   ', res);
+    });
   }
 
   currencyFormat(event: string) {
