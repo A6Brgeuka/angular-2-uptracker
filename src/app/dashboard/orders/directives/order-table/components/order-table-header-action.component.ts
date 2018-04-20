@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
 import * as _ from 'lodash';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
@@ -31,9 +31,12 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   private receiveOrdersSubject$:  Subject<any> = new Subject<any>();
   private receiveOrders$:  Observable<any>;
 
+  private voidProductsSubject$:  Subject<any> = new Subject<any>();
+
   @Input() listName: string;
   @Input() isShow: boolean;
   @Input() orders: any;
+  @Output() onVoid: EventEmitter<any> = new EventEmitter();
 
   private subscribers: any = {};
 
@@ -103,6 +106,15 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
       this.pastOrderService.goToReceive(queryParams, orders.type);
     })
     .subscribe();
+
+    this.subscribers.voidProductsSubscription = this.voidProductsSubject$
+    .switchMap((item) =>
+      this.orderTableOnVoidService.onVoidOrder(item)
+    )
+    .subscribe((res) =>
+      this.onVoid.emit(res)
+    );
+
   }
 
   onFilterCheckedOrders(url) {
@@ -125,7 +137,7 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   }
 
   onVoidOrder() {
-    this.orderTableOnVoidService.onVoidOrder(this.orders);
+    this.voidProductsSubject$.next(this.orders);
   }
 
   edit() {
