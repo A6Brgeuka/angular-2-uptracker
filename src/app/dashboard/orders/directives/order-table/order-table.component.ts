@@ -12,6 +12,7 @@ import { OrderTableService } from './order-table.service';
 import { OrderTableOnVoidService } from './order-table-on-void.service';
 import { OrderStatus } from '../../models/order-status';
 import { OrderTableFilterByService } from './order-table-filter-by.service';
+import { OrdersService } from '../../orders.service';
 
 @Component( {
   selector: 'app-order-table',
@@ -47,6 +48,7 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   @Output() filterBy = new EventEmitter();
   @Output() onFavoriteItem = new EventEmitter();
   @Output() onFlaggedItem = new EventEmitter();
+  @Output() onVoidItem = new EventEmitter();
   @Input()
   set orders(value){
     this.orderTableService.setOrders$.next(value);
@@ -63,7 +65,8 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     public orderTableSortService: OrderTableSortService,
     public orderTableService: OrderTableService,
-    private orderTableFilterByService: OrderTableFilterByService
+    public ordersService: OrdersService,
+    private orderTableFilterByService: OrderTableFilterByService,
   ) {
 
   }
@@ -145,6 +148,10 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
 
   onFlagged(event) {
     this.onFlaggedItem.emit(event);
+  }
+
+  onVoid(event) {
+    this.onVoidItem.emit(event);
   }
 
 }

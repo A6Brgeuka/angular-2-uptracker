@@ -29,6 +29,7 @@
         [orders]="checkedOrders$ | async"
         [isShow]="headerCol.actions && showHeaderMenu$ | async"
         [listName]="_listName"
+        (onVoid)="onVoid($event)"
       ></app-order-table-header-action>
     </div>
 
@@ -91,6 +92,7 @@
           [i]="i"
           (onFavorite)="onFavorite($event)"
           (onFlagged)="onFlagged($event)"
+          (onVoid)="onVoid($event)"
         ></app-order-table-item-action>
 
       </div>
