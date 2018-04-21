@@ -49,6 +49,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // console.log('###############:   ', this.userService.selfData.account)
     Currency.codes().forEach(code => {
+      console.log('~~~~~~~~~~~~~~:   ', Currency.code(code))
       this.currencies.push(Currency.code(code));
     })
     this.board = {

@@ -37,20 +37,14 @@
           <div class="row">
             <div class="currency">
               <span>{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}1.00</span>
-              <div class="select">
-                <select
-                  class="wide"
-                  materialize="material_select"
-                  [materializeSelectOptions]=""
-                  name="currency"
-                  [(ngModel)]="selectedInvoice.invoice.currency"
-                  (ngModelChange)="updateInvoiceDetails($event)"
+              <ng-select [options]="currencies">
+                <ng-template
+                  #optionTemplate
+                  let-option="option"
                 >
-                  <ng-container *ngFor="let currency of currencies; let i = index">
-                    <option value="{{currency.code}}">{{currency.currency}}</option>
-                  </ng-container>
-                </select>
-              </div>
+                  <div class="row"><div class="currency-flag currency-flag-{{option.code.toLowerCase()}}"></div>{{option.currency}}</div>
+                </ng-template>
+              </ng-select>
             </div>
           </div>
           <div class="row">
