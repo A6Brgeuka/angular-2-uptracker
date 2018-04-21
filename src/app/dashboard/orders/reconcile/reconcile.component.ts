@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
-import { any, comparator, equals, gt, prop, sort, sortBy, toLower } from 'ramda';
+import { any, comparator, equals, gt, prop, sort, sortBy, toLower, isEmpty } from 'ramda';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
@@ -32,7 +32,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public taxBoardVisible: boolean = false;
   public productHeader: boolean = false;
   public currencies: any = [];
-  public orders: any = [];
+  public orders: any = {};
 
   private orderSubscription: Subscription;
 
@@ -79,8 +79,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   handleInvoiceChanges() {
+    if (this.invoices_.length == 0 || isEmpty(this.orders)) return;
     this.reconcileService.getReconcile(this.orders.id, this.invoices_[0].invoice_id).subscribe(res => {
-      res.id = '5ad4f32e3d0192000d3acf1e';
+      res.id = this.invoices_[0].invoice_id;
       res.invoice.calculated_sub_total = parseFloat(res.invoice.calculated_sub_total.replace('$', ''));
       res.invoice.discount_ = res.invoice.discount;
       res.invoice.discount_type = 'USD';
