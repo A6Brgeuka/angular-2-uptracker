@@ -7,6 +7,7 @@ import { PastOrderService } from '../../../../../../core/services/pastOrder.serv
 import { Modal } from 'angular2-modal';
 import { ToasterService } from '../../../../../../core/services/toaster.service';
 import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-modal.component';
+import { ReconcileOnboardingModal } from '../../../../reconcile-onboarding-modal/reconcile-onboarding-modal.component';
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
@@ -125,6 +126,12 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   receive() {
     this.sendToReceiveProduct(this.item, OrderStatusValues.receive);
+  }
+
+  reconcile() {
+    this.modal
+    .open(ReconcileOnboardingModal, this.modalWindowService
+    .overlayConfigFactoryWithParams('mid'));
   }
 
   backorder() {

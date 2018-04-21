@@ -9,12 +9,11 @@ import { SelectModule } from 'ng-select';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
-import { SelectDropDownModule } from 'ngx-select-dropdown';
-
+import { DatepickerModule } from 'angular2-material-datepicker';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
-
-// import { CoreModule } from "../core/core.module";
+import { TextMaskModule } from 'angular2-text-mask';
+import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
@@ -22,10 +21,9 @@ import { CapitalizeFirstPipe } from "./pipes/capitilizeFirst/capitilizeFirst";
 import {CurrencyUsdPipe} from "./pipes/currency-usd/currency-usd.pipe";
 import {TextFilterPipe} from "./pipes/text-filter/text-filter.pipe";
 import * as directives from "./index";
-import { TextMaskModule } from 'angular2-text-mask';
-import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
 import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
+// import { SelectDropDownModule } from './components/ngx-select-dropdown/ngx-select-dropdown.module';
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -108,8 +106,10 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PriceInputModule,
     ScannerModule,
     VendorProductVariantsModule,
-    SelectDropDownModule,
-    VariantDetailModule
+    VariantDetailModule,
+    // SelectDropDownModule,
+
+    DatepickerModule
   ],
   declarations: [
     ...directivesArr,
@@ -130,7 +130,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     Daterangepicker,
     NgxDatatableModule,
     CurrencyMaskModule,
-    SelectDropDownModule,
+    // SelectDropDownModule,
 
     MaterializeModule,
     FileDropModule,
@@ -147,6 +147,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ScannerModule,
     VendorProductVariantsModule,
     VariantDetailModule,
+
+    DatepickerModule,
 
     ...directivesArr,
     ...pipesArr,
