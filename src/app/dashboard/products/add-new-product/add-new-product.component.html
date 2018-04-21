@@ -291,8 +291,9 @@
     </div>
 
     <app-vendor-product-variants
-      *ngFor="let variants of vendorVariants$ | async | iterable"
-      [variants]="variants.value"
+      *ngFor="let variants of vendorVariants; let i = index"
+      [variants]="variants"
+      (vendorDelete)="onVendorDelete(i)"
       (addVendor)="onVendorChosen($event)">
     </app-vendor-product-variants>
   </ng-container>

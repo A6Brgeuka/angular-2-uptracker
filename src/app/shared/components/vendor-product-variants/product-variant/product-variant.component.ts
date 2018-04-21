@@ -11,6 +11,7 @@ export class ProductVariantComponent implements OnInit{
   @Input('vendor') public vendor;
   @Output('vendorDelete') public vendorDelete = new EventEmitter();
 
+  public uniqueId: any = Math.random();
   public selected: boolean = true;
 
   constructor() {

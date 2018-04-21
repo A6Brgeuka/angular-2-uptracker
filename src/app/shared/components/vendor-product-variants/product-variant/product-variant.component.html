@@ -36,8 +36,8 @@
 <div class="row" *ngFor='let variant of vendor.variants; let i = index'>
   <div class="col s5 flex">
     <div class="input-checkbox">
-      <input type="checkbox" class="checkbox-input" [(ngModel)]="variant.enabled" id={{vendor.vendor_name+variant.name+i}}/>
-      <label for={{vendor.vendor_name+variant.name+i}}></label>
+      <input type="checkbox" class="checkbox-input" [(ngModel)]="variant.enabled" id={{uniqueId+i}}/>
+      <label for={{uniqueId+i}}></label>
     </div>
     <input type="text" [(ngModel)]="variant.name">
   </div>

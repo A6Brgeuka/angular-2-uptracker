@@ -24,7 +24,7 @@ export class AddProductFromVendorComponent implements OnInit {
   public variants: any;
   public product_id: any;
   public location_id: any;
-  public vendorVariants: any = {};
+  public vendorVariants: any;
 
   constructor(
     private productService: ProductService,
@@ -46,12 +46,6 @@ export class AddProductFromVendorComponent implements OnInit {
       });
   }
 
-  formatProduct(product) {
-    const attachments = map(product.attachments, 'public_url');
-    const vendor_variants = reduce(this.vendorVariants, (result: any[], value) => result.concat(value));
-    return {...product, attachments, account_category: "Supplies", vendor_variants};
-  }
-
   ngOnInit() {
     Observable.combineLatest(this.accountService.dashboardLocation$, this.route.params)
       .subscribe(([location, params]) => {
@@ -67,20 +61,28 @@ export class AddProductFromVendorComponent implements OnInit {
       const vendors = flatten(map(
                         filter(this.variants, 'checked'), 'vendor_variants'));
       const structured = this.structureVariants(vendors);
-      this.vendorVariants = groupBy(structured, 'vendor_name');
-    })
+      this.vendorVariants = map(groupBy(structured, 'vendor_name'), (val, key) => val)
+    });
 
     this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product_id, this.location_id)
       .filter(res => res.data)
       .map(res => res.data)
       .do(data => each(data.variants, v => v.checked = true))
-      .subscribe(data => {
-        const vendors = flatten(map(data.variants, 'vendor_variants'));
-        const structured = this.structureVariants(vendors);
-        this.product = data.product;
-        this.variants = data.variants;
-        this.vendorVariants = groupBy(structured, 'vendor_name');
-      });
+      .subscribe(data => this.parseInitData(data));
+  }
+
+  parseInitData(data) {
+    const vendors = flatten(map(data.variants, 'vendor_variants'));
+    const structured = this.structureVariants(vendors);
+    this.product = data.product;
+    this.variants = data.variants;
+    this.vendorVariants = map(groupBy(structured, 'vendor_name'), (val, key) => val);
+  };
+
+  formatProduct(product) {
+    const attachments = map(product.attachments, 'public_url');
+    const vendor_variants = reduce(this.vendorVariants, (result: any[], value) => result.concat(value));
+    return {...product, attachments, account_category: "Supplies", vendor_variants};
   }
 
   structureVariants(vendors) {

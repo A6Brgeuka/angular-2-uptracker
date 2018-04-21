@@ -9,6 +9,7 @@ export class VendorProductVariantsComponent implements OnInit {
 
   @Input('variants') public variants: any[];
   @Output('addVendor') public addVendor = new EventEmitter();
+  @Output('vendorDelete') public vendorDelete = new EventEmitter();
 
   public vendor: any = {};
 
@@ -27,6 +28,9 @@ export class VendorProductVariantsComponent implements OnInit {
 
   onVendorDelete(i) {
     this.variants.splice(i, 1);
+    if (!this.variants.length) {
+      this.vendorDelete.emit();
+    }
   }
 
 }

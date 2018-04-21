@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {each, map, every, difference, clone} from 'lodash';
+import {each, map, every, difference, findIndex} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -15,7 +15,6 @@ import {PackageModel, inventoryExample} from '../../../models/inventory.model';
 import {ToasterService} from '../../../core/services/toaster.service';
 import {Router} from '@angular/router';
 import {AddVendorModalComponent} from "../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
-import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-add-new-product',
@@ -28,7 +27,7 @@ export class AddNewProductComponent implements OnInit {
 
   public variants: any = {};
   public product: CustomProductModel = new CustomProductModel();
-  public vendorVariants: any = {};
+  public vendorVariants: any = [];
   public step: number = 0;
   public vendors: any[] = [];
   public departmentCollection$: Observable<any> = new Observable<any>();
@@ -41,7 +40,6 @@ export class AddNewProductComponent implements OnInit {
   public logo: any;
   public logoPreview: string = null;
   public dummyProductVariants = ["Size", "Color", "Texture", "Grit", "Length", "Strength", "Prescription", "Type"];
-  public vendorVariants$: BehaviorSubject<any> = new BehaviorSubject({});
   public productVariants: ProductVariantsModel[] = [
     {
       name: 'Size',
@@ -62,7 +60,6 @@ export class AddNewProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.vendorVariants$.next(this.vendorVariants);
     this.product.name = this.product.proper_name = this.productService.searchText;
     this.departmentCollection$ = this.accountService.getDepartments().take(1);
     this.productAccountingCollection$ = this.accountService.getProductAccounting().take(1);
@@ -164,11 +161,6 @@ export class AddNewProductComponent implements OnInit {
       });
   }
 
-  formatProduct(product) {
-    const attachments = map(product.attachments, 'public_url');
-    return {...product, attachments};
-  }
-
   canProceed() {
     if (this.step == 0) {
       return this.product.name && this.product.category;
@@ -192,12 +184,24 @@ export class AddNewProductComponent implements OnInit {
   }
 
   onVendorChosen(vendorInfo) {
-    const variants = this.createVendorVariants;
+    const vendor = this.createVendor(vendorInfo);
+    const i = findIndex(this.vendorVariants, (arr) => arr[0].vendor_name == vendor['vendor_name']);
+    i > -1 ? this.vendorVariants[i].unshift(vendor) : this.vendorVariants.unshift([vendor]);
+  }
+
+  onVendorDelete(i) {
+    this.vendorVariants.splice(i, 1);
+  }
+
+  formatProduct(product) {
+    const attachments = map(product.attachments, 'public_url');
+    return {...product, attachments};
+  }
+
+  createVendor(vendorInfo) {
+    const variants = this.createVendorVariants();
     const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
-    const vendor = {...vendorInfo, inventory_by, variants};
-    this.vendorVariants[vendor['vendor_name']] = this.vendorVariants[vendor['vendor_name']] || [];
-    this.vendorVariants[vendor['vendor_name']].unshift(vendor);
-    this.vendorVariants$.next(clone(this.vendorVariants));
+    return {...vendorInfo, inventory_by, variants}
   }
 
   openAddVendorsModal() {
