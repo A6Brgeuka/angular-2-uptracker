@@ -53,7 +53,7 @@ export class ReconcileService extends ModelService {
   }
 
   getReconcile(item_ids, invoice_id) {
-    return this.restangular.one('reconcile').customGET('', {item_ids, invoice_id}).map(res => res.data);
+    return this.restangular.one('reconcile').customGET('', { invoice_id }).map(res => res.data);
   }
 
   createReconcile(data) {

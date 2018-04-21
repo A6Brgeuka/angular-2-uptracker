@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
-import { any, comparator, equals, gt, prop, sort, sortBy, toLower, isEmpty } from 'ramda';
+import { any, comparator, equals, gt, prop, sort, sortBy, toLower, isEmpty, isNil } from 'ramda';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
@@ -79,7 +79,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   handleInvoiceChanges() {
-    if (this.invoices_.length == 0 || isEmpty(this.orders)) return;
+    if (this.invoices_.length == 0 || isEmpty(this.orders) || isNil(this.orders)) return;
+    console.log('------------>>> INVOICES: ', this.invoices);
     this.reconcileService.getReconcile(this.orders.id, this.invoices_[0].invoice_id).subscribe(res => {
       res.id = this.invoices_[0].invoice_id;
       res.invoice.calculated_sub_total = parseFloat(res.invoice.calculated_sub_total.replace('$', ''));
