@@ -22,6 +22,7 @@ export class AddProductFromVendorComponent implements OnInit {
   public step: number = 0;
   public product: any;
   public variants: any;
+  public variants$: Observable<any>;
   public product_id: any;
   public location_id: any;
   public vendorVariants: any;
@@ -57,12 +58,14 @@ export class AddProductFromVendorComponent implements OnInit {
   }
 
   getProducts() {
-    this.subscribers.onVendorsChange = this.productService.changeVendors$.skip(1).subscribe(v => {
-      const vendors = flatten(map(
-                        filter(this.variants, 'checked'), 'vendor_variants'));
-      const structured = this.structureVariants(vendors);
-      this.vendorVariants = map(groupBy(structured, 'vendor_name'), (val, key) => val)
-    });
+    this.subscribers.onVendorsChange = this.productService.changeVendors$
+        .subscribe(v => {
+          const checkedVendors = filter(this.variants, 'checked');
+          const vendors = flatten(map(checkedVendors, 'vendor_variants'));
+          const structured = this.structureVariants(vendors);
+          this.productService.productVariants = map(checkedVendors, v => this.formatVariants(v));
+          this.vendorVariants = map(groupBy(structured, 'vendor_name'), (val, key) => val)
+        });
 
     this.subscribers.getProductSubscription = this.productService.getProductLocation(this.product_id, this.location_id)
       .filter(res => res.data)
@@ -76,6 +79,7 @@ export class AddProductFromVendorComponent implements OnInit {
     const structured = this.structureVariants(vendors);
     this.product = data.product;
     this.variants = data.variants;
+    this.productService.productVariants = map(filter(this.variants, 'checked'), v => this.formatVariants(v));
     this.vendorVariants = map(groupBy(structured, 'vendor_name'), (val, key) => val);
   };
 
@@ -101,18 +105,22 @@ export class AddProductFromVendorComponent implements OnInit {
         vendor_name: v['vendor_name'],
         vendor_id: v['vendor_id']
       };
-      const variants = [{
-        name: v['name'],
-        catalog_number: v['catalog_number'],
-        club_price: v['club_price'],
-        list_price: v['list_price'],
-        our_price: v['our_price'],
-        upc: v['upc']
-      }];
+      const variants = [this.formatVariants(v)];
 
       return {...vendor, inventory_by, variants}
     });
   }
+
+  formatVariants(v) {
+    return {
+      name: v['name'],
+      catalog_number: v['catalog_number'],
+      club_price: v['club_price'],
+      list_price: v['list_price'],
+      our_price: v['our_price'],
+      upc: v['upc']
+    }
+  };
 
   goBack(): void {
     this.location.back();

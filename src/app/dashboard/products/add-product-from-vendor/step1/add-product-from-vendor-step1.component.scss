@@ -54,6 +54,12 @@ $normal: 14px;
     }
   }
 
+  .single {
+    .variant-checkbox {
+      display: none;
+    }
+  }
+
   .fa-trash {
     color: $red;
     cursor: pointer;
@@ -197,7 +203,7 @@ $normal: 14px;
         .text-heading {
           width: 10%;
           &.wider {
-            width: 11%
+            width: 12%
           }
         }
 

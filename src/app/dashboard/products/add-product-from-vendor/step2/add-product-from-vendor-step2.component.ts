@@ -5,6 +5,7 @@ import {map, findIndex} from 'lodash';
 import {PackageModel, inventoryExample} from "../../../../models/inventory.model";
 import {CustomProductVariantModel} from "../../../../models/custom-product.model";
 import {AddVendorModalComponent} from "../../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
+import {ProductService} from "../../../../core/services/product.service";
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -18,7 +19,8 @@ export class AddProductFromVendorStep2Component {
 
   constructor(
     public modal: Modal,
-    public modalWindowService: ModalWindowService) {
+    public modalWindowService: ModalWindowService,
+    public productService: ProductService) {
   }
 
   onVendorChosen(vendorInfo) {
@@ -32,7 +34,7 @@ export class AddProductFromVendorStep2Component {
   }
 
   createVendor(vendorInfo) {
-    const variants = [new CustomProductVariantModel({name: this.product.name})];
+    const variants = this.productService.productVariants;
     const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
     return{...vendorInfo, inventory_by, variants};
   }

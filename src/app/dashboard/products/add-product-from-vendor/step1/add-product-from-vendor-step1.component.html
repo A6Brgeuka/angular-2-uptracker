@@ -178,7 +178,7 @@
     </div>
   </div>
 
-  <div id="variations">
+  <div id="variations" [class.single]="variants.length == 1">
     <div class="inner product">
       <div class="variant-table">
         <div class="uptracker-form variant-head">
@@ -223,7 +223,7 @@
         </div>
       </div>
 
-      <div class="table-body" *ngIf="variants">
+      <div class="table-body">
         <div class="variant-table">
           <div class="uptracker-form  table-item"
                *ngFor="let variant of variants | textFilter:searchText:'name'">
