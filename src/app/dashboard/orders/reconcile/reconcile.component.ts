@@ -54,7 +54,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX'];
     this.currencies = [
       {value: 'usd', label: 'United States dollar'},
-      {value: 'gbp', label: 'Pound sterling'},
+      {value: 'gbp', label: 'British Pound'},
       {value: 'eur', label: 'Euro'},
       {value: 'cad', label: 'Canadian dollar'},
       {value: 'aud', label: 'Australian dollar'}
