@@ -49,7 +49,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // console.log('###############:   ', this.userService.selfData.account)
     Currency.codes().forEach(code => {
-      console.log('~~~~~~~~~~~~~~:   ', Currency.code(code))
       this.currencies.push(Currency.code(code));
     })
     this.board = {
@@ -80,13 +79,15 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   handleInvoiceChanges() {
-    if (this.invoices_.length == 0 || isEmpty(this.orders) || isNil(this.orders)) return;
-    console.log('------------>>> INVOICES: ', this.invoices);
-    this.reconcileService.getReconcile(this.orders.id, this.invoices_[0].invoice_id).subscribe(res => {
+    if (this.invoices_.length == 0) return;
+    console.log('$$$$$$$$$$:   ', this.invoices_)
+    this.reconcileService.getReconcile(this.invoices_[0].invoice_id).subscribe(res => {
+      // console.log('------------>>>   ', res);
       res.id = this.invoices_[0].invoice_id;
       res.invoice.calculated_sub_total = parseFloat(res.invoice.calculated_sub_total.replace('$', ''));
       res.invoice.discount_ = res.invoice.discount;
       res.invoice.discount_type = 'USD';
+      res.invoice.invoice_date = '';
 
       res.items.forEach(item => {
         item.discounted_price = parseFloat(item.discounted_price.replace('$', ''));
@@ -99,7 +100,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.productChange(item);
       })
 
-      this.selectedInvoice = this.invoices[0];
+      this.selectedInvoice = res;
+      console.log('$$$$$$$$$$$$$$$@@@@@@@@@@@@:   ', this.selectedInvoice);
       this.updateInvoiceDetails({});
       // console.log('-------------<<<   ', res)
     })
@@ -294,6 +296,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       handling: this.selectedInvoice.invoice.handling || '$0.00',
       invoice_date: this.selectedInvoice.invoice.invoice_date || '4/20/2018',
       invoice_number: this.selectedInvoice.invoice.invoice_number || '100-101',
+      invoice_id: this.invoices[0].invoice_id || null,
       shipping: this.selectedInvoice.invoice.shipping || '$0.0',
       sub_total: this.selectedInvoice.invoice.sub_total || '$3.49',
       tax: this.selectedInvoice.invoice.tax || '$0.00',
