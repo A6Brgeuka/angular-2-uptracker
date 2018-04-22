@@ -3,7 +3,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower, isEmpty, isNil } from 'ramda';
-import { IOption } from 'ng-select';
+import { SelectComponent, IOption } from 'ng-select';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
@@ -26,12 +26,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public panelVisible: boolean = false
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
-  public selectedInvoice: any = {invoice: {}, items: [], vendors: {}};
+  public selectedInvoice: any = {invoice: {currency: 'usd'}, items: [], vendors: {}};
   public DOLLARSIGNS: any = { USD: '$', CAD: '$', MXN: '$', JPY: '¥' }
   public board: any = {};
   public selectConfig: any = { displayKey: "invoice_number", search: true };
   public taxBoardVisible: boolean = false;
   public productHeader: boolean = false;
+  public currency: any = {}
   public currencies: Array<IOption> = [];
   public orders: any = {};
   public currencyBlackList: Array<string> = [];
@@ -51,17 +52,17 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // console.log('###############:   ', this.userService.selfData.account)
     this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL', 'MXV', 'PAB', 'SCR', 'SDG', 'SSP',
-      'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX'];
+      'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'USD', 'GBP', 'EUR', 'CAD', 'AUD'];
     this.currencies = [
-      {value: 'usd', label: 'USD'},
-      {value: 'gbp', label: 'GBP'},
-      {value: 'eur', label: 'EUR'},
-      {value: 'cad', label: 'CAD'},
-      {value: 'aud', label: 'AUD'}
+      {value: 'usd', label: 'United States dollar'},
+      {value: 'gbp', label: 'British pound'},
+      {value: 'eur', label: 'Euro'},
+      {value: 'cad', label: 'Canadian dollar'},
+      {value: 'aud', label: 'Australian dollar'}
     ];
     Currency.codes().forEach(code => {
       if (!(any((cc) => cc == code)(this.currencyBlackList))) {
-        this.currencies.push({ label: code, value: toLower(code) });
+        this.currencies.push({ label: Currency.code(code).currency, value: toLower(code) });
       }
     })
     this.board = {
@@ -97,7 +98,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.reconcileService.getReconcile(this.invoices_[0].invoice_id).subscribe(res => {
       console.log('------------>>>   ', res);
       res.id = this.invoices_[0].invoice_id;
-      res.invoice.calculated_sub_total = parseFloat(res.invoice.calculated_sub_total.replace('$', ''));
       res.invoice.discount_ = res.invoice.discount;
       res.invoice.discount_type = 'USD';
       res.invoice.invoice_date = '';
@@ -112,6 +112,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.updateInvoiceDetails({});
       // console.log('-------------<<<   ', res)
     })
+  }
+
+  handleCurrencyChange(event) {
+    this.selectedInvoice.invoice.currency = event.value;
   }
 
   currencyFormat(event: string) {

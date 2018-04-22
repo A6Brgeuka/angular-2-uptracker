@@ -37,7 +37,7 @@
           <div class="row">
             <div class="currency">
               <span class="amount">1.00</span>
-              <ng-select [options]="currencies">
+              <ng-select [options]="currencies" (selected)="handleCurrencyChange($event)">
                 <ng-template
                   #optionTemplate
                   let-option="option"
@@ -48,6 +48,10 @@
                   </div>
                 </ng-template>
               </ng-select>
+              <div class="currency-value" (click)="toggleCurrencypicker()">
+                <div class="currency-flag currency-flag-{{selectedInvoice.invoice.currency.toLowerCase()}}"></div>
+                <span>{{selectedInvoice.invoice.currency.toUpperCase()}}</span>
+              </div>
               <span class="caret"></span>
             </div>
           </div>
