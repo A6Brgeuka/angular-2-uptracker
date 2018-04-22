@@ -36,18 +36,19 @@
           <div class="row input-header"><span>Currency</span></div>
           <div class="row">
             <div class="currency">
-              <span>{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}1.00</span>
-              <ng-select [options]="currencies" multiple="true">
+              <span class="amount">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}1.00</span>
+              <ng-select [options]="currencies">
                 <ng-template
                   #optionTemplate
                   let-option="option"
                 >
                   <div class="flag-row">
                     <div class="currency-flag currency-flag-{{option.code.toLowerCase()}}"></div>
-                    <span>{{option.currency}}</span>
+                    <span class="name">{{option.currency}} {{option.code}}</span>
                   </div>
                 </ng-template>
               </ng-select>
+              <span class="caret"></span>
             </div>
           </div>
           <div class="row">

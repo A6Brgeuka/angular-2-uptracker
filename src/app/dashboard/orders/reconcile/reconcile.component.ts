@@ -33,6 +33,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public productHeader: boolean = false;
   public currencies: any = [];
   public orders: any = {};
+  public currencyBlackList: Array<string> = [];
 
   private orderSubscription: Subscription;
 
@@ -48,8 +49,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // console.log('###############:   ', this.userService.selfData.account)
+    this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL', 'MXV', 'PAB', 'SCR', 'SDG', 'SSP',
+      'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX'];
     Currency.codes().forEach(code => {
-      this.currencies.push(Currency.code(code));
+      if (!(any((cc) => cc == code)(this.currencyBlackList))) {
+        this.currencies.push(Currency.code(code));
+      }
     })
     this.board = {
       qty: null,
