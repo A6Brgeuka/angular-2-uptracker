@@ -51,7 +51,14 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // console.log('###############:   ', this.userService.selfData.account)
     this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL', 'MXV', 'PAB', 'SCR', 'SDG', 'SSP',
-      'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX'];
+      'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'USD', 'GBP', 'EUR', 'AUD', 'CAD'];
+    this.currencies = [
+      {value: 'usd', label: 'United States dollar'},
+      {value: 'gbp', label: 'Pound sterling'},
+      {value: 'eur', label: 'Euro'},
+      {value: 'cad', label: 'Canadian dollar'},
+      {value: 'aud', label: 'Australian dollar'}
+    ];
     Currency.codes().forEach(code => {
       if (!(any((cc) => cc == code)(this.currencyBlackList))) {
         const cc = Currency.code(code);
@@ -87,9 +94,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   handleInvoiceChanges() {
     if (this.invoices_.length == 0) return;
-    console.log('$$$$$$$$$$:   ', this.invoices_)
     this.reconcileService.getReconcile(this.invoices_[0].invoice_id).subscribe(res => {
-      // console.log('------------>>>   ', res);
+      console.log('------------>>>   ', res);
       res.id = this.invoices_[0].invoice_id;
       res.invoice.calculated_sub_total = parseFloat(res.invoice.calculated_sub_total.replace('$', ''));
       res.invoice.discount_ = res.invoice.discount;
@@ -97,18 +103,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       res.invoice.invoice_date = '';
 
       res.items.forEach(item => {
-        item.discounted_price = parseFloat(item.discounted_price.replace('$', ''));
-        item.package_price = parseFloat(item.package_price.replace('$', ''));
-        item.total = parseFloat(item.total.replace('$', ''));
         item.reconciled_discount_type = 'PERCENT';
-        item.reconciled_discounted_price = parseFloat(item.reconciled_discounted_price.replace('$', ''));
-        item.reconciled_package_price = parseFloat(item.reconciled_package_price.replace('$', ''));
-        item.reconciled_total = parseFloat(item.reconciled_total.replace('$', ''));
+        // item.reconciled_total = parseFloat(item.reconciled_total.replace('$', ''));
         this.productChange(item);
       })
 
       this.selectedInvoice = res;
-      console.log('$$$$$$$$$$$$$$$@@@@@@@@@@@@:   ', this.selectedInvoice);
       this.updateInvoiceDetails({});
       // console.log('-------------<<<   ', res)
     })
@@ -267,47 +267,47 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     // this.selectedInvoice.items.forEach(item => {
     //   const newItem = {
     //     invoice_line_item_id: item.invoice_line_item_id || '',
-    //     discount: item.discount || '$0.00',
-    //     discounted_price: item.discounted_price || '$3.49',
+    //     discount: item.discount || 0,
+    //     discounted_price: item.discounted_price || 3.49,
     //     order_line_item_id: item.order_line_item_id || '5ad4f32e3d0192000d3acf1e',
     //     order_qty: item.order_qty || 1,
-    //     package_price: item.package_price || '$3.49',
+    //     package_price: item.package_price || 3.49,
     //     received_qty: item.received_qty || 1,
     //     reconciled_qty: item.reconciled_qty || 1,
-    //     reconciled_package_price: item.reconciled_package_price || '$3.49',
-    //     reconciled_discount: item.reconciled_discount || '$0.00',
-    //     reconciled_discounted_price: item.reconciled_discounted_price || '$3.49',
-    //     reconciled_total: item.reconciled_total || '$3.49',
+    //     reconciled_package_price: item.reconciled_package_price || 3.49,
+    //     reconciled_discount: item.reconciled_discount || 0,
+    //     reconciled_discounted_price: item.reconciled_discounted_price || 3.49,
+    //     reconciled_total: item.reconciled_total || 3.49,
     //   };
     //   items.push(newItem);
     // })
     const newItem = {
       invoice_line_item_id: '',
-      discount: '$0.00',
-      discounted_price: '$3.49',
+      discount: 0,
+      discounted_price: 3.49,
       order_line_item_id: '5ad4f32e3d0192000d3acf1e',
       order_qty: 1,
-      package_price: '$3.49',
+      package_price: 3.49,
       received_qty: 1,
       reconciled_qty: 1,
-      reconciled_package_price: '$3.49',
-      reconciled_discount: '$0.00',
-      reconciled_discounted_price: '$3.49',
-      reconciled_total: '$3.49',
+      reconciled_package_price: 3.49,
+      reconciled_discount: 0.00,
+      reconciled_discounted_price: 3.49,
+      reconciled_total: 3.49,
     };
     // items.push(newItem);
 
     const invoice = {
       currency: this.selectedInvoice.invoice.currency || 'USD',
-      discount: this.selectedInvoice.invoice.discount || '$0.00',
-      handling: this.selectedInvoice.invoice.handling || '$0.00',
+      discount: this.selectedInvoice.invoice.discount || 0,
+      handling: this.selectedInvoice.invoice.handling || 0,
       invoice_date: this.selectedInvoice.invoice.invoice_date || '4/20/2018',
       invoice_number: this.selectedInvoice.invoice.invoice_number || '100-101',
       invoice_id: this.invoices[0].invoice_id || null,
-      shipping: this.selectedInvoice.invoice.shipping || '$0.0',
-      sub_total: this.selectedInvoice.invoice.sub_total || '$3.49',
-      tax: this.selectedInvoice.invoice.tax || '$0.00',
-      total: this.selectedInvoice.invoice.total || '$3.49',
+      shipping: this.selectedInvoice.invoice.shipping || 0,
+      sub_total: this.selectedInvoice.invoice.sub_total || 3.49,
+      tax: this.selectedInvoice.invoice.tax || 0.00,
+      total: this.selectedInvoice.invoice.total || 3.49,
       vendor_id: this.selectedInvoice.invoice.vendor_id || '582f4fe306e55c3aab564065',
       vendor_name: this.selectedInvoice.invoice.vendor_name || 'Reliance Orthodontics',
       files: [],
