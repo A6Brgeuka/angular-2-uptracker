@@ -87,6 +87,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
       this.invoices_ = [_.cloneDeep(this.invoices[0])];
+      this.handleInvoiceChanges();
       // console.log('INVOICES---------->>>   ', res);
       // console.log('ORDERS------------>>>   ', this.orders);
     });
