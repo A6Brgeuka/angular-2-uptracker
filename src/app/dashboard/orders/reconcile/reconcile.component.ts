@@ -3,6 +3,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower, isEmpty, isNil } from 'ramda';
+import { IOption } from 'ng-select';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
@@ -31,7 +32,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public selectConfig: any = { displayKey: "invoice_number", search: true };
   public taxBoardVisible: boolean = false;
   public productHeader: boolean = false;
-  public currencies: any = [];
+  public currencies: Array<IOption> = [];
   public orders: any = {};
   public currencyBlackList: Array<string> = [];
 
@@ -53,7 +54,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX'];
     Currency.codes().forEach(code => {
       if (!(any((cc) => cc == code)(this.currencyBlackList))) {
-        this.currencies.push(Currency.code(code));
+        const cc = Currency.code(code);
+        this.currencies.push({ label: cc.currency, value: toLower(code) });
       }
     })
     this.board = {
