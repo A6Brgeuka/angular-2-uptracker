@@ -51,8 +51,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // console.log('###############:   ', this.userService.selfData.account)
-    this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL', 'MXV', 'PAB', 'SCR', 'SDG', 'SSP',
-      'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'USD', 'GBP', 'EUR', 'CAD', 'AUD'];
+    this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL',
+      'MXV', 'PAB', 'SCR', 'SDG', 'SSP', 'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC',
+      'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'USD', 'GBP', 'EUR', 'CAD', 'AUD'];
     this.currencies = [
       {value: 'usd', label: 'United States dollar'},
       {value: 'gbp', label: 'British pound'},
@@ -96,15 +97,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   handleInvoiceChanges() {
     if (this.invoices_.length == 0) return;
     this.reconcileService.getReconcile(this.invoices_[0].invoice_id).subscribe(res => {
-      console.log('------------>>>   ', res);
       res.id = this.invoices_[0].invoice_id;
+      res.invoice.invoice_date = new Date(res.invoice.invoice_date)
       res.invoice.discount_ = res.invoice.discount;
       res.invoice.discount_type = 'USD';
-      res.invoice.invoice_date = '';
 
       res.items.forEach(item => {
         item.reconciled_discount_type = 'PERCENT';
-        // item.reconciled_total = parseFloat(item.reconciled_total.replace('$', ''));
         this.productChange(item);
       })
 
@@ -305,7 +304,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       currency: this.selectedInvoice.invoice.currency || 'USD',
       discount: this.selectedInvoice.invoice.discount || 0,
       handling: this.selectedInvoice.invoice.handling || 0,
-      invoice_date: this.selectedInvoice.invoice.invoice_date || '4/20/2018',
+      invoice_date: this.selectedInvoice.invoice.invoice_date || new Date('4/20/2018'),
       invoice_number: this.selectedInvoice.invoice.invoice_number || '100-101',
       invoice_id: this.invoices[0].invoice_id || null,
       shipping: this.selectedInvoice.invoice.shipping || 0,
