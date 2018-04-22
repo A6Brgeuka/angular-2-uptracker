@@ -105,7 +105,7 @@
           border: 1px solid #9a9c9e;
           border-radius: 5px;
           position: relative;
-          width: 350px;
+          width: 155px;
           height: 36px;
           .amount {
             background-color: #ffffff;
@@ -130,10 +130,11 @@
               border-bottom-right-radius: 5px;
               border-top-right-radius: 5px;
               .single {
-                height: 36px;
+                height: 34px;
                 .flag-row {
                   display: flex;
                   align-items: center;
+                  height: 34px;
                   .name {
                     margin-left: 10px;
                   }
@@ -149,12 +150,16 @@
             select-dropdown > div {
               border-radius: 5px;
               border: 1px solid #9a9c9e;
+              margin-top: 10px;
               overflow: hidden;
               z-index: 999;
-              .filter input {
-                border: 1px solid #9a9c9e;
-                border-radius: 5px;
-                height: 34px;
+              .filter {
+                padding: 8px;
+                input {
+                  border: 1px solid #9a9c9e;
+                  border-radius: 5px;
+                  height: 34px;
+                }
               }
               .flag-row {
                 display: flex;

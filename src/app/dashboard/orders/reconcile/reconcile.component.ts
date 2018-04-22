@@ -53,16 +53,15 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL', 'MXV', 'PAB', 'SCR', 'SDG', 'SSP',
       'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX'];
     this.currencies = [
-      {value: 'usd', label: 'United States dollar'},
-      {value: 'gbp', label: 'British Pound'},
-      {value: 'eur', label: 'Euro'},
-      {value: 'cad', label: 'Canadian dollar'},
-      {value: 'aud', label: 'Australian dollar'}
+      {value: 'usd', label: 'USD'},
+      {value: 'gbp', label: 'GBP'},
+      {value: 'eur', label: 'EUR'},
+      {value: 'cad', label: 'CAD'},
+      {value: 'aud', label: 'AUD'}
     ];
     Currency.codes().forEach(code => {
       if (!(any((cc) => cc == code)(this.currencyBlackList))) {
-        const cc = Currency.code(code);
-        this.currencies.push({ label: cc.currency, value: toLower(code) });
+        this.currencies.push({ label: code, value: toLower(code) });
       }
     })
     this.board = {
