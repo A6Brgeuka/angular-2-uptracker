@@ -36,6 +36,7 @@ export class ReconcileService extends ModelService {
   public appConfig: AppConfig;
   public invoices: Array<Invoice>;
 
+  public invoice$: BehaviorSubject<any> = new BehaviorSubject(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(
@@ -52,9 +53,14 @@ export class ReconcileService extends ModelService {
     return this.restangular.all('pos').all('all').customGET('');
   }
 
-  getReconcile(invoice_id) {
-    // return this.restangular.one('reconcile').customGET('', { invoice_id }).map(res => res.data);
-    return this.restangular.one('reconcile').customGET('', { invoice_id: '5adcb2c271d08f49f4661182' }).map(res => res.data);
+  getReconcile(invoice_id, item_ids) {
+    if (!isNil(invoice_id) && isNil(item_ids)) {
+      return this.restangular.one('reconcile').customGET('', { invoice_id }).map(res => res.data);
+    } else if (!isNil(invoice_id) && !isNil(item_ids)) {
+      return this.restangular.one('reconcile').customGET('', { item_ids, invoice_id }).map(res => res.data);
+    } else {
+      return this.restangular.one('reconcile').customGET('', { item_ids }).map(res => res.data);
+    }
   }
 
   createReconcile(data) {

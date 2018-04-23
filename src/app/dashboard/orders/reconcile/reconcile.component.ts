@@ -36,7 +36,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public currencies: Array<IOption> = [];
   public orders: any = {};
   public currencyBlackList: Array<string> = [];
-
+  private invoiceSubscription: Subscription;
   private orderSubscription: Subscription;
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
@@ -76,18 +76,21 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.orders = res;
       this.searchInvoices();
     });
+    this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
+      this.invoices_ = [res];
+    })
     this.handleInvoiceChanges();
   }
 
   ngOnDestroy() {
     console.log('for unsubscribing');
     this.orderSubscription.unsubscribe();
+    this.invoiceSubscription.unsubscribe();
   }
 
   searchInvoices() {
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
-      this.invoices_ = [_.cloneDeep(this.invoices[0])];
       this.handleInvoiceChanges();
       // console.log('INVOICES---------->>>   ', res);
       // console.log('ORDERS------------>>>   ', this.orders);
@@ -96,7 +99,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   handleInvoiceChanges() {
     if (this.invoices_.length == 0) return;
-    this.reconcileService.getReconcile(this.invoices_[0].invoice_id).subscribe(res => {
+    this.reconcileService.getReconcile(this.invoices_[0].invoice_id, null).subscribe(res => {
       res.id = this.invoices_[0].invoice_id;
       res.invoice.invoice_date = new Date(res.invoice.invoice_date)
       res.invoice.discount_ = res.invoice.discount;
@@ -109,7 +112,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
       this.selectedInvoice = res;
       this.updateInvoiceDetails({});
-      // console.log('-------------<<<   ', res)
+      console.log('INVOICES -------------<<<   ', res)
     })
   }
 
