@@ -99,7 +99,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   handleInvoiceChanges() {
     if (this.invoices_.length == 0) return;
-    this.reconcileService.getReconcile(this.invoices_[0].invoice_id, null).subscribe(res => {
+    this.reconcileService.getReconcile(this.invoices_[0].invoice_id, this.orders.id).subscribe(res => {
       res.id = this.invoices_[0].invoice_id;
       res.invoice.invoice_date = new Date(res.invoice.invoice_date)
       res.invoice.discount_ = res.invoice.discount;
