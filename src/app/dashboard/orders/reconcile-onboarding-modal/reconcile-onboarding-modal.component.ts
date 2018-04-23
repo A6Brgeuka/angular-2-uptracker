@@ -27,6 +27,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
   public selectConfig: any = { displayKey: "invoice_number", search: true };
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
+  public invoice_number: string = '';
 
   constructor(
     public dialog: DialogRef<ReconcileOnboardingModalContext>,
@@ -54,8 +55,9 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     this.reconcileService.orders$.next(this.context.order);
     if (this.reconcileType == 'start') {
       this.reconcileService.getReconcile(null, this.context.order.id).subscribe(res => {
-        console.log('INVOICES ----->>>>   ', res);
-        this.reconcileService.invoice$.next({ invoice_id: res.invoice.invoice_id , invoice_number: res.invoice.invoice_number });
+        res.invoice.invoice_number = this.invoice_number
+        res.invoice.invoice_date = new Date();
+        this.reconcileService.invoice$.next(res);
         this.router.navigate(['/orders/reconcile']);
       })
     } else {

@@ -78,10 +78,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.searchInvoices();
     });
     this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
-      if (isNil(res.invoice_id)) {
-
-      } else {
+      if (!isNil(res) && isNil(res.invoice_id)) {
+        this.selectedInvoice = res;
+      } else if (!isNil(res) && !isNil(res.invoice_id)) {
         this.invoices_ = [res];
+      } else {
+        this.router.navigate(['/orders/items']);
       }
     })
     this.handleInvoiceChanges();
@@ -101,7 +103,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   handleInvoiceChanges() {
-    if (this.invoices_.length == 0) return;
+    if (this.invoices_.length == 0 || isNil(this.invoices_[0].invoice_id)) return;
     try {
       this.reconcileService.getReconcile(this.invoices_[0].invoice_id, this.orders.id).subscribe(res => {
         res.id = this.invoices_[0].invoice_id;
@@ -118,7 +120,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.updateInvoiceDetails({});
       })
     } catch (err) {
-      this.router.navigate(['/orders/items']);
+      console.log(err);
     }
   }
 

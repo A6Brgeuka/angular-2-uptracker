@@ -33,7 +33,7 @@
         <label for="start_new">Start a New Invoice Reconcile</label>
       </p>
       <div class="number" [class.show]="reconcileType == 'start'">
-        <div class="input"><input type="text" placeholder="Invoice Number"></div>
+        <div class="input"><input type="text" placeholder="Invoice Number" [(ngModel)]="invoice_number"></div>
       </div>
     </div>
   </div>
