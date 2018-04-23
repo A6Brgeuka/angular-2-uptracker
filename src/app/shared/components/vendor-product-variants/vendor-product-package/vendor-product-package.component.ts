@@ -32,7 +32,7 @@ export class VendorProductPackageComponent implements OnInit {
 
   addSubscribers() {
     this.subscribers.autocompleteOuterPackSubscription = this.autocompletePackage$
-      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).take(1).publishReplay(1).refCount()
+      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key))
       .subscribe((pack: any) => this.autocompletePackage = sortBy(pack, ['unit_name']));
   }
 
@@ -54,7 +54,7 @@ export class VendorProductPackageComponent implements OnInit {
   }
 
   packageSummary(pack): string {
-    if (every(pack, 'label'))
-      return `1 ${pack[0].label} of ${pack[1].qty} ${pack[1].label} of ${pack[2].qty} ${pack[2].label} in tcu`;
+    const inner = `of ${pack[1].qty} ${pack[1].label}`;
+    return `1 ${pack[0].label} ${pack[1].label && pack[1].qty ? inner : ''} of ${pack[2].qty} ${pack[2].label}`;
   }
 }

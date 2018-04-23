@@ -12,6 +12,5 @@
 <app-product-variant
   *ngFor="let vendor of variants; let i = index"
   [vendor]="vendor"
-  (vendorDelete)="onVendorDelete(i)"
-  (addVendor)="onVendorChosen($event)">
+  (vendorDelete)="onVendorDelete(i)">
 </app-product-variant>

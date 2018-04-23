@@ -12,7 +12,6 @@
           <input auto-complete
                  placeholder="Type"
                  [source]="autocompletePackage"
-                 (input) = 'onSearchPackage($event)'
                  [list-formatter] = '"unit_name"'
                  [tab-to-select] = 'false'
                  [select-value-of] = "'unit_name'"
@@ -42,7 +41,6 @@
           <input class="caret" auto-complete
                  placeholder="N/A"
                  [source]="autocompletePackage"
-                 (input) = 'onSearchPackage($event)'
                  [list-formatter] = '"plural_unit_name"'
                  [tab-to-select] = 'false'
                  [select-value-of] = "'plural_unit_name'"
@@ -70,7 +68,6 @@
           <input class="caret" auto-complete
                  placeholder="Type"
                  [source]="autocompletePackage"
-                 (input) = 'onSearchPackage($event)'
                  [(ngModel)] = "package[2].label"
                  [list-formatter] = "'unit_name'"
                  [select-value-of] = "'unit_name'"

@@ -9,7 +9,7 @@
                  placeholder="Search-Keyword"
                  [source]="observableSource.bind(this)"
                  (ngModelChange)='selectedAutocompled($event)'
-                 [min-chars]='3'
+                 [min-chars]='2'
                  [(ngModel)]='searchText'
                  [list-formatter]="listFormatter"
                  [no-match-found-text]='noSearchedRes'
@@ -22,13 +22,13 @@
     <div class="col s6">
       <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
               [routerLink]="['/product', 'global']" (click)="dismissModal(); $event.stopPropagation()">
-        Browse global market
+        Browse Global Market
       </button>
     </div>
     <div class="col s6">
       <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
               (click)="onAddCustomClick(); $event.stopPropagation()">
-      Add custom product
+      Add Custom Product
       </button>
     </div>
   </div>

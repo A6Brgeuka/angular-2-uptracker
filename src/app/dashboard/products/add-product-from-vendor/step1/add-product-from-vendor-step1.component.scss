@@ -553,6 +553,19 @@ $normal: 14px;
     }
   }
 
+  textarea {
+    border: 1px solid $light-grey;
+    border-radius:5px;
+    padding: 5px;
+    resize: none;
+    height:auto;
+    background-color: $white;
+    &:focus{
+      border-color: $tealish;
+      outline:none;
+    }
+  }
+
   @media (max-width: 1024px) {
 
     .title {

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Modal} from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
-import {each, map, every, difference, findIndex} from 'lodash';
+import {each, map, every, difference, findIndex, flatten} from 'lodash';
 import {AccountService} from '../../../core/services/account.service';
 import {ModalWindowService} from '../../../core/services/modal-window.service';
 import {ProductService} from '../../../core/services/product.service';
@@ -75,6 +75,13 @@ export class AddNewProductComponent implements OnInit {
 
     this.subscribers.productCategoriesCollection = this.productCategoriesCollection$
       .subscribe(productsCat => this.productCategoriesCollection = productsCat);
+  }
+
+  onNextClick() {
+    this.step++;
+    if (this.step == 2) {
+      this.updateVendorProducts();
+    }
   }
 
   createVendorVariants() {
@@ -175,12 +182,11 @@ export class AddNewProductComponent implements OnInit {
   }
 
   validVariants() {
-    return every(this.productVariants, 'name') &&
-      every(this.productVariants, (v) => v.values.length > 0);
+    return every(this.productVariants, p => p.name && p.values.length > 0);
   }
 
   productNotValid() {
-    return this.product.vendor_variants.length < 1;
+    return this.vendorVariants.length < 1;
   }
 
   onVendorChosen(vendorInfo) {
@@ -195,13 +201,19 @@ export class AddNewProductComponent implements OnInit {
 
   formatProduct(product) {
     const attachments = map(product.attachments, 'public_url');
-    return {...product, attachments};
+    const vendor_variants = flatten(this.vendorVariants);
+    return {...product, vendor_variants, attachments};
   }
 
   createVendor(vendorInfo) {
     const variants = this.createVendorVariants();
     const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
     return {...vendorInfo, inventory_by, variants}
+  }
+
+  updateVendorProducts() {
+    each(this.vendorVariants, vendors =>
+      map(vendors, v => v['variants'] = this.createVendorVariants()));
   }
 
   openAddVendorsModal() {

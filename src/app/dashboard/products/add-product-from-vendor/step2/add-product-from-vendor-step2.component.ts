@@ -25,6 +25,7 @@ export class AddProductFromVendorStep2Component {
 
   onVendorChosen(vendorInfo) {
     const vendor = this.createVendor(vendorInfo);
+    this.productService.changeVariants$.next(vendor);
     const i = findIndex(this.vendorVariants, (arr) => arr[0].vendor_name == vendor['vendor_name']);
     i > -1 ? this.vendorVariants[i].unshift(vendor) : this.vendorVariants.unshift([vendor]);
   }
@@ -36,7 +37,7 @@ export class AddProductFromVendorStep2Component {
   createVendor(vendorInfo) {
     const variants = this.productService.productVariants;
     const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
-    return{...vendorInfo, inventory_by, variants};
+    return{...vendorInfo, inventory_by, variants, additional: true}; //TODO implement in better way (additional)
   }
 
   openAddVendorsModal() {

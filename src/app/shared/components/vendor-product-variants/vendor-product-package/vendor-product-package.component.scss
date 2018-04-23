@@ -15,4 +15,12 @@
       top: 4px;
     }
   }
+
+  fa[name="angle-down"] {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    font-size: 20px;
+    pointer-events: none;
+  }
 }

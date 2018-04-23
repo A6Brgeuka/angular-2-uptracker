@@ -111,7 +111,7 @@ export class AddProductFromVendorStep1Component implements OnInit {
   }
 
   onVariantChanged() {
-    this.productService.changeVendors$.next();
+    this.productService.changeVariants$.next();
   }
 
 }

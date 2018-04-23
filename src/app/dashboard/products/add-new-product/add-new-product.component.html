@@ -10,11 +10,11 @@
       </button>
     </div>
     <div class="col s8 center-align">
-      <div class="main-title">Add custom product</div>
+      <div class="main-title">Add Custom Product</div>
     </div>
     <div class="col s2 right-align">
       <button *ngIf="step != 2" [disabled]="!canProceed()"
-              class="uptracker-form-btn white-text waves-effect waves-light" (click)="step=step+1">
+              class="uptracker-form-btn white-text waves-effect waves-light" (click)="onNextClick()">
         Next
       </button>
       <button *ngIf="step == 2" [disabled]="productNotValid()"
@@ -184,7 +184,7 @@
     <div class="row">
       <div class="col s12">
         <p>Notes / Comments</p>
-        <textarea rows="6" cols="" name="comment" placeholder="" [(ngModel)]="product.notes"></textarea>
+        <textarea rows="3" cols="" name="comment" placeholder="" [(ngModel)]="product.notes"></textarea>
       </div>
     </div>
     <div class="clearfix"></div>

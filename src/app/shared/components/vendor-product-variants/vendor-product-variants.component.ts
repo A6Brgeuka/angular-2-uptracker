@@ -23,7 +23,7 @@ export class VendorProductVariantsComponent implements OnInit {
   }
 
   onAddPackageClick() {
-    this.addVendor.emit(this.vendor);
+    this.addVendor.emit({...this.vendor, additional: true});//TODO: find a better way (additional)
   }
 
   onVendorDelete(i) {
