@@ -10,7 +10,6 @@ import { OrderTableService } from '../order-table.service';
 import { PastOrderService } from '../../../../../core/services/pastOrder.service';
 import { ModalWindowService } from '../../../../../core/services/modal-window.service';
 import { SelectVendorModal } from '../../../select-vendor-modal/select-vendor.component';
-import { selectedOrderModel } from '../../../../../models/selected-order.model';
 import { ToasterService } from '../../../../../core/services/toaster.service';
 import { OrderTableOnVoidService } from '../order-table-on-void.service';
 import { OrderStatusValues } from '../../../models/order-status';
@@ -99,6 +98,10 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
       } else if (url === '/orders') {
         sendItems = orders.filteredCheckedProducts.map((order) =>
           order.order_items.map((item) => item.id));
+      } else if (url === '/orders/invoices') {
+        sendItems = [];
+      } else if (url === '/orders/packing-slips') {
+        sendItems = [];
       };
       const queryParams = uniqsendOrders.toString() + '&' + sendItems.toString();
       this.pastOrderService.goToReceive(queryParams, orders.type);
@@ -116,14 +119,35 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
   }
 
   onFilterCheckedOrders(url) {
-    return this.orders
-    .map((order: any) => {
-      return new selectedOrderModel(
-        Object.assign(order, {
-          items_ids: (url === '/orders/items') ? [order.id] : order.order_items.map((res) => res.id),
+    if (url === '/orders/items') {
+      return this.orders
+      .map((order: any) => ({
+          order_id: order.order_id,
+          items_ids: [order.id],
         })
       );
-    });
+    } else if (url === '/orders') {
+      return this.orders
+      .map((order: any) => ({
+          order_id: order.order_id,
+          items_ids: order.order_items.map((res) => res.id),
+        })
+      );
+    } else if (url === '/orders/invoices') {
+      return this.orders
+      .map((order: any) => ({
+          order_id: '',
+          items_ids: [],
+        })
+      );
+    } else if (url === '/orders/packing-slips') {
+      return this.orders
+      .map((order: any) => ({
+          order_id: '',
+          items_ids: [],
+        })
+      );
+    }
   }
 
   sendToReceiveProducts(filteredCheckedProducts, type?) {
