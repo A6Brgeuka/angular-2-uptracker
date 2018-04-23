@@ -105,14 +105,45 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProducts$
     .switchMap(([url, item]) => {
-      const data = {
-        orders: [
-          {
-            order_id: item.order_id,
-            items_ids: (url === '/orders/items') ? [item[this.uniqueField]] : item.order_items.map((res) => res.id),
-          }
-        ]
-      };
+      let data;
+      if (url === '/orders/items') {
+        data = {
+          orders: [
+            {
+              order_id: item.order_id,
+              items_ids: [item[this.uniqueField]],
+            }
+          ]
+        };
+      } else if (url === '/orders') {
+        data = {
+          orders: [
+            {
+              order_id: item.order_id,
+              items_ids: item.order_items.map((res) => res.id),
+            }
+          ]
+        };
+      } else if (url === '/orders/invoices') {
+        data = {
+          orders: [
+            {
+              order_id: '',
+              items_ids: [],
+            }
+          ]
+        };
+      } else if (url === '/orders/packing-slips') {
+        data = {
+          orders: [
+            {
+              order_id: '',
+              items_ids: [],
+            }
+          ]
+        };
+      }
+
       return this.pastOrderService.reorder(data);
     })
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
@@ -124,6 +155,10 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
         queryParams = item.item.order_id.toString() + '&' + item.item[this.uniqueField].toString();
       } else if (url === '/orders') {
         queryParams = item.item.order_id.toString() + '&' + item.item.order_items.map((res) => res.id).toString();
+      } else if (url === '/orders/invoices') {
+        queryParams = '';
+      } else if (url === '/orders/packing-slips') {
+        queryParams = '';
       }
       this.pastOrderService.goToReceive(queryParams, item.type);
     })
