@@ -59,10 +59,14 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     this.reconcileService.orders$.next(this.items);
 
     let ids = '';
-    this.items.forEach(item => {
-      if (ids !== '') ids = ids.concat(',');
-      ids = ids.concat(item.id);
-    });
+    if (this.items.length > 1) {
+      this.items.forEach(item => {
+        if (ids !== '') ids = ids.concat(',');
+        ids = ids.concat(item.id);
+      });
+    } else {
+      ids = this.context.order.id;
+    }
 
     if (this.reconcileType == 'start') {
       this.reconcileService.getReconcile(null, ids).subscribe(res => {
