@@ -7,29 +7,65 @@
       .padded {
         padding-left: 20px;
       }
-      ngx-select-dropdown {
-        .icon-angle-down {        
-          font-family: FontAwesome;
-          &:before {
-            content: '\F107';
-          }
-        }
-        .ngx-dorpdown-container {
-          .ngx-dropdown-list-container {
-            box-shadow: none;
-            border: 1px solid #9a9c9e !important;
-            .search-container {
-              input {
-                border: 1px solid #9a9c9e !important;
-                border-radius: 3px !important;
-                text-indent: 10px;
-              }
-              label {
-                display: none !important;
+      ng-select {
+        .below {
+          border: 1px solid #9a9c9e;
+          border-radius: 5px;
+          .single {
+            position: relative;
+            height: 34px;
+            .value {
+              .flag-row {
+                display: flex;
+                align-items: center;
+                height: 34px;
+                .name {
+                  margin-left: 10px;
+                }
               }
             }
-            ul.selected-items li {
-              background-color: $tealish !important;
+            .toggle {
+              display: none;
+            }
+            &:after {
+              background-repeat: no-repeat;
+              background-image: url(/assets/img/icon-dropdown-arrow.svg);
+              content: "";
+              position: absolute;
+              bottom: 0;
+              margin: auto;
+              right: 7px;
+              top: 0;
+              width: 10px;
+              height: 6px;
+            }
+          }
+        }
+        > div:focus {
+          outline: none;
+        }
+        select-dropdown > div {
+          border-radius: 5px;
+          border: 1px solid #9a9c9e;
+          margin-top: 10px;
+          overflow: hidden;
+          z-index: 999;
+          .filter {
+            padding: 8px;
+            input {
+              border: 1px solid #9a9c9e;
+              border-radius: 5px;
+              color: black;
+              font-family: 'Roboto';
+              font-size: 18px;
+              height: 34px;
+            }
+          }
+          .flag-row {
+            display: flex;
+            align-items: center;
+            .name {
+              margin-left: 10px;
             }
           }
         }
@@ -117,14 +153,6 @@
             text-indent: 10px;
             width: 80px;
           }
-          .caret {
-            background: #e8ecf0 url(/assets/img/icon-dropdown-arrow.svg) no-repeat 95% center;
-            pointer-events: none;
-            position: absolute;
-            right: 10px;
-            width: 10px;
-            height: 34px;
-          }
           .currency-value {
             display: flex;
             align-items: center;
@@ -143,6 +171,7 @@
               border-bottom-right-radius: 5px;
               border-top-right-radius: 5px;
               .single {
+                position: relative;
                 height: 34px;
                 .value {
                   display: none;
@@ -157,6 +186,18 @@
                 }
                 .toggle {
                   display: none;
+                }
+                &:after {
+                  background-repeat: no-repeat;
+                  background-image: url(/assets/img/icon-dropdown-arrow.svg);
+                  content: "";
+                  position: absolute;
+                  bottom: 0;
+                  margin: auto;
+                  right: 7px;
+                  top: 0;
+                  width: 10px;
+                  height: 6px;
                 }
               }
             }

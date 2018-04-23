@@ -25,7 +25,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public sort: string = 'A-Z';
   public filter: string = '';
   public panelVisible: boolean = false
-  public invoices: Array<any> = [];
+  public invoices: Array<IOption> = [];
   public invoices_: Array<any> = [];
   public selectedInvoice: any = {invoice: {currency: 'usd'}, items: [], vendors: {}};
   public DOLLARSIGNS: any = { USD: '$', CAD: '$', MXN: '$', JPY: '¥' }
@@ -38,6 +38,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public orders: any = {};
   public currencyBlackList: Array<string> = [];
   private invoiceSubscription: Subscription;
+  private invoicesSubscription: Subscription;
   private orderSubscription: Subscription;
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
@@ -52,60 +53,67 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL',
+    try {
+      this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL',
       'MXV', 'PAB', 'SCR', 'SDG', 'SSP', 'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC',
       'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'USD', 'GBP', 'EUR', 'CAD', 'AUD'];
-    this.currencies = [
-      {value: 'usd', label: 'United States dollar'},
-      {value: 'gbp', label: 'British pound'},
-      {value: 'eur', label: 'Euro'},
-      {value: 'cad', label: 'Canadian dollar'},
-      {value: 'aud', label: 'Australian dollar'}
-    ];
-    Currency.codes().forEach(code => {
-      if (!(any((cc) => cc == code)(this.currencyBlackList))) {
-        this.currencies.push({ label: Currency.code(code).currency, value: toLower(code) });
-      }
-    })
-    this.board = {
-      qty: null,
-      pkgPrice: null,
-      discountAmount: null,
-      discountType: 'PERCENT',
-    };
-    this.orderSubscription = this.reconcileService.orders$.subscribe(res => {
-      this.orders = res;
-      this.searchInvoices();
-    });
-    this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
-      if (!isNil(res) && isNil(res.invoice_id)) {
-        this.selectedInvoice = res;
-      } else if (!isNil(res) && !isNil(res.invoice_id)) {
-        this.invoices_ = [res];
-      } else {
-        this.router.navigate(['/orders/items']);
-      }
-    })
-    this.handleInvoiceChanges();
+      this.currencies = [
+        {value: 'usd', label: 'United States dollar'},
+        {value: 'gbp', label: 'British pound'},
+        {value: 'eur', label: 'Euro'},
+        {value: 'cad', label: 'Canadian dollar'},
+        {value: 'aud', label: 'Australian dollar'}
+      ];
+      Currency.codes().forEach(code => {
+        if (!(any((cc) => cc == code)(this.currencyBlackList))) {
+          this.currencies.push({ label: Currency.code(code).currency, value: toLower(code) });
+        }
+      })
+      this.board = {
+        qty: null,
+        pkgPrice: null,
+        discountAmount: null,
+        discountType: 'PERCENT',
+      };
+      this.orderSubscription = this.reconcileService.orders$.subscribe(res => {
+        this.orders = res;
+      });
+      this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
+        if (!isNil(res) && isNil(res.invoice_id)) {
+          this.selectedInvoice = res;
+        } else if (!isNil(res) && !isNil(res.invoice_id)) {
+          this.invoices_ = [res];
+        } else {
+          this.router.navigate(['/orders/items']);
+        }
+      })
+      this.invoicesSubscription = this.reconcileService.invoices$.subscribe(res => {
+        res.forEach(item => {
+          this.invoices.push({
+            value: item.invoice_id, label: item.invoice_number
+          });
+        })
+      })
+    } catch (err) {
+      this.router.navigate(['/orders/items']);
+    }
+    
   }
 
   ngOnDestroy() {
-    console.log('for unsubscribing');
-    this.orderSubscription.unsubscribe();
-    this.invoiceSubscription.unsubscribe();
-  }
-
-  searchInvoices() {
-    this.reconcileService.lookInvoices(null).subscribe(res => {
-      this.invoices = res;
-      this.handleInvoiceChanges();
-    });
-  }
-
-  handleInvoiceChanges() {
-    if (this.invoices_.length == 0 || isNil(this.invoices_[0].invoice_id)) return;
     try {
-      this.reconcileService.getReconcile(this.invoices_[0].invoice_id, this.orders.id).subscribe(res => {
+      console.log('for unsubscribing');
+      this.orderSubscription.unsubscribe();
+      this.invoiceSubscription.unsubscribe();
+      this.invoicesSubscription.unsubscribe();
+    } catch (err) {
+      this.router.navigate(['/orders/items']);
+    }
+  }
+
+  handleInvoiceChanges(event) {
+    try {
+      this.reconcileService.getReconcile(event.value, this.orders.id).subscribe(res => {
         res.id = this.invoices_[0].invoice_id;
         res.invoice.invoice_date = new Date(res.invoice.invoice_date)
         res.invoice.discount_ = res.invoice.discount;
@@ -277,43 +285,43 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   updateDetails() {
-    let items = [];
-    this.selectedInvoice.items.forEach(item => {
-      const newItem = {
-        invoice_line_item_id: item.invoice_line_item_id,
-        discount: item.discount,
-        discounted_price: item.discounted_price,
-        order_line_item_id: item.order_line_item_id,
-        order_qty: item.order_qty,
-        package_price: item.package_price,
-        received_qty: item.received_qty,
-        reconciled_qty: item.reconciled_qty,
-        reconciled_package_price: item.reconciled_package_price,
-        reconciled_discount: item.reconciled_discount,
-        reconciled_discounted_price: item.reconciled_discounted_price,
-        reconciled_total: item.reconciled_total,
-      };
+    // let items = [];
+    // this.selectedInvoice.items.forEach(item => {
+    //   const newItem = {
+    //     invoice_line_item_id: item.invoice_line_item_id,
+    //     discount: item.discount,
+    //     discounted_price: item.discounted_price,
+    //     order_line_item_id: item.order_line_item_id,
+    //     order_qty: item.order_qty,
+    //     package_price: item.package_price,
+    //     received_qty: item.received_qty,
+    //     reconciled_qty: item.reconciled_qty,
+    //     reconciled_package_price: item.reconciled_package_price,
+    //     reconciled_discount: item.reconciled_discount,
+    //     reconciled_discounted_price: item.reconciled_discounted_price,
+    //     reconciled_total: item.reconciled_total,
+    //   };
 
-      items.push(newItem);
-    })
+    //   items.push(newItem);
+    // })
 
-    const invoice = {
-      currency: this.selectedInvoice.invoice.currency,
-      discount: this.selectedInvoice.invoice.discount,
-      handling: this.selectedInvoice.invoice.handling,
-      invoice_date: this.selectedInvoice.invoice.invoice_date,
-      invoice_number: this.selectedInvoice.invoice.invoice_number,
-      invoice_id: this.invoices[0].invoice_id,
-      shipping: this.selectedInvoice.invoice.shipping,
-      sub_total: this.selectedInvoice.invoice.sub_total,
-      tax: this.selectedInvoice.invoice.tax,
-      total: this.selectedInvoice.invoice.total,
-      vendor_id: this.selectedInvoice.invoice.vendor_id,
-      vendor_name: this.selectedInvoice.invoice.vendor_name,
-      files: [],
-    }
+    // const invoice = {
+    //   currency: this.selectedInvoice.invoice.currency,
+    //   discount: this.selectedInvoice.invoice.discount,
+    //   handling: this.selectedInvoice.invoice.handling,
+    //   invoice_date: this.selectedInvoice.invoice.invoice_date,
+    //   invoice_number: this.selectedInvoice.invoice.invoice_number,
+    //   invoice_id: this.invoices[0].invoice_id,
+    //   shipping: this.selectedInvoice.invoice.shipping,
+    //   sub_total: this.selectedInvoice.invoice.sub_total,
+    //   tax: this.selectedInvoice.invoice.tax,
+    //   total: this.selectedInvoice.invoice.total,
+    //   vendor_id: this.selectedInvoice.invoice.vendor_id,
+    //   vendor_name: this.selectedInvoice.invoice.vendor_name,
+    //   files: [],
+    // }
 
-    const payload = { items, invoice }
-    this.reconcileService.updateReconcile(payload);
+    // const payload = { items, invoice }
+    // this.reconcileService.updateReconcile(payload);
   }
 }

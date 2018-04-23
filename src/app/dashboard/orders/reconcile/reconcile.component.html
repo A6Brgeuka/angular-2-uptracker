@@ -5,15 +5,7 @@
         <span class="main-title">Reconcile Invoice</span>
       </div>
       <div class="col l4 m6 padded">
-        <ngx-select-dropdown 
-          *ngIf="invoices.length > 0"
-          [config]="selectConfig"
-          [options]="invoices"
-          [(value)]="invoices_"
-          [multiple]="false"
-          (valueChange)="handleInvoiceChanges($event)"
-        >
-        </ngx-select-dropdown>
+        <ng-select [options]="invoices" (selected)="handleInvoiceChanges($event)"></ng-select>
       </div>
     </div>
 
@@ -52,7 +44,6 @@
                 <div class="currency-flag currency-flag-{{selectedInvoice.invoice.currency.toLowerCase()}}"></div>
                 <span>{{selectedInvoice.invoice.currency.toUpperCase()}}</span>
               </div>
-              <span class="caret"></span>
             </div>
           </div>
           <div class="row">

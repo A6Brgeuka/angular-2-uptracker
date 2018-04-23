@@ -34,8 +34,8 @@ export class Invoice {
 })
 export class ReconcileService extends ModelService {
   public appConfig: AppConfig;
-  public invoices: Array<Invoice>;
 
+  public invoices$: BehaviorSubject<any> = new BehaviorSubject(null);
   public invoice$: BehaviorSubject<any> = new BehaviorSubject(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -72,7 +72,10 @@ export class ReconcileService extends ModelService {
 
   lookInvoices(id) {
     if (isNil(id)) {
-      return this.restangular.all('invoices').all('lookup').customGET('').map(res => res.data);;
+      return this.restangular.all('invoices').all('lookup').customGET('').map(res => {
+        this.invoices$.next(res.data);
+        return res.data;
+      });;
     } else {
       return this.restangular.one('invoices').one('lookup').customGET('', {vendor_id: id}).map(res => res.data);
     }
