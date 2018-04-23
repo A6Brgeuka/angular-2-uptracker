@@ -229,9 +229,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.productHeader = false;
     this.selectedInvoice.items.forEach(item => {
       if (item.checked) {
-        item.received_qty_ = this.board.qty ? parseInt(this.board.qty).toLocaleString() : item.received_qty_;
-        item.package_price_ = this.board.pkgPrice ? this.board.pkgPrice.toLocaleString() : item.package_price_;
-        item.discounted_price_ = this.board.discountAmount ? this.board.discountAmount.toLocaleString() : item.discounted_price_;
+        item.reconciled_qty = this.board.qty ? this.board.qty : item.reconciled_qty;
+        item.reconciled_package_price = this.board.pkgPrice ? this.board.pkgPrice : item.reconciled_package_price;
+        item.reconciled_discount = this.board.discountAmount ? this.board.discountAmount : item.reconciled_discount;
       }
       this.productChange(item);
       item.checked = false;
