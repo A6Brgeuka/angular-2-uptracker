@@ -78,7 +78,11 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.searchInvoices();
     });
     this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
-      this.invoices_ = [res];
+      if (isNil(res.invoice_id)) {
+
+      } else {
+        this.invoices_ = [res];
+      }
     })
     this.handleInvoiceChanges();
   }
