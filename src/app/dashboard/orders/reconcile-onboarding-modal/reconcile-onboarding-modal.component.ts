@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
@@ -8,7 +8,7 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 import { ReconcileService } from '../../../core/services/reconcile.service';
 import { Subject } from 'rxjs/Subject';
 import { UserService } from '../../../core/services/user.service';
-import { Router } from '@angular/router';
+
 
 export class ReconcileOnboardingModalContext extends BSModalContext {
   public order: any;
@@ -54,6 +54,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     this.reconcileService.orders$.next(this.context.order);
     if (this.reconcileType == 'start') {
       this.reconcileService.getReconcile(null, this.context.order.id).subscribe(res => {
+        console.log('INVOICES ----->>>>   ', res);
         this.reconcileService.invoice$.next({ invoice_id: res.invoice.invoice_id , invoice_number: res.invoice.invoice_number });
         this.router.navigate(['/orders/reconcile']);
       })

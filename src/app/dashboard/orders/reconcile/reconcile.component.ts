@@ -104,12 +104,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         res.invoice.invoice_date = new Date(res.invoice.invoice_date)
         res.invoice.discount_ = res.invoice.discount;
         res.invoice.discount_type = 'USD';
-  
+
         res.items.forEach(item => {
           item.reconciled_discount_type = 'PERCENT';
           this.productChange(item);
         });
-  
+
         this.selectedInvoice = res;
         this.updateInvoiceDetails({});
       })
