@@ -322,7 +322,7 @@
               <label for="selectProduct"></label>
             </div>
             <div class="product-pic">
-              <img src="{{product.image}}" alt="PRODUCT" />
+              <img src="{{product.image}}" alt="PRODUCT" *ngIf="product.image" />
             </div>
             <div class="left">
               <a>{{product.item_name}}</a>
