@@ -26,11 +26,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public filter: string = '';
   public panelVisible: boolean = false
   public invoices: Array<IOption> = [];
-  public invoices_: Array<any> = [];
-  public selectedInvoice: any = {invoice: {currency: 'usd'}, items: [], vendors: {}};
+  public selectedInvoice: any = {invoice: {currency: 'usd', invoice_number: 'Select Invoice'}, items: [], vendors: {}};
   public DOLLARSIGNS: any = { USD: '$', CAD: '$', MXN: '$', JPY: '¥' }
   public board: any = {};
-  public selectConfig: any = { displayKey: "invoice_number", search: true };
   public taxBoardVisible: boolean = false;
   public productHeader: boolean = false;
   public currency: any = {}
@@ -79,10 +77,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.orders = res;
       });
       this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
-        if (!isNil(res) && isNil(res.invoice_id)) {
+        if (!isNil(res) && !isNil(res.invoice_id) && !isNil(res.invoice_number)) {
+          this.handleInvoiceChanges({value: res.invoice_id, label: res.invoice_number})
+        } else if (!isNil(res) && !isNil(res.invoice) && !isNil(res.invoice.invoice_number) && isNil(res.invoice.invoice_id)) {
           this.selectedInvoice = res;
-        } else if (!isNil(res) && !isNil(res.invoice_id)) {
-          this.invoices_ = [res];
         } else {
           this.router.navigate(['/orders/items']);
         }
@@ -114,7 +112,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   handleInvoiceChanges(event) {
     try {
       this.reconcileService.getReconcile(event.value, this.orders.id).subscribe(res => {
-        res.id = this.invoices_[0].invoice_id;
+        res.id = res.invoice.invoice_id;
         res.invoice.invoice_date = new Date(res.invoice.invoice_date)
         res.invoice.discount_ = res.invoice.discount;
         res.invoice.discount_type = 'USD';
@@ -126,6 +124,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
         this.selectedInvoice = res;
         this.updateInvoiceDetails({});
+
+        console.log('~~~~~~~~~~~~~:  ', this.selectedInvoice)
       })
     } catch (err) {
       console.log(err);

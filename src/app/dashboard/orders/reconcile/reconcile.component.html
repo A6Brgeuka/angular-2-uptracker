@@ -5,7 +5,11 @@
         <span class="main-title">Reconcile Invoice</span>
       </div>
       <div class="col l4 m6 padded">
-        <ng-select [options]="invoices" (selected)="handleInvoiceChanges($event)"></ng-select>
+        <ng-select
+          [options]="invoices"
+          placeholder="{{selectedInvoice.invoice.invoice_number}}"
+          (selected)="handleInvoiceChanges($event)"
+        ></ng-select>
       </div>
     </div>
 
