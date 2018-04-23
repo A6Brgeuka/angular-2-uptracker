@@ -10,6 +10,8 @@ import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { ReconciledOrdersListService } from '../services/reconciled-orders-list.service';
 import { Order } from '../../models/order';
 import { OrdersTableService } from '../services/orders-table.service';
+import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
+import { FlaggedOrdersListService } from '../services/flagged-orders-list.service';
 
 @Component({
   selector: 'app-reconciled-orders-list',
@@ -39,6 +41,8 @@ export class ReconciledOrdersListComponent implements OnInit, OnDestroy {
   constructor(
     public reconciledOrdersListService: ReconciledOrdersListService,
     public ordersTableService: OrdersTableService,
+    public favoritedOrdersListService: FavoritedOrdersListService,
+    public flaggedOrdersListService: FlaggedOrdersListService,
   ) {
 
   }
@@ -59,6 +63,14 @@ export class ReconciledOrdersListComponent implements OnInit, OnDestroy {
 
   sortByHeaderUpdated(event) {
     this.sortBy$.next(event.alias);
+  }
+
+  onFavorite(item) {
+    this.favoritedOrdersListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedOrdersListService.putItem(item);
   }
 
   onVoid(value) {

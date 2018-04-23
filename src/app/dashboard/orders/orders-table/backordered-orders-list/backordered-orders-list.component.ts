@@ -8,6 +8,8 @@ import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { BackorderedOrdersListService } from '../services/backordered-orders-list.service';
 import { Order } from '../../models/order';
 import { OrdersTableService } from '../services/orders-table.service';
+import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
+import { FlaggedOrdersListService } from '../services/flagged-orders-list.service';
 
 @Component({
   selector: 'app-backordered-orders-list',
@@ -37,6 +39,8 @@ export class BackorderedOrdersListComponent implements OnInit, OnDestroy {
   constructor(
     public backorderedOrdersListService: BackorderedOrdersListService,
     public ordersTableService: OrdersTableService,
+    public favoritedOrdersListService: FavoritedOrdersListService,
+    public flaggedOrdersListService: FlaggedOrdersListService,
   ) {
 
   };
@@ -53,6 +57,14 @@ export class BackorderedOrdersListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('for unsubscribing');
+  }
+
+  onFavorite(item) {
+    this.favoritedOrdersListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedOrdersListService.putItem(item);
   }
 
   onVoid(value) {

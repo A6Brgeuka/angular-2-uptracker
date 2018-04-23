@@ -7,6 +7,8 @@ import { OrderListType } from '../../models/order-list-type';
 import { OpenOrdersListService } from '../services/open-orders-list.service';
 import { Order } from '../../models/order';
 import { OrdersTableService } from '../services/orders-table.service';
+import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
+import { FlaggedOrdersListService } from '../services/flagged-orders-list.service';
 
 @Component({
   selector: 'app-open-orders-list',
@@ -37,6 +39,8 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
   constructor(
     public openOrdersListService: OpenOrdersListService,
     public ordersTableService: OrdersTableService,
+    public favoritedOrdersListService: FavoritedOrdersListService,
+    public flaggedOrdersListService: FlaggedOrdersListService,
   ) {
 
   };
@@ -52,6 +56,14 @@ export class OpenOrdersListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('for unsubscribing');
+  }
+
+  onFavorite(item) {
+    this.favoritedOrdersListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedOrdersListService.putItem(item);
   }
 
   onVoid(value) {

@@ -9,6 +9,8 @@ import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { ClosedOrdersListService } from '../services/closed-orders-list.service';
 import { Order } from '../../models/order';
 import { OrdersTableService } from '../services/orders-table.service';
+import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
+import { FlaggedOrdersListService } from '../services/flagged-orders-list.service';
 
 @Component({
   selector: 'app-closed-orders-list',
@@ -39,6 +41,8 @@ export class ClosedOrdersListComponent implements OnInit, OnDestroy {
     public closedOrdersListService: ClosedOrdersListService,
     public pastOrderService: PastOrderService,
     public ordersTableService: OrdersTableService,
+    public favoritedOrdersListService: FavoritedOrdersListService,
+    public flaggedOrdersListService: FlaggedOrdersListService,
   ) {
 
   };
@@ -62,6 +66,14 @@ export class ClosedOrdersListComponent implements OnInit, OnDestroy {
 
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
+  }
+
+  onFavorite(item) {
+    this.favoritedOrdersListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedOrdersListService.putItem(item);
   }
 
   onVoid(value) {

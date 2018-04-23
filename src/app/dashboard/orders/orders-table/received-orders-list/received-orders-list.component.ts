@@ -9,6 +9,8 @@ import { OrderListType } from '../../models/order-list-type';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { ReceivedOrdersListService } from '../services/received-orders-list.service';
 import { Order } from '../../models/order';
+import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
+import { FlaggedOrdersListService } from '../services/flagged-orders-list.service';
 
 @Component({
   selector: 'app-received-orders-list',
@@ -37,6 +39,8 @@ export class ReceivedOrdersListComponent implements OnInit, OnDestroy {
 
   constructor(
     public receivedOrdersListService: ReceivedOrdersListService,
+    public favoritedOrdersListService: FavoritedOrdersListService,
+    public flaggedOrdersListService: FlaggedOrdersListService,
   ) {
 
   }
@@ -53,6 +57,14 @@ export class ReceivedOrdersListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('for unsubscribing');
+  }
+
+  onFavorite(item) {
+    this.favoritedOrdersListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedOrdersListService.putItem(item);
   }
 
   sortByHeaderUpdated(event) {
