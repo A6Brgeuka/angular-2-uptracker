@@ -77,13 +77,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.orders = res;
       });
       this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
-        if (!isNil(res) && !isNil(res.invoice_id) && !isNil(res.invoice_number)) {
-          this.handleInvoiceChanges({value: res.invoice_id, label: res.invoice_number})
-        } else if (!isNil(res) && !isNil(res.invoice) && !isNil(res.invoice.invoice_number) && isNil(res.invoice.invoice_id)) {
-          this.selectedInvoice = res;
-        } else {
-          this.router.navigate(['/orders/items']);
-        }
+        res.invoice.invoice_date = new Date(res.invoice.invoice_date);
+        this.selectedInvoice = res;
       })
       this.invoicesSubscription = this.reconcileService.invoices$.subscribe(res => {
         res.forEach(item => {
@@ -93,6 +88,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         })
       })
     } catch (err) {
+      console.log('ngOnInit: ', err);
       this.router.navigate(['/orders/items']);
     }
     
@@ -105,6 +101,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.invoiceSubscription.unsubscribe();
       this.invoicesSubscription.unsubscribe();
     } catch (err) {
+      console.log('ngOnDestroy: ', err);
       this.router.navigate(['/orders/items']);
     }
   }
@@ -126,7 +123,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.updateInvoiceDetails({});
       })
     } catch (err) {
-      console.log(err);
+      console.log('handleInvoiceChanges: ', err);
     }
   }
 
@@ -206,7 +203,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       // Diff
       this.selectedInvoice.invoice.diff = this.selectedInvoice.invoice.calculated_total - this.selectedInvoice.invoice.total;
     } catch (err) {
-      console.log(err);
+      console.log('updateInvoiceDetails: ', err);
     }
   }
 
@@ -219,7 +216,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       }
       product.reconciled_total = (product.reconciled_discounted_price * product.received_qty) || 0;
     } catch (err) {
-      console.log(err);
+      console.log('productChange: ', err);
     }
   }
 

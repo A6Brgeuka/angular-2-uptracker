@@ -12,6 +12,7 @@ import { UserService } from '../../../core/services/user.service';
 
 export class ReconcileOnboardingModalContext extends BSModalContext {
   public order: any;
+  public orders: Array<any>;
 }
 
 @Component({
@@ -28,6 +29,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
   public invoice_number: string = '';
+  public items: Array<any> = [];
 
   constructor(
     public dialog: DialogRef<ReconcileOnboardingModalContext>,
@@ -42,27 +44,38 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
 
   ngOnInit() {
     console.log(this.context, 'Resend context');
-    // console.log('--------->>>   ', this.context.order)
+
+    this.context.orders.subscribe(item => {
+      this.items = item;
+    });
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
       this.invoices_ = [res[0]];
-    })
+    });
   }
 
   continue() {
     this.dialog.dismiss();
+    this.reconcileService.orders$.next(this.items);
 
-    this.reconcileService.orders$.next(this.context.order);
+    let ids = '';
+    this.items.forEach(item => {
+      if (ids !== '') ids = ids.concat(',');
+      ids = ids.concat(item.id);
+    });
+
     if (this.reconcileType == 'start') {
-      this.reconcileService.getReconcile(null, this.context.order.id).subscribe(res => {
+      this.reconcileService.getReconcile(null, ids).subscribe(res => {
         res.invoice.invoice_number = this.invoice_number
         res.invoice.invoice_date = new Date();
         this.reconcileService.invoice$.next(res);
         this.router.navigate(['/orders/reconcile']);
       })
     } else {
-      this.reconcileService.invoice$.next(this.invoices_[0]);
-      this.router.navigate(['/orders/reconcile']);
+      this.reconcileService.getReconcile(this.invoices_[0].invoice_id, ids).subscribe(res => {
+        this.reconcileService.invoice$.next(res);
+        this.router.navigate(['/orders/reconcile']);
+      })
     }
   }
 
