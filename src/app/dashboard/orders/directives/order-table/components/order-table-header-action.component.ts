@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Modal } from 'angular2-modal';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 import { OrderTableService } from '../order-table.service';
 import { PastOrderService } from '../../../../../core/services/pastOrder.service';
@@ -15,7 +16,6 @@ import { OrderTableOnVoidService } from '../order-table-on-void.service';
 import { OrderStatusValues } from '../../../models/order-status';
 import { OrderListType } from '../../../models/order-list-type';
 import { OrdersService } from '../../../orders.service';
-import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -80,9 +80,7 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
     this.subscribers.reorderOrdersSubscription = this.reorderOrders$
     .switchMap(([url, items]) => {
       const filteredChecked = this.onFilterCheckedOrders(url);
-      const data = {
-        'orders': filteredChecked,
-      };
+      const data = {orders: filteredChecked};
       return this.pastOrderService.reorder(data);
     })
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
