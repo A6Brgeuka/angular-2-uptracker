@@ -78,6 +78,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       });
       this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
         res.invoice.invoice_date = new Date(res.invoice.invoice_date);
+        res.invoice.discount_ = 0;
+        res.invoice.discount_type = 'PERCENT';
         this.selectedInvoice = res;
       })
       this.invoicesSubscription = this.reconcileService.invoices$.subscribe(res => {
@@ -186,6 +188,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       }
       this.selectedInvoice.invoice.total = total - this.selectedInvoice.invoice.discount;
 
+      console.log('$$$$$$$$$$$$:   ', total, ' : ', this.selectedInvoice.invoice.discount);
+
       // Calculated Total
       let calculated_total = this.selectedInvoice.invoice.calculated_sub_total
       - this.selectedInvoice.invoice.invoice_credit
@@ -251,10 +255,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   taxBoardOKClick() {
     this.taxBoardVisible = !this.taxBoardVisible;
 
-    const total = parseFloat(this.selectedInvoice.invoice.taxes)
-      + parseFloat(this.selectedInvoice.invoice.sales_tax)
-      + parseFloat(this.selectedInvoice.invoice.vat);
-    this.selectedInvoice.invoice.taxes = total.toString();
+    const total = this.selectedInvoice.invoice.tax
+      + this.selectedInvoice.invoice.sales_tax
+      + this.selectedInvoice.invoice.vat;
+    this.selectedInvoice.invoice.tax = total;
+
+    this.updateInvoiceDetails({});
   }
 
   sortAlphabet(event) {
