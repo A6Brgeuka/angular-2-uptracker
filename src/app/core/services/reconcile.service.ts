@@ -63,7 +63,7 @@ export class ReconcileService extends ModelService {
     }
   }
 
-  createReconcile(data) {
+  updateReconcile(data) {
     return this.restangular.all('reconcile').post(data)
     .do((res: any) => {
       console.log('CREATING RECONCILE --------------->>>>>>   ', res);

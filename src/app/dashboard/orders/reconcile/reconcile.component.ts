@@ -52,7 +52,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // console.log('###############:   ', this.userService.selfData.account)
     this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL',
       'MXV', 'PAB', 'SCR', 'SDG', 'SSP', 'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC',
       'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'USD', 'GBP', 'EUR', 'CAD', 'AUD'];
@@ -94,8 +93,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
       this.handleInvoiceChanges();
-      // console.log('INVOICES---------->>>   ', res);
-      // console.log('ORDERS------------>>>   ', this.orders);
     });
   }
 
@@ -115,7 +112,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   
         this.selectedInvoice = res;
         this.updateInvoiceDetails({});
-        console.log('INVOICES -------------<<<   ', res);
       })
     } catch (err) {
       this.router.navigate(['/orders/items']);
@@ -276,56 +272,42 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   updateDetails() {
     let items = [];
-    // this.selectedInvoice.items.forEach(item => {
-    //   const newItem = {
-    //     invoice_line_item_id: item.invoice_line_item_id || '',
-    //     discount: item.discount || 0,
-    //     discounted_price: item.discounted_price || 3.49,
-    //     order_line_item_id: item.order_line_item_id || '5ad4f32e3d0192000d3acf1e',
-    //     order_qty: item.order_qty || 1,
-    //     package_price: item.package_price || 3.49,
-    //     received_qty: item.received_qty || 1,
-    //     reconciled_qty: item.reconciled_qty || 1,
-    //     reconciled_package_price: item.reconciled_package_price || 3.49,
-    //     reconciled_discount: item.reconciled_discount || 0,
-    //     reconciled_discounted_price: item.reconciled_discounted_price || 3.49,
-    //     reconciled_total: item.reconciled_total || 3.49,
-    //   };
-    //   items.push(newItem);
-    // })
-    const newItem = {
-      invoice_line_item_id: '',
-      discount: 0,
-      discounted_price: 3.49,
-      order_line_item_id: '5ad4f32e3d0192000d3acf1e',
-      order_qty: 1,
-      package_price: 3.49,
-      received_qty: 1,
-      reconciled_qty: 1,
-      reconciled_package_price: 3.49,
-      reconciled_discount: 0.00,
-      reconciled_discounted_price: 3.49,
-      reconciled_total: 3.49,
-    };
-    // items.push(newItem);
+    this.selectedInvoice.items.forEach(item => {
+      const newItem = {
+        invoice_line_item_id: item.invoice_line_item_id,
+        discount: item.discount,
+        discounted_price: item.discounted_price,
+        order_line_item_id: item.order_line_item_id,
+        order_qty: item.order_qty,
+        package_price: item.package_price,
+        received_qty: item.received_qty,
+        reconciled_qty: item.reconciled_qty,
+        reconciled_package_price: item.reconciled_package_price,
+        reconciled_discount: item.reconciled_discount,
+        reconciled_discounted_price: item.reconciled_discounted_price,
+        reconciled_total: item.reconciled_total,
+      };
+
+      items.push(newItem);
+    })
 
     const invoice = {
-      currency: this.selectedInvoice.invoice.currency || 'USD',
-      discount: this.selectedInvoice.invoice.discount || 0,
-      handling: this.selectedInvoice.invoice.handling || 0,
-      invoice_date: this.selectedInvoice.invoice.invoice_date || new Date('4/20/2018'),
-      invoice_number: this.selectedInvoice.invoice.invoice_number || '100-101',
-      invoice_id: this.invoices[0].invoice_id || null,
-      shipping: this.selectedInvoice.invoice.shipping || 0,
-      sub_total: this.selectedInvoice.invoice.sub_total || 3.49,
-      tax: this.selectedInvoice.invoice.tax || 0.00,
-      total: this.selectedInvoice.invoice.total || 3.49,
-      vendor_id: this.selectedInvoice.invoice.vendor_id || '582f4fe306e55c3aab564065',
-      vendor_name: this.selectedInvoice.invoice.vendor_name || 'Reliance Orthodontics',
+      currency: this.selectedInvoice.invoice.currency,
+      discount: this.selectedInvoice.invoice.discount,
+      handling: this.selectedInvoice.invoice.handling,
+      invoice_date: this.selectedInvoice.invoice.invoice_date,
+      invoice_number: this.selectedInvoice.invoice.invoice_number,
+      invoice_id: this.invoices[0].invoice_id,
+      shipping: this.selectedInvoice.invoice.shipping,
+      sub_total: this.selectedInvoice.invoice.sub_total,
+      tax: this.selectedInvoice.invoice.tax,
+      total: this.selectedInvoice.invoice.total,
+      vendor_id: this.selectedInvoice.invoice.vendor_id,
+      vendor_name: this.selectedInvoice.invoice.vendor_name,
       files: [],
     }
 
     const payload = { items, invoice }
-    this.reconcileService.createReconcile(payload);
+    this.reconcileService.updateReconcile(payload);
   }
 }
