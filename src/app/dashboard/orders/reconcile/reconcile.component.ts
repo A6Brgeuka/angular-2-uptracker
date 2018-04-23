@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
@@ -45,7 +46,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     public modal: Modal,
     public reconcileService: ReconcileService,
     public modalWindowService: ModalWindowService,
-    public userService: UserService
+    public userService: UserService,
+    public router: Router,
   ) {
   }
 
@@ -99,21 +101,25 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   handleInvoiceChanges() {
     if (this.invoices_.length == 0) return;
-    this.reconcileService.getReconcile(this.invoices_[0].invoice_id, this.orders.id).subscribe(res => {
-      res.id = this.invoices_[0].invoice_id;
-      res.invoice.invoice_date = new Date(res.invoice.invoice_date)
-      res.invoice.discount_ = res.invoice.discount;
-      res.invoice.discount_type = 'USD';
-
-      res.items.forEach(item => {
-        item.reconciled_discount_type = 'PERCENT';
-        this.productChange(item);
+    try {
+      this.reconcileService.getReconcile(this.invoices_[0].invoice_id, this.orders.id).subscribe(res => {
+        res.id = this.invoices_[0].invoice_id;
+        res.invoice.invoice_date = new Date(res.invoice.invoice_date)
+        res.invoice.discount_ = res.invoice.discount;
+        res.invoice.discount_type = 'USD';
+  
+        res.items.forEach(item => {
+          item.reconciled_discount_type = 'PERCENT';
+          this.productChange(item);
+        });
+  
+        this.selectedInvoice = res;
+        this.updateInvoiceDetails({});
+        console.log('INVOICES -------------<<<   ', res);
       })
-
-      this.selectedInvoice = res;
-      this.updateInvoiceDetails({});
-      console.log('INVOICES -------------<<<   ', res)
-    })
+    } catch (err) {
+      this.router.navigate(['/orders/items']);
+    }
   }
 
   handleCurrencyChange(event) {

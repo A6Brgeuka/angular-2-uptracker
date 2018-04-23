@@ -54,7 +54,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     this.reconcileService.orders$.next(this.context.order);
     if (this.reconcileType == 'start') {
       this.reconcileService.getReconcile(null, this.context.order.id).subscribe(res => {
-        console.log('$$$$$$$$$$:   ', res);
+        this.reconcileService.invoice$.next({ invoice_id: res.invoice.invoice_id , invoice_number: res.invoice.invoice_number });
         this.router.navigate(['/orders/reconcile']);
       })
     } else {
