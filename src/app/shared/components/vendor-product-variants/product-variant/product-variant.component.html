@@ -2,6 +2,7 @@
 <app-vendor-product-package
   *ngFor="let package of vendor.inventory_by; let i = index"
   [package]="package"
+  [additional]="vendor.additional"
   (fillAll)="onFillAll($event)"
   (fillColumn)="onFillColumn($event)">
 </app-vendor-product-package>
@@ -9,8 +10,8 @@
 <div class="row">
   <div class="col s5 flex">
     <div class="input-checkbox">
-      <input type="checkbox" class="checkbox-input" [(ngModel)]="selected" (change)="selectAll()" id="{{vendor.vendor_name}}+'selectAll'"/>
-      <label for="{{vendor.vendor_name}}+'selectAll'"></label>
+      <input type="checkbox" class="checkbox-input" [(ngModel)]="selected" (change)="selectAll()" id="{{uniqueId}}+'selectAll'"/>
+      <label for="{{uniqueId}}+'selectAll'"></label>
     </div>
 
     Product Variant Name

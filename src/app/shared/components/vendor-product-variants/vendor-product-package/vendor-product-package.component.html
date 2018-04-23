@@ -8,8 +8,9 @@
     <div class="ttl">Outer Package</div>
     <div class="row relative">
       <div class="col s12 flex">
-        <div class="input select" [class.add-number-one]="!!package[0].label">
-          <input auto-complete
+        <div  class="input select" [class.add-number-one]="!!package[0].label">
+          <input *ngIf="additional"
+                 auto-complete="false"
                  placeholder="Type"
                  [source]="autocompletePackage"
                  [list-formatter] = '"unit_name"'
@@ -19,7 +20,8 @@
                  [(ngModel)] = 'package[0].label'
                  required
           >
-          <fa name="angle-down"></fa>
+          <fa *ngIf="additional" name="angle-down"></fa>
+        <input *ngIf="!additional" type="text" readonly [ngModel]="package[0].label" placeholder="Type">
         </div>
         <div class="label">=</div>
       </div>
@@ -33,11 +35,11 @@
     <div class="row relative">
       <div class="col s3">
         <div class="input">
-          <input [(ngModel)]="package[1].qty" type="text" placeholder="Qty">
+          <input [readonly]="!additional" [(ngModel)]="package[1].qty" type="text" placeholder="Qty">
         </div>
       </div>
       <div class="col s9 flex">
-        <div class="input search select">
+        <div class="input search select" *ngIf="additional">
           <input class="caret" auto-complete
                  placeholder="N/A"
                  [source]="autocompletePackage"
@@ -49,6 +51,7 @@
           >
           <fa name="angle-down"></fa>
         </div>
+        <input *ngIf="!additional" type="text" readonly [ngModel]="package[1].label" placeholder="Type">
         <div class="label">=</div>
       </div>
     </div>
@@ -60,23 +63,25 @@
     <div class="row relative">
       <div class="col s3">
         <div class="input">
-          <input [(ngModel)]="package[2].qty" type="text" placeholder="Qty">
+          <input [readonly]="!additional" [(ngModel)]="package[2].qty" type="text" placeholder="Qty">
         </div>
       </div>
       <div class="col s9">
-        <div class="input search select">
+        <div class="input search select" *ngIf="additional">
           <input class="caret" auto-complete
                  placeholder="Type"
                  [source]="autocompletePackage"
+                 (input) = 'onSearchPackage($event)'
                  [(ngModel)] = "package[2].label"
                  [list-formatter] = "'unit_name'"
                  [select-value-of] = "'unit_name'"
                  [tab-to-select] = 'false'
                  name="cons_package_type"
-                 required
+                 [readonly]="!additional"
           >
           <fa name="angle-down"></fa>
         </div>
+        <input *ngIf="!additional" type="text" readonly [ngModel]="package[2].label" placeholder="Type">
       </div>
     </div>
   </div>

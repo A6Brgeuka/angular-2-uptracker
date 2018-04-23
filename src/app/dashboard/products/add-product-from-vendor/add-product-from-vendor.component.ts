@@ -5,9 +5,9 @@ import {Observable} from 'rxjs/Observable';
 import {ProductService} from '../../../core/services/product.service';
 import {AccountService} from '../../../core/services/account.service';
 import { Location } from '@angular/common';
-import {map, includes, some, reject, each, flatten, filter, groupBy, reduce, cloneDeep} from 'lodash';
+import {map, includes, some, reject, each, flatten, filter, groupBy, cloneDeep} from 'lodash';
 import {ToasterService} from "../../../core/services/toaster.service";
-import {inventoryExample} from "../../../models/inventory.model";
+import {AddProductManagerService} from "../../../core/services/add-product-manager.service";
 
 @Component({
   selector: 'app-add-product-from-vendor',
@@ -33,7 +33,8 @@ export class AddProductFromVendorComponent implements OnInit {
     private accountService: AccountService,
     private location: Location,
     private router: Router,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private productManager: AddProductManagerService
   ) {
   }
 
@@ -59,10 +60,10 @@ export class AddProductFromVendorComponent implements OnInit {
     this.subscribers.onVendorsChange = this.productService.changeVariants$
       .subscribe(variants => this.updateVendors(this.variants));
 
-    /*this.subscribers.onVendorsChange = this.productService.changeVendors$
+    this.subscribers.onVendorsChange = this.productManager.changeVariants$
       .subscribe(() => {
-        this.formatVendors(this.variants);
-      })*/
+        this.updateVendors(this.variants);
+      })
   }
 
   getProducts() {
@@ -75,26 +76,24 @@ export class AddProductFromVendorComponent implements OnInit {
         each(data.variants, v => v.checked = true);
       })
       .subscribe(data => this.formatVendors(this.variants));
+
   }
 
   formatVendors(variants) {
     const checkedVariants = filter(variants, 'checked');
     const vendors = flatten(map(checkedVariants, 'vendor_variants'));
-    const structured = this.structureVariants(vendors);
-    this.productService.productVariants = map(checkedVariants, v => this.formatVariants(v));
-    this.vendorVariants = map(groupBy(structured, 'vendor_name'), (val, key) => val)
+    const structured = this.productManager.structureVariants(vendors);
+    this.productManager.productVariants = map(checkedVariants, v => this.productManager.formatVariants(v));
+    this.vendorVariants = map(groupBy(structured, 'vendor_name'), (val, key) => val);
     this.vendorVariantsCopy = cloneDeep(this.vendorVariants);
   };
 
   updateVendors(variants) {
-    //this.vendorVariants = cloneDeep(this.vendorVariantsCopy)
+    this.vendorVariants = cloneDeep(this.vendorVariantsCopy);
     const checkedVariants = filter(variants, 'checked');
     const checkedVariantsName = map(checkedVariants, 'name');
-    this.productService.productVariants = map(checkedVariants, v => this.formatVariants(v));
+    this.productManager.productVariants = map(checkedVariants, v => this.productManager.formatVariants(v));
     each(this.vendorVariants, (vendors, i) => {
-      const additional = filter(vendors, 'additional');
-      each(additional, (v: any) => v.variants = this.productService.productVariants);
-
       const rejected = reject(vendors, (vendor: any) => {
         return some(vendor.variants, (variant: any) => {
           return !includes(checkedVariantsName, variant.name);
@@ -102,46 +101,25 @@ export class AddProductFromVendorComponent implements OnInit {
       });
       rejected.length ? this.vendorVariants[i] = rejected : this.vendorVariants.splice(i, 1);
     });
+
+    each(this.productManager.additionalVariantsArr, (v: any) => {
+      v.variants = this.productManager.productVariants;
+
+      const isExists = some(this.vendorVariants, (vendors: any, i) => {
+        if (v.vendor_name == vendors[0].vendor_name) {
+          this.vendorVariants[i].unshift(cloneDeep(v));
+          return true;
+        }
+      });
+      if (!isExists) this.vendorVariants.unshift([cloneDeep(v)]);
+    });
   }
 
   formatProduct(product) {
     const attachments = map(product.attachments, 'public_url');
-    const vendor_variants = reduce(this.vendorVariants, (result: any[], value) => result.concat(value));
+    const vendor_variants = flatten(this.vendorVariants);
     return {...product, attachments, account_category: "Supplies", vendor_variants};
   }
-
-  structureVariants(vendors) {
-
-    return map(vendors, v => {
-      const inventory = [
-        {label: v['package_type'], qty: 1},
-        {label: v['sub_package'], qty: v['sub_unit_per_package']},
-        {label: v['unit_type'], qty: v['units_per_package']}
-      ];
-      //TODO: Define never[]
-      const inventory_by = [map(inventory, (inv, i) => {
-        return {...inventoryExample[i], ...inv};
-      })];
-      const vendor = {
-        vendor_name: v['vendor_name'],
-        vendor_id: v['vendor_id']
-      };
-      const variants = [this.formatVariants(v)];
-
-      return {...vendor, inventory_by, variants}
-    });
-  }
-
-  formatVariants(v: any) {
-    return {
-      name: v['name'],
-      catalog_number: v['catalog_number'],
-      club_price: v['club_price'],
-      list_price: v['list_price'],
-      our_price: v['our_price'],
-      upc: v['upc']
-    }
-  };
 
   goBack(): void {
     this.location.back();

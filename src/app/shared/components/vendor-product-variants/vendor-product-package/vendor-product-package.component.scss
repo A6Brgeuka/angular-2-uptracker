@@ -23,4 +23,8 @@
     font-size: 20px;
     pointer-events: none;
   }
+
+  [readonly] {
+    background-color: #f5f6f7 !important;
+  }
 }

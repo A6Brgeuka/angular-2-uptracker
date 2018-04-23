@@ -1,11 +1,12 @@
 import {Component, Input} from '@angular/core';
 import {Modal} from 'angular2-modal';
 import {ModalWindowService} from '../../../../core/services/modal-window.service';
-import {map, findIndex} from 'lodash';
+import {map, findIndex, cloneDeep} from 'lodash';
 import {PackageModel, inventoryExample} from "../../../../models/inventory.model";
 import {CustomProductVariantModel} from "../../../../models/custom-product.model";
 import {AddVendorModalComponent} from "../../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
 import {ProductService} from "../../../../core/services/product.service";
+import {AddProductManagerService} from "../../../../core/services/add-product-manager.service";
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -20,12 +21,12 @@ export class AddProductFromVendorStep2Component {
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
-    public productService: ProductService) {
+    private productManager: AddProductManagerService) {
   }
 
   onVendorChosen(vendorInfo) {
     const vendor = this.createVendor(vendorInfo);
-    this.productService.changeVariants$.next(vendor);
+    this.productManager.additionalVariantsAdd(vendor);
     const i = findIndex(this.vendorVariants, (arr) => arr[0].vendor_name == vendor['vendor_name']);
     i > -1 ? this.vendorVariants[i].unshift(vendor) : this.vendorVariants.unshift([vendor]);
   }
@@ -35,9 +36,9 @@ export class AddProductFromVendorStep2Component {
   }
 
   createVendor(vendorInfo) {
-    const variants = this.productService.productVariants;
+    const variants = cloneDeep(this.productManager.productVariants);
     const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
-    return{...vendorInfo, inventory_by, variants, additional: true}; //TODO implement in better way (additional)
+    return {...vendorInfo, inventory_by, variants, additional: true}; //TODO implement in better way (additional)
   }
 
   openAddVendorsModal() {

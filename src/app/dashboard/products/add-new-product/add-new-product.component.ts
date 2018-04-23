@@ -208,7 +208,7 @@ export class AddNewProductComponent implements OnInit {
   createVendor(vendorInfo) {
     const variants = this.createVendorVariants();
     const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
-    return {...vendorInfo, inventory_by, variants}
+    return {...vendorInfo, inventory_by, variants, additional: true};
   }
 
   updateVendorProducts() {

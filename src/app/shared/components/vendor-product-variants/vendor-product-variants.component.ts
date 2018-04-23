@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {AddProductManagerService} from "../../../core/services/add-product-manager.service";
 
 @Component({
   selector: 'app-vendor-product-variants',
@@ -13,7 +14,7 @@ export class VendorProductVariantsComponent implements OnInit {
 
   public vendor: any = {};
 
-  constructor() { }
+  constructor(private productManager: AddProductManagerService) { }
 
   ngOnInit() {
     this.vendor = {
@@ -27,6 +28,9 @@ export class VendorProductVariantsComponent implements OnInit {
   }
 
   onVendorDelete(i) {
+    if (this.variants[i].additional) {
+      this.productManager.additionalVariantsRemove(this.variants[i]);
+    }
     this.variants.splice(i, 1);
     if (!this.variants.length) {
       this.vendorDelete.emit();

@@ -8,6 +8,7 @@ import {AccountService} from '../../../../core/services/account.service';
 import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 import {ProductService} from "../../../../core/services/product.service";
 import {each} from 'lodash';
+import {AddProductManagerService} from "../../../../core/services/add-product-manager.service";
 
 @Component({
   selector: 'app-add-product-from-vendor-step1',
@@ -39,7 +40,8 @@ export class AddProductFromVendorStep1Component implements OnInit {
     private accountService: AccountService,
     public modal: Modal,
     public modalWindowService: ModalWindowService,
-    public productService: ProductService) {
+    public productService: ProductService,
+    private productManager: AddProductManagerService) {
   }
 
   ngOnInit() {
@@ -111,7 +113,7 @@ export class AddProductFromVendorStep1Component implements OnInit {
   }
 
   onVariantChanged() {
-    this.productService.changeVariants$.next();
+    this.productManager.changeVariants$.next();
   }
 
 }

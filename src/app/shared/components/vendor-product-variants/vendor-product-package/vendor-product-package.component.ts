@@ -15,6 +15,7 @@ import {DestroySubscribers} from "ngx-destroy-subscribers";
 export class VendorProductPackageComponent implements OnInit {
 
   @Input('package') public package: any;
+  @Input('additional') public additional: boolean = true;
   @Output('fillColumn') fillColumn = new EventEmitter();
   @Output('fillAll') fillAll = new EventEmitter();
 
@@ -55,6 +56,7 @@ export class VendorProductPackageComponent implements OnInit {
 
   packageSummary(pack): string {
     const inner = `of ${pack[1].qty} ${pack[1].label}`;
-    return `1 ${pack[0].label} ${pack[1].label && pack[1].qty ? inner : ''} of ${pack[2].qty} ${pack[2].label}`;
+    const total = 1 * (pack[1].qty || 1) * pack[2].qty;
+    return `1 ${pack[0].label} ${pack[1].label && pack[1].qty ? inner : ''} of ${pack[2].qty} ${pack[2].label}, 1 ${pack[0].label} = ${total} unit(s)`;
   }
 }
