@@ -28,6 +28,10 @@
             .toggle {
               display: none;
             }
+            .placeholder {
+              color: black;
+              line-height: 34px;
+            }
             &:after {
               background-repeat: no-repeat;
               background-image: url(/assets/img/icon-dropdown-arrow.svg);
