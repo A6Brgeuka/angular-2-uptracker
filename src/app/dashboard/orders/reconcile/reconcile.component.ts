@@ -109,7 +109,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   handleInvoiceChanges(event) {
     try {
       this.reconcileService.getReconcile(event.value, this.orders.id).subscribe(res => {
-        console.log('---------->>>   ', res)
+        // console.log('---------->>>   ', res)
         res.invoice.invoice_date = new Date(res.invoice.invoice_date)
         res.invoice.discount_ = res.invoice.discount;
         res.invoice.discount_type = 'USD';
