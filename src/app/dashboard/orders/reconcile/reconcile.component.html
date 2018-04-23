@@ -5,15 +5,11 @@
         <span class="main-title">Reconcile Invoice</span>
       </div>
       <div class="col l4 m6 padded">
-        <ngx-select-dropdown 
-          *ngIf="invoices.length > 0"
-          [config]="selectConfig"
+        <ng-select
           [options]="invoices"
-          [(value)]="invoices_"
-          [multiple]="false"
-          (valueChange)="handleInvoiceChanges($event)"
-        >
-        </ngx-select-dropdown>
+          placeholder="{{selectedInvoice.invoice.invoice_number}}"
+          (selected)="handleInvoiceChanges($event)"
+        ></ng-select>
       </div>
     </div>
 
@@ -36,20 +32,21 @@
           <div class="row input-header"><span>Currency</span></div>
           <div class="row">
             <div class="currency">
-              <span>{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}1.00</span>
-              <div class="select">
-                <select
-                  class="wide"
-                  materialize="material_select"
-                  [materializeSelectOptions]=""
-                  name="currency"
-                  [(ngModel)]="selectedInvoice.invoice.currency"
-                  (ngModelChange)="updateInvoiceDetails($event)"
+              <span class="amount">1.00</span>
+              <ng-select [options]="currencies" (selected)="handleCurrencyChange($event)">
+                <ng-template
+                  #optionTemplate
+                  let-option="option"
                 >
-                  <ng-container *ngFor="let currency of currencies; let i = index">
-                    <option value="{{currency.code}}">{{currency.currency}}</option>
-                  </ng-container>
-                </select>
+                  <div class="flag-row">
+                    <div class="currency-flag currency-flag-{{option.value}}"></div>
+                    <span class="name">{{option.label}}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+              <div class="currency-value" (click)="toggleCurrencypicker()">
+                <div class="currency-flag currency-flag-{{selectedInvoice.invoice.currency.toLowerCase()}}"></div>
+                <span>{{selectedInvoice.invoice.currency.toUpperCase()}}</span>
               </div>
             </div>
           </div>
@@ -270,12 +267,12 @@
           <span>Filters</span>
         </a>
       </div>
-      <button
+      <!-- <button
         (click)="showProductModal()"
         class="right mtop uptracker-form-btn white-text waves-effect waves-light"
       >
         Add Product
-      </button>
+      </button> -->
     </div>
 
     <div class="list is-grid-view">

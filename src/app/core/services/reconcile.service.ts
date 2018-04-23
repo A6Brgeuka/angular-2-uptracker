@@ -34,8 +34,9 @@ export class Invoice {
 })
 export class ReconcileService extends ModelService {
   public appConfig: AppConfig;
-  public invoices: Array<Invoice>;
 
+  public invoices$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public invoice$: BehaviorSubject<any> = new BehaviorSubject(null);
   public orders$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(
@@ -52,11 +53,17 @@ export class ReconcileService extends ModelService {
     return this.restangular.all('pos').all('all').customGET('');
   }
 
-  getReconcile(item_ids, invoice_id) {
-    return this.restangular.one('reconcile').customGET('', {item_ids, invoice_id}).map(res => res.data);
+  getReconcile(invoice_id, item_ids) {
+    if (!isNil(invoice_id) && isNil(item_ids)) {
+      return this.restangular.one('reconcile').customGET('', { invoice_id }).map(res => res.data);
+    } else if (!isNil(invoice_id) && !isNil(item_ids)) {
+      return this.restangular.one('reconcile').customGET('', { item_ids, invoice_id }).map(res => res.data);
+    } else {
+      return this.restangular.one('reconcile').customGET('', { item_ids }).map(res => res.data);
+    }
   }
 
-  createReconcile(data) {
+  updateReconcile(data) {
     return this.restangular.all('reconcile').post(data)
     .do((res: any) => {
       console.log('CREATING RECONCILE --------------->>>>>>   ', res);
@@ -65,7 +72,10 @@ export class ReconcileService extends ModelService {
 
   lookInvoices(id) {
     if (isNil(id)) {
-      return this.restangular.all('invoices').all('lookup').customGET('').map(res => res.data);;
+      return this.restangular.all('invoices').all('lookup').customGET('').map(res => {
+        this.invoices$.next(res.data);
+        return res.data;
+      });;
     } else {
       return this.restangular.one('invoices').one('lookup').customGET('', {vendor_id: id}).map(res => res.data);
     }

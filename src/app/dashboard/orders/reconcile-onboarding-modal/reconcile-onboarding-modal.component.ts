@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
@@ -8,10 +8,11 @@ import { ModalWindowService } from '../../../core/services/modal-window.service'
 import { ReconcileService } from '../../../core/services/reconcile.service';
 import { Subject } from 'rxjs/Subject';
 import { UserService } from '../../../core/services/user.service';
-import { Router } from '@angular/router';
+
 
 export class ReconcileOnboardingModalContext extends BSModalContext {
   public order: any;
+  public orders: Array<any>;
 }
 
 @Component({
@@ -27,6 +28,8 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
   public selectConfig: any = { displayKey: "invoice_number", search: true };
   public invoices: Array<any> = [];
   public invoices_: Array<any> = [];
+  public invoice_number: string = '';
+  public items: Array<any> = [];
 
   constructor(
     public dialog: DialogRef<ReconcileOnboardingModalContext>,
@@ -41,19 +44,38 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
 
   ngOnInit() {
     console.log(this.context, 'Resend context');
-    // console.log('--------->>>   ', this.context.order)
+
+    this.context.orders.subscribe(item => {
+      this.items = item;
+    });
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
       this.invoices_ = [res[0]];
-    })
+    });
   }
 
   continue() {
     this.dialog.dismiss();
+    this.reconcileService.orders$.next(this.items);
+
+    let ids = '';
+    this.items.forEach(item => {
+      if (ids !== '') ids = ids.concat(',');
+      ids = ids.concat(item.id);
+    });
 
     if (this.reconcileType == 'start') {
-      this.reconcileService.orders$.next(this.context.order);
-      this.router.navigate(['/orders/reconcile']);
+      this.reconcileService.getReconcile(null, ids).subscribe(res => {
+        res.invoice.invoice_number = this.invoice_number
+        res.invoice.invoice_date = new Date();
+        this.reconcileService.invoice$.next(res);
+        this.router.navigate(['/orders/reconcile']);
+      })
+    } else {
+      this.reconcileService.getReconcile(this.invoices_[0].invoice_id, ids).subscribe(res => {
+        this.reconcileService.invoice$.next(res);
+        this.router.navigate(['/orders/reconcile']);
+      })
     }
   }
 

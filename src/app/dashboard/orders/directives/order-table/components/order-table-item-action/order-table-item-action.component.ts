@@ -29,6 +29,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   @Input() i: any;
   @Input() item: any;
+  @Input() items: Array<any>;
   @Input() isShow: boolean;
   @Input() listName: string;
   @Input() uniqueField: string;
@@ -73,11 +74,9 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   addSubscribers() {
-
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
-
   }
 
   setFavorite(item) {
@@ -131,7 +130,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   reconcile() {
     this.modal
     .open(ReconcileOnboardingModal, this.modalWindowService
-    .overlayConfigFactoryWithParams({order: this.item}));
+    .overlayConfigFactoryWithParams({order: this.item, orders: this.items}));
   }
 
   backorder() {

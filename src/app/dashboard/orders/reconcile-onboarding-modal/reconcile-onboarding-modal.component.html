@@ -6,7 +6,7 @@
       Would you like to add an existing invoice or start a new invoice reconcile?
     </div>
     <div class="row option">
-      <p class="">
+      <p>
         <input
           name="selection"
           type="radio"
@@ -32,6 +32,9 @@
         <input name="selection" type="radio" id="start_new" value="start" [(ngModel)]="reconcileType" (ngModelChange)="reconcile($event)" />
         <label for="start_new">Start a New Invoice Reconcile</label>
       </p>
+      <div class="number" [class.show]="reconcileType == 'start'">
+        <div class="input"><input type="text" placeholder="Invoice Number" [(ngModel)]="invoice_number"></div>
+      </div>
     </div>
   </div>
   <div class="row">

@@ -72,6 +72,27 @@
       left: 20px;
     }
   }
+  .number {
+    height: 0px;
+    transition: height .2s;
+    position: relative;
+    overflow: hidden;
+
+    .input {
+      margin-left: 35px;
+      width: 150px;
+      input {
+        border: 1px solid #9a9c9e;
+        &:focus {
+          border-bottom-color: #9a9c9e;
+        }
+      }
+    }
+    &.show {
+      overflow: visible;
+      height: 37px;
+    }
+  }
   .uptracker-form-btn {
     width: 150px;
     height: 40px;
