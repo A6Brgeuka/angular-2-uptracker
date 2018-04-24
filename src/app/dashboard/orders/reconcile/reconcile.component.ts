@@ -135,6 +135,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.selectedInvoice.invoice.currency = event.value;
   }
 
+  goBack() {
+    this.router.navigate(['/orders/items']);
+  }
+
   currencyFormat(event: string) {
     const value = parseFloat(event);
     return CurrencyFormatter.format(value, { code: 'USD' });

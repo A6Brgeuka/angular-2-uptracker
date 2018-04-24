@@ -7,6 +7,20 @@
       .padded {
         padding-left: 20px;
       }
+      .back {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $tealish;
+        border-radius: 15px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        > span {
+          color: white;
+          font-size: 16px;
+        }
+      }
       ng-select {
         .below {
           border: 1px solid #9a9c9e;

@@ -1,6 +1,11 @@
 <form class="uptracker-form" (ngSubmit)="saveReconcile()" materialize #reconcileProductForm="ngForm" autocomplete="off" novalidate>
   <div class="top">
     <div class="row filter clearfix">
+      <div class="col l1">
+        <div class="back" (click)="goBack()">
+          <span class="fa fa-chevron-left"></span>
+        </div>
+      </div>
       <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
       </div>
