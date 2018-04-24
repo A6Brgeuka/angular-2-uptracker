@@ -39,8 +39,6 @@
       <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
     </li>
     <li *ngIf="(ordersService.tableRoute$ | async) === '/orders/packing-slips' || isRecieveList || isReceivedItem">
-      <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
-    <li *ngIf="isRecieveList || isReceivedItem">
       <a class="tealish-text" (click)="reconcile()">Reconcile</a>
     </li>
     <li *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices' && (ordersService.tableRoute$ | async) !== '/orders/packing-slips' && !isReceivedItem && !isRecieveList">
