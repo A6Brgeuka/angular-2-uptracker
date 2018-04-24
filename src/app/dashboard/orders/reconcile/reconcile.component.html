@@ -2,9 +2,13 @@
   <div class="top">
     <div class="row filter clearfix">
       <div class="col l1">
-        <div class="back" (click)="goBack()">
+        <button
+          type="submit"
+          class="uptracker-form-btn no-min-width white-text waves-effect waves-light back"
+          (click)="goBack()"
+        >
           <span class="fa fa-chevron-left"></span>
-        </div>
+        </button>
       </div>
       <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
@@ -429,6 +433,15 @@
         </div>
       </div>
     </ng-container>
+    <div class="row">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="updateProducts()"
+      >
+        UPDATE
+      </button>
+    </div>
   </div>
 
   <div class="panel" [class.active]="panelVisible">

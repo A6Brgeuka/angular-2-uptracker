@@ -337,4 +337,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     // const payload = { items, invoice }
     // this.reconcileService.updateReconcile(payload);
   }
+
+  updateProducts() {}
 }
