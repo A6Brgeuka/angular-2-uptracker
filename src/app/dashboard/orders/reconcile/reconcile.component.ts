@@ -160,6 +160,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   deleteProduct(index) {
     this.selectedInvoice.items.splice(index, 1);
+    if (this.selectedInvoice.items.length == 0) {
+      this.goBack();
+    }
   }
   
   saveReconcile() {}
