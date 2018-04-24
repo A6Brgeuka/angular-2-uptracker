@@ -226,9 +226,23 @@
           <button
             type="submit"
             class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
-            (click)="updateDetails()"
+            (click)="reconcileSave()"
           >
-            UPDATE DETAILS
+            SAVE FOR LATER
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcilePay()"
+          >
+            RECONCILE & PAY
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcileCancel()"
+          >
+            CANCEL
           </button>
         </div>
         <div class="col l6 right">

@@ -293,7 +293,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.datepicker.showCalendar = !this.datepicker.showCalendar;
   }
 
-  updateDetails() {
+  reconcileSave() {}
+
+  reconcilePay() {
     this.toasterService.pop("", "Invoice details updated successfully");
     // let items = [];
     // this.selectedInvoice.items.forEach(item => {
@@ -336,6 +338,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
     // const payload = { items, invoice }
     // this.reconcileService.updateReconcile(payload);
+  }
+
+  reconcileCancel() {
+    this.goBack()
   }
 
   updateProducts() {}
