@@ -148,8 +148,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
       return this.pastOrderService.reorder(data);
     })
-    this.subscribers.reorderProductFromOrderSubscription = this.reorderProducts$
-    .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
 
     this.subscribers.receiveProductSubscription = this.receiveProducts$
