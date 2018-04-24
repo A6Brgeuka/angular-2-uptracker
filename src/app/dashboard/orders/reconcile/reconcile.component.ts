@@ -293,7 +293,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.datepicker.showCalendar = !this.datepicker.showCalendar;
   }
 
-  reconcileSave() {}
+  reconcileSave() {
+    this.router.navigate(['/orders/invoices']);
+  }
 
   reconcilePay() {
     this.toasterService.pop("", "Invoice details updated successfully");
