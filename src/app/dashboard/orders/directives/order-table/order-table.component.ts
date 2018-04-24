@@ -68,7 +68,6 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     public ordersService: OrdersService,
     private orderTableFilterByService: OrderTableFilterByService,
   ) {
-
   }
 
   ngOnInit() {

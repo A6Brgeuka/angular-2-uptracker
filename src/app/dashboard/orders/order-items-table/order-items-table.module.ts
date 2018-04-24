@@ -8,6 +8,7 @@ import { SelectVendorModule } from '../select-vendor-modal/select-vendor.module'
 import { SearchFilterHeaderModule } from '../../../shared/components/search-filter-header/search-filter-header.module';
 import { ReconcileModule } from '../reconcile/reconcile.module';
 import { ResendOrderModalModule } from '../resend-order-modal/resend-order-modal.module';
+import { ReconcileOnboardingModalModule } from '../reconcile-onboarding-modal/reconcile-onboarding-modal.module';
 import { OrderFlagModalModule } from '../directives/order-flag-modal/order-flag-modal.module';
 import { OrdersPageFiltersModule } from '../../../shared/modals/filters-modal/orders-page-filters/orders-page-filters.module';
 
@@ -40,6 +41,7 @@ import { ClosedItemsListModule } from './closed-items-list/closed-items-list.mod
     ReceivedItemsListModule,
     ClosedItemsListModule,
     ReconcileModule,
+    ReconcileOnboardingModalModule,
     ResendOrderModalModule,
     OrderFlagModalModule,
     OrdersPageFiltersModule,
