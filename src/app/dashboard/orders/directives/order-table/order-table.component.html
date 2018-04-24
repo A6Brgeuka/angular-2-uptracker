@@ -46,7 +46,6 @@
         />
         <label for="selected{{i + item[uniqueField] + componentId}}"></label>
       </div>
-
       <div class="col"
         *ngFor="let headerCol of header;"
         (click)="headerCol?.filterBy && !(headerCol.showChevron && item.statusHistoryVisibility) ? onFilterBy(item[headerCol.alias], headerCol) : ''"
@@ -85,6 +84,7 @@
         <app-order-table-item-action
           *ngIf="headerCol.actions"
           [item]="item"
+          [items]="checkedOrders$"
           [isShow]="headerCol.actions"
           [listName]="_listName"
           [uniqueField]="uniqueField"

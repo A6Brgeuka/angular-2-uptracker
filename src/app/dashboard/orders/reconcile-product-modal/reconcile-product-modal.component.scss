@@ -1,8 +1,9 @@
-@import "../../../colors";
+@import "../../../../colors";
 
 :host /deep/ {
   .inner {
     margin: 0 auto;
+    font-family: 'Roboto';
 
     .title {
       color: $dark;
@@ -10,29 +11,55 @@
       font-weight: normal;
       margin-bottom: 40px;
     }
-
-    .thin {
-      font-weight: 200;
+    .bold {
+      font-weight: bold;
     }
-
+    .thin {
+      font-weight: 400;
+    }
     .left-align {
       text-align: left;
     }
-
     .no-margin {
       margin: 0;
+    }
+    .no-mgb {
+      margin-bottom: 0;
     }
     .no-padding {
       padding: 0;
     }
     .right-bordered {
-      border-right: 1px solid $light-grey;
+      border-right: 1px solid $grey;
+      padding-bottom: 50px;
     }
     .left-padded {
       padding-left: 40px !important;
     }
-    .bottom-padded {
-      padding-bottom: 40px !important;
+    .right-padded {
+      padding-right: 50px;
+    }
+
+    .select {
+      background-color: $white;
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+      input {
+        background-color: $white;
+        border: none;
+        height: 30px;
+      }
+      .select-wrapper {
+        padding-right: 5px;
+        ul {
+          border: 1px solid $grey !important;
+          top: 35px !important;
+
+          li.disabled span {
+            color: $light-grey !important;
+          }
+        }
+      }
     }
 
     .left {
@@ -43,12 +70,12 @@
 
       .search {
         display: flex;
-        border: 1px solid $light-grey;
+        border: 1px solid $grey;
         border-radius: 5px;
         font-size: 30px;
         margin: 0;
         > i {
-          color: $light-grey;
+          color: $grey;
           line-height: 55px;
           margin-right: 20px;
           margin-left: 20px;
@@ -72,7 +99,7 @@
       }
       .product {
         display: flex;
-        border-bottom: 1px solid $light-grey;
+        border-bottom: 1px solid $grey;
         cursor: pointer;
         margin-left: 0;
         margin-right: 0;
@@ -81,7 +108,7 @@
           padding-left: 0;
           .icon {
             background-color: $white;
-            border: 1px solid $light-grey;
+            border: 1px solid $grey;
             border-radius: 5px;
             cursor: pointer;
             width: 100px;
@@ -131,14 +158,14 @@
       }
       .description {
         display: flex;
-        border-bottom: 1px solid $light-grey;
+        border-bottom: 1px solid $grey;
         margin: 0 0 50px;
         padding-bottom: 40px;
         .preview {
           padding-left: 0;
           .icon {
             background-color: $white;
-            border: 1px solid $light-grey;
+            border: 1px solid $grey;
             border-radius: 5px;
             cursor: pointer;
             width: 150px;
@@ -149,10 +176,6 @@
           color: $dark;
           margin-left: 20px;
           width: 100%;
-          .case {
-            margin-top: 10px;
-            margin-bottom: 15px;
-          }
           .line-header {
             font-weight: 200;
             margin-top: 20px;
@@ -175,154 +198,62 @@
           }
         }
       }
-      .location {
-        color: $dark;
-        margin: 0;
-        input {
-          border-color: $light-grey;
-          max-width: 300px;
-        }
-        &.submit {
-          margin-top: 30px;
-          .btn {
-            background-color: $tealish;
-            border-radius: 5px;
-            box-shadow: none;
-          }
-        }
-        &.amount {
-          margin-top: 20px;
-        }
+
+      .variant {
+        max-width: 200px;
       }
-      .unit {
+      .qty {
+        max-width: 100px;
+      }
+
+      .input-discount {
         display: flex;
-        .limit {
-          max-width: 100px;
-        }
-        > span {
-          line-height: 30px;
-        }
-      }
-      .product {
-        margin: 0;
-        color: $dark;
+        border: 1px solid #9e9e9e;
+        border-radius: 5px;
+        width: 154px;
+        height: 32px;
         input {
-          border-color: $light-grey;
-          max-width: 300px;
-        }
-      }
-      .backstock {
-        display: flex;
-        color: $dark;
-        margin: 0;
-        .stock-row {
-          margin-bottom: 10px;
-          padding: 0;
-        }
-        .stock-field {
-          display: flex;
+          background-color: #ffffff;
+          border-right: 1px solid #9e9e9e;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
           line-height: 30px;
-          margin-bottom: 10px;
-          padding: 0;
+          padding-left: 5px;
+          width: 70%;
+          height: 30px;
+        }
+        .select {
+          background-color: #f5f6f7;
+          border-bottom-right-radius: 5px;
+          border-top-right-radius: 5px;
+          width: 30%;
           input {
-            background-color: $white;
-            border-radius: 5px;
-            border: 1px solid $light-grey;
-            box-shadow: none !important;
-            box-sizing: border-box;
-            color: $grey;
-            font-size: 12px;
-            max-width: 70px;
-            min-width: 50px;
-            margin-right: 20px;
-            line-height: 30px;
-            padding: 5px;
-            text-align: center;
-            height: 30px;
-          }
-          input[disabled] {
-            background-color: $light-light-grey;
-          }
-          .action-button {
-            text-align: center;
-            cursor: pointer;
-            border-radius: 4px;
-            line-height: 30px;
-            background-color: $tealish;
+            background-color: #f5f6f7;
             border: none;
-            color: $white;
-            width: 30px;
             height: 30px;
-            &.right-align {
-              margin-left: 15px;
-            }
-            &.active {
-              background-color: $tealish;
-            }
           }
-          .action-button[disabled] {
-            background-color: $light-grey;
-          }
-          .btn {
-            background-color: $tealish;
-            border-radius: 4px;
-            box-shadow: none;
-            font-size: 12px;
-            height: 30px;
-            line-height: 30px;
-            padding-left: 8px;
-            padding-right: 8px;
-
-            > i {
-              font-size: 12px;
+          .select-wrapper {
+            padding-right: 5px;
+            input {
+              width: 100%;
+              &.select-dropdown {
+                text-indent: 0;
+              }
             }
-            &.inactive {
-              background-color: $light-grey;
+            ul {
+              border: 1px solid $grey !important;
+              top: 35px !important;
+              left: auto !important;
+              right: 0 !important;
             }
           }
         }
       }
-    }
-    .right {
-      display: block;
-      position: relative;
-      padding-left: 60px;
-      padding-right: 60px;
-      width: 100%;
 
-      .preview {
-        display: flex;
-        justify-content: center;
-        margin: 30px;
-        .icon {
-          background-color: $white;
-          border: 1px solid $light-grey;
-          border-radius: 5px;
-          cursor: pointer;
-          width: 200px;
-          height: 200px;
-        }
-      }
-      .slider-container {
-        margin-top: 50px;
-        margin-bottom: 100px;
-        margin-left: 30px;
-        margin-right: 30px;
-      }
       .submit {
-        display: flex;
-        justify-content: center;
         .btn {
           background-color: $tealish;
-          border-radius: 5px;
           box-shadow: none;
-          width: auto;
-        }
-        .left {
-          margin-right: 20px;
-        }
-        .right {
-          margin-left: 20px;
         }
       }
     }

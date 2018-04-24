@@ -62,7 +62,7 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
       floorVisible: false,
     }, {
       stockName: 'Room B',
-      stockQTY: 133,
+      stockQTY: 13,
       stockMove: null,
       stockDisabled: false,
       floorName: 'Ex. Room 1',
@@ -154,9 +154,32 @@ export class TransferModal implements OnInit, ModalComponent<TransferModalContex
     }
   }
 
+  unitChange(event) {
+    if (event === 'Gloves') {
+      this.inventories.forEach((inventory, index) => {
+        inventory.stockQTY = inventory.stockQTY * 100;
+      })
+    } else {
+      this.inventories.forEach((inventory, index) => {
+        inventory.stockQTY = inventory.stockQTY / 100;
+      })
+    }
+  }
+
   toBackInitial() {
     this.modalState = 0;
     this.searchText = '';
+  }
+
+  getTransferText(unit, move) {
+    if (unit == 'Boxes' && move > 1) {
+      return `${move} Boxes = ${(300 * move).toLocaleString()} Gloves`;
+    } else if (unit == 'Boxes' && move == 1) {
+      return `${move} Box = ${(300 * move).toLocaleString()} Gloves`;
+    } else if (unit == 'Gloves' && move > 1) {
+      return `${move} Gloves`;
+    }
+    return `${move} Glove`;
   }
 
   toGoModal(state, index) {

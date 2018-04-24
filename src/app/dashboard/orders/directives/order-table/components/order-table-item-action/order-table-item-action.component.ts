@@ -7,6 +7,7 @@ import { PastOrderService } from '../../../../../../core/services/pastOrder.serv
 import { Modal } from 'angular2-modal';
 import { ToasterService } from '../../../../../../core/services/toaster.service';
 import { ResendOrderModal } from '../../../../resend-order-modal/resend-order-modal.component';
+import { ReconcileOnboardingModal } from '../../../../reconcile-onboarding-modal/reconcile-onboarding-modal.component';
 import { ModalWindowService } from '../../../../../../core/services/modal-window.service';
 import { OrderTableOnVoidService } from '../../order-table-on-void.service';
 import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-modal.component';
@@ -28,6 +29,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   @Input() i: any;
   @Input() item: any;
+  @Input() items: Array<any>;
   @Input() isShow: boolean;
   @Input() listName: string;
   @Input() uniqueField: string;
@@ -72,11 +74,9 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   addSubscribers() {
-
     this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
     .switchMap((data) => this.pastOrderService.reorder(data))
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
-
   }
 
   setFavorite(item) {
@@ -125,6 +125,12 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   receive() {
     this.sendToReceiveProduct(this.item, OrderStatusValues.receive);
+  }
+
+  reconcile() {
+    this.modal
+    .open(ReconcileOnboardingModal, this.modalWindowService
+    .overlayConfigFactoryWithParams({order: this.item, orders: this.items}));
   }
 
   backorder() {
