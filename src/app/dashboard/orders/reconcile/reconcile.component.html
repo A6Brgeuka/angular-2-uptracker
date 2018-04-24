@@ -1,6 +1,15 @@
 <form class="uptracker-form" (ngSubmit)="saveReconcile()" materialize #reconcileProductForm="ngForm" autocomplete="off" novalidate>
   <div class="top">
     <div class="row filter clearfix">
+      <div class="col l1">
+        <button
+          type="submit"
+          class="uptracker-form-btn no-min-width white-text waves-effect waves-light back"
+          (click)="goBack()"
+        >
+          <span class="fa fa-chevron-left"></span>
+        </button>
+      </div>
       <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
       </div>
@@ -137,7 +146,7 @@
           </div>
           <div class="row">
             <div class="item">
-              <span>Taxes</span>
+              <span>Tax</span>
               <div class="input-taxes">
                 <input
                   type="text"
@@ -158,7 +167,7 @@
                         type="text"
                         name="salestax"
                         currencyMask
-                        [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
                         [(ngModel)]="selectedInvoice.invoice.sales_tax"
                       >
                     </div>
@@ -170,7 +179,7 @@
                         type="text"
                         name="vat"
                         currencyMask
-                        [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
                         [(ngModel)]="selectedInvoice.invoice.vat"
                       >
                     </div>
@@ -217,9 +226,23 @@
           <button
             type="submit"
             class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
-            (click)="updateDetails()"
+            (click)="reconcileSave()"
           >
-            UPDATE DETAILS
+            SAVE FOR LATER
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcilePay()"
+          >
+            RECONCILE & PAY
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcileCancel()"
+          >
+            CANCEL
           </button>
         </div>
         <div class="col l6 right">
@@ -253,7 +276,7 @@
 
     <div class="control">
       <div class="input wide-input">
-        <input type="text" name="filterInput" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
+        <input type="text" name="filterInput" placeholder="Product Search" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
       </div>
       <div class="select">
         <select title="sort by" name="sort" [(ngModel)]="sort" materialize="material_select"  (ngModelChange)="sortAlphabet($event)">
@@ -261,12 +284,12 @@
           <option value="Z-A">Z-A</option>
         </select>
       </div>
-      <div class="filter">
+      <!-- <div class="filter">
         <a (click)="openFilterModal()">
           <fa [name]="'filter'"></fa>
           <span>Filters</span>
         </a>
-      </div>
+      </div> -->
       <!-- <button
         (click)="showProductModal()"
         class="right mtop uptracker-form-btn white-text waves-effect waves-light"
@@ -321,7 +344,7 @@
               />
               <label for="selectProduct"></label>
             </div>
-            <div class="product-pic">
+            <div class="product-pic" *ngIf="product.image">
               <img src="{{product.image}}" alt="PRODUCT" />
             </div>
             <div class="left">
@@ -413,14 +436,26 @@
             </div>
           </div>
 
-          <div class="col s1 flex-center justify-center trash-icon">
-            <a>
+          <div class="col s1 flex-center justify-center trash-icon trash">
+            <a (click)="product.isControlOpen = !product.isControlOpen">
               <fa name="ellipsis-h" class="tealish-text"></fa>
             </a>
+            <div class="remove" (click)="deleteProduct(i)" *ngIf="product.isControlOpen">
+              <span>Remove</span>
+            </div>
           </div>
         </div>
       </div>
     </ng-container>
+    <div class="row">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="updateProducts()"
+      >
+        UPDATE
+      </button>
+    </div>
   </div>
 
   <div class="panel" [class.active]="panelVisible">
