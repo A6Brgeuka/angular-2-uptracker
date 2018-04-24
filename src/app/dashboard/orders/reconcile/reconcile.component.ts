@@ -194,8 +194,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       }
       this.selectedInvoice.invoice.total = total - this.selectedInvoice.invoice.discount;
 
-      console.log('$$$$$$$$$$$$:   ', total, ' : ', this.selectedInvoice.invoice.discount);
-
       // Calculated Total
       let calculated_total = this.selectedInvoice.invoice.calculated_sub_total
       - this.selectedInvoice.invoice.invoice_credit
@@ -262,8 +260,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.taxBoardVisible = !this.taxBoardVisible;
 
     const total = this.selectedInvoice.invoice.tax
-      + this.selectedInvoice.invoice.sales_tax
-      + this.selectedInvoice.invoice.vat;
+      + this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.sales_tax / 100
+      + this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.vat / 100;
     this.selectedInvoice.invoice.tax = total;
 
     this.updateInvoiceDetails({});
