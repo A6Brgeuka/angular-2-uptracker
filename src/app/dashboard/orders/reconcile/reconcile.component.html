@@ -413,10 +413,13 @@
             </div>
           </div>
 
-          <div class="col s1 flex-center justify-center trash-icon">
-            <a>
+          <div class="col s1 flex-center justify-center trash-icon trash">
+            <a (click)="product.isControlOpen = !product.isControlOpen">
               <fa name="ellipsis-h" class="tealish-text"></fa>
             </a>
+            <div class="remove" (click)="deleteProduct(i)" *ngIf="product.isControlOpen">
+              <span>Remove</span>
+            </div>
           </div>
         </div>
       </div>

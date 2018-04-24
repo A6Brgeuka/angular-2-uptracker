@@ -151,6 +151,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     product.checked = false;
     this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
   }
+
+  deleteProduct(index) {
+    this.selectedInvoice.items.splice(index, 1);
+  }
   
   saveReconcile() {}
 

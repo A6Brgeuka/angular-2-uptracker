@@ -594,6 +594,25 @@
           }
         }
       }
+      .trash {
+        position: relative;
+        .remove {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: white;
+          border: 1px solid #9a9c9e;
+          cursor: pointer;
+          top: 10px;
+          right: 20px;
+          position: absolute;
+          width: 100px;
+          height: 50px;
+          > span {
+            color: $tealish;
+          }
+        }
+      }
       &.row .col {
         padding-left: 5px;
         padding-right: 5px;
