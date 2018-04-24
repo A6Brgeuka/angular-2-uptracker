@@ -79,7 +79,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.orders = res;
       });
       this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
-        res.invoice.invoice_date = new Date(res.invoice.invoice_date);
+        // res.invoice.invoice_date = new Date(res.invoice.invoice_date);
+        res.invoice.invoice_date = new Date();
         res.invoice.discount_ = 0;
         res.invoice.discount_type = 'PERCENT';
         this.selectedInvoice = res;
@@ -95,7 +96,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       console.log('ngOnInit: ', err);
       this.router.navigate(['/orders/items']);
     }
-    
   }
 
   ngOnDestroy() {
