@@ -5,6 +5,7 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower, isEmpty, isNil } from 'ramda';
 import { SelectComponent, IOption } from 'ng-select';
+import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
@@ -12,7 +13,7 @@ import * as Currency from 'currency-codes';
 import { ReconcileService, UserService } from '../../../core/services/index';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
-import { Subscription } from 'rxjs';
+import { ToasterService } from '../../../core/services/toaster.service';
 
 @Component({
   selector: 'app-reconcile',
@@ -47,6 +48,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public userService: UserService,
     public router: Router,
+    public toasterService: ToasterService,
   ) {
   }
 
@@ -290,46 +292,47 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   updateDetails() {
-    let items = [];
-    this.selectedInvoice.items.forEach(item => {
-      const newItem = {
-        order_id: item.order_id,
-        order_line_item_id: item.order_line_item_id,
-        invoice_line_item_id: item.invoice_line_item_id,
-        item_name: item.item_name,
-        order_qty: item.order_qty,
-        received_qty: item.received_qty,
-        package_price: item.package_price,
-        discount: item.discount,
-        discounted_price: item.discounted_price,
-        total: item.total,
-        reconciled_qty: item.reconciled_qty,
-        reconciled_package_price: item.reconciled_package_price,
-        reconciled_discount: item.reconciled_discount,
-        reconciled_discounted_price: item.reconciled_discounted_price,
-        reconciled_total: item.reconciled_total,
-      };
+    this.toasterService.pop("", "Invoice details updated successfully");
+    // let items = [];
+    // this.selectedInvoice.items.forEach(item => {
+    //   const newItem = {
+    //     order_id: item.order_id,
+    //     order_line_item_id: item.order_line_item_id,
+    //     invoice_line_item_id: item.invoice_line_item_id,
+    //     item_name: item.item_name,
+    //     order_qty: item.order_qty,
+    //     received_qty: item.received_qty,
+    //     package_price: item.package_price,
+    //     discount: item.discount,
+    //     discounted_price: item.discounted_price,
+    //     total: item.total,
+    //     reconciled_qty: item.reconciled_qty,
+    //     reconciled_package_price: item.reconciled_package_price,
+    //     reconciled_discount: item.reconciled_discount,
+    //     reconciled_discounted_price: item.reconciled_discounted_price,
+    //     reconciled_total: item.reconciled_total,
+    //   };
 
-      items.push(newItem);
-    })
+    //   items.push(newItem);
+    // })
 
-    const invoice = {
-      currency: this.selectedInvoice.invoice.currency,
-      discount: this.selectedInvoice.invoice.discount,
-      handling: this.selectedInvoice.invoice.handling,
-      invoice_date: this.selectedInvoice.invoice.invoice_date,
-      invoice_number: this.selectedInvoice.invoice.invoice_number,
-      invoice_id: this.selectedInvoice.invoice.invoice_id,
-      shipping: this.selectedInvoice.invoice.shipping,
-      sub_total: this.selectedInvoice.invoice.sub_total,
-      tax: this.selectedInvoice.invoice.tax,
-      total: this.selectedInvoice.invoice.total,
-      vendor_id: this.selectedInvoice.invoice.vendor_id,
-      vendor_name: this.selectedInvoice.invoice.vendor_name,
-      attachments: [],
-    }
+    // const invoice = {
+    //   currency: this.selectedInvoice.invoice.currency,
+    //   discount: this.selectedInvoice.invoice.discount,
+    //   handling: this.selectedInvoice.invoice.handling,
+    //   invoice_date: this.selectedInvoice.invoice.invoice_date,
+    //   invoice_number: this.selectedInvoice.invoice.invoice_number,
+    //   invoice_id: this.selectedInvoice.invoice.invoice_id,
+    //   shipping: this.selectedInvoice.invoice.shipping,
+    //   sub_total: this.selectedInvoice.invoice.sub_total,
+    //   tax: this.selectedInvoice.invoice.tax,
+    //   total: this.selectedInvoice.invoice.total,
+    //   vendor_id: this.selectedInvoice.invoice.vendor_id,
+    //   vendor_name: this.selectedInvoice.invoice.vendor_name,
+    //   attachments: [],
+    // }
 
-    const payload = { items, invoice }
-    this.reconcileService.updateReconcile(payload);
+    // const payload = { items, invoice }
+    // this.reconcileService.updateReconcile(payload);
   }
 }
