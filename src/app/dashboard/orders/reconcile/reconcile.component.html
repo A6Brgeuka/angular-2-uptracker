@@ -167,7 +167,7 @@
                         type="text"
                         name="salestax"
                         currencyMask
-                        [options]="{ prefix: '%', thousands: ',', decimal: '.', align: 'left' }"
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
                         [(ngModel)]="selectedInvoice.invoice.sales_tax"
                       >
                     </div>
@@ -179,7 +179,7 @@
                         type="text"
                         name="vat"
                         currencyMask
-                        [options]="{ prefix: '%', thousands: ',', decimal: '.', align: 'left' }"
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
                         [(ngModel)]="selectedInvoice.invoice.vat"
                       >
                     </div>

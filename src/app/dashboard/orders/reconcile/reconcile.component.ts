@@ -267,8 +267,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     this.taxBoardVisible = !this.taxBoardVisible;
 
     const total = this.selectedInvoice.invoice.tax
-      + this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.sales_tax / 100
-      + this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.vat / 100;
+      + (this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.sales_tax / 100) || 0
+      + (this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.vat / 100) || 0;
     this.selectedInvoice.invoice.tax = total;
 
     this.updateInvoiceDetails({});
