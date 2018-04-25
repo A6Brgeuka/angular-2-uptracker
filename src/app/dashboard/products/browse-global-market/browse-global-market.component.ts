@@ -1,7 +1,5 @@
-import {Component, OnInit, HostListener} from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import {Component, OnInit, HostListener, OnDestroy} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {includes} from 'lodash';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {Router} from '@angular/router';
 import {ProductService} from '../../../core/services/product.service';
@@ -14,12 +12,11 @@ import { Location } from '@angular/common';
 })
 
 @DestroySubscribers()
-export class BrowseGlobalMarketComponent implements OnInit {
+export class BrowseGlobalMarketComponent implements OnInit, OnDestroy {
 
   public subscribers: any = {};
 
-  public products$: Observable<any> = new Observable();
-  public searchKey$: BehaviorSubject<any> = new BehaviorSubject('');
+  public searchKey: string;
   public isRequest: boolean = false;
   public infiniteScroll$: any = new BehaviorSubject(false);
 
@@ -31,14 +28,6 @@ export class BrowseGlobalMarketComponent implements OnInit {
 
   ngOnInit() {
     this.productService.updateMarketplaceData('global');
-    this.products$ = Observable
-      .combineLatest(
-        this.productService.collection$,
-        this.searchKey$
-      )
-      .map(([products, searchKey]: [any, any]) =>
-        products.filter((product: any) =>
-          searchKey ? includes(product.name.toLowerCase(), searchKey.toLowerCase()) : product));
   };
 
   addSubscribers() {
@@ -85,6 +74,15 @@ export class BrowseGlobalMarketComponent implements OnInit {
   goBack(): void {
     this.productService.updateMarketplaceData('my');
     this.location.back();
+  }
+
+  resetSearch() {
+    this.searchKey = '';
+    this.productService.updateSearchKey('');
+  }
+
+  ngOnDestroy() {
+    this.resetSearch();
   }
 
 }
