@@ -97,7 +97,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isRequest = true;
       this.searchKeyLast = this.searchKey;
       //TODO remove
-      if (this.total <= (this.inventoryService.current_page) * this.inventoryService.pagination_limit) {
+      if (this.total <= (this.inventoryService.current_page) * this.inventoryService.pagination_limit - 1) {
         this.isRequest = false;
         return Observable.of(false);
       } else {
