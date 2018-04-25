@@ -21,7 +21,7 @@ export class BrowseGlobalMarketComponent implements OnInit, OnDestroy {
   public infiniteScroll$: any = new BehaviorSubject(false);
 
   constructor(
-    private productService: ProductService,
+    public productService: ProductService,
     private router: Router,
     private location: Location
   ) {}
