@@ -155,14 +155,16 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
       let queryParams;
       if (url === '/orders/items') {
         queryParams = item.item.order_id.toString() + '&' + item.item[this.uniqueField].toString();
+        this.pastOrderService.goToReceive(queryParams, item.type);
       } else if (url === '/orders') {
         queryParams = item.item.order_id.toString() + '&' + item.item.order_items.map((res) => res.id).toString();
+        this.pastOrderService.goToReceive(queryParams, item.type);
       } else if (url === '/orders/invoices') {
-        queryParams = '';
+        queryParams = {invoice_id: item.invoice_id};
+        this.pastOrderService.goToReconcile(queryParams);
       } else if (url === '/orders/packing-slips') {
         queryParams = '';
       }
-      this.pastOrderService.goToReceive(queryParams, item.type);
     })
     .subscribe();
 
