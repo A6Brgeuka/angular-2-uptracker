@@ -1,19 +1,24 @@
 <form class="uptracker-form" (ngSubmit)="saveReconcile()" materialize #reconcileProductForm="ngForm" autocomplete="off" novalidate>
   <div class="top">
     <div class="row filter clearfix">
+      <div class="col l1">
+        <button
+          type="submit"
+          class="uptracker-form-btn no-min-width white-text waves-effect waves-light back"
+          (click)="goBack()"
+        >
+          <span class="fa fa-chevron-left"></span>
+        </button>
+      </div>
       <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
       </div>
       <div class="col l4 m6 padded">
-        <ngx-select-dropdown 
-          *ngIf="invoices.length > 0"
-          [config]="selectConfig"
+        <ng-select
           [options]="invoices"
-          [(value)]="invoices_"
-          [multiple]="false"
-          (valueChange)="invoiceChange($event)"
-        >
-        </ngx-select-dropdown>
+          placeholder="{{selectedInvoice.invoice.invoice_number}}"
+          (selected)="handleInvoiceChanges($event)"
+        ></ng-select>
       </div>
     </div>
 
@@ -36,20 +41,21 @@
           <div class="row input-header"><span>Currency</span></div>
           <div class="row">
             <div class="currency">
-              <span>{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}1.00</span>
-              <div class="select">
-                <select
-                  class="wide"
-                  materialize="material_select"
-                  [materializeSelectOptions]=""
-                  name="currency"
-                  [(ngModel)]="selectedInvoice.invoice.currency"
-                  (ngModelChange)="invoiceChange($event)"
+              <span class="amount">1.00</span>
+              <ng-select [options]="currencies" (selected)="handleCurrencyChange($event)">
+                <ng-template
+                  #optionTemplate
+                  let-option="option"
                 >
-                  <ng-container *ngFor="let currency of currencies; let i = index">
-                    <option value="{{currency.code}}">{{currency.currency}}</option>
-                  </ng-container>
-                </select>
+                  <div class="flag-row">
+                    <div class="currency-flag currency-flag-{{option.value}}"></div>
+                    <span class="name">{{option.label}}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+              <div class="currency-value">
+                <div class="currency-flag currency-flag-{{selectedInvoice.invoice.currency.toLowerCase()}}"></div>
+                <span>{{selectedInvoice.invoice.currency.toUpperCase()}}</span>
               </div>
             </div>
           </div>
@@ -78,7 +84,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.sub_total"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -96,7 +102,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.invoice_credit"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -114,7 +120,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.shipping"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -132,7 +138,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.handling"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                 </div>
               </div>
@@ -140,7 +146,7 @@
           </div>
           <div class="row">
             <div class="item">
-              <span>Taxes</span>
+              <span>Tax</span>
               <div class="input-taxes">
                 <input
                   type="text"
@@ -148,7 +154,7 @@
                   currencyMask
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                   [(ngModel)]="selectedInvoice.invoice.tax"
-                  (ngModelChange)="invoiceChange($event)"
+                  (ngModelChange)="updateInvoiceDetails($event)"
                 >
                 <div class="plus" (click)="toggleTaxBoard()">
                   <fa name="plus"></fa>
@@ -161,7 +167,7 @@
                         type="text"
                         name="salestax"
                         currencyMask
-                        [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
                         [(ngModel)]="selectedInvoice.invoice.sales_tax"
                       >
                     </div>
@@ -173,7 +179,7 @@
                         type="text"
                         name="vat"
                         currencyMask
-                        [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
                         [(ngModel)]="selectedInvoice.invoice.vat"
                       >
                     </div>
@@ -195,7 +201,7 @@
                   type="text"
                   name="discount"
                   [(ngModel)]="selectedInvoice.invoice.discount_"
-                  (ngModelChange)="invoiceChange($event)"
+                  (ngModelChange)="updateInvoiceDetails($event)"
                 >
                 <div class="select">
                   <select
@@ -203,7 +209,7 @@
                     materialize="material_select"
                     name="currency"
                     [(ngModel)]="selectedInvoice.invoice.discount_type"
-                    (ngModelChange)="invoiceChange($event)"
+                    (ngModelChange)="updateInvoiceDetails($event)"
                   >
                     <option value="PERCENT">%</option>
                     <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
@@ -220,9 +226,23 @@
           <button
             type="submit"
             class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
-            (click)="updateDetails()"
+            (click)="reconcileSave()"
           >
-            UPDATE DETAILS
+            SAVE FOR LATER
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcilePay()"
+          >
+            RECONCILE & PAY
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcileCancel()"
+          >
+            CANCEL
           </button>
         </div>
         <div class="col l6 right">
@@ -256,7 +276,7 @@
 
     <div class="control">
       <div class="input wide-input">
-        <input type="text" name="filterInput" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
+        <input type="text" name="filterInput" placeholder="Product Search" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
       </div>
       <div class="select">
         <select title="sort by" name="sort" [(ngModel)]="sort" materialize="material_select"  (ngModelChange)="sortAlphabet($event)">
@@ -264,18 +284,18 @@
           <option value="Z-A">Z-A</option>
         </select>
       </div>
-      <div class="filter">
+      <!-- <div class="filter">
         <a (click)="openFilterModal()">
           <fa [name]="'filter'"></fa>
           <span>Filters</span>
         </a>
-      </div>
-      <button
+      </div> -->
+      <!-- <button
         (click)="showProductModal()"
         class="right mtop uptracker-form-btn white-text waves-effect waves-light"
       >
         Add Product
-      </button>
+      </button> -->
     </div>
 
     <div class="list is-grid-view">
@@ -324,7 +344,7 @@
               />
               <label for="selectProduct"></label>
             </div>
-            <div class="product-pic">
+            <div class="product-pic" *ngIf="product.image">
               <img src="{{product.image}}" alt="PRODUCT" />
             </div>
             <div class="left">
@@ -416,14 +436,26 @@
             </div>
           </div>
 
-          <div class="col s1 flex-center justify-center trash-icon">
-            <a>
+          <div class="col s1 flex-center justify-center trash-icon trash">
+            <a (click)="product.isControlOpen = !product.isControlOpen">
               <fa name="ellipsis-h" class="tealish-text"></fa>
             </a>
+            <div class="remove" (click)="deleteProduct(i)" *ngIf="product.isControlOpen">
+              <span>Remove</span>
+            </div>
           </div>
         </div>
       </div>
     </ng-container>
+    <div class="row">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="updateProducts()"
+      >
+        UPDATE
+      </button>
+    </div>
   </div>
 
   <div class="panel" [class.active]="panelVisible">

@@ -11,51 +11,50 @@ import { ModalWindowService } from '../../../../core/services/modal-window.servi
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { OrderTableService } from './order-table.service';
 import { AddCommentModalComponent } from '../../../../shared/modals/add-comment-modal/add-comment-modal.component';
-import { OrderItemsTableService } from '../../order-items-table/services/order-items-table.service';
+import { OrdersService } from '../../orders.service';
+import { ConnectableObservable } from 'rxjs/Rx';
 
 
 @Injectable()
 export class OrderTableOnVoidService {
-  private voidOrder$: Subject<any>;
   private voidCheckedOrders$: Subject<any>;
   private openConfirmVoidModal$: Subject<any>;
+  private voidOrder$: ConnectableObservable<any>;
 
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableService: OrderTableService,
-    public orderItemsTableService: OrderItemsTableService,
+    public ordersService: OrdersService,
   ) {
-    this.voidOrder$ = new Subject<any>();
     this.voidCheckedOrders$ = new Subject<any>();
     this.openConfirmVoidModal$ = new Subject();
 
-    this.openConfirmVoidModal$
+    this.voidOrder$ = this.openConfirmVoidModal$
     .map((data) => _.isArray(data) ? [...data] : [data])
-    .map((items) => _.map(items, 'id'))
-    .switchMap((ids) =>
+    .switchMap((orders) =>
       Observable.fromPromise(
         this.modal
         .open(AddCommentModalComponent, this.modalWindowService
         .overlayConfigFactoryWithParams({
-          title: `Why are you voiding this item${ids.length > 1 ? 's' : ''}?`,
+          title: `Why are you voiding this item${orders.length > 1 ? 's' : ''}?`,
           placeholder: 'Message'
         }, true, 'mid'))
         .then((resultPromise) => resultPromise.result)
       )
       .catch(() => Observable.never())
-      .map((result) => ids.map((id) => ({id, message: result.body})))
-    )
-    .switchMap((items: any) =>
-      this.orderItemsTableService.onVoidOrder({items})
-    )
-    .subscribe();
+      .map((result) =>
+        orders.map((item) => ({item, message: result.body}))
+      )
+    ).publish();
+    this.voidOrder$.connect();
 
   }
 
   onVoidOrder(data) {
     this.openConfirmVoidModal$.next(data);
+    return this.voidOrder$;
   }
 
 }

@@ -7,29 +7,84 @@
       .padded {
         padding-left: 20px;
       }
-      ngx-select-dropdown {
-        .icon-angle-down {        
-          font-family: FontAwesome;
-          &:before {
-            content: '\F107';
-          }
+      .back {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $tealish;
+        border-radius: 15px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        > span {
+          color: white;
+          font-size: 16px;
         }
-        .ngx-dorpdown-container {
-          .ngx-dropdown-list-container {
-            box-shadow: none;
-            border: 1px solid #9a9c9e !important;
-            .search-container {
-              input {
-                border: 1px solid #9a9c9e !important;
-                border-radius: 3px !important;
-                text-indent: 10px;
-              }
-              label {
-                display: none !important;
+      }
+      ng-select {
+        .below {
+          border: 1px solid #9a9c9e;
+          border-radius: 5px;
+          .single {
+            position: relative;
+            height: 34px;
+            .value {
+              line-height: 34px;
+              .flag-row {
+                display: flex;
+                align-items: center;
+                height: 34px;
+                .name {
+                  margin-left: 10px;
+                }
               }
             }
-            ul.selected-items li {
-              background-color: $tealish !important;
+            .toggle {
+              display: none;
+            }
+            .placeholder {
+              color: black;
+              line-height: 34px;
+            }
+            &:after {
+              background-repeat: no-repeat;
+              background-image: url(/assets/img/icon-dropdown-arrow.svg);
+              content: "";
+              position: absolute;
+              bottom: 0;
+              margin: auto;
+              right: 7px;
+              top: 0;
+              width: 10px;
+              height: 6px;
+            }
+          }
+        }
+        > div:focus {
+          outline: none;
+        }
+        select-dropdown > div {
+          border-radius: 5px;
+          border: 1px solid #9a9c9e;
+          margin-top: 10px;
+          overflow: hidden;
+          z-index: 999;
+          .filter {
+            padding: 8px;
+            input {
+              border: 1px solid #9a9c9e;
+              border-radius: 5px;
+              color: black;
+              font-family: 'Roboto';
+              font-size: 18px;
+              height: 34px;
+            }
+          }
+          .flag-row {
+            display: flex;
+            align-items: center;
+            .name {
+              margin-left: 10px;
             }
           }
         }
@@ -104,9 +159,10 @@
           display: flex;
           border: 1px solid #9a9c9e;
           border-radius: 5px;
-          width: 300px;
+          position: relative;
+          width: 155px;
           height: 36px;
-          > span {
+          .amount {
             background-color: #ffffff;
             border-right: 1px solid #9e9e9e;
             border-top-left-radius: 5px;
@@ -116,33 +172,81 @@
             text-indent: 10px;
             width: 80px;
           }
-          .select {
-            background-color: #f5f6f7;
-            border-bottom-right-radius: 5px;
-            border-top-right-radius: 5px;
-            width: 220px;
-            .select-wrapper {
-              .select-dropdown {
-                background-color: #f5f6f7;
-                border: none;
-              }
-              .dropdown-content li {
-                background-color: white;
-              }
-              .dropdown-content li:hover {
-                background-color: #f5f5f5;
-              }
-              .dropdown-content li.selected {
-                background-color: #f5f5f5;
-              }
-              input {
+          .currency-value {
+            display: flex;
+            align-items: center;
+            line-height: 34px;
+            pointer-events: none;
+            position: absolute;
+            right: 25px;
+            height: 34px;
+            > span {
+              margin-left: 10px;
+            }
+          }
+          ng-select {
+            .below {
+              border: none;
+              border-bottom-right-radius: 5px;
+              border-top-right-radius: 5px;
+              .single {
+                position: relative;
                 height: 34px;
+                .value {
+                  display: none;
+                  .flag-row {
+                    display: flex;
+                    align-items: center;
+                    height: 34px;
+                    .name {
+                      margin-left: 10px;
+                    }
+                  }
+                }
+                .toggle {
+                  display: none;
+                }
+                &:after {
+                  background-repeat: no-repeat;
+                  background-image: url(/assets/img/icon-dropdown-arrow.svg);
+                  content: "";
+                  position: absolute;
+                  bottom: 0;
+                  margin: auto;
+                  right: 7px;
+                  top: 0;
+                  width: 10px;
+                  height: 6px;
+                }
               }
-              ul {
-                border: 1px solid #9a9c9e !important;
-                top: 35px !important;
-                right: 0 !important;
-                left: auto !important;
+            }
+            > div:focus {
+              outline: none;
+            }
+            select-dropdown > div {
+              border-radius: 5px;
+              border: 1px solid #9a9c9e;
+              margin-top: 10px;
+              overflow: hidden;
+              z-index: 999;
+              width: 250px !important;
+              .filter {
+                padding: 8px;
+                input {
+                  border: 1px solid #9a9c9e;
+                  border-radius: 5px;
+                  color: black;
+                  font-family: 'Roboto';
+                  font-size: 18px;
+                  height: 34px;
+                }
+              }
+              .flag-row {
+                display: flex;
+                align-items: center;
+                .name {
+                  margin-left: 10px;
+                }
               }
             }
           }
@@ -501,6 +605,25 @@
             border-right: none;
             border-bottom-right-radius: 5px;
             border-top-right-radius: 5px;
+          }
+        }
+      }
+      .trash {
+        position: relative;
+        .remove {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: white;
+          border: 1px solid #9a9c9e;
+          cursor: pointer;
+          top: 10px;
+          right: 20px;
+          position: absolute;
+          width: 100px;
+          height: 50px;
+          > span {
+            color: $tealish;
           }
         }
       }

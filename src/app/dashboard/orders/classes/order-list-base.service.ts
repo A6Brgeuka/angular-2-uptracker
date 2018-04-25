@@ -4,7 +4,6 @@ import { Subject } from 'rxjs/Subject';
 
 import * as _ from 'lodash';
 
-import { OrderItem } from '../models/order-item';
 import { EntitiesService } from './entities.service';
 
 export enum IdsActions {
@@ -17,7 +16,7 @@ export abstract class OrderListBaseService {
 
   public getCollectionRequest$: Observable<any>;
   public getCollection$: Subject<any> = new Subject();
-  public collection$: Observable<OrderItem[]>;
+  public collection$: Observable<any[]>;
   public ids$: ConnectableObservable<string[]>;
   protected abstract idName: string;
 

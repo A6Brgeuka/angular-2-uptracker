@@ -32,8 +32,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscribers.resetFiltersSubscription = this.stateService.navigationEndUrl$
-    .subscribe(() => this.resetFilters());
+    this.ordersService.updateRoute(this.router.url);
+
+    this.subscribers.navigationEndSubscription = this.stateService.navigationEndUrl$
+    .subscribe((url) => {
+      this.ordersService.updateRoute(url);
+      this.resetFilters();
+    });
   }
 
   ngOnDestroy() {

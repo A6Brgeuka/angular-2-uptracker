@@ -14,6 +14,8 @@ import { OrderFlagModalComponent } from '../../../order-flag-modal/order-flag-mo
 import { OrderStatus, OrderStatusValues } from '../../../../models/order-status';
 import { OrderListType } from '../../../../models/order-list-type';
 import { OrderItem } from '../../../../models/order-item';
+import { OrdersService } from '../../../../orders.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-order-table-item-action',
@@ -25,15 +27,23 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   private subscribers: any = {};
 
-  private reorderProduct$:  any = new Subject<any>();
+  private reorderProductSubject$:  Subject<any> = new Subject<any>();
+  private reorderProducts$:  Observable<any>;
+
+  private voidProductSubject$:  Subject<any> = new Subject<any>();
+
+  private receiveProductSubject$:  Subject<any> = new Subject<any>();
+  private receiveProducts$:  Observable<any>;
 
   @Input() i: any;
   @Input() item: any;
+  @Input() items: Array<any>;
   @Input() isShow: boolean;
   @Input() listName: string;
   @Input() uniqueField: string;
   @Output() onFavorite: EventEmitter<OrderItem> = new EventEmitter();
   @Output() onFlagged: EventEmitter<OrderItem> = new EventEmitter();
+  @Output() onVoid: EventEmitter<OrderItem> = new EventEmitter();
 
   constructor(
     public modal: Modal,
@@ -41,6 +51,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public toasterService: ToasterService,
     public orderTableOnVoidService: OrderTableOnVoidService,
+    public ordersService: OrdersService,
   ) {
   }
 
@@ -49,7 +60,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   get isBackorderedList() {
-    return this.listName === OrderListType.received;
+    return this.listName === OrderListType.backordered;
   }
 
   get isBackorderedItem() {
@@ -66,6 +77,18 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(`${this.constructor.name} Inits`);
+
+    this.reorderProducts$ = Observable.combineLatest(
+      this.ordersService.tableRoute$,
+      this.reorderProductSubject$,
+    );
+
+    this.receiveProducts$ = Observable.combineLatest(
+      this.ordersService.tableRoute$,
+      this.receiveProductSubject$,
+    );
+
+
   }
 
   ngOnDestroy() {
@@ -74,9 +97,74 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
 
   addSubscribers() {
 
-    this.subscribers.reorderProductFromOrderSubscription = this.reorderProduct$
-    .switchMap((data) => this.pastOrderService.reorder(data))
+    this.subscribers.voidProductSubscription = this.voidProductSubject$
+    .switchMap((item) =>
+      this.orderTableOnVoidService.onVoidOrder(item)
+    )
+    .subscribe((res) =>
+      this.onVoid.emit(res)
+    );
+
+    this.subscribers.reorderProductFromOrderSubscription = this.reorderProducts$
+    .switchMap(([url, item]) => {
+      let data;
+      if (url === '/orders/items') {
+        data = {
+          orders: [
+            {
+              order_id: item.order_id,
+              items_ids: [item[this.uniqueField]],
+            }
+          ]
+        };
+      } else if (url === '/orders') {
+        data = {
+          orders: [
+            {
+              order_id: item.order_id,
+              items_ids: item.order_items.map((res) => res.id),
+            }
+          ]
+        };
+      } else if (url === '/orders/invoices') {
+        data = {
+          orders: [
+            {
+              order_id: '',
+              items_ids: [],
+            }
+          ]
+        };
+      } else if (url === '/orders/packing-slips') {
+        data = {
+          orders: [
+            {
+              order_id: '',
+              items_ids: [],
+            }
+          ]
+        };
+      }
+
+      return this.pastOrderService.reorder(data);
+    })
     .subscribe((res: any) => this.toasterService.pop('', res.msg));
+
+    this.subscribers.receiveProductSubscription = this.receiveProducts$
+    .map(([url, item]) => {
+      let queryParams;
+      if (url === '/orders/items') {
+        queryParams = item.item.order_id.toString() + '&' + item.item[this.uniqueField].toString();
+      } else if (url === '/orders') {
+        queryParams = item.item.order_id.toString() + '&' + item.item.order_items.map((res) => res.id).toString();
+      } else if (url === '/orders/invoices') {
+        queryParams = '';
+      } else if (url === '/orders/packing-slips') {
+        queryParams = '';
+      }
+      this.pastOrderService.goToReceive(queryParams, item.type);
+    })
+    .subscribe();
 
   }
 
@@ -85,15 +173,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   buyAgainOrder(item) {
-    const data = {
-      'orders': [
-        {
-          'order_id': item.order_id,
-          'items_ids': [item[this.uniqueField]],
-        }
-      ]
-    };
-    this.reorderProduct$.next(data);
+    this.reorderProductSubject$.next(item);
   }
 
   openResendDialog(item) {
@@ -103,7 +183,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   };
 
   onVoidOrder(item) {
-    this.orderTableOnVoidService.onVoidOrder(item);
+    this.voidProductSubject$.next(item);
   }
 
   openAddCommentModal(item) {
@@ -131,7 +211,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   reconcile() {
     this.modal
     .open(ReconcileOnboardingModal, this.modalWindowService
-    .overlayConfigFactoryWithParams('mid'));
+    .overlayConfigFactoryWithParams({order: this.item, orders: this.items}));
   }
 
   backorder() {
@@ -143,8 +223,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   }
 
   private sendToReceiveProduct(item, type?) {
-    const queryParams = item.order_id.toString() + '&' + item[this.uniqueField].toString();
-    this.pastOrderService.goToReceive(queryParams, type);
+    this.receiveProductSubject$.next({item, type});
   }
 
 }

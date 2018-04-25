@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { map, filter, intersectionBy } from 'lodash';
 
 import { OrderTableFilterByService } from './directives/order-table/order-table-filter-by.service';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class OrdersService {
@@ -23,6 +24,7 @@ export class OrdersService {
   public onChipsChange$ = new Subject<string[]>();
 
   public filterQueryParams$: Subject<any> = new Subject();
+  public tableRoute$: ReplaySubject<any> = new ReplaySubject();
 
   constructor(
     public orderTableFilterByService: OrderTableFilterByService,
@@ -55,6 +57,10 @@ export class OrdersService {
 
   updateFilterQueryParams(params) {
     this.filterQueryParams$.next(params);
+  }
+
+  updateRoute(url) {
+    this.tableRoute$.next(url);
   }
 
 }
