@@ -8,20 +8,19 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { SelectModule } from 'ng-select';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { CurrencyMaskModule } from 'ng2-currency-mask'
-
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { DatepickerModule } from 'angular2-material-datepicker';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
-
-// import { CoreModule } from "../core/core.module";
+import { TextMaskModule } from 'angular2-text-mask';
+import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
 import { OrderByDatePipe } from './pipes/order-by-date/order-by-date.pipe';
-import * as directives from "./index";
-import { TextMaskModule } from 'angular2-text-mask';
-import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
+// import { SelectDropDownModule } from './components/ngx-select-dropdown/ngx-select-dropdown.module';
+import * as directives from "./index";
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
@@ -91,7 +90,10 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SelectModule,
     Daterangepicker,
     NgxDatatableModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    // SelectDropDownModule,
+
+    DatepickerModule
   ],
   declarations: [
     ...directivesArr,
@@ -111,6 +113,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     Daterangepicker,
     NgxDatatableModule,
     CurrencyMaskModule,
+    // SelectDropDownModule,
 
     MaterializeModule,
     FileDropModule,
@@ -123,6 +126,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HasClassModule,
     ChipsInputModule,
     ChipsModule,
+
+    DatepickerModule,
 
     ...directivesArr,
     ...pipesArr,

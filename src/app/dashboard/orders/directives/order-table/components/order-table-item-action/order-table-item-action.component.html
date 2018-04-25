@@ -35,20 +35,23 @@
         {{item.favorite ? 'Unfavorite' : 'Favorite'}}
       </a>
     </li>
-    <li *ngIf="item.order_method !== 'Direct' && !isRecieveList">
+    <li *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices' && (ordersService.tableRoute$ | async) !== '/orders/packing-slips' && item.order_method !== 'Direct' && !isRecieveList">
       <a class="tealish-text" (click)="openResendDialog(item)">Resend</a>
     </li>
-    <li *ngIf="isRecieveList || isReceivedItem">
-      <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+    <li *ngIf="(ordersService.tableRoute$ | async) === '/orders/packing-slips' || isRecieveList || isReceivedItem">
+      <a class="tealish-text" (click)="reconcile()">Reconcile</a>
     </li>
-    <li *ngIf="!isReceivedItem && !isRecieveList">
+    <li *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices' && (ordersService.tableRoute$ | async) !== '/orders/packing-slips' && !isReceivedItem && !isRecieveList">
       <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
-    <li *ngIf="!isBackorderedItem && !isBackorderedList">
+    <li *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices' && (ordersService.tableRoute$ | async) !== '/orders/packing-slips' && !isBackorderedItem && !isBackorderedList">
       <a class="tealish-text" (click)="backorder()">Backorder</a>
     </li>
     <li>
       <a class="tealish-text" (click)="buyAgainOrder(item)">Buy Again</a>
+    </li>
+    <li *ngIf="(ordersService.tableRoute$ | async) === '/orders/invoices'">
+      <a class="tealish-text">Send</a>
     </li>
     <li *ngIf="!isViodedItem && !isReceivedItem &&  !isRecieveList">
       <a class="red-text" (click)="onVoidOrder(item)">Void</a>

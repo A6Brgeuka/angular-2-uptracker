@@ -1,7 +1,0 @@
-<app-order-table
-  [uniqueField]="'id'"
-  [header]="tableHeaderReceived"
-  [orders]="(orders$ | async)"
-  [listName] = 'listName'
-  (sortByHeaderUpdated)="sortByHeaderUpdated($event)"
-></app-order-table>

@@ -4,8 +4,7 @@ import { Subject } from 'rxjs/Subject';
 
 import * as _ from 'lodash';
 
-import { OrderItem } from '../models/order-item';
-import { PastOrderService } from '../../../core/services';
+import { EntitiesService } from './entities.service';
 
 export enum IdsActions {
   add,
@@ -17,16 +16,20 @@ export abstract class OrderListBaseService {
 
   public getCollectionRequest$: Observable<any>;
   public getCollection$: Subject<any> = new Subject();
-  public collection$: Observable<OrderItem[]>;
+  public collection$: Observable<any[]>;
   public ids$: ConnectableObservable<string[]>;
-
+  protected abstract idName: string;
 
   constructor(
-    pastOrderService: PastOrderService
+    entitiesService: EntitiesService,
   ) {
-    this.getCollectionRequest$ = this.getCollection$
-    .switchMap(() =>
-      this.getRequest()
+    this.getCollectionRequest$ = Observable.merge(
+      this.getCollection$,
+      entitiesService.filterQueryParams$,
+    )
+    .debounceTime(100)
+    .switchMap((params) =>
+      this.getRequest(params)
       .map((res: any) => res.data)
       .catch((error) => Observable.never())
     )
@@ -34,9 +37,9 @@ export abstract class OrderListBaseService {
 
     this.ids$ = Observable.merge(
       this.getCollectionRequest$
-      .map((items) => _.map(items, 'id'))
+      .map((items) => _.map(items, this.idName))
       .let(this.getSetAction),
-      pastOrderService.removeIds$
+      entitiesService.removeIds$
       .let(this.getRemoveAction),
     )
     .scan(
@@ -47,7 +50,7 @@ export abstract class OrderListBaseService {
     this.ids$.connect();
 
     this.collection$ = Observable.combineLatest(
-      pastOrderService.entities$,
+      entitiesService.entities$,
       this.ids$,
     )
     .map(([entities, ids]) => ids.map((id) => entities[id]));
@@ -58,7 +61,7 @@ export abstract class OrderListBaseService {
     return this.getCollectionRequest$;
   }
 
-  protected abstract getRequest(): Observable<any>;
+  protected abstract getRequest(params): Observable<any>;
 
   protected reducer(state, {type, items}: {type: IdsActions, items: string[]}): string[] {
       switch (type) {

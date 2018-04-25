@@ -1,0 +1,10 @@
+<app-order-table
+  [uniqueField]="'order_id'"
+  [header]="tableHeaderReceived"
+  [orders]="(orders$ | async)"
+  [listName] = 'listName'
+  (sortByHeaderUpdated)="sortByHeaderUpdated($event)"
+  (onFavoriteItem)="onFavorite($event)"
+  (onFlaggedItem)="onFlagged($event)"
+  (onVoidItem)="onVoid($event)"
+></app-order-table>

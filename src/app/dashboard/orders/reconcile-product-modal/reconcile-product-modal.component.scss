@@ -1,0 +1,277 @@
+@import "../../../../colors";
+
+:host /deep/ {
+  .inner {
+    margin: 0 auto;
+    font-family: 'Roboto';
+
+    .title {
+      color: $dark;
+      font-size: 1.6rem;
+      font-weight: normal;
+      margin-bottom: 40px;
+    }
+    .bold {
+      font-weight: bold;
+    }
+    .thin {
+      font-weight: 400;
+    }
+    .left-align {
+      text-align: left;
+    }
+    .no-margin {
+      margin: 0;
+    }
+    .no-mgb {
+      margin-bottom: 0;
+    }
+    .no-padding {
+      padding: 0;
+    }
+    .right-bordered {
+      border-right: 1px solid $grey;
+      padding-bottom: 50px;
+    }
+    .left-padded {
+      padding-left: 40px !important;
+    }
+    .right-padded {
+      padding-right: 50px;
+    }
+
+    .select {
+      background-color: $white;
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+      input {
+        background-color: $white;
+        border: none;
+        height: 30px;
+      }
+      .select-wrapper {
+        padding-right: 5px;
+        ul {
+          border: 1px solid $grey !important;
+          top: 35px !important;
+
+          li.disabled span {
+            color: $light-grey !important;
+          }
+        }
+      }
+    }
+
+    .left {
+      display: block;
+      padding-left: 60px;
+      padding-right: 60px;
+      width: 100%;
+
+      .search {
+        display: flex;
+        border: 1px solid $grey;
+        border-radius: 5px;
+        font-size: 30px;
+        margin: 0;
+        > i {
+          color: $grey;
+          line-height: 55px;
+          margin-right: 20px;
+          margin-left: 20px;
+        }
+        > input {
+          border: none;
+          color: $dark;
+          font-size: 18px;
+          margin-bottom: 5px;
+          margin-top: 5px;
+        }
+      }
+      .info {
+        line-height: 16px;
+        margin-top: 5px;
+        margin-bottom: 30px;
+        > span {
+          color: $grey;
+          line-height: 14px;
+        }
+      }
+      .product {
+        display: flex;
+        border-bottom: 1px solid $grey;
+        cursor: pointer;
+        margin-left: 0;
+        margin-right: 0;
+        padding-bottom: 20px;
+        .preview {
+          padding-left: 0;
+          .icon {
+            background-color: $white;
+            border: 1px solid $grey;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+          }
+        }
+        .description {
+          color: $dark;
+          margin-left: 25px;
+          width: 100%;
+        }
+        .arrow {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          color: $tealish;
+          padding-right: 0;
+          font-size: 26px;
+          width: 30px;
+          height: 100px;
+        }
+      }
+      .product:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .middle {
+      display: block;
+      padding-left: 60px;
+      padding-right: 60px;
+      width: 100%;
+
+      .nav {
+        transition: opacity .3s;
+        position: absolute;
+        background-color: $tealish;
+        cursor: pointer;
+        font-size: 12px;
+        text-align: center;
+        border-radius: 20px;
+        color: $white;
+        line-height: 27px;
+        padding-right: 3px;
+        width: 24px;
+        height: 24px;
+      }
+      .description {
+        display: flex;
+        border-bottom: 1px solid $grey;
+        margin: 0 0 50px;
+        padding-bottom: 40px;
+        .preview {
+          padding-left: 0;
+          .icon {
+            background-color: $white;
+            border: 1px solid $grey;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px;
+            height: 150px;
+          }
+        }
+        .content {
+          color: $dark;
+          margin-left: 20px;
+          width: 100%;
+          .line-header {
+            font-weight: 200;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            padding: 0;
+            .col {
+              padding: 0;
+              .row {
+                margin: 0;
+              }
+            }
+            .center-align {
+              display: flex;
+              justify-content: center;
+            }
+            .right-align {
+              display: flex;
+              justify-content: flex-end;
+            }
+          }
+        }
+      }
+
+      .variant {
+        max-width: 200px;
+      }
+      .qty {
+        max-width: 100px;
+      }
+
+      .input-discount {
+        display: flex;
+        border: 1px solid #9e9e9e;
+        border-radius: 5px;
+        width: 154px;
+        height: 32px;
+        input {
+          background-color: #ffffff;
+          border-right: 1px solid #9e9e9e;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+          line-height: 30px;
+          padding-left: 5px;
+          width: 70%;
+          height: 30px;
+        }
+        .select {
+          background-color: #f5f6f7;
+          border-bottom-right-radius: 5px;
+          border-top-right-radius: 5px;
+          width: 30%;
+          input {
+            background-color: #f5f6f7;
+            border: none;
+            height: 30px;
+          }
+          .select-wrapper {
+            padding-right: 5px;
+            input {
+              width: 100%;
+              &.select-dropdown {
+                text-indent: 0;
+              }
+            }
+            ul {
+              border: 1px solid $grey !important;
+              top: 35px !important;
+              left: auto !important;
+              right: 0 !important;
+            }
+          }
+        }
+      }
+
+      .submit {
+        .btn {
+          background-color: $tealish;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+}
+
+/deep/ .modal {
+  min-height: 0;
+  .modal-dialog {
+    .modal-content {
+      overflow: hidden;
+      padding: 30px 0 75px;
+    }
+  }
+}

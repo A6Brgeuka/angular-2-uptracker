@@ -187,6 +187,7 @@ export class VendorService extends ModelService {
   getVendor(id) {
     return this.restangular.one('vendors', id).get().map(vendor => {
       this.globalVendor$.next(vendor.data.vendor);
+      return vendor.data.vendor;
     });
   }
 

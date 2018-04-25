@@ -35,7 +35,7 @@ export class AddVendorModalComponent implements OnInit {
   public step: number = 1;
   public uploadName: string = '';
   public formData: FormData = new FormData();
-  public logo: File;
+  public logo: any;
   public logoPreview: string = '';
 
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
@@ -132,6 +132,10 @@ export class AddVendorModalComponent implements OnInit {
     this.vendorService.addAccountVendor(this.formData)
       .do(res => this.vendorService.addToCollection$.next(res))
       .subscribe(res => this.router.navigate(['/vendors/edit/' + res.id]) && this.closeModal(true))
+  }
+
+  deleteLogo() {
+    this.logo = this.logoPreview = '';
   }
 
   uploadLogo(file: any) {

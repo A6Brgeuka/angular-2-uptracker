@@ -1,26 +1,28 @@
-import { ModelService } from "../../overrides/model.service";
-import { Injectable, Injector } from "@angular/core";
-import { Subscribers } from "../../decorators/subscribers.decorator";
-import { Restangular } from "ngx-restangular";
-import { APP_CONFIG, AppConfig } from "../../app.config";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Injectable, Injector } from '@angular/core';
+
+import { Restangular } from 'ngx-restangular';
 import * as _ from 'lodash';
-import { UserService } from "./user.service";
-import { AccountService } from "./account.service";
-import { SlFilters } from '../../models/slfilters.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+
+import { APP_CONFIG, AppConfig } from '../../app.config';
+import { Subscribers } from '../../decorators/subscribers.decorator';
+import { ModelService } from '../../overrides/model.service';
+import { UserService } from './user.service';
+import { AccountService } from './account.service';
 
 export class PriceInfoDiscounts {
-  type:string = "fixed";
-  amount:number = 5;
-  reward_points:number =0; //reward
-  bogo_type:string ="free"; //typeBogo
-  discounted:number = 1;
-  total: number = 1;
-  full_price: number = 4;
+  type = 'fixed';
+  amount = 5;
+  reward_points = 0; //reward
+  bogo_type = 'free'; //typeBogo
+  discounted = 1;
+  total = 1;
+  full_price = 4;
   
   constructor(obj?: any) {
-    for (let field in obj) {
-      if (typeof this[field] !== "undefined") {
+    for (const field in obj) {
+      if (typeof this[field] !== 'undefined') {
         this[field] = obj && obj[field];
       }
     }
@@ -28,13 +30,13 @@ export class PriceInfoDiscounts {
 }
 
 export class PriceInfoData {
-  public variant_id:string;
-  public price:number;
-  public price_type:string;
-  public discounts:PriceInfoDiscounts[];
+  public variant_id: string;
+  public price: number;
+  public price_type: string;
+  public discounts: PriceInfoDiscounts[];
   constructor(obj?: any) {
-    for (let field in obj) {
-      if (typeof this[field] !== "undefined") {
+    for (const field in obj) {
+      if (typeof this[field] !== 'undefined') {
         this[field] = obj && obj[field];
        }
     }
@@ -49,8 +51,9 @@ export class PriceInfoData {
 export class CartService extends ModelService {
   public appConfig: AppConfig;
   public ordersPreview$: any = new BehaviorSubject([]);
-  public filters$: BehaviorSubject<SlFilters> = new BehaviorSubject(new SlFilters);
-  
+  public filtersParams$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public cartData$: Observable<any>;
+
   constructor(
     public injector: Injector,
     public restangular: Restangular,
@@ -63,15 +66,20 @@ export class CartService extends ModelService {
   }
 
   onInit() {
-    this.accountService.dashboardLocation$
-    .map((r:any)=>{
-      return r ? r.id : null;
-    })
-    .switchMap((l:any)=>{
+
+    this.cartData$ = Observable.combineLatest(
+      this.accountService.dashboardLocation$,
+      this.filtersParams$,
+    )
+    .debounceTime(50)
+    .publishReplay(1).refCount();
+
+    this.cartData$
+    .switchMap(([l, filters]) => {
       if (l) {
-        return this.restangular.one('cart',l).customGET('');
+        return this.restangular.one('cart', l.id).customGET('', filters);
       } else {
-        return this.restangular.all('cart').customGET('');
+        return this.restangular.all('cart').customGET('', filters);
       }
     })
     .map((res: any) => {
@@ -83,35 +91,38 @@ export class CartService extends ModelService {
       this.updateCollection$.next(res);
     })
     .subscribe();
-    console.log("order service loaded");
+    console.log('order service loaded');
   }
   
-  updateCollection(res:any):void {
+  updateCollection(res: any): void {
     res = this.dividePrices(res);
     this.updateCollection$.next(res);
   }
   
-  dividePrices(res:any):any{
-    _.map(res,(r:any)=>{
-      if (!r.selected_vendor || !r.selected_vendor.vendor_name) {
-        r.selected_vendor = {
-          'vendor_name':'Auto'
-        };
+  dividePrices(res: any): any {
+    _.map(res, (r: any) => {
+      if ((!r.selected_vendor || !r.selected_vendor.vendor_name) && r.vendors.length) {
+        r.selected_vendor = r.vendors[0];
+        r.price = r.selected_vendor.book_price;
       }
-      r.price/=100;
-      r.selected_vendor.price/=100;
-      r.selected_vendor.book_price/=100;
-      r.selected_vendor.your_price/=100;
-      r.vendors.map((v:any)=>{
-        v.book_price/=100;
-        v.club_price/=100;
-        v.your_price/=100;
-        v.lowest_price/=100;
+      r.price /= 100;
+      r.selected_vendor.price /= 100;
+      r.selected_vendor.book_price /= 100;
+      r.selected_vendor.your_price /= 100;
+      r.vendors.map((v: any) => {
+        v.book_price /= 100;
+        v.club_price /= 100;
+        v.your_price /= 100;
+        v.lowest_price /= 100;
       });
-      r.vendors.sort((a,b)=>{
-        if (a.book_price > b.book_price) {return 1;}
-        else if (a.book_price < b.book_price) {return -1;}
-        else {return 0;}
+      r.vendors.sort((a, b) => {
+        if (a.book_price > b.book_price) {
+          return 1;
+        } else if (a.book_price < b.book_price) {
+          return -1;
+        } else {
+          return 0;
+        }
       });
   
       r.selected = true;
@@ -122,8 +133,8 @@ export class CartService extends ModelService {
     return res;
   }
   
-  addToCart (data){
-    return this.restangular.one('cart',data.location_id).customPOST(data);
+  addToCart (data) {
+    return this.restangular.one('cart', data.location_id).customPOST(data);
   }
   
   updateItem (data) {
@@ -131,18 +142,18 @@ export class CartService extends ModelService {
   }
   
   removeItem (data) {
-    return this.restangular.one('cart',data.location_id).customDELETE(data);
+    return this.restangular.one('cart', data.location_id).customDELETE(data);
   }
   
-  updatePriceInfo(data:any, location_id){
-    return this.restangular.one('cart',location_id).all('pricing').customPUT(data);
+  updatePriceInfo(data: any, location_id) {
+    return this.restangular.one('cart', location_id).all('pricing').customPUT(data);
   }
   
   removeItems(items) {
-    let idArray = [];
+    const idArray = [];
     items.map((item) => idArray.push(item.id));
     
-    let payload = {
+    const payload = {
       item_ids: idArray.toString()
     };
     return this.restangular.all('cart').customDELETE('', payload).map(res => res.data);

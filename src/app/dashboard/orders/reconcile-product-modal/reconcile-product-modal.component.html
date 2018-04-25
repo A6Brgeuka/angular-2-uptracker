@@ -1,0 +1,126 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="inner">
+  <div class="left" *ngIf="modalState === 0">
+    <div class="title center-align"><span>SEARCH</span></div>
+    <div class="row search">
+      <i class="fa fa-search"></i>
+      <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
+    </div>
+    <div class="info"><span>Search by inventory group name, product name, keyword, id number, etc</span></div>
+    <div  *ngIf="!!searchText">
+      <div *ngFor="let group of groups; let i = index">
+        <div class="row product" (click)="toGoModal(1, i)">
+          <div class="preview">
+            <div class="icon"></div>
+          </div>
+          <div class="description">
+            <div class="bold">{{group.name}}</div>
+            <div class="thin">{{group.info}}</div>
+            <div class="thin mrg-top-10">{{group.counts}} Products</div>
+          </div>
+          <div class="arrow">
+            <i class="fa fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="middle" *ngIf="modalState === 1">
+    <div class="nav fa fa-chevron-left" (click)="toGoModal(0)"></div>
+    <div class="title center-align"><span>ADD A PRODUCT</span></div>
+    <div class="row description">
+      <div class="preview">
+        <div class="icon"></div>
+      </div>
+      <div class="content">
+        <div class="bold">Gloves Tender Touch Nitrile</div>
+        <div class="thin">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
+        <div class="col s12 line-header">
+          <div class="col s4">
+            <div class="row bold">Department</div>
+            <div class="row thin">Clinic</div>
+          </div>
+          <div class="col s4 center-align"><div class="left-align">
+            <div class="row bold">Category</div>
+            <div class="row thin">Gloves</div></div>
+          </div>
+          <div class="col s4 right-align"><div class="left-align">
+            <div class="row bold">Accounting</div>
+            <div class="row thin">Not Specified</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row no-margin select-group">
+      <div class="col s5 right-bordered">
+        <div class="row no-mgb">
+          <span class="bold">Variant</span>
+          <div class="select variant">
+            <select title="sort by" name="variant" [(ngModel)]="variant" materialize="material_select"  (ngModelChange)="productChange($event)">
+              <option value="Box">Box (200 QTY)</option>
+              <option value="Glove">Glove</option>
+            </select>
+          </div>
+        </div>
+        <div class="row no-mgb">
+          <span class="bold">QTY</span>
+          <div class="input qty">
+            <input
+              type="text"
+              name="quantity"
+              [(ngModel)]="quantity"
+              (ngModelChange)="productChange($event)"
+            >
+          </div>
+        </div>
+        <div class="row no-mgb">
+          <span class="bold">Discount</span>
+          <div>
+            <div class="input-discount">
+              <input
+                type="text"
+                name="discount"
+                [(ngModel)]="discount"
+                (ngModelChange)="productChange($event)"
+              >
+              <div class="select">
+                <select
+                  class="wide"
+                  materialize="material_select"
+                  name="currency"
+                  [(ngModel)]="discountType"
+                  (ngModelChange)="productChange($event)"
+                >
+                  <option value="%">%</option>
+                  <option value="$">$</option>
+                  <option class="disabled" value="REWARDS" disabled>Rewards<br />(Coming soon)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s7 right-padded">
+        <div class="row select left-padded">
+          <span class="bold">Location</span>
+          <select title="sort by" [(ngModel)]="location" materialize="material_select" (change)="productChange($event)">
+            <option value="loc1">Ft. Lauderdale</option>
+            <option value="loc2">Miami</option>
+          </select>
+        </div>
+        <div class="row left-padded bold">You're adding the following product to order #ROM-12344:</div>
+        <div class="row left-padded bold">{{quantity}} {{variant}} at a {{discount}}{{discountType}} Discount</div>
+        <div class="row submit left-padded">
+          <div
+            class="btn white-text waves-effect waves-light"
+            (click)="addOrder()">
+            ADD TO ORDER
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

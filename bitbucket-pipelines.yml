@@ -6,18 +6,26 @@
 image: uptracker/app:latest
 
 pipelines:
+  custom:
+    deploy-to-sandbox:
+      - step:
+          deployment: test
+          script:
+            - ng -v
+            - cp _env_dev.ts env.ts
+            - npm i
+            - ng build --prod
+            - scp -Cr dist/* www-data@dev.up-tracker.com:/var/www/sandbox/
   branches:
     master:
       - step:
           deployment: production
-          script: # Modify the commands below to build your repository.
+          script:
             - ng -v
             - cp _env.ts env.ts
             - npm i
             - ng build --prod
-            - zip -r dist.zip dist
-            - python3 s3_upload.py app.up-tracker.com dist.zip versions/`git rev-parse --short HEAD`.zip
-            - python3 s3_upload.py app.up-tracker.com dist
+            - scp -Cr dist/* www-data@dev.up-tracker.com:/var/www/app/
     dev:
       - step:
           deployment: staging

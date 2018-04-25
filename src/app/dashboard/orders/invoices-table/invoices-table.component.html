@@ -1,0 +1,20 @@
+<div class="row">
+  <ul class="tabs location-tabs mrg-btm-0" materialize="tabs">
+    <li
+      class="tab"
+      *ngFor="let tab of invoicesTabsArr"
+    >
+      <a
+        href="#{{tab}}Tab"
+        appHasClass="active"
+        (hasClassChange)="activeChange($event, tab)"
+      >{{tab.replace('_', ' ')}}</a>
+    </li>
+  </ul>
+</div>
+<app-all-invoices-list id="{{invoicesTabs.all}}Tab"></app-all-invoices-list>
+<app-open-invoices-list id="{{invoicesTabs.open}}Tab"></app-open-invoices-list>
+<app-approval-invoices-list id="{{invoicesTabs.approval}}Tab"></app-approval-invoices-list>
+<app-payment-invoices-list id="{{invoicesTabs.payment}}Tab"></app-payment-invoices-list>
+<app-paid-invoices-list id="{{invoicesTabs.paid}}Tab"></app-paid-invoices-list>
+<app-flagged-invoices-list id="{{invoicesTabs.flagged}}Tab"></app-flagged-invoices-list>
