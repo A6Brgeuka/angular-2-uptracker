@@ -20,7 +20,7 @@ export class OpenInvoicesListComponent implements OnInit, OnDestroy {
 
   public listName: string = OrderListType.open;
   public tableHeader: any = [
-    {name: 'Invoice #', className: 's1', alias: 'invoice_id', filterBy: true, },
+    {name: 'Invoice #', className: 's1', alias: 'invoice_id', filterBy: false, linkToReconcile: true, },
     {name: 'Vendor', className: 's2', alias: 'vendor', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
     {name: 'Location', className: 's2', alias: 'location_name', filterBy: true, },
