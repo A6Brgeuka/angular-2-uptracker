@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {AddProductManagerService} from "../../../core/services/add-product-manager.service";
-import {isEqual, each, reduce, map} from 'lodash';
+import {isEqual, each, reduce, cloneDeep} from 'lodash';
 
 @Component({
   selector: 'app-vendor-product-variants',
@@ -41,22 +41,22 @@ export class VendorProductVariantsComponent implements OnInit {
   }
 
   group() {
-    const toDelete = [];
 
     each(this.variants, (vendor, i) => {
-      if (i == 0) return;
+      const toDelete = [];
       if (!this.variants[i]) return;
       if (vendor.additional) return;
-      for (let j=0; j<i; j++) {
+      for (let j=i+1; j<this.variants.length; j++) {
         if (isEqual(this.variants[i].inventory_by[0], this.variants[j].inventory_by[0])) {
           this.variants[i].variants.push(this.variants[j].variants[0]);
           toDelete.push(j);
         }
       }
+
+      for (let j = toDelete.length-1; j>=0; j--) {
+        this.variants.splice(toDelete[j], 1);
+      }
     });
-    each(toDelete, i => {
-      this.variants.splice(i, 1);
-    })
   }
 
 }
