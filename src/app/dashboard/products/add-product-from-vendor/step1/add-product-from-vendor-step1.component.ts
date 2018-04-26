@@ -8,7 +8,7 @@ import {AccountService} from '../../../../core/services/account.service';
 import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 import {ProductService} from "../../../../core/services/product.service";
 import {each} from 'lodash';
-import {AddProductManagerService} from "../../../../core/services/add-product-manager.service";
+import {AddProductManager} from "../../../../core/services/add-product.manager";
 
 @Component({
   selector: 'app-add-product-from-vendor-step1',
@@ -41,7 +41,7 @@ export class AddProductFromVendorStep1Component implements OnInit {
     public modal: Modal,
     public modalWindowService: ModalWindowService,
     public productService: ProductService,
-    private productManager: AddProductManagerService) {
+    private productManager: AddProductManager) {
   }
 
   ngOnInit() {

@@ -25,7 +25,7 @@ import { ReceivedOrderService } from './received-order.service';
 import { ReceivedOrderListService } from './received-order-list.service';
 import { RestockService } from './restock.service';
 import { ReconcileService } from './reconcile.service';
-import { AddProductManagerService} from './add-product-manager.service';
+import { AddProductManager} from './add-product.manager';
 
 export {
   ToasterService,
@@ -55,7 +55,7 @@ export {
   ReceivedOrderListService,
   RestockService,
   ReconcileService,
-  AddProductManagerService
+  AddProductManager
 };
 
 // an array of services to resolve routes with data
@@ -86,5 +86,5 @@ export const APP_SERVICE_PROVIDERS = [
   ReceivedOrderListService,
   RestockService,
   ReconcileService,
-  AddProductManagerService
+  AddProductManager
 ];

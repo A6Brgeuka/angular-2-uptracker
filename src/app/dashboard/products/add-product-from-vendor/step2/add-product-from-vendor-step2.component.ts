@@ -3,10 +3,8 @@ import {Modal} from 'angular2-modal';
 import {ModalWindowService} from '../../../../core/services/modal-window.service';
 import {map, findIndex, cloneDeep} from 'lodash';
 import {PackageModel, inventoryExample} from "../../../../models/inventory.model";
-import {CustomProductVariantModel} from "../../../../models/custom-product.model";
 import {AddVendorModalComponent} from "../../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
-import {ProductService} from "../../../../core/services/product.service";
-import {AddProductManagerService} from "../../../../core/services/add-product-manager.service";
+import {AddProductManager} from "../../../../core/services/add-product.manager";
 
 @Component({
   selector: 'app-add-product-from-vendor-step2',
@@ -21,7 +19,7 @@ export class AddProductFromVendorStep2Component {
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
-    private productManager: AddProductManagerService) {
+    private productManager: AddProductManager) {
   }
 
   onVendorChosen(vendorInfo) {
@@ -36,7 +34,7 @@ export class AddProductFromVendorStep2Component {
   }
 
   createVendor(vendorInfo) {
-    const variants = cloneDeep(this.productManager.productVariants);
+    const variants = this.productManager.productVariants;
     const inventory_by = [map(inventoryExample, (inv) => new PackageModel(inv))];
     return {...vendorInfo, inventory_by, variants, additional: true}; //TODO implement in better way (additional)
   }

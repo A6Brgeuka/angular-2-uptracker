@@ -7,7 +7,7 @@ import {AccountService} from '../../../core/services/account.service';
 import { Location } from '@angular/common';
 import {map, includes, some, reject, each, flatten, filter, groupBy, cloneDeep} from 'lodash';
 import {ToasterService} from "../../../core/services/toaster.service";
-import {AddProductManagerService} from "../../../core/services/add-product-manager.service";
+import {AddProductManager} from "../../../core/services/add-product.manager";
 
 @Component({
   selector: 'app-add-product-from-vendor',
@@ -34,7 +34,7 @@ export class AddProductFromVendorComponent implements OnInit {
     private location: Location,
     private router: Router,
     private toasterService: ToasterService,
-    private productManager: AddProductManagerService
+    private productManager: AddProductManager
   ) {
   }
 
@@ -57,13 +57,8 @@ export class AddProductFromVendorComponent implements OnInit {
         },
         (err: any) => console.log(err));
 
-    this.subscribers.onVendorsChange = this.productService.changeVariants$
-      .subscribe(variants => this.updateVendors(this.variants));
-
     this.subscribers.onVendorsChange = this.productManager.changeVariants$
-      .subscribe(() => {
-        this.updateVendors(this.variants);
-      })
+      .subscribe(() => this.updateVendors(this.variants));
   }
 
   getProducts() {

@@ -1,15 +1,23 @@
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs/Subject";
 import {inventoryExample} from "../../models/inventory.model";
-import {map, findIndex} from 'lodash';
+import {map, findIndex, each, cloneDeep} from 'lodash';
 
 @Injectable()
-export class AddProductManagerService {
+export class AddProductManager {
   public changeVariants$: Subject<any> = new Subject<any>();
-  public productVariants: any;
+  public productVariantsArr: any;
   public additionalVariantsArr: any = [];
 
   constructor() {}
+
+  set productVariants(variants) {
+    this.productVariantsArr = each(variants, (v: any) => delete v.upc);
+  }
+
+  get productVariants() {
+    return cloneDeep(this.productVariantsArr);
+  }
 
   structureVariants(vendors) {
 

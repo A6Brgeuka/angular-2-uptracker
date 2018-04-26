@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
-import {AddProductManagerService} from "../../../core/services/add-product-manager.service";
+import {AddProductManager} from "../../../core/services/add-product.manager";
 import {isEqual, each, reduce, cloneDeep} from 'lodash';
 
 @Component({
@@ -15,7 +15,7 @@ export class VendorProductVariantsComponent implements OnInit {
 
   public vendor: any = {};
 
-  constructor(private productManager: AddProductManagerService) { }
+  constructor(private productManager: AddProductManager) { }
 
   ngOnInit() {
     this.vendor = {
