@@ -113,18 +113,21 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   handleInvoiceChanges(event) {
     try {
       this.reconcileService.getReconcile(event.value, this.orders.id).subscribe(res => {
-        // console.log('---------->>>   ', res)
-        res.invoice.invoice_date = new Date(res.invoice.invoice_date)
-        res.invoice.discount_ = res.invoice.discount;
-        res.invoice.discount_type = 'USD';
-
-        res.items.forEach(item => {
-          item.reconciled_discount_type = 'PERCENT';
-          this.productChange(item);
-        });
-
-        this.selectedInvoice = res;
-        this.updateInvoiceDetails({});
+        if (isNil(res.data)) {
+          this.toasterService.pop('error', 'Invoice or Order items are in usage now.');
+        } else {
+          res.data.invoice.invoice_date = new Date(res.invoice.invoice_date)
+          res.data.invoice.discount_ = res.invoice.discount;
+          res.data.invoice.discount_type = 'USD';
+  
+          res.data.items.forEach(item => {
+            item.reconciled_discount_type = 'PERCENT';
+            this.productChange(item);
+          });
+  
+          this.selectedInvoice = res.data;
+          this.updateInvoiceDetails({});
+        }
       })
     } catch (err) {
       console.log('handleInvoiceChanges: ', err);

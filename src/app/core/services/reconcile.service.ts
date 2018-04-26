@@ -59,7 +59,9 @@ export class ReconcileService extends ModelService {
     } else if (!isNil(invoice_id) && !isNil(item_ids)) {
       return this.restangular.one('reconcile').customGET('', { item_ids, invoice_id }).map(res => res.data);
     } else {
-      return this.restangular.one('reconcile').customGET('', { item_ids }).map(res => res.data);
+      return this.restangular.one('reconcile').customGET('', { item_ids }).map(res => {
+        return {data: res.data, message: res.message};
+      });
     }
   }
 
