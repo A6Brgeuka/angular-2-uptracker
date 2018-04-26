@@ -9,18 +9,11 @@
     <div class="row relative">
       <div class="col s12 flex">
         <div  class="input select" [class.add-number-one]="!!package[0].label">
-          <input *ngIf="additional"
-                 auto-complete="false"
-                 placeholder="Type"
-                 [source]="autocompletePackage"
-                 [list-formatter] = '"unit_name"'
-                 [tab-to-select] = 'false'
-                 [select-value-of] = "'unit_name'"
-                 name="package_type"
-                 [(ngModel)] = 'package[0].label'
-                 required
-          >
-          <fa *ngIf="additional" name="angle-down"></fa>
+          <app-dropdown-package *ngIf="additional"
+            [autocompletePackage]="autocompletePackage"
+            [packageLabel]="package[0].label"
+            (packageLabelChange)="package[0].label = $event">
+          </app-dropdown-package>
         <input *ngIf="!additional" type="text" readonly [ngModel]="package[0].label" placeholder="Type">
         </div>
         <div class="label">=</div>
@@ -38,19 +31,12 @@
           <input [readonly]="!additional" [(ngModel)]="package[1].qty" type="text" placeholder="Qty">
         </div>
       </div>
-      <div class="col s9 flex">
-        <div class="input search select" *ngIf="additional">
-          <input class="caret" auto-complete
-                 placeholder="N/A"
-                 [source]="autocompletePackage"
-                 [list-formatter] = '"plural_unit_name"'
-                 [tab-to-select] = 'false'
-                 [select-value-of] = "'plural_unit_name'"
-                 name="sub_package_type"
-                 [(ngModel)] = 'package[1].label'
-          >
-          <fa name="angle-down"></fa>
-        </div>
+      <div class="col s9 input flex">
+        <app-dropdown-package *ngIf="additional"
+          [autocompletePackage]="autocompletePackage"
+          [packageLabel]="package[1].label"
+          (packageLabelChange)="package[1].label = $event">
+        </app-dropdown-package>
         <input *ngIf="!additional" type="text" readonly [ngModel]="package[1].label" placeholder="Type">
         <div class="label">=</div>
       </div>
@@ -66,21 +52,12 @@
           <input [readonly]="!additional" [(ngModel)]="package[2].qty" type="text" placeholder="Qty">
         </div>
       </div>
-      <div class="col s9">
-        <div class="input search select" *ngIf="additional">
-          <input class="caret" auto-complete
-                 placeholder="Type"
-                 [source]="autocompletePackage"
-                 (input) = 'onSearchPackage($event)'
-                 [(ngModel)] = "package[2].label"
-                 [list-formatter] = "'unit_name'"
-                 [select-value-of] = "'unit_name'"
-                 [tab-to-select] = 'false'
-                 name="cons_package_type"
-                 [readonly]="!additional"
-          >
-          <fa name="angle-down"></fa>
-        </div>
+      <div class="col s9 input">
+        <app-dropdown-package *ngIf="additional"
+          [autocompletePackage]="autocompletePackage"
+          [packageLabel]="package[2].label"
+          (packageLabelChange)="package[2].label=$event">
+        </app-dropdown-package>
         <input *ngIf="!additional" type="text" readonly [ngModel]="package[2].label" placeholder="Type">
       </div>
     </div>

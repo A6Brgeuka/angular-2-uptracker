@@ -8,6 +8,7 @@ import {NguiAutoCompleteModule} from "@ngui/auto-complete";
 import {PriceInputModule} from "../../price-input/price-input.module";
 import {ScannerModule} from "../../../../dashboard/scanner/scanner.module";
 import {VendorProductPackageComponent} from "../vendor-product-package/vendor-product-package.component";
+import {DropdownPackageModule} from "../vendor-product-package/dropdown-package/dropdown-package.module";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {VendorProductPackageComponent} from "../vendor-product-package/vendor-pr
     Angular2FontawesomeModule,
     MaterializeModule,
     NguiAutoCompleteModule,
-    PriceInputModule
+    PriceInputModule,
+    DropdownPackageModule
   ],
   exports: [
     ProductVariantComponent
