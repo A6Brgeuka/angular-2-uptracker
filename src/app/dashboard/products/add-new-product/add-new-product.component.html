@@ -28,8 +28,8 @@
     <div class="col s12 m3 center-align">
       <div class="col s12">
         <div class="img-container">
-          <div class="img" *ngIf="logoPreview" [ngStyle]="{ 'background-image': 'url(' + logoPreview + ')' }">
-            <div class="del-img-btn" (click)="logoPreview = ''">
+          <div class="img" *ngIf="product.image" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+            <div class="del-img-btn" (click)="product.image = ''">
               <i class="material-icons">delete</i>
             </div>
           </div>
@@ -45,8 +45,8 @@
         <div class="input add-attachment">
           <div class="file-field">
             <div class="upload-link">
-              <input type="file" accept="image/*" (change)="uploadLogo($event)"/>
-              <a>Upload an image</a>
+              <!--<input type="file" accept="image/*" (change)="uploadLogo($event)"/>-->
+              <a (click)="openUploadImageModal()">Upload an image</a>
             </div>
           </div>
         </div>

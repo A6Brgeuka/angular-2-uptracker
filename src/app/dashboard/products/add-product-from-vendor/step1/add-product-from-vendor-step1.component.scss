@@ -54,6 +54,10 @@ $normal: 14px;
     }
   }
 
+  .invalid .select-dropdown {
+    border-color: $red!important;
+  }
+
   .single {
     .variant-checkbox {
       display: none;

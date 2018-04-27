@@ -5,7 +5,7 @@
 
 <ul *ngIf="isOpen" [ngClass]="{'fadeIn':isOpen}">
   <li *ngFor="let item of autocompletePackage"
-      (click)="packageChange(item.unit_name)">
+      (click)="onSelect(item.unit_name)">
     {{item.unit_name}}
   </li>
 </ul>

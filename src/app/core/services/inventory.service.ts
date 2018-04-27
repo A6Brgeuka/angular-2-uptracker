@@ -9,6 +9,7 @@ import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
 import { InventorySearchResults } from '../../models/inventory.model';
 import { ToasterService } from './toaster.service';
+import {sortBy} from 'lodash';
 
 @Injectable()
 @Subscribers({
@@ -36,6 +37,7 @@ export class InventoryService extends ModelService {
   consumablePackageList = [];
   public selectedStep3Tab:any = null;
   public inventoryData$: Observable<any>;
+  public autocompletePackage: any;
 
   constructor(
     public injector: Injector,
@@ -62,6 +64,9 @@ export class InventoryService extends ModelService {
   onInit() {
 
     this.getAllInventories();
+
+    this.autocompleteSearchPackage('')
+      .subscribe((pack: any) => this.autocompletePackage = sortBy(pack, ['unit_name']));
 
     this.selfData$ = Observable.merge(
       this.updateSelfData$

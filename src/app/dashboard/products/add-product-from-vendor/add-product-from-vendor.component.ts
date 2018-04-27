@@ -48,6 +48,11 @@ export class AddProductFromVendorComponent implements OnInit {
       });
   }
 
+  canProceed() {
+    if (this.product)
+      return this.product.name && this.product.category;
+  }
+
   ngOnInit() {
     Observable.combineLatest(this.accountService.dashboardLocation$, this.route.params)
       .subscribe(([location, params]) => {
@@ -71,7 +76,6 @@ export class AddProductFromVendorComponent implements OnInit {
         each(data.variants, v => v.checked = true);
       })
       .subscribe(data => this.formatVendors(this.variants));
-
   }
 
   formatVendors(variants) {

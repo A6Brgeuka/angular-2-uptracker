@@ -9,6 +9,7 @@ import {HelpTextModal} from '../../../inventory/add-inventory/help-text-modal/he
 import {ProductService} from "../../../../core/services/product.service";
 import {each} from 'lodash';
 import {AddProductManager} from "../../../../core/services/add-product.manager";
+import {UploadEditImageModalComponent} from "../../../../shared/modals/upload-edit-image-modal/upload-edit-image-modal.component";
 
 @Component({
   selector: 'app-add-product-from-vendor-step1',
@@ -114,6 +115,17 @@ export class AddProductFromVendorStep1Component implements OnInit {
 
   onVariantChanged() {
     this.productManager.changeVariants$.next();
+  }
+
+  openUploadImageModal() {
+    this.modal.open(UploadEditImageModalComponent, this.modalWindowService
+      .overlayConfigFactoryWithParams(this.product, true, 'normal'))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (res) => this.product.image = res,
+          (err) => {}
+        );
+      });
   }
 
 }

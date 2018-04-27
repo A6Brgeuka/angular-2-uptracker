@@ -12,7 +12,7 @@ import {DestroySubscribers} from "ngx-destroy-subscribers";
 })
 
 @DestroySubscribers()
-export class VendorProductPackageComponent implements OnInit {
+export class VendorProductPackageComponent {
 
   @Input('package') public package: any;
   @Input('additional') public additional: boolean = true;
@@ -21,28 +21,8 @@ export class VendorProductPackageComponent implements OnInit {
 
   public subscribers: any = {};
   public mainPrices: any = new CustomProductVariantModel();
-  public autocompletePackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
-  public autocompletePackage: any = [];
 
   constructor(public inventoryService: InventoryService) {
-  }
-
-  ngOnInit() {
-    this.autocompletePackage$.next('');
-  }
-
-  addSubscribers() {
-    this.subscribers.autocompleteOuterPackSubscription = this.autocompletePackage$
-      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key))
-      .subscribe((pack: any) => this.autocompletePackage = sortBy(pack, ['unit_name']));
-  }
-
-  observableSourcePackage(keyword: any) {
-    return Observable.of(this.autocompletePackage).take(1);
-  }
-
-  onSearchPackage(event) {
-    this.autocompletePackage$.next(event.target.value);
   }
 
   onFillAll(price: string) {
@@ -57,6 +37,6 @@ export class VendorProductPackageComponent implements OnInit {
   packageSummary(pack): string {
     const inner = `of ${pack[1].qty} ${pack[1].label}`;
     const total = 1 * (pack[1].qty || 1) * pack[2].qty;
-    return `1 ${pack[0].label} ${pack[1].label && pack[1].qty ? inner : ''} of ${pack[2].qty} ${pack[2].label}, 1 ${pack[0].label} = ${total} unit(s)`;
+    return `1 ${pack[0].label} ${pack[1].label && pack[1].qty ? inner : ''} of ${pack[2].qty} ${pack[2].label}, 1 ${pack[0].label} = ${total} ${pack[2].label}(s)`;
   }
 }

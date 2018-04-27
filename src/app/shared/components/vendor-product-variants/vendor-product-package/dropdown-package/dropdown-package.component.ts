@@ -19,12 +19,17 @@ export class DropdownPackageComponent {
 
   packageChange(value){
     this.packageLabelChange.emit(value);
-    this.toggleSubMenu();
+    this.isOpen = true;
   }
 
   onClick() {
     if (!this.ref.nativeElement.contains(event.target))
       this.isOpen = false;
+  }
+
+  onSelect(value) {
+    this.packageChange(value);
+    this.toggleSubMenu();
   }
 
   toggleSubMenu() {

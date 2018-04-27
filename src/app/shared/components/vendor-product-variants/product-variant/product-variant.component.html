@@ -8,7 +8,7 @@
 </app-vendor-product-package>
 
 <div class="row">
-  <div class="col s5 flex">
+  <div class="col s4 flex">
     <div class="input-checkbox">
       <input type="checkbox" class="checkbox-input" [(ngModel)]="selected" (change)="selectAll()" id="{{uniqueId}}+'selectAll'"/>
       <label for="{{uniqueId}}+'selectAll'"></label>
@@ -16,11 +16,14 @@
 
     Product Variant Name
   </div>
-  <div class="col s7">
-    <div class="col s3">
+  <div class="col s8">
+    <div class="col s2">
+      Manufacture
+    </div>
+    <div class="col s2">
       Barcode
     </div>
-    <div class="col s3">
+    <div class="col s2">
       Catalog #
     </div>
     <div class="col s2">
@@ -35,19 +38,22 @@
   </div>
 </div>
 <div class="row" *ngFor='let variant of vendor.variants; let i = index'>
-  <div class="col s5 flex">
+  <div class="col s4 flex">
     <div class="input-checkbox">
       <input type="checkbox" class="checkbox-input" [(ngModel)]="variant.enabled" id={{uniqueId+i}}/>
       <label for={{uniqueId+i}}></label>
     </div>
-    <input type="text" [(ngModel)]="variant.name">
+    <input type="text" [(ngModel)]="variant.name" title="{{variant.name}}">
   </div>
-  <div class="col s7">
-    <div class="col s3 row-input relative">
+  <div class="col s8">
+    <div class="col s2 row-input">
+      <input type="text" [(ngModel)]="variant.manufacture" placeholder="Manufacture #">
+    </div>
+    <div class="col s2 row-input relative">
       <input type="text" [(ngModel)]="variant.upc" placeholder="Barcode">
       <app-scanner (searchText)="variant.upc = $event"></app-scanner>
     </div>
-    <div class="col s3 row-input">
+    <div class="col s2 row-input">
       <input type="text" [(ngModel)]="variant.catalog_number" placeholder="Catalog #">
     </div>
 

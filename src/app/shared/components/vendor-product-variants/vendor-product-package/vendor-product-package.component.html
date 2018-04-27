@@ -10,7 +10,7 @@
       <div class="col s12 flex">
         <div  class="input select" [class.add-number-one]="!!package[0].label">
           <app-dropdown-package *ngIf="additional"
-            [autocompletePackage]="autocompletePackage"
+            [autocompletePackage]="inventoryService.autocompletePackage"
             [packageLabel]="package[0].label"
             (packageLabelChange)="package[0].label = $event">
           </app-dropdown-package>
@@ -33,7 +33,7 @@
       </div>
       <div class="col s9 input flex">
         <app-dropdown-package *ngIf="additional"
-          [autocompletePackage]="autocompletePackage"
+          [autocompletePackage]="inventoryService.autocompletePackage"
           [packageLabel]="package[1].label"
           (packageLabelChange)="package[1].label = $event">
         </app-dropdown-package>
@@ -54,7 +54,7 @@
       </div>
       <div class="col s9 input">
         <app-dropdown-package *ngIf="additional"
-          [autocompletePackage]="autocompletePackage"
+          [autocompletePackage]="inventoryService.autocompletePackage"
           [packageLabel]="package[2].label"
           (packageLabelChange)="package[2].label=$event">
         </app-dropdown-package>

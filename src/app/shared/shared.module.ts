@@ -64,6 +64,8 @@ import {ScannerModule} from "../dashboard/scanner/scanner.module";
 import {PriceInputModule} from "./components/price-input/price-input.module";
 import {VariantDetailModule} from "./components/variant-detail/variant-detail.module";
 import {VendorProductVariantsModule} from "./components/vendor-product-variants/vendor-product-variants.module";
+import {UploadEditFileModule} from "./components/upload-edit-file/upload-edit-file.module";
+import {UploadEditImageModalModule} from "./modals/upload-edit-image-modal/upload-edit-image-modal.module";
 
 const modalsArr = [
   EditUserModal,
@@ -109,7 +111,9 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     VariantDetailModule,
     // SelectDropDownModule,
 
-    DatepickerModule
+    DatepickerModule,
+    UploadEditFileModule,
+    UploadEditImageModalModule
   ],
   declarations: [
     ...directivesArr,
@@ -149,6 +153,8 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     VariantDetailModule,
 
     DatepickerModule,
+    UploadEditFileModule,
+    UploadEditImageModalModule,
 
     ...directivesArr,
     ...pipesArr,

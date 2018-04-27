@@ -75,6 +75,11 @@
     line-height: 20px;
     min-width: 100px;
     background: $tealish;
+
+    &[disabled] {
+      background: $grey!important;
+      pointer-events: none;
+    }
   }
 
   .bluebtn:hover {

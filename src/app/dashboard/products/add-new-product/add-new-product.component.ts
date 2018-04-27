@@ -15,6 +15,7 @@ import {PackageModel, inventoryExample} from '../../../models/inventory.model';
 import {ToasterService} from '../../../core/services/toaster.service';
 import {Router} from '@angular/router';
 import {AddVendorModalComponent} from "../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
+import {UploadEditImageModalComponent} from "../../../shared/modals/upload-edit-image-modal/upload-edit-image-modal.component";
 
 @Component({
   selector: 'app-add-new-product',
@@ -221,11 +222,19 @@ export class AddNewProductComponent implements OnInit {
       .open(AddVendorModalComponent, this.modalWindowService.overlayConfigFactoryWithParams({modalMode: true}, true))
       .then((resultPromise) => {
         resultPromise.result.then(
-          (vendor) => {
-            this.onVendorChosen({vendor_name: vendor.name});
-          },
-          (err) => {
-          }
+          (vendor) => this.onVendorChosen({vendor_name: vendor.name}),
+          (err) => {}
+        );
+      });
+  }
+
+  openUploadImageModal() {
+    this.modal.open(UploadEditImageModalComponent, this.modalWindowService
+      .overlayConfigFactoryWithParams(this.product, true, 'normal'))
+      .then((resultPromise) => {
+        resultPromise.result.then(
+          (res) => this.product.image = res,
+          (err) => {}
         );
       });
   }

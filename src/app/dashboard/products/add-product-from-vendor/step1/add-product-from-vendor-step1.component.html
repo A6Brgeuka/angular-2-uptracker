@@ -23,8 +23,7 @@
         <div class="input add-attachment">
           <div class="file-field">
             <div class="upload-link">
-              <input type="file" accept="image/*" (change)="uploadLogo($event)"/>
-              <a>Upload an image</a>
+              <a (click)="openUploadImageModal()">Upload an image</a>
             </div>
           </div>
         </div>
