@@ -13,7 +13,6 @@ import { MarketplaceFiltersComponent } from '../../shared/modals/filters-modal/m
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  public searchKey: string;
   public test: string;
 
   constructor(
@@ -41,7 +40,6 @@ export class ProductsComponent implements OnInit {
   }
 
   resetFilters() {
-    this.searchKey = '';
     this.productService.updateSearchKey('');
     this.productService.filterBy$.next(null);
   }
