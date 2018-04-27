@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, NgZone, OnInit, Output } from '@angular/core';
 
 
 import { Observable } from 'rxjs/Observable';
@@ -17,6 +17,7 @@ import { OrderStatusValues } from '../../../models/order-status';
 })
 
 export class ReceiveAddNewStatusItemComponent implements OnInit {
+  renderSelect$: Observable<boolean>;
 
   public pendingStatus = OrderStatusValues.pending;
 
@@ -35,6 +36,7 @@ export class ReceiveAddNewStatusItemComponent implements OnInit {
 
   constructor(
     private receivedOrderService: ReceivedOrderService,
+    public ngZone: NgZone,
   ) {
   }
 
@@ -43,11 +45,22 @@ export class ReceiveAddNewStatusItemComponent implements OnInit {
       this.statusList$,
       this.newStatusList$,
     )
-    .map(([statusList, newStatusList]) => _.differenceWith(statusList, newStatusList, _.isEqual));
+    .map(([statusList, newStatusList]) => {
+      const filteredNewStatusList = _.reject(newStatusList, {'value': 'receive'});
+      return _.differenceWith(statusList, filteredNewStatusList, _.isEqual);
+    });
+
+    /**
+       use renderSelect for setting 'Pending' status after adding new status, because materialize select doesn't work as expected
+     **/
+    this.renderSelect$ = Observable.merge(
+      this.remainingStatusList$.mapTo(false),
+      this.remainingStatusList$.delayWhen(event => this.ngZone.onMicrotaskEmpty).mapTo(true),
+    );
   }
 
   onListSelect(type) {
-    if (type !== this.pendingStatus) {
+    if (type !== 'pending') {
       this.statusAdd.emit({
         type,
         qty: this.qty,
