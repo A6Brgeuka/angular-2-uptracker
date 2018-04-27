@@ -203,7 +203,7 @@ export class AddNewProductComponent implements OnInit {
   formatProduct(product) {
     const attachments = map(product.attachments, 'public_url');
     const vendor_variants = flatten(this.vendorVariants);
-    return {...product, vendor_variants, attachments};
+    return {...product, vendor_variants, attachments, custom: true};
   }
 
   createVendor(vendorInfo) {

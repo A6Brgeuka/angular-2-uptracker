@@ -117,7 +117,7 @@ export class AddProductFromVendorComponent implements OnInit {
   formatProduct(product) {
     const attachments = map(product.attachments, 'public_url');
     const vendor_variants = flatten(this.vendorVariants);
-    return {...product, attachments, account_category: "Supplies", vendor_variants};
+    return {...product, attachments, account_category: "Supplies", vendor_variants, custom: false};
   }
 
   goBack(): void {
