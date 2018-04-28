@@ -4,6 +4,7 @@ import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {Router} from '@angular/router';
 import {ProductService} from '../../../core/services/product.service';
 import { Location } from '@angular/common';
+import {Observable, Subject} from "rxjs";
 
 @Component({
   selector: 'app-browse-global-market',
@@ -16,9 +17,16 @@ export class BrowseGlobalMarketComponent implements OnInit, OnDestroy {
 
   public subscribers: any = {};
 
-  public searchKey: string;
+  public searchKey$: Subject<any> = new Subject<any>();
+  public searchKey: string = '';
+  public infiniteScroll$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   public isRequest: boolean = false;
-  public infiniteScroll$: any = new BehaviorSubject(false);
+  public products$: Observable<any>;
+  public queryParams: any = {
+    page: 1,
+    limit: 10,
+    query: ''
+  };
 
   constructor(
     public productService: ProductService,
@@ -27,17 +35,24 @@ export class BrowseGlobalMarketComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.productService.updateMarketplaceData('global');
+    this.getInfiniteScroll()
   };
 
   addSubscribers() {
+    // Observable.combineLatest(
+    //   this.searchKey$,
+    //   this.infiniteScroll$
+    // )
+    //   .subscribe(([searchKey, scroll] : [string, boolean]) => {
+    //     this.products$ = this.productService.searchProducts(searchKey);
+    //   });
 
     this.subscribers.infiniteSccrollSubscription = this.infiniteScroll$
       .filter((infinite) => infinite && !this.isRequest)
       .switchMap((infinite) => {
         this.isRequest = true;
-        ++this.productService.current_page;
-        return this.productService.getNextProducts(this.productService.current_page);
+        ++this.queryParams.page;
+        return this.products$ = this.productService.searchProducts(this.queryParams);
         })
       .subscribe();
 
@@ -45,9 +60,7 @@ export class BrowseGlobalMarketComponent implements OnInit, OnDestroy {
       .filter(r => r)
       .do(() => this.isRequest = false)
       .delay(1000)
-      .subscribe((r) => {
-        this.getInfiniteScroll();
-      });
+      .subscribe((r) => this.getInfiniteScroll());
   }
 
   getInfiniteScroll() {
@@ -63,7 +76,7 @@ export class BrowseGlobalMarketComponent implements OnInit, OnDestroy {
   }
 
   searchProducts(event) {
-    this.productService.updateSearchKey(event);
+    this.searchKey$.next(event);
   }
 
   selectProduct(product) {
@@ -72,13 +85,11 @@ export class BrowseGlobalMarketComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    this.productService.updateMarketplaceData('my');
     this.location.back();
   }
 
   resetSearch() {
-    this.searchKey = '';
-    this.productService.updateSearchKey('');
+    this.searchKey$.next('');
   }
 
   ngOnDestroy() {

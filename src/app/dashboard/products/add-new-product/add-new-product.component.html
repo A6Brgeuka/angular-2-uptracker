@@ -45,7 +45,6 @@
         <div class="input add-attachment">
           <div class="file-field">
             <div class="upload-link">
-              <!--<input type="file" accept="image/*" (change)="uploadLogo($event)"/>-->
               <a (click)="openUploadImageModal()">Upload an image</a>
             </div>
           </div>
@@ -116,7 +115,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col input s12 m4">
+          <div class="col input s12 m6">
             <label>Department</label>
             <div class="select">
               <select
@@ -128,7 +127,7 @@
             </div>
           </div>
 
-          <div class="col input s12 m4">
+          <div class="col input s12 m6">
             <label>Category</label>
             <div class="select">
               <select
@@ -145,7 +144,7 @@
             </div>
           </div>
 
-          <div class="col input s12 m4">
+          <div class="col input s12 m6">
             <label>Accounting</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
             <div class="select">
               <select
@@ -156,6 +155,11 @@
                 </option>
               </select>
             </div>
+          </div>
+
+          <div class="col input s12 m6">
+            <label>Manufacture #</label>
+            <input type="text" [(ngModel)]="product.manufacture" placeholder="Manufacture #">
           </div>
         </div>
 
