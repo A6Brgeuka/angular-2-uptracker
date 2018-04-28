@@ -1,11 +1,11 @@
 import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {isEqual, each} from 'lodash';
 import {AddProductManager} from "../../../core/services/add-product.manager";
-import {isEqual, each, reduce, cloneDeep} from 'lodash';
 
 @Component({
   selector: 'app-vendor-product-variants',
-  templateUrl: './vendor-product-variants.component.html',
-  styleUrls: ['./vendor-product-variants.component.scss']
+  templateUrl: 'vendor-product-variants.component.html',
+  styleUrls: ['vendor-product-variants.component.scss']
 })
 export class VendorProductVariantsComponent implements OnInit {
 

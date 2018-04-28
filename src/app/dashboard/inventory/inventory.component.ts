@@ -322,7 +322,6 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   onInventoryClick(id) {
     this.onInventoryClickEvent.emit(id)
   }
-
   showFiltersModal() {
     this.modal
     .open(InventoryGroupFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));

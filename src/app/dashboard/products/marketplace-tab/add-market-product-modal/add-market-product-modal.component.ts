@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {DialogRef, Modal} from 'angular2-modal';
-import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { ModalWindowService } from '../../../../core/services/modal-window.service';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import {Observable} from 'rxjs/Observable';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subject} from 'rxjs/Subject';
-import {ProductService} from '../../../core/services/product.service';
+import {ProductService} from '../../../../core/services/product.service';
 import {isObject} from 'lodash'
 import {Router} from "@angular/router";
+
 export class AddMarketProductModalContext extends BSModalContext {
 
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
@@ -11,9 +11,8 @@ import { Observable } from 'rxjs/Observable';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { RequestProductModal } from '../request-product-modal/request-product-modal.component';
-import { AddCustomProductModalComponent } from '../../../shared/modals/add-custom-product-modal/add-custom-product-modal.component';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { AddMarketProductModalComponent } from '../../../shared/modals/add-market-product-modal/add-market-product-modal.component';
+import { AddMarketProductModalComponent } from './add-market-product-modal/add-market-product-modal.component';
 
 @Component({
   selector: 'app-marketplace-tab',

@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 
 import { AddMarketProductModalComponent } from './add-market-product-modal.component';
-import { AppSharedModule } from '../../shared.module';
+import {NguiAutoCompleteModule} from "@ngui/auto-complete";
+import {ScannerModule} from "../../../scanner/scanner.module";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
     AddMarketProductModalComponent,
   ],
   imports: [
-    AppSharedModule
+    RouterModule,
+    NguiAutoCompleteModule,
+    ScannerModule
   ],
   providers: [],
   exports: [

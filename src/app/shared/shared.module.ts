@@ -63,7 +63,6 @@ import { ChipsModule } from './components/chips/chips.module';
 import {ScannerModule} from "../dashboard/scanner/scanner.module";
 import {PriceInputModule} from "./components/price-input/price-input.module";
 import {VariantDetailModule} from "./components/variant-detail/variant-detail.module";
-import {VendorProductVariantsModule} from "./components/vendor-product-variants/vendor-product-variants.module";
 import {UploadEditFileModule} from "./components/upload-edit-file/upload-edit-file.module";
 import {UploadEditImageModalModule} from "./modals/upload-edit-image-modal/upload-edit-image-modal.module";
 
@@ -107,7 +106,6 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CurrencyMaskModule,
     PriceInputModule,
     ScannerModule,
-    VendorProductVariantsModule,
     VariantDetailModule,
     // SelectDropDownModule,
 
@@ -149,7 +147,6 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ChipsModule,
     PriceInputModule,
     ScannerModule,
-    VendorProductVariantsModule,
     VariantDetailModule,
 
     DatepickerModule,

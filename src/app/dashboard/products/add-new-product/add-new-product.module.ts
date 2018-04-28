@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 
 import { AddNewProductComponent } from './add-new-product.component';
 import {AppSharedModule} from '../../../shared/shared.module';
+import {VendorProductVariantsModule} from "../vendor-product-variants/vendor-product-variants.module";
 
 @NgModule({
   declarations: [
     AddNewProductComponent,
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    VendorProductVariantsModule
   ],
   providers: [],
   exports: [

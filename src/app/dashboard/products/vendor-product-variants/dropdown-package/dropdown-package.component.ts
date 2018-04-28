@@ -2,8 +2,8 @@ import {Component, Input, Output, EventEmitter, ElementRef} from '@angular/core'
 
 @Component({
   selector: 'app-dropdown-package',
-  templateUrl: './dropdown-package.component.html',
-  styleUrls: ['./dropdown-package.component.scss'],
+  templateUrl: 'dropdown-package.component.html',
+  styleUrls: ['dropdown-package.component.scss'],
   host: {
     "(document:click)": "onClick($event)"
   }

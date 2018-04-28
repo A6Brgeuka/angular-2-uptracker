@@ -1,8 +1,6 @@
-import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
-import {every, sortBy} from 'lodash';
+import {Component, Output, EventEmitter, Input} from '@angular/core';
 import {CustomProductVariantModel} from "../../../../models/custom-product.model";
 import {InventoryService} from "../../../../core/services/inventory.service";
-import {BehaviorSubject, Observable} from "rxjs";
 import {DestroySubscribers} from "ngx-destroy-subscribers";
 
 @Component({
