@@ -153,8 +153,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       this.goBack();
     }
   }
-  
-  saveReconcile() {}
 
   openFilterModal() {}
 
