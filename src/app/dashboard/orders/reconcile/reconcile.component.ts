@@ -9,11 +9,11 @@ import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import * as CurrencyFormatter from 'currency-formatter';
-import * as Currency from 'currency-codes';
 import { ReconcileService, UserService } from '../../../core/services/index';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { ToasterService } from '../../../core/services/toaster.service';
+import Currencies from './reconcile.currency'
 
 @Component({
   selector: 'app-reconcile',
@@ -54,21 +54,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     try {
-      this.currencyBlackList = ['ALL', 'AMD', 'AOA', 'BOV', 'BYR', 'CHE', 'CHW', 'CLF', 'COU', 'CUC', 'LVL', 'LSL',
-      'MXV', 'PAB', 'SCR', 'SDG', 'SSP', 'TMT', 'USN', 'USS', 'UYI', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC',
-      'XBD', 'XBT', 'XDR', 'XFU', 'XPD', 'XPT', 'XTS', 'XXX', 'USD', 'GBP', 'EUR', 'CAD', 'AUD'];
-      this.currencies = [
-        {value: 'usd', label: 'United States dollar'},
-        {value: 'gbp', label: 'British pound'},
-        {value: 'eur', label: 'Euro'},
-        {value: 'cad', label: 'Canadian dollar'},
-        {value: 'aud', label: 'Australian dollar'}
-      ];
-      Currency.codes().forEach(code => {
-        if (!(any((cc) => cc == code)(this.currencyBlackList))) {
-          this.currencies.push({ label: Currency.code(code).currency, value: toLower(code) });
-        }
-      })
+      this.currencies = Currencies;
       this.board = {
         qty: null,
         pkgPrice: null,
