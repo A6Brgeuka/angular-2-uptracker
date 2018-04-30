@@ -1,0 +1,35 @@
+<div class="close" (click)="dismissModal()"></div>
+<div class="inner">
+  <div class="row">
+    <div class="col s12">
+      <div class="title">Add Product to your Marketplace</div>
+      <div class="input relative">
+        <div class="col s12 input search">
+          <input auto-complete (input)="onSearchTypeIn($event)"
+                 placeholder="Search-Keyword"
+                 [source]="observableSource.bind(this)"
+                 (ngModelChange)='selectedAutocompled($event)'
+                 [min-chars]='2'
+                 [(ngModel)]='searchText'
+                 [list-formatter]="listFormatter"
+                 [no-match-found-text]='noSearchedRes'
+                 [tab-to-select]='false'
+          />
+          <app-scanner (searchText)="onSearchTextUpdated($event)"></app-scanner>
+        </div>
+        </div>
+    </div>
+    <div class="col s6">
+      <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
+              [routerLink]="['/product', 'global']" (click)="dismissModal(); $event.stopPropagation()">
+        Browse Global Market
+      </button>
+    </div>
+    <div class="col s6">
+      <button class="uptracker-form-btn white-text tealish waves-effect waves-light"
+              (click)="onAddCustomClick(); $event.stopPropagation()">
+      Add Custom Product
+      </button>
+    </div>
+  </div>
+</div>

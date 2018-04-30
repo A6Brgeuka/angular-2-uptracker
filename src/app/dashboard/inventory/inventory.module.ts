@@ -16,7 +16,9 @@ import { InventoryGroupFiltersModule } from '../../shared/modals/filters-modal/i
     AddInventoryModalModule,
     InventoryGroupFiltersModule,
   ],
-  providers: []
+  exports: [InventoryComponent],
+  providers: [],
+  entryComponents: [ InventoryComponent ]
 })
 export class InventoryModule {
 }

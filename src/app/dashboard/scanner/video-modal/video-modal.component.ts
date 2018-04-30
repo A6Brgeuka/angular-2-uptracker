@@ -30,11 +30,12 @@ export class VideoModal implements ModalComponent<VideoModalContext>, OnInit {
   }
 
     ngOnInit() {
-        this.scannerService.onStartStream(this.video, this.canvas, this.dialog);
+        //this.scannerService.onStartStream(this.video, this.canvas, this.dialog);
     }
 
     closeModal() {
-        this.scannerService.onStopStrem();
+      this.dialog.dismiss();
+      //this.scannerService.onStopStrem();
     }
 }
 

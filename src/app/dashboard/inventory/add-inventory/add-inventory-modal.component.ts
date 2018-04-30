@@ -25,6 +25,7 @@ export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
   inventoryGroup: any = null;
   selectedProduct: any = null;
+  modalMode: boolean;
 }
 
 @Component({
@@ -237,10 +238,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
       updateItems$
     ).publishReplay(1).refCount();
 
-    this.subscribers.itemsSubscription = this.items$.subscribe(res => {
+    this.subscribers.itemsSubscription = this.items$.filter(i => i).subscribe(res => {
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {
+        console.log(res)
         const findedCategory: any = _.find(res, 'category');
         const searchedCategory = (findedCategory) ? this.productCategoriesCollection.indexOf(findedCategory.category) : null;
         this.newInventory.name = res[0].name;
@@ -641,6 +643,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
         this.saveAdded$.next();
       }
     }
+    this.dialog.close(this.newInventory)
   }
 
   nextPackage(value) {
