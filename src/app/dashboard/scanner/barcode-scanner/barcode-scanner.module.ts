@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BarcodeScannerComponent } from './barcode-scanner.component';
-import { AppSharedModule } from '../../../shared/shared.module';
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { AppSharedModule } from '../../../shared/shared.module';
     BarcodeScannerComponent
   ],
   imports: [
-    AppSharedModule
+    CommonModule
   ],
   providers: [],
 })

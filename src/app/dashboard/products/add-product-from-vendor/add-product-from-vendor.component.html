@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col s2">
+    <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="step==0"></div>
+    <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
+            (click)="step=step-1" *ngIf="step != 0">
+      <fa name="chevron-left"></fa>
+      Back
+    </button>
+  </div>
+  <div class="col s8 center-align">
+    <div class="main-title">Add Global Product</div>
+    <div class="sub-title" *ngIf="step==1">
+      Vendors
+    </div>
+  </div>
+  <div class="col s2 right-align">
+    <button *ngIf="step!=1" [disabled]="!canProceed()"
+            class="uptracker-form-btn white-text waves-effect waves-light" (click)="step=step+1">
+      Next
+    </button>
+    <button *ngIf="step==1"
+            class="uptracker-form-btn white-text waves-effect waves-light" (click)="onSubmit()">
+      Save
+    </button>
+  </div>
+
+</div>
+
+<app-add-product-from-vendor-step1
+  *ngIf="step == 0"
+  [product]="product"
+  [variants]="variants"
+  (canProceed)="onCanProceed($event)">
+</app-add-product-from-vendor-step1>
+
+<app-add-product-from-vendor-step2
+  *ngIf="step == 1"
+  [product]="product"
+  [vendorVariants]="vendorVariants">
+</app-add-product-from-vendor-step2>

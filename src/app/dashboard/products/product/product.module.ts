@@ -13,7 +13,7 @@ import { BulkAdd2OrderModalModule } from './bulkAdd2order-modal/bulkAdd2order-mo
     ProductComponent,
     VariantShortDetailComponent,
     InventoryDetailComponent,
-    HistoryDetailComponent,
+    HistoryDetailComponent
   ],
   imports: [
     AppSharedModule,

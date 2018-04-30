@@ -1,0 +1,128 @@
+@import "../../../../../colors";
+
+:host /deep/ {
+  position: relative;
+  display: block;
+  padding-top: 20px;
+
+  .col {
+    padding: 0 0.25rem;
+  }
+
+  .fa-barcode {
+    color: $tealish;
+    font-size: 20px;
+    position: absolute;
+    right: 10px;
+    top: 6px;
+  }
+
+  input[appCurrencyUsdFormat] {
+    color: $grey;
+  }
+  .dirty {
+    color: $black;
+  }
+
+  input{
+    margin: 0 !important;
+    box-sizing:border-box;
+    background-color: $white;
+    border-radius: 3px !important;
+    border-color: $light-grey !important;
+  }
+
+  .bluebtn {
+    margin: 0;
+  }
+
+  .sub-title {
+    height: 22px;
+    font-family: Ubuntu;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: $dark;
+  }
+
+  input[type="text"]{
+    height:30px !important;
+    border:1px solid $light-grey;
+    border-radius:5px;
+    background-color: $white;
+    padding-left:5px;
+    &:focus{
+      border-color: $tealish;
+    }
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap !important;
+  }
+
+  .label {
+    padding-left: 10px;
+    font-size: 20px;
+  }
+
+  .input-checkbox {
+    padding-right: 10px;
+  }
+
+  @media (max-width: 800px) {
+    .uptracker-form-btn,
+    .bluebtn {
+      min-width: 50px;
+    }
+  }
+
+  fa[name="angle-down"] {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    font-size: 20px;
+  }
+
+  fa[name="times-circle"]{
+    position: absolute;
+    right: 0;
+    font-size: 16px;
+    cursor: pointer;
+    color: $mid-grey;
+    opacity: 0;
+    transition: all .3s;
+  }
+
+  .ttl {
+    padding-left: 0.75rem;
+    padding-bottom: 7px;
+  }
+
+  .margin {
+    margin-top: 20px;
+  }
+
+  .select {
+    position: relative;
+  }
+
+}
+
+:host {
+
+  &:hover {
+    fa[name="times-circle"] {
+      opacity: 1;
+    }
+  }
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+}
+
