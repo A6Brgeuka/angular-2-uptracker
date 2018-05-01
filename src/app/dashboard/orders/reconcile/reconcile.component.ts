@@ -117,32 +117,41 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   updateInvoiceDetails(event) {
-    try {
-      // Total
-      this.selectedInvoice.invoice.total = this.selectedInvoice.invoice.calculated_sub_total
-      + this.selectedInvoice.invoice.shipping
-      + this.selectedInvoice.invoice.handling
-      + this.selectedInvoice.invoice.tax;
+    if (isNil(this.selectedInvoice.invoice.sub_total)) this.selectedInvoice.invoice.sub_total = 0;
+    if (isNil(this.selectedInvoice.invoice.invoice_credit)) this.selectedInvoice.invoice.invoice_credit = 0;
+    if (isNil(this.selectedInvoice.invoice.shipping)) this.selectedInvoice.invoice.shipping = 0;
+    if (isNil(this.selectedInvoice.invoice.handling)) this.selectedInvoice.invoice.handling = 0;
+    if (isNil(this.selectedInvoice.invoice.tax)) this.selectedInvoice.invoice.tax = 0;
+    if (isNil(this.selectedInvoice.invoice.discount)) this.selectedInvoice.invoice.discount = 0;
+    if (isNil(this.selectedInvoice.invoice.sales_tax)) this.selectedInvoice.invoice.sales_tax = 0;
+    if (isNil(this.selectedInvoice.invoice.vat)) this.selectedInvoice.invoice.vat = 0;
 
-      // Calculated Total
-      let calculated_total = this.selectedInvoice.invoice.sub_total
-      + this.selectedInvoice.invoice.shipping
-      + this.selectedInvoice.invoice.handling
-      + this.selectedInvoice.invoice.tax
-      - this.selectedInvoice.invoice.invoice_credit;
+    this.selectedInvoice.invoice.tax = 
+      this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.sales_tax / 100
+      + this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.vat / 100;
 
-      if (this.selectedInvoice.invoice.discount_type === 'PERCENT') {
-        this.selectedInvoice.invoice.discount = calculated_total * this.selectedInvoice.invoice.discount_ / 100;
-      } else {
-        this.selectedInvoice.invoice.discount = this.selectedInvoice.invoice.discount_;
-      }
-      this.selectedInvoice.invoice.calculated_total = calculated_total - this.selectedInvoice.invoice.discount;
+    // Total
+    this.selectedInvoice.invoice.total = this.selectedInvoice.invoice.calculated_sub_total
+    + this.selectedInvoice.invoice.shipping
+    + this.selectedInvoice.invoice.handling
+    + this.selectedInvoice.invoice.tax;
 
-      // Diff
-      this.selectedInvoice.invoice.diff = this.selectedInvoice.invoice.calculated_total - this.selectedInvoice.invoice.total;
-    } catch (err) {
-      console.log('updateInvoiceDetails: ', err);
+    // Calculated Total
+    let calculated_total = this.selectedInvoice.invoice.sub_total
+    + this.selectedInvoice.invoice.shipping
+    + this.selectedInvoice.invoice.handling
+    + this.selectedInvoice.invoice.tax
+    - this.selectedInvoice.invoice.invoice_credit;
+
+    if (this.selectedInvoice.invoice.discount_type === 'PERCENT') {
+      this.selectedInvoice.invoice.discount = calculated_total * this.selectedInvoice.invoice.discount_ / 100;
+    } else {
+      this.selectedInvoice.invoice.discount = this.selectedInvoice.invoice.discount_;
     }
+    this.selectedInvoice.invoice.calculated_total = calculated_total - this.selectedInvoice.invoice.discount;
+
+    // Diff
+    this.selectedInvoice.invoice.diff = this.selectedInvoice.invoice.calculated_total - this.selectedInvoice.invoice.total;
   }
 
   handleCurrencyChange(event) {
@@ -258,10 +267,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   taxBoardOKClick() {
     this.taxBoardVisible = !this.taxBoardVisible;
 
-    const total = this.selectedInvoice.invoice.tax
-      + (this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.sales_tax / 100) || 0
+    this.selectedInvoice.invoice.tax = 
+      (this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.sales_tax / 100) || 0
       + (this.selectedInvoice.invoice.sub_total * this.selectedInvoice.invoice.vat / 100) || 0;
-    this.selectedInvoice.invoice.tax = total;
 
     this.updateInvoiceDetails({});
   }

@@ -81,6 +81,7 @@
                     type="text"
                     name="subTotal"
                     placeholder="$0.00"
+                    defaultValue="0"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.sub_total"
@@ -99,6 +100,7 @@
                     type="text"
                     name="invoiceCredit"
                     placeholder="$0.00"
+                    defaultValue="0"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.invoice_credit"
@@ -117,6 +119,7 @@
                     type="text"
                     name="shipping"
                     placeholder="$0.00"
+                    defaultValue="0"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.shipping"
@@ -134,7 +137,8 @@
                   <input
                     type="text"
                     name="handling"
-                    placeholder="$5.00"
+                    placeholder="$0.00"
+                    defaultValue="0"
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="selectedInvoice.invoice.handling"
@@ -152,6 +156,7 @@
                   type="text"
                   name="taxes"
                   currencyMask
+                  placeholder="$0.00"
                   [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                   [(ngModel)]="selectedInvoice.invoice.tax"
                   (ngModelChange)="updateInvoiceDetails($event)"
