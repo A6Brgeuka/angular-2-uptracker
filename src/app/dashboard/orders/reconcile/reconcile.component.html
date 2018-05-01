@@ -68,7 +68,7 @@
             <div class="item">
               <span>Calculated Sub-Total</span>
               <div class="input-calculated">
-                {{currencyFormat(selectedInvoice.invoice.calculated_sub_total)}}
+                {{selectedInvoice.invoice.calculated_sub_total | currency:symbol:true}}
               </div>
             </div>
           </div>
@@ -252,7 +252,7 @@
             <div class="item">
               <span>Total</span>
               <div class="input-calculated">
-                <span class="bold">{{currencyFormat(selectedInvoice.invoice.total)}}</span>
+                <span class="bold">{{selectedInvoice.invoice.total | currency:symbol:true}}</span>
               </div>
             </div>
           </div>
@@ -260,7 +260,7 @@
             <div class="item">
               <span>Calculated Total</span>
               <div class="input-calculated">
-                {{currencyFormat(selectedInvoice.invoice.calculated_total)}}
+                {{selectedInvoice.invoice.calculated_total | currency:symbol:true}}
               </div>
             </div>
           </div>
@@ -268,7 +268,7 @@
             <div class="item">
               <span class="diff-red">Diff</span>
               <div class="input-calculated">
-                <span class="diff-red">{{currencyFormat(selectedInvoice.invoice.diff)}}</span>
+                <span class="diff-red">{{selectedInvoice.invoice.diff | currency:symbol:true}}</span>
               </div>
             </div>
           </div>
@@ -278,7 +278,7 @@
 
     <div class="control">
       <div class="input wide-input">
-        <input type="text" name="filterInput" placeholder="Product Search" [(ngModel)]="filter" (ngModelChange)="filterChange($event)">
+        <input type="text" name="filterInput" placeholder="Product Search" [(ngModel)]="filter">
       </div>
       <div class="select">
         <select title="sort by" name="sort" [(ngModel)]="sort" materialize="material_select"  (ngModelChange)="sortAlphabet($event)">
@@ -286,18 +286,6 @@
           <option value="Z-A">Z-A</option>
         </select>
       </div>
-      <!-- <div class="filter">
-        <a (click)="openFilterModal()">
-          <fa [name]="'filter'"></fa>
-          <span>Filters</span>
-        </a>
-      </div> -->
-      <!-- <button
-        (click)="showProductModal()"
-        class="right mtop uptracker-form-btn white-text waves-effect waves-light"
-      >
-        Add Product
-      </button> -->
     </div>
 
     <div class="list is-grid-view">
@@ -363,16 +351,16 @@
                 <div class="text-left mini-input input-header">{{product.order_qty}}</div>
               </div>
               <div class="col s2">
-                <div class="text-left input-header">{{currencyFormat(product.package_price)}}</div>
+                <div class="text-left input-header">{{product.package_price | currency:symbol:true}}</div>
               </div>
               <div class="col s2">
-                <div class="text-left input-header">{{currencyFormat(product.discount)}}</div>
+                <div class="text-left input-header">{{product.discount | currency:symbol:true}}</div>
               </div>
               <div class="col s2">
-                <div>{{currencyFormat(product.discounted_price)}}</div>
+                <div>{{product.discounted_price | currency:symbol:true}}</div>
               </div>
               <div class="col s2">
-                <div>{{currencyFormat(product.total)}}</div>
+                <div>{{product.total | currency:symbol:true}}</div>
               </div>
             </div>
             <div class="row mrg-btm-0">
@@ -382,7 +370,7 @@
               <div class="col s2">
                 <div class="input mini-input">
                   <input
-                    type="text"
+                    type="number"
                     class="text-left"
                     name="reconciled_qty"
                     [(ngModel)]="product.reconciled_qty"
@@ -430,10 +418,10 @@
                 </div>
               </div>
               <div class="col s2">
-                <div class="lined">{{currencyFormat(product.reconciled_discounted_price)}}</div>
+                <div class="lined">{{product.reconciled_discounted_price | currency:symbol:true}}</div>
               </div>
               <div class="col s2">
-                <div class="lined">{{currencyFormat(product.reconciled_total)}}</div>
+                <div class="lined">{{product.reconciled_total | currency:symbol:true}}</div>
               </div>
             </div>
           </div>

@@ -5,11 +5,7 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { DatepickerComponent } from 'angular2-material-datepicker';
 import { any, comparator, equals, gt, prop, sort, sortBy, toLower, isEmpty, isNil } from 'ramda';
 import { SelectComponent, IOption } from 'ng-select';
-import { Subscription } from 'rxjs';
-import * as moment from 'moment';
-import * as _ from 'lodash';
-import * as CurrencyFormatter from 'currency-formatter';
-import { ReconcileService, UserService } from '../../../core/services/index';
+import { ReconcileService } from '../../../core/services/index';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { ToasterService } from '../../../core/services/toaster.service';
@@ -35,10 +31,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public currency: any = {}
   public currencies: Array<IOption> = [];
   public orders: any = {};
-  public currencyBlackList: Array<string> = [];
-  private invoiceSubscription: Subscription;
-  private invoicesSubscription: Subscription;
-  private orderSubscription: Subscription;
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
@@ -46,7 +38,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     public modal: Modal,
     public reconcileService: ReconcileService,
     public modalWindowService: ModalWindowService,
-    public userService: UserService,
     public router: Router,
     public toasterService: ToasterService,
   ) {
@@ -61,17 +52,26 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         discountAmount: null,
         discountType: 'PERCENT',
       };
-      this.orderSubscription = this.reconcileService.orders$.subscribe(res => {
+      this.reconcileService.orders$.subscribe(res => {
         this.orders = res;
       });
-      this.invoiceSubscription = this.reconcileService.invoice$.subscribe(res => {
+      this.reconcileService.invoice$.subscribe(res => {
         // res.invoice.invoice_date = new Date(res.invoice.invoice_date);
         res.invoice.invoice_date = new Date();
         res.invoice.discount_ = 0;
         res.invoice.discount_type = 'PERCENT';
+
+        res.invoice.shipping = res.invoice.shipping || 0;
+        res.invoice.handling = res.invoice.handling || 0;
+        res.invoice.tax = res.invoice.tax || 0;
+        res.invoice.total = res.invoice.total || 0;
+        res.invoice.invoice_credit = res.invoice.invoice_credit || 0;
+        res.invoice.sub_total = res.invoice.sub_total || 0;
+
         this.selectedInvoice = res;
+        this.updateInvoiceDetails({});
       })
-      this.invoicesSubscription = this.reconcileService.invoices$.subscribe(res => {
+      this.reconcileService.invoices$.subscribe(res => {
         res.forEach(item => {
           this.invoices.push({
             value: item.invoice_id, label: item.invoice_number
@@ -85,16 +85,10 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    try {
-      console.log('for unsubscribing');
-      this.orderSubscription.unsubscribe();
-      this.invoiceSubscription.unsubscribe();
-      this.invoicesSubscription.unsubscribe();
-    } catch (err) {
-      console.log('ngOnDestroy: ', err);
-      this.router.navigate(['/orders/items']);
-    }
+    console.log('for unsubscribing');
   }
+
+  addSubscribers() {}
 
   handleInvoiceChanges(event) {
     try {
@@ -120,80 +114,20 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleCurrencyChange(event) {
-    this.selectedInvoice.invoice.currency = event.value;
-  }
-
-  goBack() {
-    this.router.navigate(['/orders/items']);
-  }
-
-  currencyFormat(event: string) {
-    const value = parseFloat(event);
-    return CurrencyFormatter.format(value, { code: 'USD' });
-  }
-
-  showProductModal() {
-    this.modal
-    .open(ReconcileProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}));
-  }
-
-  addSubscribers() {}
-  
-  toggleSelectAll() {}
-
-  removeProduct(product) {
-    product.checked = false;
-    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
-  }
-
-  deleteProduct(index) {
-    this.selectedInvoice.items.splice(index, 1);
-    if (this.selectedInvoice.items.length == 0) {
-      this.goBack();
-    }
-  }
-
-  openFilterModal() {}
-
-  filterChange(event) {}
-
-  productHeaderSelect(event) {
-    setTimeout(() => {
-      this.selectedInvoice.items.forEach(item => {
-        item.checked = this.productHeader;
-      })
-      this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
-    })
-  }
-
-  productSelect(product) {
-    product.checked = !product.checked
-    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
-  }
-
   updateInvoiceDetails(event) {
     try {
       // Total
-      let total = this.selectedInvoice.invoice.sub_total
-      - this.selectedInvoice.invoice.invoice_credit
+      this.selectedInvoice.invoice.total = this.selectedInvoice.invoice.calculated_sub_total
       + this.selectedInvoice.invoice.shipping
       + this.selectedInvoice.invoice.handling
       + this.selectedInvoice.invoice.tax;
-
-      if (this.selectedInvoice.invoice.discount_type === 'PERCENT') {
-        this.selectedInvoice.invoice.discount = total * this.selectedInvoice.invoice.discount_ / 100;
-      } else {
-        this.selectedInvoice.invoice.discount = this.selectedInvoice.invoice.discount_;
-      }
-      this.selectedInvoice.invoice.total = total - this.selectedInvoice.invoice.discount;
 
       // Calculated Total
-      let calculated_total = this.selectedInvoice.invoice.calculated_sub_total
-      - this.selectedInvoice.invoice.invoice_credit
+      let calculated_total = this.selectedInvoice.invoice.sub_total
       + this.selectedInvoice.invoice.shipping
       + this.selectedInvoice.invoice.handling
-      + this.selectedInvoice.invoice.tax;
+      + this.selectedInvoice.invoice.tax
+      - this.selectedInvoice.invoice.invoice_credit;
 
       if (this.selectedInvoice.invoice.discount_type === 'PERCENT') {
         this.selectedInvoice.invoice.discount = calculated_total * this.selectedInvoice.invoice.discount_ / 100;
@@ -209,6 +143,45 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleCurrencyChange(event) {
+    this.selectedInvoice.invoice.currency = event.value;
+  }
+
+  goBack() {
+    this.router.navigate(['/orders/items']);
+  }
+
+  showProductModal() {
+    this.modal
+    .open(ReconcileProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}));
+  }
+
+  removeProduct(product) {
+    product.checked = false;
+    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
+  }
+
+  deleteProduct(index) {
+    this.selectedInvoice.items.splice(index, 1);
+    if (this.selectedInvoice.items.length == 0) {
+      this.goBack();
+    }
+  }
+
+  productHeaderSelect(event) {
+    setTimeout(() => {
+      this.selectedInvoice.items.forEach(item => {
+        item.checked = this.productHeader;
+      })
+      this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
+    })
+  }
+
+  productSelect(product) {
+    product.checked = !product.checked
+    this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
+  }
+
   productChange(product) {
     try {
       if (product.reconciled_discount_type === 'PERCENT') {
@@ -216,7 +189,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       } else {
         product.reconciled_discounted_price = (product.reconciled_package_price - product.reconciled_discount) || 0;
       }
-      product.reconciled_total = (product.reconciled_discounted_price * product.received_qty) || 0;
+      product.reconciled_total = (product.reconciled_discounted_price * product.reconciled_qty) || 0;
     } catch (err) {
       console.log('productChange: ', err);
     }
@@ -329,11 +302,12 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     return payload;
   }
 
-  async reconcileSave() {
+  reconcileSave() {
     this.toasterService.pop("", "Invoice details updated successfully");
     const payload = this.getUpdates(false);
-    await this.reconcileService.updateReconcile(payload);
-    this.router.navigate(['/orders/invoices']);
+    this.reconcileService.updateReconcile(payload).subscribe(res => {
+      this.router.navigate(['/orders/invoices']);
+    });
   }
 
   reconcilePay() {
