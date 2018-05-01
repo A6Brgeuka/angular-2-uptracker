@@ -1,5 +1,7 @@
 <div class="product-page">
   <div class="close fa fa-chevron-left" (click)="goBack()"></div>
+  <div class="title">{{showVariant ? 'Product Variation' : 'Product Details' }}</div>
+
   <div class="row right edit-buttons">
     <button class="bt-edit-product edbtn bluebtn" *ngIf="!showEdit" (click)="showEditFields()">
       <fa [name]="'pencil'"></fa>
@@ -13,26 +15,8 @@
   </div>
   <div class="inner" [ngClass]="{'edit-mode':showEdit}">
 
-    <div class="title center-align">{{showVariant ? 'Product Variation' : 'Product Details' }}
-    </div>
     <div class="row uptracker-form">
-      <div class="ttl-box row input" *ngIf="product?.name != null">
-        <div *ngIf="!showEdit" class="ttl col s12 variant-show-name">
-          {{ showVariant ? currentVariant.name : product?.name}}
-        </div>
-        <div class="col s12">
-          <input (click)="$event.stopPropagation();"
-                 class="ttl col s12 name-field"
-                 *ngIf="showEdit"
-                 [(ngModel)]="productCopy.name"
-                 type="text">
-        </div>
-      </div>
-      <div class="ttl-box row input" *ngIf="product?.name != product?.proper_name">
-        <div [class.variant-show-name]="product?.name == null" class="ttl col s12">
-          {{ showVariant ? currentVariant.proper_name : product?.proper_name}}
-        </div>
-      </div>
+
       <div class="info-box col s12" [class.condensed]="showVariant">
         <div class="img-container left">
           <div class="img file-field" *ngIf="!showVariant || showVariant && !currentVariant?.image"
@@ -45,14 +29,39 @@
           </div>
         </div>
         <div class="left product-params">
-          <div class="row" [ngClass]="{'checks':showEdit}">
 
-            <div class="col m4" [class.l2]="!showEdit" >
+          <div class="ttl-box input" *ngIf="product?.name != null">
+            <label *ngIf="!showEdit" class="variant-show-name">
+              {{ showVariant ? currentVariant.name : product?.name}}
+            </label>
+            <div>
+              <input (click)="$event.stopPropagation();"
+                class="name-field"
+                *ngIf="showEdit"
+                [(ngModel)]="productCopy.name"
+                type="text">
+            </div>
+            <div *ngIf="!showEdit" [class.variant-show-name]="product?.name == null">
+              {{ showVariant ? currentVariant.proper_name : product?.proper_name}}
+            </div>
+            <div>
+              <input (click)="$event.stopPropagation();"
+                class="name-field"
+                *ngIf="showEdit"
+                [(ngModel)]="productCopy.proper_name"
+                type="text">
+            </div>
+
+          </div>
+
+          <div class="row mrg-btm-20" [ngClass]="{'checks':showEdit}">
+
+            <div class="col m3" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="">
                 <label>Hazardous</label>
                 <span class="value">
                   <a *ngIf="product?.hazardous && product?.msds" target="_blank" [href]="product?.msds">{{product?.hazardous_string}}</a>
-                  <span  *ngIf="!product?.hazardous  && !product?.msds">{{product?.hazardous_string}}</span>
+                  <div  *ngIf="!product?.hazardous  && !product?.msds">{{product?.hazardous_string}}</div>
                 </span>
               </div>
               <div *ngIf="showEdit" class="input-checkbox checkbox">
@@ -67,10 +76,10 @@
               </div>
             </div>
 
-            <div class="col m4" [class.l2]="!showEdit" >
+            <div class="col m3" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="">
                 <label>Trackable</label>
-                <span class="value">{{product?.trackable_string}}</span>
+                <div class="value">{{product?.trackable_string}}</div>
               </div>
               <div *ngIf="showEdit" class="input-checkbox checkbox">
                 <label>Trackable</label>
@@ -84,10 +93,10 @@
               </div>
             </div>
 
-            <div class="col m4" [class.l2]="!showEdit" >
+            <div class="col m3" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="">
                 <label>Tax Exempt</label>
-                <span class="value">{{product?.tax_exempt_string}}</span>
+                <div class="value">{{product?.tax_exempt_string}}</div>
               </div>
               <div *ngIf="showEdit" class="input-checkbox checkbox">
                 <label>Tax Exempt</label>
@@ -103,8 +112,18 @@
 
           </div>
           <div class="row">
-
-            <div class="col m4 input" [class.l2]="!showEdit" >
+            <div class="col m3 input" [class.l2]="!showEdit">
+              <label>Manufacturer</label>
+              <div *ngIf="!showEdit" class="value">{{product?.manufacturer}}</div>
+              <div>
+                <input (click)="$event.stopPropagation();"
+                  class="name-field"
+                  *ngIf="showEdit"
+                  [(ngModel)]="productCopy.manufacturer"
+                  type="text">
+              </div>
+            </div>
+            <div class="col m3 input" [class.l2]="!showEdit" >
               <label>Department</label>
               <div *ngIf="!showEdit" class="value">{{product?.department}}</div>
               <div *ngIf="showEdit" class="select">
@@ -117,7 +136,7 @@
               </div>
             </div>
 
-            <div class="col m4 input" [class.l2]="!showEdit" >
+            <div class="col m3 input" [class.l2]="!showEdit" >
               <label>Category</label>
               <div *ngIf="!showEdit" class="value">{{product?.category}}</div>
               <div *ngIf="showEdit" class="select">
@@ -131,7 +150,7 @@
               </div>
             </div>
 
-            <div class="col m4 input" [class.l2]="!showEdit" >
+            <div class="col m3 input" [class.l2]="!showEdit" >
               <label>Accounting</label>
               <div *ngIf="!showEdit" class="value">{{product?.account_category}}</div>
               <div *ngIf="showEdit" class="select">

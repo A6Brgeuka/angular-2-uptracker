@@ -13,8 +13,8 @@ $normal: 14px;
       width: 40px;
       height: 40px;
       position: absolute;
-      left: 10px;
-      top: 10px;
+      left: 20px;
+      top: 25px;
       background-color: $tealish;
       cursor: pointer;
       font-size: 20px;
@@ -31,11 +31,21 @@ $normal: 14px;
     .title {
       font: 28px/32px Ubuntu;
       margin-bottom: 5px;
+      margin-left: 40px;
     }
 
+    .ttl-box {
+      label, .variant-show-name {
+        font-size: 1rem;
+      }
+    }
     .row {
       margin-left: -0.75rem;
       margin-right: -0.75rem;
+      margin-bottom: 0;
+      .mrg-btm-20 {
+        margin-bottom: 20px;
+      }
     }
 
     .buttons {
@@ -90,7 +100,7 @@ $normal: 14px;
   .edit-buttons {
     position: absolute;
     right: 36px;
-    top: 20px;
+    top: 30px;
   }
 
   .title {
@@ -200,7 +210,7 @@ $normal: 14px;
       width: 200px;
       height: 200px;
       border: 1px solid $light-grey;
-
+      margin: 30px 30px 30px 20px;
       .img {
         height: 100%;
         background-position: center center;
@@ -212,13 +222,13 @@ $normal: 14px;
       }
     }
     .product-params {
-      padding: 20px;
-      width: calc(100% - 200px);
+      padding: 50px 15px;
+      width: calc(100% - 260px);
     }
 
     .row.uptracker-form {
       margin-bottom: 0;
-
+      background: $light-grey;
     }
     .row.table-head-filter {
       margin-bottom: 0;
@@ -280,17 +290,12 @@ $normal: 14px;
       }
     }
     .info-box {
-
       min-height: 180px;
 
       input[type="text"] {
         border-color: $greeny;
         color: $dark;
-        height: 36px;
-      }
-      .name-field {
-        margin-bottom: -5px;
-        margin-top: 0;
+        height: 32px;
       }
 
       .ttl {
@@ -298,7 +303,9 @@ $normal: 14px;
       }
 
       label {
-        color: $grey;
+        color: #000;
+        font-weight: bold;
+        font-family: 'Roboto';
       }
 
       .value {
