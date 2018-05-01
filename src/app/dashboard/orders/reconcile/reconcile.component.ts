@@ -92,30 +92,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
 
   addSubscribers() {}
 
-  handleInvoiceChanges(event) {
-    try {
-      this.reconcileService.getReconcile(event.value, this.orders.id).subscribe(res => {
-        if (isNil(res.data)) {
-          this.toasterService.pop('error', 'Invoice or Order items are in usage now.');
-        } else {
-          res.data.invoice.invoice_date = new Date(res.invoice.invoice_date)
-          res.data.invoice.discount_ = res.invoice.discount;
-          res.data.invoice.discount_type = 'USD';
-  
-          res.data.items.forEach(item => {
-            item.reconciled_discount_type = 'PERCENT';
-            this.productChange(item);
-          });
-  
-          this.selectedInvoice = res.data;
-          this.updateInvoiceDetails({});
-        }
-      })
-    } catch (err) {
-      console.log('handleInvoiceChanges: ', err);
-    }
-  }
-
   updateInvoiceDetails(event) {
     if (isNil(this.selectedInvoice.invoice.sub_total)) this.selectedInvoice.invoice.sub_total = 0;
     if (isNil(this.selectedInvoice.invoice.invoice_credit)) this.selectedInvoice.invoice.invoice_credit = 0;
@@ -340,6 +316,13 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     const payload = { items, invoice }
 
     return payload;
+  }
+
+  saveInvoice(event) {
+    const payload = this.getUpdates(false);
+    this.reconcileService.updateReconcile(payload).subscribe(res => {
+      this.reconcileService.lookInvoices(null).subscribe(res => {});
+    });
   }
 
   reconcileSave() {
