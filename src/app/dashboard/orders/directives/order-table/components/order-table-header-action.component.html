@@ -1,5 +1,4 @@
 <ng-template [ngIf]="isShow">
-
   <div class="right edititem"
     materialize="dropdown"
     [attr.data-activates]='listName'
@@ -11,13 +10,13 @@
     <li>
       <a class="tealish-text" (click)="edit()">Edit</a>
     </li>
-    <li *ngIf="!isReceiveList">
+    <li *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices' && (ordersService.tableRoute$ | async) !== '/orders/packing-slips' && !isReceiveList">
       <a class="tealish-text" (click)="receive()">Receive</a>
     </li>
-    <li *ngIf="!isBackorderedList">
+    <li *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices' && (ordersService.tableRoute$ | async) !== '/orders/packing-slips' && !isBackorderedList">
       <a class="tealish-text" (click)="backorder()">Backorder</a>
     </li>
-    <li *ngIf="isReceiveList">
+    <li *ngIf="(ordersService.tableRoute$ | async) === '/orders/packing-slips' || isReceiveList">
       <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
     </li>
     <li>

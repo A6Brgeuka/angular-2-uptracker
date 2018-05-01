@@ -5,9 +5,11 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { FlaggedOrdersListService } from '../services/flagged-orders-list.service';
+import { Order } from '../../models/order';
+import { OrdersTableService } from '../services/orders-table.service';
+import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
 
 @Component({
   selector: 'app-flagged-orders-list',
@@ -29,14 +31,16 @@ export class FlaggedOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
     {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
-    {name: '', className: 's1', actions: false},
+    {name: '', className: 's1', actions: true},
   ];
 
-  public orders$: Observable<OrderItem[]>;
+  public orders$: Observable<Order[]>;
 
   constructor(
     private pastOrderService: PastOrderService,
     private flaggedOrdersListService: FlaggedOrdersListService,
+    private ordersTableService: OrdersTableService,
+    private favoritedOrdersListService: FavoritedOrdersListService,
   ) {
 
   };
@@ -60,6 +64,19 @@ export class FlaggedOrdersListComponent implements OnInit, OnDestroy {
 
   onFilterBy(value) {
     this.pastOrderService.updateFilterBy(value);
+  }
+
+  onFavorite(item) {
+    this.favoritedOrdersListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedOrdersListService.putItem(item);
+  }
+
+  onVoid(value) {
+    const data = {orders: value.map((item) => ({order_id: item.item.order_id, message: item.message}))};
+    this.ordersTableService.onVoidOrder(data);
   }
 
 }

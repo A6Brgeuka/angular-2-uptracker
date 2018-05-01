@@ -1,0 +1,304 @@
+<div class="inner edit-mode">
+
+  <div class="row">
+    <div class="col s2">
+      <div class="close fa fa-chevron-left" (click)="goBack()" *ngIf="step == 0"></div>
+      <button class="uptracker-form-btn back-btn tealish tealish-text waves-effect waves-light"
+              (click)="step=step-1;" *ngIf="step != 0">
+        <fa name="chevron-left"></fa>
+        Back
+      </button>
+    </div>
+    <div class="col s8 center-align">
+      <div class="main-title">Add Custom Product</div>
+    </div>
+    <div class="col s2 right-align">
+      <button *ngIf="step != 2" [disabled]="!canProceed()"
+              class="uptracker-form-btn white-text waves-effect waves-light" (click)="onNextClick()">
+        Next
+      </button>
+      <button *ngIf="step == 2" [disabled]="productNotValid()"
+              class="uptracker-form-btn white-text waves-effect waves-light" (click)="onSubmit()">
+        Save
+      </button>
+    </div>
+  </div>
+
+  <div class="row uptracker-form" *ngIf="step == 0">
+    <div class="col s12 m3 center-align">
+      <div class="col s12">
+        <div class="img-container">
+          <div class="img" *ngIf="product.image" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+            <div class="del-img-btn" (click)="product.image = ''">
+              <i class="material-icons">delete</i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <div>
+          Product image
+        </div>
+        <div>
+          Please upload a JPG or PNG max size 10 MB
+        </div>
+        <div class="input add-attachment">
+          <div class="file-field">
+            <div class="upload-link">
+              <a (click)="openUploadImageModal()">Upload an image</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="info-box col s12 m9">
+      <div class="ttl-box row input">
+        <div class="col s12">
+          <input class="ttl col s12 name-field"
+                 [(ngModel)]="product.name" (change)="setPropName(product.name)" type="text" placeholder="Type Name">
+        </div>
+        <div class="col s12">
+          <div class="technical-name-container">
+            <input class="ttl col s12 name-field"
+                   [(ngModel)]="product.proper_name" type="text" placeholder="Technical Name">
+            <fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
+            <div class="clearfix"></div>
+          </div>
+          <div class="checkbox-container">
+          </div>
+        </div>
+        <div class="row checks">
+
+          <div class="col s4">
+            <div class="input-checkbox checkbox">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                [(ngModel)]="product.hazardous"
+                id="hazardous"
+              />
+              <label for="hazardous"></label>
+              <div class="checkbox-container">
+                <label>Hazardous</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col s4">
+            <div class="input-checkbox checkbox">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                [(ngModel)]="product.trackable"
+                id="trackable"
+              />
+              <label for="trackable"></label>
+              <div class="checkbox-container">
+                <label>Trackable</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col s4">
+            <div class="input-checkbox checkbox">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                [(ngModel)]="product.tax_exempt"
+                id="tax_exempt"
+              />
+              <label for="tax_exempt"></label>
+              <div class="checkbox-container">
+                <label>Tax Exempt</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col input s12 m6">
+            <label>Department</label>
+            <div class="select">
+              <select
+                [(ngModel)]="product.department"
+                materialize="material_select"
+                [materializeSelectOptions]="departmentCollection">
+                <option *ngFor="let item of departmentCollection" [value]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col input s12 m6">
+            <label>Category</label>
+            <div class="select">
+              <select
+                [(ngModel)]="product.category"
+                materialize="material_select"
+                [materializeSelectOptions]="productCategoriesCollection"
+                #category="ngModel"
+                [class.invalid]="category.invalid"
+                required>
+                <option value="">N/A</option>
+                <option *ngFor="let cat of productCategoriesCollection" [value]="cat">{{cat}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col input s12 m6">
+            <label>Accounting</label><fa [name]="'question-circle'" (click)="openHelperModal()"></fa>
+            <div class="select">
+              <select
+                [(ngModel)]="product.account_category"
+                materialize="material_select"
+                [materializeSelectOptions]="productAccountingCollection">
+                <option *ngFor="let acc of productAccountingCollection" [value]="acc">{{acc}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col input s12 m6">
+            <label>Manufacture</label>
+            <input type="text" [(ngModel)]="product.manufacture" placeholder="Manufacture #">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s12">
+            <div class="file-list">
+              <div class="item flex-doc" *ngFor="let file of product.attachments; let i = index;">
+                <a class="flex" href="{{file.public_url}}" target="_blank" *ngIf="file.public_url">
+                  {{file.file_name}}
+                </a>
+                <fa name="trash" (click)="removeFile(i)"></fa>
+              </div>
+            </div>
+            <div class="text">
+              <div class="file-field">
+                <div class="upload-link">
+                  <input type="file" (change)="changeListener($event)" multiple />
+                  <a>Attach File</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <p>Notes / Comments</p>
+        <textarea rows="3" cols="" name="comment" placeholder="" [(ngModel)]="product.notes"></textarea>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+
+  <ng-container *ngIf="step == 1">
+    <div class="row center-align">
+      <div class="col s12 sub-title">
+        {{product.name}}
+      </div>
+      <div class="container">
+        <p class="title">What is a Product Variant?</p>
+        <p>
+          A product Variant is when a product has more than one type.
+          For example gloves have different sizes, color chains come in different colors,
+          brackets have different sizes and prescriptions.
+          Variants should be the same product just with slightly different attributes.
+          If the product you are adding has no variants please delete the prefilled suggestions.
+          If the product has a different variant please select one from drop down or type in new Variant type.
+        </p>
+        <p class="title">NEXT SCREEN:</p>
+        <p>
+          Do not add quantity variants here as you will be able to add different packaging in
+          the next screen including how many items come per package.
+        </p>
+        <p>
+          Additionally you may have more than one vendor who supplies the exact same product or product variants.
+          These are called vendor variants. It is important to note that you should only add different vendors who
+          carry the exact same product with the same manufacture and UPC code in this section. If the vendor carries
+          a similar product but has a different manufacture/UPC code you can group them together in your inventory section.
+          This product section is only for products that are the exact same. You will be able to add Vendor Variants in the next screen.
+        </p>
+      </div>
+      <div class="col s12 title left-align">
+        Variants
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12 flex">
+        <div class="col l2 m4 s6" *ngFor="let variant of productVariants; let index = index;">
+          <div class="wrap">
+            <div class="input search select">
+              <input type="text"
+                     class="center-align"
+                     auto-complete
+                     [source]="dummyProductVariants"
+                     [accept-user-input]="true"
+                     placeholder="Type"
+                     [(ngModel)] = 'variant.name'
+              >
+              <fa name="angle-down"></fa>
+            </div>
+            <div *ngFor="let attr of productVariants[index].values; let i = index;" class="product-variant">
+              <input type="text" [(ngModel)]="productVariants[index].values[i]">
+              <fa name="times-circle" (click)="deleteItem(variant.values, i)"></fa>
+            </div>
+            <div class="product-variant">
+              <input type="text" [(ngModel)]="variant.newName"
+                     (keydown.enter)="addVariant(variant.newName, index)"
+                     placeholder="Add another {{ variant.name | capitalizeFirst}}">
+            </div>
+            <button class="uptracker-form-btn add-variant-button" *ngIf="variant.newName" (click)="addVariant(variant.newName, index)">
+              Add {{variant.newName}}
+            </button>
+            <fa name="times-circle" class="hide-by-opacity" (click)="deleteVariant(index)"></fa>
+          </div>
+        </div>
+        <div class="col l2 m4 s6">
+          <div class="wrap">
+            <div class="select">
+              <input class="center-align" type="text"
+                     auto-complete
+                     placeholder="Variant name"
+                     [(ngModel)]="newVariant"
+                     [source]="availableVariants"
+                     [accept-user-input]="true"
+                     (keydown.enter)="onProductVariantSelect(newVariant)">
+              <button class="uptracker-form-btn add-variant-button" *ngIf="newVariant" (click)="onProductVariantSelect(newVariant)">
+                Add {{newVariant}}
+              </button>
+              <fa name="plus-circle" (click)="onProductVariantSelect(newVariant)"></fa>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="step == 2">
+    <div class="row">
+      <div class="col s11">
+        <app-vendor-search
+          (addVendor)="onVendorChosen($event)"
+          (vendorChosen)="onVendorChosen($event)">
+        </app-vendor-search>
+      </div>
+      <div class="col s1">
+        <button class="bluebtn waves-light waves-effect" (click)="openAddVendorsModal()">
+          <fa [name]="'plus'"></fa>
+          Add Vendor
+        </button>
+      </div>
+    </div>
+
+    <app-vendor-product-variants
+      *ngFor="let variants of vendorVariants; let i = index"
+      [variants]="variants"
+      (vendorDelete)="onVendorDelete(i)"
+      (addVendor)="onVendorChosen($event)">
+    </app-vendor-product-variants>
+  </ng-container>
+</div>

@@ -28,7 +28,7 @@ import { ShoppingListFiltersComponent } from '../../shared/modals/filters-modal/
 export class ShoppingListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public selectAll: boolean = false;
-  public last_loc: string = '';
+  public last_loc = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public selectAll$: ReplaySubject<any> = new ReplaySubject(1);
@@ -57,21 +57,13 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //TODO remove
     this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-     
-    Observable.combineLatest(
-      this.cartService.collection$,
-      this.cartService.filters$,
-    )
-    .subscribe(([r, f]) => {
-      let cart = _.filter(r, (item: any) => (
-        (f.location == '' || f.location == item.location_name)
-        && (f.vendor == '' || f.vendor == item.selected_vendor.vendor_name))
-        && (!f.onlymy || this.userService.selfData.id == item.created_by)
-      );
-      this.totalOrders = cart.filter((item:any)=>item.status).length;
-      this.total = cart.length;
+
+    this.subscribers.getCartCollectionSubscription = this.cartService.collection$
+    .subscribe((r) => {
+      this.totalOrders = r.filter((item: any) => item.status).length;
+      this.total = r.length;
       this.checkSelectAllItems(r);
-      this.updateCart(cart);
+      this.updateCart(r);
       this.changed = [];
     });
     
@@ -87,12 +79,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       .switchMap(select => {
         return this.cartService.collection$.first()
         .map(res => {
-          let status = select ? 1 : 0;
+          const status = select ? 1 : 0;
           res = _.forEach(res, (item: any) => {
             item.status = status;
           });
           return res;
-        })
+        });
       })
       .subscribe(cart => this.saveItem());
   
@@ -104,7 +96,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       .switchMap(res => this.cartService.removeItems(res)
       )
     )
-    .subscribe((res:any) => {
+    .subscribe((res: any) => {
         // make a request again, because order_preview isn't returned
         this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
       },
@@ -113,7 +105,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   
     this.subscribers.removeCurrentProductSubscribtion = this.deleteCurrentProduct$
     .switchMap((product: any) => this.cartService.removeItems([product]))
-    .subscribe((res:any) => {
+    .subscribe((res: any) => {
         // make a request again, because order_preview isn't returned
         this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
       },
@@ -126,7 +118,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       this.checkSelectAllItems(items);
       return new ChangingShoppingListModel({items});
     })
-    .switchMap((data:any) =>
+    .switchMap((data: any) =>
       this.cartService.updateItem(data)
     )
     .subscribe((res: any) => {
@@ -186,7 +178,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   
   searchFilter(event) {
     // replace forbidden characters
-    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+    const value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
   
@@ -197,7 +189,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   changePriceModal(item = {}) {
     //TODO
     this.modal
-    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({"product": item}, true, 'mid'))
+    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({'product': item}, true, 'mid'))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
@@ -243,7 +235,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
   
   checkSelectAllItems(items) {
-    let checkedItemsArr = _.filter(items, 'status');
+    const checkedItemsArr = _.filter(items, 'status');
     this.selectAll = (checkedItemsArr.length === items.length);
   }
 

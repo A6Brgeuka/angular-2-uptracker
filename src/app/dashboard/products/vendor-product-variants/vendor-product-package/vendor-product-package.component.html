@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col s12 sub-title">
+    {{packageSummary(package)}}
+  </div>
+</div>
+<div class="row">
+  <div class="col m4 l2">
+    <div class="ttl">Outer Package</div>
+    <div class="row relative">
+      <div class="col s12 flex">
+        <div  class="input select" [class.add-number-one]="!!package[0].label">
+          <app-dropdown-package *ngIf="additional"
+            [autocompletePackage]="inventoryService.autocompletePackage"
+            [packageLabel]="package[0].label"
+            (packageLabelChange)="package[0].label = $event">
+          </app-dropdown-package>
+        <input *ngIf="!additional" type="text" readonly [ngModel]="package[0].label" placeholder="Type">
+        </div>
+        <div class="label">=</div>
+      </div>
+    </div>
+  </div>
+  <div class="col m4 l3">
+    <div class="ttl">
+      Inner Package
+      <fa [name]="'question-circle'"></fa>
+    </div>
+    <div class="row relative">
+      <div class="col s3">
+        <div class="input">
+          <input [readonly]="!additional" [(ngModel)]="package[1].qty" type="text" placeholder="Qty">
+        </div>
+      </div>
+      <div class="col s9 input flex">
+        <app-dropdown-package *ngIf="additional"
+          [autocompletePackage]="inventoryService.autocompletePackage"
+          [packageLabel]="package[1].label"
+          (packageLabelChange)="package[1].label = $event">
+        </app-dropdown-package>
+        <input *ngIf="!additional" type="text" readonly [ngModel]="package[1].label" placeholder="Type">
+        <div class="label">=</div>
+      </div>
+    </div>
+  </div>
+  <div class="col m4 l3">
+    <div class="ttl">
+      Consumable Units Per Inner/Outer
+    </div>
+    <div class="row relative">
+      <div class="col s3">
+        <div class="input">
+          <input [readonly]="!additional" [(ngModel)]="package[2].qty" type="text" placeholder="Qty">
+        </div>
+      </div>
+      <div class="col s9 input">
+        <app-dropdown-package *ngIf="additional"
+          [autocompletePackage]="inventoryService.autocompletePackage"
+          [packageLabel]="package[2].label"
+          (packageLabelChange)="package[2].label=$event">
+        </app-dropdown-package>
+        <input *ngIf="!additional" type="text" readonly [ngModel]="package[2].label" placeholder="Type">
+      </div>
+    </div>
+  </div>
+  <div class="col m12 l3 offset-l1">
+    <div class="row relative">
+      <div class="col s4">
+        <div class="ttl">List $</div>
+        <app-price-input
+          [placeholder]="'List $'"
+          [(ngModel)]="mainPrices.list_price"
+          (ngModelChange)='onFillAll(mainPrices.list_price)'>
+        </app-price-input>
+      </div>
+
+      <div class="col s4">
+        <div class="ttl">Our $</div>
+        <app-price-input
+          [placeholder]="'Our $'"
+          [(ngModel)]="mainPrices.our_price"
+          (ngModelChange)='onFillColumn("our_price", mainPrices.our_price)'>
+        </app-price-input>
+      </div>
+
+      <div class="col s4">
+        <div class="ttl">Club $</div>
+        <app-price-input
+          [placeholder]="'Club $'"
+          [(ngModel)]="mainPrices.club_price"
+          (ngModelChange)='onFillColumn("club_price", mainPrices.club_price)'>
+        </app-price-input>
+      </div>
+    </div>
+  </div>
+</div>

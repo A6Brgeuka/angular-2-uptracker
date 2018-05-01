@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Input, AfterViewInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, HostListener, Input, AfterViewInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -21,6 +21,8 @@ import { InventoryGroupFiltersComponent } from '../../shared/modals/filters-moda
 @DestroySubscribers()
 export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input('inputRange') inputRange;
+  @Input('modalMode') modalMode: boolean;
+  @Output('onInventoryClick') onInventoryClickEvent = new EventEmitter();
 
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -97,7 +99,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isRequest = true;
       this.searchKeyLast = this.searchKey;
       //TODO remove
-      if (this.total <= (this.inventoryService.current_page) * this.inventoryService.pagination_limit) {
+      if (this.total <= (this.inventoryService.current_page) * this.inventoryService.pagination_limit - 1) {
         this.isRequest = false;
         return Observable.of(false);
       } else {
@@ -317,6 +319,9 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  onInventoryClick(id) {
+    this.onInventoryClickEvent.emit(id)
+  }
   showFiltersModal() {
     this.modal
     .open(InventoryGroupFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));

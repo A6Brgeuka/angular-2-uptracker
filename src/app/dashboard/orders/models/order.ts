@@ -1,6 +1,7 @@
 import { OrderItem } from './order-item';
 
 export interface Order {
+  item_count: number;
   location_name: string;
   order_id: string;
   order_items?: OrderItem[];
@@ -12,5 +13,6 @@ export interface Order {
   status: string;
   status_int: number;
   total: string;
+  vendor_id: string;
   vendor_name: string;
 }

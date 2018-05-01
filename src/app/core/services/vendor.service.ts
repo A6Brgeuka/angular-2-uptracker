@@ -38,6 +38,7 @@ export class VendorService extends ModelService {
   public vendorsData$: Observable<any>;
   public requestParams: any;
   public vendorsList: string;
+  public vendorSearch: string;
 
   constructor(
     public injector: Injector,

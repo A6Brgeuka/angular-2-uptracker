@@ -6,9 +6,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { OrderStatusAlreadyValues } from '../../models/order-status';
 import { ReconciledOrdersListService } from '../services/reconciled-orders-list.service';
+import { Order } from '../../models/order';
+import { OrdersTableService } from '../services/orders-table.service';
+import { FavoritedOrdersListService } from '../services/favorited-orders-list.service';
+import { FlaggedOrdersListService } from '../services/flagged-orders-list.service';
 
 @Component({
   selector: 'app-reconciled-orders-list',
@@ -29,14 +32,17 @@ export class ReconciledOrdersListComponent implements OnInit, OnDestroy {
     {name: 'Reconciled', className: 's1', alias: 'reconciled_date', filterBy: true, },
     {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
-    {name: '', className: 's1', actions: false},
+    {name: '', className: 's1', actions: true},
   ];
 
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
-  public orders$: Observable<OrderItem[]>;
+  public orders$: Observable<Order[]>;
 
   constructor(
     public reconciledOrdersListService: ReconciledOrdersListService,
+    public ordersTableService: OrdersTableService,
+    public favoritedOrdersListService: FavoritedOrdersListService,
+    public flaggedOrdersListService: FlaggedOrdersListService,
   ) {
 
   }
@@ -57,6 +63,19 @@ export class ReconciledOrdersListComponent implements OnInit, OnDestroy {
 
   sortByHeaderUpdated(event) {
     this.sortBy$.next(event.alias);
+  }
+
+  onFavorite(item) {
+    this.favoritedOrdersListService.postItem(item);
+  }
+
+  onFlagged(item) {
+    this.flaggedOrdersListService.putItem(item);
+  }
+
+  onVoid(value) {
+    const data = {orders: value.map((item) => ({order_id: item.item.order_id, message: item.message}))};
+    this.ordersTableService.onVoidOrder(data);
   }
 
 }

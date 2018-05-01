@@ -1,0 +1,12 @@
+<input appOnlyNumbers
+       [(ngModel)]='value'
+       [class.dirty]="price.dirty"
+       type="text"
+       placeholder="{{placeholder}}"
+       #price="ngModel"
+       name="price"
+       required
+       #inputEl
+       (blur)="onBlur($event)"
+       (focus)="onFocus()"
+      >

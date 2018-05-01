@@ -9,6 +9,7 @@ import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { FlaggedItemsListService } from '../services/flagged-items-list.service';
 import { FavoritedItemsListService } from '../services/favorited-items-list.service';
+import { OrderItemsTableService } from '../services/order-items-table.service';
 
 @Component({
   selector: 'app-flagged-items-list',
@@ -40,6 +41,7 @@ export class FlaggedItemsListComponent implements OnInit, OnDestroy {
     private pastOrderService: PastOrderService,
     private flaggedItemsListService: FlaggedItemsListService,
     private favoritedItemsListService: FavoritedItemsListService,
+    private orderItemsTableService: OrderItemsTableService,
   ) {
 
   };
@@ -71,6 +73,11 @@ export class FlaggedItemsListComponent implements OnInit, OnDestroy {
 
   onFlagged(item) {
     this.flaggedItemsListService.putItem(item);
+  }
+
+  onVoid(value) {
+    const data = {items: value.map((item) => ({id: item.item.id, message: item.message}))};
+    this.orderItemsTableService.onVoidOrder(data);
   }
 
 }

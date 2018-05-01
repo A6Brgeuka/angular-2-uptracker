@@ -1,0 +1,80 @@
+<fa name="times-circle" (click)="deleteVendor()"></fa>
+<app-vendor-product-package
+  *ngFor="let package of vendor.inventory_by; let i = index"
+  [package]="package"
+  [additional]="vendor.additional"
+  (fillAll)="onFillAll($event)"
+  (fillColumn)="onFillColumn($event)">
+</app-vendor-product-package>
+
+<div class="row">
+  <div class="col s4 flex">
+    <div class="input-checkbox">
+      <input type="checkbox" class="checkbox-input" [(ngModel)]="selected" (change)="selectAll()" id="{{uniqueId}}+'selectAll'"/>
+      <label for="{{uniqueId}}+'selectAll'"></label>
+    </div>
+
+    Product Variant Name
+  </div>
+  <div class="col s8">
+    <div class="col s2">
+      Manufacture #
+    </div>
+    <div class="col s2">
+      Barcode
+    </div>
+    <div class="col s2">
+      Catalog #
+    </div>
+    <div class="col s2">
+      List $
+    </div>
+    <div class="col s2">
+      Our $
+    </div>
+    <div class="col s2">
+      Club $
+    </div>
+  </div>
+</div>
+<div class="row" *ngFor='let variant of vendor.variants; let i = index'>
+  <div class="col s4 flex">
+    <div class="input-checkbox">
+      <input type="checkbox" class="checkbox-input" [(ngModel)]="variant.enabled" id={{uniqueId+i}}/>
+      <label for={{uniqueId+i}}></label>
+    </div>
+    <input type="text" [(ngModel)]="variant.name" title="{{variant.name}}">
+  </div>
+  <div class="col s8">
+    <div class="col s2 row-input">
+      <input type="text" [(ngModel)]="variant.manufacture" placeholder="Manufacture #">
+    </div>
+    <div class="col s2 row-input relative">
+      <input type="text" [(ngModel)]="variant.upc" placeholder="Barcode">
+      <app-scanner (searchText)="variant.upc = $event"></app-scanner>
+    </div>
+    <div class="col s2 row-input">
+      <input type="text" [(ngModel)]="variant.catalog_number" placeholder="Catalog #">
+    </div>
+
+    <div class="col s2 row-input">
+      <app-price-input
+        [placeholder]="'List $'"
+        [(ngModel)]="variant.list_price"
+        (ngModelChange)='onFillOur(variant.list_price, i)'>
+      </app-price-input>
+    </div>
+    <div class="col s2 row-input">
+      <app-price-input
+        [placeholder]="'Our $'"
+        [(ngModel)]="variant.our_price">
+      </app-price-input>
+    </div>
+    <div class="col s2 row-input">
+      <app-price-input
+        [placeholder]="'Club $'"
+        [(ngModel)]="variant.club_price">
+      </app-price-input>
+    </div>
+  </div>
+</div>

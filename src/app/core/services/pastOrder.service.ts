@@ -40,4 +40,7 @@ export class PastOrderService {
     this.router.navigate(['orders/receive', params], {queryParams: {type}});
   }
 
+  goToReconcile(invoice_id) {
+    this.router.navigate(['orders/reconcile'], {queryParams: {invoice_id}});
+  }
 }

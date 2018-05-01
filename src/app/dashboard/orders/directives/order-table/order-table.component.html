@@ -29,6 +29,7 @@
         [orders]="checkedOrders$ | async"
         [isShow]="headerCol.actions && showHeaderMenu$ | async"
         [listName]="_listName"
+        (onVoid)="onVoid($event)"
       ></app-order-table-header-action>
     </div>
 
@@ -61,6 +62,9 @@
           [ngStyle]="{'-webkit-line-clamp': headerCol.wrap > 1 && headerCol.wrap}"
         >
           <span
+            (click)="(headerCol?.linkToReconcile) ? goToReconcile(item) : ''"
+            [class.pointer]="headerCol?.linkToReconcile"
+            [class.tealish-text]="headerCol?.linkToReconcile"
             *ngIf="headerCol.alias && item[headerCol.alias]"
             [title]="item[headerCol.alias]"
             [ngClass]="{'black-text cursor-default': headerCol.showChevron && item.statusHistoryVisibility, 'red-text':  (filterByObj$ | async)[headerCol.alias] === item[headerCol.alias]}">
@@ -91,6 +95,7 @@
           [i]="i"
           (onFavorite)="onFavorite($event)"
           (onFlagged)="onFlagged($event)"
+          (onVoid)="onVoid($event)"
         ></app-order-table-item-action>
 
       </div>

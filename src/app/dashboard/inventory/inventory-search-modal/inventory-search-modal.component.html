@@ -1,0 +1,5 @@
+<div class="close" (click)="dismissModal()"></div>
+<app-inventory
+  [modalMode]="true"
+  (onInventoryClick)="getInventoryId($event)">
+</app-inventory>

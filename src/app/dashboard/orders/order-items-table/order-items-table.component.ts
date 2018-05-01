@@ -1,15 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Modal } from 'angular2-modal';
 
 import { map } from 'lodash';
 
-import { PastOrderService } from '../../../core/services/pastOrder.service';
-import { ModalWindowService } from '../../../core/services/modal-window.service';
-import { ToasterService } from '../../../core/services/toaster.service';
 import { OrdersService } from '../orders.service';
 
 @Component({
@@ -17,11 +9,8 @@ import { OrdersService } from '../orders.service';
   templateUrl: './order-items-table.component.html',
   styleUrls: ['./order-items-table.component.scss']
 })
-@DestroySubscribers()
 export class OrderItemsTableComponent  {
   public subscribers: any = {};
-  public orders$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public visible: boolean[] = [];
 
   public orderTabs = {
     all: 'all',
@@ -37,11 +26,6 @@ export class OrderItemsTableComponent  {
   public orderTabsArr = map(this.orderTabs, (value, key) => value);
 
   constructor(
-    public modal: Modal,
-    public router: Router,
-    public pastOrderService: PastOrderService,
-    public modalWindowService: ModalWindowService,
-    public toasterService: ToasterService,
     private ordersService: OrdersService,
   ) {
   }

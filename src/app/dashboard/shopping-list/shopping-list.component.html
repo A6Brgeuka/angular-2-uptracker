@@ -104,11 +104,6 @@
             <!--<a materialize="dropdown" class='dropdown-button btn' href='#' data-activates='_dd'>Choose</a>-->
             <!-- Dropdown Structure -->
             <ul id="dropd{{ i }}" materialize="dropdown" class='dropdown-content vendors-dd'>
-              <li (click)="updateVendor(product, {vendor_name:'Auto'})" *ngIf="!product.custom">
-                <div class="col s2 image-container"></div>
-                <div class="col s7 inblock">Auto select</div>
-                <div class="col s3 inblock"></div>
-              </li>
               <li *ngFor="let vendor of product.vendors " (click)="updateVendor(product, vendor)">
                 <div class="col s2 image-container"
                   [ngStyle]="vendor.image_url ? { 'background-image': 'url(' + vendor.image_url + ')' } : {}"></div>

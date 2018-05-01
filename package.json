@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "serve:prod": "ng serve --prod --ssl",
-    "build": "ng build --prod",
+    "build": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -43,6 +43,7 @@
     "ng-select": "^1.0.0-rc.3",
     "ng2-currency-mask": "^4.4.1",
     "ng2-daterangepicker": "^2.0.12",
+    "ng2-img-cropper": "^0.9.0",
     "ngx-cookie": "^1.0.0",
     "ngx-destroy-subscribers": "^1.0.1",
     "ngx-perfect-scrollbar": "^4.9.6",
