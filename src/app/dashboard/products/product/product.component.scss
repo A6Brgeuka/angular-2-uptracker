@@ -28,6 +28,12 @@ $normal: 14px;
       }
     }
 
+    label {
+      color: #000;
+      font-weight: bold;
+      font-family: 'Roboto';
+    }
+
     .title {
       font: 28px/32px Ubuntu;
       margin-bottom: 5px;
@@ -40,8 +46,8 @@ $normal: 14px;
       }
     }
     .row {
-      margin-left: -0.75rem;
-      margin-right: -0.75rem;
+      //margin-left: -0.75rem;
+      //margin-right: -0.75rem;
       margin-bottom: 0;
       .mrg-btm-20 {
         margin-bottom: 20px;
@@ -210,7 +216,7 @@ $normal: 14px;
       width: 200px;
       height: 200px;
       border: 1px solid $light-grey;
-      margin: 30px 30px 30px 20px;
+      margin: 30px 20px;
       .img {
         height: 100%;
         background-position: center center;
@@ -222,7 +228,7 @@ $normal: 14px;
       }
     }
     .product-params {
-      padding: 50px 15px;
+      padding: 40px 15px;
       width: calc(100% - 260px);
     }
 
@@ -231,7 +237,7 @@ $normal: 14px;
       background: $light-grey;
     }
     .row.table-head-filter {
-      margin-bottom: 0;
+      margin: 20px 0;
     }
 
     .uptracker-form .input {
@@ -300,12 +306,6 @@ $normal: 14px;
 
       .ttl {
         color: $grey;
-      }
-
-      label {
-        color: #000;
-        font-weight: bold;
-        font-family: 'Roboto';
       }
 
       .value {
@@ -451,7 +451,10 @@ $normal: 14px;
 
         .variant-name {
           color: $tealish;
-
+          min-height: 100px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
           span {
             cursor: pointer;
           }
@@ -529,7 +532,6 @@ $normal: 14px;
         }
 
         .table-item {
-          padding: 0;
           border-bottom: 1px solid $light-grey;
 
           &:last-child {
@@ -561,6 +563,13 @@ $normal: 14px;
           width: auto;
           padding: 0 15px;
         }
+        .variant-image-container {
+          width: 100px;
+          height: 100px;
+          margin: 0 15px;
+          background-size: cover;
+        }
+
       }
       .flor .row-item {
         float: right;
@@ -723,8 +732,11 @@ $normal: 14px;
   i.fa-eye-slash {
     color: $red;
   }
-  .table-item .row-item {
-    padding-left: 15px !important;
+  .table-item {
+    padding: 15px 0;
+    .row-item {
+      padding-left: 15px !important;
+    }
   }
   .table-item .row-item:first-of-type {
     padding-left: 0px !important;
@@ -787,9 +799,6 @@ $normal: 14px;
   }
   .inner.product .row-item {
     cursor: pointer;
-  }
-  .edit-buttons {
-    margin-right: 20px;
   }
 }
 

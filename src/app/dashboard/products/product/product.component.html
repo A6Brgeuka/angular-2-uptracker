@@ -30,7 +30,7 @@
         </div>
         <div class="left product-params">
 
-          <div class="ttl-box input" *ngIf="product?.name != null">
+          <div class="ttl-box input col s12" *ngIf="product?.name != null">
             <label *ngIf="!showEdit" class="variant-show-name">
               {{ showVariant ? currentVariant.name : product?.name}}
             </label>
@@ -203,8 +203,8 @@
     <div id="variations">
       <div *ngIf="!showVariant" class="inner product">
         <div class="variant-table">
-          <div class="uptracker-form variant-head">
-            <div class="variant-checkbox head-item">
+          <div class="variant-head row">
+            <div class="col m6">
               <div class="checkbox input-checkbox ">
                 <input
                   type="checkbox"
@@ -215,85 +215,120 @@
                 <label for="variation-checkbox"></label>
               </div>
             </div>
-            <div class="name-heading head-item">
+            <div class="col m3">
               <div class="input">
                 <input
                   type="text"
                   class="name-input"
                   ngModel
                   (input)="changeName($event)"
-                  placeholder="Name"
+                  placeholder="Search"
                   #name="ngModel"/>
               </div>
             </div>
-            <div class="small-heading  head-item">
-              <div class="select ultra-low-height">
-                <select
-                  [(ngModel)]="variation.package_type"
-                  #pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changePkg($event)"
-                  [materializeSelectOptions]="variationArrs.package_type">
-                  <option value="">Pkg</option>
-                  <option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="small-heading head-item">
-              <div class="select ultra-low-height">
-                <select
-                  [(ngModel)]="variation.unit_type"
-                  #unit="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnit($event)"
-                  [materializeSelectOptions]="variationArrs.unit_type">
-                  <option value="">Unit</option>
-                  <option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>
-                </select>
-              </div>
-            </div>
-            <div class="small-heading head-item">
-              <div class="select ultra-low-height">
-                <select
-                  [(ngModel)]="variation.units_per_package"
-                  #units_pkg="ngModel"
-                  materialize="material_select"
-                  (change)="changeUnitsPkg($event)"
-                  [materializeSelectOptions]="variationArrs.units_per_package">
-                  <option value="">Qty</option>
-                  <option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}
-                  </option>
-                </select>
-              </div>
+
+            <div class="col m3 s3 select low-height sortby">
+              <select [(ngModel)]="sortBy" materialize="material_select">
+                <option disabled value="">Sort by</option>
+                <option value="relevance">Relevance</option>
+                <option value="A-Z">A-Z</option>
+                <option value="Z-A">Z-A</option>
+                <option value="priority">Priority</option>
+              </select>
             </div>
 
-            <div class="text-heading valign-wrapper head-item">
-              <div class="text-head valign">
-                Price Range
-              </div>
-            </div>
-            <div class="flor">
-              <div *ngIf="!showEdit" class="add-order-heading head-item">
-                <button
-                  (click)="bulkAddToOrder()"
-                  class="uptracker-form-btn waves-light waves-effect add-order-btn"
-                  [disabled]="!addOrderVariantsButtonShow">
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  Add to Order
-                </button>
-              </div>
-              <div *ngIf="showEdit" class="visibility-heading head-item">
-                <i class="material-icons noselect" (click)="toggleVariationVisibility()">
-                  {{variation.status != 2 ? "visibility" : "visibility_off"}}
-                </i>
-              </div>
-              <div class="filter-heading noselect head-item">
-                <fa [name]="'filter'"></fa>
-              </div>
-            </div>
-
-            <div class="clearfix"></div>
           </div>
+          <!--<div class="uptracker-form variant-head">-->
+            <!--<div class="variant-checkbox head-item">-->
+              <!--<div class="checkbox input-checkbox ">-->
+                <!--<input-->
+                  <!--type="checkbox"-->
+                  <!--class="checkbox-input"-->
+                  <!--(change)="headCheckboxChange()"-->
+                  <!--id="variation-checkbox"-->
+                <!--/>-->
+                <!--<label for="variation-checkbox"></label>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="name-heading head-item">-->
+              <!--<div class="input">-->
+                <!--<input-->
+                  <!--type="text"-->
+                  <!--class="name-input"-->
+                  <!--ngModel-->
+                  <!--(input)="changeName($event)"-->
+                  <!--placeholder="Name"-->
+                  <!--#name="ngModel"/>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="small-heading  head-item">-->
+              <!--<div class="select ultra-low-height">-->
+                <!--<select-->
+                  <!--[(ngModel)]="variation.package_type"-->
+                  <!--#pkg="ngModel"-->
+                  <!--materialize="material_select"-->
+                  <!--(change)="changePkg($event)"-->
+                  <!--[materializeSelectOptions]="variationArrs.package_type">-->
+                  <!--<option value="">Pkg</option>-->
+                  <!--<option *ngFor="let item of variationArrs.package_type" [value]="item">{{item}}</option>-->
+                <!--</select>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="small-heading head-item">-->
+              <!--<div class="select ultra-low-height">-->
+                <!--<select-->
+                  <!--[(ngModel)]="variation.unit_type"-->
+                  <!--#unit="ngModel"-->
+                  <!--materialize="material_select"-->
+                  <!--(change)="changeUnit($event)"-->
+                  <!--[materializeSelectOptions]="variationArrs.unit_type">-->
+                  <!--<option value="">Unit</option>-->
+                  <!--<option *ngFor="let item of variationArrs.unit_type" [value]="item">{{item}}</option>-->
+                <!--</select>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="small-heading head-item">-->
+              <!--<div class="select ultra-low-height">-->
+                <!--<select-->
+                  <!--[(ngModel)]="variation.units_per_package"-->
+                  <!--#units_pkg="ngModel"-->
+                  <!--materialize="material_select"-->
+                  <!--(change)="changeUnitsPkg($event)"-->
+                  <!--[materializeSelectOptions]="variationArrs.units_per_package">-->
+                  <!--<option value="">Qty</option>-->
+                  <!--<option *ngFor="let item of variationArrs.units_per_package" [value]="item">{{item}}-->
+                  <!--</option>-->
+                <!--</select>-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="text-heading valign-wrapper head-item">-->
+              <!--<div class="text-head valign">-->
+                <!--Price Range-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="flor">-->
+              <!--<div *ngIf="!showEdit" class="add-order-heading head-item">-->
+                <!--<button-->
+                  <!--(click)="bulkAddToOrder()"-->
+                  <!--class="uptracker-form-btn waves-light waves-effect add-order-btn"-->
+                  <!--[disabled]="!addOrderVariantsButtonShow">-->
+                  <!--<i class="fa fa-shopping-cart" aria-hidden="true"></i>-->
+                  <!--Add to Order-->
+                <!--</button>-->
+              <!--</div>-->
+              <!--<div *ngIf="showEdit" class="visibility-heading head-item">-->
+                <!--<i class="material-icons noselect" (click)="toggleVariationVisibility()">-->
+                  <!--{{variation.status != 2 ? "visibility" : "visibility_off"}}-->
+                <!--</i>-->
+              <!--</div>-->
+              <!--<div class="filter-heading noselect head-item">-->
+                <!--<fa [name]="'filter'"></fa>-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="clearfix"></div>-->
+          <!--</div>-->
         </div>
 
         <div class="table-body">
@@ -301,50 +336,98 @@
             <div class="uptracker-form  table-item"
               *ngFor="let variant of filteredVariants$ | async"
               (click)="toggleVariantDetailView(variant)">
-              <div class="variant-checkbox row-item">
-                <div class="checkbox input-checkbox">
-                  <input
-                    type="checkbox"
-                    class="checkbox-input"
-                    [(ngModel)]="variant.checked"
-                    (change)="variantCheckedChange()"
-                    id="{{variant.id}}"
-                  />
-                  <label for="{{variant.id}}"></label>
+
+              <div class="row">
+                <div class="col s8 m6">
+                  <div class="row-item">
+                    <div class="checkbox input-checkbox">
+                      <input
+                        type="checkbox"
+                        class="checkbox-input"
+                        [(ngModel)]="variant.checked"
+                        (change)="variantCheckedChange()"
+                        id="{{variant.id}}"
+                      />
+                      <label for="{{variant.id}}"></label>
+                    </div>
+                  </div>
+                  <div class="variant-image-container left"
+                    [ngStyle]="{ 'background-image': 'url(' + (variant?.image) + ')' }">
+                  </div>
+                  <div class="variant-name row-item">
+                    <div (click)="showVariantDetails($event,variant)"
+                      *ngIf="!showEdit"
+                      [class.reddish]="variant.status == 2"
+                      class="valign"
+                    >{{variant.name || "Product Here"}}
+                    </div>
+                    <div *ngIf="showEdit" class="input">
+                      <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
+                    </div>
+                    <div *ngIf="!showEdit"
+                      (click)="addToOrder(variant)"
+                      class="add-order-col add-order-heading row-item">
+                      <button class="uptracker-form-btn waves-light waves-effect add-order-btn">
+                        <i
+                          class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        Auto
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col s4 m6">
+                  <div class="row">
+                    <div class="col s6">
+                          <label>UPC</label>
+                          <div>{{variant?.upc || '012345678905'}}</div>
+                          <label>Manufacture #</label>
+                          <div>{{variant?.mfg_number}}</div>
+                    </div>
+                    <div class="col s6">
+                      <div class="row">
+                        <div class="col s12">
+                          <label>Forum Price</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col s6">Per Unit</div>
+                        <div class="col s6">$</div>
+                      </div>
+                      <div class="row">
+                        <div class="col s6">Per Inner</div>
+                        <div class="col s6">$</div>
+                      </div>
+                      <div class="row">
+                        <div class="col s6">Per Outer</div>
+                        <div class="col s6">$</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="name-heading variant-name row-item valign-wrapper">
-              <span (click)="showVariantDetails($event,variant)"
-                *ngIf="!showEdit"
-                [class.reddish]="variant.status == 2"
-                class="valign"
-              >{{variant.name || "Product Here"}}</span>
-                <div *ngIf="showEdit" class="input">
-                  <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
-                </div>
-              </div>
-              <div class="small-heading row-item">{{variant.package_type || ""}}</div>
-              <div class="small-heading row-item">{{variant.unit_type || ""}}</div>
-              <div class="small-heading row-item">{{variant.units_per_package || ""}}</div>
-              <div class="text-heading row-item nowrap">{{variant.price_range || ""}}</div>
-              <div class="flor">
-                <div *ngIf="showEdit" class="edit-variant visibility-heading row-item">
-                  <i class="fa fa-eye"
-                    [class.fa-eye]="variant.status == 1"
-                    [class.fa-eye-slash]="variant.status == 2"
-                    (click)="toggleVariantVisibility(variant)"
-                    aria-hidden="true"></i>
-                </div>
-                <div *ngIf="!showEdit"
-                  (click)="addToOrder(variant)"
-                  class="add-order-col add-order-heading row-item">
-                  <button class="uptracker-form-btn waves-light waves-effect add-order-btn">
-                    <i
-                      class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    Add to Order
-                  </button>
-                </div>
-              </div>
+
+              <!--<div class="small-heading row-item">{{variant.package_type || ""}}</div>-->
+              <!--<div class="small-heading row-item">{{variant.unit_type || ""}}</div>-->
+              <!--<div class="small-heading row-item">{{variant.units_per_package || ""}}</div>-->
+              <!--<div class="text-heading row-item nowrap">{{variant.price_range || ""}}</div>-->
+              <!--<div class="flor">-->
+                <!--<div *ngIf="showEdit" class="edit-variant visibility-heading row-item">-->
+                  <!--<i class="fa fa-eye"-->
+                    <!--[class.fa-eye]="variant.status == 1"-->
+                    <!--[class.fa-eye-slash]="variant.status == 2"-->
+                    <!--(click)="toggleVariantVisibility(variant)"-->
+                    <!--aria-hidden="true"></i>-->
+                <!--</div>-->
+                <!--<div *ngIf="!showEdit"-->
+                  <!--(click)="addToOrder(variant)"-->
+                  <!--class="add-order-col add-order-heading row-item">-->
+                  <!--<button class="uptracker-form-btn waves-light waves-effect add-order-btn">-->
+                    <!--<i-->
+                      <!--class="fa fa-shopping-cart" aria-hidden="true"></i>-->
+                    <!--Add to Order-->
+                  <!--</button>-->
+                <!--</div>-->
+              <!--</div>-->
               <div class="clearfix"></div>
               <app-variant-short-detail [showEdit]="showEdit"
                 [product_id]="product_id"
