@@ -9,6 +9,7 @@ import { ReconcileService } from '../../../core/services/index';
 import { ReconcileProductModal } from '../reconcile-product-modal/reconcile-product-modal.component';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { ToasterService } from '../../../core/services/toaster.service';
+import { ConfirmModalService } from '../../../shared/modals/confirm-modal/confirm-modal.service';
 import Currencies from './reconcile.currency'
 
 @Component({
@@ -40,6 +41,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     public modalWindowService: ModalWindowService,
     public router: Router,
     public toasterService: ToasterService,
+    public confirmModalService: ConfirmModalService,
   ) {
   }
 
@@ -156,6 +158,34 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     .open(ReconcileProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
 
+  packageChange(product) {
+    console.log('----------->>>   ', product);
+    if (product.package_price > product.reconciled_package_price) {
+      this.confirmModalService.confirmModal('Warning', 'Is this a price change or discount?', [
+        {text: 'Price Change', value: 'price', cancel: true},
+        {text: 'Discount', value: 'discount', cancel: false}
+      ])
+      .subscribe((res) => {
+        if (res.success) {
+          product.reconciled_discounted_price = product.reconciled_package_price;
+          product.reconciled_discount = (product.package_price - product.reconciled_discounted_price).toFixed(2);
+          product.reconciled_package_price = product.package_price;
+          product.reconciled_discount_type = 'USD';
+        }
+      });
+    } else if (product.package_price < product.reconciled_package_price) {
+      this.confirmModalService.confirmModal('Warning', 'Is this a new price?', [
+        {text: 'Yes', value: 'yes', cancel: false},
+        {text: 'No', value: 'no', cancel: true}
+      ])
+      .subscribe((res) => {
+        if (res.success) {
+
+        }
+      });
+    }
+  }
+
   removeProduct(product) {
     product.checked = false;
     this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
@@ -190,6 +220,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         product.reconciled_discounted_price = (product.reconciled_package_price - product.reconciled_discount) || 0;
       }
       product.reconciled_total = (product.reconciled_discounted_price * product.reconciled_qty) || 0;
+      this.selectedInvoice.invoice.calculated_sub_total = product.reconciled_total;
+      this.updateInvoiceDetails({});
     } catch (err) {
       console.log('productChange: ', err);
     }

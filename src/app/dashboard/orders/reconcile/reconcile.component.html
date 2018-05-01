@@ -387,6 +387,7 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="product.reconciled_package_price"
+                    (blur)="packageChange(product)"
                     (ngModelChange)="productChange(product)"
                   >
                 </div>
