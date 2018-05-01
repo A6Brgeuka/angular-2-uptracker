@@ -32,6 +32,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   public currency: any = {}
   public currencies: Array<IOption> = [];
   public orders: any = {};
+  public symbol: string = 'USD';
 
   @ViewChild('datepicker') datepicker: DatepickerComponent;
 
@@ -58,7 +59,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         this.orders = res;
       });
       this.reconcileService.invoice$.subscribe(res => {
-        // res.invoice.invoice_date = new Date(res.invoice.invoice_date);
         res.invoice.invoice_date = new Date();
         res.invoice.discount_ = 0;
         res.invoice.discount_type = 'PERCENT';
@@ -146,6 +146,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   handleCurrencyChange(event) {
+    this.symbol = event.value;
     this.selectedInvoice.invoice.currency = event.value;
   }
 
@@ -159,31 +160,30 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   packageChange(product) {
-    console.log('----------->>>   ', product);
-    if (product.package_price > product.reconciled_package_price) {
-      this.confirmModalService.confirmModal('Warning', 'Is this a price change or discount?', [
-        {text: 'Price Change', value: 'price', cancel: true},
-        {text: 'Discount', value: 'discount', cancel: false}
-      ])
-      .subscribe((res) => {
-        if (res.success) {
-          product.reconciled_discounted_price = product.reconciled_package_price;
-          product.reconciled_discount = (product.package_price - product.reconciled_discounted_price).toFixed(2);
-          product.reconciled_package_price = product.package_price;
-          product.reconciled_discount_type = 'USD';
-        }
-      });
-    } else if (product.package_price < product.reconciled_package_price) {
-      this.confirmModalService.confirmModal('Warning', 'Is this a new price?', [
-        {text: 'Yes', value: 'yes', cancel: false},
-        {text: 'No', value: 'no', cancel: true}
-      ])
-      .subscribe((res) => {
-        if (res.success) {
+    // if (product.package_price > product.reconciled_package_price) {
+    //   this.confirmModalService.confirmModal('Warning', 'Is this a price change or discount?', [
+    //     {text: 'Price Change', value: 'price', cancel: true},
+    //     {text: 'Discount', value: 'discount', cancel: false}
+    //   ])
+    //   .subscribe((res) => {
+    //     if (res.success) {
+    //       product.reconciled_discounted_price = product.reconciled_package_price;
+    //       product.reconciled_discount = (product.package_price - product.reconciled_discounted_price).toFixed(2);
+    //       product.reconciled_package_price = product.package_price;
+    //       product.reconciled_discount_type = 'USD';
+    //     }
+    //   });
+    // } else if (product.package_price < product.reconciled_package_price) {
+    //   this.confirmModalService.confirmModal('Warning', 'Is this a new price?', [
+    //     {text: 'Yes', value: 'yes', cancel: false},
+    //     {text: 'No', value: 'no', cancel: true}
+    //   ])
+    //   .subscribe((res) => {
+    //     if (res.success) {
 
-        }
-      });
-    }
+    //     }
+    //   });
+    // }
   }
 
   removeProduct(product) {
