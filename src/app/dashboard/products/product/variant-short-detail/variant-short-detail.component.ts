@@ -1,17 +1,9 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
-import * as _ from 'lodash';
 import { ModalWindowService } from '../../../../core/services/modal-window.service';
 import { Modal } from 'angular2-modal';
 import { AccountService } from '../../../../core/services/account.service';
-
-
-export class ViewProductModalContext extends BSModalContext {
-  public product: any;
-}
 
 @Component({
   selector: 'app-variant-short-detail',
@@ -28,6 +20,8 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
   @Input("variant") public variant;
   @Input("product_id") public product_id;
   @Input("showEdit") public showEdit;
+
+  @Output() addToOrderWithVendor: EventEmitter<any> = new EventEmitter();
 
   private subscribers: any = {};
 
@@ -61,4 +55,7 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
     console.log(p);
   }
 
+  addToOrder(item) {
+    this.addToOrderWithVendor.emit(item);
+  }
 }

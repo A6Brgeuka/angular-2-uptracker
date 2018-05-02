@@ -38,7 +38,7 @@
         {{item.price}}
     </div>
     <div class="col s1">
-        <button class="show-hover-elem uptracker-form-btn waves-light waves-effect add-order-btn">
+        <button (click)="addToOrder(item)" class="show-hover-elem uptracker-form-btn waves-light waves-effect add-order-btn">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </button>
     </div>
