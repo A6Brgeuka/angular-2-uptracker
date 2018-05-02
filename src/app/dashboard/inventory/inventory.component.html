@@ -22,7 +22,7 @@
           <span>Reset</span>
         </a>
       </div>
-      <div class="col s2">
+      <div class="col s2" *ngIf="!modalMode">
         <button (click)="openAddInventoryModal()" class="right uptracker-form-btn waves-effect waves-light">
           <fa name="plus"></fa>
           Add Group
@@ -57,10 +57,11 @@
       <div *ngIf="!inventoryService.isGrid">
         <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
           <div class="inner">
+            <div *ngIf="modalMode" class="overlay" (click)="onInventoryClick(product.id)"></div>
             <div class="hazardous" *ngIf="product.hazardous">
               <i class="material-icons">warning</i>
             </div>
-            <div class="star-right" [class.favorite]="product.favorite" *ngIf="true">
+            <div class="star-right" [class.favorite]="product.favorite" *ngIf="!modalMode">
               <i (click)="setFavorite($event,product)" class="fa" [class.fa-star-o]="!product.favorite" [class.fa-star]="product.favorite"></i>
             </div>
             <div [routerLink]="['/', 'inventory','item', product.id]"

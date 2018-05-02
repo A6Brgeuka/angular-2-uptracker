@@ -3,11 +3,13 @@ import { Router } from '@angular/router';
 import { DialogRef, ModalComponent, Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { isNil } from 'ramda'
 import * as _ from 'lodash';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { ReconcileService } from '../../../core/services/reconcile.service';
 import { Subject } from 'rxjs/Subject';
 import { UserService } from '../../../core/services/user.service';
+import { ToasterService } from '../../../core/services/toaster.service';
 
 
 export class ReconcileOnboardingModalContext extends BSModalContext {
@@ -38,6 +40,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     public reconcileService: ReconcileService,
     public userService: UserService,
     public router: Router,
+    public toasterService: ToasterService,
   ) {
     this.context = dialog.context;
   }
@@ -50,6 +53,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     });
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
+      this.invoices.push(res[0]);
       this.invoices_ = [res[0]];
     });
   }
@@ -70,15 +74,23 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
 
     if (this.reconcileType == 'start') {
       this.reconcileService.getReconcile(null, ids).subscribe(res => {
-        res.invoice.invoice_number = this.invoice_number
-        res.invoice.invoice_date = new Date();
-        this.reconcileService.invoice$.next(res);
-        this.router.navigate(['/orders/reconcile']);
+        if (isNil(res.data)) {
+          this.toasterService.pop('error', 'Order items are in usage now.');
+        } else {
+          res.data.invoice.invoice_number = this.invoice_number
+          res.data.invoice.invoice_date = new Date();
+          this.reconcileService.invoice$.next(res.data);
+          this.router.navigate(['/orders/reconcile']);
+        }
       })
     } else {
       this.reconcileService.getReconcile(this.invoices_[0].invoice_id, ids).subscribe(res => {
-        this.reconcileService.invoice$.next(res);
-        this.router.navigate(['/orders/reconcile']);
+        if (isNil(res.data)) {
+          this.toasterService.pop('error', 'Invoice or Order Items are already in use');
+        } else {
+          this.reconcileService.invoice$.next(res.data);
+          this.router.navigate(['/orders/reconcile']);
+        }
       })
     }
   }

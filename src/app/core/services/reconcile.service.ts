@@ -55,18 +55,24 @@ export class ReconcileService extends ModelService {
 
   getReconcile(invoice_id, item_ids) {
     if (!isNil(invoice_id) && isNil(item_ids)) {
-      return this.restangular.one('reconcile').customGET('', { invoice_id }).map(res => res.data);
+      return this.restangular.one('reconcile').customGET('', { invoice_id }).map(res => {
+        return {data: res.data, message: res.message}
+      });
     } else if (!isNil(invoice_id) && !isNil(item_ids)) {
-      return this.restangular.one('reconcile').customGET('', { item_ids, invoice_id }).map(res => res.data);
+      return this.restangular.one('reconcile').customGET('', { item_ids, invoice_id }).map(res => {
+        return {data: res.data, message: res.message}
+      });
     } else {
-      return this.restangular.one('reconcile').customGET('', { item_ids }).map(res => res.data);
+      return this.restangular.one('reconcile').customGET('', { item_ids }).map(res => {
+        return {data: res.data, message: res.message};
+      });
     }
   }
 
   updateReconcile(data) {
     return this.restangular.all('reconcile').post(data)
     .do((res: any) => {
-      console.log('CREATING RECONCILE --------------->>>>>>   ', res);
+      this.invoice$.next(res.data[1])
     });
   }
 

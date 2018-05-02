@@ -14,7 +14,7 @@ import {PhoneMaskService} from '../../../core/services/phone-mask.service';
 import * as _ from 'lodash';
 
 export class AddVendorModalContext extends BSModalContext {
-
+  modalMode: boolean;
 }
 
 @Component({
@@ -53,6 +53,7 @@ export class AddVendorModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.vendor.vendor_name = this.vendorService.vendorSearch;
   }
 
   dismissModal() {
@@ -130,8 +131,15 @@ export class AddVendorModalComponent implements OnInit {
     }
 
     this.vendorService.addAccountVendor(this.formData)
-      .do(res => this.vendorService.addToCollection$.next(res))
-      .subscribe(res => this.router.navigate(['/vendors/edit/' + res.id]) && this.closeModal(true))
+    .do(res => this.vendorService.addToCollection$.next(res))
+    .subscribe(
+      (res: any) => {
+        this.dialog.context.modalMode ?
+          this.dialog.close(res) :
+          this.router.navigate(['/vendors/edit/' + res.id]) && this.dismissModal();
+      }
+    );
+
   }
 
   deleteLogo() {

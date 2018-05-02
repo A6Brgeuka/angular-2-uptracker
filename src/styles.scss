@@ -1086,8 +1086,7 @@ modal-overlay {
 
     @media (max-width: 1024px) {
       .close {
-        left: 10px;
-        top: 10px;
+        position: relative;
       }
     }
 
@@ -1123,10 +1122,10 @@ modal-overlay {
 modal-overlay {
   &.transparent-bg {
     .modal-backdrop {
-      background-color: rgba(0, 0, 0, .3)
+      /*background-color: rgba(0, 0, 0, .3)*/
     }
     .modal {
-      border-color: #444;
+      /*border-color: #444;*/
       top: 20vh;
       margin: auto auto 30px;
       max-width: 400px;

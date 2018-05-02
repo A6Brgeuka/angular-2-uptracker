@@ -1,0 +1,44 @@
+@import "../../../../colors";
+
+:host {
+  background-color: rgba(255, 255, 255, 0.6);
+  display: block;
+  padding: 10px;
+  margin-bottom: 20px;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  app-product-variant {
+    border-bottom: 2px solid $light-grey;
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
+  }
+
+  .vendor-title {
+    height: 24px;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: $black;
+  }
+
+  .add-button {
+    height: 17px;
+    font-family: Ubuntu;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: $tealish;
+  }
+
+}

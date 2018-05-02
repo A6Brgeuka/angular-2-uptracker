@@ -62,6 +62,9 @@
           [ngStyle]="{'-webkit-line-clamp': headerCol.wrap > 1 && headerCol.wrap}"
         >
           <span
+            (click)="(headerCol?.linkToReconcile) ? goToReconcile(item) : ''"
+            [class.pointer]="headerCol?.linkToReconcile"
+            [class.tealish-text]="headerCol?.linkToReconcile"
             *ngIf="headerCol.alias && item[headerCol.alias]"
             [title]="item[headerCol.alias]"
             [ngClass]="{'black-text cursor-default': headerCol.showChevron && item.statusHistoryVisibility, 'red-text':  (filterByObj$ | async)[headerCol.alias] === item[headerCol.alias]}">

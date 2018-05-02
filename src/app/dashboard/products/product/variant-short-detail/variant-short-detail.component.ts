@@ -14,7 +14,7 @@ export class ViewProductModalContext extends BSModalContext {
 }
 
 @Component({
-  selector: 'app-variant-detail',
+  selector: 'app-variant-short-detail',
   //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
   // Remove when solved.
   /* tslint:disable */
