@@ -1,9 +1,20 @@
 $tealish: #33c6d9;
 
+.float-right {
+  float: right;
+}
+.table-body, .table-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+}
+.table-body {
+  border-top: 1px solid #d6d6d6;
+}
 .variant-detail-wrapper {
   margin-top: 20px;
   padding-left: 3.5%;
-
+  border-top: 1px solid #d6d6d6;
   .variant-detail-top {
     margin-bottom: 15px;
 
