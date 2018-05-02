@@ -67,14 +67,19 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         });
 
         this.selectedInvoice = res;
+        console.log('~~~~~~~~~~:   ', this.selectedInvoice)
         this.updateInvoiceDetails({});
       })
       this.reconcileService.invoices$.subscribe(res => {
+        const invoices = [];
         res.forEach(item => {
-          this.invoices.push({
+          invoices.push({
             value: item.invoice_id, label: item.invoice_number
           });
-        })
+        });
+        setTimeout(() => {
+          this.invoices = invoices;
+        });
       })
     } catch (err) {
       console.log('ngOnInit: ', err);

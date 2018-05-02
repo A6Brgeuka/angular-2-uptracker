@@ -71,7 +71,9 @@ export class ReconcileService extends ModelService {
 
   updateReconcile(data) {
     return this.restangular.all('reconcile').post(data)
-    .do((res: any) => {});
+    .do((res: any) => {
+      this.invoice$.next(res.data[1])
+    });
   }
 
   lookInvoices(id) {
