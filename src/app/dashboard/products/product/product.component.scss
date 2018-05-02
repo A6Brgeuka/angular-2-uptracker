@@ -41,7 +41,7 @@ $normal: 14px;
       }
     }
 
-    label, .table-header {
+    label, .table-header, .inner .inner .variant-table .uptracker-form .price-select input {
       color: #000;
       font-weight: bold;
       font-family: 'Roboto';
@@ -584,6 +584,7 @@ $normal: 14px;
           height: 100px;
           margin: 0 15px;
           background-size: cover;
+          background-color: $mid-grey;
         }
 
       }
