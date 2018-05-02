@@ -9,7 +9,14 @@ $tealish: #33c6d9;
   padding: 10px 0;
 }
 .table-body {
+  min-height: 46px;
   border-top: 1px solid #d6d6d6;
+  .show-hover-elem {
+    display: none;
+  }
+  &:hover .show-hover-elem {
+    display: inherit;
+  }
 }
 .variant-detail-wrapper {
   margin-top: 20px;
