@@ -208,8 +208,8 @@
       <div *ngIf="!showVariant" class="inner product">
         <div class="variant-table">
           <div class="variant-head row">
-            <div class="col m6">
-              <div class="checkbox input-checkbox ">
+            <div class="col m6 flex-center">
+              <div class="checkbox input-checkbox left">
                 <input
                   type="checkbox"
                   class="checkbox-input"
@@ -218,6 +218,16 @@
                 />
                 <label for="variation-checkbox"></label>
               </div>
+
+              <div *ngIf="!showEdit" class="add-checked-btn">
+                <button
+                  (click)="bulkAddToOrder()"
+                  class="uptracker-form-btn waves-light waves-effect add-order-btn"
+                  [disabled]="!addOrderVariantsButtonShow">
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                </button>
+              </div>
+
             </div>
             <div class="col m3">
               <div class="input">
@@ -367,7 +377,7 @@
                     </div>
                     <div *ngIf="!showEdit"
                       (click)="addToOrder(variant)"
-                      class="add-order-col add-order-heading row-item">
+                      class="add-order-col add-order-heading">
                       <button class="uptracker-form-btn waves-light waves-effect add-order-btn">
                         <i
                           class="fa fa-shopping-cart" aria-hidden="true"></i>
