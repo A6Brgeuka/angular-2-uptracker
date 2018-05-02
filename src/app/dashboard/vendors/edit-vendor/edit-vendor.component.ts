@@ -125,6 +125,34 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.files$ = Observable.combineLatest(
+      this.newFiles$,
+      this.oldFiles$,
+      (newFiles, oldFiles) => {
+        let files = _.union(oldFiles, newFiles);
+        return files;
+      }
+    );
+
+    this.locations$ = this.accountService.locations$
+      .map((res: any) => {
+        this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
+        this.secondaryLocationArr = _.filter(res, (loc) => {
+          return this.primaryLocation != loc;
+        });
+        if (this.secondaryLocationArr.length > 0)
+          this.secondaryLocation = this.secondaryLocationArr[0];
+        return this.secondaryLocationArr;
+      });
+
+    this.currentVendor$ = this.vendorService.globalVendor$;
+
+    this.vendorService.globalVendor$.subscribe(value => {
+      this.generalVendor = new VendorModel(value);
+      this.generalVendor.locations.forEach(v => {
+        this.locationVendors.push(new AccountVendorModel(v));
+      });
+    })
   }
 
   addSubscribers() {
@@ -165,36 +193,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-
-    this.files$ = Observable.combineLatest(
-      this.newFiles$,
-      this.oldFiles$,
-      (newFiles, oldFiles) => {
-        let files = _.union(oldFiles, newFiles);
-        return files;
-      }
-    );
-
-    this.locations$ = this.accountService.locations$
-    .map((res: any) => {
-      this.primaryLocation = _.find(res, {'location_type': 'Primary'}) || res[0];
-      this.secondaryLocationArr = _.filter(res, (loc) => {
-        return this.primaryLocation != loc;
-      });
-      if (this.secondaryLocationArr.length > 0)
-        this.secondaryLocation = this.secondaryLocationArr[0];
-      return this.secondaryLocationArr;
-    });
-
-    this.currentVendor$ = this.vendorService.globalVendor$;
-
-    this.vendorService.globalVendor$.subscribe(value => {
-      this.generalVendor = new VendorModel(value);
-      this.generalVendor.locations.forEach(v => {
-        this.locationVendors.push(new AccountVendorModel(v));
-      });
-      this.initTabs();
-    })
+    this.initTabs();
   }
 
   openConfirmModal(location) {
@@ -414,8 +413,13 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     });
 
     _.each(this.generalVendor, (value, key) => {
-    if (value != null && typeof value === 'string')
-      this.formData.append(key, value);
+      if (value != null && typeof value === 'string')
+        this.formData.append(key, value);
+    });
+
+    _.each(this.generalVendor.address, (value, key) => {
+      if (value != null && typeof value === 'string')
+        this.formData.append(key, value);
     });
 
     let i = 0;
