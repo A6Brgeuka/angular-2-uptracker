@@ -336,7 +336,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       }
       this.reconcileService.getReconcile(event.value, ids).subscribe(res => {
         if (isNil(res.data)) {
-          this.toasterService.pop('error', 'Invoice or Order items are in usage now.');
+          this.toasterService.pop('error', 'Invoice or Order Items are already in use');
         } else {
           this.reconcileService.invoice$.next(res.data);
           this.router.navigate(['/orders/reconcile']);
