@@ -5,6 +5,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 export class HelpTextModalContext extends BSModalContext {
   public text: any;
+  public link: any;
 }
 
 
