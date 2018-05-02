@@ -40,15 +40,5 @@ export class VariantShortDetailComponent implements OnInit {
   addToOrder(item) {
     this.addToOrderWithVendor.emit(item);
   }
-  vendorHeaderCheckboxChange(event) {
-    this.variant.vendor_variants.forEach((item) => {
-      item.checked = event;
-      return item;
-    })
-  }
 
-  vendorLineCheckboxChange() {
-    const filterChecked = _.filter(this.variant.vendor_variants, {checked: true});
-    this.variant.checked = !!(filterChecked && filterChecked.length === this.variant.vendor_variants.length);
-  }
 }
