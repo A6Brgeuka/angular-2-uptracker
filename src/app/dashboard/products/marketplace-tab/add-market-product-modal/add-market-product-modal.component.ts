@@ -58,16 +58,17 @@ export class AddMarketProductModalComponent implements OnInit {
     this.dialog.close(data);
   }
 
-  onSearchTypeIn(event) {
+  onSearchTypeIn(name) {
+    this.productService.searchText = name;
     const requestParams = {
-      query: event.target.value,
+      query: name,
       page: 1,
       limit: 10
     };
     this.autocompleteProducts$
       .next(requestParams);
-    if (event.target.value.length > 2) {
-      this.typeIn$.next(event.target.value);
+    if (name.length > 2) {
+      this.typeIn$.next(name);
     } else {
       this.typeIn$.next(null);
     }
@@ -90,7 +91,6 @@ export class AddMarketProductModalComponent implements OnInit {
   }
 
   onAddCustomClick() {
-    this.productService.searchText = this.searchText;
     this.router.navigate(['/product', 'custom']) && this.dismissModal();
   }
 }

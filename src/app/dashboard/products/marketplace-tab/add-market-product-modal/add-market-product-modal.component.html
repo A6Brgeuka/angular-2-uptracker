@@ -5,7 +5,7 @@
       <div class="title">Add Product to your Marketplace</div>
       <div class="input relative">
         <div class="col s12 input search">
-          <input auto-complete (input)="onSearchTypeIn($event)"
+          <input auto-complete (input)="onSearchTypeIn($event.target.value)"
                  placeholder="Search-Keyword"
                  [source]="observableSource.bind(this)"
                  (ngModelChange)='selectedAutocompled($event)'
