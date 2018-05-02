@@ -53,8 +53,10 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
     });
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
-      this.invoices.push(res[0]);
-      this.invoices_ = [res[0]];
+      if (res.length > 0) {
+        this.invoices.push(res[0]);
+        this.invoices_ = [res[0]];
+      }
     });
   }
 
