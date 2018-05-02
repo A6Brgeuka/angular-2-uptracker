@@ -424,7 +424,7 @@
                 </div>
               </div>
               <div class="col s2">
-                <div class="lined">{{product.reconciled_discounted_price | currency:symbol:true}}</div>
+                <div class="lined">{{product.reconciled_discount ? (product.reconciled_discounted_price | currency:symbol:true) : '--'}}</div>
               </div>
               <div class="col s2">
                 <div class="lined">{{product.reconciled_total | currency:symbol:true}}</div>

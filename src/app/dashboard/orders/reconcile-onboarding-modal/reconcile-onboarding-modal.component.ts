@@ -52,7 +52,6 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
       this.items = item;
     });
     this.reconcileService.lookInvoices(null).subscribe(res => {
-      console.log('###########:   ', res)
       this.invoices = res;
       this.invoices.push(res[0]);
       this.invoices_ = [res[0]];

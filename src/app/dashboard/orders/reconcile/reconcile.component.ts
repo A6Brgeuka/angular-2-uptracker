@@ -62,13 +62,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         res.invoice.invoice_date = new Date();
         res.invoice.discount_ = 0;
         res.invoice.discount_type = 'PERCENT';
-
-        res.invoice.shipping = res.invoice.shipping || 0;
-        res.invoice.handling = res.invoice.handling || 0;
-        res.invoice.tax = res.invoice.tax || 0;
-        res.invoice.total = res.invoice.total || 0;
-        res.invoice.invoice_credit = res.invoice.invoice_credit || 0;
-        res.invoice.sub_total = res.invoice.sub_total || 0;
+        res.items.forEach(item => {
+          item.reconciled_discount_type = 'PERCENT';
+        });
 
         this.selectedInvoice = res;
         this.updateInvoiceDetails({});
