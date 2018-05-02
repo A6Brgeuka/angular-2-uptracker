@@ -337,10 +337,7 @@
 
         <div class="table-body">
           <div class="variant-table">
-            <div class="uptracker-form  table-item"
-              *ngFor="let variant of filteredVariants$ | async"
-              (click)="toggleVariantDetailView(variant)">
-
+            <div class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
               <div class="row">
                 <div class="col s8 m6">
                   <div class="row-item">
@@ -436,7 +433,7 @@
               <app-variant-short-detail [showEdit]="showEdit"
                 [product_id]="product_id"
                 [variant]="variant"
-                *ngIf="variant.detailView">
+                >
               </app-variant-short-detail>
             </div>
           </div>
