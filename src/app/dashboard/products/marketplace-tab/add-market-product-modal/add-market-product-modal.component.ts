@@ -82,8 +82,9 @@ export class AddMarketProductModalComponent implements OnInit {
   }
 
   selectedAutocompled(product: any) {
-    if (isObject(product))
+    if (isObject(product)) {
       this.router.navigate(['/product', 'global', product.id]) && this.dismissModal();
+    }
   }
 
   observableSource(keyword: any) {

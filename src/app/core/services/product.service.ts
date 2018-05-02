@@ -296,6 +296,6 @@ export class ProductService extends ModelService {
   }
 
   autocompleteSearchProduct(keywords: string) {
-    return this.restangular.one('marketplace', 'global').customGET('', keywords).map((res: any) => res.data.results);
+    return this.restangular.one('products', 'search').customGET('', keywords).map((res: any) => res.data);
   }
 }
