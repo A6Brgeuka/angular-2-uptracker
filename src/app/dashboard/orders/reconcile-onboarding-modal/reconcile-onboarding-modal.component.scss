@@ -35,6 +35,8 @@
       .ngx-dropdown-list-container {
         box-shadow: none !important;
         border: 1px solid #9a9c9e !important;
+        max-height: 400px;
+        overflow: scroll;
         top: 50px;
         .search-container {
           input {

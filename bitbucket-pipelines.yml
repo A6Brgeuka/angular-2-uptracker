@@ -14,7 +14,7 @@ pipelines:
             - ng -v
             - cp _env_dev.ts env.ts
             - npm i
-            - ng build --prod
+            - ng build --prod -aot=false
             - scp -Cr dist/* www-data@dev.up-tracker.com:/var/www/sandbox/
   branches:
     master:
@@ -24,7 +24,7 @@ pipelines:
             - ng -v
             - cp _env.ts env.ts
             - npm i
-            - ng build --prod
+            - ng build --prod -aot=false
             - scp -Cr dist/* www-data@dev.up-tracker.com:/var/www/app/
     dev:
       - step:
@@ -33,5 +33,5 @@ pipelines:
             - ng -v
             - cp _env_dev.ts env.ts
             - npm i
-            - ng build --prod
+            - ng build --prod -aot=false
             - scp -Cr dist/* www-data@dev.up-tracker.com:/var/www/dev/
