@@ -15,10 +15,10 @@
         <div class="col s1">Units</div>
         <div class="col s2">Total Consumable Units</div>
         <div class="col s2 select">
-            <select materialize="material_select">
-                <option>Price per Unit</option>
-                <option>Price per Inner</option>
-                <option>Price per Outer</option>
+            <select materialize="material_select" [(ngModel)]="selectedPrice" class="price-select">
+                <option value="unit_price">Price per Unit</option>
+                <option value="sub_package_price">Price per Inner</option>
+                <option value="package_price">Price per Outer</option>
             </select>
         </div>
         <div class="col s1"></div>
@@ -35,7 +35,7 @@
     <div class="col s1">{{item?.units_per_sub_package || item?.units_per_package}} {{item?.unit_type}}</div>
     <div class="col s2">{{item?.units_per_package}} {{item?.unit_type}}</div>
     <div class="col s2">
-        {{item.price}}
+        {{item[selectedPrice]}}
     </div>
     <div class="col s1">
         <button (click)="addToOrder(item)" class="show-hover-elem uptracker-form-btn waves-light waves-effect add-order-btn">
