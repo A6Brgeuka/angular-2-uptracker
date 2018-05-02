@@ -300,7 +300,10 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
       variants = _.filter(variants, filterSelectOption);
-      //
+
+      if (sortBy) {
+        variants = _.orderBy(variants, ['name'], [sortBy]);
+      }
       return variants;
     });
   }
