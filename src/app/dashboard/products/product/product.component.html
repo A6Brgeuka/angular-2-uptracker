@@ -215,6 +215,7 @@
                   class="checkbox-input"
                   (change)="headCheckboxChange()"
                   id="variation-checkbox"
+                  [(ngModel)]="variation.checked"
                 />
                 <label for="variation-checkbox"></label>
               </div>
@@ -242,12 +243,12 @@
             </div>
 
             <div class="col m3 s3 select low-height sortby">
-              <select [(ngModel)]="sortBy" materialize="material_select">
+              <select (change)="sortBy($event)" materialize="material_select">
                 <option disabled value="">Sort by</option>
-                <option value="relevance">Relevance</option>
+                <!--<option value="relevance">Relevance</option>-->
                 <option value="A-Z">A-Z</option>
                 <option value="Z-A">Z-A</option>
-                <option value="priority">Priority</option>
+                <!--<option value="priority">Priority</option>-->
               </select>
             </div>
 
@@ -265,7 +266,7 @@
                         type="checkbox"
                         class="checkbox-input"
                         [(ngModel)]="variant.checked"
-                        (change)="variantCheckedChange()"
+                        (change)="variantCheckedChange(variant.checked)"
                         id="{{variant.id}}"
                       />
                       <label for="{{variant.id}}"></label>
@@ -280,7 +281,7 @@
                       [class.reddish]="variant.status == 2"
                     >
                       <div class="table-header">{{variant.name || "Product Here"}}</div>
-                      <div>{{variant?.proper_name || 'Technical name'}}</div>
+                      <div>{{variant?.proper_name}}</div>
                     </div>
                     <div *ngIf="showEdit" class="input">
                       <input class="col s12 name-field greenborder" [(ngModel)]="variant.name" type="text">
@@ -300,7 +301,7 @@
                   <div class="row">
                     <div class="col s6">
                           <label>UPC</label>
-                          <div>{{variant?.upc || 'upc'}}</div>
+                          <div>{{variant?.upc}}</div>
                           <label>Manufacture #</label>
                           <div>{{variant?.mfg_number}}</div>
                     </div>

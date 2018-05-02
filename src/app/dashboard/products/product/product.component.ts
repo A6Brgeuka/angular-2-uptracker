@@ -1,16 +1,15 @@
 import {
-  Component, OnInit, AfterViewInit, ViewChild, ElementRef, NgZone, ViewContainerRef,
+  Component, OnInit, AfterViewInit, NgZone,
   ChangeDetectorRef, OnDestroy
 } from '@angular/core';
 
-import { Modal, Overlay } from 'angular2-modal';
+import { Modal } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
 import * as _ from 'lodash';
 import { Location }                 from '@angular/common';
 
-import { ProductModel } from '../../../models/index';
 import { UserService, AccountService } from '../../../core/services/index';
 import { ProductService } from "../../../core/services/product.service";
 import { ModalWindowService } from "../../../core/services/modal-window.service";
@@ -113,6 +112,7 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   public showEdit$: BehaviorSubject<any> = new BehaviorSubject([]);
   public filterSelectOption$: BehaviorSubject<any> = new BehaviorSubject({});
   public filterName$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortBy$: BehaviorSubject<any> = new BehaviorSubject(null);
   public filterPrice$ = new BehaviorSubject(null);
   public filteredVariants$ = Observable.of([]);
   public variantsCopy = [];
@@ -266,8 +266,9 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filterPrice$,
       this.variantChecked$,
       this.showEdit$,
+      this.sortBy$,
     )
-    .map(([variants, filterSelectOption, filterName, filterPrice, variantChecked, showEdit]) => {
+    .map(([variants, filterSelectOption, filterName, filterPrice, variantChecked, showEdit, sortBy]) => {
       if (showEdit) {
 
         return variants;
@@ -275,8 +276,7 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
       // check if at least on variant is checked to show add order button
       let checkedArrVariants = _.filter(variants, {checked: true});
 
-      this.variation.checked = checkedArrVariants.length == variants.length && variants.length ? true : false;
-
+      this.variation.checked = checkedArrVariants.length === variants.length && variants.length ? true : false;
       this.addOrderVariantsButtonShow = checkedArrVariants.length ? true : false;
 
       if (filterPrice && filterPrice != "") {
@@ -470,8 +470,8 @@ ngOnDestroy() {
   }
 
   // detects changes on variant checkbox
-  variantCheckedChange() {
-    this.variantChecked$.next(false)
+  variantCheckedChange(event) {
+    this.variantChecked$.next(event);
   }
 
   changeName(event) {
@@ -815,5 +815,9 @@ ngOnDestroy() {
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
     .overlayConfigFactoryWithParams({'text': 'Help text'}, true, 'mid'));
+  }
+
+  sortBy(event) {
+    this.sortBy$.next(event.target.value);
   }
 }
