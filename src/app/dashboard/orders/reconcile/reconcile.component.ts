@@ -315,6 +315,7 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   saveInvoice(event) {
+    if (!isNil(this.selectedInvoice.invoice.invoice_id)) return;
     const payload = this.getUpdates(false);
     this.reconcileService.updateReconcile(payload).subscribe(res => {
       this.reconcileService.lookInvoices(null).subscribe(res => {});
