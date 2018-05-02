@@ -279,8 +279,8 @@ export class ProductService extends ModelService {
     return r;
   }
 
-  searchProducts(queryParams) {
-    return this.restangular.all('products').all('search').customGET('', queryParams).map((res: any) => res.data);
+  searchGlobalProducts(queryParams) {
+    return this.restangular.one('marketplace', 'global').customGET('', queryParams).map((res: any) => res.data);
   }
 
   addCustomProduct(data) {
