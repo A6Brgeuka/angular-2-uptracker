@@ -811,4 +811,7 @@
 ::-webkit-scrollbar {
   display: none;
 }
-
+::placeholder {
+  color: black;
+  opacity: 1;
+}
