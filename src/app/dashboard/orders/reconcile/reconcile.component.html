@@ -17,7 +17,7 @@
         <ng-select
           [options]="invoices"
           placeholder="{{selectedInvoice.invoice.invoice_number}}"
-          (selected)="saveInvoice($event)"
+          (selected)="handleInvoiceChanges($event)"
         ></ng-select>
       </div>
     </div>

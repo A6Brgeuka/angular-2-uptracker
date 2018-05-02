@@ -67,7 +67,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         });
 
         this.selectedInvoice = res;
-        console.log('~~~~~~~~~~:   ', this.selectedInvoice)
         this.updateInvoiceDetails({});
       })
       this.reconcileService.invoices$.subscribe(res => {
@@ -319,12 +318,31 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     return payload;
   }
 
-  saveInvoice(event) {
-    if (!isNil(this.selectedInvoice.invoice.invoice_id)) return;
-    const payload = this.getUpdates(false);
-    this.reconcileService.updateReconcile(payload).subscribe(res => {
-      this.reconcileService.lookInvoices(null).subscribe(res => {});
-    });
+  handleInvoiceChanges(event) {
+    if (isNil(this.selectedInvoice.invoice.invoice_id)) {
+      const payload = this.getUpdates(false);
+      this.reconcileService.updateReconcile(payload).subscribe(res => {
+        this.reconcileService.lookInvoices(null).subscribe(res => {});
+      });
+    } else {
+      let ids = '';
+      if (this.selectedInvoice.items.length > 1) {
+        this.selectedInvoice.items.forEach(item => {
+          if (ids !== '') ids = ids.concat(',');
+          ids = ids.concat(item.order_line_item_id);
+        });
+      } else {
+        ids = this.selectedInvoice.items[0].order_line_item_id;
+      }
+      this.reconcileService.getReconcile(event.value, ids).subscribe(res => {
+        if (isNil(res.data)) {
+          this.toasterService.pop('error', 'Invoice or Order items are in usage now.');
+        } else {
+          this.reconcileService.invoice$.next(res.data);
+          this.router.navigate(['/orders/reconcile']);
+        }
+      });
+    }
   }
 
   reconcileSave() {
