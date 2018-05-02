@@ -44,6 +44,8 @@ export class AddMarketProductModalComponent implements OnInit {
 
   addSubscribers() {
     this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
+      .debounceTime(500)
+      .distinctUntilChanged()
       .switchMap((keywords: string) => this.productService.autocompleteSearchProduct(keywords)).publishReplay(1).refCount()
       .subscribe(res => {
         this.autocompleteProducts = res;
