@@ -22,6 +22,7 @@ import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
 import { BulkAdd2OrderModal } from './bulkAdd2order-modal/bulkAdd2order-modal.component';
 import { SampleModel } from '../../../models/sample.model';
 import { ConfigService } from '../../../core/services/config.service';
+import { HelpTextModal } from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 
 export class VendorShortInfo extends SampleModel {
   vendor_id: string = null;
@@ -811,4 +812,8 @@ ngOnDestroy() {
     reader.readAsDataURL(file.target.files[0]);
   }
 
+  openHelperModal() {
+    this.modal.open(HelpTextModal, this.modalWindowService
+    .overlayConfigFactoryWithParams({'text': 'Help text'}, true, 'mid'));
+  }
 }

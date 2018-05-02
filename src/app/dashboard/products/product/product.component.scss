@@ -4,6 +4,19 @@ $normal: 14px;
 
 :host /deep/ {
 
+  .header-helper {
+    display: inline-block;
+    text-align: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #B2B4B6;
+    color: #4a4a4a;
+    line-height: 14px;
+    margin-left: 5px;
+    font-size: 10px;
+  }
+
   .product-page {
     position: relative;
     //background: #fff;
