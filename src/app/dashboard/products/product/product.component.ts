@@ -73,6 +73,14 @@ export class ViewProductModalContext extends BSModalContext {
 })
 @DestroySubscribers()
 export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  helpText = {
+    technicalName: 'The name given by the vendor often found on an invoice',
+    trackable: 'Certain products you will want to track every single item that you receive such as those products with an expiration date, lot number or anything that you want that has a unique identifier. Examples include Implants that need to be tracked per patient, RX drugs, and specific tools.',
+    taxExempt: 'Those products that you do not have to pay tax on because your state has provided an exemption.  It is important to note that many vendors will not charge you tax for products because they are not required to do so if they don’t have a presence in your state. However, this does NOT mean you are not responsible to pay that tax for ALL products the are not exempt.  If a product is exempt check this box and it will not be included on reports that show what your use tax liability amount is.  See more info at:',
+    accounting: 'This should be the category your account classifies this product under.  We will be allowing users to create their own accounting subcategories soon so that they can match with your account software.',
+
+  };
   public subscribers: any = {};
   context: ViewProductModalContext;
   public product$: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -812,9 +820,9 @@ ngOnDestroy() {
     reader.readAsDataURL(file.target.files[0]);
   }
 
-  openHelperModal() {
+  openHelperModal(text, link?) {
     this.modal.open(HelpTextModal, this.modalWindowService
-    .overlayConfigFactoryWithParams({'text': 'Help text'}, true, 'mid'));
+    .overlayConfigFactoryWithParams({'text': text, 'link': link }, true, 'mid'));
   }
 
   sortBy(event) {

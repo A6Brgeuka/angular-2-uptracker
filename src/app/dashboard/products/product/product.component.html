@@ -43,7 +43,7 @@
             </div>
             <div *ngIf="!showEdit" [class.variant-show-name]="product?.name == null" class="relative">
               {{ showVariant ? currentVariant.proper_name : product?.proper_name}}
-              <a class="header-helper" (click)="openHelperModal()">?</a>
+              <a class="header-helper" (click)="openHelperModal(helpText.technicalName)">?</a>
             </div>
             <div>
               <input (click)="$event.stopPropagation();"
@@ -80,7 +80,7 @@
             <div class="col m3" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="relative">
                 <label>Trackable</label>
-                <a class="header-helper" (click)="openHelperModal()">?</a>
+                <a class="header-helper" (click)="openHelperModal(helpText.trackable)">?</a>
                 <div class="value">{{product?.trackable_string}}</div>
               </div>
               <div *ngIf="showEdit" class="input-checkbox checkbox">
@@ -98,7 +98,7 @@
             <div class="col m3" [class.l2]="!showEdit" >
               <div *ngIf="!showEdit" class="relative">
                 <label>Tax Exempt</label>
-                <a class="header-helper" (click)="openHelperModal()">?</a>
+                <a class="header-helper" (click)="openHelperModal(helpText.taxExempt, 'https://www.investopedia.com/terms/u/use-tax.asp')">?</a>
                 <div class="value">{{product?.tax_exempt_string}}</div>
               </div>
               <div *ngIf="showEdit" class="input-checkbox checkbox">
@@ -155,7 +155,7 @@
 
             <div class="relative col m3 input" [class.l2]="!showEdit">
               <label>Accounting</label>
-              <a class="header-helper" (click)="openHelperModal()">?</a>
+              <a class="header-helper" (click)="openHelperModal(helpText.accounting)">?</a>
               <div *ngIf="!showEdit" class="value">{{product?.account_category}}</div>
               <div *ngIf="showEdit" class="select">
                 <select
