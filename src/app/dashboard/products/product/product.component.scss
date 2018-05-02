@@ -28,7 +28,7 @@ $normal: 14px;
       }
     }
 
-    label {
+    label, .table-header {
       color: #000;
       font-weight: bold;
       font-family: 'Roboto';
@@ -471,7 +471,9 @@ $normal: 14px;
           }
         }
         .uptracker-form {
-
+          .uptracker-form-btn {
+            min-width: 70px;
+          }
           .input {
             margin-bottom: 0;
           }

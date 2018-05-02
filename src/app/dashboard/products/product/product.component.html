@@ -554,7 +554,7 @@
           <div class="variant-table">
             <div class="uptracker-form  table-item" *ngFor="let variant of filteredVariants$ | async">
 
-              <div class="name-heading variant-name row-item valign-wrapper">
+              <div class="name-heading row-item valign-wrapper">
                         <span [class.reddish]="variant.status == 2" class="valign"
                           (click)="toggleVariantDetailView(variant)">{{variant.name || "Product Here"}}
                         </span>
