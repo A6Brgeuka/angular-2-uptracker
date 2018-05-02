@@ -24,8 +24,8 @@ export class AddProductManager {
     return map(vendors, v => {
       const inventory = [
         {label: v['package_type'], qty: 1},
-        {label: v['sub_package'], qty: v['sub_unit_per_package'] ? v['sub_unit_per_package'] : null},
-        {label: v['unit_type'], qty: v['units_per_package']}
+        {label: v['sub_package_type'], qty: v['sub_package_per_package'] ? v['sub_package_per_package'] : null},
+        {label: v['unit_type'], qty: v['units_per_sub_package'], units_per_package: v['units_per_package']}
       ];
       //TODO: Define never[]
       const inventory_by = [map(inventory, (inv, i) => {
@@ -44,10 +44,11 @@ export class AddProductManager {
   formatVariants(v: any) {
     return {
       name: v['name'],
+      original_name: v['name'],
       catalog_number: v['catalog_number'],
       club_price: v['club_price'],
-      list_price: v['list_price'],
-      our_price: v['our_price'],
+      list_price: v['price'],
+      our_price: v['your_price'],
       upc: v['upc']
     }
   };

@@ -269,18 +269,20 @@ export class ProductService extends ModelService {
       for (let j=0, l=arg[i].length; j<l; j++) {
         let a = arr.slice(0);
         a.push(arg[i][j]);
-        if (i==max)
-          r.push({...new CustomProductVariantModel(), name: _.join(a, ' ')});
+        if (i==max) {
+          const variant = {
+            ...new CustomProductVariantModel(),
+            name: _.join(a, ' '),
+            original_name: _.join(a, ' ')
+          };
+          r.push(variant);
+        }
         else
           helper(a, i+1);
       }
     }
     helper([], 0);
     return r;
-  }
-
-  searchGlobalProducts(queryParams) {
-    return this.restangular.one('marketplace', 'global').customGET('', queryParams).map((res: any) => res.data);
   }
 
   addCustomProduct(data) {
