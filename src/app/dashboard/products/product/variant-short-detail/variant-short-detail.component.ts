@@ -1,8 +1,8 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import { ModalWindowService } from '../../../../core/services/modal-window.service';
-import { Modal } from 'angular2-modal';
+import * as _ from 'lodash';
+
 import { AccountService } from '../../../../core/services/account.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { AccountService } from '../../../../core/services/account.service';
   styleUrls: ['./variant-short-detail.component.scss']
 })
 @DestroySubscribers()
-export class VariantShortDetailComponent implements OnInit, AfterViewInit {
+export class VariantShortDetailComponent implements OnInit {
   public locationArr: any;
 
   @Input("variant") public variant;
@@ -26,8 +26,6 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
   private subscribers: any = {};
 
   constructor(
-    public modalWindowService: ModalWindowService,
-    public modal: Modal,
     public accountService: AccountService,
 
 ) {
@@ -39,23 +37,18 @@ export class VariantShortDetailComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
-
-  }
-
-  toggleVariantVisibility(variant) {
-    variant.status = variant.status == 2 ? variant.status =1 : variant.status = 2;
-  }
-
-  variantDetailCollapse() {
-    this.variant.detailView = false;
-  }
-
-  log(p){
-    console.log(p);
-  }
-
   addToOrder(item) {
     this.addToOrderWithVendor.emit(item);
+  }
+  vendorHeaderCheckboxChange(event) {
+    this.variant.vendor_variants.forEach((item) => {
+      item.checked = event;
+      return item;
+    })
+  }
+
+  vendorLineCheckboxChange() {
+    const filterChecked = _.filter(this.variant.vendor_variants, {checked: true});
+    this.variant.checked = !!(filterChecked && filterChecked.length === this.variant.vendor_variants.length);
   }
 }
