@@ -5,7 +5,6 @@ import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Observable';
 
 import { OrderListType } from '../../models/order-list-type';
-import { OrderItem } from '../../models/order-item';
 import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { FlaggedInvoicesListService } from '../services/flagged-invoices-list.service';
 import { Invoice } from '../../models/invoice';
@@ -21,7 +20,7 @@ export class FlaggedInvoicesListComponent implements OnInit, OnDestroy {
 
   public listName: string = OrderListType.flagged;
   public tableHeader: any = [
-    {name: 'Invoice #', className: 's1', alias: 'invoice_id', filterBy: true, },
+    {name: 'Invoice #', className: 's1', alias: 'invoice_id', filterBy: false, linkToReconcile: true, },
     {name: 'Vendor', className: 's2', alias: 'vendor', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
     {name: 'Location', className: 's2', alias: 'location_name', filterBy: true, },

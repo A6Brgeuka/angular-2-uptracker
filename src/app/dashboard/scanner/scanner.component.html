@@ -3,6 +3,7 @@
 
 <div class="scanner">
   <!--<input *ngIf="notCamera" type="file" accept="image/*;capture=camera" (change)="onChangeFile($event)">-->
-  <div *ngIf="notCamera" (click)="onOpenVideo()" class="start"></div>
+  <!--<div *ngIf="notCamera" (click)="onOpenVideo()" class="start"></div>-->
+  <div *ngIf="notCamera" (click)="scanBarcode()" class="start"></div>
   <fa name="barcode"></fa>
 </div>

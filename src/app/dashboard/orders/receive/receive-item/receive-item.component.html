@@ -82,12 +82,16 @@
   *ngFor="let statusFormGroup of statusControl?.controls; index as i"
   [statusFormGroup]="statusFormGroup"
   [inventoryGroupIdControl]="inventoryGroupIdControl"
-  [inventoryGroupIds]="inventoryGroupIds$ | async"
+  [inventoryGroups]="inventoryGroups$ | async"
+  [inventoryGroup]="inventoryGroup$ | async"
+  [selectedInventoryGroup]="selectedInventoryGroup$ | async"
   [itemProductVariantId]="itemProductVariantId$ | async"
+  [locations]="locations$ | async"
   [pendingQty]="pendingQty$ | async"
   [selected]="statusItemStatuses$ | async"
   (remove)="removeStatus(i)"
   (createInventoryEvent)="createNewInventoryEvent($event)"
+  (selectedInventoryEvent)="selectedInventoryEvent($event)"
 ></app-receive-new-status-item>
 <div [hidden]="!orderItemForm.hasError('maxItemsQty')"
   class="error red-text left-align">

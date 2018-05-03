@@ -13,6 +13,7 @@ import { OrderTableOnVoidService } from './order-table-on-void.service';
 import { OrderStatus } from '../../models/order-status';
 import { OrderTableFilterByService } from './order-table-filter-by.service';
 import { OrdersService } from '../../orders.service';
+import { PastOrderService } from '../../../../core/services/pastOrder.service';
 
 @Component( {
   selector: 'app-order-table',
@@ -67,6 +68,7 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     public orderTableService: OrderTableService,
     public ordersService: OrdersService,
     private orderTableFilterByService: OrderTableFilterByService,
+    private pastOrderService: PastOrderService,
   ) {
   }
 
@@ -153,4 +155,7 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     this.onVoidItem.emit(event);
   }
 
+  goToReconcile(item) {
+    this.pastOrderService.goToReconcile(item.invoice_id);
+  }
 }

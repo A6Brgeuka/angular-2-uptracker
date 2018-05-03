@@ -565,7 +565,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
     this.addCustomProduct = !this.addCustomProduct;
     // let pkgType = this.newProductData.consumable_unit.properties.unit_type;
     let pkgType = this.newInventory.consumable_unit_type;
-    this.newProductData = new InventorySearchResults();
+    this.newProductData = new InventorySearchResults({ name: this.searchText });
 
     this.newProductData.custom_product = true;
     // this.newProductData.consumable_unit.properties.unit_type = this.newInventory.consumable_unit_type;

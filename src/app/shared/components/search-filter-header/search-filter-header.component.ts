@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { find } from 'lodash';
+
+import { OrdersService } from '../../../dashboard/orders/orders.service';
 
 export type SearchFilterHeaderType = 'keyword' | 'chips' | 'multiple';
 
@@ -31,14 +32,14 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
   @Output() resetEvent = new EventEmitter();
   @Output() openModalEvent = new EventEmitter();
   public dataTypeArr: any[] = [
-    {value: '', title: 'Orders'},
-    {value: 'items', title: 'Order Items'},
-    {value: 'packing-slips', title: 'Packing Slips'},
-    {value: 'invoices', title: 'Invoices'},
+    {value: '/orders', title: 'Orders'},
+    {value: '/orders/items', title: 'Order Items'},
+    {value: '/orders/packing-slips', title: 'Packing Slips'},
+    {value: '/orders/invoices', title: 'Invoices'},
   ];
 
   constructor(
-    public route: ActivatedRoute,
+    private ordersService: OrdersService,
   ) {
 
   }
@@ -56,12 +57,10 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.route && this.route.firstChild) {
-      this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
-      .subscribe((res: any) => {
-        this.title = (res.length) ? find(this.dataTypeArr, {'value': res[0].path}).title : 'Orders';
-      });
-    }
+    this.subscribers.getChildRoutePathSubscription = this.ordersService.tableRoute$
+    .subscribe((res: any) => {
+      this.title = find(this.dataTypeArr, {'value': res}).title;
+    });
   }
 
   ngOnDestroy() {

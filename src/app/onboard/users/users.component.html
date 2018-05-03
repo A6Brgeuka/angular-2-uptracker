@@ -9,7 +9,7 @@
     <div class="list">
       <div class="item center-align" *ngFor="let user of userArr" (click)="viewUserModal(user)">
         <div class="img" *ngIf="user.avatar" [ngStyle]="{ 'background-image': 'url(' + user.avatar + ')' }"></div>
-        <div class="img" *ngIf="!user.avatar"></div>
+        <div class="img" *ngIf="!user.avatar" [ngStyle]="{ 'background-image': 'url(/assets/img/onboard/icon-onboarding-users.svg)', 'background-size': 'contain' }"></div>
         <div class="ttl">{{user.name}}</div>
       </div>
     </div>
