@@ -4,23 +4,21 @@ import {
 } from '@angular/core';
 
 import { Modal } from 'angular2-modal';
-import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable, BehaviorSubject, Subject } from 'rxjs/Rx';
 import * as _ from 'lodash';
-import { Location }                 from '@angular/common';
+import { Location } from '@angular/common';
 
 import { UserService, AccountService } from '../../../core/services/index';
-import { ProductService } from "../../../core/services/product.service";
-import { ModalWindowService } from "../../../core/services/modal-window.service";
-import { ToasterService } from "../../../core/services/toaster.service";
-import { EditCommentModal } from "../../../shared/modals/edit-comment-modal/edit-comment-modal.component";
-import { FileUploadService } from "../../../core/services/file-upload.service";
-import { ActivatedRoute, Params } from '@angular/router';
+import { ProductService } from '../../../core/services/product.service';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { ToasterService } from '../../../core/services/toaster.service';
+import { EditCommentModal } from '../../../shared/modals/edit-comment-modal/edit-comment-modal.component';
+import { FileUploadService } from '../../../core/services/file-upload.service';
+import { ActivatedRoute } from '@angular/router';
 import { Add2OrderModal } from './add2order-modal/add2order-modal.component';
 import { BulkAdd2OrderModal } from './bulkAdd2order-modal/bulkAdd2order-modal.component';
 import { SampleModel } from '../../../models/sample.model';
-import { ConfigService } from '../../../core/services/config.service';
 import { HelpTextModal } from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 
 export class VendorShortInfo extends SampleModel {
@@ -38,32 +36,28 @@ export class AddToOrderData {
   vendorArr: any[] = [];
   locationArr: any[] = [];
   //form text fill
-  variant_name: string = '';
-  productId: string = '';
+  variant_name = '';
+  productId = '';
   units_per_package: number = null;
   sub_unit_per_package: number = null;
   unit_type: string = null;
   sub_unit_type: string = null;
   package_type: string = null;
   //variables
-  quantity: number = 1;
+  quantity = 1;
   vendor: VendorShortInfo = null;
-  location_id: string = '';
+  location_id = '';
   selected_unit_type: string = null;
   last_unit_type: string = null;
-  isAuto: boolean = true;
+  isAuto = true;
 
   constructor(obj) {
-    for (let field in obj) {
-      if (typeof this[field] !== "undefined") {
+    for (const field in obj) {
+      if (typeof this[field] !== 'undefined') {
         this[field] = obj && obj[field];
       }
     }
   }
-}
-
-export class ViewProductModalContext extends BSModalContext {
-  public product: any;
 }
 
 @Component({
@@ -82,9 +76,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
 
   };
   public subscribers: any = {};
-  context: ViewProductModalContext;
-  public product$: BehaviorSubject<any> = new BehaviorSubject([]);
-
 
   public product: any;
   public productCopy: any;
@@ -106,8 +97,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   public addOrderVariantsButtonShow: boolean = false;
 
   public departmentCollection$: Observable<any> = new Observable<any>();
-  public productAccountingCollection$: Observable<any> = new Observable<any>();
-  public productCategoriesCollection$: Observable<any> = new Observable<any>();
 
   public departmentCollection: string[];
   public productAccountingCollection: string[];
@@ -135,7 +124,7 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   public location_id;
   public currentLocation: any = {};
 
-  fileIsOver: boolean = false;
+  fileIsOver = false;
   public newFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   public oldFiles$: BehaviorSubject<any> = new BehaviorSubject(null);
   public fileArr: any = [];
@@ -156,8 +145,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   public deleteFromDoc$: Subject<any> = new Subject<any>();
   public updateDoc$: Subject<any> = new Subject<any>();
 
-  public formData: FormData = new FormData();
-
   public hasInfoTab: boolean = false;
   public product_id: string;
   public locationArr: any;
@@ -165,7 +152,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public userService: UserService,
     public accountService: AccountService,
-    public configService: ConfigService,
     public productService: ProductService,
     public toasterService: ToasterService,
     public fileUploadService: FileUploadService,
@@ -181,7 +167,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
     this.showEdit$.next(false);
   }
 
-
   ngOnInit() {
     this.accountService.getDepartments()
     .subscribe((arr:string[])=>this.departmentCollection = arr);
@@ -191,14 +176,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.accountService.getProductCategories()
     .subscribe((arr:string[])=>this.productCategoriesCollection = arr);
-
-
-    //this.configService.environment$
-    //.filter((a:string)=>a=='development')
-    //.subscribe((a)=> {
-    //  this.canEdit = true;
-    //});
-
 
     this.subscribers.getLocationArraySubscription = this.accountService.locations$
     .subscribe(r => {
@@ -271,12 +248,11 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
       this.variants$,
       this.filterSelectOption$,
       this.filterName$,
-      this.filterPrice$,
       this.variantChecked$,
       this.showEdit$,
       this.sortBy$,
     )
-    .map(([variants, filterSelectOption, filterName, filterPrice, variantChecked, showEdit, sortBy]) => {
+    .map(([variants, filterSelectOption, filterName, variantChecked, showEdit, sortBy]) => {
       if (showEdit) {
 
         return variants;
@@ -287,12 +263,6 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
       this.variation.checked = checkedArrVariants.length === variants.length && variants.length ? true : false;
       this.addOrderVariantsButtonShow = checkedArrVariants.length ? true : false;
 
-      if (filterPrice && filterPrice != "") {
-        variants = _.reject(variants, (variant: any) => {
-          let key = new RegExp(filterPrice, 'i');
-          return !key.test(variant.name);
-        });
-      }
       if (filterName && filterName != "") {
         variants = _.reject(variants, (variant: any) => {
           let key = new RegExp(filterName, 'i');
@@ -353,7 +323,6 @@ ngOnDestroy() {
       || !_.isEmpty(data.product.documents));
 
       this.loadDoc$.next(data.product.documents);
-      //this.loadDoc$.subscribe(r => console.log(r));
 
       this.resetText();
       this.variants = _.map(data.variants, (item: any) => {
@@ -811,10 +780,6 @@ ngOnDestroy() {
     } else {
       this.location.back();
     }
-  }
-
-  hideVariantDetails() {
-
   }
 
   uploadLogo(file: any) {

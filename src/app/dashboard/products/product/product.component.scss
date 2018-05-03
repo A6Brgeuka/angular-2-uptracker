@@ -19,7 +19,6 @@ $normal: 14px;
 
   .product-page {
     position: relative;
-    //background: #fff;
     padding: 30px;
     .close {
       transition: opacity .3s;
@@ -59,8 +58,6 @@ $normal: 14px;
       }
     }
     .row {
-      //margin-left: -0.75rem;
-      //margin-right: -0.75rem;
       margin-bottom: 0;
       .mrg-btm-20 {
         margin-bottom: 20px;
@@ -344,12 +341,6 @@ $normal: 14px;
         }
       }
     }
-
-    // table vertical scroll
-    //.table-body {
-    //  height: 372px;
-    //  overflow-y: auto;
-    //}
 
     .row-item.selected {
       background-color: #f5f5f5;
