@@ -398,10 +398,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
     .subscribe(res => this.productCategoriesCollection = res);
 
     this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
-    .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
-    .subscribe(res => {
-      this.autocompleteProducts = res['suggestions'];
-    });
+      .debounceTime(500)
+      .distinctUntilChanged()
+      .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
+      .subscribe(res => {
+        this.autocompleteProducts = res['suggestions'];
+      });
 
     this.subscribers.departmentCollectionSubscription = this.accountService.getDepartments().take(1)
     .subscribe(departments => this.departmentCollection = departments);

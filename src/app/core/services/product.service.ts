@@ -263,7 +263,7 @@ export class ProductService extends ModelService {
     return false;
   }
 
-  recursive(): CustomProductVariantModel[] {
+  recursive(...someArgs: any[]): CustomProductVariantModel[] {
     let r = [], arg = arguments, max = arg.length-1;
     function helper(arr, i) {
       for (let j=0, l=arg[i].length; j<l; j++) {

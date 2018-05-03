@@ -23,7 +23,8 @@
         <div class="input add-attachment">
           <div class="file-field">
             <div class="upload-link">
-              <a (click)="openUploadImageModal()">Upload an image</a>
+              <input type="file" (change)="openUploadImageModal($event)">
+              <a>Upload an image</a>
             </div>
           </div>
         </div>
@@ -135,8 +136,8 @@
         </div>
 
         <div class="col input s12 m6">
-          <label>Manufacture</label>
-          <input type="text" [(ngModel)]="product.manufacture" placeholder="Manufacture">
+          <label>Manufacture #</label>
+          <input type="text" [(ngModel)]="product.manufacture" placeholder="Manufacture #">
         </div>
       </div>
 

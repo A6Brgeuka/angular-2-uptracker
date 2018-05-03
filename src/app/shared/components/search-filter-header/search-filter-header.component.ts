@@ -58,10 +58,9 @@ export class SearchFilterHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.route && this.route.firstChild) {
       this.subscribers.getChildRoutePathSubscription = this.route.firstChild.url
-      .subscribe(res => {
+      .subscribe((res: any) => {
         this.title = (res.length) ? find(this.dataTypeArr, {'value': res[0].path}).title : 'Orders';
-      }
-      );
+      });
     }
   }
 

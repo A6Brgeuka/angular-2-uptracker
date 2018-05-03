@@ -235,12 +235,14 @@ export class AddNewProductComponent implements OnInit {
       });
   }
 
-  openUploadImageModal() {
+  openUploadImageModal(event) {
     this.modal.open(UploadEditImageModalComponent, this.modalWindowService
-      .overlayConfigFactoryWithParams(this.product, true, 'normal'))
+      .overlayConfigFactoryWithParams({ product: this.product, event }, true, 'normal'))
       .then((resultPromise) => {
         resultPromise.result.then(
-          (res) => this.product.image = res,
+          (res) => {
+            return this.product.image = res;
+          },
           (err) => {}
         );
       });

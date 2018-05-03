@@ -69,6 +69,8 @@ export class AddVendorModalComponent implements OnInit {
 
   addSubscribers() {
     this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
+      .debounceTime(500)
+      .distinctUntilChanged()
       .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
       .subscribe((vendors: any) => this.autocompleteVendors = vendors);
   }

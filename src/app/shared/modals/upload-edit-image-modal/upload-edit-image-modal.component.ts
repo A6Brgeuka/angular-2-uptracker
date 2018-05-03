@@ -4,8 +4,10 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 
 export class UploadEditImageModalContext extends BSModalContext {
-
+  product: any;
+  event: any;
 }
+
 @Component({
   selector: 'app-upload-edit-image-modal',
   templateUrl: './upload-edit-image-modal.component.html',
@@ -15,6 +17,8 @@ export class UploadEditImageModalComponent implements OnInit, ModalComponent<Upl
 
   context: UploadEditImageModalContext;
   product: any;
+  event: any;
+
   constructor(public dialog: DialogRef<UploadEditImageModalContext>,
               public modalWindowService: ModalWindowService,
               public modal: Modal) {
@@ -22,7 +26,8 @@ export class UploadEditImageModalComponent implements OnInit, ModalComponent<Upl
   }
 
   ngOnInit() {
-    this.product = this.context;
+    this.product = this.context.product;
+    this.event = this.context.event;
     console.log(this.product);
   }
 

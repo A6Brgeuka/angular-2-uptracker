@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
 import { CustomProductModel } from '../../../models/custom-product.model';
 import { ProductService } from '../../../core/services/product.service';
@@ -16,8 +16,12 @@ export class UploadEditFileComponent implements OnInit {
   cropperSettings: CropperSettings;
   croppedWidth: number;
   croppedHeight: number;
-  showEditArea: boolean;
+
   @Input() product: CustomProductModel;
+  @Input() event: any;
+
+  @Output() closeModal = new EventEmitter();
+
   @ViewChild('cropper', undefined) cropper: ImageCropperComponent;
 
   constructor(private productService: ProductService) {
@@ -45,7 +49,6 @@ export class UploadEditFileComponent implements OnInit {
     this.cropperSettings.preserveSize = true;
     this.cropperSettings.noFileInput = true;
 
-    this.showEditArea = false;
     this.dataCropImg = {
       image: ''
     };
@@ -64,7 +67,9 @@ export class UploadEditFileComponent implements OnInit {
     // image.crossOrigin = "Use-Credentials";
     // image.src = this.product.image;
 
-
+    if (this.event) {
+      this.fileChangeListener(event);
+    }
   }
 
   cropped(bounds: Bounds) {
@@ -73,44 +78,56 @@ export class UploadEditFileComponent implements OnInit {
   }
 
   fileChangeListener($event) {
-    this.showEditArea = true;
     const formData = new FormData();
     const image: any = new Image();
     const file: File = $event.target.files[0];
     const myReader: FileReader = new FileReader();
+
     myReader.onloadend = (loadEvent: any) => {
       image.src = loadEvent.target.result;
-      console.log('image',image,$event.target.files[0]);
+      console.log('image', image, $event.target.files[0]);
       this.cropper.setImage(image);
       formData.append('image', file);
       this.productService.addCustomProductImage(formData)
-      .subscribe(url => {this.product.image = url; console.log("SUBSCRIBE URL")});
+      .subscribe(url => {
+        this.product.image = url;
+        console.log("SUBSCRIBE URL");
+      });
     };
     myReader.readAsDataURL(file);
   }
 
 
-  rotateBase64Image(base64data) {
+  rotateBase64Image(dataCropImg) {
+    const base64data = dataCropImg.image; // contains 'original' also
+
     const canvas: any = document.createElement('canvas');
     canvas.setAttribute('width', 200);
     canvas.setAttribute('height', 200);
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.moveTo(0,0);
-    canvas.width=canvas.width;
+    canvas.width = canvas.width;
+
     const image = new Image();
     image.src = base64data;
-    image.onload =  () =>{
-      ctx.translate(canvas.width/2, canvas.height/2);
-      ctx.rotate(90* Math.PI / 180);
-      ctx.drawImage(image, -100,-100, canvas.width,canvas.height);
-      this.dataCropImg.image = canvas.toDataURL("image/jpeg");
+    image.onload = () => {
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(90 * Math.PI / 180);
+      ctx.drawImage(image, -100, -100, canvas.width, canvas.height);
+
+      const imageUrl = canvas.toDataURL('image/png');
+      const rotatedImage = new Image();
+      rotatedImage.src = imageUrl;
+      this.cropper.setImage(rotatedImage);
     };
   }
 
-  saveBlob(dataURI){
-    const byteString = atob(dataURI.split(',')[1]);
-    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+  saveBlob(dataCropImg) {
+    const base64data = dataCropImg.image; // contains 'original' also
+
+    const byteString = atob(base64data.split(',')[1]);
+    const mimeString = base64data.split(',')[0].split(':')[1].split(';')[0]
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
     for (let i = 0; i < byteString.length; i++) {
@@ -120,9 +137,13 @@ export class UploadEditFileComponent implements OnInit {
     const formData = new FormData();
     const croppedImage = blob;
     formData.append("image", croppedImage);
-    this.productService.addCustomProductImage(formData)
-    .subscribe(url => this.product.image = url);
+
+    this
+      .productService
+      .addCustomProductImage(formData)
+      .subscribe(url => {
+        this.product.image = url;
+        this.closeModal.emit();
+      });
   }
-
-
 }
