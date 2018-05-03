@@ -34,7 +34,8 @@ export class VendorProductPackageComponent {
 
   packageSummary(pack): string {
     const inner = `of ${pack[1].qty} ${pack[1].label}`;
-    const total = 1 * (pack[1].qty || 1) * pack[2].qty;
-    return `1 ${pack[0].label} ${pack[1].label && pack[1].qty ? inner : ''} of ${pack[2].qty} ${pack[2].label}, 1 ${pack[0].label} = ${total} ${pack[2].label}(s)`;
+    const consumable = `of ${pack[2].qty} ${pack[2].label}`;
+    const total = pack[2].units_per_package || (1 * (pack[1].qty || 1) * pack[2].qty);
+    return `1 ${pack[0].label} ${pack[1].label && pack[1].qty ? inner : ''} ${pack[2].label && pack[2].qty ? consumable : ''}, 1 ${pack[0].label} = ${total} ${pack[2].label}(s)`;
   }
 }

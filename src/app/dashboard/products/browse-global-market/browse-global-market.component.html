@@ -5,7 +5,7 @@
 </div>
 <app-search-filter-header
   [title]="'Add Product:'"
-  [searchKey]="''"
+  [searchKey]="searchKey"
   (resetEvent)="resetSearch()"
   (searchEvent)="searchProducts($event)">
 </app-search-filter-header>
@@ -16,7 +16,7 @@
     <br>
     Please select which product(s) you would like to add to your marketplace
   </div>
-  <div class="item center-align" *ngFor="let product of products$ | async; let i=index">
+  <div class="item center-align" *ngFor="let product of productService.collection$ | async; let i=index">
     <div class="inner" (click)="selectProduct(product); $event.stopPropagation()">
       <div class="hazardous" *ngIf="product.hazardous">
         <i class="material-icons">warning</i>

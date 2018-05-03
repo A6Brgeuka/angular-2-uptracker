@@ -1,16 +1,22 @@
-<div *ngIf="showEditArea" class = "edit-logo-img col s12 center-align">
+<div class="edit-logo-img col s12 center-align">
   <div class="">
-    <img-cropper  #cropper [image]="dataCropImg" [settings]="cropperSettings" (onCrop)="cropped($event)"></img-cropper>
+    <img-cropper #cropper
+                 [image]="dataCropImg"
+                 [settings]="cropperSettings"
+                 (onCrop)="cropped($event)"
+    >
+    </img-cropper>
     <div class="edit-btn-group">
-      <button class="uptracker-form-btn bluebtn waves-effect waves-light" (click) = "rotateBase64Image(dataCropImg.image)">
-        Rotate logo
+      <button class="uptracker-form-btn bluebtn waves-effect waves-light" (click)="rotateBase64Image(dataCropImg)">
+        Rotate image
       </button>
-      <button class="uptracker-form-btn bluebtn waves-effect waves-light" (click)="showEditArea = false; saveBlob(dataCropImg.image)">
-        Save logo
+      <button class="uptracker-form-btn bluebtn waves-effect waves-light" (click)="saveBlob(dataCropImg)">
+        Save image
       </button>
     </div>
   </div>
 </div>
+<!--
 <div class="col s12 center-align">
   <div class="col s12">
     <div class="img-container">
@@ -38,3 +44,4 @@
     </div>
   </div>
 </div>
+-->

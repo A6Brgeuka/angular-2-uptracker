@@ -40,7 +40,7 @@ export class AddNewProductComponent implements OnInit {
   public newVariant: string = '';
   public logo: any;
   public logoPreview: string = null;
-  public dummyProductVariants = ["Size", "Color", "Texture", "Grit", "Length", "Strength", "Prescription", "Type"];
+  public dummyProductVariants = ["Size", "Color", "Texture", "Grit", "Length", "Strength", "Prescription", "Type", "Flavor"];
   public productVariants: ProductVariantsModel[] = [
     {
       name: 'Size',
@@ -87,7 +87,14 @@ export class AddNewProductComponent implements OnInit {
 
   createVendorVariants() {
     let arr = map(this.productVariants, 'values');
-    if (!arr.length) return [{...new CustomProductVariantModel(), name: this.product.name}];
+    if (!arr.length) {
+      const variant = {
+        ...new CustomProductVariantModel(),
+        name: this.product.name,
+        original_name: this.product.name
+      };
+      return [variant];
+    }
     return this.productService.recursive(...arr);
   }
 
@@ -228,12 +235,14 @@ export class AddNewProductComponent implements OnInit {
       });
   }
 
-  openUploadImageModal() {
+  openUploadImageModal(event) {
     this.modal.open(UploadEditImageModalComponent, this.modalWindowService
-      .overlayConfigFactoryWithParams(this.product, true, 'normal'))
+      .overlayConfigFactoryWithParams({ product: this.product, event }, true, 'normal'))
       .then((resultPromise) => {
         resultPromise.result.then(
-          (res) => this.product.image = res,
+          (res) => {
+            return this.product.image = res;
+          },
           (err) => {}
         );
       });

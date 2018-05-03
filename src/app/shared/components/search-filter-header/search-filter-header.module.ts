@@ -16,14 +16,7 @@ import { AppSharedModule } from '../../shared.module';
   ],
   exports: [SearchFilterHeaderComponent],
   imports: [
-    AppSharedModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    Angular2FontawesomeModule,
-    ChipsInputModule,
-    ChipsModule,
-    MaterializeModule,
+    AppSharedModule
   ],
   providers: [],
 })

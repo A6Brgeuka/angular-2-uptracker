@@ -263,24 +263,26 @@ export class ProductService extends ModelService {
     return false;
   }
 
-  recursive(): CustomProductVariantModel[] {
+  recursive(...someArgs: any[]): CustomProductVariantModel[] {
     let r = [], arg = arguments, max = arg.length-1;
     function helper(arr, i) {
       for (let j=0, l=arg[i].length; j<l; j++) {
         let a = arr.slice(0);
         a.push(arg[i][j]);
-        if (i==max)
-          r.push({...new CustomProductVariantModel(), name: _.join(a, ' ')});
+        if (i==max) {
+          const variant = {
+            ...new CustomProductVariantModel(),
+            name: _.join(a, ' '),
+            original_name: _.join(a, ' ')
+          };
+          r.push(variant);
+        }
         else
           helper(a, i+1);
       }
     }
     helper([], 0);
     return r;
-  }
-
-  searchProducts(queryParams) {
-    return this.restangular.all('products').all('search').customGET('', queryParams).map((res: any) => res.data);
   }
 
   addCustomProduct(data) {
@@ -296,6 +298,6 @@ export class ProductService extends ModelService {
   }
 
   autocompleteSearchProduct(keywords: string) {
-    return this.restangular.one('marketplace', 'global').customGET('', keywords).map((res: any) => res.data.results);
+    return this.restangular.one('products', 'search').customGET('', keywords).map((res: any) => res.data);
   }
 }

@@ -81,11 +81,11 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
       this.sort$.startWith(null),
       this.orderTableService.toggleSelect$.startWith(null),
     )
-    .map(([orders, sort]: [any, any]) => {
+    .map(([orders, sort, toggleSelect]: [any, any, any]) => {
       if (!sort) {
         return orders;
       }
-        return _.orderBy(orders, [sort.alias], [sort.order]);
+      return _.orderBy(orders, [sort.alias], [sort.order]);
     });
 
     this.checkedOrders$ = this.filteredOrders$
