@@ -14,7 +14,6 @@ export class VendorProductPackageComponent {
 
   @Input('package') public package: any;
   @Input('additional') public additional: boolean = true;
-  @Input('total') public total: number;
   @Output('fillColumn') fillColumn = new EventEmitter();
   @Output('fillAll') fillAll = new EventEmitter();
 

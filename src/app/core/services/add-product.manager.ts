@@ -25,7 +25,7 @@ export class AddProductManager {
       const inventory = [
         {label: v['package_type'], qty: 1},
         {label: v['sub_package_type'], qty: v['sub_package_per_package'] ? v['sub_package_per_package'] : null},
-        {label: v['unit_type'], qty: v['units_per_sub_package'], units_per_package: v['units_per_package']}
+        {label: v['unit_type'], qty: v['units_per_sub_package'] || v['units_per_package'], units_per_package: v['units_per_package']}
       ];
       //TODO: Define never[]
       const inventory_by = [map(inventory, (inv, i) => {

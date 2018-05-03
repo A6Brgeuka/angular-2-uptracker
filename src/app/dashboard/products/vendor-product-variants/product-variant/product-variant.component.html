@@ -3,7 +3,6 @@
   *ngFor="let package of vendor.inventory_by; let i = index"
   [package]="package"
   [additional]="vendor.additional"
-  [total]=""
   (fillAll)="onFillAll($event)"
   (fillColumn)="onFillColumn($event)">
 </app-vendor-product-package>
