@@ -1,14 +1,17 @@
+import { Component, EventEmitter, NgZone, OnInit, Output } from '@angular/core';
+
 import { Observable } from 'rxjs/Observable';
-import { Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Subject } from 'rxjs/Subject';
 import * as _ from 'lodash';
+import {Modal} from 'angular2-modal';
+
 import { ToasterService } from '../../core/services/toaster.service';
 import { SpinnerService } from '../../core/services/spinner.service';
-import {VideoModal} from "./video-modal/video-modal.component";
-import {Modal} from "angular2-modal";
-import {ModalWindowService} from "../../core/services/modal-window.service";
-import {ScannerService} from "../../core/services/scanner.service";
+import {VideoModal} from './video-modal/video-modal.component';
+import {ModalWindowService} from '../../core/services/modal-window.service';
+import {ScannerService} from '../../core/services/scanner.service';
+import { BarcodeScannerService } from './barcode-scanner.service';
 
 @Component({
   selector: 'app-scanner',
@@ -35,6 +38,7 @@ export class ScannerComponent implements OnInit {
     public modalWindowService: ModalWindowService,
     public modal: Modal,
     public scannerService: ScannerService,
+    public barcodeScannerService: BarcodeScannerService,
   ) {
   }
 
@@ -96,6 +100,10 @@ export class ScannerComponent implements OnInit {
               }
           );
       });
+  }
+
+  scanBarcode() {
+    this.barcodeScannerService.scanBarcode();
   }
 
   onBarCodeUpdated(code) {
