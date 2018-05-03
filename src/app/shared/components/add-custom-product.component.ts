@@ -59,25 +59,25 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
 
   addSubscribers() {
     this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
-      .debounceTime(500)
+      .debounceTime(300)
       .distinctUntilChanged()
       .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
       .subscribe((vendors: any) => this.autocompleteVendors = vendors);
 
     this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
-      .debounceTime(500)
+      .debounceTime(300)
       .distinctUntilChanged()
       .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
       .subscribe((pack: any) => this.autocompleteOuterPackage = _.sortBy(pack, ['unit_name']));
 
     this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
-      .debounceTime(500)
+      .debounceTime(300)
       .distinctUntilChanged()
       .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
       .subscribe((pack: any) => this.autocompleteInnerPackage = _.sortBy(pack, ['plural_unit_name']));
 
     this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
-      .debounceTime(500)
+      .debounceTime(300)
       .distinctUntilChanged()
       .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
       .subscribe((pack: any) => this.autocompleteConsPackage = pack);

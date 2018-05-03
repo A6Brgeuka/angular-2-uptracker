@@ -32,7 +32,7 @@ export class VendorSearchComponent implements OnInit {
 
   addSubscribers() {
     this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
-      .debounceTime(500)
+      .debounceTime(300)
       .distinctUntilChanged()
       .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
       .subscribe((vendors: any) => this.autocompleteVendors = vendors);
