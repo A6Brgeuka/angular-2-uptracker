@@ -1,5 +1,5 @@
 <div class="variant-detail-wrapper">
-    <div *ngIf='variant.custom_attr.length' class="variant-detail-top">
+    <div *ngIf='variant?.custom_attr && variant?.custom_attr.length' class="variant-detail-top">
         <div *ngFor="let attr of variant.custom_attr" class="variant-detail-top-item">
             <div class="top">{{attr.name}}</div>
             <div>{{attr.value}}</div>
