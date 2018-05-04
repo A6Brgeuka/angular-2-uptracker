@@ -8,7 +8,7 @@ export interface ReceiveOrderItemModel {
   id: string;
   status?: OrderItemStatusFormModel[];
   status_line_items?: OrderItemStatusFormModel[];
-  inventory_group_id: string;
+  inventory_group_id?: string;
   original_quantity?: number;
   quantity?: number;
   item_name?: string;
@@ -29,7 +29,7 @@ export class OrderItemFormGroup extends FormGroup {
 
     super({
       id: new FormControl(id, Validators.required),
-      inventory_group_id: new FormControl(inventory_group_id, Validators.required),
+      inventory_group_id: new FormControl(inventory_group_id),
       status: new FormArray([]),
       status_line_items: new FormArray(statusLineItemsFormGroups),
       quantity: new FormControl({value: quantity, disabled: true}),
