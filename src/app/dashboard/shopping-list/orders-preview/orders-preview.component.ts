@@ -166,7 +166,8 @@ export class OrdersPreviewComponent implements OnInit {
             this.convertOrder()
               .subscribe(order => {
                 this.orderService.sendOrderRequest(order.id)
-                .subscribe(status => {
+                  .take(1)
+                  .subscribe(status => {
                   this.modal.open(
                     EditFaxDataModal,
                     this.modalWindowService.overlayConfigFactoryWithParams({
@@ -197,20 +198,19 @@ export class OrdersPreviewComponent implements OnInit {
           case 'Phone':
             this.convertOrder()
               .subscribe(order => {
-                this.orderService.sendOrderRequestFinal(order.id, {})
-                  .subscribe(() => {
-                    this.openWarningOrderModal(order);
+                this.orderService.sendOrderRequest(order.id)
+                  .take(1)
+                  .subscribe((status: any) => {
+                    this.openWarningOrderModal(order, status);
                   })
               });
-
             break;
           case 'Mail':
             this.convertOrder()
               .subscribe(order => {
-                this.orderService.sendOrderRequestFinal(order.id, {})
-                  .subscribe(() => {
-                    this.openWarningOrderModal(order);
-                  })
+                this.orderService.sendOrderRequest(order.id)
+                  .take(1)
+                  .subscribe(status => this.openWarningOrderModal(order, status))
               });
             break;
           default:
@@ -304,13 +304,10 @@ export class OrdersPreviewComponent implements OnInit {
       .map(res => res.data.order)
   }
 
-  openWarningOrderModal(order) {
+  openWarningOrderModal(order, status) {
     this.modal.open(
       WarningOrderModalComponent,
-      this.modalWindowService.overlayConfigFactoryWithParams({
-        order_id: order.id,
-        order_method: order.order_method
-      }, true, 'oldschool')
+      this.modalWindowService.overlayConfigFactoryWithParams({order, status}, true, 'oldschool')
     );
   }
 
