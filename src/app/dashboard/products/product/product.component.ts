@@ -613,6 +613,7 @@ ngOnDestroy() {
           'sub_unit_type': v.sub_unit_type,
           'package_type': v.package_type,
           'variant_name': v.name,
+          'location_id': this.location_id,
           'vendor': {variant_id:v.vendor_variants[0].variant_id},
           'isAuto': true,
         });
