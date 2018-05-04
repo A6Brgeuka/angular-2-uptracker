@@ -27,7 +27,7 @@ export class AllPackingSlipsListComponent implements OnInit, OnDestroy {
     {name: 'Date', className: 's1', alias: 'date', filterBy: true, },
     {name: 'Received By', className: 's2', alias: 'received_by', filterBy: true, },
     {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
-    {name: '', className: 's1', actions: true},
+    {name: '', className: 's1', actions: false},
   ];
 
   public packingSlips$: Observable<PackingSlip[]>;
