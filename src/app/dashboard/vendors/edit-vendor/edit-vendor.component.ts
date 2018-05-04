@@ -152,6 +152,11 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.generalVendor.locations.forEach(v => {
         this.locationVendors.push(new AccountVendorModel(v));
       });
+      /* this.generalVendor.address.summary = this.generalVendor.address.street_1
+       + this.generalVendor.address.street_2
+       + this.generalVendor.address.city
+       + this.generalVendor.address.state
+       + this.generalVendor.address.postal_code;*/
     })
   }
 
