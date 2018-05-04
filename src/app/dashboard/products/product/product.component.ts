@@ -168,13 +168,13 @@ export class ProductComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.accountService.getDepartments()
+    this.subscribers.getDepartmentsSubscription = this.accountService.getDepartments()
     .subscribe((arr:string[])=>this.departmentCollection = arr);
 
-    this.accountService.getProductAccounting()
+    this.subscribers.getProductAccountingSubscription = this.accountService.getProductAccounting()
     .subscribe((arr:string[])=>this.productAccountingCollection = arr);
 
-    this.accountService.getProductCategories()
+    this.subscribers.getProductCategoriesSubscription = this.accountService.getProductCategories()
     .subscribe((arr:string[])=>this.productCategoriesCollection = arr);
 
     this.subscribers.getLocationArraySubscription = this.accountService.locations$
