@@ -90,6 +90,7 @@ export class OrderItems {
   line_item_type: string;
   location_id: string;
   order_id: string;
+  order_method: any;
   price: string;
   price_nf: number;
   product_id: string;
