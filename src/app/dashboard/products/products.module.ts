@@ -12,10 +12,14 @@ import { HomeTabModule } from './home-tab/home-tab.module';
 import { MarisListTabModule } from './maris-list-tab/maris-list-tab.module';
 import { MarketplaceTabModule } from './marketplace-tab/marketplace-tab.module';
 import { SearchFilterHeaderModule } from '../../shared/components/search-filter-header/search-filter-header.module';
+import { BrowseGlobalMarketModule } from './browse-global-market/browse-global-market.module';
+import { AddNewProductModule } from './add-new-product/add-new-product.module';
+import { AddProductFromVendorModule } from './add-product-from-vendor/add-product-from-vendor.module';
+import { MarketplaceFiltersModule } from '../../shared/modals/filters-modal/marketplace-filters/marketplace-filters.module';
 
 @NgModule({
   declarations: [
-    ProductsComponent,
+    ProductsComponent
   ],
   imports: [
     AppSharedModule,
@@ -28,7 +32,11 @@ import { SearchFilterHeaderModule } from '../../shared/components/search-filter-
     ProductModule,
     MarisListTabModule,
     MarketplaceTabModule,
+    MarketplaceFiltersModule,
     UploadCsvModalModule,
+    BrowseGlobalMarketModule,
+    AddNewProductModule,
+    AddProductFromVendorModule
   ],
   providers: []
 })

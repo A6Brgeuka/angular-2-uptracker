@@ -8,29 +8,38 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
 import { SelectModule } from 'ng-select';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { CurrencyMaskModule } from 'ng2-currency-mask'
-
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { DatepickerModule } from 'angular2-material-datepicker';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
-
-// import { CoreModule } from "../core/core.module";
+import { TextMaskModule } from 'angular2-text-mask';
+import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
+import { CapitalizeFirstPipe } from "./pipes/capitilizeFirst/capitilizeFirst";
+import {CurrencyUsdPipe} from "./pipes/currency-usd/currency-usd.pipe";
+import {TextFilterPipe} from "./pipes/text-filter/text-filter.pipe";
 import * as directives from "./index";
-import { TextMaskModule } from 'angular2-text-mask';
-import { AgmCoreModule } from "angular2-google-maps/core";
 import { GooglePlacesInputModule, HasClassModule } from "./directives";
+import { VendorSearchComponent } from "./components/vendor-search/vendor-search.component";
+// import { SelectDropDownModule } from './components/ngx-select-dropdown/ngx-select-dropdown.module';
 
 let directivesArr = [
   directives.IntlPhoneMaskDirective,
-  directives.UserDropdownMenuDirective,
+  directives.UserDropdownMenuDirective
 ];
-
 
 let pipesArr = [
   IterablePipe,
   InputValueSearch,
+  CapitalizeFirstPipe,
+  CurrencyUsdPipe,
+  TextFilterPipe
+];
+
+let componentsArr = [
+  VendorSearchComponent
 ];
 
 // resolvers
@@ -51,6 +60,11 @@ import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-per
 import { AddVendorModalComponent } from './modals/add-vendor-modal/add-vendor-modal.component';
 import { ChipsInputModule } from './components/chips-input/chips-input.module';
 import { ChipsModule } from './components/chips/chips.module';
+import {ScannerModule} from "../dashboard/scanner/scanner.module";
+import {PriceInputModule} from "./components/price-input/price-input.module";
+import {VariantDetailModule} from "./components/variant-detail/variant-detail.module";
+import {UploadEditFileModule} from "./components/upload-edit-file/upload-edit-file.module";
+import {UploadEditImageModalModule} from "./modals/upload-edit-image-modal/upload-edit-image-modal.module";
 
 const modalsArr = [
   EditUserModal,
@@ -58,7 +72,7 @@ const modalsArr = [
   ChangePasswordUserModal,
   EditCommentModal,
   UniConfirmModal,
-  AddVendorModalComponent,
+  AddVendorModalComponent
 ];
 
 const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -89,12 +103,21 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SelectModule,
     Daterangepicker,
     NgxDatatableModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    PriceInputModule,
+    ScannerModule,
+    VariantDetailModule,
+    // SelectDropDownModule,
+
+    DatepickerModule,
+    UploadEditFileModule,
+    UploadEditImageModalModule
   ],
   declarations: [
     ...directivesArr,
     ...pipesArr,
     ...modalsArr,
+    ...componentsArr
   ],
   exports: [
     BootstrapModalModule,
@@ -109,6 +132,7 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     Daterangepicker,
     NgxDatatableModule,
     CurrencyMaskModule,
+    // SelectDropDownModule,
 
     MaterializeModule,
     FileDropModule,
@@ -121,14 +145,23 @@ const PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HasClassModule,
     ChipsInputModule,
     ChipsModule,
+    PriceInputModule,
+    ScannerModule,
+    VariantDetailModule,
+
+    DatepickerModule,
+    UploadEditFileModule,
+    UploadEditImageModalModule,
 
     ...directivesArr,
     ...pipesArr,
-    ...modalsArr
+    ...modalsArr,
+    ...componentsArr
   ],
   providers: [
     ...MAIN_RESOLVER_PROVIDERS,
     ...ACCOUNT_RESOLVER_PROVIDERS,
+    CurrencyUsdPipe
   ],
   entryComponents: [
     ...modalsArr

@@ -9,27 +9,30 @@ import { LocationsModule } from './locations/locations.module';
 import { UsersModule } from './users/users.module';
 import { VendorsModule } from './vendors/vendors.module';
 import { ProductsModule } from './products/products.module';
-import { InventoryModule } from "./inventory/inventory.module";
-import { TranseferModule } from "./transfer/transfer.module";
+import { InventoryModule } from './inventory/inventory.module';
+import { TranseferModule } from './transfer/transfer.module';
+import { StockModule } from './stock/stock.module';
 import { ShoppingListModule } from "./shopping-list/shopping-list.module";
 
 // for lazy loading
-//import { routing } from './index';
+// import { routing } from './index';
 import { OrdersPreviewModule } from './shopping-list/orders-preview/orders-preview.module';
 import { PurchaseOrderModule } from './shopping-list/orders-preview/purchase-order/purchase-order.module';
 import { ReportsModule } from './reports/reports.module';
 import { AppliancesModule } from './appliances/appliances.module';
 import { AssetsModule } from './assets/assets.module';
 import { RestockFloorModule } from './restock-floor/restock-floor.module';
+import {InventorySearchModalModule} from "./inventory/inventory-search-modal/inventory-search-modal.module";
 
-import { DashboardFilterModalModule } from './dashboard-filter-modal/dashboard-filter-modal.module';
+import { SubInventoryModalModule } from './sub-inventory-modal/sub-inventory-modal.module';
+import { TransferModalModule } from './transfer-modal/transfer-modal.module';
 
 @NgModule({
   declarations: [
     DashboardComponent,
   ],
   imports: [
-    //routing,
+    // routing,
     AppliancesModule,
     AppSharedModule,
     AssetsModule,
@@ -43,10 +46,13 @@ import { DashboardFilterModalModule } from './dashboard-filter-modal/dashboard-f
     ProductsModule,
     InventoryModule,
     TranseferModule,
+    StockModule,
     ReportsModule,
     ShoppingListModule,
     RestockFloorModule,
-    DashboardFilterModalModule,
+    InventorySearchModalModule,
+    SubInventoryModalModule,
+    TransferModalModule,
   ],
   providers: []
 })

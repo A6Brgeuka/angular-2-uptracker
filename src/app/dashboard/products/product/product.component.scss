@@ -4,17 +4,29 @@ $normal: 14px;
 
 :host /deep/ {
 
+  .header-helper {
+    display: inline-block;
+    text-align: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #B2B4B6;
+    color: #4a4a4a;
+    line-height: 14px;
+    margin-left: 5px;
+    font-size: 10px;
+  }
+
   .product-page {
     position: relative;
-    //background: #fff;
     padding: 30px;
     .close {
       transition: opacity .3s;
       width: 40px;
       height: 40px;
       position: absolute;
-      left: 10px;
-      top: 10px;
+      left: 20px;
+      top: 25px;
       background-color: $tealish;
       cursor: pointer;
       font-size: 20px;
@@ -28,14 +40,28 @@ $normal: 14px;
       }
     }
 
+    label, .table-header, .inner .inner .variant-table .uptracker-form .price-select input {
+      color: #000;
+      font-weight: bold;
+      font-family: 'Roboto';
+    }
+
     .title {
       font: 28px/32px Ubuntu;
       margin-bottom: 5px;
+      margin-left: 40px;
     }
 
+    .ttl-box {
+      label, .variant-show-name {
+        font-size: 1rem;
+      }
+    }
     .row {
-      margin-left: -0.75rem;
-      margin-right: -0.75rem;
+      margin-bottom: 0;
+      .mrg-btm-20 {
+        margin-bottom: 20px;
+      }
     }
 
     .buttons {
@@ -43,7 +69,9 @@ $normal: 14px;
         background: $tealish;
       }
     }
-
+    .add-checked-btn {
+      margin-left: 20px;
+    }
     .uptracker-form.ng-valid {
       .input {
         input {
@@ -90,7 +118,7 @@ $normal: 14px;
   .edit-buttons {
     position: absolute;
     right: 36px;
-    top: 20px;
+    top: 30px;
   }
 
   .title {
@@ -200,7 +228,7 @@ $normal: 14px;
       width: 200px;
       height: 200px;
       border: 1px solid $light-grey;
-
+      margin: 30px 20px;
       .img {
         height: 100%;
         background-position: center center;
@@ -212,16 +240,16 @@ $normal: 14px;
       }
     }
     .product-params {
-      padding: 20px;
-      width: calc(100% - 200px);
+      padding: 40px 15px;
+      width: calc(100% - 260px);
     }
 
     .row.uptracker-form {
       margin-bottom: 0;
-
+      background: $light-grey;
     }
     .row.table-head-filter {
-      margin-bottom: 0;
+      margin: 20px 0;
     }
 
     .uptracker-form .input {
@@ -280,24 +308,15 @@ $normal: 14px;
       }
     }
     .info-box {
-
       min-height: 180px;
 
       input[type="text"] {
         border-color: $greeny;
         color: $dark;
-        height: 36px;
-      }
-      .name-field {
-        margin-bottom: -5px;
-        margin-top: 0;
+        height: 32px;
       }
 
       .ttl {
-        color: $grey;
-      }
-
-      label {
         color: $grey;
       }
 
@@ -322,12 +341,6 @@ $normal: 14px;
         }
       }
     }
-
-    // table vertical scroll
-    //.table-body {
-    //  height: 372px;
-    //  overflow-y: auto;
-    //}
 
     .row-item.selected {
       background-color: #f5f5f5;
@@ -443,8 +456,10 @@ $normal: 14px;
         }
 
         .variant-name {
-          color: $tealish;
-
+          min-height: 100px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
           span {
             cursor: pointer;
           }
@@ -461,7 +476,9 @@ $normal: 14px;
           }
         }
         .uptracker-form {
-
+          .uptracker-form-btn {
+            min-width: 70px;
+          }
           .input {
             margin-bottom: 0;
           }
@@ -522,22 +539,10 @@ $normal: 14px;
         }
 
         .table-item {
-          padding: 0;
           border-bottom: 1px solid $light-grey;
 
           &:last-child {
             border-bottom: none;
-          }
-
-          .variant-func {
-            transition: all 0s linear 0.2s;
-            visibility: hidden;
-          }
-
-          &:hover {
-            .variant-func {
-              visibility: visible;
-            }
           }
 
         }
@@ -565,6 +570,14 @@ $normal: 14px;
           width: auto;
           padding: 0 15px;
         }
+        .variant-image-container {
+          width: 100px;
+          height: 100px;
+          margin: 0 15px;
+          background-size: cover;
+          background-color: $mid-grey;
+        }
+
       }
       .flor .row-item {
         float: right;
@@ -727,8 +740,11 @@ $normal: 14px;
   i.fa-eye-slash {
     color: $red;
   }
-  .table-item .row-item {
-    padding-left: 15px !important;
+  .table-item {
+    padding: 15px 0;
+    .row-item {
+      padding-left: 15px !important;
+    }
   }
   .table-item .row-item:first-of-type {
     padding-left: 0px !important;
@@ -791,9 +807,6 @@ $normal: 14px;
   }
   .inner.product .row-item {
     cursor: pointer;
-  }
-  .edit-buttons {
-    margin-right: 20px;
   }
 }
 

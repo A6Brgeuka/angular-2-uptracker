@@ -1,0 +1,13 @@
+<input [(ngModel)]="packageLabel"
+       (click)="toggleSubMenu()"
+       (input)="packageChange(packageLabel)"
+       placeholder="Type"/>
+
+<ul *ngIf="isOpen" [ngClass]="{'fadeIn':isOpen}">
+  <li *ngFor="let item of autocompletePackage"
+      (click)="onSelect(item.unit_name)">
+    {{item.unit_name}}
+  </li>
+</ul>
+
+<fa name="angle-down"></fa>

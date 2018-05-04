@@ -25,6 +25,7 @@ export class AddInventoryModalContext extends BSModalContext {
   inventoryItems: any[] = [];
   inventoryGroup: any = null;
   selectedProduct: any = null;
+  modalMode: boolean;
 }
 
 @Component({
@@ -237,10 +238,11 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
       updateItems$
     ).publishReplay(1).refCount();
 
-    this.subscribers.itemsSubscription = this.items$.subscribe(res => {
+    this.subscribers.itemsSubscription = this.items$.filter(i => i).subscribe(res => {
       this.newInventory.products = res.map((el: any) => new InventoryProductModel(el));
       this.showSelect = false;
       if (res.length && !this.context.inventoryGroup) {
+        console.log(res)
         const findedCategory: any = _.find(res, 'category');
         const searchedCategory = (findedCategory) ? this.productCategoriesCollection.indexOf(findedCategory.category) : null;
         this.newInventory.name = res[0].name;
@@ -396,10 +398,12 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
     .subscribe(res => this.productCategoriesCollection = res);
 
     this.subscribers.autocompleteProductsSubscription = this.autocompleteProducts$
-    .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
-    .subscribe(res => {
-      this.autocompleteProducts = res['suggestions'];
-    });
+      .debounceTime(500)
+      .distinctUntilChanged()
+      .switchMap((keywords: string) => this.inventoryService.autocompleteSearch(keywords)).publishReplay(1).refCount()
+      .subscribe(res => {
+        this.autocompleteProducts = res['suggestions'];
+      });
 
     this.subscribers.departmentCollectionSubscription = this.accountService.getDepartments().take(1)
     .subscribe(departments => this.departmentCollection = departments);
@@ -561,7 +565,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
     this.addCustomProduct = !this.addCustomProduct;
     // let pkgType = this.newProductData.consumable_unit.properties.unit_type;
     let pkgType = this.newInventory.consumable_unit_type;
-    this.newProductData = new InventorySearchResults();
+    this.newProductData = new InventorySearchResults({ name: this.searchText });
 
     this.newProductData.custom_product = true;
     // this.newProductData.consumable_unit.properties.unit_type = this.newInventory.consumable_unit_type;
@@ -641,6 +645,7 @@ export class AddInventoryModal implements OnInit, OnDestroy, ModalComponent<AddI
         this.saveAdded$.next();
       }
     }
+    this.dialog.close(this.newInventory)
   }
 
   nextPackage(value) {

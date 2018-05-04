@@ -1,5 +1,5 @@
 <div class="inner add-to-order-modal">
-  <div>
+  <div *ngIf="!context.text">
     <p>
       There are three types of units when considering products… The outer package
       is how the whole product comes packaged, for example a case of gloves.
@@ -28,6 +28,10 @@
       If you get them by the tray the outer package is a tray, the inner is N/A and the consumable
       unit is Bracket(s) with a qty of how many come in a tray.
     </p>
+  </div>
+  <div *ngIf="context.text" class="helpText">
+    {{context.text}}
+    <a href="{{context.link}}" target="_blank">{{context.link}}</a>
   </div>
   <div class="center-align col s12 clearfix bottom-buttons">
     <button class="uptracker-form-btn" (click)="dismissModal()">Close</button>

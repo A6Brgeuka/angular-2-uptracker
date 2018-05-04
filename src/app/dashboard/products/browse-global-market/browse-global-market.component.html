@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col s12">
+    <div class="close fa fa-chevron-left" (click)="goBack()"></div>
+  </div>
+</div>
+<app-search-filter-header
+  [title]="'Add Product:'"
+  [searchKey]="searchKey"
+  (resetEvent)="resetSearch()"
+  (searchEvent)="searchProducts($event)">
+</app-search-filter-header>
+
+<div class="list">
+  <div class="title">
+    Global Market Place
+    <br>
+    Please select which product(s) you would like to add to your marketplace
+  </div>
+  <div class="item center-align" *ngFor="let product of productService.collection$ | async; let i=index">
+    <div class="inner" (click)="selectProduct(product); $event.stopPropagation()">
+      <div class="hazardous" *ngIf="product.hazardous">
+        <i class="material-icons">warning</i>
+      </div>
+      <div *ngIf="product.image" class="img" [ngStyle]="{ 'background-image': 'url(' + product.image + ')' }">
+        <div class="trackable" *ngIf="product.trackable">
+          <fa [name]="'barcode'"></fa>
+        </div>
+      </div>
+      <div *ngIf="!product.image" class="img">
+        <div class="trackable" *ngIf="product.trackable">
+          <fa [name]="'barcode'"></fa>
+        </div>
+      </div>
+      <div class="info">
+        <div class="ttl" title="{{product.name}}">{{product.name}}</div>
+        <div class="bottom">
+          <div class="variations left">{{product.variant_count}} Variation(s)</div>
+          <div class="price right">{{product.price_range}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isRequest" class="any-bottom-spinner" [class.table-view]="productService.isGrid">
+    <div class="cssload-loader">
+      <div class="cssload-inner cssload-one"></div>
+      <div class="cssload-inner cssload-two"></div>
+      <div class="cssload-inner cssload-three"></div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+</div>

@@ -25,9 +25,11 @@
         [name]="(sort$ | async)?.order === asc ? 'chevron-up' : 'chevron-down'"
       ></fa>
       <app-order-table-header-action
+        *ngIf="headerCol.actions && showHeaderMenu$ | async"
         [orders]="checkedOrders$ | async"
         [isShow]="headerCol.actions && showHeaderMenu$ | async"
         [listName]="_listName"
+        (onVoid)="onVoid($event)"
       ></app-order-table-header-action>
     </div>
 
@@ -45,7 +47,6 @@
         />
         <label for="selected{{i + item[uniqueField] + componentId}}"></label>
       </div>
-
       <div class="col"
         *ngFor="let headerCol of header;"
         (click)="headerCol?.filterBy && !(headerCol.showChevron && item.statusHistoryVisibility) ? onFilterBy(item[headerCol.alias], headerCol) : ''"
@@ -61,6 +62,9 @@
           [ngStyle]="{'-webkit-line-clamp': headerCol.wrap > 1 && headerCol.wrap}"
         >
           <span
+            (click)="(headerCol?.linkToReconcile) ? goToReconcile(item) : ''"
+            [class.pointer]="headerCol?.linkToReconcile"
+            [class.tealish-text]="headerCol?.linkToReconcile"
             *ngIf="headerCol.alias && item[headerCol.alias]"
             [title]="item[headerCol.alias]"
             [ngClass]="{'black-text cursor-default': headerCol.showChevron && item.statusHistoryVisibility, 'red-text':  (filterByObj$ | async)[headerCol.alias] === item[headerCol.alias]}">
@@ -81,13 +85,17 @@
           ></fa>
         </div>
 
-
         <app-order-table-item-action
+          *ngIf="headerCol.actions"
           [item]="item"
+          [items]="checkedOrders$"
           [isShow]="headerCol.actions"
           [listName]="_listName"
           [uniqueField]="uniqueField"
           [i]="i"
+          (onFavorite)="onFavorite($event)"
+          (onFlagged)="onFlagged($event)"
+          (onVoid)="onVoid($event)"
         ></app-order-table-item-action>
 
       </div>

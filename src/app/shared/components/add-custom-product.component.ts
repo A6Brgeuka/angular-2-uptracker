@@ -19,7 +19,7 @@ import { Modal } from 'angular2-modal';
 @DestroySubscribers()
 export class AddCustomProductComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
-  
+
   public autocompleteVendors$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   public autocompleteVendors: any = [];
   public autocompleteOuterPackage$: BehaviorSubject<any> = new BehaviorSubject<any>({});
@@ -30,7 +30,7 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
   public packDirty: boolean = false;
-  
+
   @Input('editCustomProduct') public editCustomProduct:  boolean;
   @Input('newProductData') public newProductData: InventorySearchResults;
   @Input('items') public items: Array<{}> = [];
@@ -40,15 +40,15 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   @Input('autocompleteConsPackage') public autocompleteConsPackage: any = [];
   @Output() cancelEvent = new EventEmitter();
   @Output() addEvent = new EventEmitter();
-  
+
   constructor(
     public inventoryService: InventoryService,
     public modal: Modal,
     public modalWindowService: ModalWindowService,
   ) {
-  
+
   }
-  
+
   ngOnInit() {
     this.autocompleteOuterPackage$.next('');
     this.autocompleteInnerPackage$.next('');
@@ -56,29 +56,37 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
 
     this.newProductData.consumable_unit.properties.unit_type = (!this.editCustomProduct && !this.editCustomProduct && this.packageType && this.packageType.consumable_unit) ? this.packageType.consumable_unit.properties.unit_type : this.newProductData.consumable_unit.properties.unit_type;
   }
-  
+
   addSubscribers() {
     this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
-    .subscribe((vendors: any) => this.autocompleteVendors = vendors);
-  
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
+      .subscribe((vendors: any) => this.autocompleteVendors = vendors);
+
     this.subscribers.autocompleteOuterPackSubscription = this.autocompleteOuterPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack: any) => this.autocompleteOuterPackage = _.sortBy(pack, ['unit_name']));
-  
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+      .subscribe((pack: any) => this.autocompleteOuterPackage = _.sortBy(pack, ['unit_name']));
+
     this.subscribers.autocompleteInnerPackSubscription = this.autocompleteInnerPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack: any) => this.autocompleteInnerPackage = _.sortBy(pack, ['plural_unit_name']));
-  
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+      .subscribe((pack: any) => this.autocompleteInnerPackage = _.sortBy(pack, ['plural_unit_name']));
+
     this.subscribers.autocompleteConsPackSubscription = this.autocompleteConsPackage$
-    .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
-    .subscribe((pack: any) => this.autocompleteConsPackage = pack);
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((key: string) => this.inventoryService.autocompleteSearchPackage(key)).publishReplay(1).refCount()
+      .subscribe((pack: any) => this.autocompleteConsPackage = pack);
   }
-  
+
   ngOnDestroy() {
-  
+
   }
-  
+
   selectedAutocompledVendor(vendor) {
     if (!(this.newProductData.vendors.length && !vendor.vendor_id && this.newProductData.vendors[0].vendor_name === vendor)) {
       this.newProductData.vendors = (vendor.vendor_id) ? [vendor] : [{vendor_name: vendor, vendor_id: null}];
@@ -95,7 +103,7 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   observableSourceVendor(keyword: any) {
     return Observable.of(this.autocompleteVendors).take(1);
   }
-  
+
   selectedAutocompledOuterPackage(outerPackage) {
     this.newProductData.package_type = outerPackage.unit_name;
   }
@@ -105,14 +113,14 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   observableSourceOuterPackage(keyword: any) {
     return Observable.of(this.autocompleteOuterPackage).take(1);
   }
-  
+
   updateOuterPackege(event) {
     this.outerPack = (this.newProductData.package_type === event.target.value) ? this.newProductData.package_type : null;
     if (!this.outerPack) {
       this.autocompleteOuterPackage$.next('');
     }
   }
-  
+
   selectedAutocompledInnerPackage(innerPackage) {
     this.newProductData.sub_package.properties.unit_type = innerPackage.plural_unit_name;
   }
@@ -139,19 +147,19 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
   observableSourceConsPackage(keyword: any) {
     return Observable.of(this.autocompleteConsPackage).take(1);
   }
-  
+
   addNewProduct() {
     this.addEvent.emit();
   }
-  
+
   toggleCustomCancel() {
     this.cancelEvent.emit();
   }
-  
+
   onUpcUpdated(upc) {
     this.newProductData.upc = upc;
   }
-  
+
   changePrice(val) {
     const regex = /[\d\.]*/g;
     let m: any = regex.exec(val);
@@ -167,28 +175,28 @@ export class AddCustomProductComponent implements OnInit, OnDestroy {
     }
     return val;
   }
-  
+
   onChangeListPrice(val) {
     let value = this.changePrice(val);
     this.newProductData.list_price = value;
     this.newProductData.formattedPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
-  
+
   onChangeForumPrice(val) {
     let value = this.changePrice(val);
     this.newProductData.negotiated_price = value;
     this.newProductData.formattedForumPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
-  
+
   onChangeClubPrice(val) {
     let value = this.changePrice(val);
     this.newProductData.club_price = value;
     this.newProductData.formattedClubPrice = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
   }
-  
+
   openHelperModal() {
     this.modal.open(HelpTextModal, this.modalWindowService
     .overlayConfigFactoryWithParams({"text": ''}, true, 'mid'))
   }
-  
+
 }

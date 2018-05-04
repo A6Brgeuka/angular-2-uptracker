@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { AppSharedModule } from '../../../shared/shared.module';
 import { VideoModal } from './video-modal.component';
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
     VideoModal
   ],
   imports: [
-    AppSharedModule
+    CommonModule
   ],
   providers: [],
   // IMPORTANT:

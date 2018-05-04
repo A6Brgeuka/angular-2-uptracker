@@ -8,7 +8,6 @@
     [class.disabled]="!profileForm.form.valid"
     [disabled]="!profileForm.form.valid"
   >
-
     <fa [name]="'check'"></fa>
     Save
   </button>
@@ -24,9 +23,6 @@
 
 <div class="title center-align">User Details</div>
 
-
-
-
   <div class="row">
         <ul class="tabs" materialize="tabs">
           <li class="tab col s4"><a href="#profile" #tabProfile>Profile</a></li>
@@ -34,8 +30,6 @@
           <li class="tab col s4"><a href="#template" #tabTemplate>Template</a></li>
         </ul>
   </div>
-
-
 
   <div id="profile">
     <div class="row user-image">
@@ -48,21 +42,17 @@
                  [options]="options"
                  (fileOver)="fileOver($event)"
                  (onFileDrop)="onFileDrop($event)">
-              <div class="file-field" [hidden]="uploadedImage">
+              <div class="file-field">
                 <div class="upload-link">
                   <input
                       type="file"
                       accept="image/*"
                       (change)="changeListener($event)" />
-                  <a>Upload a photo</a>
                 </div>
               </div>
-
-              <img class="img" *ngIf="uploadedImage" [src]="uploadedImage">
-              <img class="img" *ngIf="!uploadedImage"  src="/assets/img/onboard/icon-onboarding-users.svg" >
+              <div class="img" *ngIf="uploadedImage" [ngStyle]="{ 'background-image': 'url(' + uploadedImage + ')' }"></div>
+              <div class="img" *ngIf="!uploadedImage"  [ngStyle]="{ 'background-image': 'url(/assets/img/onboard/icon-onboarding-users.svg)', 'background-size': 'auto' }"></div>
               <div *ngIf="uploadedImage"  class="del-img-btn" (click)="uploadedImage = null"><i class="material-icons">delete</i></div>
-
-
           </div>
           </div>
         </div>
@@ -99,6 +89,7 @@
               Name is required.
             </div>
           </div>
+
           <div class="col s12 m6">
             <div class="label left-align">Default Location</div>
             <div class="select" [class.dirty]="locationDirty">
@@ -210,7 +201,6 @@
     </div>
   </div>
 
-
   <div id="permissions">
     <div class="input row">
       <div class="col s12 m8">
@@ -264,7 +254,6 @@
     </div>
   </div>
 
-
   <div id="template">
     <div class="ttl">P.O. Template</div>
     <div class="textarea">
@@ -279,7 +268,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="buttons center-align">
     <span class="nav-btn"><button type="button" class="btn-flat back-btn" *ngIf="tabPermissions.className == 'active' || tabTemplate.className=='active'" (click)="prevTab()">Prev</button></span>

@@ -9,6 +9,7 @@ import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
 import { InventorySearchResults } from '../../models/inventory.model';
 import { ToasterService } from './toaster.service';
+import {sortBy} from 'lodash';
 
 @Injectable()
 @Subscribers({
@@ -16,7 +17,7 @@ import { ToasterService } from './toaster.service';
   destroyFunc: null,
 })
 export class InventoryService extends ModelService {
-  
+
   public isGrid: boolean = false;
   selfData: any;
   selfData$: Observable<any>;
@@ -25,6 +26,7 @@ export class InventoryService extends ModelService {
   pagination_limit: number = 10;
   combinedInventory$: Observable<any>;
   public isDataLoaded$: any = new BehaviorSubject(false);
+  public filterParams$: any = new BehaviorSubject(null);
   totalCount$: any = new BehaviorSubject(1);
   location$: any = new BehaviorSubject(false);
   getInventoryData$: any = new Subject();
@@ -34,7 +36,9 @@ export class InventoryService extends ModelService {
   innerPackageList = [];
   consumablePackageList = [];
   public selectedStep3Tab:any = null;
-  
+  public inventoryData$: Observable<any>;
+  public autocompletePackage: any;
+
   constructor(
     public injector: Injector,
     public userService: UserService,
@@ -43,7 +47,7 @@ export class InventoryService extends ModelService {
     public toasterService: ToasterService
   ) {
     super(restangular);
-    
+
     this.combinedInventory$ = Observable
     .combineLatest(
       this.collection$,
@@ -53,14 +57,17 @@ export class InventoryService extends ModelService {
       return user.account;
     })
     .publishReplay(1).refCount();
-    
+
     this.onInit();
   }
-  
+
   onInit() {
-  
+
     this.getAllInventories();
-    
+
+    this.autocompleteSearchPackage('')
+      .subscribe((pack: any) => this.autocompletePackage = sortBy(pack, ['unit_name']));
+
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     );
@@ -68,31 +75,39 @@ export class InventoryService extends ModelService {
       this.selfData = res;
       console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
-    
+
     this.loadCollection$.next([]);
-    
+
   }
-  
+
   getAllInventories() {
-    this.getInventoryData$
-    .withLatestFrom(this.location$)
-    .map(([queryParams, location]) => {
+    this.inventoryData$ = Observable.combineLatest(
+      this.getInventoryData$,
+      this.location$,
+      this.filterParams$,
+    )
+    .debounceTime(50)
+    .publishReplay(1).refCount();
+
+    this.inventoryData$
+    .map(([queryParams, location, filtersParams]) => {
       if (location) {
         queryParams.query.location_id = location.id;
       }
+      queryParams.query = {...queryParams.query, ...filtersParams};
       return queryParams;
     })
     .switchMap((queryParams) => {
       return this.restangular.all('inventory').customGET('', queryParams.query)
       .map(res => {
         res.data.map((item: any) => Object.assign(item, {status: 1}));
-        
+
         if (queryParams.reset) {
           this.updateCollection$.next(res.data);
         } else {
           this.addCollectionToCollection$.next(res.data);
         }
-        
+
         this.totalCount$.next(res.count);
         this.isDataLoaded$.next(true);
         return res.data;
@@ -100,7 +115,7 @@ export class InventoryService extends ModelService {
     })
     .subscribe();
   }
-  
+
   getNextInventory(page?, search_string?, sortBy?) {
     if (page == 0) {
       this.current_page = 1;
@@ -118,18 +133,18 @@ export class InventoryService extends ModelService {
     }
     return this.getInventoryData(query, page ? false : true);
   }
-  
+
   public getInventoryData(query: any = {}, reset: boolean = true) {
     this.getInventoryData$.next({query, reset});
     return this.getInventoryData$.delay(1000);
   }
-  
+
   addSubscribers() {
     this.entity$.subscribe((res) => {
       this.updateSelfData(res);
     });
   }
-  
+
   updateSelfData(data) {
     this.updateSelfData$.next(data);
   }
@@ -141,11 +156,11 @@ export class InventoryService extends ModelService {
       return updatedInventory.data;
     });
   }
-  
+
   updateInventoryCollection(data: any) {
     this.updateElementCollection$.next(data);
   }
-  
+
   setFavorite(inventory) {
     let postData = {
       inventory_id: inventory.id || inventory.inventory_id,
@@ -153,12 +168,12 @@ export class InventoryService extends ModelService {
     }
     return this.restangular.one('inventory', 'favorite').customPOST(postData).map((res: any) => res.data);
   }
-  
+
   getInventoryItem(id: string) {
     //GET /api/v1/invntory/{inventory_id}
     return this.restangular.one('inventory', id || 1).customGET().map((res: any) => res.data);
   }
-  
+
   addItemsToInventory(newInventory) {
     return this.restangular.all('inventory').customPOST(newInventory)
     .map((newInventory: any) =>
@@ -169,7 +184,7 @@ export class InventoryService extends ModelService {
       }
     );
   }
-  
+
   search(keyword: string) {
     //GET /api/v1/inventory/search?q={keyword,upc,catalog number}
     return this.restangular.one('inventory', 'search').customGET('', {'q': keyword}).map((res: any) => res.data);
@@ -177,27 +192,27 @@ export class InventoryService extends ModelService {
   autocompleteSearch(keywords: string) {
     return this.restangular.one('inventory', 'suggest').customGET('', {'q': keywords}).map((res: any) => res.data);
   }
-  
+
   autocompleteSearchVendor(keywords: string) {
     return this.restangular.one('vendors', 'suggest').customGET('', {'q': keywords}).map((res: any) => res.data.suggestions);
   }
   autocompleteSearchPackage(keywords: string) {
     return this.restangular.one('inventory', 'suggest').all('unit').customGET('', {'q': keywords}).map((res: any) => res.data.suggestions);
   }
-  
+
   addInventoryItemComment(comment) {
     return this.restangular.all('comments').post(comment).map(res => res.data);
   }
-  
+
   deleteInventoryItemComment(id) {
     return this.restangular.one('comments', id).remove()
   }
-  
+
   editInventoryItemComment(comment) {
     let commentRestangularized = this.restangular.restangularizeElement(null, comment, "comments");
     return commentRestangularized.put()
   }
-  
+
   checkIfNotExist(items:InventorySearchResults[]){
     let payload = {
       products: items.map(item => {
@@ -209,7 +224,7 @@ export class InventoryService extends ModelService {
     }
     return this.restangular.one('inventory', 'check').customPOST(payload).map((res: any) => res.data);
   }
-  
+
   getPackagesLists() {
    return this.restangular.one('config', 'product_units').customGET('')
       .map(res => {
@@ -218,7 +233,7 @@ export class InventoryService extends ModelService {
        this.consumablePackageList = res.data.consumable_unit;
       })
   }
-  
+
   deleteInventory(inventory) {
     return this.restangular.one('inventory', inventory.id).remove();
   }

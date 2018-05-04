@@ -14,7 +14,7 @@ import {PhoneMaskService} from '../../../core/services/phone-mask.service';
 import * as _ from 'lodash';
 
 export class AddVendorModalContext extends BSModalContext {
-
+  modalMode: boolean;
 }
 
 @Component({
@@ -35,7 +35,7 @@ export class AddVendorModalComponent implements OnInit {
   public step: number = 1;
   public uploadName: string = '';
   public formData: FormData = new FormData();
-  public logo: File;
+  public logo: any;
   public logoPreview: string = '';
 
   public phoneMask: any = this.phoneMaskService.defaultTextMask;
@@ -53,6 +53,7 @@ export class AddVendorModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.vendor.vendor_name = this.vendorService.vendorSearch;
   }
 
   dismissModal() {
@@ -68,6 +69,8 @@ export class AddVendorModalComponent implements OnInit {
 
   addSubscribers() {
     this.subscribers.autocompleteVendorsSubscription = this.autocompleteVendors$
+      .debounceTime(300)
+      .distinctUntilChanged()
       .switchMap((key: string) => this.inventoryService.autocompleteSearchVendor(key)).publishReplay(1).refCount()
       .subscribe((vendors: any) => this.autocompleteVendors = vendors);
   }
@@ -131,11 +134,16 @@ export class AddVendorModalComponent implements OnInit {
 
     this.vendorService.addAccountVendor(this.formData).subscribe(
       (res: any) => {
-        this.router.navigate(['/vendors/edit/' + res.id]);
-        return this.dismissModal();
+        this.dialog.context.modalMode ?
+          this.dialog.close(res) :
+          this.router.navigate(['/vendors/edit/' + res.id]) && this.dismissModal();
       }
     );
 
+  }
+
+  deleteLogo() {
+    this.logo = this.logoPreview = '';
   }
 
   uploadLogo(file: any) {

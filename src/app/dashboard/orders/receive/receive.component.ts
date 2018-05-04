@@ -106,7 +106,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     )
     .subscribe(() => {
       this.toasterService.pop('', 'Successfully received');
-      this.router.navigate(['/orders']);
+      this.router.navigate(['orders', 'items']);
     });
 
     this.subscribers.openConfirmModalSubscription = this.openConfirmModal$
@@ -127,7 +127,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
           break;
         }
         case 'exit': {
-          this.router.navigate(['/orders']);
+          this.router.navigate(['orders', 'items']);
           break;
         }
       }

@@ -6,10 +6,10 @@ import { ResponseContentType } from "@angular/http";
 import { APP_DI_CONFIG } from '../../../../../../env';
 import { ToasterService } from "../../../../core/services/toaster.service";
 import { SpinnerService } from "../../../../core/services";
-import {OrderService, OrderItems} from "../../../../core/services/order.service";
-import {UserService} from "../../../../core/services/user.service";
-import {EditEmailDataModal} from "../purchase-order/edit-email-data-modal/edit-email-data-modal.component";
-import {ModalWindowService} from "../../../../core/services/modal-window.service";
+import { OrderService, OrderItems } from "../../../../core/services/order.service";
+import { UserService } from "../../../../core/services/user.service";
+import { EditEmailDataModal } from "../purchase-order/edit-email-data-modal/edit-email-data-modal.component";
+import { ModalWindowService } from "../../../../core/services/modal-window.service";
 
 export class WarningOrderModalContext extends BSModalContext {
   public order: OrderItems;
@@ -38,7 +38,6 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
     public orderService: OrderService,
     public modalWindowService: ModalWindowService,
     public modal: Modal
-
   ) {
     this.context = dialog.context;
   }
@@ -96,6 +95,7 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
 
       this.spinner.hide();
       this.dialog.close();
+      this.modalWindowService.confirmModal$.next(true);
     });
   }
 

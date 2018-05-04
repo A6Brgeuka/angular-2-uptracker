@@ -11,6 +11,8 @@ import { AccountService } from './account.service';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import {ProductModel} from "../../models/product.model";
+import {CustomProductVariantModel} from "../../models/custom-product.model";
 
 @Injectable()
 @Subscribers({
@@ -18,7 +20,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
   destroyFunc: null,
 })
 export class ProductService extends ModelService {
-  
+
   public isGrid: boolean = false;
   public selfData: any;
   public selfData$: Observable<any>;
@@ -31,21 +33,24 @@ export class ProductService extends ModelService {
   public location$: any = new BehaviorSubject(false);
   public getProductsData$: any = new BehaviorSubject({});
   public getMarketplaceData$: ReplaySubject<any> = new ReplaySubject(1);
-  //public getMarketplaceData$: Subject<any> = new Subject<any>();
   public location: string;
   public total: number = 1;
   public dashboardLocation: any;
-  
+
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public sortBy$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public filterBy$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public searchKey: string;
-  
+
   public marketplace: string;
-  
+
   marketplaceData$: Observable<any>;
-  
+
   public requestParams: any;
-  
+
+  public selectedProduct: ProductModel;
+  public searchText: string;
+
   constructor(
     public injector: Injector,
     public userService: UserService,
@@ -53,7 +58,7 @@ export class ProductService extends ModelService {
     public restangular: Restangular
   ) {
     super(restangular);
-    
+
     this.combinedProducts$ = Observable
     .combineLatest(
       this.collection$,
@@ -63,34 +68,34 @@ export class ProductService extends ModelService {
       return user.account;
     })
     .publishReplay(1).refCount();
-    
+
     this.onInit();
   }
-  
+
   onInit() {
-    
+
     this.marketplaceData$ = Observable.combineLatest(
       this.getMarketplaceData$,
       this.accountService.dashboardLocation$,
       this.searchKey$,
       this.sortBy$,
+      this.filterBy$,
     )
     .debounceTime(50)
     .publishReplay(1).refCount();
-    
+
     this.marketplaceData$
     .filter((marketplace) => marketplace && marketplace !== 'home')
-    .switchMap(([marketplace, location, searchkey, sortBy]) => {
-      
+    .switchMap(([marketplace, location, searchkey, sortBy, filterBy]) => {
       this.loadCollection$.next([]);
       this.current_page = 1;
       this.marketplace = marketplace;
-      
+
       this.requestParams = {
         page: this.current_page,
         limit: this.pagination_limit,
       };
-      
+
       if (sortBy && sortBy === 'Z-A') {
         this.requestParams.sort = 'desc';
       }
@@ -100,11 +105,11 @@ export class ProductService extends ModelService {
       if (searchkey) {
         this.requestParams.query = searchkey;
       }
-      
+      this.requestParams = {...this.requestParams, ...filterBy};
       return this.getMarketPlace(marketplace, this.requestParams);
     })
     .subscribe();
-    
+
     this.selfData$ = Observable.merge(
       this.updateSelfData$
     );
@@ -112,30 +117,30 @@ export class ProductService extends ModelService {
       this.selfData = res;
       console.log(`${this.constructor.name} Update SELF DATA`, res);
     });
-    
+
   }
-  
+
   getNextProducts(page?) {
     let reset: boolean = page ? false : true;
     this.requestParams.page = this.current_page;
     return this.getMarketPlace(this.marketplace, this.requestParams, reset);
   }
-  
+
   addSubscribers() {
     this.entity$.subscribe((res) => {
       this.updateSelfData(res);
     });
   }
-  
+
   updateSelfData(data) {
     this.updateSelfData$.next(data);
   }
-  
+
   //only for resolver. it works anyway through constructor
   getProducts() {
     return Observable.of([]);
   }
-  
+
   getMarketPlace(marketplace: string, queryParams: {[key:string]: any}, reset: boolean = true) {
     return this.restangular.one('marketplace', marketplace).customGET('', queryParams)
     .map(res => {
@@ -149,53 +154,53 @@ export class ProductService extends ModelService {
       return res.data.results;
     });
   }
-  
+
   updateSearchKey(value: string) {
     this.searchKey$.next(value);
   }
   updateSortBy(value: string) {
     this.sortBy$.next(value);
   };
-  
+
   updateMarketplaceData(tabName: string) {
     this.getMarketplaceData$.next(tabName);
   }
-  
+
   getProduct(id) {
     return this.restangular.one('products', id).get();
   }
-  
+
   getBulkEditAdditionalInfo(ids: string[]) {
     return this.restangular.all('products').all('bulk')
     .customPOST(JSON.stringify({"product_ids": ids}), undefined, undefined, {'Content-Type': "application/json"});
   }
-  
+
   getProductLocation(id, location_id) {
     return this.restangular.one('products', id).get({location_id: location_id});
   }
-  
+
   addProductComment(comment) {
     return this.restangular.all('comments').post(comment)
   }
-  
+
   deleteProductComment(id) {
     return this.restangular.one('comments', id).remove()
   }
-  
+
   editProductComment(comment) {
     let commentRestangularized = this.restangular.restangularizeElement(null, comment, "comments");
     return commentRestangularized.put()
   }
-  
+
   updateProduct(data: any) {
     console.log(data);
     return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').post(data);
   }
-  
+
   bulkUpdateProducts(data: any) {
     return this.restangular.one('accounts', this.userService.selfData.account_id).all('products').all('bulk').post(data);
   }
-  
+
   deepDiff(obj1: any, obj2: any): any {
     if (_.isFunction(obj1) || _.isFunction(obj2)) {
       throw 'Invalid argument. Function given, object expected.';
@@ -237,11 +242,11 @@ export class ProductService extends ModelService {
     }
     return diff;
   };
-  
+
   isValue(obj) {
     return !_.isObject(obj) && !_.isArray(obj);
   }
-  
+
   emptyValues(obj: any): any {
     if (obj === false || this.isValue(obj)) {
       return true;
@@ -257,9 +262,42 @@ export class ProductService extends ModelService {
     }
     return false;
   }
-  
+
+  recursive(...someArgs: any[]): CustomProductVariantModel[] {
+    let r = [], arg = arguments, max = arg.length-1;
+    function helper(arr, i) {
+      for (let j=0, l=arg[i].length; j<l; j++) {
+        let a = arr.slice(0);
+        a.push(arg[i][j]);
+        if (i==max) {
+          const variant = {
+            ...new CustomProductVariantModel(),
+            name: _.join(a, ' '),
+            original_name: _.join(a, ' ')
+          };
+          r.push(variant);
+        }
+        else
+          helper(a, i+1);
+      }
+    }
+    helper([], 0);
+    return r;
+  }
+
   addCustomProduct(data) {
     return this.restangular.all('products').all('custom').post(data).map(res => res.data);
   }
-  
+
+  addCustomProductImage(data) {
+    return this.restangular.all('products').all('custom').all('image').post(data).map(res => res.image);
+  }
+
+  addCustomProductDocument(data) {
+    return this.restangular.all('products').all('custom').all('documents').post(data);
+  }
+
+  autocompleteSearchProduct(keywords: string) {
+    return this.restangular.one('products', 'search').customGET('', keywords).map((res: any) => res.data);
+  }
 }

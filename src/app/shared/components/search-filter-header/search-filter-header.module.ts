@@ -7,6 +7,8 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome';
 import { SearchFilterHeaderComponent } from './search-filter-header.component';
 import { ChipsInputModule } from '../chips-input/chips-input.module';
 import { ChipsModule } from '../chips/chips.module';
+import { MaterializeModule } from 'angular2-materialize';
+import { AppSharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [
@@ -14,12 +16,7 @@ import { ChipsModule } from '../chips/chips.module';
   ],
   exports: [SearchFilterHeaderComponent],
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    Angular2FontawesomeModule,
-    ChipsInputModule,
-    ChipsModule,
+    AppSharedModule
   ],
   providers: [],
 })

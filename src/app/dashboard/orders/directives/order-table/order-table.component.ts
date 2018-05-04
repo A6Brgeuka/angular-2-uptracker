@@ -3,21 +3,17 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import { Router } from '@angular/router';
-import { Modal } from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
-import { ToasterService } from '../../../../core/services/toaster.service';
-import { ModalWindowService } from '../../../../core/services/modal-window.service';
-import { PastOrderService } from '../../../../core/services/pastOrder.service';
 import { OrderTableSortService } from './order-table-sort.service';
 import { OrderTableService } from './order-table.service';
 import { OrderTableOnVoidService } from './order-table-on-void.service';
 import { OrderStatus } from '../../models/order-status';
 import { OrderTableFilterByService } from './order-table-filter-by.service';
-
+import { OrdersService } from '../../orders.service';
+import { PastOrderService } from '../../../../core/services/pastOrder.service';
 
 @Component( {
   selector: 'app-order-table',
@@ -51,6 +47,9 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   };
   @Output() sortByHeaderUpdated = new EventEmitter();
   @Output() filterBy = new EventEmitter();
+  @Output() onFavoriteItem = new EventEmitter();
+  @Output() onFlaggedItem = new EventEmitter();
+  @Output() onVoidItem = new EventEmitter();
   @Input()
   set orders(value){
     this.orderTableService.setOrders$.next(value);
@@ -65,16 +64,12 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   private showHeaderMenu$: Observable<any>;
 
   constructor(
-    public modal: Modal,
-    public router: Router,
-    public pastOrderService: PastOrderService,
-    public modalWindowService: ModalWindowService,
-    public toasterService: ToasterService,
     public orderTableSortService: OrderTableSortService,
     public orderTableService: OrderTableService,
-    private orderTableFilterByService: OrderTableFilterByService
+    public ordersService: OrdersService,
+    private orderTableFilterByService: OrderTableFilterByService,
+    private pastOrderService: PastOrderService,
   ) {
-
   }
 
   ngOnInit() {
@@ -86,11 +81,11 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
       this.sort$.startWith(null),
       this.orderTableService.toggleSelect$.startWith(null),
     )
-    .map(([orders, sort]: [any, any]) => {
+    .map(([orders, sort, toggleSelect]: [any, any, any]) => {
       if (!sort) {
         return orders;
       }
-        return _.orderBy(orders, [sort.alias], [sort.order]);
+      return _.orderBy(orders, [sort.alias], [sort.order]);
     });
 
     this.checkedOrders$ = this.filteredOrders$
@@ -148,4 +143,19 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     item.statusHistoryVisibility = !item.statusHistoryVisibility;
   }
 
+  onFavorite(event) {
+    this.onFavoriteItem.emit(event);
+  }
+
+  onFlagged(event) {
+    this.onFlaggedItem.emit(event);
+  }
+
+  onVoid(event) {
+    this.onVoidItem.emit(event);
+  }
+
+  goToReconcile(item) {
+    this.pastOrderService.goToReconcile(item.invoice_id);
+  }
 }

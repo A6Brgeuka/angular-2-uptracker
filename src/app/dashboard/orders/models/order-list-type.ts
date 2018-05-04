@@ -1,4 +1,5 @@
 export const OrderListType = {
+  approval: 'approval',
   all: 'all',
   open: 'open',
   received: 'received',
@@ -7,4 +8,6 @@ export const OrderListType = {
   closed: 'closed',
   flagged: 'flagged',
   favorited: 'favorited',
+  payment: 'payment',
+  paid: 'paid',
 };

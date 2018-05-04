@@ -1,232 +1,540 @@
-<form class="uptracker-form" (ngSubmit)="saveReconcile()" materialize #reconcileProductForm="ngForm" autocomplete="off" novalidate>
+<div class="uptracker-form">
   <div class="top">
     <div class="row filter clearfix">
+      <div class="col l1">
+        <button
+          type="submit"
+          class="uptracker-form-btn no-min-width white-text waves-effect waves-light back"
+          (click)="goBack()"
+        >
+          <span class="fa fa-chevron-left"></span>
+        </button>
+      </div>
       <div class="col l3 m6 title">
         <span class="main-title">Reconcile Invoice</span>
       </div>
-      <div class="col l3 m6">
-        <div class="select">
-          <select
-            class="wide"
-            materialize="material_select"
-            [materializeSelectOptions]=""
-            name="vendor"
-          >
-            <option value="">Patterson</option>
-          </select>
+      <div class="col l4 m6 padded">
+        <ng-select
+          [options]="invoices"
+          placeholder="{{selectedInvoice.invoice.invoice_number}}"
+          (selected)="handleInvoiceChanges($event)"
+        ></ng-select>
+      </div>
+    </div>
+
+    <div class="invoice">
+      <div class="row bottom-border">
+        <div class="col l6 left">
+          <div class="row input-header"><span>Invoice Date</span></div>
+          <div class="row date-picker">
+            <material-datepicker
+              #datepicker
+              accentColor="#33c6d9"
+              dateFormat="MM-DD-YYYY"
+              [(date)]="selectedInvoice.invoice.invoice_date"
+            >
+            </material-datepicker>
+            <div class="calendar" (click)="toggleDatepicker($event)">
+              <img src="/assets/img/icon-calendar.png" alt="" />
+            </div>
+          </div>
+          <div class="row input-header"><span>Currency</span></div>
+          <div class="row">
+            <div class="currency">
+              <span class="amount">1.00</span>
+              <ng-select [options]="currencies" (selected)="handleCurrencyChange($event)">
+                <ng-template
+                  #optionTemplate
+                  let-option="option"
+                >
+                  <div class="flag-row">
+                    <div class="currency-flag currency-flag-{{option.value}}"></div>
+                    <span class="name">{{option.label}}</span>
+                  </div>
+                </ng-template>
+              </ng-select>
+              <div class="currency-value">
+                <div class="currency-flag currency-flag-{{selectedInvoice.invoice.currency.toLowerCase()}}"></div>
+                <span>{{selectedInvoice.invoice.currency.toUpperCase()}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <a class="exchange" href="https://www.xe.com/currencytables" target="_blank">Exchange Rate</a> 
+          </div>
+        </div>
+        <div class="col l6 right">
+          <div class="row">
+            <div class="item">
+              <span>Calculated Sub-Total</span>
+              <div class="input-calculated">
+                {{selectedInvoice.invoice.calculated_sub_total | currency:symbol:true}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Invoiced Sub-Total</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    name="subTotal"
+                    placeholder="$0.00"
+                    defaultValue="0"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                    [(ngModel)]="selectedInvoice.invoice.sub_total"
+                    (ngModelChange)="updateInvoiceDetails($event)"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Invoice Credit</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    name="invoiceCredit"
+                    placeholder="$0.00"
+                    defaultValue="0"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                    [(ngModel)]="selectedInvoice.invoice.invoice_credit"
+                    (ngModelChange)="updateInvoiceDetails($event)"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Shipping</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    name="shipping"
+                    placeholder="$0.00"
+                    defaultValue="0"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                    [(ngModel)]="selectedInvoice.invoice.shipping"
+                    (ngModelChange)="updateInvoiceDetails($event)"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Handling</span>
+              <div>
+                <div class="input">
+                  <input
+                    type="text"
+                    name="handling"
+                    placeholder="$0.00"
+                    defaultValue="0"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                    [(ngModel)]="selectedInvoice.invoice.handling"
+                    (ngModelChange)="updateInvoiceDetails($event)"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Tax</span>
+              <div class="input-taxes">
+                <input
+                  type="text"
+                  name="taxes"
+                  currencyMask
+                  placeholder="$0.00"
+                  [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                  [(ngModel)]="selectedInvoice.invoice.tax"
+                  (ngModelChange)="updateInvoiceDetails($event)"
+                >
+                <div class="plus" (click)="toggleTaxBoard()">
+                  <fa name="plus"></fa>
+                </div>
+                <div class="tax-board" *ngIf="taxBoardVisible">
+                  <div class="row">
+                    <div class="col s5"><span>Sales Tax</span></div>
+                    <div class="col s7 input">
+                      <input
+                        type="text"
+                        name="salestax"
+                        currencyMask
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
+                        [(ngModel)]="selectedInvoice.invoice.sales_tax"
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s5"><span>VAT</span></div>
+                    <div class="col s7 input">
+                      <input
+                        type="text"
+                        name="vat"
+                        currencyMask
+                        [options]="{ prefix: '', suffix: '%', thousands: ',', decimal: '.', align: 'left' }"
+                        [(ngModel)]="selectedInvoice.invoice.vat"
+                      >
+                    </div>
+                  </div>
+                  <div class="row button">
+                    <button class="btn white-text" (click)="taxBoardOKClick()">
+                      <span>OK</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>P.O. Discount</span>
+              <div class="input-discount">
+                <input
+                  type="text"
+                  name="discount"
+                  currencyMask
+                  [options]="{ prefix: '', thousands: ',', decimal: '.', align: 'left' }"
+                  [(ngModel)]="selectedInvoice.invoice.discount_"
+                  (ngModelChange)="updateInvoiceDetails($event)"
+                >
+                <div class="select">
+                  <select
+                    class="wide"
+                    materialize="material_select"
+                    name="currency"
+                    [(ngModel)]="selectedInvoice.invoice.discount_type"
+                    (ngModelChange)="updateInvoiceDetails($event)"
+                  >
+                    <option value="PERCENT">%</option>
+                    <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                    <option class="disabled" value="REWARDS" disabled>Rewards<br />(Coming soon)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col l1 m2">
-        <div class="input">
-          <input
-            type="text"
-            placeholder="Invoice #"
+      <div class="row">
+        <div class="col l6 left">
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcileSave()"
           >
+            SAVE FOR LATER
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcilePay()"
+          >
+            RECONCILE & PAY
+          </button>
+          <button
+            type="submit"
+            class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+            (click)="reconcileCancel()"
+          >
+            CANCEL
+          </button>
+        </div>
+        <div class="col l6 right">
+          <div class="row">
+            <div class="item">
+              <span>Total</span>
+              <div class="input-calculated">
+                <span class="bold">{{selectedInvoice.invoice.total | currency:symbol:true}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span>Calculated Total</span>
+              <div class="input-calculated">
+                {{selectedInvoice.invoice.calculated_total | currency:symbol:true}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item">
+              <span class="diff-red">Diff</span>
+              <div class="input-calculated">
+                <span class="diff-red">{{selectedInvoice.invoice.diff | currency:symbol:true}}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col l1 m2">
-        <div class="input">
-          <input
-            type="text"
-            placeholder="Invoice Date"
-          >
-        </div>
+    </div>
+
+    <div class="control">
+      <div class="input wide-input">
+        <input type="text" name="filterInput" placeholder="Product Search" [(ngModel)]="filter">
       </div>
-      <div class="col l1 m2">
-        <div class="select">
-          <select
-            class="wide"
-            materialize="material_select"
-            [materializeSelectOptions]=""
-            name="currency"
-          >
-            <option value="">USD</option>
-          </select>
-        </div>
-      </div>
-      <div class="col l1 m2">
-        <div class="input">
-          <input
-            type="text"
-            placeholder="1.0"
-          >
-        </div>
-      </div>
-      <div class="col l2 m4 right-align">
-        <button
-          type="submit"
-          class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
-        >
-          <fa name="check"></fa>
-          Save
-        </button>
+      <div class="select">
+        <select title="sort by" name="sort" [(ngModel)]="sort" materialize="material_select"  (ngModelChange)="sortAlphabet($event)">
+          <option value="A-Z">A-Z</option>
+          <option value="Z-A">Z-A</option>
+        </select>
       </div>
     </div>
 
     <div class="list is-grid-view">
       <div class="heading row">
-        <div class="col s4 left-align">
-          <div class="input-checkbox left checkbox">
+        <div class="col s3 left-align">
+          <div class="input-checkbox checkbox left product">
             <input
               type="checkbox"
               class="checkbox-input"
-              id="selectAll"
-              name="selectAll"
+              id="selectProductHeader"
+              name="selectProductHeader"
+              [(ngModel)]="productHeader"
+              (click)="productHeaderSelect($event)"
             />
-            <label for="selectAll"></label>
-          </div>
-          <div class="left">
-            Product
+            <label for="selectProductHeader"></label>
+            <span>Product</span>
           </div>
         </div>
-        <div class="col s7">
+        <div class="col s8">
           <div class="row mrg-btm-0">
-            <div class="col s2">Quantity</div>
-            <div class="col s3">Pkg Price</div>
-            <div class="col s3">Discount</div>
+            <div class="col s2">Pkg</div>
+            <div class="col s2">QTY</div>
+            <div class="col s2">Pkg Price</div>
+            <div class="col s2">Discount</div>
             <div class="col s2">Disc Price</div>
             <div class="col s2">Total Price</div>
           </div>
         </div>
         <div class="col s1">
-          <div class="right edititem">
-            <fa name="pencil"></fa>
-          </div>
         </div>
       </div>
     </div>
 
-    <div class="item row">
-      <div class="table-item flex-center">
-        <div class="col s4 left-align flex-center">
-          <div class="input-checkbox left checkbox">
-            <input
-              type="checkbox"
-              class="checkbox-input"
-              id="selectProduct"
-              name="selectProduct"
-            />
-            <label for="selectProduct"></label>
+    <ng-container *ngFor="let product of selectedInvoice.items; let i = index">
+      <div class="item row"  *ngIf="filtered(product)">
+        <div class="table-item flex-center">
+          <div class="col s3 left-align flex-center">
+            <div class="input-checkbox left checkbox">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                id="selectProduct"
+                name="selectProduct"
+                [(ngModel)]="product.checked"
+                (click)="productSelect(product)"
+              />
+              <label for="selectProduct"></label>
+            </div>
+            <div class="product-pic" *ngIf="product.image">
+              <img src="{{product.image}}" alt="PRODUCT" />
+            </div>
+            <div class="left">
+              <a>{{product.item_name}}</a>
+            </div>
           </div>
-          <div class="left">
-            <a>Some Product Name Which We Know Is Longgggg</a>
-          </div>
-        </div>
 
-        <div class="col s7">
-          <div class="row mrg-btm-0 flex-center">
-            <div class="col s2">
-              <div class="text-right">20</div>
+          <div class="col s8">
+            <div class="row mrg-btm-0 flex-center">
+              <div class="col s2">
+                <div class="text-left">{{product.package}}</div>
+              </div>
+              <div class="col s2">
+                <div class="text-left mini-input input-header">{{product.order_qty}}</div>
+              </div>
+              <div class="col s2">
+                <div class="text-left input-header">{{product.package_price | currency:symbol:true}}</div>
+              </div>
+              <div class="col s2">
+                <div class="text-left input-header">{{product.discount | currency:symbol:true}}</div>
+              </div>
+              <div class="col s2">
+                <div>{{product.discounted_price | currency:symbol:true}}</div>
+              </div>
+              <div class="col s2">
+                <div>{{product.total | currency:symbol:true}}</div>
+              </div>
             </div>
-            <div class="col s3">
-              <div class="text-right">$10.00</div>
-            </div>
-            <div class="col s3">
-              <div class="text-right">$0.00</div>
-            </div>
-            <div class="col s2">
-              <div><i>$10.00</i></div>
-            </div>
-            <div class="col s2">
-              <div>$200.00</div>
+            <div class="row mrg-btm-0">
+              <div class="col s2">
+                <div class="lined">{{product.package}}</div>
+              </div>
+              <div class="col s2">
+                <div class="input mini-input">
+                  <input
+                    type="number"
+                    class="text-left"
+                    name="reconciled_qty"
+                    [(ngModel)]="product.reconciled_qty"
+                    (ngModelChange)="productChange(product)"
+                  >
+                </div>
+              </div>
+              <div class="col s2">
+                <div class="input">
+                  <input
+                    class="text-left"
+                    name="reconciled_package_price"
+                    type="text"
+                    currencyMask
+                    [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                    [(ngModel)]="product.reconciled_package_price"
+                    (blur)="packageChange(product)"
+                    (ngModelChange)="productChange(product)"
+                  >
+                </div>
+              </div>
+              <div class="col s2">
+                <div class="discount">
+                  <div class="input">
+                    <input
+                      class="text-left"
+                      name="reconciled_discount"
+                      type="number"
+                      [(ngModel)]="product.reconciled_discount"
+                      (ngModelChange)="productChange(product)"
+                    >
+                  </div>
+                  <div class="select">
+                    <select
+                      class="wide"
+                      materialize="material_select"
+                      name="reconciled_discount_type"
+                      [(ngModel)]="product.reconciled_discount_type"
+                      (ngModelChange)="productChange(product)"
+                    >
+                      <option value="PERCENT">%</option>
+                      <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                      <option class="disabled" value="REWARDS" disabled>Rewards<br />(Coming soon)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col s2">
+                <div class="lined">{{product.reconciled_discount ? (product.reconciled_discounted_price | currency:symbol:true) : '--'}}</div>
+              </div>
+              <div class="col s2">
+                <div class="lined">{{product.reconciled_total | currency:symbol:true}}</div>
+              </div>
             </div>
           </div>
-          <div class="row mrg-btm-0 flex-center">
-            <div class="col s2">
-              <div class="input">
-                <input class="text-right" type="text" value="20">
-              </div>
-            </div>
-            <div class="col s3">
-              <div class="input">
-                <input class="text-right" type="text" value="$10.00">
-              </div>
-            </div>
-            <div class="col s3">
-              <div class="input">
-                <input class="text-right" type="text" value="$0.00">
-              </div>
-            </div>
-            <div class="col s2">
-              <div><i>$10.00</i></div>
-            </div>
-            <div class="col s2">
-              <div>$200.00</div>
-            </div>
-          </div>
-        </div>
 
-        <div class="col s1 flex-center justify-center trash-icon">
-          <a>
-            <fa name="trash" class="tealish-text"></fa>
-          </a>
+          <div class="col s1 flex-center justify-center trash-icon trash">
+            <a (click)="product.isControlOpen = !product.isControlOpen">
+              <fa name="ellipsis-h" class="tealish-text"></fa>
+            </a>
+            <div class="remove" (click)="deleteProduct(i)" *ngIf="product.isControlOpen">
+              <span>Remove</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
+    </ng-container>
     <div class="row">
-      <div class="col s12">
-        <button
-          (click)="addProduct()"
-          class="right mtop uptracker-form-btn white-text waves-effect waves-light"
-        >
-          <fa name="plus"></fa>
-          Add Product
-        </button>
-      </div>
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="updateProducts()"
+      >
+        UPDATE
+      </button>
     </div>
   </div>
 
-  <div class="row right-bottom-part">
-    <div class="col s3 right">
-      <div class="row flex-center">
-        <div class="col s6">
-          Sub-Total
-        </div>
-        <div class="col s6 text-right pdg-r-0">
-          $200.00
-        </div>
+  <div class="panel" [class.active]="panelVisible">
+    <div class="active-area">
+      <div class="title">Bulk Updates</div>
+      <div class="list-area">
+        <ng-container *ngFor="let product of selectedInvoice.items; let i = index">
+          <div class="product-list" *ngIf="product.checked">
+            <div class="row">
+              <span>{{product.item_name}}</span>
+            </div>
+            <div class="remove">
+              <a (click)="removeProduct(product)">Remove</a>
+            </div>
+          </div>
+        </ng-container>
       </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          Shipping
+      <div class="board">
+        <div class="row">
+          <div class="col s4"><span class="board-title">QTY</span></div>
+          <div class="col s8">
+            <div class="input">
+              <input
+                class="text-left"
+                name="board-qty"
+                type="text"
+                [(ngModel)]="board.qty"
+              >
+            </div>
+          </div>
         </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
+        <div class="row">
+          <div class="col s4"><span class="board-title">Pkg Price</span></div>
+          <div class="col s8">
+            <div class="input">
+              <input
+                class="text-left"
+                name="board-pkg"
+                type="text"
+                currencyMask
+                [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                [(ngModel)]="board.pkgPrice"
+              >
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          Handing
+        <div class="row">
+          <div class="col s4"><span class="board-title">Discount</span></div>
+          <div class="col s8">
+            <div class="discount">
+              <div class="input">
+                <input
+                  class="text-left"
+                  name="board-discount"
+                  type="text"
+                  currencyMask
+                  [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
+                  [(ngModel)]="board.discountAmount"
+                >
+              </div>
+              <div class="select">
+                <select
+                  class="wide"
+                  materialize="material_select"
+                  [materializeSelectOptions]=""
+                  name="currency"
+                  [(ngModel)]="board.discountType"
+                >
+                  <option value="PERCENT">%</option>
+                  <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>
+                  <option class="disabled" value="REWARDS" disabled>Rewards<br />(Coming soon)</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
+        <div class="row center">
+          <button class="update" (click)="bulkUpdates()">UPDATE</button>
         </div>
-      </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          Tax
+        <div class="row center">
+          <a class="nevermind" (click)="bulkNevermind()">Nevermind</a>
         </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
-        </div>
-      </div>
-      <div class="row flex-center">
-        <div class="col s6">
-          P.O. Discount
-        </div>
-        <div class="col s6 text-right input pdg-r-0">
-          <input type="text" value="$0.00">
-        </div>
-      </div>
-      <div class="row flex-center">
-        <h5 class="col s6">
-          Total
-        </h5>
-        <h5 class="col s6 text-right pdg-r-0">
-          $200.00
-        </h5>
       </div>
     </div>
   </div>
-</form>
+</div>

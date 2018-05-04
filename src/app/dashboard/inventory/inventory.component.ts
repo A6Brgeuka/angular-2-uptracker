@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Input, AfterViewInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, HostListener, Input, AfterViewInit, OnDestroy, Output, EventEmitter} from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
@@ -11,6 +11,7 @@ import { ToasterService } from '../../core/services/toaster.service';
 import { InventoryService } from '../../core/services/inventory.service';
 import { AddInventoryModal } from './add-inventory/add-inventory-modal.component';
 import { Subject } from 'rxjs/Subject';
+import { InventoryGroupFiltersComponent } from '../../shared/modals/filters-modal/inventory-group-filters/inventory-group-filters.component';
 
 @Component({
   selector: 'app-inventory',
@@ -20,6 +21,8 @@ import { Subject } from 'rxjs/Subject';
 @DestroySubscribers()
 export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input('inputRange') inputRange;
+  @Input('modalMode') modalMode: boolean;
+  @Output('onInventoryClick') onInventoryClickEvent = new EventEmitter();
 
   public subscribers: any = {};
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -96,7 +99,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isRequest = true;
       this.searchKeyLast = this.searchKey;
       //TODO remove
-      if (this.total <= (this.inventoryService.current_page) * this.inventoryService.pagination_limit) {
+      if (this.total <= (this.inventoryService.current_page) * this.inventoryService.pagination_limit - 1) {
         this.isRequest = false;
         return Observable.of(false);
       } else {
@@ -221,6 +224,7 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchKey = '';
     this.sortBy = '';
     this.inventoryService.current_page = 0;
+    this.inventoryService.filterParams$.next(null);
     this.inventoryService.getNextInventory(0, this.searchKey, this.sortBy).subscribe((r) => {
         this.getInfiniteScroll();
       }
@@ -315,4 +319,11 @@ export class InventoryComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  onInventoryClick(id) {
+    this.onInventoryClickEvent.emit(id)
+  }
+  showFiltersModal() {
+    this.modal
+    .open(InventoryGroupFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
+  }
 }

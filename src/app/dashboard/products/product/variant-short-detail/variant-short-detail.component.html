@@ -1,5 +1,5 @@
 <div class="variant-detail-wrapper">
-    <div class="variant-detail-top">
+    <div *ngIf='variant?.custom_attr && variant?.custom_attr.length' class="variant-detail-top">
         <div *ngFor="let attr of variant.custom_attr" class="variant-detail-top-item">
             <div class="top">{{attr.name}}</div>
             <div>{{attr.value}}</div>
@@ -7,74 +7,41 @@
         <div class="clearfix"></div>
     </div>
 
-    <div class="variant-detail-table">
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col18">Vendor Name</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col10">Catalog#</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col11">Avg Lead Time</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">Book $</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">Your $</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">Club $</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">Forum $</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
-            <fa [name]="'filter'"></fa>
+    <div class="row table-header">
+        <div class="col s2">Vendor</div>
+        <div class="col s2">Catalog #</div>
+        <div class="col s1">Outer Pkg <div class="float-right">=</div></div>
+        <div class="col s1">Inner Pkg <div class="float-right">=</div></div>
+        <div class="col s1">Units</div>
+        <div class="col s2">Total Consumable Units</div>
+        <div class="col s2 select">
+            <select materialize="material_select" [(ngModel)]="selectedPrice" class="price-select">
+                <option value="unit_price">Price per Unit</option>
+                <option value="sub_package_price">Price per Inner</option>
+                <option value="package_price">Price per Outer</option>
+            </select>
         </div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon"></div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon"></div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon"></div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon"></div>
-        <div class="clearfix"></div>
+        <div class="col s1"></div>
     </div>
-
-    <div *ngFor="let item of variant.vendor_variants" class="variant-detail-table variant-detail-table-body-row">
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col18">
-            <a [routerLink]="'/vendors/view/'+[item.vendor_id]" target="_blank">
-                {{item.vendor_name}}
-            </a>
-        </div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col10">
-            {{item.catalog_number}}
-        </div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col11">{{item.avg_lead_time}}</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">{{item.price}}</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">
-            <span *ngIf="!showEdit">
-                {{item.your_price}}
-            </span>
-            <div *ngIf="showEdit" class="input">
-                <input (click)="$event.stopPropagation();" type="text" class="yourprice" (change)="log(item)"  [(ngModel)]="item.your_price" >
-            </div>
-        </div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">{{item.club_price}}</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col6-5">{{item.forum_price}}</div>
-        <div class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
-        </div>
-        <div class="right sub-edit-block">
-            <div *ngIf="!showEdit"
-              (click)="addToOrder(item)"
-              class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
-            <div *ngIf="!showEdit"  class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
-                <i class="fa fa-flag" aria-hidden="true"></i></div>
-            <div *ngIf="showEdit"  class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
-                <i class="fa fa-eye "
-                  [class.fa-eye]="item.status == 1"
-                  [class.fa-eye-slash]="item.status == 2"
-                  (click)="toggleVariantVisibility(item)"
-                  ></i>
-            </div>
-            <div *ngIf="showEdit" class="name-column variant-detail-table-head-item variant-detail-table-head-col3 variant-detail-table-icon">
-                <i class="fa fa-flag" aria-hidden="true"></i></div>
-        </div>
-        <div class="clearfix"></div>
+<div *ngFor="let item of variant.vendor_variants" class="row table-body" [class.tealish-text]="item.checked">
+    <div class="col s2">
+        <a [routerLink]="'/vendors/view/'+[item.vendor_id]" target="_blank">
+            {{item.vendor_name}}
+        </a>
     </div>
-
-    <div class="variant-detail-table variant-detail-table-view-all noselect">
-        View All Vendors
+    <div class="col s2">{{item?.catalog_number}}</div>
+    <div class="col s1">{{item?.package_type || 'N/A'}}</div>
+    <div class="col s1">{{(item?.sub_package_per_package) ? item?.sub_package_per_package : ''}} {{item?.sub_package || 'N/A'}}</div>
+    <div class="col s1">{{item?.units_per_sub_package || item?.units_per_package}} {{item?.unit_type}}</div>
+    <div class="col s2">{{item?.units_per_package}} {{item?.unit_type}}</div>
+    <div class="col s2">
+        {{item[selectedPrice]}}
     </div>
-
-    <div class="right variant-detail-collapse">
-        <span (click)="variantDetailCollapse()"><i class="fa fa-chevron-up" aria-hidden="true"></i> Collapse</span>
+    <div class="col s1">
+        <button (click)="addToOrder(item)" class="show-hover-elem uptracker-form-btn waves-light waves-effect add-order-btn">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        </button>
     </div>
-
+</div>
     <div class="clearfix"></div>
 </div>

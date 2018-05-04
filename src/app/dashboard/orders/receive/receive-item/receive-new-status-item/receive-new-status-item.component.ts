@@ -31,16 +31,12 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   public subscribers: any = {};
   public receiveStatus = OrderStatusValues.receive;
 
-
   public statusList$: Observable<OrderReceivingStatus[]>;
 
-  public inventoryGroup$: Observable<ReceivedInventoryGroupModel>;
-  public inventoryGroups$: Observable<ReceivedInventoryGroupModel[]>;
-  public isSelectDisabled$: Observable<boolean>;
-  public locations$: Observable<any[]>;
-
-  selectedInventoryGroupSubject$: Subject<ReceivedInventoryGroupModel> = new Subject();
-  selectedInventoryGroup$: Observable<ReceivedInventoryGroupModel>;
+  public locations$: ReplaySubject<any[]> = new ReplaySubject(1);
+  public inventoryGroup$: ReplaySubject<ReceivedInventoryGroupModel> = new ReplaySubject(1);
+  public inventoryGroups$: ReplaySubject<ReceivedInventoryGroupModel[]> = new ReplaySubject(1);
+  public selectedInventoryGroup$: ReplaySubject<ReceivedInventoryGroupModel> = new ReplaySubject(1);
 
   selectedLocation$: Observable<any>;
   selectedLocationSubject$: Subject<any> = new Subject();
@@ -54,8 +50,21 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   @Input() public statusFormGroup: OrderItemStatusFormGroup;
 
   @Input() public inventoryGroupIdControl: FormControl;
-  @Input() public inventoryGroupIds: string[] = [];
-  @Input() public itemProductVariantId: string = '';
+  @Input() public itemProductVariantId = '';
+  @Input('locations')
+  set locations(value){
+    this.locations$.next(value);
+  };
+
+  @Input('inventoryGroup') set inventoryGroup(value) {
+    this.inventoryGroup$.next(value);
+  };
+  @Input('inventoryGroups') set inventoryGroups(value) {
+    this.inventoryGroups$.next(value);
+  };
+  @Input('selectedInventoryGroup') set selectedInventoryGroup(value) {
+    this.selectedInventoryGroup$.next(value);
+  };
 
   @Input() pendingQty = 0;
 
@@ -66,6 +75,7 @@ export class ReceiveNewStatusItemComponent implements OnInit {
 
   @Output() remove = new EventEmitter();
   @Output() createInventoryEvent = new EventEmitter();
+  @Output() selectedInventoryEvent = new EventEmitter();
 
   constructor(
     public receivedOrderService: ReceivedOrderService,
@@ -98,6 +108,7 @@ export class ReceiveNewStatusItemComponent implements OnInit {
   }
 
   ngOnInit() {
+
     const selectedWithoutCurrent$ = this.selectedStatusList$.asObservable()
     .map((list) => list.filter((item) => item.value !== this.typeControl.value));
 
@@ -107,42 +118,6 @@ export class ReceiveNewStatusItemComponent implements OnInit {
     )
     .map(([statusList, selectedList]) => _.differenceWith(statusList, selectedList, _.isEqual))
     .map((statusList) => statusList.filter((status) => status.value !== OrderStatusValues.pending));
-
-    const inventoryGroupId = this.inventoryGroupIdControl.value
-    this.inventoryGroup$ = this.receiveService.getInventoryGroup(inventoryGroupId);
-
-    const createNewInventoryGroup: ReceivedInventoryGroupModel  = {id: 'create', locations: [], name: 'Create Inventory Group'};
-
-    const inventoryGroupsByIds$: Observable<ReceivedInventoryGroupModel[]> =
-      this.receiveService.getInventoryGroups(this.inventoryGroupIds)
-      .map((inventoryGroups) => {
-        return [createNewInventoryGroup, ...inventoryGroups];
-      });
-
-    this.inventoryGroups$ = inventoryGroupId ?
-      this.inventoryGroup$.map((group) => [group]) :
-      inventoryGroupsByIds$;
-    this.isSelectDisabled$ = this.inventoryGroup$
-    .map((inventoryGroup) => !!inventoryGroup);
-
-    this.selectedInventoryGroup$ = Observable.merge(
-      this.inventoryGroup$,
-      this.selectedInventoryGroupSubject$,
-    );
-
-    this.locations$ = this.selectedInventoryGroup$
-    .map((inventoryGroup) => (inventoryGroup && inventoryGroup.locations) || [])
-    .map((locations) =>
-      locations.reduce((acc, location) => {
-        const combinedLocations = location.storage_locations
-        .map((storageLocation) => ({
-          label: `${location.name}: ${storageLocation.name}`,
-          storage_location_id: storageLocation.id,
-          location_id: location.id
-        }));
-        return [...acc, ...combinedLocations];
-      }, [])
-    );
 
     const selectedLocation$ = this.locations$
     .map((locations) =>
@@ -156,7 +131,7 @@ export class ReceiveNewStatusItemComponent implements OnInit {
       this.selectedLocationSubject$,
     );
 
-    this.formSubmitted$ = this.receiveService.formSubmitted$
+    this.formSubmitted$ = this.receiveService.formSubmitted$;
 
   }
 
@@ -164,7 +139,7 @@ export class ReceiveNewStatusItemComponent implements OnInit {
 
     this.subscribers.primaryStatusSubscribtion = this.typeControl.valueChanges
     .subscribe((status) => {
-      this.primaryStatusControl.patchValue(status === OrderStatusValues.receive)
+      this.primaryStatusControl.patchValue(status === OrderStatusValues.receive);
     });
 
     this.subscribers.inventoryGroupIdControlSubscription = this.inventoryGroupIdControl.valueChanges
@@ -201,7 +176,7 @@ export class ReceiveNewStatusItemComponent implements OnInit {
     if (event.id === 'create') {
       this.createInventoryGroupSubject$.next(event);
     } else {
-      this.selectedInventoryGroupSubject$.next(event);
+      this.selectedInventoryEvent.emit(event);
       this.inventoryGroupIdControl.patchValue(event && event.id);
       this.inventoryGroupIdControl.markAsDirty();
     }

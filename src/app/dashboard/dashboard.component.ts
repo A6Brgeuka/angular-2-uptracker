@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import * as _ from 'lodash';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 import { UserService, StateService, AccountService } from '../core/services/index';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 import { DashboardService } from '../core/services/dashboard.service';
 import { ModalWindowService } from '../core/services/modal-window.service';
-import { DashboardFilterModal } from './dashboard-filter-modal/dashboard-filter-modal.component';
+import { SubInventoryModal } from './sub-inventory-modal/sub-inventory-modal.component';
+import { TransferModal } from './transfer-modal/transfer-modal.component'
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,11 +18,11 @@ import { DashboardFilterModal } from './dashboard-filter-modal/dashboard-filter-
 @DestroySubscribers()
 export class DashboardComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
-  public selectedLocation: string = '';
+  public selectedLocation = '';
   public locations$: any;
   public locationArr: any;
-  public showLocSelect: boolean = true;
-  
+  public showLocSelect = true;
+
   constructor(
     public modal: Modal,
     public modalWindowService: ModalWindowService,
@@ -39,18 +40,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.locationArr = res;
       console.log('location arr', res);
     });
-    
+
   }
-  
+
   ngOnInit() {
-    
+
   }
-  
+
   ngOnDestroy() {
     this.subscribers.dashboardLocationSubscription.unsubscribe();
     this.subscribers.dashboardLocationProductSubscription.unsubscribe();
   }
-  
+
   addSubscribers() {
     this.subscribers.dashboardLocationSubscription = this.accountService.dashboardLocation$
     .subscribe((res: any) => {
@@ -60,14 +61,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     .subscribe(res => {
       this.showLocSelect = false;
       this.locationArr = res;
-      if (this.locationArr.length <2) {
+      if (this.locationArr.length < 2) {
         this.selectedLocation = this.locationArr[0].id;
         this.accountService.dashboardLocation$.next(this.locationArr[0]);
       }
       // setTimeout because list with locations doesn't change dynamically
       setTimeout(() => {
         this.showLocSelect = true;
-      }, 1)
+      }, 1);
     });
   }
 
@@ -75,16 +76,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.accountService.dashboardLocation$.next(_.find(this.locationArr, {'id': event.target.value}));
   }
 
-  showFiltersModal() {
+  showSubInventoryModal() {
     this.modal
-    .open(DashboardFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .open(SubInventoryModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
     .then((resultPromise) => {
       resultPromise.result.then(
-        (res) => {
-          // this.filterProducts();
-        },
-        (err) => {
-        }
+        (res) => {},
+        (err) => {}
+      );
+    });
+  }
+
+  showTransferModal() {
+    this.modal
+    .open(TransferModal, this.modalWindowService.overlayConfigFactoryWithParams({}))
+    .then((resultPromise) => {
+      resultPromise.result.then(
+        (res) => {},
+        (err) => {}
       );
     });
   }

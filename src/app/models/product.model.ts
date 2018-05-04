@@ -5,6 +5,7 @@ export class ProductModel {
   created_at: string = null;
   department: string = null;
   hazardous: boolean = null;
+  image: any = null;
   images: any = null;
   maufacturer: string = null;
   msds: string = null;
@@ -16,7 +17,7 @@ export class ProductModel {
   trackable: boolean = null;
   updated_at: string = null;
   variant_count: number = null;
-  
+
   constructor(obj?:any) {
     for (let field in obj) {
       if (typeof this[field] !== "undefined") {

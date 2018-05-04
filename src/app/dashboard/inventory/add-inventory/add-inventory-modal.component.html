@@ -1,4 +1,5 @@
-<div class="close" (click)="dismissModal()"></div>
+<div class="close" (click)="dismissModal()" [class.modal-mode]="context.modalMode"></div>
+
 <div class="inner">
   <div class="row title center-align relative">
     <div class="col s12">
@@ -32,7 +33,7 @@
     </ul>
   </div>
   <div id="step1">
-    <div class="row">
+    <div class="row" *ngIf="!context.modalMode">
       <div *ngIf="addCustomProduct" class="col s12 m6">
         <app-add-custom-product
           [editCustomProduct] = "editCustomProduct"
@@ -163,6 +164,26 @@
             <fa name="minus"></fa>
           </div>
           <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="context.modalMode">
+      <div
+        *ngFor="let item of (items$ | async); let i=index;"
+        class="row added-items">
+        <div class="col s12 center-align">
+          <div>
+            <div class="product-name tealish-text">
+              <a (click)="editProduct(item)">{{ item?.name }}</a>
+            </div>
+          </div>
+          <div class="image" *ngIf="(item?.images && item?.images[0])"
+               [ngStyle]="{'background-image':'url(\''+item?.images[0]+'\')'}">
+          </div>
+          <div class="image no-image" *ngIf="(!item?.images || !item?.images[0])"
+               [ngStyle]="{'background-image':'url(/assets/img/onboard/icon-onboarding-products.svg)'}">
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,18 @@
 @import "../../../../colors";
 
 :host /deep/ {
+
+  .close.modal-mode {
+    display: block !important;
+  }
+
   .inner {
+
+    .modal-mode {
+      .hide-for-modal {
+        display: none;
+      }
+    }
 
     .row {
       margin-bottom: 10px;

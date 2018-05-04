@@ -9,16 +9,15 @@ import * as _ from 'lodash';
 
 import { ViewProductModal } from './view-product-modal/view-product-modal.component';
 import { EditProductModal } from './edit-product-modal/edit-product-modal.component';
-import { ProductFilterModal } from './product-filter-modal/product-filter-modal.component';
-import { ModalWindowService } from "../../core/services/modal-window.service";
-import { AddProductModal } from "./add-product-modal/add-product-modal.component";
+import { ModalWindowService } from '../../core/services/modal-window.service';
+import { AddProductModal } from './add-product-modal/add-product-modal.component';
 import { ShoppingListSettingsModal } from './shopping-list-settings-modal/shopping-list-settings.component';
 import { UserService } from '../../core/services/user.service';
 import { CartService } from '../../core/services/cart.service';
 import { PriceModal } from './price-modal/price-modal.component';
 import { AccountService } from '../../core/services/account.service';
-import { SlFilters } from '../../models/slfilters.model';
-import { ChangingShoppingListModel, ItemModel, VariantModel } from '../../models/changing-shopping-list.model';
+import { ChangingShoppingListModel } from '../../models/changing-shopping-list.model';
+import { ShoppingListFiltersComponent } from '../../shared/modals/filters-modal/shopping-list-filters/shopping-list-filters.component';
 
 @Component({
   selector: 'app-shopping-list',
@@ -29,7 +28,7 @@ import { ChangingShoppingListModel, ItemModel, VariantModel } from '../../models
 export class ShoppingListComponent implements OnInit, OnDestroy {
   public subscribers: any = {};
   public selectAll: boolean = false;
-  public last_loc: string = '';
+  public last_loc = '';
   public searchKey$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   public cart$: BehaviorSubject<any> = new BehaviorSubject(null);
   public selectAll$: ReplaySubject<any> = new ReplaySubject(1);
@@ -58,27 +57,19 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //TODO remove
     this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
-     
-    Observable.combineLatest(
-      this.cartService.collection$,
-      this.cartService.filters$,
-    )
-    .subscribe(([r, f]) => {
-      let cart = _.filter(r, (item: any) => (
-        (f.location == '' || f.location == item.location_name)
-        && (f.vendor == '' || f.vendor == item.selected_vendor.vendor_name))
-        && (!f.onlymy || this.userService.selfData.id == item.created_by)
-      );
-      this.totalOrders = cart.filter((item:any)=>item.status).length;
-      this.total = cart.length;
+
+    this.subscribers.getCartCollectionSubscription = this.cartService.collection$
+    .subscribe((r) => {
+      this.totalOrders = r.filter((item: any) => item.status).length;
+      this.total = r.length;
       this.checkSelectAllItems(r);
-      this.updateCart(cart);
+      this.updateCart(r);
       this.changed = [];
     });
     
   }
   ngOnDestroy() {
-    console.log('for unsubscribing')
+    console.log('for unsubscribing');
   }
   
   addSubscribers() {
@@ -88,12 +79,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       .switchMap(select => {
         return this.cartService.collection$.first()
         .map(res => {
-          let status = select ? 1 : 0;
+          const status = select ? 1 : 0;
           res = _.forEach(res, (item: any) => {
             item.status = status;
           });
           return res;
-        })
+        });
       })
       .subscribe(cart => this.saveItem());
   
@@ -105,7 +96,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       .switchMap(res => this.cartService.removeItems(res)
       )
     )
-    .subscribe((res:any) => {
+    .subscribe((res: any) => {
         // make a request again, because order_preview isn't returned
         this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
       },
@@ -114,7 +105,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   
     this.subscribers.removeCurrentProductSubscribtion = this.deleteCurrentProduct$
     .switchMap((product: any) => this.cartService.removeItems([product]))
-    .subscribe((res:any) => {
+    .subscribe((res: any) => {
         // make a request again, because order_preview isn't returned
         this.accountService.dashboardLocation$.next(this.accountService.dashboardLocation);
       },
@@ -127,7 +118,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       this.checkSelectAllItems(items);
       return new ChangingShoppingListModel({items});
     })
-    .switchMap((data:any) =>
+    .switchMap((data: any) =>
       this.cartService.updateItem(data)
     )
     .subscribe((res: any) => {
@@ -187,44 +178,18 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   
   searchFilter(event) {
     // replace forbidden characters
-    let value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+    const value = event.target.value.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
     this.searchKey$.next(value);
   }
   
   showFiltersModal() {
-    Observable.combineLatest(
-      this.cartService.collection$,
-      this.cartService.filters$
-    )
-    .take(1)
-    .subscribe(([cart,filters]) => {
-      let vendors = [];
-      _.map(cart, (v: any) => {
-          vendors.push(v.selected_vendor.vendor_name)
-      });
-      vendors = _.sortedUniq(vendors.sort());
-      this.modal
-      .open(ProductFilterModal, this.modalWindowService.overlayConfigFactoryWithParams({
-        vendors: vendors,
-        currentFilters: filters,
-        callback: this.applyFilters.bind(this)
-      }, true))
-      .then((resultPromise) => {
-        resultPromise.result.then(
-          (res) => {
-            // this.filterProducts();
-          },
-          (err) => {
-          }
-        );
-      });
-    });
+    this.modal.open(ShoppingListFiltersComponent, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
   
   changePriceModal(item = {}) {
     //TODO
     this.modal
-    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({"product": item}, true, 'mid'))
+    .open(PriceModal, this.modalWindowService.overlayConfigFactoryWithParams({'product': item}, true, 'mid'))
     .then((resultPromise) => {
       resultPromise.result.then(
         (res) => {
@@ -257,10 +222,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.selectAll$.next(!selectAll);
   }
   
-  applyFilters(data: SlFilters) {
-    this.cartService.filters$.next(data);
-  }
-  
   deleteCheckedProducts() {
     this.deleteChecked$.next('');
   }
@@ -274,8 +235,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
   
   checkSelectAllItems(items) {
-    let checkedItemsArr = _.filter(items, 'status');
+    const checkedItemsArr = _.filter(items, 'status');
     this.selectAll = (checkedItemsArr.length === items.length);
   }
-  
+
+  resetFilters() {
+    this.cartService.filtersParams$.next(null);
+  }
 }

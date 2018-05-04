@@ -1,0 +1,10 @@
+@import "../../../../colors";
+
+:host {
+  input {
+    color: $grey;
+  }
+  .dirty {
+    color: $black;
+  }
+}

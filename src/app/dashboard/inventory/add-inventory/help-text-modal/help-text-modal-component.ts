@@ -5,6 +5,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 export class HelpTextModalContext extends BSModalContext {
   public text: any;
+  public link: any;
 }
 
 
@@ -13,10 +14,13 @@ export class HelpTextModalContext extends BSModalContext {
   templateUrl: './help-text-modal.component.html',
   styleUrls: ['./help-text-modal.component.scss']
 })
-export class HelpTextModal implements OnInit {
+export class HelpTextModal implements OnInit, ModalComponent<HelpTextModalContext> {
+  context: HelpTextModalContext;
   constructor(
     public dialog: DialogRef<HelpTextModalContext>,
-  ) {}
+  ) {
+    this.context = dialog.context;
+  }
 
   ngOnInit() {}
 

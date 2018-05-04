@@ -1,0 +1,141 @@
+@import "../../../../colors";
+
+:host /deep/ {
+
+  .title .main-title{
+    line-height: 30px;
+    font-size: 28px;
+    font-family: Ubuntu;
+  }
+
+  .close {
+    transition: opacity .3s;
+    width: 40px;
+    height: 40px;
+    background-color: $tealish;
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 20px;
+    color: #fff;
+    line-height: 40px;
+    padding-right: 3px;
+    &:hover {
+      opacity: .8;
+    }
+  }
+
+  .list {
+    letter-spacing: 0;
+    word-spacing: 0;
+    font-size: 0;
+    padding-bottom: 15px;
+    text-align: left;
+    margin-left: -20px;
+      .item {
+        display: inline-block;
+        vertical-align: top;
+        width: 250px;
+        height: 250px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        max-width: 100%;
+        position: relative;
+
+        .inner {
+          width: 250px;
+          height: 250px;
+          border: 1px solid #d6d6d6;
+          background: #fff;
+          cursor: pointer;
+          border-radius: 5px;
+
+          .hazardous {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            color: #f1594e;
+          }
+          &.active {
+            border: 3px solid #000;
+          }
+
+          &:hover {
+            .star-right {
+              opacity: 1;
+            }
+          }
+        }
+
+
+        .img {
+          margin: 21px auto 30px;
+          height: 140px;
+          width: 140px;
+          background: #f1f2f2 no-repeat center center;
+          background-size: cover;
+          position: relative;
+
+          .trackable {
+            color: #33c6d9;
+            position: absolute;
+            right: -10px;
+            bottom: -25px;
+            font-size: 24px;
+          }
+        }
+
+        .info {
+          position: relative;
+          font-size: 12px;
+          margin: 0 15px;
+
+          .ttl {
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: bold;
+            height: 36px;
+          }
+
+          .bottom {
+            .variations {
+              color: #9d9d9d;
+            }
+
+            .price {
+              color: #33c6d9;
+            }
+          }
+
+          .edit {
+            display: none;
+            cursor: pointer;
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: url(/assets/img/icon-edit.svg) no-repeat;
+            right: 21px;
+            top: 2px;
+            left: auto;
+          }
+        }
+
+        &:hover {
+          .info {
+            .edit {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+  @media (max-width: 1024px) {
+    .title {
+      display: block;
+    }
+  }
+}
+
+
+
