@@ -49,10 +49,10 @@
       </div>
       <div class="col"
         *ngFor="let headerCol of header;"
-        (click)="headerCol?.filterBy && !(headerCol.showChevron && item.statusHistoryVisibility) ? onFilterBy(item[headerCol.alias], headerCol) : ''"
+        (click)="headerCol?.filterBy && !(headerCol.showChevron && item.statusHistoryVisibility) ? onFilterBy(item[headerCol.alias], headerCol) : toggleStatusHistoryDetail(item); $event.stopPropagation()"
         [ngClass]="headerCol.className"
-        [class.tealish-text]="headerCol?.filterBy"
-        [class.pointer]="headerCol?.filterBy"
+        [class.tealish-text]="headerCol?.filterBy || headerCol?.showChevron"
+        [class.pointer]="headerCol?.filterBy || headerCol?.showChevron"
         [class.expanded]="item.statusHistoryVisibility"
       >
         <div
@@ -79,7 +79,6 @@
           </span>
           <fa
             *ngIf="headerCol.showChevron && item.status_int === orderStatus.multiple"
-            (click)="toggleStatusHistoryDetail(item); $event.stopPropagation()"
             class="expand-chevron"
             [name]="item.statusHistoryVisibility ? 'chevron-up' : 'chevron-down'"
           ></fa>
