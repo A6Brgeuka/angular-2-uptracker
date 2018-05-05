@@ -460,14 +460,12 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
     this.generalVendor.vendor_id = this.vendorId || this.generalVendor.id;
 
-    let requests = [];
+    //let requests = [];
     this.prepareFormData();
 
-    if (!this.vendor._id || (this.currentLocation && this.currentLocation.id && this.vendor.is_all)) {
-      requests.push(this.vendorService.addAccountVendor(this.formData));
-    } else {
-      requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
-    }
+    this.vendorService.editAccountVendor(this.vendor, this.formData)
+      .subscribe((res) => this.goBackOneStep());
+/*
 
     if (!this.currentLocation || !this.currentLocation.id) {
       if (this.primaryLocation) {
@@ -476,8 +474,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         this.prepareFormData();
         if (foundVendor) {
           requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
-        } else {
-          requests.push(this.vendorService.addAccountVendor(this.formData));
         }
       }
 
@@ -487,15 +483,14 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         this.prepareFormData();
         if (foundVendor) {
           requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
-        } else {
-          requests.push(this.vendorService.addAccountVendor(this.formData));
         }
       }
     }
+*/
 
-    Observable.combineLatest(requests).subscribe(res => {
+    /*Observable.combineLatest(requests).subscribe(res => {
       this.goBackOneStep();
-    })
+    })*/
 
     console.log(this.vendor, 3333333);
     console.log(this.formData, 44444);
