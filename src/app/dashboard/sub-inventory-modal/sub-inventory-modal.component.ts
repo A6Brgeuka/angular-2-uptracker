@@ -5,8 +5,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import { Observable } from 'rxjs/Rx';
 import { VendorModel } from '../../models';
-import { UserService, AccountService } from '../../core/services';
-import * as _ from 'lodash';
+import { UserService, AccountService, SubtractService } from '../../core/services';
 
 
 export class SubInventoryModalContext extends BSModalContext {
@@ -39,10 +38,16 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
   public stockSterlization: number = 2;
   public stockSterlizationLimit: number = 2;
 
+
+  public inventory: any = {}
+  public productVariant: any = {}
+  public inventoryBy: any = []
+
   constructor(
     public dialog: DialogRef<SubInventoryModalContext>,
     public userService: UserService,
     public accountService: AccountService,
+    public subtractService: SubtractService,
   ) {
     this.context = dialog.context;
     this.groups.push({
@@ -57,10 +62,29 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.subtractService.getInventory('5aec73b36427bb00088997bb').subscribe(res => {
+      console.log('Inventory: ', res)
+      this.inventory = res;
+    })
+  }
+
+  searchProducts(event) {
+    this.subtractService.searchInventory(this.searchText, 10, 1).subscribe(res => {
+      console.log('Inventories: ', res)
+    });
+  }
 
   goBackToFirst() {
     this.modalState = 0;
+  }
+
+  productChange(event) {
+    this.inventory.inventory_products.forEach(product => {
+      if (product.id == this.productVariant) {
+        this.inventoryBy = product.inventory_by;
+      }
+    })
   }
 
   locationSort(event) {
@@ -73,8 +97,6 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
   }
 
   subtractingSort(event) {}
-
-  searchProducts(event) {}
 
   stockMiniClick(value) {
     if (value === this.stockMini && value > this.stockMiniLimit) {

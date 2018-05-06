@@ -5,7 +5,6 @@ import { Subscribers } from "../../decorators/subscribers.decorator";
 import { Restangular } from "ngx-restangular";
 import { APP_CONFIG, AppConfig } from "../../app.config";
 import { Observable, BehaviorSubject } from "rxjs";
-import * as _ from 'lodash';
 import { UserService } from "./user.service";
 import { AccountService } from "./account.service";
 

@@ -11,12 +11,12 @@
       <div *ngFor="let group of groups; let i = index">
         <div class="row product" (click)="toGoModal(1, i)">
           <div class="preview">
-            <div class="icon"></div>
+            <img src="{{inventory.image}}" alt="PRODUCT" class="icon" />
           </div>
           <div class="description">
-            <div class="bold">{{group.name}}</div>
-            <div class="thin">{{group.info}}</div>
-            <div class="thin mrg-top-10">{{group.counts}} Products</div>
+            <div class="bold">{{inventory.name}}</div>
+            <div class="thin">{{inventory.notes}}&nbsp;</div>
+            <div class="thin mrg-top-10">{{inventory.inventory_products.length}} Products</div>
           </div>
           <div class="arrow">
             <i class="fa fa-chevron-right"></i>
@@ -30,23 +30,23 @@
     <div class="title center-align"><span>SUBTRACT FROM INVENTORY</span></div>
     <div class="row description">
       <div class="preview">
-        <div class="icon"></div>
+        <img src="{{inventory.image}}" alt="PRODUCT" class="icon" />
       </div>
       <div class="content">
-        <div class="bold">Gloves Tender Touch Nitrile</div>
-        <div class="thin">Gloves Tender Touch Nitrile Sempercare PF 200/box</div>
+        <div class="bold">{{inventory.name}}</div>
+        <div class="thin">{{inventory.notes}}</div>
         <div class="col s12 line-header">
           <div class="col s4">
             <div class="row">Department</div>
-            <div class="row">Clinic</div>
+            <div class="row">{{inventory.department}}</div>
           </div>
           <div class="col s4 center-align"><div class="left-align">
             <div class="row">Category</div>
-            <div class="row">Gloves</div></div>
+            <div class="row">{{inventory.category}}</div></div>
           </div>
           <div class="col s4 right-align"><div class="left-align">
             <div class="row">Accounting</div>
-            <div class="row">Not Specified</div></div>
+            <div class="row">{{inventory.account_category}}</div></div>
           </div>
         </div>
         <div class="col s12 range-container">
@@ -75,20 +75,21 @@
     <div class="row location select">
       <span class="bold">Location</span>
       <select title="sort by" [(ngModel)]="location" materialize="material_select" (change)="locationSort($event)">
-        <option disabled value="">Ft. Lauderdale</option>
-        <option value="relevance">Location 1</option>
-        <option value="A-Z">Location 2</option>
-        <option value="Z-A">Location 3</option>
+        <option *ngFor="let location of inventory.inventory_item_locations" [value]="location.id">{{location.name}}</option>
+      </select>
+    </div>
+    <div class="row location select">
+      <span class="bold">Product Variant</span>
+      <select title="sort by" [(ngModel)]="productVariant" materialize="material_select" (change)="productChange($event)">
+        <option *ngFor="let product of inventory.inventory_products" [value]="product.id">{{product.name}}</option>
       </select>
     </div>
     <div class="row subtracting select">
       <span class="bold">What are you subtracting?</span>
       <div class="line">
         <select title="sort by" [(ngModel)]="subtracting" materialize="material_select" (change)="subtractingSort($event)">
-          <option value="Box">1 Box</option>
-          <option value="Glove">1 Glove</option>
+          <option *ngFor="let item of inventory.inventory_products[0].inventory_by" [value]="item.value">{{item.label}}</option>
         </select>
-        <span *ngIf="subtracting === 'Box'">=&nbsp;&nbsp;&nbsp;300 Gloves</span>
       </div>
     </div>
     <div class="row backstock">
@@ -143,13 +144,13 @@
     <div class="title center-align"><span>SUCCESS!</span></div>
     <div class="center-align">Your inventory has been updated</div>
     <div class="preview">
-      <div class="icon"></div>
+      <img src="{{inventory.image}}" alt="PRODUCT" class="icon" />
     </div>
     <div class="center-align bold">
-      <span>Gloves Tender Touch Nitrile X-Small</span>
+      <span>{{inventory.name}}</span>
     </div>
     <div class="center-align">
-      <span>Gloves Tender Touch Nitrile Sempercare PF 200/box</span>
+      <span>{{inventory.notes}}&nbsp;</span>
     </div>
     <div class="range-container slider-container">
       <div class="range-field">
