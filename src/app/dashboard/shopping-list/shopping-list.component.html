@@ -161,7 +161,7 @@
         <div *ngFor="let order of (cartService.ordersPreview$ | async)" class="row order-list-item">
           <div class="col s9">
             <div class="order-heading">{{ order.type }}</div>
-            <div class="order-price">{{ order.total }}</div>
+            <div class="order-price">{{ order.sub_total }}</div>
             <div class="order-count">{{ order.order_count }} Orders</div>
           </div>
           <div class="col s3" [routerLink]="['orders-preview',order.order_id ]">
