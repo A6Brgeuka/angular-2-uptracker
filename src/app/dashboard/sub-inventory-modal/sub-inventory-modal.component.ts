@@ -136,12 +136,19 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
   toGoModal(state, index) {
     this.modalState = state;
     if (index !== undefined) {
-      this.selectedGroup = this.groups[index];
+      this.inventory = this.inventories[index];
+      this.inventory.critical_level = 10;
+      this.inventory.overstock_level = 30;
+      this.inventory.min = 0;
+      this.inventory.max = 40;
+      console.log('$$$$$$$$$$$$$$:   ', this.inventory)
     }
   }
 
   // sets the style of the range-field thumb;
-  calcQuantityMargin(product) {
+  calcQuantityMargin() {
+    const product = this.inventory
+
     let valueArr: number[] = [product.on_hand, product.critical_level, product.overstock_level];
 
     product.max = Math.max(...valueArr);
