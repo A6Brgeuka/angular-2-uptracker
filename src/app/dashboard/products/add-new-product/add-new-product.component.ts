@@ -1,21 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Modal} from 'angular2-modal';
+import { Modal } from 'angular2-modal';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 
 import {each, map, every, difference, findIndex, flatten} from 'lodash';
-import {AccountService} from '../../../core/services/account.service';
-import {ModalWindowService} from '../../../core/services/modal-window.service';
-import {ProductService} from '../../../core/services/product.service';
-import {HelpTextModal} from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
+import { AccountService } from '../../../core/services/account.service';
+import { ModalWindowService } from '../../../core/services/modal-window.service';
+import { ProductService } from '../../../core/services/product.service';
+import { HelpTextModal } from '../../inventory/add-inventory/help-text-modal/help-text-modal-component';
 import { Location } from '@angular/common';
-import {CustomProductModel, CustomProductVariantModel} from '../../../models/custom-product.model';
-import {ProductVariantsModel} from '../../../models/product-variants.model';
-import {PackageModel, inventoryExample} from '../../../models/inventory.model';
-import {ToasterService} from '../../../core/services/toaster.service';
-import {Router} from '@angular/router';
-import {AddVendorModalComponent} from "../../../shared/modals/add-vendor-modal/add-vendor-modal.component";
-import {UploadEditImageModalComponent} from "../../../shared/modals/upload-edit-image-modal/upload-edit-image-modal.component";
+import { CustomProductModel, CustomProductVariantModel } from '../../../models/custom-product.model';
+import { ProductVariantsModel } from '../../../models/product-variants.model';
+import { PackageModel, inventoryExample } from '../../../models/inventory.model';
+import { ToasterService } from '../../../core/services/toaster.service';
+import { Router } from '@angular/router';
+import { AddVendorModalComponent } from '../../../shared/modals/add-vendor-modal/add-vendor-modal.component';
+import { UploadEditImageModalComponent } from '../../../shared/modals/upload-edit-image-modal/upload-edit-image-modal.component';
 
 @Component({
   selector: 'app-add-new-product',
@@ -40,7 +40,7 @@ export class AddNewProductComponent implements OnInit {
   public newVariant: string = '';
   public logo: any;
   public logoPreview: string = null;
-  public dummyProductVariants = ["Size", "Color", "Texture", "Grit", "Length", "Strength", "Prescription", "Type", "Flavor"];
+  public dummyProductVariants = ['Size', 'Color', 'Texture', 'Grit', 'Length', 'Strength', 'Prescription', 'Type', 'Flavor'];
   public productVariants: ProductVariantsModel[] = [
     {
       name: 'Size',
@@ -48,6 +48,8 @@ export class AddNewProductComponent implements OnInit {
       newName: ''
     }
   ];
+
+  public showWarning: boolean = true;
 
   constructor(
     private accountService: AccountService,
@@ -80,13 +82,13 @@ export class AddNewProductComponent implements OnInit {
 
   onNextClick() {
     this.step++;
-    if (this.step == 2) {
+    if (this.step === 2) {
       this.updateVendorProducts();
     }
   }
 
   createVendorVariants() {
-    let arr = map(this.productVariants, 'values');
+    const arr = map(this.productVariants, 'values');
     if (!arr.length) {
       const variant = {
         ...new CustomProductVariantModel(),
@@ -122,12 +124,12 @@ export class AddNewProductComponent implements OnInit {
   }
 
   readThis(inputValue: any): void {
-    let files: File[] = inputValue.files;
+    const files: File[] = inputValue.files;
     this.addFile(files);
   }
 
   onFileDrop(file: any): void {
-    let myReader: any = new FileReader();
+    const myReader: any = new FileReader();
     myReader.fileName = file.name;
     this.addFile(file);
   }
@@ -137,15 +139,15 @@ export class AddNewProductComponent implements OnInit {
     each(files, (file, i) => formData.append(`documents[${i}]`, file));
     this.productService.addCustomProductDocument(formData)
       .subscribe(urls =>
-        this.product.attachments = this.product.attachments.concat(urls))
+        this.product.attachments = this.product.attachments.concat(urls));
   }
 
   removeFile(i) {
-    this.product.attachments.splice(i, 1)
+    this.product.attachments.splice(i, 1);
   }
 
   deleteItem = (variant, i) => {
-      variant.splice(i, 1);
+    variant.splice(i, 1);
   };
 
   deleteVariant = (i) => {
@@ -177,10 +179,10 @@ export class AddNewProductComponent implements OnInit {
   }
 
   canProceed() {
-    if (this.step == 0) {
+    if (this.step === 0) {
       return this.product.name && this.product.category;
     }
-    if (this.step == 1) {
+    if (this.step === 1) {
       return this.validVariants();
     }
   }
@@ -199,8 +201,9 @@ export class AddNewProductComponent implements OnInit {
 
   onVendorChosen(vendorInfo) {
     const vendor = this.createVendor(vendorInfo);
-    const i = findIndex(this.vendorVariants, (arr) => arr[0].vendor_name == vendor['vendor_name']);
+    const i = findIndex(this.vendorVariants, (arr) => arr[0].vendor_name === vendor['vendor_name']);
     i > -1 ? this.vendorVariants[i].unshift(vendor) : this.vendorVariants.unshift([vendor]);
+    this.showWarning = false;
   }
 
   onVendorDelete(i) {

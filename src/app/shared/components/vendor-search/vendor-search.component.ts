@@ -1,12 +1,12 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {NewVendorModel} from '../../../models/new-vendor.model';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {InventoryService} from '../../../core/services/inventory.service';
-import {DestroySubscribers} from 'ngx-destroy-subscribers';
-import {Observable} from 'rxjs/Observable';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { NewVendorModel } from '../../../models/new-vendor.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { InventoryService } from '../../../core/services/inventory.service';
+import { DestroySubscribers } from 'ngx-destroy-subscribers';
+import { Observable } from 'rxjs/Observable';
 
-import {isObject} from 'lodash';
-import {VendorService} from "../../../core/services/vendor.service";
+import { isObject } from 'lodash';
+import { VendorService } from '../../../core/services/vendor.service';
 
 @Component({
   selector: 'app-vendor-search',
@@ -16,10 +16,12 @@ import {VendorService} from "../../../core/services/vendor.service";
 @DestroySubscribers()
 export class VendorSearchComponent implements OnInit {
 
+  @Input() showWarning: boolean;
+
   @Output('vendorChosen') vendorChosen = new EventEmitter();
 
   public subscribers: any = {};
-  public vendor = {vendor_name:null, vendor_id:null};
+  public vendor = {vendor_name: null, vendor_id: null};
   public vendorDirty: boolean = false;
   public vendorValid: boolean = false;
   public vendorModel: NewVendorModel;

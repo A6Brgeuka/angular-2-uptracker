@@ -286,7 +286,9 @@
       <div class="col s11">
         <app-vendor-search
           (addVendor)="onVendorChosen($event)"
-          (vendorChosen)="onVendorChosen($event)">
+          (vendorChosen)="onVendorChosen($event)"
+          [showWarning]="showWarning"
+        >
         </app-vendor-search>
       </div>
       <div class="col s1">
