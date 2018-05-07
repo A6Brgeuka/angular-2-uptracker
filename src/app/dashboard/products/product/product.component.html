@@ -20,7 +20,7 @@
       <div class="info-box col s12" [class.condensed]="showVariant">
         <div class="img-container left">
           <div class="img file-field" *ngIf="!showVariant || showVariant && !currentVariant?.image"
-            [ngStyle]="{ 'background-image': 'url(' + (productCopy?.image || product?.image) + ')' }">
+            [ngStyle]="{ 'background-image': 'url(' + (productCopy?.image || product?.image || '/assets/img/onboard/icon-onboarding-products.svg') + ')' }">
             <input *ngIf="showEdit" type="file" (change)="uploadLogo($event)" />
           </div>
           <div class="img file-field" *ngIf="showVariant && currentVariant?.image"
@@ -271,7 +271,7 @@
                     </div>
                   </div>
                   <div class="variant-image-container left"
-                    [ngStyle]="{ 'background-image': 'url(' + (variant?.image) + ')' }">
+                    [ngStyle]="{ 'background-image': 'url(' + (variant?.image || '/assets/img/onboard/icon-onboarding-products.svg') + ')' }">
                   </div>
                   <div class="variant-name">
                     <div
