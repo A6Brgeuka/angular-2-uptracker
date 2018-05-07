@@ -38,7 +38,7 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
   public stockSterlization: number = 2;
   public stockSterlizationLimit: number = 2;
 
-
+  public inventories: Array<any> = [];
   public inventory: any = {}
   public productVariant: any = {}
   public inventoryBy: any = []
@@ -71,7 +71,7 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
 
   searchProducts(event) {
     this.subtractService.searchInventory(this.searchText, 10, 1).subscribe(res => {
-      console.log('Inventories: ', res)
+      this.inventories = res;
     });
   }
 

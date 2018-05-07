@@ -7,8 +7,8 @@
       <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
     </div>
     <div class="info"><span>Search by inventory group name, product name, keyword, id number, etc</span></div>
-    <div  *ngIf="!!searchText">
-      <div *ngFor="let group of groups; let i = index">
+    <div  *ngIf="inventories.length > 0">
+      <div *ngFor="let inventory of inventories; let i = index">
         <div class="row product" (click)="toGoModal(1, i)">
           <div class="preview">
             <img src="{{inventory.image}}" alt="PRODUCT" class="icon" />
