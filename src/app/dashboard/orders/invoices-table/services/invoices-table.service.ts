@@ -8,7 +8,7 @@ import { StateService } from '../../../../core/services/state.service';
 
 @Injectable()
 export class InvoicesTableService extends EntitiesService {
-  protected idName = 'id';
+  protected idName = 'invoice_id';
   protected url = '/orders/invoices';
 
   constructor(

@@ -20,7 +20,7 @@ export class ApprovalInvoicesListComponent implements OnInit, OnDestroy {
 
   public listName: string = OrderListType.approval;
   public tableHeader: any = [
-    {name: 'Invoice #', className: 's1', alias: 'invoice_number', filterBy: false, linkToReconcile: true, },
+    {name: 'Invoice #', className: 's1', alias: 'invoice_number', filterBy: true, linkToReconcile: false, },
     {name: 'Vendor', className: 's2', alias: 'vendor', filterBy: true, wrap: 2, },
     {name: 'Status', className: 's1', alias: 'status', filterBy: true, showChevron: true, },
     {name: 'Location', className: 's2', alias: 'location_name', filterBy: true, },

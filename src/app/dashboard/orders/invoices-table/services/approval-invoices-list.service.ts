@@ -8,7 +8,7 @@ import { InvoicesTableService } from './invoices-table.service';
 @Injectable()
 export class ApprovalInvoicesListService extends OrderListBaseService {
 
-  protected idName = 'id';
+  protected idName = 'invoice_id';
 
   constructor(
     private restangular: Restangular,
