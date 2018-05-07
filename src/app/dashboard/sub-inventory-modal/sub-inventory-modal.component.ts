@@ -28,8 +28,6 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
   public modalState: number = 0;
   public location: string = '';
   public subtracting: string = 'Box';
-  public groups: Array<any> = [];
-  public selectedGroup: any;
 
   public stockMini: number = 30;
   public stockMiniLimit: number = 30;
@@ -40,8 +38,7 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
 
   public inventories: Array<any> = [];
   public inventory: any = {}
-  public productVariant: any = {}
-  public inventoryBy: any = []
+  public productVariant: number = 0
 
   constructor(
     public dialog: DialogRef<SubInventoryModalContext>,
@@ -50,24 +47,9 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
     public subtractService: SubtractService,
   ) {
     this.context = dialog.context;
-    this.groups.push({
-      name: 'Gloves Tender Touch Nitrile',
-      info: 'Gloves Tender Touch Nitrile Sempercare PF 200/box',
-      counts: 13,
-      min: 5,
-      max: 30,
-      on_hand: 15,
-      critical_level: 10,
-      overstock_level: 25,
-    });
   }
 
-  ngOnInit() {
-    this.subtractService.getInventory('5aec73b36427bb00088997bb').subscribe(res => {
-      console.log('Inventory: ', res)
-      this.inventory = res;
-    })
-  }
+  ngOnInit() {}
 
   searchProducts(event) {
     this.subtractService.searchInventory(this.searchText, 10, 1).subscribe(res => {
@@ -79,13 +61,7 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
     this.modalState = 0;
   }
 
-  productChange(event) {
-    this.inventory.inventory_products.forEach(product => {
-      if (product.id == this.productVariant) {
-        this.inventoryBy = product.inventory_by;
-      }
-    })
-  }
+  productChange(event) {}
 
   locationSort(event) {
     this.stockMini = Math.round(100 * Math.random());
@@ -141,6 +117,8 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
       this.inventory.overstock_level = 30;
       this.inventory.min = 0;
       this.inventory.max = 40;
+
+      console.log('INVENTORY:   ', this.inventory);
     }
   }
 

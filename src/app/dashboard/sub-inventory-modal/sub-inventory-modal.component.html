@@ -63,14 +63,14 @@
     <div class="row location select">
       <span class="bold">Product Variant</span>
       <select title="sort by" [(ngModel)]="productVariant" materialize="material_select" (change)="productChange($event)">
-        <option *ngFor="let product of inventory.inventory_products" [value]="product.id">{{product.name}}</option>
+        <option *ngFor="let product of inventory.inventory_products; let i = index" [value]="i">{{product.name}}</option>
       </select>
     </div>
     <div class="row subtracting select">
       <span class="bold">What are you subtracting?</span>
       <div class="line">
         <select title="sort by" [(ngModel)]="subtracting" materialize="material_select" (change)="subtractingSort($event)">
-          <option *ngFor="let item of inventory.inventory_products[0].inventory_by" [value]="item.value">{{item.label}}</option>
+          <option *ngFor="let item of inventory.inventory_products[productVariant].inventory_by" [value]="item.value">{{item.label}}</option>
         </select>
       </div>
     </div>
