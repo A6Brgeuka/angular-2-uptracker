@@ -116,6 +116,16 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  onColClick(item, value, headerCol, event) {
+    if (headerCol.filterBy && !(headerCol.showChevron && item.statusHistoryVisibility)) {
+      this.onFilterBy(item[value], headerCol);
+    }
+    if (headerCol.showChevron && item.status_int === this.orderStatus.multiple) {
+      this.toggleStatusHistoryDetail(item);
+      event.stopPropagation();
+    }
+  }
+
   setCheckbox(item) {
     this.orderTableService.toggleSelect(item[this.uniqueField]);
   }
@@ -158,4 +168,5 @@ export class OrderTableComponent implements OnInit, OnDestroy, OnChanges {
   goToReconcile(item) {
     this.pastOrderService.goToReconcile(item.invoice_id);
   }
+
 }

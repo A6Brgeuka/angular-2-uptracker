@@ -49,7 +49,7 @@
       </div>
       <div class="col"
         *ngFor="let headerCol of header;"
-        (click)="headerCol?.filterBy && !(headerCol.showChevron && item.statusHistoryVisibility) ? onFilterBy(item[headerCol.alias], headerCol) : toggleStatusHistoryDetail(item); $event.stopPropagation()"
+        (click)="onColClick(item, headerCol.alias, headerCol, $event)"
         [ngClass]="headerCol.className"
         [class.tealish-text]="headerCol?.filterBy || headerCol?.showChevron"
         [class.pointer]="headerCol?.filterBy || headerCol?.showChevron"
