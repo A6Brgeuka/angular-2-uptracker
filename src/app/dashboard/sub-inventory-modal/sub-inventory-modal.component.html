@@ -50,14 +50,14 @@
           </div>
         </div>
         <div class="col s12">
-          <range-slider [product]="inventory"></range-slider>
+          <range-slider [product]="inventory.inventory_item_locations[location]"></range-slider>
         </div>
       </div>
     </div>
     <div class="row location select">
       <span class="bold">Location</span>
       <select title="sort by" [(ngModel)]="location" materialize="material_select" (change)="locationSort($event)">
-        <option *ngFor="let location of inventory.inventory_item_locations" [value]="location.id">{{location.name}}</option>
+        <option *ngFor="let location of inventory.inventory_item_locations; let i = index" [value]="i">{{location.name}}</option>
       </select>
     </div>
     <div class="row location select">
@@ -135,7 +135,7 @@
       <span>{{inventory?.notes}}&nbsp;</span>
     </div>
     <div class="slider-container">
-      <range-slider [product]="inventory"></range-slider>
+      <range-slider [product]="inventory.inventory_item_locations[location]"></range-slider>
     </div>
     <div class="row submit">
       <div

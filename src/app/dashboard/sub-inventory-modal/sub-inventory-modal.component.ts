@@ -26,19 +26,18 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
   public subscribers: any = {};
   public searchText: string = '';
   public modalState: number = 0;
-  public location: string = '';
-  public subtracting: string = 'Box';
+  public location: number = 0;
+  public inventories: Array<any> = [];
+  public inventory: any = {}
+  public productVariant: number = 0
 
+  public subtracting: string = 'Box';
   public stockMini: number = 30;
   public stockMiniLimit: number = 30;
   public stockShelf: number = 133;
   public stockShelfLimit: number = 133;
   public stockSterlization: number = 2;
   public stockSterlizationLimit: number = 2;
-
-  public inventories: Array<any> = [];
-  public inventory: any = {}
-  public productVariant: number = 0
 
   constructor(
     public dialog: DialogRef<SubInventoryModalContext>,
@@ -55,6 +54,14 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
     this.subtractService.searchInventory(this.searchText, 10, 1).subscribe(res => {
       this.inventories = res;
     });
+  }
+
+  toGoModal(state, index) {
+    this.modalState = state;
+    if (index !== undefined) {
+      this.inventory = this.inventories[index];
+      console.log('INVENTORY:   ', this.inventory);
+    }
   }
 
   goBackToFirst() {
@@ -107,19 +114,6 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
   toBackInitial() {
     this.modalState = 0;
     this.searchText = '';
-  }
-
-  toGoModal(state, index) {
-    this.modalState = state;
-    if (index !== undefined) {
-      this.inventory = this.inventories[index];
-      this.inventory.critical_level = 10;
-      this.inventory.overstock_level = 30;
-      this.inventory.min = 0;
-      this.inventory.max = 40;
-
-      console.log('INVENTORY:   ', this.inventory);
-    }
   }
 
   dismissModal() {
