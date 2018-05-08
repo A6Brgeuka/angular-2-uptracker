@@ -28,7 +28,7 @@ export class PaidInvoicesListComponent implements OnInit, OnDestroy {
     {name: 'Reconciled by', className: 's2', alias: 'reconciled_by_name', filterBy: true, },
     {name: '# of Items', className: 's1 bold underline-text center-align', alias: 'item_count'},
     {name: 'Total', className: 's1 bold underline-text right-align', alias: 'total'},
-    {name: '', className: 's1', actions: false},
+    {name: '', className: 's1', actions: true},
   ];
 
   public invoices$: Observable<Invoice[]>;
