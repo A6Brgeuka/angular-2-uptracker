@@ -152,11 +152,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.generalVendor.locations.forEach(v => {
         this.locationVendors.push(new AccountVendorModel(v));
       });
-      /* this.generalVendor.address.summary = this.generalVendor.address.street_1
-       + this.generalVendor.address.street_2
-       + this.generalVendor.address.city
-       + this.generalVendor.address.state
-       + this.generalVendor.address.postal_code;*/
     })
   }
 
@@ -418,11 +413,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     });
 
     _.each(this.generalVendor, (value, key) => {
-      if (value != null && typeof value === 'string')
-        this.formData.append(key, value);
-    });
-
-    _.each(this.generalVendor.address, (value, key) => {
+      console.log(value, key)
       if (value != null && typeof value === 'string')
         this.formData.append(key, value);
     });
@@ -460,12 +451,14 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.vendor.location_id = this.currentLocation ? this.currentLocation.id : 'all';
     this.generalVendor.vendor_id = this.vendorId || this.generalVendor.id;
 
-    //let requests = [];
+    let requests = [];
     this.prepareFormData();
 
-    this.vendorService.editAccountVendor(this.vendor, this.formData)
-      .subscribe((res) => this.goBackOneStep());
-/*
+    if (!this.vendor._id || (this.currentLocation && this.currentLocation.id && this.vendor.is_all)) {
+      requests.push(this.vendorService.addAccountVendor(this.formData));
+    } else {
+      requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
+    }
 
     if (!this.currentLocation || !this.currentLocation.id) {
       if (this.primaryLocation) {
@@ -474,6 +467,8 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         this.prepareFormData();
         if (foundVendor) {
           requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
+        } else {
+          requests.push(this.vendorService.addAccountVendor(this.formData));
         }
       }
 
@@ -483,14 +478,15 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
         this.prepareFormData();
         if (foundVendor) {
           requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
+        } else {
+          requests.push(this.vendorService.addAccountVendor(this.formData));
         }
       }
     }
-*/
 
-    /*Observable.combineLatest(requests).subscribe(res => {
+    Observable.combineLatest(requests).subscribe(res => {
       this.goBackOneStep();
-    })*/
+    })
 
     console.log(this.vendor, 3333333);
     console.log(this.formData, 44444);
