@@ -228,4 +228,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
     this.receiveProductSubject$.next({item, type});
   }
 
+  viewInvoice(invoice) {
+    debugger;
+  }
 }
