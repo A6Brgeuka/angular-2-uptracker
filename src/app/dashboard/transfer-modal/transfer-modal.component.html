@@ -2,9 +2,10 @@
 <div class="inner">
   <div class="left" *ngIf="modalState === 0">
     <div class="title center-align"><span>SEARCH</span></div>
-    <div class="row search">
+    <div class="row search relative">
       <i class="fa fa-search"></i>
       <input id="search" [(ngModel)]="searchText" (ngModelChange)="searchProducts($event)">
+      <app-scanner></app-scanner>
     </div>
     <div class="info"><span>Search by inventory group name, product name, keyword, id number, etc</span></div>
     <div  *ngIf="!!searchText">
