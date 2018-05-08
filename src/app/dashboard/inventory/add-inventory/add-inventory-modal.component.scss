@@ -145,13 +145,6 @@
     }
     .input {
       position: relative;
-      .fa-barcode {
-        color: $tealish;
-        font-size: 24px;
-        position: absolute;
-        right: 23px;
-        top: 5px;
-      }
       &.search {
         input {
           padding-left: 10px;
@@ -412,8 +405,3 @@ input:focus+.error {
   border-color: $light-grey;
 }
 
-//.location-tabs {
-//  overflow-y: hidden;
-//  width: fit-content;
-//  overflow-x: visible;
-//}
