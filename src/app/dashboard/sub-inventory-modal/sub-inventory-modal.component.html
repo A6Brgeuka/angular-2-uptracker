@@ -70,7 +70,9 @@
       <span class="bold">What are you subtracting?</span>
       <div class="line">
         <select title="sort by" [(ngModel)]="subtracting" materialize="material_select" (change)="subtractingSort($event)">
-          <option *ngFor="let item of inventory.inventory_products[productVariant].inventory_by" [value]="item.value">{{item.label}}</option>
+          <ng-container *ngFor="let item of inventory.inventory_products[productVariant].inventory_by">
+            <option *ngIf="item.value && item.label" [value]="item.value">{{item.label}}</option>
+          </ng-container>
         </select>
       </div>
     </div>
@@ -78,42 +80,23 @@
       <div class="stock-row bold">Backstock</div>
       <div class="stock-row bold">QTY</div>
     </div>
-    <div class="row backstock">
-      <div class="stock-field thin">Mini Fridge</div>
-      <div class="stock-field thin">
-        <input type="number" [(ngModel)]="stockMini" (ngModelChange)="stockMiniClick($event)">
-        <button class="action-button" [disabled]="stockMini >= stockMiniLimit" (click)="stockMiniClick(1)">
-          <fa name="plus"></fa>
-        </button>
-        <button class="action-button right-align" (click)="stockMiniClick(-1)">
-          <fa name="minus"></fa>
-        </button>
-      </div>
-    </div>
-    <div class="row backstock">
-      <div class="stock-field thin">Shelf A</div>
-      <div class="stock-field" thin>
-        <input type="number" [(ngModel)]="stockShelf" (ngModelChange)="stockShelfClick($event)">
-        <button class="action-button" [disabled]="stockShelf >= stockShelfLimit" (click)="stockShelfClick(1)">
-          <fa name="plus"></fa>
-        </button>
-        <button class="action-button right-align" (click)="stockShelfClick(-1)">
-          <fa name="minus"></fa>
-        </button>
-      </div>
-    </div>
-    <div class="row backstock">
-      <div class="stock-field thin">Sterlization Room</div>
-      <div class="stock-field thin">
-        <input type="number" [(ngModel)]="stockSterlization" (ngModelChange)="stockSterlizationClick($event)">
-        <button class="action-button" [disabled]="stockSterlization >= stockSterlizationLimit" (click)="stockSterlizationClick(1)">
-          <fa name="plus"></fa>
-        </button>
-        <button class="action-button right-align" (click)="stockSterlizationClick(-1)">
-          <fa name="minus"></fa>
-        </button>
-      </div>
-    </div>
+    <ng-container *ngFor="let item of inventory.inventory_item_locations[location].storage_locations">
+      <ng-container *ngIf="!item.floorstock && item.on_hand">
+        <div class="row backstock">
+          <div class="stock-field thin">{{item.name}}</div>
+          <div class="stock-field thin">
+            <input type="number" [(ngModel)]="item.value" (ngModelChange)="backstockClicks(item, 0)">
+            <button class="action-button" [disabled]="item.value >= item.on_hand" (click)="backstockClicks(item, 1)">
+              <fa name="plus"></fa>
+            </button>
+            <button class="action-button right-align" (click)="backstockClicks(item, -1)">
+              <fa name="minus"></fa>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
     <div class="row submit">
       <div
         class="btn white-text waves-effect waves-light"

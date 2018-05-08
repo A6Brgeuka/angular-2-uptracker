@@ -60,12 +60,17 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
     this.modalState = state;
     if (index !== undefined) {
       this.inventory = this.inventories[index];
-      console.log('INVENTORY:   ', this.inventory);
-    }
-  }
+      this.subtractService.getInventory(this.inventory.id).subscribe(res => {
+        this.inventory = res;
+        this.inventory.inventory_item_locations.forEach(location => {
+          location.storage_locations.forEach(storage => {
+            storage.value = storage.on_hand
+          })
+        });
 
-  goBackToFirst() {
-    this.modalState = 0;
+        console.log('---------------------->>>>   ', res)
+      })
+    }
   }
 
   productChange(event) {}
@@ -81,39 +86,25 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
 
   subtractingSort(event) {}
 
-  stockMiniClick(value) {
-    if (value === this.stockMini && value > this.stockMiniLimit) {
+  backstockClicks(item, value) {
+    if (item.value > item.on_hand) {
       setTimeout(() => {
-        this.stockMini = this.stockMiniLimit;
+        item.value = item.on_hand;
       })
-    } else if (value !== this.stockMini) {
-      this.stockMini += value;
-    }
-  }
-
-  stockShelfClick(value) {
-    if (value === this.stockShelf && value > this.stockShelfLimit) {
-      setTimeout(() => {
-        this.stockShelf = this.stockShelfLimit;
-      })
-    } else if (value !== this.stockShelf) {
-      this.stockShelf += value;
-    }
-  }
-
-  stockSterlizationClick(value) {
-    if (value === this.stockSterlization && value > this.stockSterlizationLimit) {
-      setTimeout(() => {
-        this.stockSterlization = this.stockSterlizationLimit;
-      })
-    } else if (value !== this.stockSterlization) {
-      this.stockSterlization += value;
+    } else if (item.value !== item.on_hand) {
+      item.value += value;
+    } else if (item.value == item.on_hand && value == -1) {
+      item.value += value;
     }
   }
 
   toBackInitial() {
     this.modalState = 0;
     this.searchText = '';
+  }
+
+  goBackToFirst() {
+    this.modalState = 0;
   }
 
   dismissModal() {
