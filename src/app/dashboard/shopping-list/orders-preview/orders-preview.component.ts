@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { ResponseContentType } from '@angular/http';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
 import {BehaviorSubject, Observable} from 'rxjs/Rx';
-import { Location }                 from '@angular/common';
+import { Subject } from 'rxjs/Subject';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
+
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { UserService } from '../../../core/services/user.service';
 import { AccountService } from '../../../core/services/account.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import {OrderOptions, OrderService, ConvertedOrder} from '../../../core/services/order.service';
+import {OrderOptions, OrderService} from '../../../core/services/order.service';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { APP_DI_CONFIG } from '../../../../../env';
 import { HttpClient } from '../../../core/services/http.service';
-import { ResponseContentType } from '@angular/http';
 import { EditFaxDataModal } from './edit-fax-data-modal/edit-fax-data-modal.component';
 import { WarningOrderModalComponent } from './warning-order-modal/warning-order-modal.component';
 import { OnlineOrderModalComponent } from './online-order-modal/online-order-modal.component';
@@ -30,11 +33,11 @@ import { ConfirmModalService } from '../../../shared/modals/confirm-modal/confir
 export class OrdersPreviewComponent implements OnInit {
   public subscribers: any = {};
 
-  public orderId: string = '';
+  public orderId = '';
   public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public prefillAllSubject$: Subject<any> = new Subject<any>();
   public location_id: string;
   public apiUrl: string;
-  private first_order: any;
 
   constructor(
     public modal: Modal,
@@ -76,11 +79,11 @@ export class OrdersPreviewComponent implements OnInit {
   }
 
   saveOrder(orderId: string, key: string, val, vendorId: string) {
-    if (key != 'ship_to' && key != 'order_method') {
+    if (key !== 'ship_to' && key !== 'order_method') {
       const regex = /[\d\.]*/g;
-      let m: any = regex.exec(val);
+      const m: any = regex.exec(val);
       regex.lastIndex++;
-      let m1: any = regex.exec(val);
+      const m1: any = regex.exec(val);
       if (m && m[0]) {
         val = parseFloat(m[0] ? m[0] : '0');
       } else if (m1 && m1[0]) {
@@ -91,7 +94,7 @@ export class OrdersPreviewComponent implements OnInit {
       }
 
     }
-    let data: any = {};
+    const data: any = {};
     data[key] = val;
     data['vendor_id'] = vendorId;
     this.orderService.updateOrder(orderId, data).subscribe((res: any) => {
@@ -101,7 +104,7 @@ export class OrdersPreviewComponent implements OnInit {
       (res: any) => {
         this.toasterService.pop('error', res.statusText);
         console.error(res);
-      })
+      });
   }
 
   goBack(): void {
@@ -113,7 +116,7 @@ export class OrdersPreviewComponent implements OnInit {
       vendor_id: [order[0].vendor_id],
       location_id: order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id
     };
-    let data = new OrderOptions();
+    const data = new OrderOptions();
     data.ship_to = order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id;
     data.order_method = order[0].order_method;
     data['vendor_id'] = order[0].vendor_id;
@@ -125,7 +128,22 @@ export class OrdersPreviewComponent implements OnInit {
       .subscribe(() => {
         this.confirmModalService.confirmModal('Success', 'Order is finalized ', [{text: 'Ok', value: 'ok', cancel: true}])
           .subscribe(() => this.router.navigate(['/shoppinglist']));
+      });
+
+    this.subscribers.prefillAllSubscription = this.prefillAllSubject$
+    .switchMap(() =>
+      this.orders$
+      .map((orders: any) => {
+        const order_ids = orders.map((order: any) => order.vendor_id);
+        return this.orderService.convertData = {
+          vendor_id: order_ids,
+          location_id: this.location_id
+        };
       })
+    )
+    .subscribe(() => {
+      this.router.navigate(['/shoppinglist', 'purchase', this.orderId]);
+    });
   }
 
   makeOrder(order: any) {
@@ -139,7 +157,6 @@ export class OrdersPreviewComponent implements OnInit {
     }*/
 
     this.orderService.updateOrder(this.orderId, data).subscribe((res: any) => {
-      debugger;
         this.calcTT(res);
         //TODO: need to define, why order_method == null
         order[0].order_method = order[0].order_method == null ? 'Email' : order[0].order_method;
@@ -242,19 +259,8 @@ export class OrdersPreviewComponent implements OnInit {
       }
     }
 
-  prefillAll(){
-    this.orders$
-    .map((orders:any)=>{
-      this.first_order = orders[0];
-      return orders.map((order:any)=>order.vendor_id)
-    })
-    .subscribe((order_ids:string[])=>{
-      this.orderService.convertData = {
-        vendor_id: order_ids,
-        location_id: this.location_id
-      };
-      this.router.navigate(['/shoppinglist', 'purchase', this.orderId]);
-    });
+  prefillAll() {
+    this.prefillAllSubject$.next(null);
   }
 
   onViewPoClick(order: any) {
