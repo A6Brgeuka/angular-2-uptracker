@@ -1,4 +1,4 @@
-<div class="reconcile-tooltip">
+<div class="reconcile-tooltip" [ngClass]="{'visible': _product.isTooltipVisible}">
   <div *ngIf="state == 10">
     <span>Is this a discount or new price?</span>
     <p>
@@ -20,7 +20,10 @@
     </div>
   </div>
   <div *ngIf="state == 11">
-    <span>Discount applied!</span>
+    <div class="price-row">
+      <img src="/assets/img/icon-check.png" alt="" />
+      <span>Discount applied!</span>
+    </div>
     <div class="controls">
       <button
         type="submit"

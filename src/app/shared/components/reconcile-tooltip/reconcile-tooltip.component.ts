@@ -7,20 +7,19 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 
 export class ReconcileTooltipComponent {
-  public _isLower: any = {};
+  public _product: any = {};
   public state: number = 10;
   public reconcileType: string = '';
 
   @Input()
-  set isLower(value: any) {
-    console.log('~~~~~~~~~~~~~~~:   ', value)
-    this._isLower = value;
+  set product(value: any) {
+    this._product = value;
   }
 
   constructor() {
-    if (this._isLower == 'true') {
+    if (this._product.package_price > this._product.reconciled_package_price) {
       this.state = 10;
-    } else {
+    } else if (this._product.package_price < this._product.reconciled_package_price) {
       this.state = 12;
     }
   }
@@ -37,7 +36,7 @@ export class ReconcileTooltipComponent {
     } else if (button == 'no') {
       this.state = 14;
     } else {
-
+      this._product.isTooltipVisible = false;
     }
   }
 }

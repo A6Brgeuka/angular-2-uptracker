@@ -2,6 +2,7 @@
 
 :host /deep/ {
   .reconcile-tooltip {
+    display: none;
     bottom: 60px;
     border: 1px solid #9a9c9e;
     background-color: #fff;
@@ -30,6 +31,10 @@
         margin-left: 10px;
       }
     }
+  }
+
+  .visible {
+    display: block;
   }
 
   [type="radio"]:checked + label:after {

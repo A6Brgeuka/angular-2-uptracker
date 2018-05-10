@@ -205,6 +205,9 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         product.reconciled_discounted_price = (product.reconciled_package_price - product.reconciled_discount) || 0;
       }
       product.reconciled_total = (product.reconciled_discounted_price * product.reconciled_qty) || 0;
+      if (product.package_price !== product.reconciled_package_price) {
+        product.isTooltipVisible = true;
+      }
       this.selectedInvoice.invoice.calculated_sub_total = product.reconciled_total;
       this.updateInvoiceDetails({});
     } catch (err) {
