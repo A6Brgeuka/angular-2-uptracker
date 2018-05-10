@@ -1,4 +1,4 @@
-<ng-template [ngIf]="isShow">
+<ng-template [ngIf]="isShow && (ordersService.tableRoute$ | async) !== '/orders/invoices'">
   <div class="right edititem"
     materialize="dropdown"
     [attr.data-activates]='listName'

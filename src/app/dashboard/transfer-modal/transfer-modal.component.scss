@@ -47,6 +47,9 @@
         border-radius: 5px;
         font-size: 30px;
         margin: 0;
+        .scanner {
+          top: 10px;
+        }
         > i {
           color: $light-grey;
           line-height: 55px;

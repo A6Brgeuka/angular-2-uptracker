@@ -3,6 +3,7 @@
     class="tealish-text pointer"
     [class.show-hover-elem]="!item.flagged"
     (click)="openAddCommentModal(item)"
+    *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices'"
   >
     <fa name="flag-o" *ngIf="!item?.flagged"></fa>
     <fa name="flag" *ngIf="item?.flagged"></fa>
@@ -11,6 +12,7 @@
     class="tealish-text pointer"
     [class.show-hover-elem] = "!item.favorite"
     (click)="setFavorite(item)"
+    *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices'"
   >
     <fa name="star-o" *ngIf="!item?.favorite"></fa>
     <fa name="star" *ngIf="item?.favorite"></fa>
@@ -21,7 +23,7 @@
     [attr.data-activates]='item[uniqueField] + listName + i'>
     <fa name="ellipsis-h"></fa>
   </div>
-  <ul [id]='item[uniqueField] + listName + i' class='dropdown-content'>
+  <ul [id]='item[uniqueField] + listName + i' class='dropdown-content' *ngIf="(ordersService.tableRoute$ | async) !== '/orders/invoices'">
     <li *ngIf="item.status !== 'Reconciled'">
       <a class="tealish-text" (click)="edit()">Edit</a>
     </li>
@@ -55,6 +57,11 @@
     </li>
     <li *ngIf="!isViodedItem && !isReceivedItem &&  !isRecieveList">
       <a class="red-text" (click)="onVoidOrder(item)">Void</a>
+    </li>
+  </ul>
+  <ul [id]='item[uniqueField] + listName + i' class='dropdown-content' *ngIf="(ordersService.tableRoute$ | async) === '/orders/invoices'">
+    <li>
+      <a class="tealish-text" (click)="viewInvoice(item)">View Invoice</a>
     </li>
   </ul>
 </ng-template>
