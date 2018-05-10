@@ -139,6 +139,7 @@ export class OrdersPreviewComponent implements OnInit {
     }*/
 
     this.orderService.updateOrder(this.orderId, data).subscribe((res: any) => {
+      debugger;
         this.calcTT(res);
         //TODO: need to define, why order_method == null
         order[0].order_method = order[0].order_method == null ? 'Email' : order[0].order_method;
@@ -252,17 +253,13 @@ export class OrdersPreviewComponent implements OnInit {
         vendor_id: order_ids,
         location_id: this.location_id
       };
-      this.route.params.subscribe((p:Params)=>{
-        this.router.navigate(['/shoppinglist','purchase',p['id']]);
-      });
+      this.router.navigate(['/shoppinglist', 'purchase', this.orderId]);
     });
   }
 
   onViewPoClick(order: any) {
     this.prefillDataForConvertion(order);
-    this.route.params.subscribe((p:Params)=>{
-      this.router.navigate(['/shoppinglist','purchase',p['id']]);
-    });
+    this.router.navigate(['/shoppinglist', 'purchase', this.orderId]);
   }
 
   onPrintPoClick(order: any) {
