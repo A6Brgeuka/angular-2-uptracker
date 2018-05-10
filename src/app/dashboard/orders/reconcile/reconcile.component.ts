@@ -345,6 +345,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     }
   }
 
+  reconcileTypeChanges(event) {}
+
   reconcileSave() {
     this.toasterService.pop("", "Invoice details updated successfully");
     const payload = this.getUpdates(false);

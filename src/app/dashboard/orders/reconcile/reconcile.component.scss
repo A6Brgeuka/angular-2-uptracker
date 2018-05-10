@@ -540,6 +540,9 @@
     .item {
       font-family: 'Roboto';
       border-bottom: 1px solid #ddd;
+      .relative {
+        position: relative;
+      }
       .text-right {
         padding-right: 5px;
       }
@@ -798,7 +801,7 @@
       }
     }
   }
-  
+
   .select {
     .select-wrapper {
       ul li.disabled span {
