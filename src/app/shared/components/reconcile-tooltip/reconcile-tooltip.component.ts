@@ -1,27 +1,70 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, forwardRef, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, FormControl } from "@angular/forms";
+
+const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => ReconcileTooltipComponent),
+  multi: true
+};
+
+const CUSTOM_INPUT_VALIDATORS: any = {
+  provide: NG_VALIDATORS,
+  useExisting: forwardRef(() => ReconcileTooltipComponent),
+  multi: true
+};
+
+declare var ReconcileTooltip: any;
+
 
 @Component({
   selector: 'reconcile-tooltip',
   templateUrl: './reconcile-tooltip.component.html',
   styleUrls: ['./reconcile-tooltip.component.scss'],
+  providers: [
+    CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR,
+    CUSTOM_INPUT_VALIDATORS
+  ]
 })
 
-export class ReconcileTooltipComponent {
-  public _product: any = {};
-  public state: number = 10;
-  public reconcileType: string = '';
+export class ReconcileTooltipComponent implements ControlValueAccessor, OnInit {
+  onChange = (_: any): void => {};
+  onTouched = (_: any): void => {};
+  reconciled_package_price: any = {};
+  state: number = 10;
+  package_price: string = '';
+  reconcileType: string = '';
+  visible: boolean = false;
 
   @Input()
-  set product(value: any) {
-    this._product = value;
+  set price(value: any) {
+    this.package_price = value;
   }
 
-  constructor() {
-    if (this._product.package_price > this._product.reconciled_package_price) {
+  constructor() {}
+
+  ngOnInit() {}
+
+  writeValue(v): void {
+    this.reconciled_package_price = v || {};
+    if (this.package_price > this.reconciled_package_price) {
+      this.visible = true;
       this.state = 10;
-    } else if (this._product.package_price < this._product.reconciled_package_price) {
+    } else if (this.package_price < this.reconciled_package_price) {
+      this.visible = true;
       this.state = 12;
     }
+  }
+
+  validate(c: FormControl): any {
+    return true; /* TODO Investigate what was wrong with previous validation */
+  }
+
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn; 
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn; 
   }
 
   changeTooltip(button) {
@@ -36,7 +79,7 @@ export class ReconcileTooltipComponent {
     } else if (button == 'no') {
       this.state = 14;
     } else {
-      this._product.isTooltipVisible = false;
+      this.visible = false;
     }
   }
 }
