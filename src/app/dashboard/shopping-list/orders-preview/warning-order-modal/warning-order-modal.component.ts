@@ -6,10 +6,10 @@ import { ResponseContentType } from "@angular/http";
 import { APP_DI_CONFIG } from '../../../../../../env';
 import { ToasterService } from "../../../../core/services/toaster.service";
 import { SpinnerService } from "../../../../core/services";
-import { OrderService, OrderItems } from "../../../../core/services/order.service";
 import { UserService } from "../../../../core/services/user.service";
 import { EditEmailDataModal } from "../purchase-order/edit-email-data-modal/edit-email-data-modal.component";
 import { ModalWindowService } from "../../../../core/services/modal-window.service";
+import { OrderItems } from '../models/converted-order';
 
 export class WarningOrderModalContext extends BSModalContext {
   public order: OrderItems;
@@ -34,8 +34,7 @@ export class WarningOrderModalComponent implements OnInit, ModalComponent<Warnin
     public httpClient: HttpClient,
     public toasterService: ToasterService,
     public spinner: SpinnerService,
-    public userService : UserService,
-    public orderService: OrderService,
+    public userService: UserService,
     public modalWindowService: ModalWindowService,
     public modal: Modal
   ) {

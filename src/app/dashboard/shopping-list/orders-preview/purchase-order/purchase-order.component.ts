@@ -3,19 +3,20 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { Location }                 from '@angular/common';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs/Subject';
 
-import { ModalWindowService } from "../../../../core/services/modal-window.service";
+import { ModalWindowService } from '../../../../core/services/modal-window.service';
 import { UserService } from '../../../../core/services/user.service';
 import { AccountService } from '../../../../core/services/account.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ConvertedOrder, OrderService } from '../../../../core/services/order.service';
+import { OrderService } from '../../../../core/services/order.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { EditEmailDataModal } from './edit-email-data-modal/edit-email-data-modal.component';
-import { Subject } from 'rxjs/Subject';
+import { ConvertedOrder } from '../models/converted-order';
 
 
 @Component({
@@ -136,7 +137,7 @@ export class PurchaseOrderComponent implements OnInit {
         this.showEmailDataEditModal({
           order_method:order['order_method'],
           attachments: order['attachments'],
-          email_text: status.email_text.replace('(vendor name)', order['vendor_name']),
+          email_text: status.email_text ? status.email_text.replace('(vendor name)', order['vendor_name']) : '',
           po_number: order['po_number'],
           preview_id: order['preview_id'],
           order_id: order['id'],
