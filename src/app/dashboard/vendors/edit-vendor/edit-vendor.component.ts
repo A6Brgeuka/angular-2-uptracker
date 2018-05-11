@@ -158,7 +158,7 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   addSubscribers() {
     this.currency$ = this.accountService.getCurrencies();
     this.subscribers.currencySubscription = this.currency$
-    .subscribe(currency => this.currencyArr = currency);
+      .subscribe(currency => this.currencyArr = currency);
   }
 
   initTabs() {
@@ -252,8 +252,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
   }
 
   chooseTabLocation(location = null) {
-
-    console.log(this.vendor, 1111111);
     // set placeholders
     if (location) {
       let allLocationsVendor = _.find(_.cloneDeep(this.vendorData), {'location_id': null}) || {};
@@ -316,7 +314,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     this.secondaryFormPhone = '';
     this.secondaryFormPhone2 = '';
     this.secondaryFormFax = '';
-    console.log(this.vendor, 2222222);
 
     this.calcPriorityMargin(this.vendor.priority || 1);
 
@@ -413,7 +410,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     });
 
     _.each(this.generalVendor, (value, key) => {
-      console.log(value, key)
       if (value != null && typeof value === 'string')
         this.formData.append(key, value);
     });
@@ -454,32 +450,46 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
     let requests = [];
     this.prepareFormData();
 
-    if (!this.vendor._id || (this.currentLocation && this.currentLocation.id && this.vendor.is_all)) {
-      requests.push(this.vendorService.addAccountVendor(this.formData));
-    } else {
-      requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
-    }
-
-    if (!this.currentLocation || !this.currentLocation.id) {
-      if (this.primaryLocation) {
-        let foundVendor = this.locationVendors.find(v => v.location_id === this.primaryLocation.id);
-        this.vendor.location_id = this.primaryLocation.id;
+    if (this.vendor.location_id === 'all') {
+      _.each(this.userService.selfData.locations, location => {
+        let location_id = location.location_id;
+        let foundVendor = this.locationVendors.find(v => v.location_id === location_id);
+        this.vendor.location_id = location_id;
         this.prepareFormData();
         if (foundVendor) {
           requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
         } else {
           requests.push(this.vendorService.addAccountVendor(this.formData));
         }
+      });
+    } else {
+      if (!this.vendor._id || (this.currentLocation && this.currentLocation.id && this.vendor.is_all)) {
+        requests.push(this.vendorService.addAccountVendor(this.formData));
+      } else {
+        requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
       }
 
-      if (this.secondaryLocation) {
-        let foundVendor = this.locationVendors.find(v => v.location_id === this.secondaryLocation.id);
-        this.vendor.location_id = this.secondaryLocation.id;
-        this.prepareFormData();
-        if (foundVendor) {
-          requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
-        } else {
-          requests.push(this.vendorService.addAccountVendor(this.formData));
+      if (!this.currentLocation || !this.currentLocation.id) {
+        if (this.primaryLocation) {
+          let foundVendor = this.locationVendors.find(v => v.location_id === this.primaryLocation.id);
+          this.vendor.location_id = this.primaryLocation.id;
+          this.prepareFormData();
+          if (foundVendor) {
+            requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
+          } else {
+            requests.push(this.vendorService.addAccountVendor(this.formData));
+          }
+        }
+
+        if (this.secondaryLocation) {
+          let foundVendor = this.locationVendors.find(v => v.location_id === this.secondaryLocation.id);
+          this.vendor.location_id = this.secondaryLocation.id;
+          this.prepareFormData();
+          if (foundVendor) {
+            requests.push(this.vendorService.editAccountVendor(this.vendor, this.formData));
+          } else {
+            requests.push(this.vendorService.addAccountVendor(this.formData));
+          }
         }
       }
     }
@@ -488,8 +498,6 @@ export class EditVendorComponent implements OnInit, AfterViewInit {
       this.goBackOneStep();
     })
 
-    console.log(this.vendor, 3333333);
-    console.log(this.formData, 44444);
 
   }
 

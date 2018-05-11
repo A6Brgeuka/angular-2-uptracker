@@ -130,7 +130,7 @@ export class AddVendorModalComponent implements OnInit {
 
     this.vendorService.addAccountVendor(this.formData)
       .do(res => this.vendorService.addToCollection$.next(res))
-      .subscribe(res => this.router.navigate(['/vendors/view/' + res.id]) && this.closeModal(true));
+      .subscribe(res => this.router.navigate(['/vendors/edit/' + res.id]) && this.closeModal(true));
   }
 
   deleteLogo() {
