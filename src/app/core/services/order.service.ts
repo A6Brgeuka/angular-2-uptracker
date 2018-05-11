@@ -3,6 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Restangular } from 'ngx-restangular';
 import { Subscribers } from '../../decorators/subscribers.decorator';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import * as _ from 'lodash';
 
 import { ModelService } from '../../overrides/model.service';
 import { APP_CONFIG, AppConfig } from '../../app.config';
@@ -91,5 +92,14 @@ export class OrderService extends ModelService {
     return this.restangular.one('po', orderId).all('send').customPOST(data)
       .map((res: any) => res.data);
   }
-  
+
+  calcTT(items) {
+    let tt = 0;
+    _.each(items, (i: any) => {
+      tt += i.total_nf;
+    });
+    items.total_total = tt;
+    return this.updateCollection$.next(items);
+  }
+
 }
