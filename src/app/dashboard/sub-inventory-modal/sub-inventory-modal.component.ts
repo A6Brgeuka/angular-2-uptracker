@@ -67,9 +67,11 @@ export class SubInventoryModal implements OnInit, ModalComponent<SubInventoryMod
             storage.value = storage.on_hand
           })
         });
-
-        console.log('---------------------->>>>   ', res)
       })
+    }
+
+    if (state == 2 && index == undefined) {
+      this.subtractService.submitInventory(this.inventory.id, this.inventory);
     }
   }
 

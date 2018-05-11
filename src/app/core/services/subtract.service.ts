@@ -44,4 +44,9 @@ export class SubtractService extends ModelService {
       return res.data;
     });
   }
+
+  submitInventory(id, data) {
+    return this.restangular.one('inventory', id).all('level').customPUT(data)
+    .do((res: any) => {});
+  }
 }
