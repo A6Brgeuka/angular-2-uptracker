@@ -3,11 +3,10 @@ import { Location } from '@angular/common';
 import { ResponseContentType } from '@angular/http';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import {BehaviorSubject, Observable} from 'rxjs/Rx';
+import { Observable} from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { DestroySubscribers } from 'ngx-destroy-subscribers';
-import * as _ from 'lodash';
 
 import { ModalWindowService } from '../../../core/services/modal-window.service';
 import { UserService } from '../../../core/services/user.service';
@@ -34,8 +33,9 @@ export class OrdersPreviewComponent implements OnInit {
   public subscribers: any = {};
 
   public orderId = '';
-  public orders$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public orders$: Observable<any>;
   public prefillAllSubject$: Subject<any> = new Subject<any>();
+  public saveOrderSubject$: Subject<any> = new Subject<any>();
   public location_id: string;
   public apiUrl: string;
 
@@ -58,69 +58,29 @@ export class OrdersPreviewComponent implements OnInit {
 
   ngOnInit() {
 
+    this.orders$ = this.orderService.collection$;
+
     this.subscribers.paramsSubscribtion = this.route.params
     .switchMap((p: Params) => {
       this.orderId = p['id'];
       return this.orderService.getOrder(p['id']);
     })
     .subscribe((items: any) => {
-      return this.calcTT(items);
+      return this.orderService.calcTT(items);
     });
 
-  }
-
-  calcTT(items) {
-    let tt = 0;
-    _.each(items, (i: any) => {
-      tt += i.total_nf;
-    });
-    items.total_total = tt;
-    return this.orders$.next(items);
-  }
-
-  saveOrder(orderId: string, key: string, val, vendorId: string) {
-    if (key !== 'ship_to' && key !== 'order_method') {
-      const regex = /[\d\.]*/g;
-      const m: any = regex.exec(val);
-      regex.lastIndex++;
-      const m1: any = regex.exec(val);
-      if (m && m[0]) {
-        val = parseFloat(m[0] ? m[0] : '0');
-      } else if (m1 && m1[0]) {
-        val = parseFloat(m1[0] ? m1[0] : '0');
-      }
-      if (!val) {
-        val = 0;
-      }
-
-    }
-    const data: any = {};
-    data[key] = val;
-    data['vendor_id'] = vendorId;
-    this.orderService.updateOrder(orderId, data).subscribe((res: any) => {
+    this.subscribers.saveOrderSubscription = this.saveOrderSubject$
+    .switchMap((data) =>
+      this.orderService.updateOrder(this.orderId, data)
+    )
+    .subscribe((res: any) => {
         this.toasterService.pop('', 'Data updated');
-        this.calcTT(res);
+        this.orderService.calcTT(res);
       },
       (res: any) => {
         this.toasterService.pop('error', res.statusText);
         console.error(res);
       });
-  }
-
-  goBack(): void {
-    this.windowLocation.back();
-  }
-
-  prefillDataForConvertion(order: any) {
-    this.orderService.convertData = {
-      vendor_id: [order[0].vendor_id],
-      location_id: order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id
-    };
-    const data = new OrderOptions();
-    data.ship_to = order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id;
-    data.order_method = order[0].order_method;
-    data['vendor_id'] = order[0].vendor_id;
-    return data;
   }
 
   addSubscribers() {
@@ -146,6 +106,45 @@ export class OrdersPreviewComponent implements OnInit {
     });
   }
 
+  saveOrder(key: string, val, vendorId: string) {
+    if (key !== 'ship_to' && key !== 'order_method') {
+      const regex = /[\d\.]*/g;
+      const m: any = regex.exec(val);
+      regex.lastIndex++;
+      const m1: any = regex.exec(val);
+      if (m && m[0]) {
+        val = parseFloat(m[0] ? m[0] : '0');
+      } else if (m1 && m1[0]) {
+        val = parseFloat(m1[0] ? m1[0] : '0');
+      }
+      if (!val) {
+        val = 0;
+      }
+
+    }
+    const data: any = {};
+    data[key] = val;
+    data['vendor_id'] = vendorId;
+    this.saveOrderSubject$.next(data);
+  }
+
+  goBack(): void {
+    this.windowLocation.back();
+  }
+
+  prefillDataForConvertion(order: any) {
+    this.orderService.convertData = {
+      vendor_id: [order[0].vendor_id],
+      location_id: order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id
+    };
+    const data = new OrderOptions();
+    data.ship_to = order[0].ship_to.location_id ? order[0].ship_to.location_id : order[0].ship_to_options[0].location_id;
+    data.order_method = order[0].order_method;
+    data['vendor_id'] = order[0].vendor_id;
+    return data;
+  }
+
+
   makeOrder(order: any) {
 
     const data = this.prefillDataForConvertion(order);
@@ -156,8 +155,9 @@ export class OrdersPreviewComponent implements OnInit {
       w = window.open();
     }*/
 
-    this.orderService.updateOrder(this.orderId, data).subscribe((res: any) => {
-        this.calcTT(res);
+    this.orderService.updateOrder(this.orderId, data)
+    .subscribe((res: any) => {
+        this.orderService.calcTT(res);
         //TODO: need to define, why order_method == null
         order[0].order_method = order[0].order_method == null ? 'Email' : order[0].order_method;
         switch (order[0].order_method) {
