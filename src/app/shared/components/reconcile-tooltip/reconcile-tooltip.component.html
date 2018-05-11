@@ -2,7 +2,7 @@
   <div *ngIf="state == 10">
     <span>Is this a discount or new price?</span>
     <p>
-      <input name="selection1" type="radio" id="discount" value="discount" [(ngModel)]="reconcileType" />
+      <input name="selection1" type="radio" id="discount" value="discount" [(ngModel)]="reconcileType" (ngModelChange)="onDiscount()" />
       <label for="discount">Discount</label>
     </p>
     <p>

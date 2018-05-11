@@ -1,3 +1,5 @@
+import { EventEmitter } from '@angular/core';
+import { Output } from '@angular/core';
 import { Component, forwardRef, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, FormControl } from "@angular/forms";
 
@@ -39,6 +41,7 @@ export class ReconcileTooltipComponent implements ControlValueAccessor, OnInit {
   set price(value: any) {
     this.package_price = value;
   }
+  @Output() selectDiscount: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -81,5 +84,9 @@ export class ReconcileTooltipComponent implements ControlValueAccessor, OnInit {
     } else {
       this.visible = false;
     }
+  }
+
+  onDiscount() {
+    this.selectDiscount.next()
   }
 }
