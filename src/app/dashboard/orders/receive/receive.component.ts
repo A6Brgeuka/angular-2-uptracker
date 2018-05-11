@@ -143,20 +143,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.openConfirmModal$.next('');
   }
 
-  // transformStorageLocations(item) {
-  //   let locations = item.inventory_group.locations.reduce((acc: any[], location) => {
-  //
-  //     const array = location.storage_locations.map(storage_location => ({
-  //       location_id: location.location_id,
-  //       location_name: location.name,
-  //       ...storage_location
-  //     }));
-  //
-  //     return [...acc, array];
-  //   }, []);
-  //   item.locations = _.flatten(locations);
-  // }
-
   save() {
     this.receiveService.formSubmitted();
     console.log('Save will be implemented later');
@@ -167,32 +153,6 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     } else {
       this.toasterService.pop('error', 'Form is invalid. Couldn\'t save');
     }
-    // if (this.receiveProducts.packing_slip_number) {
-    //   this.receiveProducts.orders.map((order) => {
-    //     order.items.map(item => {
-    //       if (item.inventory_group_id) {
-    //         item.status.map(status => {
-    //           if (status.type === 'receive' || status.type === 'partial receive') {
-    //             status.primary_status = true;
-    //           }
-    //           if ((status.type === 'receive' || status.type === 'partial receive' || status.type === 'quantity increase' || status.type === 'quantity decrease') && !status.storage_location_id) {
-    //             status.storage_location_id = item.inventory_group.locations[0].storage_locations[0].id;
-    //           }
-    //           return status;
-    //         });
-    //       } else {
-    //         this.inventoryGroupValid = false;
-    //       }
-    //     });
-    //   });
-    //   if (this.inventoryGroupValid) {
-    //     this.saveReceiveProducts$.next('');
-    //   }
-    //
-    // } else {
-    //   this.packingSlipValid = false;
-    //   this.inventoryGroupValid = false;
-    // }
   }
 
 }
