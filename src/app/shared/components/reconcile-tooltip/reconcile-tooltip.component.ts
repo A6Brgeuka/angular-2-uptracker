@@ -1,6 +1,4 @@
-import { EventEmitter } from '@angular/core';
-import { Output } from '@angular/core';
-import { Component, forwardRef, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
+import { Component, forwardRef, OnInit, ViewChild, ElementRef, EventEmitter, Input, Output } from "@angular/core";
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, FormControl } from "@angular/forms";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
@@ -55,6 +53,9 @@ export class ReconcileTooltipComponent implements ControlValueAccessor, OnInit {
     } else if (this.package_price < this.reconciled_package_price) {
       this.visible = true;
       this.state = 12;
+    }
+    if (this.reconcileType == 'discount') {
+      this.selectDiscount.next()
     }
   }
 

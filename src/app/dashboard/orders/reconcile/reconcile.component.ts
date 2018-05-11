@@ -171,7 +171,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   productChange(product) {
-    console.log('~~~~~~~~~~~~:   ', product)
     try {
       if (product.reconciled_discount_type === 'PERCENT') {
         product.reconciled_discounted_price = ((1 - product.reconciled_discount / 100) * product.reconciled_package_price) || 0;
@@ -190,12 +189,17 @@ export class ReconcileComponent implements OnInit, OnDestroy {
   }
 
   productDiscount(product) {
-    if (product.reconciled_discount_type == 'PERCENT') {
-      product.reconciled_discount = Math.round(10000 * (product.package_price - product.reconciled_discounted_price) / product.package_price) / 100;
+    if (product.reconciled_package_price > product.package_price) {
+      product.reconciled_discount = 0;
+      product.discounted_price = 0;
     } else {
-      product.reconciled_discount = Math.round((product.package_price - product.reconciled_discounted_price) * 100) / 100;
+      if (product.reconciled_discount_type == 'PERCENT') {
+        product.reconciled_discount = Math.round(10000 * (product.package_price - product.reconciled_package_price) / product.package_price) / 100;
+      } else {
+        product.reconciled_discount = Math.round((product.package_price - product.reconciled_package_price) * 100) / 100;
+      }
+      product.discounted_price = product.reconciled_discounted_price;
     }
-    product.discounted_price = product.reconciled_discounted_price;
   }
 
   bulkUpdates() {
