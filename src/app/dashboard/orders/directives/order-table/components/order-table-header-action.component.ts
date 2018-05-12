@@ -6,6 +6,7 @@ import { Modal } from 'angular2-modal';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
+import { ReconcileOnboardingModal } from '../../../reconcile-onboarding-modal/reconcile-onboarding-modal.component';
 import { OrderTableService } from '../order-table.service';
 import { PastOrderService } from '../../../../../core/services/pastOrder.service';
 import { ModalWindowService } from '../../../../../core/services/modal-window.service';
@@ -172,6 +173,12 @@ export class OrderTableHeaderActionComponent implements OnInit, OnDestroy {
 
   backorder() {
     this.onReceiveOrders(OrderStatusValues.backorder);
+  }
+
+  reconcile() {
+    this.modal
+    .open(ReconcileOnboardingModal, this.modalWindowService
+    .overlayConfigFactoryWithParams({orders: this.orders}));
   }
 
   private onReceiveOrders(type?) {

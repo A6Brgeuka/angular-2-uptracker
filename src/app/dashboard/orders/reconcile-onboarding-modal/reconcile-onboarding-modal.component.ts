@@ -13,7 +13,6 @@ import { ToasterService } from '../../../core/services/toaster.service';
 
 
 export class ReconcileOnboardingModalContext extends BSModalContext {
-  public order: any;
   public orders: Array<any>;
 }
 
@@ -46,11 +45,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
   }
 
   ngOnInit() {
-    console.log(this.context, 'Resend context');
-
-    this.context.orders.subscribe(item => {
-      this.items = item;
-    });
+    this.items = this.context.orders
     this.reconcileService.lookInvoices(null).subscribe(res => {
       this.invoices = res;
       if (res.length > 0) {
@@ -71,7 +66,7 @@ export class ReconcileOnboardingModal implements OnInit, ModalComponent<Reconcil
         ids = ids.concat(item.id);
       });
     } else {
-      ids = this.context.order.id;
+      ids = this.items[0].id;
     }
 
     if (this.reconcileType == 'start') {

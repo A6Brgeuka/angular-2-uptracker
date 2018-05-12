@@ -17,7 +17,7 @@
       <a class="tealish-text" (click)="backorder()">Backorder</a>
     </li>
     <li *ngIf="(ordersService.tableRoute$ | async) === '/orders/packing-slips' || isReceiveList">
-      <a class="tealish-text" [routerLink]="['/orders/reconcile']">Reconcile</a>
+      <a class="tealish-text" (click)="reconcile()">Reconcile</a>
     </li>
     <li>
       <a class="tealish-text" (click)=buyAgainOrders()>Buy Again</a>

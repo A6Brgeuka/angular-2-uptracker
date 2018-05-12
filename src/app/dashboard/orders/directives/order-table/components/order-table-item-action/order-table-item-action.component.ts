@@ -87,8 +87,6 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
       this.ordersService.tableRoute$,
       this.receiveProductSubject$,
     );
-
-
   }
 
   ngOnDestroy() {
@@ -213,7 +211,7 @@ export class OrderTableItemActionComponent implements OnInit, OnDestroy {
   reconcile() {
     this.modal
     .open(ReconcileOnboardingModal, this.modalWindowService
-    .overlayConfigFactoryWithParams({order: this.item, orders: this.items}));
+    .overlayConfigFactoryWithParams({orders: [this.item]}));
   }
 
   backorder() {
