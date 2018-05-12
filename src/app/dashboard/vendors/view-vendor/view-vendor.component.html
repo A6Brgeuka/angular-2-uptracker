@@ -249,14 +249,21 @@
         {{locationData.secondary_rep_fax}}
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col s12 label">Documents:</div>
-    <div class="col s12">
-      <div class="document" *ngFor="let document of locationData.documents">
-        <a [href]="document.uri" target="_blank">
-          <img src="/assets/img/icon-info.svg" alt="" /> {{document.name}}
-        </a>
+    <div class="row">
+      <div class="col s12 divider-container">
+        <div class="divider-header">
+          Documents
+        </div>
+        <div class='divider-line'></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <div class="document" *ngFor="let document of locationData.documents">
+          <a [href]="document.uri" target="_blank">
+            <img src="/assets/img/icon-info.svg" alt="" /> {{document.name}}
+          </a>
+        </div>
       </div>
     </div>
   </div>
