@@ -144,33 +144,6 @@ export class ReconcileComponent implements OnInit, OnDestroy {
     .open(ReconcileProductModal, this.modalWindowService.overlayConfigFactoryWithParams({}));
   }
 
-  packageChange(product) {
-    // if (product.package_price > product.reconciled_package_price) {
-    //   this.confirmModalService.confirmModal('Warning', 'Is this a price change or discount?', [
-    //     {text: 'Price Change', value: 'price', cancel: true},
-    //     {text: 'Discount', value: 'discount', cancel: false}
-    //   ])
-    //   .subscribe((res) => {
-    //     if (res.success) {
-    //       product.reconciled_discounted_price = product.reconciled_package_price;
-    //       product.reconciled_discount = (product.package_price - product.reconciled_discounted_price).toFixed(2);
-    //       product.reconciled_package_price = product.package_price;
-    //       product.reconciled_discount_type = 'USD';
-    //     }
-    //   });
-    // } else if (product.package_price < product.reconciled_package_price) {
-    //   this.confirmModalService.confirmModal('Warning', 'Is this a new price?', [
-    //     {text: 'Yes', value: 'yes', cancel: false},
-    //     {text: 'No', value: 'no', cancel: true}
-    //   ])
-    //   .subscribe((res) => {
-    //     if (res.success) {
-
-    //     }
-    //   });
-    // }
-  }
-
   removeProduct(product) {
     product.checked = false;
     this.panelVisible = any((pd) => pd.checked)(this.selectedInvoice.items);
@@ -205,10 +178,27 @@ export class ReconcileComponent implements OnInit, OnDestroy {
         product.reconciled_discounted_price = (product.reconciled_package_price - product.reconciled_discount) || 0;
       }
       product.reconciled_total = (product.reconciled_discounted_price * product.reconciled_qty) || 0;
+      if (product.package_price !== product.reconciled_package_price) {
+        product.isTooltipVisible = true;
+      }
       this.selectedInvoice.invoice.calculated_sub_total = product.reconciled_total;
       this.updateInvoiceDetails({});
     } catch (err) {
       console.log('productChange: ', err);
+    }
+  }
+
+  productDiscount(product) {
+    if (product.reconciled_package_price > product.package_price) {
+      product.reconciled_discount = 0;
+      product.discounted_price = 0;
+    } else {
+      if (product.reconciled_discount_type == 'PERCENT') {
+        product.reconciled_discount = Math.round(10000 * (product.package_price - product.reconciled_package_price) / product.package_price) / 100;
+      } else {
+        product.reconciled_discount = Math.round((product.package_price - product.reconciled_package_price) * 100) / 100;
+      }
+      product.discounted_price = product.reconciled_discounted_price;
     }
   }
 
@@ -344,6 +334,8 @@ export class ReconcileComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  reconcileTypeChanges(event) {}
 
   reconcileSave() {
     this.toasterService.pop("", "Invoice details updated successfully");

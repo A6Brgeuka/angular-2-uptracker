@@ -7,6 +7,7 @@ import { ReconcileProductModalModule } from '../reconcile-product-modal/reconcil
 import {
     SelectDropDownModule
 } from '../../../shared/components/ngx-select-dropdown/ngx-select-dropdown.module';
+import { ReconcileTooltipModule } from '../../../shared/components/reconcile-tooltip/reconcile-tooltip.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {
     FormsModule,
     ReactiveFormsModule,
     ReconcileProductModalModule,
-    SelectDropDownModule
+    SelectDropDownModule,
+    ReconcileTooltipModule
   ],
   providers: []
 })

@@ -1,0 +1,83 @@
+<div class="reconcile-tooltip" [ngClass]="{'visible': visible}">
+  <div *ngIf="state == 10">
+    <span>Is this a discount or new price?</span>
+    <p>
+      <input name="selection1" type="radio" id="discount" value="discount" [(ngModel)]="reconcileType" (ngModelChange)="onDiscount()" />
+      <label for="discount">Discount</label>
+    </p>
+    <p>
+      <input name="selection2" type="radio" id="newprice" value="price" [(ngModel)]="reconcileType" />
+      <label for="newprice">New Price</label>
+    </p>
+    <div class="controls">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="changeTooltip('next')"
+      >
+        NEXT
+      </button>
+    </div>
+  </div>
+  <div *ngIf="state == 11">
+    <div class="price-row">
+      <img src="/assets/img/icon-check.png" alt="" />
+      <span>Discount applied!</span>
+    </div>
+    <div class="controls">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="changeTooltip('close')"
+      >
+        CLOSE
+      </button>
+    </div>
+  </div>
+  <div *ngIf="state == 12">
+    <span>This will change the price for all future orders of this product. Would you still like to proceed?</span>
+    <div class="controls">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="changeTooltip('yes')"
+      >
+        YES
+      </button>
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="changeTooltip('no')"
+      >
+        NO
+      </button>
+    </div>
+  </div>
+  <div *ngIf="state == 13">
+    <div class="price-row">
+      <img src="/assets/img/icon-check.png" alt="" />
+      <span>New price updated!</span>
+    </div>
+    <div class="controls">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="changeTooltip('close')"
+      >
+        CLOSE
+      </button>
+    </div>
+  </div>
+  <div *ngIf="state == 14">
+    <span>Ok! The price will only update this one time.</span>
+    <div class="controls">
+      <button
+        type="submit"
+        class="uptracker-form-btn no-min-width white-text waves-effect waves-light"
+        (click)="changeTooltip('close')"
+      >
+        CLOSE
+      </button>
+    </div>
+  </div>
+</div>

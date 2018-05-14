@@ -383,7 +383,7 @@
                   >
                 </div>
               </div>
-              <div class="col s2">
+              <div class="col s2 relative">
                 <div class="input">
                   <input
                     class="text-left"
@@ -392,10 +392,14 @@
                     currencyMask
                     [options]="{ prefix: '$', thousands: ',', decimal: '.', align: 'left' }"
                     [(ngModel)]="product.reconciled_package_price"
-                    (blur)="packageChange(product)"
                     (ngModelChange)="productChange(product)"
                   >
                 </div>
+                <reconcile-tooltip
+                  [price]="product.package_price"
+                  (selectDiscount)="productDiscount(product)"
+                  [(ngModel)]="product.reconciled_package_price"
+                ></reconcile-tooltip>
               </div>
               <div class="col s2">
                 <div class="discount">
@@ -414,7 +418,7 @@
                       materialize="material_select"
                       name="reconciled_discount_type"
                       [(ngModel)]="product.reconciled_discount_type"
-                      (ngModelChange)="productChange(product)"
+                      (ngModelChange)="productDiscount(product)"
                     >
                       <option value="PERCENT">%</option>
                       <option value="{{selectedInvoice.invoice.currency}}">{{DOLLARSIGNS[selectedInvoice.invoice.currency]}}</option>

@@ -1,0 +1,45 @@
+@import "../../../../colors";
+
+:host /deep/ {
+  .reconcile-tooltip {
+    display: none;
+    bottom: 60px;
+    border: 1px solid #9a9c9e;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    position: absolute;
+    width: 300px;
+
+    .controls {
+      margin-top: 20px;
+      height: 30px;
+
+      button {
+        margin: 0;
+      }
+    }
+    .price-row {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 30px;
+        height: 30px;
+      }
+      span {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .visible {
+    display: block;
+  }
+
+  [type="radio"]:checked + label:after {
+    background-color: $tealish;
+    border-color: $tealish;
+    left: 3px;
+  }
+}
