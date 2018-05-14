@@ -4,7 +4,8 @@
        placeholder="Type"/>
 
 <ul *ngIf="isOpen" [ngClass]="{'fadeIn':isOpen}">
-  <li *ngFor="let item of autocompletePackage"
+  <li *ngFor="let item of autocompletePackage; let i = index"
+      [attr.data-index]="i"
       (click)="onSelect(item.unit_name)">
     {{item.unit_name}}
   </li>
