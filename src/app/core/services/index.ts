@@ -25,6 +25,7 @@ import { ReceivedOrderService } from './received-order.service';
 import { ReceivedOrderListService } from './received-order-list.service';
 import { RestockService } from './restock.service';
 import { ReconcileService } from './reconcile.service';
+import { SubtractService } from './subtract.service'
 import { AddProductManager} from './add-product.manager';
 
 export {
@@ -55,6 +56,7 @@ export {
   ReceivedOrderListService,
   RestockService,
   ReconcileService,
+  SubtractService,
   AddProductManager
 };
 
@@ -86,5 +88,6 @@ export const APP_SERVICE_PROVIDERS = [
   ReceivedOrderListService,
   RestockService,
   ReconcileService,
+  SubtractService,
   AddProductManager
 ];

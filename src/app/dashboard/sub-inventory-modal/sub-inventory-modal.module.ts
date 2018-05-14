@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 
 import { SubInventoryModal } from './sub-inventory-modal.component';
 import { AppSharedModule } from '../../shared/shared.module';
+import { RangeSliderModule } from '../../shared/components/range-slider/range-slider.module';
 
 @NgModule({
   declarations: [
     SubInventoryModal
   ],
   imports: [
-    AppSharedModule
+    AppSharedModule,
+    RangeSliderModule
   ],
   providers: [],
   // IMPORTANT:
