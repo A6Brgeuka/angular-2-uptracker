@@ -27,7 +27,7 @@
   </div>
 </div>
 <div class="list">
-  <div class="item center-align" *ngFor="let vendor of vendors$ | async; let i=index">
+  <div class="item center-align" *ngFor="let vendor of vendors$ | async | orderByDate:'-updated_at'; let i=index">
     <div class="inner" [routerLink]="'view/'+[vendor.id]" >
       <div *ngIf="vendor.logo" class="img" [ngStyle]="{ 'background-image': 'url(' + vendor.logo + ')' }"></div>
       <div *ngIf="!vendor.logo"  class="img" ></div>

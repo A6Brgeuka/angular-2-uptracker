@@ -1119,8 +1119,14 @@ modal-overlay {
 
 }
 
+.modal-open {
+  overflow: hidden;
+}
+
 modal-overlay {
   &.transparent-bg {
+    overflow: auto;
+
     .modal-backdrop {
       /*background-color: rgba(0, 0, 0, .3)*/
     }

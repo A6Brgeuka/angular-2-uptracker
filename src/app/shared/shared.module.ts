@@ -17,6 +17,7 @@ import { AgmCoreModule } from "angular2-google-maps/core";
 
 import { IterablePipe } from "./pipes/iterable/iterable.pipe";
 import { InputValueSearch } from "./pipes/input-value-search/input-value-search.pipe";
+import { OrderByDatePipe } from './pipes/order-by-date/order-by-date.pipe';
 import { CapitalizeFirstPipe } from "./pipes/capitilizeFirst/capitilizeFirst";
 import {CurrencyUsdPipe} from "./pipes/currency-usd/currency-usd.pipe";
 import {TextFilterPipe} from "./pipes/text-filter/text-filter.pipe";
@@ -33,6 +34,7 @@ let directivesArr = [
 let pipesArr = [
   IterablePipe,
   InputValueSearch,
+  OrderByDatePipe,
   CapitalizeFirstPipe,
   CurrencyUsdPipe,
   TextFilterPipe

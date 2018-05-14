@@ -1,12 +1,10 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BSModalContext} from 'angular2-modal/plugins/bootstrap';
 import {DialogRef} from 'angular2-modal';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Vendor} from '../../../models/inventory.model';
 import {InventoryService} from '../../../core/services/inventory.service';
 import {DestroySubscribers} from 'ngx-destroy-subscribers';
-import {AccountVendorModel} from '../../../models/account-vendor.model';
 import {NewVendorModel} from '../../../models/new-vendor.model';
 import {VendorService} from '../../../core/services/vendor.service';
 import {Router} from '@angular/router';
@@ -132,14 +130,9 @@ export class AddVendorModalComponent implements OnInit {
       this.formData.append('logo', this.logo);
     }
 
-    this.vendorService.addAccountVendor(this.formData).subscribe(
-      (res: any) => {
-        this.dialog.context.modalMode ?
-          this.dialog.close(res) :
-          this.router.navigate(['/vendors/edit/' + res.id]) && this.dismissModal();
-      }
-    );
-
+    this.vendorService.addAccountVendor(this.formData)
+      .do(res => this.vendorService.addToCollection$.next(res))
+      .subscribe(res => this.router.navigate(['/vendors/edit/' + res.id]) && this.closeModal(true));
   }
 
   deleteLogo() {

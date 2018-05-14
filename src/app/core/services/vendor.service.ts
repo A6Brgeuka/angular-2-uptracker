@@ -164,7 +164,6 @@ export class VendorService extends ModelService {
           this.updateCollection$.next(res.data.vendors);
         }
         this.totalCount$.next(res.data.count);
-        this.totalCount$.next(res.data.count);
         this.isDataLoaded$.next(true);
         return res.data.vendors;
       }
